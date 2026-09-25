@@ -1,0 +1,41 @@
+# Product expansion roadmap
+
+User direction recorded on 2026-09-25. This is sequencing and scope guidance,
+not a set of implementation tracks or a delivery commitment.
+
+| Order | Model scope | Data progression |
+| --- | --- | --- |
+| 1 | Emergency department | Generic/public baseline → Cairns Emergency Department, within CHHHS |
+| 2 | Surgery | Generic/public baseline → CHHHS example |
+| 3 | Birthing suites | Generic/public baseline → CHHHS example |
+| 4 | Outpatient clinics | Generic/public baseline → CHHHS example |
+| 5 | Waitlist management | Generic/public baseline → CHHHS example |
+| 6 | Whole of hospital | Generic/public baseline → CHHHS example |
+| 7 | Whole of health | Generic/public baseline → CHHHS example |
+
+For each stage, establish a reproducible generic model using public data and open
+examples where available, with clearly labelled synthetic assumptions where
+necessary. Then refine through a separate CHHHS example profile supported by
+available local data and validation. The ED adaptation specifically targets
+Cairns Emergency Department. Public-data availability and local access are not
+assumed to provide the detailed timestamps needed for micro-level calibration.
+
+Keep generic model logic, data mappings, parameter sets and site-specific policies
+separate, with provenance for each. CHHHS/Cairns adaptation must not overwrite the
+generic baseline or turn a local assumption into a universal engine default.
+Compare the generic and local versions explicitly as evidence improves.
+
+The framework combines DES and ABM with extension points for later methods. Core
+contracts expose time, entities/components, events, model adapters and versioned
+outputs; clinical pathways, site rules and presentation remain separate. Future
+methods must integrate with deterministic scheduling, seed/state ownership and
+verification contracts rather than creating a competing clock or state store.
+Do not add speculative solver/plugin machinery before a concrete method needs it.
+
+The current two Kairos enhancement tracks support reuse through neutral resource/
+task identities, configurable policies and empirical mappings. Acceptance remains
+general engine primitives plus generic ED synthetic fixtures. Whole-system
+composition and other clinical domain models are not implementation work here.
+
+Create detailed tracks for later stages only when requested. No detailed tracks
+for stages 2–7 have been created.
