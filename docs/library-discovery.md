@@ -68,7 +68,7 @@ The complete default-branch file trees returned by GitHub contained only
 No reusable implementation was found in those default branches. Other branches
 were not examined.
 
-## Proposed vision — awaiting user confirmation
+## Approved vision
 
 **CareOps Sim — Emergency Department:** Build a reproducible Kairos-based
 simulation of patient arrivals, triage, assessment, treatment, and discharge or
@@ -77,6 +77,49 @@ scenarios using waiting times, length of stay, throughput, and resource use.
 Costing, funding, process analysis, and uncertainty libraries are candidate
 optional integrations.
 
+The user approved this vision on 2026-09-25 and selected interactive product
+definition. They additionally require a bleeding-edge approach for planned Kairos
+components and development of compatible parallel execution components.
+
 The intended users, setting, model detail, input data, interface, initial scenario,
 and success criteria remain to be defined through Conductor setup. The technology
 stack and first implementation track have not been approved.
+
+## Parallel execution discovery
+
+Kairos currently contains these components as Rust workspace crates within the
+single source submodule. They are not separate Git submodules. No repository split
+is required to develop them in place.
+
+| Component | Observed boundary at the pinned revision | Development and compatibility work to plan |
+| --- | --- | --- |
+| `kairo-ecs-pdes` | Local protocol and deterministic reference fixtures; its validation documentation explicitly excludes core-scheduler integration and actual speedup | Integrate actual parallel execution with the ED event model; check causality, deterministic random streams, queue/resource ownership, and parity across worker counts. |
+| `kairo-ecs-mpi` | Dependency-free placeholder transport and protocol contracts; no MPI runtime dependency | Implement real rank/worker transport, launch, event exchange and failure behaviour; execute multi-process tests on a supported runtime. |
+| `kairo-ecs-grpc` | Placeholder transport and local protocol proofs; no `tonic` or generated protobuf runtime dependency | Implement real coordinator/worker services, serialization, networking and failure handling; verify multi-node execution. |
+| `kairo-ecs-gpu` | Explicit unavailable contracts for wgpu and CUDA; a separate CPU fallback exists for local validation | Implement actual device backends and suitable kernels; verify device execution, numerical behaviour and measured performance. |
+| `kairo-ecs-webgpu` | Feature-gated crate and shader/contract surfaces | Audit browser runtime integration and establish real browser/device evidence before treating it as supported. |
+
+Primary local sources:
+
+- [PDES validation boundary](../libs/kairos/docs/pdes/validation-evidence.md)
+- [Distributed runtime blockers](../libs/kairos/docs/distributed/deployment-guide.md)
+- [GPU backend availability](../libs/kairos/docs/gpu-compute/backend-selection.md)
+- [PDES manifest](../libs/kairos/crates/kairo-ecs-pdes/Cargo.toml)
+- [MPI manifest](../libs/kairos/crates/kairo-ecs-mpi/Cargo.toml)
+- [gRPC manifest](../libs/kairos/crates/kairo-ecs-grpc/Cargo.toml)
+- [GPU manifest](../libs/kairos/crates/kairo-ecs-gpu/Cargo.toml)
+- [WebGPU manifest](../libs/kairos/crates/kairo-ecs-webgpu/Cargo.toml)
+
+Proposed interpretation of bleeding-edge development: work against recent,
+explicitly recorded source revisions and evaluate new runtime capabilities through
+named development phases. Record revisions, toolchains, features and execution
+backends with results so experiments remain reproducible. Refreshing source pins
+must include compatibility evidence for the ED model and selected adapters.
+
+Independent scenario/replication parallelism and parallel execution within a
+single simulated ED are different capabilities. Both need explicit requirements;
+neither proves the other. A backend must report what actually executed, and
+measured hardware/runtime evidence must support any performance claim.
+
+Runtime tests and performance measurements have not been run as part of this
+discovery. These are implementation requirements to resolve in the agreed plan.
