@@ -2,15 +2,15 @@
 
 ## Current scope and authority
 
-The user requested two reviewable specifications and phased plans. Record both
-as proposed; no implementation checkbox is complete merely because a document
-exists. Existing explicit product and Rust-native decisions provide this planning
+The user requested queue/calibration plans and then an audit of complete ED
+delivery, development tooling and hardened workflows. Record proposed work
+honestly; no implementation checkbox is complete merely because a document exists. Existing explicit product and Rust-native decisions provide this planning
 context. The wider product draft has not received final setup approval.
 
 Use [Kairos's workflow](../libs/kairos/conductor/workflow.md) for implementation
 inside its repository: contract first, core first, bindings second. Each local
 track has a spec, plan, metadata, index, ownership contract, test matrix, risk
-register and handoff. Local `metadata.json` files are authoritative for these two
+register and handoff. Local `metadata.json` files are authoritative for these
 coordination tracks; `tracks.md` is the human-readable index. Upstream
 `tracks.yaml` remains authoritative for upstream dependencies/status.
 
@@ -45,3 +45,15 @@ versions, MSRV/features and verification evidence.
 
 Conductor's optional skills catalog was checked; its Firebase/GCP entries do not
 apply to this Rust library planning increment.
+
+
+## Readiness and development harness
+
+Use [module-readiness.md](module-readiness.md) for the capability/completion
+boundary, [agent-engineering.md](agent-engineering.md) for bounded context/skill
+work and [ci-security-release.md](ci-security-release.md) for phased gates.
+Run `python3 tools/context.py resume` once at session recovery; validate source
+state, then read the active slice. Update `current-state.json` at a meaningful
+handoff. Machine checks establish artifact integrity only; executed runtime
+receipts establish capability. GitHub setup occurs at D2, after a buildable
+fixture/local checks and before sustained implementation.

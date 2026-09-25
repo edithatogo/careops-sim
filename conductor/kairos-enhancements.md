@@ -2,7 +2,8 @@
 
 **Planning baseline:** 2026-09-25; Kairos
 `fae901558f07b7b717a676adbafbe2cdc78dea1c`.
-**Status:** specifications and plans proposed; implementation not started.
+**Status:** queue/calibration specifications and plans proposed; their implementation
+has not started. The later development audit added a local context bootstrap.
 
 ## Deliverables
 
@@ -115,3 +116,16 @@ specified clinical/domain sequence. DES and ABM share core state/time contracts;
 future methods extend those contracts through reviewed adapters. Only these two
 reusable-engine tracks are detailed here. Preserve public/synthetic generic
 fixtures separately from local CHHHS data mappings and calibration profiles.
+
+
+## Delivery-readiness extension
+
+The subsequent audit found the two engine tracks insufficient for completed ED
+library delivery. [Module readiness](module-readiness.md) maps every Kairos crate
+and supporting owner to required/deferred capabilities. The registry now adds
+[development readiness](tracks/development_readiness_20260925/plan.md) and
+[generic ED delivery](tracks/generic_ed_delivery_20260925/plan.md). These implement
+missing development/ED paths while retaining the existing engine and backend
+architecture. Current versions, agent/skill evals, CI, security, repository timing
+and clean-consumer release gates are explicit. No later clinical domains gained
+implementation tracks.

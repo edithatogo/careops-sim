@@ -32,7 +32,7 @@ methods must integrate with deterministic scheduling, seed/state ownership and
 verification contracts rather than creating a competing clock or state store.
 Do not add speculative solver/plugin machinery before a concrete method needs it.
 
-The current two Kairos enhancement tracks support reuse through neutral resource/
+The Kairos queue/calibration enhancement tracks support reuse through neutral resource/
 task identities, configurable policies and empirical mappings. Acceptance remains
 general engine primitives plus generic ED synthetic fixtures. Whole-system
 composition and other clinical domain models are not implementation work here.

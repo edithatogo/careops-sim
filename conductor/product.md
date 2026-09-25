@@ -37,3 +37,12 @@ Then proceed in order through surgery, birthing suites, outpatient clinics,
 waitlist management, whole of hospital and whole of health. Each starts generic/
 public, then iterates to CHHHS. [The roadmap](roadmap.md) records sequencing;
 later-domain detailed tracks are deferred.
+
+
+## Development and delivery extension
+
+The readiness audit adds a tested local context harness and explicit delivery
+tracks for the generic ED library, dashboard and existing backend profiles.
+[Module readiness](module-readiness.md) distinguishes these completion levels.
+The engine/model implementations remain planned; current local verification
+covers baseline Kairos tests and the context harness only.

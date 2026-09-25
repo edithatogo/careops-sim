@@ -4,6 +4,11 @@
 **Specification:** [spec.md](spec.md) · **Workflow:** [workflow.md](../../workflow.md)
 **Owners:** existing 21/04/03/22; 01/12/25/30 for shared contracts and gates.
 
+Programme prerequisites: D1 before C0; D2 before C1 implementation. C6 reuses
+the generic ED fixture delivered by E2, avoiding a second competing model. See
+[development readiness](../development_readiness_20260925/plan.md) and
+[generic ED delivery](../generic_ed_delivery_20260925/plan.md).
+
 ## C0 — Data, fidelity and calibration contracts
 
 Entry: specification review and refresh of existing Kairos plans; queue Q0 API
@@ -132,7 +137,7 @@ run. Legacy runner fixtures still parse and behave as before.
 
 ## C6 — Integrated ED demonstration and release evidence
 
-Entry: C5 and Q5; source and dependency versions frozen for acceptance.
+Entry: C5, Q5 and generic ED E2; source and dependency versions frozen for acceptance.
 Owners 21/12/25, with 03/04/22 and backend-owner handoff.
 
 - [ ] C6.1 Execute a synthetic ED fixture covering arrivals/acuity, staff zones,

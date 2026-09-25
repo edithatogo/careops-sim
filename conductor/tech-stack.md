@@ -23,3 +23,13 @@
 
 See [the alignment decisions](../docs/kairos-alignment.md) and
 [enhancement programme](kairos-enhancements.md).
+
+
+## Current development audit
+
+[Dependency policy](dependency-policy.md) and its live source snapshot supersede
+older version assumptions: Rust 1.98.1 is locally tested; Arrow 60 requires MSRV
+1.88, above Kairos's declared 1.76. D1/C0 resolve compatibility before updating
+upstream manifests. Optional latest dependencies are candidates, not installed
+or validated merely by appearing in the snapshot. The lightweight local context
+harness uses Python stdlib for developer orchestration only.

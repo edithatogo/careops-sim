@@ -4,6 +4,10 @@
 **Specification:** [spec.md](spec.md) · **Workflow:** [workflow.md](../../workflow.md)
 **Owners:** upstream 03, with 01/04/12/25 as recorded per milestone.
 
+Programme prerequisites: D1 establishes reviewed toolchain/agent contracts before
+Q0; D2 establishes useful remote CI before Q1 implementation. See
+[development readiness](../development_readiness_20260925/plan.md).
+
 ## Q0 — Freeze contracts and compatibility decisions
 
 Entry: reviewed specification, current upstream source/registry refresh. This

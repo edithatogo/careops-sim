@@ -43,3 +43,13 @@ Review the specifications and begin Q0/C0 contract/ADR work when implementation
 is requested. No further input is required to finish this planning deliverable.
 Local ED data, layout, staffing and pathway details become inputs for the later
 Cairns profile rather than prerequisites for the generic framework.
+
+
+## Subsequent readiness audit
+
+The original two-track document checks above describe the earlier delivery.
+A later user-requested audit expanded the programme to four tracks and added a
+local context harness plus baseline tests. See [the current audit receipt](evidence/development-audit.md)
+for executed evidence and [module readiness](module-readiness.md) for remaining
+gaps. The prior statement that no Rust tests were run applies only to that initial
+planning pass, not to this subsequent baseline verification.

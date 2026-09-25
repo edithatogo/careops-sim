@@ -1,0 +1,107 @@
+# Kairos module readiness and ED delivery audit
+
+Audit: 2026-09-25, Kairos `fae901558f07b7b717a676adbafbe2cdc78dea1c`.
+The two original plans are necessary but insufficient for a completed ED library.
+They omitted explicit ED pathway delivery, release qualification and several
+cross-cutting development gates. Development-readiness (D) and generic-ED delivery
+(E) now close that coverage gap. All later clinical domains remain roadmap-only.
+
+## Completion levels
+
+| Gate | Meaning | Required milestones |
+| --- | --- | --- |
+| G0: development ready | Reproducible Rust environment, contracts, capability baseline, evaluated agent harness and usable CI | D0–D2; Q0/C0/E0 reviewed |
+| G1: native ED library complete | Generic ED model, headless API/runner, real telemetry, calibration, multicore replications, reproducible package with docs and release checks | Q5, C6, E4, D3/D4 |
+| G2: first usable product | G1 plus interactive scenario dashboard, exports and native/browser contract tests | E5, D4 release profile evidence |
+| G3: accelerated/parallel profiles | Actual Metal, then within-run PDES, then distributed acceptance; measured correctness and performance | E6/E7/E8 separately; no all-or-nothing backend claim |
+
+A completed native library does not imply every Kairos ecosystem module has been
+implemented. Every module is classified below. Deferred capabilities must remain
+explicitly unavailable; never pass an availability check through a CPU mock.
+
+## Crate coverage and evidence required
+
+Paths below are relative to `libs/kairos/crates/`. Source/manifest inspection
+establishes current boundaries; only the five-package test slice noted below ran.
+
+| Module(s) | Current inspected boundary | Required work / owner | Delivery gate |
+| --- | --- | --- | --- |
+| kairo-ecs-types | Tick time and generational IDs | Versioned handles/errors, precision/overflow rules; 01, Q0/C0/E0 | G0/G1 |
+| kairo-ecs-core | Deterministic scheduler; raw schedule permits past events | Checked Flow admission, completion boundary tests, actual scheduler snapshot/restore; 01, Q1/Q4 | G1 |
+| kairo-ecs-state | World and separate type-erased registry | Unified runtime, context codecs, despawn/lease invariants; 01/03, Q1/Q4 | G1 |
+| kairo-ecs-rng | Explicit deterministic streams | Versioned task/purpose keys, distribution sampling, stable patient identities; 01, C2/E1 | G1 |
+| kairo-ecs-des | Legacy FIFO resources and trajectories | Full queue/preemption/Flow track Q0–Q5; preserve legacy API; 03 | G1 |
+| kairo-ecs-abm | Behavior loop with separate context | Shared DES/ABM runtime and minimal staff policy/transit; 03, Q4/C2 | G1 |
+| kairo-ecs-arrow | Schema and smoke bytes, no Arrow deps | Real IPC/Parquet, versioned sidecars, bounded IO; 04, C1/C4 | G1 |
+| kairo-ecs-cli | Basic manifests/replay surfaces | Real ED execution, studies, interruption recovery, cancel/progress/errors and worker runs; 22, C5/E3 | G1 |
+| kairo-ecs-calibration (proposed) | Not present | C0 ADR then C1–C6; reusable Rust algorithms owned by 21 | G1 |
+| kairo-ecs-bench | Existing benchmark/fixture integration | Representative ED/resource/Arrow/calibration workloads and thresholds; 12/18/31, Q5/C6/D3 | G1 |
+| kairo-ecs-debug | Trace snapshots/deltas; not proof of full ECS serialization | Readable failure traces and replay integration; full interactive time travel optional; 40 with 01/22, Q4/E3 | G1 diagnostic subset |
+| kairo-ecs-viz | Headless snapshot facade; native renderer unavailable | ED snapshot/delta adapter, backpressure and sampling contracts; 05, E5 | G2 |
+| kairo-ecs-ffi | Existing core bridge, not new Flow API | Audit ownership/panic/tick widths and expose required ED surface; 02, E5 | G2 if used by selected Wasm route |
+| kairo-ecs-wasm | Existing limited FFI-backed engine | ED API and u128/ID mapping, worker lifecycle and native parity; 09, E5 | G2 |
+| kairo-ecs-uniffi | Bridge wrapper | Maintain regression compatibility; full ED expansion deferred to real consumer; 02 | Deferred expansion |
+| kairo-ecs-diplomat | Bridge wrapper | Same protected ABI review; no redundant ED API rewrite; 02 | Deferred expansion |
+| kairo-ecs-cs-bridge | FFI bridge | Preserve existing gates if shared ABI changes; no new C# ED work; 10 | Deferred expansion |
+| kairo-ecs-gpu | Empty backend dependency features / explicit unavailable contracts | Real wgpu/WGSL Metal dispatch, CPU oracle and device benchmarks; 32, E6 | G3-Metal |
+| kairo-ecs-webgpu | Browser contract/scaffold | Real browser device setup and parity through existing 33; no assumption that Pixi rendering is simulation compute | Deferred after native Metal |
+| kairo-ecs-pdes | Conservative scheduler/in-memory reference scaffolding | Real core/Flow LP integration, resource ownership/lookahead/GVT, threaded evidence; 34, E7 | G3-PDES |
+| kairo-ecs-mpi | Local protocol surface; no MPI runtime dependency | Real MPI transport, rank launch, migration and failure evidence; 35, E8 | G3-distributed |
+| kairo-ecs-grpc | Local protocol surface; no tonic/prost runtime | Real services/auth/protocol, recovery and at-most-once migration; 35, E8 | G3-distributed |
+| kairo-ecs-streaming | Optional Kafka/NATS/Flight feature names, no runtime deps | Batch Arrow sufficient initially; real live ingestion needs separate source/wall-clock contract; 36 | Deferred |
+| kairo-ecs-ml | Optional backend feature names, no runtime deps | Burn remains existing direction; learned policies/surrogates need measured value and validation; 37 | Deferred |
+| kairo-ecs-fmi | Optional co-simulation features, no runtime deps | Preserve extension contracts, implement only for concrete future model need; 38 | Deferred |
+
+Python/R/Julia/Go/C# binding packages remain in existing owner tracks 06–11.
+A Python binding crate is listed as excluded in the upstream workspace; do not
+interpret that as a required implemented ED dependency. Run affected legacy
+binding compatibility gates when shared interfaces change, without requiring new
+full ED APIs in every language before G1. All reusable new computation stays Rust.
+
+## Non-crate dependency closure
+
+| Existing upstream tracks | ED obligation |
+| --- | --- |
+| 00, 19, 26 | Naming/licensing/citation and interoperability decisions; D0/E0; retain seed/schema provenance |
+| 12, 18, 21, 31 | Analytic/differential/property tests, validation/uncertainty, representative performance and regression thresholds; Q/C/D3/E4 |
+| 13, 20, 27, 30, 44 | CI, supply-chain/security, reproducible bootstrap, toolchain policy and real health gates; D0–D5 |
+| 14, 17, 23, 24, 41, 45 | Executable generic-ED examples, API docs, Astro/Starlight integration where relevant, dashboard usability; E0/E4/E5 |
+| 15, 16, 25, 28, 29, 42 | Compatibility, independent review, packaging and provenance; D4/E4; retain existing global publication holds |
+| 39, 43 | Cloud/HPC deployment only after real distributed runtime; E8 handoff; not required for local G1/G2 |
+
+Track 03/04 dependencies on 26 and all upstream dependency edges remain in force.
+The scoped ED release evidence does not waive Kairos's broader package publication
+requirements or mark global upstream tracks Done. D0 produces a machine-readable
+capability/owner/gate inventory and resolves dependency/status inconsistencies.
+
+## Concrete readiness gaps
+
+- Parent repo had no AGENTS map, persistent context check, CI, Rust project or
+  remote. Local map/check harness added now; buildable ED code and hosted CI await D/E.
+- Upstream `rust-toolchain.toml` and mise use floating channels; MSRV=1.76 conflicts
+  with current Arrow 60 MSRV=1.88. D1/C0 require a scoped compatibility decision.
+- Upstream ci-core uses older pinned cargo tools, ci-policy installs others without
+  versions; `cargo deny check advisories sources` does not run its license/bans
+  policy. D2 aligns versions and runs intended policy categories.
+- CodeQL matrix is JavaScript-only; assess and enable current Rust support in D3.
+- Fuzz workflow installs stable and invokes cargo-fuzz; D3 selects a dated tested
+  nightly lane for supported sanitizer/fuzz execution, with actual run evidence.
+- Local developer validation currently requires unrelated polyglot runtimes.
+  D1 adds a minimal native-ED profile while preserving broader upstream commands.
+- Full ECS/scheduler/context checkpointing is an implementation dependency, not
+  established by existing trace-debug snapshots. Q4 owns this with 01/22.
+- GPU/PDES/network smoke labels do not prove device/threaded/multi-node execution.
+  E6–E8 require actual hardware/runtime evidence and retain existing thresholds.
+
+## Baseline verification
+
+On 2026-09-25, Apple silicon macOS, rustc/cargo 1.98.1:
+
+```sh
+cd libs/kairos
+cargo test --locked --offline -p kairo-ecs-core -p kairo-ecs-state -p kairo-ecs-rng -p kairo-ecs-des -p kairo-ecs-abm
+```
+
+Result: **60 tests passed**, no failures. This is existing baseline behavior,
+not the new queue/calibration/ED acceptance suite. Submodule source and pin remain
+unchanged. See [development evidence](evidence/development-audit.md).
