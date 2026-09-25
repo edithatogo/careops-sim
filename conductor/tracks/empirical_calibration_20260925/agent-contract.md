@@ -24,3 +24,13 @@ waits for Q5 and C5. A single owner coordinates shared schemas/Cargo manifests.
 Every handoff records schema/API versions, fixture seeds, input/artifact hashes,
 actual executed gates and limitations. Do not use a Done status as a substitute
 for required runtime evidence.
+
+
+## Execution modes
+
+This track supports serial execution or bounded parallel subagents through
+[the shared execution protocol](../../execution-model.md). Workers receive one
+reviewed packet, exact source hashes, write reservations, commands and behavioral
+oracles. The coordinator owns shared files, integration and accepted task status.
+Use [the decomposition guide](../../execution/decomposition.md) to size work for
+simpler models; unresolved design decisions escalate before implementation.

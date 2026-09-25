@@ -21,3 +21,13 @@ Parallel-safe work: calibration schema design, pure metrics and Arrow ingestion
 after contract review. Shared Cargo manifests, Arrow schemas and scheduler/type
 files require one coordinated owner. Deliver tests and compatibility evidence
 before integration; maintain spec/plan/risk/test/handoff records at each phase.
+
+
+## Execution modes
+
+This track supports serial execution or bounded parallel subagents through
+[the shared execution protocol](../../execution-model.md). Workers receive one
+reviewed packet, exact source hashes, write reservations, commands and behavioral
+oracles. The coordinator owns shared files, integration and accepted task status.
+Use [the decomposition guide](../../execution/decomposition.md) to size work for
+simpler models; unresolved design decisions escalate before implementation.

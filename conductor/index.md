@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [Serial/parallel and smaller-model execution](execution-model.md)
+- [Worker packet decomposition](execution/decomposition.md)
 - [Resume state](current-state.json) — `python3 tools/context.py resume`
 - [Module readiness and delivery gates](module-readiness.md)
 - [Dependency/version policy](dependency-policy.md)

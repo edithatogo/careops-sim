@@ -1,5 +1,11 @@
 # Phased implementation plan: DES queues and preemption
 
+Execution: use the shared [serial/parallel protocol](../../execution-model.md) and
+[small-packet decomposition guide](../../execution/decomposition.md). The task
+catalog preserves every prerequisite and phase closeout. Prepare and validate
+bounded worker packets before dispatch; gpt-6-luna is a candidate worker, not an
+assumed authority for unresolved contracts or acceptance decisions.
+
 **Status:** proposed; every checkbox below is future implementation work.
 **Specification:** [spec.md](spec.md) · **Workflow:** [workflow.md](../../workflow.md)
 **Owners:** upstream 03, with 01/04/12/25 as recorded per milestone.

@@ -93,3 +93,15 @@ budgets, lock/lease, idempotency key, timeout, retry ceiling, pause switch and o
 before enabling unattended runs. Publishing, secrets, permissions and irreversible
 operations keep explicit authorization boundaries. No desktop automation is
 created as a side effect of writing this plan.
+
+
+## Execution-mode implementation
+
+The user requested serial or parallel execution, including smaller models such as
+gpt-6-luna. [The execution protocol](execution-model.md) now defines coordinator,
+worker and reviewer roles; all 119 tasks have machine-readable prerequisite and
+reservation records. A tested planner proposes serial/parallel schedules without
+starting agents. Reviewed small packets carry source hashes, fixed interfaces,
+exact commands, outputs and escalation rules. See [decomposition](execution/decomposition.md).
+The included inventory recipe enables a low-risk initial model trial. Actual Luna
+qualification remains pending; task packaging alone is not evidence of capability.

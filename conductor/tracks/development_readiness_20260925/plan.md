@@ -1,5 +1,11 @@
 # Plan: development readiness
 
+Execution: use the shared [serial/parallel protocol](../../execution-model.md) and
+[small-packet decomposition guide](../../execution/decomposition.md). The task
+catalog preserves every prerequisite and phase closeout. Prepare and validate
+bounded worker packets before dispatch; gpt-6-luna is a candidate worker, not an
+assumed authority for unresolved contracts or acceptance decisions.
+
 Status: bootstrap slice implemented; remaining work planned. All phase completion
 requires [workflow](../../workflow.md), evidence and relevant upstream owner review.
 

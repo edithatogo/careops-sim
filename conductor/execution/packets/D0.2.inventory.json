@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "packet_id": "D0.2.inventory",
+  "task_id": "D0.2",
+  "target_repo": ".",
+  "base_commit": "BIND_AT_DISPATCH",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "example_requires_binding",
+  "objective": "Extract exactly the currently present Kairos crate manifests into a sorted machine-readable inventory. Do not infer readiness or edit simulation code.",
+  "context_paths": [
+    "conductor/module-readiness.md",
+    "libs/kairos/Cargo.toml",
+    "tools/verify_inventory.py"
+  ],
+  "input_paths": [
+    "conductor/module-readiness.md",
+    "libs/kairos/Cargo.toml",
+    "tools/verify_inventory.py",
+    "libs/kairos/crates/kairo-ecs-abm/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-arrow/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-bench/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-cli/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-core/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-cs-bridge/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-debug/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-des/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-diplomat/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-ffi/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-fmi/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-gpu/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-grpc/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-ml/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-mpi/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-pdes/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-rng/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-state/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-streaming/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-types/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-uniffi/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-viz/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-wasm/Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-webgpu/Cargo.toml"
+  ],
+  "input_hashes": {},
+  "write_paths": [
+    ".artifacts/D0.2.inventory/modules.json",
+    ".artifacts/D0.2.inventory/result.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "libs",
+    "tools",
+    "tests",
+    "conductor"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "modules.json is exactly {schema_version:1, modules:[{crate:string, manifest:root-relative path, dependencies:sorted direct dependency names, features:sorted feature names}]}. Sort rows by manifest path. Include every crates/*/Cargo.toml once. Do not include workspace dependencies or infer empty features are functional backends.",
+  "steps": [
+    "Read the three context files and verify the bound input hashes.",
+    "Enumerate libs/kairos/crates/*/Cargo.toml in sorted path order; parse each using Python tomllib or equivalent typed TOML parsing.",
+    "Write the required JSON under the allowed artifact path, creating that output directory if absent.",
+    "Run the exact verification command. If a mismatch occurs, inspect the source record; do not edit the verifier. Stop after two unsuccessful corrections with a minimal diff.",
+    "Write result.json with packet_id, base_commit, status=ready_for_review or blocked, changed_paths, command argv/exit/output, unresolved issues. Do not mark D0.2 complete."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "tools/verify_inventory.py",
+        ".artifacts/D0.2.inventory/modules.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Exact fields, row count/order, names, dependency lists and feature lists equal the checked-in Cargo manifests."
+    }
+  ],
+  "acceptance": [
+    "No edits outside the two artifact paths; no remote actions or tool installation.",
+    "Every current crate manifest represented exactly once with source-derived fields.",
+    "Verifier exits 0; structured result truthfully reports executed command and any uncertainty.",
+    "This leaf is extraction only; capability assessment, dependency closure and D0.2 integration remain coordinator work."
+  ],
+  "result_path": ".artifacts/D0.2.inventory/result.json",
+  "stop_conditions": [
+    "Source/hash/base changed",
+    "Missing or unparsable manifest",
+    "Need to edit protected path",
+    "Verifier still fails after two corrections"
+  ],
+  "size_exception": null
+}

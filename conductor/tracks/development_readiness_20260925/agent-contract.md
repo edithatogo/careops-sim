@@ -12,3 +12,13 @@ owns a shared file. Delegate only under applicable session authorization; this
 contract defines responsibilities and does not start agents. No new public
 publication, private-data ingestion or scope expansion follows merely from a
 passing local check. Follow [agent engineering](../../agent-engineering.md).
+
+
+## Execution modes
+
+This track supports serial execution or bounded parallel subagents through
+[the shared execution protocol](../../execution-model.md). Workers receive one
+reviewed packet, exact source hashes, write reservations, commands and behavioral
+oracles. The coordinator owns shared files, integration and accepted task status.
+Use [the decomposition guide](../../execution/decomposition.md) to size work for
+simpler models; unresolved design decisions escalate before implementation.

@@ -57,3 +57,15 @@ state, then read the active slice. Update `current-state.json` at a meaningful
 handoff. Machine checks establish artifact integrity only; executed runtime
 receipts establish capability. GitHub setup occurs at D2, after a buildable
 fixture/local checks and before sustained implementation.
+
+
+## Serial and parallel task execution
+
+Use [execution-model.md](execution-model.md) for either mode. The generated
+[task catalog](execution/tasks.json) covers every task and prerequisite. Validate
+with `python3 tools/tasks.py check` after plan changes. Source plans/metadata are
+authoritative; rebuild/review the catalog instead of editing it by hand.
+Workers execute reviewed bounded packets and return evidence; only the coordinator
+accepts integration and marks a checkbox. Phase closeouts remain required in both
+modes. Simpler models are qualified on fixed packet evals; architectural/statistical/
+security decisions cannot be inferred or silently changed by a worker.

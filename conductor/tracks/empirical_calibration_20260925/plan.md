@@ -1,5 +1,11 @@
 # Phased implementation plan: empirical calibration and validation
 
+Execution: use the shared [serial/parallel protocol](../../execution-model.md) and
+[small-packet decomposition guide](../../execution/decomposition.md). The task
+catalog preserves every prerequisite and phase closeout. Prepare and validate
+bounded worker packets before dispatch; gpt-6-luna is a candidate worker, not an
+assumed authority for unresolved contracts or acceptance decisions.
+
 **Status:** proposed; checkboxes describe future implementation.
 **Specification:** [spec.md](spec.md) · **Workflow:** [workflow.md](../../workflow.md)
 **Owners:** existing 21/04/03/22; 01/12/25/30 for shared contracts and gates.

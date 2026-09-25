@@ -1,6 +1,8 @@
 # CareOps Sim: working map
 
 Read `conductor/index.md`, then run `python3 tools/context.py resume`.
+Also read `conductor/execution-model.md` for serial/parallel scheduling and bounded
+worker packets; run `python3 tools/tasks.py check`.
 Read only the active task's spec, plan, ownership contract and relevant source.
 `conductor/current-state.json` records the next task; verify it against Git and
 source before resuming. It is context, not authority to mark work complete.
@@ -20,6 +22,8 @@ source before resuming. It is context, not authority to mark work complete.
 
 ## Commands and evidence
 
+- `python3 tools/tasks.py ready --mode serial` or `--mode parallel --workers 4`:
+  preparation candidates only; coordinator reserves/reviews before dispatch.
 - `python3 tools/context.py check`: planning/context integrity, not runtime tests.
 - `python3 -m unittest discover -s tests -v`: local harness regression tests.
 - `python3 tools/refresh_versions.py`: network read-only dependency candidates;

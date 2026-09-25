@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "packet_id": "REQUIRED",
+  "task_id": "REQUIRED",
+  "target_repo": ".",
+  "base_commit": "REQUIRED",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "objective": "REQUIRED",
+  "context_paths": [],
+  "input_hashes": {},
+  "write_paths": [],
+  "protected_paths": [".git", "conductor/execution/tasks.json", "conductor/current-state.json"],
+  "leaf_dependencies": [],
+  "interface_contract": "REQUIRED",
+  "steps": [],
+  "verification": [],
+  "acceptance": [],
+  "result_path": "REQUIRED",
+  "stop_conditions": ["Input/base drift", "Missing prerequisite or undefined interface", "Edit outside write_paths", "Cannot establish the specified oracle"],
+  "size_exception": null,
+  "status": "template"
+}

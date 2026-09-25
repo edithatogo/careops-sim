@@ -1,5 +1,11 @@
 # Plan: generic ED library delivery
 
+Execution: use the shared [serial/parallel protocol](../../execution-model.md) and
+[small-packet decomposition guide](../../execution/decomposition.md). The task
+catalog preserves every prerequisite and phase closeout. Prepare and validate
+bounded worker packets before dispatch; gpt-6-luna is a candidate worker, not an
+assumed authority for unresolved contracts or acceptance decisions.
+
 Every phase uses [workflow.md](../../workflow.md). Task-level acceptance below is
 mandatory; budgets/thresholds are frozen in E0/D3 before measuring acceptance.
 

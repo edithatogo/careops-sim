@@ -1,0 +1,95 @@
+import copy
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import tempfile
+import unittest
+
+spec=importlib.util.spec_from_file_location('tasks',Path(__file__).parents[1]/'tools/tasks.py')
+tasks=importlib.util.module_from_spec(spec);spec.loader.exec_module(tasks)
+
+def task(name,deps=(),paths=('src',),accepted=False):
+    return {'id':name,'dependencies':list(deps),'write_reservations':list(paths),'accepted':accepted}
+
+class SchedulingTests(unittest.TestCase):
+    def catalog(self):
+        return {'tasks':[task('D0.1',accepted=True), task('Q0.1',['D0.1'],['queue']),
+                         task('C0.1',['D0.1'],['arrow']),task('E0.1',['Q0.1','C0.1'],['ed'])]}
+    def test_serial_parallel_have_same_tasks_and_barriers(self):
+        catalog=self.catalog()
+        serial=tasks.schedule(catalog,1);parallel=tasks.schedule(catalog,4)
+        self.assertEqual({x for w in serial for x in w},{x for w in parallel for x in w})
+        self.assertEqual(parallel,[['Q0.1','C0.1'],['E0.1']])
+    def test_conflicting_ancestors_are_serialized(self):
+        catalog={'tasks':[task('Q0.1',paths=['src']),task('C0.1',paths=['src/arrow'])]}
+        self.assertEqual(len(tasks.select(catalog,set(),4)),1)
+    def test_similar_prefixes_are_not_conflicts(self):
+        self.assertFalse(tasks.overlap('src/des','src/descriptive'))
+    def test_active_reservations_block_selection(self):
+        self.assertEqual(tasks.select(self.catalog(),{'D0.1'},4,['queue','arrow']),[])
+    def test_unaccepted_prerequisites_block(self):
+        self.assertEqual(tasks.select(self.catalog(),set(),4)[0]['id'],'D0.1')
+    def test_cycle_rejected(self):
+        with self.assertRaisesRegex(ValueError,'cycle'):
+            tasks.validate({'tasks':[task('Q0.1',['C0.1']),task('C0.1',['Q0.1'])]})
+    def test_unknown_dependency_rejected(self):
+        with self.assertRaisesRegex(ValueError,'Unknown'):
+            tasks.validate({'tasks':[task('Q0.1',['Q9.9'])]})
+    def test_false_acceptance_rejected(self):
+        with self.assertRaisesRegex(ValueError,'unaccepted prerequisite'):
+            tasks.validate({'tasks':[task('Q0.1'),task('Q0.2',['Q0.1'],accepted=True)]})
+    def test_nonpositive_worker_count_rejected(self):
+        with self.assertRaises(ValueError):tasks.select(self.catalog(),set(),0)
+    def test_real_catalog_modes_cover_all_tasks_without_conflict(self):
+        catalog=tasks.derive(tasks.ROOT)
+        serial=tasks.schedule(catalog,1);parallel=tasks.schedule(catalog,4)
+        self.assertEqual({i for w in serial for i in w},{i for w in parallel for i in w})
+        by_id={t['id']:t for t in catalog['tasks']}
+        accepted={t['id'] for t in catalog['tasks'] if t['accepted']}
+        for wave in parallel:
+            for i,identifier in enumerate(wave):
+                self.assertTrue(set(by_id[identifier]['dependencies'])<=accepted)
+                for other in wave[i+1:]:
+                    self.assertFalse(any(tasks.overlap(a,b) for a in by_id[identifier]['write_reservations'] for b in by_id[other]['write_reservations']))
+            accepted.update(wave)
+        self.assertEqual(len(accepted),119)
+
+class PacketTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.root=Path(self.temp.name);(self.root/'input.md').write_text('fixed contract')
+        self.packet={'packet_id':'Q1.1.unit','task_id':'Q1.1','target_repo':'.','base_commit':'a'*40,
+          'objective':'One task','context_paths':['input.md'],
+          'input_hashes':{'input.md':hashlib.sha256(b'fixed contract').hexdigest()},
+          'write_paths':['out.json'],'protected_paths':['input.md'],'leaf_dependencies':[],
+          'interface_contract':'fixed','steps':['implement'],
+          'verification':[{'argv':['check'],'cwd':'.','expected_exit':0,'oracle':'expected outcome'}],
+          'acceptance':['one result'],'result_path':'out.json','stop_conditions':['drift'],'status':'prepared'}
+    def errors(self):return tasks.packet_errors(self.root,self.packet,check_git=False)
+    def test_bound_packet_valid(self):self.assertEqual(self.errors(),[])
+    def test_template_rejected(self):
+        self.packet['base_commit']='REQUIRED'
+        self.assertTrue(self.errors())
+    def test_input_drift_rejected(self):
+        (self.root/'input.md').write_text('changed')
+        self.assertTrue(any('hash drift' in e for e in self.errors()))
+    def test_protected_write_rejected(self):
+        self.packet['write_paths'].append('input.md')
+        self.assertTrue(any('Protected write' in e for e in self.errors()))
+    def test_traversal_rejected(self):
+        self.packet['write_paths'].append('../escape')
+        self.assertTrue(any('Unsafe' in e for e in self.errors()))
+    def test_missing_oracle_rejected(self):
+        self.packet['verification'][0]['oracle']=''
+        self.assertTrue(any('oracle' in e for e in self.errors()))
+    def test_failing_final_acceptance_rejected(self):
+        self.packet['verification'][0]['expected_exit']=1
+        self.assertTrue(any('Final verification' in e for e in self.errors()))
+    def test_oversize_packet_rejected(self):
+        self.packet['write_paths']=[f'file{i}' for i in range(6)]
+        self.assertTrue(any('Oversized' in e for e in self.errors()))
+    def test_stale_base_rejected(self):
+        self.assertTrue(any('Base commit drift' in e for e in tasks.packet_errors(self.root,self.packet)))
+
+if __name__=='__main__':unittest.main()

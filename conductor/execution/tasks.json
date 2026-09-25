@@ -1,0 +1,3353 @@
+{
+  "schema_version": 1,
+  "purpose": "Preparation DAG; not agent launch or lease authority",
+  "tasks": [
+    {
+      "id": "D0.1",
+      "track_id": "development_readiness_20260925",
+      "phase": "D0",
+      "objective": "Inspect module/CI/toolchain boundaries; record readiness and live registry candidates; add AGENTS map, context resume/check and negative regression tests. Evidence: [audit receipt](../../evidence/development-audit.md).",
+      "kind": "contract_decision",
+      "accepted": true,
+      "dependencies": [],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D0"
+    },
+    {
+      "id": "D0.2",
+      "track_id": "development_readiness_20260925",
+      "phase": "D0",
+      "objective": "Turn the module table into capability/owner/gate records, refresh the upstream DAG, reconcile prerequisite contracts and classify required vs deferred APIs. Test that missing prerequisite evidence blocks a readiness claim.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "D0.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 17
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D0"
+    },
+    {
+      "id": "D0.3",
+      "track_id": "development_readiness_20260925",
+      "phase": "D0",
+      "objective": "Define the ED-native support/release profile with 25/30 and independent review checklist; preserve upstream global publication holds. Record ADRs.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "D0.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D0"
+    },
+    {
+      "id": "D0.4",
+      "track_id": "development_readiness_20260925",
+      "phase": "D0",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "D0.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 22
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D0"
+    },
+    {
+      "id": "D1.1",
+      "track_id": "development_readiness_20260925",
+      "phase": "D1",
+      "objective": "Add bootstrap tests for missing/wrong tools and clean macOS ARM/Linux environments. Resolve Rust 1.98.1/current registry candidates; pin versions and record platform checksums. Test minimum/current consumer dependency resolution.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D0.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 29
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D1"
+    },
+    {
+      "id": "D1.2",
+      "track_id": "development_readiness_20260925",
+      "phase": "D1",
+      "objective": "Resolve Arrow/TOML/Rayon versus MSRV with owners 25/30. Update affected manifests, policy checks and docs together; keep existing core promises unless an approved transition applies. Separate stable baseline and dated canary lane.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "D1.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 32
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D1"
+    },
+    {
+      "id": "D1.3",
+      "track_id": "development_readiness_20260925",
+      "phase": "D1",
+      "objective": "Inventory available Conductor/security/browser skills; source or author context-resume, deterministic-review, calibration-review and dependency-upgrade skills only for missing behaviors. Record source commit/licence/hash and tools.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D1.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 35
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D1"
+    },
+    {
+      "id": "D1.4",
+      "track_id": "development_readiness_20260925",
+      "phase": "D1",
+      "objective": "Write held-out harness/skill evals first, including fake pass, pin drift, hidden clamp error and untrusted instructions; test the candidate skills and approve only those improving correctness/intervention cost over the baseline.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D1.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 38
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D1"
+    },
+    {
+      "id": "D1.5",
+      "track_id": "development_readiness_20260925",
+      "phase": "D1",
+      "objective": "Add structured command receipts, input/output hashes and checkpoint validation without private payloads. Exercise kill/restart, stale context and concurrent-writer rejection; log tool/model version where available.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D1.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 41
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D1"
+    },
+    {
+      "id": "D1.6",
+      "track_id": "development_readiness_20260925",
+      "phase": "D1",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "D1.5"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 44
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D1"
+    },
+    {
+      "id": "D2.1",
+      "track_id": "development_readiness_20260925",
+      "phase": "D2",
+      "objective": "Write local CI smoke/negative fixtures: failing test must fail required gate, unchanged path is explicit, untrusted PR lacks secrets, missing artifact cannot pass. Prepare fmt/clippy/unit/doctest/context lanes before creation.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D1.6",
+        "E0.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 54
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        ".github",
+        "libs/kairos/.github"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D2"
+    },
+    {
+      "id": "D2.2",
+      "track_id": "development_readiness_20260925",
+      "phase": "D2",
+      "objective": "Resolve owner/name/visibility; check for existing repo; create or link once at the value gate. Push reviewed source, configure one-maintainer branch rules and verify actual required-check behavior on a small PR.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "D2.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 57
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        ".github",
+        "libs/kairos/.github"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D2"
+    },
+    {
+      "id": "D2.3",
+      "track_id": "development_readiness_20260925",
+      "phase": "D2",
+      "objective": "Pin action commit SHAs and tool versions; run actionlint/zizmor, secret scan and full dependency policy. Set narrow permissions, budgets, concurrency, cache keys and native Linux/macOS ARM lanes appropriate to the support promise.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D2.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 60
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        ".github",
+        "libs/kairos/.github"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D2"
+    },
+    {
+      "id": "D2.4",
+      "track_id": "development_readiness_20260925",
+      "phase": "D2",
+      "objective": "Add exact-parent-pin Kairos integration plus upstream owner CI; verify the parent fails against an incompatible pin even if upstream tests passed.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D2.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 63
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        ".github",
+        "libs/kairos/.github"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D2"
+    },
+    {
+      "id": "D2.5",
+      "track_id": "development_readiness_20260925",
+      "phase": "D2",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "D2.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 65
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D2"
+    },
+    {
+      "id": "D3.1",
+      "track_id": "development_readiness_20260925",
+      "phase": "D3",
+      "objective": "Add failing malformed-input, state-machine, resume and seed-change cases as implementations land; promote minimized property/fuzz failures to fixtures.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D2.5"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 72
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D3"
+    },
+    {
+      "id": "D3.2",
+      "track_id": "development_readiness_20260925",
+      "phase": "D3",
+      "objective": "Add a tested dated nightly fuzz/sanitizer lane, selective Miri/unsafe checks and Rust CodeQL extraction where available. Keep unsupported analysis explicit; preserve advisories/licence/bans/source gates.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D3.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 74
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D3"
+    },
+    {
+      "id": "D3.3",
+      "track_id": "development_readiness_20260925",
+      "phase": "D3",
+      "objective": "Add nextest/doctest, feature/MSRV/semver/schema and mutation/coverage checks for critical paths. Audit flaky tests with owner/expiry, not hidden retries.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D3.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 77
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D3"
+    },
+    {
+      "id": "D3.4",
+      "track_id": "development_readiness_20260925",
+      "phase": "D3",
+      "objective": "Establish representative ED/load/memory/cancellation/soak benchmarks; set recorded budgets before release and maintain existing upstream thresholds. Test slow consumers, oversized input, zero-time loops and exhausted storage.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D3.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 79
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D3"
+    },
+    {
+      "id": "D3.5",
+      "track_id": "development_readiness_20260925",
+      "phase": "D3",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "D3.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 82
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D3"
+    },
+    {
+      "id": "D4.1",
+      "track_id": "development_readiness_20260925",
+      "phase": "D4",
+      "objective": "Review input/FFI/agent/build/output trust boundaries and misuse cases; resolve release-blocking findings and test resource limits. Record local-data and networking entry gates without presuming real EHR access.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "C6.5",
+        "D3.5",
+        "E3.4",
+        "Q5.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 91
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D4"
+    },
+    {
+      "id": "D4.2",
+      "track_id": "development_readiness_20260925",
+      "phase": "D4",
+      "objective": "Rehearse clean-consumer package/install, licence notices, SBOM, checksum and provenance generation/verification with owners 15/16/20/25/28/42/44. Test expired/wrong-commit evidence and an incompatible schema as failures.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D4.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 94
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D4"
+    },
+    {
+      "id": "D4.3",
+      "track_id": "development_readiness_20260925",
+      "phase": "D4",
+      "objective": "Rehearse rollback to last-known-good pins and checkpoint migration; verify reproducibility across claimed platforms and create release notes and explicit unsupported-feature list. No autonomous public publication.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D4.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 97
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D4"
+    },
+    {
+      "id": "D4.4",
+      "track_id": "development_readiness_20260925",
+      "phase": "D4",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "D4.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 100
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D4"
+    },
+    {
+      "id": "D5.1",
+      "track_id": "development_readiness_20260925",
+      "phase": "D5",
+      "objective": "Add schedules only after CI is reliable: version freshness, documentation drift, dependency groups and extended tests. Validate no-change silence, actionable reports, idempotency, timeout, retry ceiling and pause controls.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D4.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 107
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D5"
+    },
+    {
+      "id": "D5.2",
+      "track_id": "development_readiness_20260925",
+      "phase": "D5",
+      "objective": "Evaluate optional repair/reviewer agents on held-out tasks; restrict write scope and permissions, record cost/false-pass/intervention metrics and require exact-commit checks before merges. Keep one writer per owned path.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "D5.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 110
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D5"
+    },
+    {
+      "id": "D5.3",
+      "track_id": "development_readiness_20260925",
+      "phase": "D5",
+      "objective": "Track quality debt, flaky tests and performance drift; review whether automation saves maintainer effort. Roll back workflows that weaken evidence.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D5.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 113
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "tools",
+        "tests",
+        "conductor/dependency-policy.md"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D5"
+    },
+    {
+      "id": "D5.4",
+      "track_id": "development_readiness_20260925",
+      "phase": "D5",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "D5.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/development_readiness_20260925/plan.md",
+        "line": 115
+      },
+      "context_paths": [
+        "conductor/tracks/development_readiness_20260925/spec.md",
+        "conductor/tracks/development_readiness_20260925/plan.md",
+        "conductor/tracks/development_readiness_20260925/test-matrix.md",
+        "conductor/tracks/development_readiness_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D5"
+    },
+    {
+      "id": "Q0.1",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q0",
+      "objective": "Record an ADR for additive FlowRuntime, legacy DESContext/Resource compatibility, single authoritative DES/ABM world, task/context codecs and public handle/error types; review with 01/03/25.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "D1.6"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 22
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/design/queue"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q0"
+    },
+    {
+      "id": "Q0.2",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q0",
+      "objective": "Freeze one-unit queue semantics, independent preemption flags, deadline boundaries, completion-at-T behavior, cancellation/repriority order, victim ties, restart draw reuse and zero-time budgets in executable fixture specs.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "Q0.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 25
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/design/queue"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q0"
+    },
+    {
+      "id": "Q0.3",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q0",
+      "objective": "Reserve Flow event-kind IDs without collisions; define lifecycle sidecar and snapshot extension with 01/04/22. Fix relevant stale contract links through their existing owners. Agree event/transition join semantics.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "Q0.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 28
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/design/queue"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q0"
+    },
+    {
+      "id": "Q0.4",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q0",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "Q0.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 31
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q0"
+    },
+    {
+      "id": "Q1.1",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q1",
+      "objective": "Write failing component/invariant tests for live/recycled entities, capacity=0, overflow, duplicate release, resource removal and capacity shrink.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D2.5",
+        "Q0.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 41
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q1"
+    },
+    {
+      "id": "Q1.2",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q1",
+      "objective": "Add ResourceCapacity, ResourceRequest, ClaimQueue<PriorityKey>, ActiveAllocations, work/context handles and checked command admission to the new runtime. Reuse ComponentRegistry; enforce liveness and despawn cleanup.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q1.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 43
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q1"
+    },
+    {
+      "id": "Q1.3",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q1",
+      "objective": "Implement resource/manual lease lifecycle and canonical inspection; reject past commands and invalid partial builder state transactionally.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q1.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 46
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q1"
+    },
+    {
+      "id": "Q1.4",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q1",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "Q1.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 48
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q1"
+    },
+    {
+      "id": "Q2.1",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q2",
+      "objective": "Write failing queue/tie fixtures covering FIFO within priority, reprioritization retaining admission sequence, cancellation, deadlines and growth/drain. Permute component insertion/removal and event insertion orders.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q1.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 58
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q2"
+    },
+    {
+      "id": "Q2.2",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q2",
+      "objective": "Implement ordered queue index, checked admission sequence, deadline events and resource arbitration. Separate resource priority from scheduler priority; preserve core order and local boundary semantics.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q2.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 61
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q2"
+    },
+    {
+      "id": "Q2.3",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q2",
+      "objective": "Add state-machine property tests asserting capacity conservation and mutually exclusive queue/active membership after every generated operation. Verify timeout-at-T forbids granting at T in both event insertion orders.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q2.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 64
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q2"
+    },
+    {
+      "id": "Q2.4",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q2",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "Q2.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 67
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q2"
+    },
+    {
+      "id": "Q3.1",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q3",
+      "objective": "Write failing three-strategy fixtures with low work(10) at 0 and urgent work(2) at 3; cover nested interruptions, multiple victims, equal priorities, non-preemptible holders and zero-remaining completion at the interruption tick.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q2.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 77
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q3"
+    },
+    {
+      "id": "Q3.2",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q3",
+      "objective": "Implement eviction selection and atomic lease replacement, elapsed/ remaining/cumulative effort, suspended context, attempt revisions, cancel-token invalidation and explicit cancellation while suspended.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q3.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 80
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q3"
+    },
+    {
+      "id": "Q3.3",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q3",
+      "objective": "Implement resume/restart handlers and exactly-once transition emission. Add fault/stale-event injection tests; assert restart reuses the initial draw and aborted tasks never resume. Property-test repeated preempt/resume cycles.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q3.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 83
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q3"
+    },
+    {
+      "id": "Q3.4",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q3",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "Q3.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 86
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q3"
+    },
+    {
+      "id": "Q4.1",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q4",
+      "objective": "Write API-level integration tests for acquire/priority/can_preempt/ preemptible/deadline/work builders, non-reentrant notifications, behavior callbacks and a single shared DES/ABM time/world.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q3.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 97
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-abm",
+        "libs/kairos/crates/kairo-ecs-arrow",
+        "libs/kairos/crates/kairo-ecs-cli"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q4"
+    },
+    {
+      "id": "Q4.2",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q4",
+      "objective": "Implement builders, domain dispatch hooks, registered context codecs, deterministic notification order and bounded zero-duration feedback handling. Add a migration example retaining the old FIFO API.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q4.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 100
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-abm",
+        "libs/kairos/crates/kairo-ecs-arrow",
+        "libs/kairos/crates/kairo-ecs-cli"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q4"
+    },
+    {
+      "id": "Q4.3",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q4",
+      "objective": "Add resource_lifecycle.v1 telemetry and checkpoint/resume support with owning tracks. Preserve event_log.v1. Restore queue sequences, leases, pending commands, completion revisions, RNG state and suspended work.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q4.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 103
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-abm",
+        "libs/kairos/crates/kairo-ecs-arrow",
+        "libs/kairos/crates/kairo-ecs-cli"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q4"
+    },
+    {
+      "id": "Q4.4",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q4",
+      "objective": "Add a synthetic workflow fixture: named staff, urgent interruption, staged staff/bed claims and bed cleaning before reavailability. Keep clinical rules in the adapter and avoid atomic multi-resource claims not supported by v1.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q4.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 106
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-abm",
+        "libs/kairos/crates/kairo-ecs-arrow",
+        "libs/kairos/crates/kairo-ecs-cli"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q4"
+    },
+    {
+      "id": "Q4.5",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q4",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "Q4.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 109
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q4"
+    },
+    {
+      "id": "Q5.1",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q5",
+      "objective": "Add deterministic conformance fixtures for all boundary/strategy cases. Compare canonical output hashes on repeated serial runs and independent replications at 1/2/N local workers. Run property seeds in debug and release.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q4.5"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 121
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q5"
+    },
+    {
+      "id": "Q5.2",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q5",
+      "objective": "Benchmark FIFO/priority queues, rekey/cancel churn, high interruption rates, and many resources at representative queue/active sizes. Record latency, throughput, memory and active-victim scan costs against the legacy baseline; retain upstream acceptance targets and review any regressions.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q5.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 124
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q5"
+    },
+    {
+      "id": "Q5.3",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q5",
+      "objective": "Run feature-minimal/legacy/API compatibility gates; document migration, starvation, one-resource limits, checkpoint compatibility and result provenance. Hand off single-LP ownership/zero-lookahead restrictions and queue fixtures to existing PDES/distributed owners; flag Metal queue execution as unsupported.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "Q5.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 128
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-state"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q5"
+    },
+    {
+      "id": "Q5.4",
+      "track_id": "des_queue_preemption_20260925",
+      "phase": "Q5",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "Q5.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "line": 132
+      },
+      "context_paths": [
+        "conductor/tracks/des_queue_preemption_20260925/spec.md",
+        "conductor/tracks/des_queue_preemption_20260925/plan.md",
+        "conductor/tracks/des_queue_preemption_20260925/test-matrix.md",
+        "conductor/tracks/des_queue_preemption_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/des_queue_preemption_20260925/plan.md#Q5"
+    },
+    {
+      "id": "C0.1",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C0",
+      "objective": "Record the smallest-change ADR for a reusable Rust calibration crate, Arrow feature placement, runner/configuration extensions and stable model- adapter hooks. Resolve the missing Track 22 VVUQ contract reference with 21.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "D1.6"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 23
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/design/calibration"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C0"
+    },
+    {
+      "id": "C0.2",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C0",
+      "objective": "Freeze trace/residual/metric schemas, event mapping, timestamp origin, missing/censoring policy, fidelity precedence and observed-versus-predicted ledger separation. Specify seed-purpose derivation through 01.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "C0.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 26
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/design/calibration"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C0"
+    },
+    {
+      "id": "C0.3",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C0",
+      "objective": "Assess [public data/open examples](../../generic-ed-evidence.md), recording population, field coverage, licence, revision and assumptions. Define synthetic datasets, identifiable/confounded parameter fixtures, prespecified objective weights/scales, split strategy, numeric tolerances and inference validity rules. Record current Arrow dependency/MSRV compatibility options; resolve exact versions with 25/30 before adding dependencies.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "C0.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 29
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/design/calibration"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C0"
+    },
+    {
+      "id": "C0.4",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C0",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "C0.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 35
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C0"
+    },
+    {
+      "id": "C1.1",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C1",
+      "objective": "Write failing actual IPC/Parquet read/write and independent-reader fixtures, including wide/long mappings, timestamp units/timezones, DST ambiguity, nulls, duplicate IDs, invalid chronology and overflow.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C0.4",
+        "D2.5"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 45
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-arrow",
+        "libs/kairos/schemas/arrow"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C1"
+    },
+    {
+      "id": "C1.2",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C1",
+      "objective": "Implement optional Arrow IPC/Parquet features, bounded RecordBatch readers and typed schemas. Preserve custom smoke-format compatibility without mislabelling it IPC. Lock dependencies and verify feature-minimal/MSRV builds.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C1.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 48
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-arrow",
+        "libs/kairos/schemas/arrow"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C1"
+    },
+    {
+      "id": "C1.3",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C1",
+      "objective": "Implement normalization, stable external sorting, origin conversion, partial-order/occupancy validation, exclusions and provenance manifests. Test equivalent input at several batch sizes, row groups and physical row orders.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C1.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 51
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-arrow",
+        "libs/kairos/schemas/arrow"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C1"
+    },
+    {
+      "id": "C1.4",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C1",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "C1.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 54
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C1"
+    },
+    {
+      "id": "C2.1",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C2",
+      "objective": "Write failing mode resolution/boundary tests and common-random-number fixtures. Assert Macro emits no transit, zero-transit Micro matches its paired Macro fixture, and changing mode never discards active or suspended work.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C0.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 66
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-abm",
+        "libs/kairos/crates/kairo-ecs-rng"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
+    },
+    {
+      "id": "C2.2",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C2",
+      "objective": "Implement empirical work-duration providers, FidelityPolicy and stable entity/task/purpose keys. Separate intrinsic work from queue/transit intervals; persist all mode and stream state for resume.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C2.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 69
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-abm",
+        "libs/kairos/crates/kairo-ecs-rng"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
+    },
+    {
+      "id": "C2.3",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C2",
+      "objective": "Implement a deterministic route-graph TransitModel with units, stable shortest-path ties, integer tick conversion, unreachable errors and stored movement progress. Supply a minimal urgency/FIFO/zone/skill staff adapter; cleaning/reservation remains an explicit model resource lifecycle.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C2.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 72
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des",
+        "libs/kairos/crates/kairo-ecs-abm",
+        "libs/kairos/crates/kairo-ecs-rng"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
+    },
+    {
+      "id": "C2.4",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C2",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "C2.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 76
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
+    },
+    {
+      "id": "C3.1",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C3",
+      "objective": "Write failing anchor/probe fixtures: early completion, late completion, completion exactly at anchor, missing target, impossible resource occupancy, repeated events, interrupted transit/work and bounded probe termination.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C1.4",
+        "C2.4",
+        "Q4.5"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 86
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-cli"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C3"
+    },
+    {
+      "id": "C3.2",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C3",
+      "objective": "Implement observed-ledger replay and isolated predictive probes with explicit snapshots. Preserve macro anchor ticks; allow late probes to finish in isolated virtual time or return censored/failed. Never rewind the macro run.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C3.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 89
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-cli"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C3"
+    },
+    {
+      "id": "C3.3",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C3",
+      "objective": "Capture unclamped target predictions and signed residuals, feasibility, missingness and replay role. Implement strict/diagnostic policy and checkpoint recovery of outstanding probes without duplicates or future-state leakage.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C3.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 92
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-cli"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C3"
+    },
+    {
+      "id": "C3.4",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C3",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "C3.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 95
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C3"
+    },
+    {
+      "id": "C4.1",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C4",
+      "objective": "Write analytic W1/KS tests, tied/weighted/unequal/empty cases and independent reference fixtures with pinned generator provenance. Add duration scaling, large-tick precision, null, censoring and missing-outcome tests.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C1.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 106
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-arrow"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C4"
+    },
+    {
+      "id": "C4.2",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C4",
+      "objective": "Implement deterministic sorted-CDF W1 and KS D, paired residual summaries, grouping/window semantics, counts/validity flags and explicit insufficient-data statuses. No automatic classical KS p-value for clustered, tied records. Optional inference requires separate documented validity tests.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C4.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 109
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-arrow"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C4"
+    },
+    {
+      "id": "C4.3",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C4",
+      "objective": "Emit calibration_residual.v1/calibration_metric.v1 through actual Arrow IO, joined to existing run/event records. Verify stable reduction order and compatibility without altering event_log.v1 field types.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C4.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 113
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-arrow"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C4"
+    },
+    {
+      "id": "C4.4",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C4",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "C4.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 116
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C4"
+    },
+    {
+      "id": "C5.1",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C5",
+      "objective": "Write failing grid-search, invalid-candidate, tie-ranking, split-leakage, failed-probe penalty and resume tests. Test repeated runs and 1/2/N workers with randomized wall-clock completion order.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C3.4",
+        "C4.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 126
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-cli"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C5"
+    },
+    {
+      "id": "C5.2",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C5",
+      "objective": "Implement bounded candidate enumeration, parameter/unit constraints, prespecified normalized objectives, common seed schedules and fixed evaluation budgets. Persist all attempts; rank only complete evaluation batches.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C5.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 129
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-cli"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C5"
+    },
+    {
+      "id": "C5.3",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C5",
+      "objective": "Extend the existing scenario/seed manifest and CLI with trace verify, shadow/free replay, calibrate and compare operations. Preserve legacy inputs; emit full study/candidate/configuration/artifact provenance and typed failures.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C5.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 132
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-cli"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C5"
+    },
+    {
+      "id": "C5.4",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C5",
+      "objective": "Integrate CPU worker execution for independent replications/candidates through Track 22, with deterministic shard merge and crash/resume handling. Keep core state isolated and search decisions independent of worker order.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C5.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 135
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-cli"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C5"
+    },
+    {
+      "id": "C5.5",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C5",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "C5.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 138
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C5"
+    },
+    {
+      "id": "C6.1",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C6",
+      "objective": "Execute a synthetic ED fixture covering arrivals/acuity, staff zones, diagnostics, urgent preemption, bed cleaning and boarding. Calibrate known transit parameters, recover the identifiable fixture and flag a deliberately confounded service/transit case instead of claiming unique recovery.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C5.5",
+        "E2.4",
+        "Q5.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 149
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-arrow"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C6"
+    },
+    {
+      "id": "C6.2",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C6",
+      "objective": "Freeze selected parameters and evaluate free-running Macro/Micro on held-out cases/time blocks. Report waits/length of stay/throughput/resource use, transit/interruption counts, W1/KS/residuals, uncertainty, exclusions and runtime. Require correct synthetic expectations; empirical superiority is not presumed.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C6.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 153
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-arrow"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C6"
+    },
+    {
+      "id": "C6.3",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C6",
+      "objective": "Run feature/API/manifest/Arrow compatibility, deterministic replay and performance gates; benchmark ingestion memory, probe overhead, metrics and candidate throughput with named data sizes/hardware. Document validity limits.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C6.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 157
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-arrow"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C6"
+    },
+    {
+      "id": "C6.4",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C6",
+      "objective": "Hand off fixtures and contracts to existing Metal/PDES/distributed tracks. Add future visualization snapshot/Wasm parity requirements from [hybrid-model appraisal](../../hybrid-model-insights.md); render-rate changes must not change simulation results. Hardware/UI work stays with those owners.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C6.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 160
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-calibration",
+        "libs/kairos/crates/kairo-ecs-arrow"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C6"
+    },
+    {
+      "id": "C6.5",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C6",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "C6.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 164
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C6"
+    },
+    {
+      "id": "E0.1",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E0",
+      "objective": "Write tests for scenario/schema validation, module boundary violations and a single deterministic patient fixture before implementing the skeleton.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "D1.6"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 16
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "Cargo.toml",
+        "crates/careops-ed",
+        "conductor/design/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E0"
+    },
+    {
+      "id": "E0.2",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E0",
+      "objective": "Create a minimal Rust workspace with ED library/CLI boundary, Kairos path dependency and locked builds; define public API/errors, time units and profile schema. Keep domain/site/presentation distinct. One-patient example must run.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "E0.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 18
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "Cargo.toml",
+        "crates/careops-ed",
+        "conductor/design/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E0"
+    },
+    {
+      "id": "E0.3",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E0",
+      "objective": "Inventory public sources/open examples, exact revisions/licences and fields; specify assumptions for arrivals/acuity/work/diagnostics/boarding and generic layout. Define metric formulas, horizon/warm-up and release support.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "E0.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "Cargo.toml",
+        "crates/careops-ed",
+        "conductor/design/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E0"
+    },
+    {
+      "id": "E0.4",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E0",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "E0.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 24
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E0"
+    },
+    {
+      "id": "E1.1",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E1",
+      "objective": "Write pathway tests for empty run, one patient, each acuity/pathway, saturated arrival demand, zero/long service, impossible resource config and endpoint count conservation. Define explicit metrics and expected intervals.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C2.4",
+        "D2.5",
+        "E0.4",
+        "Q4.5"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 33
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E1"
+    },
+    {
+      "id": "E1.2",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E1",
+      "objective": "Implement seeded time-varying arrivals, triage/assessment/diagnostics/ treatment/disposition states and stable patient/task IDs; configure service distributions with provenance. Do not hide queue time in service samples.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E1.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 36
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E1"
+    },
+    {
+      "id": "E1.3",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E1",
+      "objective": "Implement admission boarding/discharge and optional abandonment/transfer policies, with terminal reason/censoring and endpoint timestamps. Version policy choices and test time bounds, run-horizon endings and unfinished work.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E1.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 39
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E1"
+    },
+    {
+      "id": "E1.4",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E1",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "E1.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 42
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E1"
+    },
+    {
+      "id": "E2.1",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E2",
+      "objective": "Write tests for shifts/breaks/skill-zone constraints, urgent preemption, staff handover, cleaning/reservation, blocked diagnostics and boarding capacity.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E1.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 49
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E2"
+    },
+    {
+      "id": "E2.2",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E2",
+      "objective": "Implement minimal agent dispatch, Macro/Micro route/work execution and phased resource claims avoiding unsupported atomic multi-resource acquisition. Shift reductions must honor the resource shrink/in-flight-work contract.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E2.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 51
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E2"
+    },
+    {
+      "id": "E2.3",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E2",
+      "objective": "Add a composed synthetic ED fixture, simultaneous events and restart/ resume edge cases; verify no double allocation, leaks, starvation hidden by censoring, or movement driven by animation time. Make this the shared C6 fixture.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E2.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 54
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E2"
+    },
+    {
+      "id": "E2.4",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E2",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "E2.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 57
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E2"
+    },
+    {
+      "id": "E3.1",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E3",
+      "objective": "Write public API/CLI tests for validate/run/compare/export, cancellation, malformed config, deterministic error codes, output overwrite protection, disk-full/interrupted output, seed/replication allocation and crash recovery.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C5.5",
+        "E2.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 66
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E3"
+    },
+    {
+      "id": "E3.2",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E3",
+      "objective": "Integrate existing runner/scenario formats, independent CPU workers, checkpointing and progress. Write artifacts atomically; a partial run is clearly incomplete and cannot be mistaken for a valid finished experiment.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E3.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 69
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E3"
+    },
+    {
+      "id": "E3.3",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E3",
+      "objective": "Export Arrow/Parquet and summaries with metric denominators, uncertainty, censored/unfinished counts and complete provenance; test 1/2/N workers and checkpoint equivalence through ED+queue+calibration state.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E3.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 72
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E3"
+    },
+    {
+      "id": "E3.4",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E3",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "E3.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 75
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E3"
+    },
+    {
+      "id": "E4.1",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E4",
+      "objective": "Add analytic limiting cases (no contention, deterministic single server, known queue fixture), invariant/differential tests, public-reference comparisons and independent review. Distinguish software verification from domain validation.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "D4.4",
+        "E3.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 84
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E4"
+    },
+    {
+      "id": "E4.2",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E4",
+      "objective": "Run sensitivity/identifiability, held-out Macro/Micro and warm-up/ observation-window checks; establish uncertainty and profile-specific validity limits. Benchmark representative demand, memory and long-run leak behavior.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E4.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 87
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E4"
+    },
+    {
+      "id": "E4.3",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E4",
+      "objective": "Publish executable docs/examples and migration/support tables; package dry-run and test from a clean downstream Rust project at promised toolchains. Verify release evidence, dependency pins, licences/SBOM and restore/rollback.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E4.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 90
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E4"
+    },
+    {
+      "id": "E4.4",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E4",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "E4.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 93
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E4"
+    },
+    {
+      "id": "E5.1",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E5",
+      "objective": "Freeze a narrow snapshot/command ABI and implement native/Wasm parity fixtures for IDs/u128 time, configuration, progress, cancellation and errors. Review actual FFI needs, memory/buffer lifetime and supported browser targets.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "E4.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 103
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "apps/dashboard",
+        "libs/kairos/crates/kairo-ecs-wasm",
+        "libs/kairos/crates/kairo-ecs-ffi",
+        "libs/kairos/crates/kairo-ecs-viz"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E5"
+    },
+    {
+      "id": "E5.2",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E5",
+      "objective": "Build scenario edit/run/compare/export UI; choose presentation components after prototype measurement (Pixi optional). Run simulation in a worker or explicit local runner; keep engine and frame clocks independent.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E5.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 106
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "apps/dashboard",
+        "libs/kairos/crates/kairo-ecs-wasm",
+        "libs/kairos/crates/kairo-ecs-ffi",
+        "libs/kairos/crates/kairo-ecs-viz"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E5"
+    },
+    {
+      "id": "E5.3",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E5",
+      "objective": "Test render rates off/30/60, slow consumers/backpressure, memory growth, restart/route state, accessibility and useful error reporting. Measure actual transfer copies/frame latency; never infer WebGPU compute from rendering.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E5.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 109
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "apps/dashboard",
+        "libs/kairos/crates/kairo-ecs-wasm",
+        "libs/kairos/crates/kairo-ecs-ffi",
+        "libs/kairos/crates/kairo-ecs-viz"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E5"
+    },
+    {
+      "id": "E5.4",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E5",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "E5.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 112
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E5"
+    },
+    {
+      "id": "E6.1",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E6",
+      "objective": "Profile batch numeric workloads and choose a kernel with measurable end-to-end benefit (initial candidate: batched numeric metrics/transit evaluation). Write CPU/device oracle, precision/ranking and fallback/error tests first.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "E4.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 124
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-gpu"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E6"
+    },
+    {
+      "id": "E6.2",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E6",
+      "objective": "Implement real wgpu/WGSL device path in owner 32, pin tested dependencies and record device/driver/compiler details. Keep queue arbitration CPU-owned.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E6.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 127
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-gpu"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E6"
+    },
+    {
+      "id": "E6.3",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E6",
+      "objective": "Run actual Apple hardware parity/throughput/transfer/memory tests, unavailable-device behavior and representative end-to-end benchmark. If no material gain, retain experimental status and document findings rather than declaring acceleration successful. MLX replacement requires comparative ADR.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E6.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 129
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-gpu"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E6"
+    },
+    {
+      "id": "E6.4",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E6",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "E6.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 133
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E6"
+    },
+    {
+      "id": "E7.1",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E7",
+      "objective": "Define ED LP partition/resource ownership and lookahead constraints; write serial-oracle, in-flight message/GVT and zero-lookahead failure tests.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "E6.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 140
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-pdes",
+        "libs/kairos/crates/kairo-ecs-des"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E7"
+    },
+    {
+      "id": "E7.2",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E7",
+      "objective": "Integrate actual scheduler/Flow state with conservative PDES and real worker communication; preserve task RNG and snapshot contracts. Restrict shared resources to a defined owner and model explicit inter-LP messages.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E7.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 142
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-pdes",
+        "libs/kairos/crates/kairo-ecs-des"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E7"
+    },
+    {
+      "id": "E7.3",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E7",
+      "objective": "Test threaded 1/2/N execution, deadlock/causality/migration boundaries, slow workers, checkpoint and final observable state parity. Do not impose an identical global cross-LP trace beyond Track 34's contract. Measure speedup.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E7.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 145
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-pdes",
+        "libs/kairos/crates/kairo-ecs-des"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E7"
+    },
+    {
+      "id": "E7.4",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E7",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "E7.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 148
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E7"
+    },
+    {
+      "id": "E8.1",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E8",
+      "objective": "Specify and test versioned transport envelopes, allocation/entity migration ownership, deduplication, reconnect/checkpoint and failure policy; extend D4 threat review before network execution.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "E7.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 156
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-mpi",
+        "libs/kairos/crates/kairo-ecs-grpc"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E8"
+    },
+    {
+      "id": "E8.2",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E8",
+      "objective": "Implement real gRPC and MPI adapters within existing owners using evaluated current tonic/prost/MPI dependencies at that phase. Pin runtime and library versions then; do not add them to the initial native-ED dependency graph.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E8.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 159
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-mpi",
+        "libs/kairos/crates/kairo-ecs-grpc"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E8"
+    },
+    {
+      "id": "E8.3",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E8",
+      "objective": "Run actual multi-process/multi-node tests: loss/delay/retry, duplicate message/migration, worker failure, bounded shutdown and telemetry aggregation. Verify serial/PDES observable parity and profile-specific speed/memory evidence.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E8.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 162
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-mpi",
+        "libs/kairos/crates/kairo-ecs-grpc"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E8"
+    },
+    {
+      "id": "E8.4",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E8",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "E8.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 165
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E8"
+    }
+  ]
+}
