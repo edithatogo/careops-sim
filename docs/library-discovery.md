@@ -81,9 +81,35 @@ The user approved this vision on 2026-09-25 and selected interactive product
 definition. They additionally require a bleeding-edge approach for planned Kairos
 components and development of compatible parallel execution components.
 
-The intended users, setting, model detail, input data, interface, initial scenario,
-and success criteria remain to be defined through Conductor setup. The technology
-stack and first implementation track have not been approved.
+The user subsequently selected:
+
+- ED clinicians, operations leads, and analysts comparing capacity and staffing;
+- a configurable ED with acuity, staffing, treatment spaces, diagnostics, and
+  admission boarding;
+- local multicore CPU first, then GPU and distributed backends in explicit phases;
+- an interactive scenario dashboard with reproducible batch runs and exports.
+
+They also require Kairos and other reusable modules to remain Rust-native and
+requested advice on the implementation language for CareOps Sim. The recommendation
+is recorded in [language options](./language-options.md). Python-only capabilities
+in the candidate libraries therefore require native development before inclusion
+in the reusable runtime, or remain optional external analysis tools.
+
+The [product draft](./product-draft.md) incorporates these choices. Site-specific
+parameters, quantitative success targets, the technology stack, and the first
+implementation track have not been approved.
+
+The user subsequently requested Apple silicon/MLX/Metal prioritization and reuse
+of Kairos's existing plans. The [Apple silicon assessment](./apple-silicon-acceleration.md)
+identifies the existing wgpu/Metal and Burn tracks, records the absence of MLX
+references at the pinned revision, and updates the product draft to prioritize
+Metal as the first GPU target following the CPU baseline.
+
+The user further requires close alignment with Kairos's existing plan, adding
+needed implementation and adapting the plan only where necessary or demonstrably
+substantially better. The [alignment policy and track map](./kairos-alignment.md)
+record this direction. Existing wgpu/WGSL, PDES, runner and relevant Burn plans are
+the implementation baseline; alternative frameworks are conditional proposals.
 
 ## Parallel execution discovery
 
