@@ -7,7 +7,7 @@ URLs, fetch time, release date and declared MSRV. Refresh with
 The snapshot is a candidate inventory, not a tested lockfile or promise that all
 packages should be adopted. Unknown MSRV means unknown, not compatible.
 
-## Verified current candidates, 2026-09-25
+## Verified current candidates, refreshed 2026-09-27
 
 | Area | Registry candidate | Adoption decision |
 | --- | --- | --- |
@@ -25,8 +25,8 @@ packages should be adopted. Unknown MSRV means unknown, not compatible.
 | cargo-fuzz / zizmor | 0.13.2 / 1.30.1 | D3 fuzz/nightly; D2 workflow analysis |
 | checkout / upload-artifact / download-artifact | v7.0.1 / v7.0.1 / v8.0.1 | Resolve releases to full verified commit SHAs and check runner compatibility in D2 |
 | CodeQL action | v4.38.2 | Use action release, not the separate codeql-bundle tag |
-| Renovate / actionlint / gitleaks | 44.115.4 / v1.7.12 / v8.30.1 | Pin tested automation/tool versions in D1/D2 |
-| Codex CLI | rust-v0.157.0 | Observed upstream candidate; not a claim about this desktop app's version |
+| Renovate / actionlint / gitleaks | 44.115.12 / v1.7.12 / v8.30.1 | Pin tested automation/tool versions in D1/D2 |
+| Codex CLI | rust-v0.157.1 | Observed upstream candidate; not a claim about this desktop app's version |
 
 Sources are the linked crates.io/GitHub/Rust distribution endpoints in the JSON.
 No production dependency, host toolchain, application model or upstream submodule
