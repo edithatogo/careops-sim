@@ -165,3 +165,28 @@ surfaces.
 [Functional MVP → hardened native v1 → extensions](delivery-contract.md) defines the
 required features and acceptance recipes. E2 is the functional headless MVP; E4
 is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.
+
+## ED-native support profile (D0.3)
+
+[ADR-0001](decisions/ADR-0001-ed-native-support-profile.md) defines the staged
+CareOps Sim release boundary. Its [machine-readable profile](evidence/d0.3-ed-native-profile-20260927.json)
+classifies all 25 capabilities inventoried at the pinned Kairos revision. At the
+module level: MVP uses `kairo-ecs-types`, `core`, `state`, `rng`, `des`, `abm`,
+and `cli`; native v1 adds `arrow`, proposed `calibration`, `bench`, and the
+diagnostic subset of `debug`; all remaining modules are post-v1. The JSON has the
+complete exact module names, rationale, owners, source state and gate mapping.
+
+The intended ED targets are Linux x86_64 and macOS aarch64, both currently
+unqualified. D1.1/D1.2 must settle the exact toolchain and consumer MSRV; D2/D4
+must establish platform CI and clean-consumer evidence before either can be
+claimed as supported. This ED-scoped profile does not modify Kairos Track 30's
+global support matrix or infer support from the local Mac. Track 25's root-specific
+API/schema review applies to each affected public change; unused bindings and
+FFI are impact-assessed as not exposed, not implicitly approved. Local simulation
+outputs and later dry-runs do not lift Kairos global publication holds.
+
+The profile was checked against pinned Tracks 25/30 and Kairos package/release
+hold records. That source review is not a direct maintainer approval. The
+[independent D0.3 review receipt](evidence/d0.3-execution-receipt-20260928.md)
+records the precise status and open owner-alignment work; it must not be
+represented as upstream approval.

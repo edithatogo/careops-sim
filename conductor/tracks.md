@@ -14,11 +14,12 @@ Calibration schema/ingestion/metrics can proceed independently after contract
 review. Shadow replay of interrupted work depends on the queue/Flow integration
 milestone Q4. See [milestones and ownership](kairos-enhancements.md).
 
-- [ ] **Development readiness and hardened delivery** — `development_readiness_20260925`
+- [~] **Development readiness and hardened delivery** — `development_readiness_20260925`
   ([index](tracks/development_readiness_20260925/index.md),
   [spec](tracks/development_readiness_20260925/spec.md),
-  [plan](tracks/development_readiness_20260925/plan.md)). In progress: D0.1 audit/
-  context bootstrap only. Remaining toolchain, skill, CI and release work planned.
+  [plan](tracks/development_readiness_20260925/plan.md)). In progress: D0.1–D0.3
+  audit, evidence join and ED-native support profile complete; D0.4 phase review
+  pending. Toolchain, skill, CI and release work remain.
 - [ ] **Generic ED library delivery** — `generic_ed_delivery_20260925`
   ([index](tracks/generic_ed_delivery_20260925/index.md),
   [spec](tracks/generic_ed_delivery_20260925/spec.md),

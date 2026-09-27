@@ -41,9 +41,13 @@ source-backed [capability inventory](../../evidence/d0.2-kairos-capability-inven
 [prerequisite/identity audit](../../evidence/d0.2-prerequisite-identity-audit-20260927.json),
 and [reports 10/11](../../evidence/d0.2-research-audit-reports-10-11-20260927.md)/
 [26/28](../../evidence/d0.2-research-audit-reports-26-28-20260927.md) reviews.
-- [ ] D0.3 Define the ED-native support/release profile with 25/30 and independent
+- [x] D0.3 Define the ED-native support/release profile with 25/30 and independent
   review checklist; preserve upstream global publication holds. Record ADRs.
   Classify every capability as MVP, native v1 or post-v1 per the delivery contract. Do not require CAD/UI/Wasm/device/network backends or optional repair automation for native acceptance.
+
+Evidence: [ADR-0001](../../decisions/ADR-0001-ed-native-support-profile.md),
+[capability profile](../../evidence/d0.3-ed-native-profile-20260927.json), and
+[execution/review receipt](../../evidence/d0.3-execution-receipt-20260928.md).
 - [ ] D0.4 Conductor — review and verify phase (workflow.md).
 
 Exit: reviewed dependency closure, reproducible context recovery, no false G0 claim.
