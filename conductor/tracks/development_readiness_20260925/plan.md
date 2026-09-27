@@ -58,7 +58,7 @@ Manual verification: resume in a fresh session and reach the exact next task.
 
 ## D1 — Reproducible current toolchain and evaluated agent skills
 
-- [ ] D1.1 Add bootstrap tests for missing/wrong tools and clean macOS ARM/Linux
+- [x] D1.1 Add bootstrap tests for missing/wrong tools and clean macOS ARM/Linux
   environments. Resolve Rust 1.98.1/current registry candidates; pin versions and
   record platform checksums. Test minimum/current consumer dependency resolution.
 - [ ] D1.2 Resolve Arrow/TOML/Rayon versus MSRV with owners 25/30. Update affected
