@@ -30,12 +30,17 @@ validity limit. Acceptance requires this track's actual outputs and tests.
 - [x] D0.1 Inspect module/CI/toolchain boundaries; record readiness and live registry
   candidates; add AGENTS map, context resume/check and negative regression tests.
   Evidence: [audit receipt](../../evidence/development-audit.md).
-- [ ] D0.2 Turn the module table into capability/owner/gate records, refresh the
+- [x] D0.2 Turn the module table into capability/owner/gate records, refresh the
   upstream DAG, reconcile prerequisite contracts and classify required vs deferred
   APIs. Test that missing prerequisite evidence blocks a readiness claim.
   Reconcile Kairos commit/date and Cargo/README versus LICENSE metadata
   using local objects; report 10 repository identity claims are not authoritative.
   Consume reports 10/11/26/28 as completed research intake; verify each adopted capability/CI/harness claim against the current pinned source and document verified, contradicted or unresolved status.
+Evidence: [D0.2 execution receipt](../../evidence/d0.2-execution-receipt-20260927.md),
+source-backed [capability inventory](../../evidence/d0.2-kairos-capability-inventory-20260927.json),
+[prerequisite/identity audit](../../evidence/d0.2-prerequisite-identity-audit-20260927.json),
+and [reports 10/11](../../evidence/d0.2-research-audit-reports-10-11-20260927.md)/
+[26/28](../../evidence/d0.2-research-audit-reports-26-28-20260927.md) reviews.
 - [ ] D0.3 Define the ED-native support/release profile with 25/30 and independent
   review checklist; preserve upstream global publication holds. Record ADRs.
   Classify every capability as MVP, native v1 or post-v1 per the delivery contract. Do not require CAD/UI/Wasm/device/network backends or optional repair automation for native acceptance.

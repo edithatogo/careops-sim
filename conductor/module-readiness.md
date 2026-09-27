@@ -124,6 +124,42 @@ dependence, uncertainty and generic examples. P0 gates E0/C0, P3 gates C2, P4
 gates E1 and P5 gates C6. G1 therefore includes actual model-to-catalogue coverage
 and reproducible input examples. This does not introduce a later clinical domain.
 
+## D0.2 pinned-source reconciliation (2026-09-27)
+
+The D0.2 source audit is bound to parent commit `92ab172028bc9e3af1ede9a15cc254a12cddbc68`
+and the exact Kairos submodule pin and checkout `fae901558f07b7b717a676adbafbe2cdc78dea1c`.
+The local Kairos commit object is dated 2026-05-20 (+10:00), with parent
+`f11e0be7dcf8cad705741a44b651ca953e269ae2`; report 10's alternative date and
+parent do not match this object. The parent pin is the inspected commit itself,
+not its Git parent.
+
+The source-derived 24-manifest inventory, source-backed 25-row capability matrix, prerequisite/identity audit, and
+research-claim reconciliations are retained in
+[the manifest inventory](evidence/d0.2-kairos-manifest-inventory-20260927.json),
+[the capability inventory](evidence/d0.2-kairos-capability-inventory-20260927.json),
+[the prerequisite and identity audit](evidence/d0.2-prerequisite-identity-audit-20260927.json),
+[the reports 10/11 audit](evidence/d0.2-research-audit-reports-10-11-20260927.md),
+and [the reports 26/28 audit](evidence/d0.2-research-audit-reports-26-28-20260927.md).
+The capability table has 25 planned/readiness rows while the checkout has 24
+crate manifests; `kairo-ecs-calibration` is a proposed module without a manifest.
+This is an intentional planning-vs-source distinction, not an inventory error.
+
+Kairos source supports a deterministic serial scheduler and a limited FIFO
+resource helper. It does not establish first-class priority/deadline/preemption
+queues, integrated Flow/PDES, hardware acceleration, production Arrow IO, a
+worker-launching agent harness, current hosted CI success, benchmark results, or
+Luna qualification. Reports' commands remain unexecuted research material.
+Report 26's wgpu MSRV claim also conflicts with the parent candidate snapshot and
+remains for D1.2 source/registry verification. These source gaps and external
+claims stay assigned to their existing D/Q/C/E gates.
+
+The local license declarations conflict: Cargo metadata and README say
+Apache-2.0, while `LICENSE` states Apache-2.0 and MIT. This audit records the
+discrepancy without determining package-level legal intent. Repository URL,
+public visibility, CI state, Pages publication, and release claims are local
+source declarations only unless verified through their live authoritative
+surfaces.
+
 ## Authoritative delivery sequence
 
 [Functional MVP → hardened native v1 → extensions](delivery-contract.md) defines the

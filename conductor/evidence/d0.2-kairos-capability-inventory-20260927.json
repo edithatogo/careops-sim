@@ -1,0 +1,356 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "15b83c66ef1d9ce6e9c597bd07fba2e5bd3f3478",
+  "capabilities": [
+    {
+      "module": "kairo-ecs-types",
+      "capability": "Fixed-tick time, checked arithmetic, and generational entity IDs; ED versioned handles and boundary policy remain incomplete.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-types/src/lib.rs",
+          "line_range": "51-93,96-126,147-164",
+          "claim": "SimTime and SimDuration provide fixed u128 ticks with checked arithmetic, while EntityId encodes index/generation; broader ED handle/error policy is not shown."
+        }
+      ],
+      "owner": "01; Q0/C0/E0",
+      "delivery_gate": "G0/G1"
+    },
+    {
+      "module": "kairo-ecs-core",
+      "capability": "Deterministic event scheduling and cancellation; checked Flow admission and actual scheduler snapshot/restore remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-core/src/lib.rs",
+          "line_range": "35-84,117-139,172-180",
+          "claim": "Scheduler orders queued events and supports cancel/step/run_until; schedule() accepts requests directly and no snapshot/restore API appears in this source."
+        }
+      ],
+      "owner": "01; Q1/Q4",
+      "delivery_gate": "G1"
+    },
+    {
+      "module": "kairo-ecs-state",
+      "capability": "Generational World and type-erased component stores/registry; unified runtime codecs and lifecycle invariants remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-state/src/lib.rs",
+          "line_range": "53-68,117-179,183-200,340-385",
+          "claim": "World supports spawn/despawn and sorted snapshots, and component storage is separate; this does not establish a unified DES/ABM runtime or context codecs."
+        }
+      ],
+      "owner": "01/03; Q1/Q4",
+      "delivery_gate": "G1"
+    },
+    {
+      "module": "kairo-ecs-rng",
+      "capability": "Deterministic SplitMix64 streams derived from run seeds and entity handles; versioned purpose keys and distributions remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-rng/src/lib.rs",
+          "line_range": "28-47,49-90",
+          "claim": "The crate derives repeatable entity streams and exposes u32/u64 draws; task-purpose keys and distribution sampling are not present in this API."
+        }
+      ],
+      "owner": "01; C2/E1",
+      "delivery_gate": "G1"
+    },
+    {
+      "module": "kairo-ecs-des",
+      "capability": "Legacy FIFO resource requests/releases and fixed-time trajectories; priority, preemption, lifecycle tokens, and Flow API are absent.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-des/src/lib.rs",
+          "line_range": "103-157,160-185,187-230",
+          "claim": "Resource uses a VecDeque FIFO and request/release without ownership tokens; DESContext holds resources separately from World and schedules trajectories."
+        }
+      ],
+      "owner": "03",
+      "delivery_gate": "G1"
+    },
+    {
+      "module": "kairo-ecs-abm",
+      "capability": "Scheduled behavior updates with World, component registry, and per-agent RNG; shared DES runtime and staff/transit policies remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-abm/src/lib.rs",
+          "line_range": "11-16,51-68,82-109",
+          "claim": "ABMContext contains its own Scheduler, World, and ComponentRegistry; behavior receives an agent and RNG, with no DES Resource bridge in this API."
+        }
+      ],
+      "owner": "03; Q4/C2",
+      "delivery_gate": "G1"
+    },
+    {
+      "module": "kairo-ecs-arrow",
+      "capability": "Versioned event-log schema and smoke serialization surface; real Arrow IPC/Parquet and bounded IO remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-arrow/src/lib.rs",
+          "line_range": "7-26,28-47",
+          "claim": "The crate defines an event-log schema and fingerprint; its manifest has only kairo-ecs-types as a dependency, so these lines do not evidence Arrow IPC/Parquet support."
+        }
+      ],
+      "owner": "04; C1/C4",
+      "delivery_gate": "G1"
+    },
+    {
+      "module": "kairo-ecs-cli",
+      "capability": "Scenario/seed manifest parsing and validation; full ED execution, recovery, cancellation, progress, and worker runs remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-cli/src/scenario.rs",
+          "line_range": "6-19,58-79,92-156",
+          "claim": "CLI scenario code loads manifests and validates schema, seeds, fixture presence, and run bounds; it does not establish a complete ED run service."
+        }
+      ],
+      "owner": "22; C5/E3",
+      "delivery_gate": "G1"
+    },
+    {
+      "module": "kairo-ecs-calibration (proposed)",
+      "capability": "Proposed reusable Rust calibration module; no crate exists in the pinned Kairos workspace.",
+      "current_state": "missing",
+      "evidence": [
+        {
+          "path": "conductor/module-readiness.md",
+          "line_range": "46",
+          "claim": "The parent readiness row labels this module proposed and assigns C0 ADR then C1-C6; it is a plan entry, not evidence of a Kairos implementation."
+        }
+      ],
+      "owner": "21",
+      "delivery_gate": "G1"
+    },
+    {
+      "module": "kairo-ecs-bench",
+      "capability": "Benchmark scenario definitions and smoke helpers exist; representative ED/resource/Arrow/calibration thresholds remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-bench/src/lib.rs",
+          "line_range": "8-21,47-70",
+          "claim": "The source declares canonical scheduler/state/hybrid benchmark scenario names and smoke scales; it does not show the required representative ED workload thresholds."
+        }
+      ],
+      "owner": "12/18/31; Q5/C6/D3",
+      "delivery_gate": "G1"
+    },
+    {
+      "module": "kairo-ecs-debug",
+      "capability": "Event trace snapshots and deltas exist; readable failure traces and replay integration remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-debug/src/lib.rs",
+          "line_range": "11-38,53-74",
+          "claim": "EventTrace stores key-value snapshots and event deltas with deterministic sorting; these are not full ECS serialization or interactive time travel."
+        }
+      ],
+      "owner": "40 with 01/22; Q4/E3",
+      "delivery_gate": "G1 diagnostic subset"
+    },
+    {
+      "module": "kairo-ecs-viz",
+      "capability": "Headless render-frame and snapshot facade; ED delta/backpressure/sampling and native renderer are unavailable.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-viz/src/lib.rs",
+          "line_range": "3-27,67-95",
+          "claim": "RenderFrame can be built from a WorldSnapshot; source constants state renderer dependencies are not configured, so no native renderer capability is inferred."
+        }
+      ],
+      "owner": "05; E5",
+      "delivery_gate": "G2"
+    },
+    {
+      "module": "kairo-ecs-ffi",
+      "capability": "C ABI engine lifecycle, scheduling, stepping, and statistics bridge; ED Flow API exposure and ABI audit remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-ffi/src/lib.rs",
+          "line_range": "11-21,29-66",
+          "claim": "The FFI surface contains a Scheduler/World-backed engine state and C-compatible stats/status types; the observed API is a core bridge, not a new Flow API."
+        }
+      ],
+      "owner": "02; E5",
+      "delivery_gate": "G2 if used by selected Wasm route"
+    },
+    {
+      "module": "kairo-ecs-wasm",
+      "capability": "Limited FFI-backed WasmEngine wrapper with u64 tick scheduling; ED API, u128 mapping, worker lifecycle, and parity remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-wasm/src/lib.rs",
+          "line_range": "4-18,30-68",
+          "claim": "WasmEngine delegates to FFI and exposes u64 current-time/schedule values and stats; this does not establish the required ED surface or native parity."
+        }
+      ],
+      "owner": "09; E5",
+      "delivery_gate": "G2"
+    },
+    {
+      "module": "kairo-ecs-uniffi",
+      "capability": "UniFFI-ready wrapper over core FFI lifecycle; full ED expansion is deferred.",
+      "current_state": "deferred",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-uniffi/src/lib.rs",
+          "line_range": "3-8,31-79",
+          "claim": "The source describes a facade over the stable FFI and implements handle/schedule/step/stats/close; it does not implement a separate ED API."
+        }
+      ],
+      "owner": "02",
+      "delivery_gate": "Deferred expansion"
+    },
+    {
+      "module": "kairo-ecs-diplomat",
+      "capability": "Diplomat-ready wrapper over core FFI lifecycle; full ED expansion is deferred.",
+      "current_state": "deferred",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-diplomat/src/lib.rs",
+          "line_range": "3-8,10-55",
+          "claim": "DiplomatEngine reuses the FFI handle and exposes schedule, step, time, and stats; no independent ED API is evidenced."
+        }
+      ],
+      "owner": "02",
+      "delivery_gate": "Deferred expansion"
+    },
+    {
+      "module": "kairo-ecs-cs-bridge",
+      "capability": "C# P/Invoke re-export of the existing FFI surface; new C# ED work is deferred.",
+      "current_state": "deferred",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-cs-bridge/src/lib.rs",
+          "line_range": "1-7",
+          "claim": "The crate documents itself as re-exporting FFI functions for P/Invoke; it contains no separate C# ED implementation."
+        }
+      ],
+      "owner": "10",
+      "delivery_gate": "Deferred expansion"
+    },
+    {
+      "module": "kairo-ecs-gpu",
+      "capability": "CPU-side GPU facade and explicit unavailable backend contracts; real device dispatch, CPU oracle qualification, and device benchmarks remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-gpu/src/lib.rs",
+          "line_range": "1-27",
+          "claim": "GPU backend modules are feature-gated and the crate re-exports compute contracts; this source does not prove a GPU device is available or dispatch works on hardware."
+        }
+      ],
+      "owner": "32; E6",
+      "delivery_gate": "G3-Metal"
+    },
+    {
+      "module": "kairo-ecs-webgpu",
+      "capability": "Dependency-free browser WebGPU scaffold and reference dispatch API; browser device setup and parity remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-webgpu/src/lib.rs",
+          "line_range": "1-29",
+          "claim": "The crate identifies itself as a scaffold and exports reference/browser dispatch surfaces; no browser device execution is established by this source."
+        }
+      ],
+      "owner": "33",
+      "delivery_gate": "Deferred after native Metal"
+    },
+    {
+      "module": "kairo-ecs-pdes",
+      "capability": "Logical-process, event, null-message, and in-memory transport scaffolding; core Flow integration, GVT, and threaded evidence remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-pdes/src/lib.rs",
+          "line_range": "7-44,62-75",
+          "claim": "The crate defines partition and message contracts around SimTime; these declarations do not establish integrated parallel execution or GVT qualification."
+        }
+      ],
+      "owner": "34; E7",
+      "delivery_gate": "G3-PDES"
+    },
+    {
+      "module": "kairo-ecs-mpi",
+      "capability": "Dependency-free MPI protocol/rank contract scaffolding; MPI transport, launch, migration, and failure evidence remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-mpi/src/lib.rs",
+          "line_range": "8-26,49-75",
+          "claim": "The source labels its contract placeholder/dependency-free and defines rank/message envelope types; this is not an MPI runtime transport."
+        }
+      ],
+      "owner": "35; E8",
+      "delivery_gate": "G3-distributed"
+    },
+    {
+      "module": "kairo-ecs-grpc",
+      "capability": "Dependency-free gRPC protocol/envelope contract scaffolding; service runtime, auth, recovery, and at-most-once migration remain gaps.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-grpc/src/lib.rs",
+          "line_range": "9-37,39-63",
+          "claim": "The source calls this a placeholder protocol and defines envelope constructors; it does not provide tonic/prost service execution."
+        }
+      ],
+      "owner": "35; E8",
+      "delivery_gate": "G3-distributed"
+    },
+    {
+      "module": "kairo-ecs-streaming",
+      "capability": "Stream message/schema contracts exist; optional Kafka/NATS/Flight names do not establish live adapters or ingestion.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-streaming/src/lib.rs",
+          "line_range": "8-41,43-57,59-80",
+          "claim": "The source defines stream names and message validation; the manifest declares feature names without runtime dependencies, so no live broker support is inferred."
+        }
+      ],
+      "owner": "36",
+      "delivery_gate": "Deferred"
+    },
+    {
+      "module": "kairo-ecs-ml",
+      "capability": "Tensor/model metadata and inference contracts exist; optional backend feature names do not establish learned policies or a runtime backend.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-ml/src/lib.rs",
+          "line_range": "9-49,51-75",
+          "claim": "The source provides validated Tensor and model metadata types; the manifest lists optional backend feature names without backend dependencies."
+        }
+      ],
+      "owner": "37",
+      "delivery_gate": "Deferred"
+    },
+    {
+      "module": "kairo-ecs-fmi",
+      "capability": "Feature-gated FMI/AAS/digital-twin module surfaces exist; concrete co-simulation qualification is deferred.",
+      "current_state": "partial",
+      "evidence": [
+        {
+          "path": "libs/kairos/crates/kairo-ecs-fmi/src/lib.rs",
+          "line_range": "3-17",
+          "claim": "The crate gates import/export/AAS/digital-twin modules by feature; this surface alone does not establish a selected ED model integration."
+        }
+      ],
+      "owner": "38",
+      "delivery_gate": "Deferred"
+    }
+  ]
+}

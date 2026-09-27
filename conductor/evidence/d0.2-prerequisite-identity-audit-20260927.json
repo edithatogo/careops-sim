@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "baseline": {
+    "parent_commit": "92ab172028bc9e3af1ede9a15cc254a12cddbc68",
+    "kairos_pin": "fae901558f07b7b717a676adbafbe2cdc78dea1c",
+    "kairos_head": "fae901558f07b7b717a676adbafbe2cdc78dea1c",
+    "kairos_commit_date": "2026-05-20",
+    "kairos_tree_clean": true
+  },
+  "licensing": {
+    "cargo_workspace_claim": "The workspace package metadata declares license = Apache-2.0 and repository = https://github.com/edithatogo/kairos.",
+    "des_package_claim": "kairo-ecs-des declares license.workspace = true and the same repository URL; it therefore inherits the workspace Apache-2.0 metadata declaration.",
+    "readme_claim": "README identifies the project as KairoECS and says Apache-2.0, referring readers to LICENSE.",
+    "license_text_claim": "LICENSE states the repository is dual-licensed under Apache-2.0 and MIT.",
+    "discrepancies": [
+      {
+        "claim": "Cargo package metadata and README state Apache-2.0, while LICENSE states Apache-2.0 and MIT.",
+        "evidence": "libs/kairos/Cargo.toml [workspace.package].license = \"Apache-2.0\"; crates/kairo-ecs-des/Cargo.toml uses license.workspace = true; README.md:106-108 says Apache-2.0; LICENSE:1 and :17 contain dual-license statements."
+      }
+    ],
+    "resolution": "The checked-out source does not resolve whether the MIT grant is intended to apply to the DES package or all published packages. Keep this discrepancy open; obtain licensing-owner direction, then align package metadata and README or document the intended package-level licensing before making a release claim."
+  },
+  "prerequisites": [
+    {
+      "milestone": "D0.2 capability leaf",
+      "required_by": "D0.2 gates join",
+      "status": "accepted",
+      "evidence": "Packet prerequisite receipt records coordinator acceptance and matching output hashes for capabilities.json and its result.json. This is leaf acceptance only; D0.2 as a whole remains unaccepted in conductor/execution/tasks.json."
+    },
+    {
+      "milestone": "D0.2",
+      "required_by": "D1",
+      "status": "pending",
+      "evidence": "conductor/execution/tasks.json marks D0.2 accepted=false; current-state and development-readiness plan place work in D0.2."
+    },
+    {
+      "milestone": "D1",
+      "required_by": "Q0",
+      "status": "pending",
+      "evidence": "D1.1-D1.6 are unaccepted in the generated task catalog; Q0.1 explicitly depends on D1.6; DES queue metadata declares Q0 requires development_readiness_20260925:D1. No D1 acceptance receipt is present in this packet."
+    },
+    {
+      "milestone": "D2",
+      "required_by": "Q1",
+      "status": "pending",
+      "evidence": "D2.1-D2.5 are unaccepted; Q1.1 explicitly depends on D2.5; DES queue metadata declares Q1 requires development_readiness_20260925:D2."
+    },
+    {
+      "milestone": "E0",
+      "required_by": "D2",
+      "status": "pending",
+      "evidence": "Generic-ED task catalog marks E0.1-E0.4 unaccepted; D2.1 explicitly depends on E0.4 and development-readiness metadata declares D2 requires generic_ed_delivery_20260925:E0."
+    },
+    {
+      "milestone": "Q0",
+      "required_by": "Q1",
+      "status": "pending",
+      "evidence": "Q0.1-Q0.4 are unaccepted; Q1.1 explicitly depends on Q0.4."
+    },
+    {
+      "milestone": "Q0/C0/E0 reviewed",
+      "required_by": "G0 development-ready gate",
+      "status": "pending",
+      "evidence": "conductor/module-readiness.md defines G0 as D0-D2 plus reviewed Q0/C0/E0. The relevant task catalog entries are not accepted."
+    }
+  ],
+  "identity_claims": [
+    {
+      "claim": "The local parent gitlink points to Kairos commit fae901558f07b7b717a676adbafbe2cdc78dea1c.",
+      "local_source": "git ls-tree 92ab172 libs/kairos; libs/kairos git HEAD",
+      "authority": "local_fact",
+      "scope": "This checkout and its recorded submodule object only; it does not prove a remote branch or release identity."
+    },
+    {
+      "claim": "The checked-out Kairos commit date is 2026-05-20 (commit timestamp 2026-05-20T08:41:11+10:00).",
+      "local_source": "git -C libs/kairos show -s --format=%cI HEAD",
+      "authority": "local_fact",
+      "scope": "Local commit object metadata only."
+    },
+    {
+      "claim": "The local Kairos commit subject is 'Record Azure provider registration (#27)'.",
+      "local_source": ".artifacts/run-queue-prereq/identity-snapshot.md, local git metadata section",
+      "authority": "local_fact",
+      "scope": "Subject recorded on the local commit object only; '#27' does not establish a current or merged remote pull request."
+    },
+    {
+      "claim": "Local git describe output is fae9015.",
+      "local_source": ".artifacts/run-queue-prereq/identity-snapshot.md, Describe field",
+      "authority": "local_fact",
+      "scope": "Local repository description output only."
+    },
+    {
+      "claim": "The local Kairos checkout reports no tags.",
+      "local_source": ".artifacts/run-queue-prereq/identity-snapshot.md, Local tags field",
+      "authority": "local_fact",
+      "scope": "Tags available in this checkout only; no statement about remote tags."
+    },
+    {
+      "claim": "Local git configuration records origin as https://github.com/edithatogo/kairos.git.",
+      "local_source": ".artifacts/run-queue-prereq/identity-snapshot.md, Origin URL field",
+      "authority": "local_fact",
+      "scope": "Local configuration only; does not prove repository ownership, access, current URL, or remote state."
+    },
+    {
+      "claim": "The Kairos submodule working tree is clean and HEAD is detached.",
+      "local_source": "git -C libs/kairos status --short --branch",
+      "authority": "local_fact",
+      "scope": "Observed local checkout state at inspection time only."
+    },
+    {
+      "claim": "Workspace metadata declares the name KairoECS in README, Apache-2.0, Rust 2021, rust-version 1.76, and the GitHub repository URL.",
+      "local_source": "libs/kairos/README.md:1,16; libs/kairos/Cargo.toml [workspace.package]",
+      "authority": "source_declaration",
+      "scope": "Names and values declared by these checked-out source files; no external validation."
+    },
+    {
+      "claim": "README says the repository is public and CI-backed.",
+      "local_source": "libs/kairos/README.md:12-14",
+      "authority": "unverified_external",
+      "scope": "README assertion only; public visibility, current CI configuration and current CI outcomes were not checked remotely."
+    },
+    {
+      "claim": "README says the GitHub Pages documentation site is published at edithatogo.github.io/kairos/.",
+      "local_source": "libs/kairos/README.md:78-83",
+      "authority": "unverified_external",
+      "scope": "README assertion only; live publication and current site contents were not checked."
+    }
+  ],
+  "unresolved": [
+    "D1 is not accepted, so Q0 is blocked. Generated task DAG confirms Q0.1 depends on D1.6; DES queue milestone metadata independently declares the D1 gate.",
+    "D2 is not accepted and E0 is not accepted, so Q1 is blocked. Generated task DAG confirms Q1.1 depends on D2.5 and D2.1 depends on E0.4; metadata independently declares D2 requires E0 and Q1 requires D2.",
+    "The DES queue metadata milestone_dependencies encode Q0<-D1 and Q1<-D2, while phase_dependencies alone only encode the Q0-Q5 chain. Consumers that ignore milestone_dependencies must use the generated task DAG cross-track edges.",
+    "The Cargo/README Apache-only declarations conflict with LICENSE's Apache/MIT statement; package-level intended licensing and external publication/ownership claims remain unverified.",
+    "Ten distinct identity claims are supported by the supplied local snapshot/source; classifications above limit authority to local facts, source declarations, or unverified external assertions."
+  ]
+}

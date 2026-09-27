@@ -39,6 +39,9 @@ class BindingTests(unittest.TestCase):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name)
         self.catalog=mvp.tasks.derive(ROOT)
+        # These tests exercise packet preparation for D0.2 leaves. Keep the
+        # fixture task open even after the real plan closes D0.2.
+        next(t for t in self.catalog['tasks'] if t['id']=='D0.2')['accepted']=False
         self.recipes=json.loads((ROOT/mvp.RECIPES).read_text())
         for name in [str(mvp.RECIPES),'conductor/execution/worker-prompt.md','conductor/execution/mvp/worker-loop.md']:
             p=self.root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes((ROOT/name).read_bytes())
