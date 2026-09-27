@@ -63,3 +63,9 @@ Acceptance: E-R1–9 are qualified per [G0–G3](../../module-readiness.md), wit
 level tests in the plan. G1 is the completed native library; G2 adds the promised
 first usable product; backend profiles are separate later milestones. All
 upstream contract and publication gates remain applicable to affected changes.
+
+## Research integration requirements
+
+E0 must review assisted transfer, supervision and contested equipment against single-resource scope before E2. E1 must separate latent state, agent knowledge, provisional disposition and realized outcomes. E2 must preserve assignment and interruption history, distinguish work/travel/wait, and document multitasking approximations without claiming simultaneous attention.
+
+See [reports 5–8 incorporation](../../research/ed-research-incorporation-20260927.md).

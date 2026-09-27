@@ -28,7 +28,9 @@ contract available for cross-track review. No queue implementation needed yet.
   adapter hooks. Resolve the missing Track 22 VVUQ contract reference with 21.
 - [ ] C0.2 Freeze trace/residual/metric schemas, event mapping, timestamp origin,
   missing/censoring policy, fidelity precedence and observed-versus-predicted
-  ledger separation. Specify seed-purpose derivation through 01.
+  ledger separation. Specify seed-purpose derivation through 01. Preserve raw task
+  events, provisional/realized disposition, knowledge availability and versioned
+  exact/partial/unverified mappings; published standards do not imply local conformance.
 - [ ] C0.3 Assess [public data/open examples](../../generic-ed-evidence.md),
   recording population, field coverage, licence, revision and assumptions.
   Define synthetic datasets, identifiable/confounded parameter fixtures,
@@ -47,7 +49,9 @@ Entry: C0. Owners 04 (IO), 21 (semantics); can proceed alongside Q1–Q3.
 
 - [ ] C1.1 Write failing actual IPC/Parquet read/write and independent-reader
   fixtures, including wide/long mappings, timestamp units/timezones, DST
-  ambiguity, nulls, duplicate IDs, invalid chronology and overflow.
+  ambiguity, nulls, duplicate IDs, invalid chronology and overflow. Include missing
+  triage/cohort denominators, distinct administrative/physical departure and future-
+  outcome leakage fixtures; observed task events must survive lossy standards mappings.
 - [ ] C1.2 Implement optional Arrow IPC/Parquet features, bounded RecordBatch
   readers and typed schemas. Preserve custom smoke-format compatibility without
   mislabelling it IPC. Lock dependencies and verify feature-minimal/MSRV builds.
@@ -75,7 +79,9 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
 - [ ] C2.3 Implement a deterministic route-graph TransitModel with units, stable
   shortest-path ties, integer tick conversion, unreachable errors and stored
   movement progress. Supply a minimal urgency/FIFO/zone/skill staff adapter;
-  cleaning/reservation remains an explicit model resource lifecycle.
+  cleaning/reservation remains an explicit model resource lifecycle. Require explicit
+  movement-mode speeds, versioned geometry and O/D purpose; test mixed-use pauses
+  and sensor-derived distance are not silently treated as path/speed ground truth.
 - [ ] C2.4 Conductor — review and verify phase (workflow.md).
 
 Exit: C-02 in standalone fixtures; integrated interruption acceptance awaits Q4.

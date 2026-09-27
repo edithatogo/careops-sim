@@ -276,3 +276,9 @@ upstream registry/handoff updates and applicable phase gates.
   informs ergonomics and the distinction between priority and permission to
   preempt. This design deliberately uses explicit victim policies and FIFO equal
   priorities; it does not promise exact SimPy API or interrupt equivalence.
+
+## Domain research review boundary
+
+Q0 reviews assisted transport, co-working, interruption ancestry and ED reselection needs. Clinical task selection belongs in the ED adapter and must conform to approved Suspend/Abort/Restart and deterministic ordering. Atomic bundles, fractional multitasking and new scheduler precedence remain deferred unless explicitly redesigned and tested.
+
+See [reports 5–8 incorporation](../../research/ed-research-incorporation-20260927.md).

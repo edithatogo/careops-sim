@@ -362,3 +362,9 @@ queue, fidelity, telemetry or calibration components. Add other simulation
 methods only through a concrete, reviewed extension to shared time/state/output
 contracts. Public aggregate statistics can inform a generic baseline but cannot
 be treated as patient-level traces or direct evidence of staff walking behavior.
+
+## Research integration requirements
+
+C0/C2 must distinguish measured task events from fitted model parameters, RTLS observations from legal paths, and clamped final outcomes from predictive knowledge. Staff/shift clustering and eligible-choice-set availability constrain identifiability; elapsed EHR intervals alone do not identify walking or switching costs.
+
+See [reports 5–8 incorporation](../../research/ed-research-incorporation-20260927.md).

@@ -130,3 +130,15 @@ No scheduler/RNG rewrite, clinical-policy invention or full hospital implementat
 is in scope. P0 can start immediately; P1 DES and P2 ABM research can run in parallel
 with disjoint outputs. P3 joins them; P4 supplies generic inputs to E1. P5 validates
 against E2/C5 and gates C6. See plan/metadata for precise dependencies.
+
+## Incorporated research constraints (reports 5–8)
+
+See [the incorporation ledger](../../research/ed-research-incorporation-20260927.md).
+Maintain separate artifact lineage and claim-verification status. Reconstructed
+registers cannot authenticate inaccessible originals. Mean-only evidence cannot
+supply an empirical family, tail or range. Record observation concurrency rules.
+Spatial/behavior records include eligible choice sets, persistent assignment,
+movement mode and interruption ancestry; rates of prompts and task switches are distinct.
+Generate all conditional variables without future-information leakage; distinguish
+provisional/realized disposition and agent-known/latent/recorded state. Cohort,
+visit-type and missingness denominators accompany every categorical vector.

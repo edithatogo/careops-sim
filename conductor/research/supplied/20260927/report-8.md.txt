@@ -1,0 +1,259 @@
+# Audit and corrected reconstruction of the ED standards research package
+
+## Recovery status and research scope
+
+Research was conducted on **27 September 2026, Australia/Brisbane** as a bounded follow-up to the earlier standards-mapping report. I did **not** restart the broad emergency-department ABM/DES literature review. The audit concentrated on the original-package provenance claim, the AIHW triage denominator, high-impact interoperability mappings, current standards versions, public-data seed values, and evidence gaps that materially affect CareOps Sim.
+
+The requested original `ed_abm_des_standards_research_bundle.zip` was **not recoverable from the files accessible in this conversation**. A file search for the requested bundle and constituent artefacts returned no retrievable source files. Consequently, I cannot verify that the original actually contained **340 parameters, 1,700 mappings, 35 dependencies, 63 fields or 15 directly source-seeded rows**. Recreating those counts merely to make them agree with the previous report would create false provenance, so I have not done that.
+
+Two separate downloadable artefacts are therefore supplied:
+
+**[Download the original-recovery status bundle](sandbox:/mnt/data/ed_abm_des_standards_original_recovery_status.zip)** — this is explicitly **not** the original package. It records that recovery failed and contains the source-audit status.
+
+**[Download the corrected reconstructed standards bundle](sandbox:/mnt/data/ed_abm_des_standards_reconstruction_v2.zip)** — this is a new, versioned reconstruction, not a claimed recovery.
+
+The corrected reconstruction contains **68 parameter/field rows, 272 explicit standards mappings, 30 dependencies, 35 public-data estimate rows and 18 source records**. Those counts emerged from the reconstructed scope; they were deliberately not forced to equal the inaccessible package's reported counts.
+
+The package contains:
+
+| Artefact | Purpose |
+|---|---|
+| `parameter_register.csv` | Reconstructed canonical ED/model fields |
+| `mappings.csv` | METeOR, FHIR/AU, HL7 v2 and OMOP crosswalk with mapping-quality classification |
+| `public_estimates.csv` | Public-data seed estimates and synthetic examples |
+| `sources.csv` | Exact source URLs, periods, extraction locations and access notes |
+| `dependencies.csv` | Derivation, conditionality and semantic dependencies |
+| `standards_versions.csv` | Audited version anchors and version caveats |
+| `local_data_request.csv` | Data required for local calibration |
+| `coverage_matrix.csv` | Mapping/evidence status by field |
+| `arrival_pattern_timeline.csv` | Deliberately unpopulated hourly profile rather than fabricated rates |
+| `source_audit.csv` | High-impact claim audit |
+| `unresolved_ledger.csv` | Prioritised unresolved evidence |
+| `changelog.csv` | Reconstruction corrections |
+| `example_inputs.yaml` | Corrected illustrative model inputs |
+| `diagram.mmd` | Source → canonical model → standards architecture |
+| `references.bib` | Source list |
+| `search_log.txt` | Search/inclusion/exclusion record |
+| `validation_report.txt` | Executed CSV/YAML and arithmetic checks |
+| `manifest.csv`, `manifest.json` | File counts, versions and SHA-256 hashes |
+| `README.md` | Package interpretation and provenance |
+| `original_recovery_status.txt` | Explicit non-recovery statement |
+
+The machine-readable files were actually parsed after creation: all CSV files passed Python CSV parsing; the YAML passed YAML parsing; the manifest JSON passed JSON parsing; and the ATS count/probability identities were checked programmatically. These are **format and internal-consistency checks**, not implementation, clinical validation or model calibration.
+
+## AIHW triage denominator audit
+
+The most material numerical correction concerns the 2024–25 Australian triage distribution.
+
+AIHW's published national table reports **9,094,312 ED presentations**, with ATS-category counts of 86,831 Resuscitation, 1,608,414 Emergency, 3,789,676 Urgent, 3,050,990 Semi-urgent and 555,221 Non-urgent. citeturn17search5
+
+Those five counts sum to:
+
+\[
+86{,}831+1{,}608{,}414+3{,}789{,}676+3{,}050{,}990+555{,}221
+=9{,}091{,}132
+\]
+
+which is **3,180 fewer than the published total**. The residual corresponds to about **0.03497% of all presentations**. It is therefore inappropriate simply to normalise AIHW's displayed rounded percentages and pretend the total discrepancy does not exist. AIHW's technical appendix independently establishes that triage can be unreported: its state/territory table explicitly says its total includes emergency presentations for which triage category was not reported. citeturn20view0turn22view0
+
+For a simulator generating an ATS category **conditional on ATS 1–5 having been reported**, the correct count-based denominator from that table is therefore 9,091,132:
+
+| Generated state | Count | \(P(\mathrm{ATS}=k\mid \mathrm{ATS1–5\ reported})\) |
+|---|---:|---:|
+| ATS 1 | 86,831 | 0.009551176 |
+| ATS 2 | 1,608,414 | 0.176921202 |
+| ATS 3 | 3,789,676 | 0.416854139 |
+| ATS 4 | 3,050,990 | 0.335600671 |
+| ATS 5 | 555,221 | 0.061072812 |
+| **Known ATS total** | **9,091,132** | **1.000000000** |
+
+If the **measurement/reporting process itself is being modelled**, use the full denominator of 9,094,312 and add a residual `triage_not_reported` state with probability approximately **0.000349669** rather than forcing the five reported categories to represent every record. The package implements both interpretations explicitly and does not infer what subtypes lie inside that residual.
+
+This distinction also matters for Queensland. AIHW Table A4 reports Queensland emergency-presentation proportions of **1.1%, 21.5%, 47.0%, 26.9% and 3.5%** for ATS 1–5, but the table is restricted to presentations whose type of visit is *Emergency presentation*, and its footnote says the total includes presentations with triage category not reported. Those rounded percentages should therefore be treated as broad Queensland transfer priors, **not** converted unquestioningly into an exact categorical generator. citeturn20view0turn22view0
+
+AIHW also reports that, nationally, 98.9% of presentations were Emergency presentations, 0.8% were planned return visits and the remaining visit types accounted for 0.2%. These are displayed rounded percentages; they should not be forced into an artificially precise joint case-mix distribution without source counts. citeturn20view0turn22view0
+
+Several public-data quality parameters are useful for building an explicit observation model rather than silently assuming perfect records. AIHW reports that in 2024–25:
+
+- 14,415 otherwise relevant emergency presentations were excluded from waiting-time statistics solely because a valid clinical-care commencement date or time was unavailable;
+- ED length of stay was invalid for 2,933 records;
+- clinical-care duration could not be calculated for 414,799 records;
+- Indigenous status was not reported for 0.9% of ED presentations; and
+- 3.1% of records could not be mapped to a remoteness category because of invalid or missing SA2/usual-residence information. citeturn20view0
+
+Those values appear in `public_estimates.csv` as **measurement/data-quality parameters or validation targets**, rather than being confused with primitive patient-flow parameters.
+
+The AIHW technical definition further reinforces an important model boundary. Waiting time is elapsed time from ED presentation to commencement of clinical care, whereas ED length of stay is elapsed time from presentation to **physical departure**. The 4-hour indicator is based on presentation-to-physical-departure time of no more than 240 minutes, subject to validity exclusions. citeturn20view0turn22view1 These are principally **endogenous outcomes** of a queue/resource model. They should not ordinarily be sampled as independent DES service times.
+
+ACEM defines ATS policy targets as immediate, 10, 30, 60 and 120 minutes for ATS 1–5 respectively, with performance-indicator thresholds of 100%, 80%, 75%, 70% and 70%. ACEM also says a triage assessment should generally take two to five minutes. These are policy/guideline statements, not empirical probability distributions for task duration, so the package does not convert them into gamma or lognormal service-time inputs. citeturn23view5
+
+## Standards and terminology audit
+
+The corrected package uses version-specific standards rather than generic labels such as “FHIR”, “OMOP” or “HL7”.
+
+### Australian FHIR
+
+The current published **AU Core 2.0.0** package is based on **FHIR R4 4.0.1**. HL7 Australia identifies it as the published Working Standard release generated on 28 January 2026. citeturn17search1turn17search3turn17search4
+
+The current published **AU Base 6.0.0** is likewise based on FHIR R4 4.0.1; HL7 Australia identifies 6.0.0 as its current published version and describes it as the Australian realm layer defining extensions, profiles, terminology and identifiers. citeturn18search2turn18search3
+
+Accordingly, the reconstruction pins:
+
+```text
+FHIR core    R4 4.0.1
+AU Core      2.0.0
+AU Base      6.0.0
+```
+
+It does **not** silently substitute a later ballot for those published anchors.
+
+A useful example of why mappings are classified rather than declared universally “exact” is arrival mode. FHIR R4 has an `encounter-modeOfArrival` extension, but the FHIR definition centres on whether the patient arrives by ambulance and the type of ambulance, whereas the Australian NAPEDC value domain distinguishes modes such as ambulance/air/helicopter, police/correctional and other transport. This is therefore marked **partial**, not exact. citeturn19search0turn19search4turn20view1
+
+Likewise, `Encounter.period.start` and `.end` can carry encounter timing, but whether those timestamps are semantically identical to Australian **presentation**, **episode end** or **physical departure** depends on the implementation. The reconstructed package therefore preserves those as partial mappings rather than collapsing three operationally different clocks into one FHIR field. That is an inference from the distinct Australian definitions and generic FHIR Encounter semantics. citeturn20view1turn22view1turn17search13
+
+### HL7 version two
+
+HL7 published **Version 2.9.1** normatively in September 2024. citeturn23view4 However, that fact does **not** establish that a Queensland hospital interface, EDIS, LIS or ADT feed uses v2.9.1. The actual local message version, trigger-event conventions, profiles and Z-segments remain an implementation-specific evidence requirement.
+
+For that reason, `mappings.csv` treats 2.9.1 as a **dictionary/reference anchor only**. Obvious conventional mappings such as patient identifiers or discharge date/time can be recorded, but operational milestones such as ambulance offload, triage timestamp, decision to admit, bed-ready time and internal queue state remain `unverified` where no local interface-control document has been inspected.
+
+That is preferable to populating 1,700 crosswalk cells merely to maximise nominal standards coverage.
+
+### OMOP
+
+The official OMOP **CDM v5.5** page explicitly identifies 5.5 as the latest version of the OMOP CDM. citeturn24view0 It also illustrates why CareOps should retain a richer canonical source-event layer upstream of OMOP. `VISIT_OCCURRENCE` represents healthcare visits, including Emergency Room Visits and Ambulance Visits, while detailed operational transitions are not its primary purpose. citeturn24view0
+
+An especially important semantic mismatch concerns sex and gender. OMOP v5.5 says `PERSON.gender_concept_id` is intended to capture biological sex at birth and specifically advises that gender identity from the source be stored in `OBSERVATION`. Current Australian NAPEDC metadata has separate sex and gender concepts. A direct one-column Australian-sex/gender → `PERSON.gender_concept_id` crosswalk would therefore be lossy and is classified **partial**, not exact. citeturn24view0turn20view1
+
+The same caution applies to internal ED queues, primitive staff-task service times, bed negotiation events and transit times: the corrected package labels these **simulation-only**, **proposed-extension** or **unverified** rather than inventing OMOP fields.
+
+### Clinical terminologies and classifications
+
+LOINC **2.83** was released on 19 August 2026. citeturn23view1 UCUM's current cited specification is **Version 2.2**, dated 17 June 2024. citeturn23view3 These are sensible anchors for coded measurements and units, while the actually deployed terminology-server versions still need to be recorded.
+
+SNOMED CT-AU needs an unusually careful caveat at this exact research date. The NCTS archive shows the **31 August 2026 v20260831** release, maintained against the August 2026 international edition, with version URI information and AMT artefacts. However, on 27 September the same archive already displays a **v20260930** release-note entry dated 24 September, while also showing an upcoming-release schedule containing 28 September. citeturn23view2 That timing is ambiguous enough that the corrected package does **not** claim that v20260930 is already deployed locally. `v20260831` appears only as a conservative example pin; a real implementation should query the terminology service and record its actual edition/version URI.
+
+For emergency diagnosis coding, observation-period versioning is mandatory. IHACPA states that the **13th-edition EPD Short List** is used from 1 July 2025, while the **12th edition** was used for 2023–24 and 2024–25 NAPEDC submissions. citeturn20view3 AIHW's 2024–25 appendix independently confirms that its diagnosis data used the 12th-edition shortlist. citeturn20view0turn22view0 Therefore, using the current 13th-edition list to retrospectively interpret 2024–25 data without a version-aware transformation would be an error.
+
+## Crosswalk design and implications for CareOps Sim
+
+The principal architectural recommendation is to make a **CareOps canonical ED event model** the loss-preserving layer and treat FHIR, HL7 v2 and OMOP as different projections/interfaces rather than forcing the simulation state to equal any one interoperability model.
+
+The package's Mermaid diagram expresses the intended flow:
+
+```text
+local source systems
+  ↓
+canonical ED event layer
+  ├─→ Kairos DES/ABM state/events
+  ├─→ FHIR R4 / AU Core / AU Base
+  └─→ OMOP analytical projection
+
+HL7 v2 feeds → source/canonical layer
+terminologies → coded canonical fields
+```
+
+This follows directly from the fact that the Australian national dataset includes reporting concepts such as presentation date/time, clinical-care commencement, triage, episode end and physical departure, while the simulation additionally needs fine-grained resource/task/location events that are not national reporting fields. METeOR's 2026–27 NAPEDC specification explicitly lists presentation date/time, physical departure date/time, diagnosis and other ED fields, and is effective from 1 July 2026 through 30 June 2027. citeturn20view1 The reconstruction deliberately adds internal location, ambulance crew-release, bed-ready, queue-state, primitive-service-time, transit-time and resource-bundle fields where the simulator needs more than the reporting standard.
+
+The mapping taxonomy is consequently substantive:
+
+| Classification | Meaning in this package |
+|---|---|
+| **exact** | Audited source and target concepts align sufficiently at the field level |
+| **partial** | Useful representation exists, but semantics/granularity differ |
+| **proposed-extension** | A plausible FHIR/local extension or event representation, not a verified standard field |
+| **simulation-only** | Internal model state or derived quantity that should not be forced into a clinical interchange standard |
+| **unverified** | No defensible exact mapping was established in this bounded audit |
+
+Examples include:
+
+- **Blood pressure → AU Core/FHIR Observation:** strong/exact profile-level mapping, with LOINC/UCUM coding where applicable. AU Core explicitly establishes Australian FHIR requirements over R4, and FHIR Observation provides code, effective time and value/component structures. citeturn17search13turn18search3
+- **ATS category → FHIR:** partial. `Encounter.priority` may be useful, but ATS is a particular Australian urgency classification, and a coded triage Observation may be needed to preserve the source concept.
+- **presentation time → `Encounter.period.start`:** partial, because an implementation's Encounter boundary may not be identical to the national reporting definition.
+- **physical departure → FHIR `Encounter.period.end`:** partial for the same reason; the Australian model explicitly defines physical departure as the end point for ED LOS. citeturn22view1
+- **primitive task service time:** simulation-only. It should be inferred from actual task/resource event logs, not placed in FHIR or OMOP merely to achieve mapping completeness.
+- **internal transit time:** simulation-only/locally derived unless there is a source location-event or RTLS system.
+- **resource bundle requirement:** simulation structural rule. It has deliberately **not** been treated as an implemented Kairos feature.
+
+That final point preserves the stated CareOps architecture constraint. Atomic resource bundles may be a reasonable future modelling extension, but the present queue proposal supports one capacity unit and one resource per work item. The corrected package records `resource_bundle_requirement` as a future/review concern and **does not claim atomic bundles have been adopted or implemented**. Likewise, no change is made to the authoritative-state/clock or same-time ordering contract.
+
+## Public-data starting values and what remains synthetic
+
+The package now provides useful starting values without turning national aggregates into fictitious local calibration.
+
+The **45,000 presentations/year profile remains explicitly synthetic**. It implies a simple annual-average 123.2877 presentations/day, but neither number is represented as a Cairns estimate or an observed generic-ED value. The annual figure is retained only because it was part of the legacy illustrative configuration.
+
+The most defensible initial public-data seeds are currently:
+
+| Candidate | Initial value | Status | Recommended role |
+|---|---:|---|---|
+| Annual Australian ED presentations | 9,094,312 | published | context/validation, not local demand |
+| ATS 1 conditional probability | 0.0095512 | count-derived | national transfer prior |
+| ATS 2 conditional probability | 0.1769212 | count-derived | national transfer prior |
+| ATS 3 conditional probability | 0.4168541 | count-derived | national transfer prior |
+| ATS 4 conditional probability | 0.3356007 | count-derived | national transfer prior |
+| ATS 5 conditional probability | 0.0610728 | count-derived | national transfer prior |
+| National triage residual | 0.0003497 | derived | measurement/missingness model |
+| Ambulance or air-rescue arrival | about 0.27 | published, rounded | broad transfer prior |
+| Seen on time | about 0.67 | published, rounded | output validation target |
+| Completed within four hours | about 0.53 | published, rounded | output validation target |
+| Illustrative model demand | 45,000/year | **synthetic** | example only |
+| Illustrative average arrivals | 123.2877/day | **synthetic-derived** | example only |
+
+AIHW reports around 9.1 million public-hospital ED presentations in 2024–25 and 67% seen on time nationally. citeturn17search18 The package intentionally treats performance statistics as validation/output quantities rather than inserting them as DES waiting-time distributions.
+
+It also deliberately leaves `arrival_pattern_timeline.csv` blank for hourly arrival fractions. A plausible-looking 24-hour curve would be easy to manufacture, but that would violate the evidence requirements. The correct next step is to estimate a time-varying arrival process from timestamped local presentations or a verified public hourly dataset, conditioning as appropriate on day of week, season and holidays.
+
+Similarly, **no primitive doctor, nurse, imaging, pathology, procedure or bed-management service-time distribution has been inferred from AIHW waiting-time or ED LOS percentiles**. AIHW defines those quantities as patient-level elapsed outcomes through the ED process; they contain queues, parallel work, blocking and other mechanisms. citeturn20view0turn22view1 They cannot identify the component service-time distributions needed by a DES.
+
+Any previous construction in which a lognormal distribution was made to pass through two published quantiles should therefore be understood as an **assumed synthetic surrogate for visualisation or sensitivity analysis**, not as an empirically fitted distribution and not as calibration acceptance truth. That distinction is encoded in `example_inputs.yaml`, `source_audit.csv` and `dependencies.csv`.
+
+## Evidence gaps and acquisition priorities
+
+The remaining gaps are more important to model validity than adding hundreds of speculative interoperability rows.
+
+**Primitive service times are the highest-priority ED-internal gap.** The simulator needs event-level task start/end, resource identity, interruption and completion data for clinician assessment, nursing tasks, procedures and other resource-constrained work. National waiting-time and LOS outputs cannot recover those primitives. This is therefore a critical local-data requirement rather than a parameter to fill from an aggregate report. AIHW's definitions demonstrate why: waiting time covers presentation to clinical-care commencement, while LOS extends to physical departure and therefore spans multiple queues and processes. citeturn22view1
+
+**Access block requires richer inpatient-boundary timestamps.** Decision to admit, specialty acceptance where relevant, bed request, bed assignment, bed-ready time and actual physical departure should be retained separately. Otherwise, a model may reproduce an overall boarding interval without identifying which downstream constraint produced it.
+
+**Ambulance ramping requires the ambulance operational clock rather than arrival mode alone.** Arrival, handover, physical offload, crew release and return-to-availability are distinct milestones. NAPEDC has useful ED reporting variables but does not by itself provide that full operational feedback loop. The package therefore asks for linked ambulance CAD/ePCR/interface data instead of inventing missing durations. citeturn20view1
+
+**Spatial/transit data are genuinely missing from the present public parameterisation.** A model that explicitly represents movement between waiting rooms, resuscitation, acute bays, imaging and other locations needs location-transition timestamps, and potentially RTLS or floor-plan/path data. There is no justification for adding arbitrary walking-time distributions merely because a spatial model could consume them.
+
+**Joint case mix requires microdata.** National marginal ATS, arrival-mode and visit-type percentages should not be multiplied as if independent. A local model should estimate conditional or joint relationships among arrival time, arrival mode, age, acuity, presenting problem, diagnostics, stream and disposition from encounter-level data. This is particularly important because AIHW explicitly observes jurisdictional variation in triage distributions that may reflect both patient mix and categorisation differences. citeturn20view0turn22view0
+
+**Local interoperability deployment remains to be discovered.** The publication of AU Core, AU Base, HL7 v2.9.1 or OMOP 5.5 does not establish what a particular hospital exposes. The evidence needed is the relevant FHIR `CapabilityStatement`, implementation guide/profile URLs, HL7 v2 interface-control documents and sample messages, terminology-server release metadata, and—where OMOP already exists—`CDM_SOURCE` and vocabulary-version metadata. AU Core and AU Base are national implementation specifications, while HL7 v2.9.1 is an international standard publication; neither proves local conformance automatically. citeturn17search1turn18search3turn23view4
+
+The practical acquisition order is therefore: **primitive task/event timestamps and inpatient boundary data first; ambulance operational milestones and local joint case mix next; then local interoperability/profile discovery; spatial data only when a spatial mechanism is part of a defined decision question**. Adding further generic standards mappings before those gaps are resolved would increase table size more than model identifiability.
+
+## Conflicts, unresolved questions and delivered corrections
+
+The principal conflicts found in the existing-report claims are now explicit rather than silently resolved:
+
+The original package and its headline row counts cannot be authenticated because the source artefact is inaccessible. The corrected package therefore has a new identity and different row counts.
+
+The AIHW triage total cannot be reconciled by normalising rounded percentages alone. There are **3,180 presentations between the total and the sum of the five published ATS counts**, and AIHW separately documents unreported triage categories in its emergency-presentation table. citeturn17search5turn22view0
+
+The 45,000/year demand figure has no evidential status beyond a synthetic example and remains labelled accordingly.
+
+Two-quantile lognormal task-time curves are not empirical full distributions and are excluded from evidence-backed defaults.
+
+FHIR mappings are not assumed exact simply because an approximately corresponding field exists. The corrected crosswalk distinguishes exact from partial and extension-based semantics using AU Core/AU Base/FHIR R4 as versioned references. citeturn17search3turn18search3
+
+HL7 v2.9.1 is a valid current standards anchor but not evidence of the locally deployed message version. citeturn23view4
+
+OMOP **5.5** is explicitly identified by its own specification as the latest OMOP CDM, but its semantics—particularly sex/gender and encounter representation—require source-preserving ETL rather than naïve one-to-one mapping. citeturn24view0
+
+The diagnosis code system must be observation-period aware: the 2024–25 AIHW data use the **12th-edition** ED shortlist, while IHACPA moved to the **13th edition from 1 July 2025**. citeturn20view0turn20view3
+
+SNOMED CT-AU has an edge-case release-timing ambiguity on the research date: the NCTS site already displays a v20260930 release-note entry, but the archive also shows a subsequent scheduled release date. The corrected package therefore requires the deployed terminology-server version to be inspected rather than declaring a future-dated edition operational by inference. citeturn23view2
+
+No implementation task, Kairos contract change, atomic-resource-bundle feature, local calibration or validation has been marked complete.
+
+**Delivered files**
+
+[Download the corrected reconstructed research bundle](sandbox:/mnt/data/ed_abm_des_standards_reconstruction_v2.zip)
+
+[Download the original-recovery status and audit bundle](sandbox:/mnt/data/ed_abm_des_standards_original_recovery_status.zip)
+
+The corrected bundle's `manifest.csv` and `manifest.json` provide record counts and SHA-256 hashes for the delivered artefacts; `source_audit.csv` contains the claim-by-claim audit; `changelog.csv` records the original-to-corrected conceptual changes that could be established without access to the original files; and `unresolved_ledger.csv` identifies what evidence would be required before those remaining cells can responsibly be populated.

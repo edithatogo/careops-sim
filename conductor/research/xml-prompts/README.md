@@ -29,3 +29,10 @@ If original artifacts cannot be recovered, reconstruction must be labelled. F3 c
 Start F1/F2 now. R2 (DES evidence) and R3 (spatial/behavior evidence) can run in parallel from known gaps without waiting; their IDs remain provisional until F3. R4 methods and R5 boundary research can also start independently, with final choices reconciled against accepted inputs. R6/R7 are targeted contract support. R8a–d are separate optional engineering searches, most useful with current Kairos source attached.
 
 Attach only the documents listed inside each prompt. Paths refer to the CareOps checkout, not files a remote ChatGPT session can automatically read. Research does not close Conductor tasks or replace local implementation verification.
+
+## Research returned on 2026-09-27
+
+F1/F2 returned reports 7/8 with failed original recovery and newly reconstructed
+packages; R2/R3 returned reports 6/5. See [incorporation ledger](../ed-research-incorporation-20260927.md).
+Obtain their actual artifact files before F3. Do not rerun completed broad searches
+or treat the smaller reconstructions as authenticated originals.

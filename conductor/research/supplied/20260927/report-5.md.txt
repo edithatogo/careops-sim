@@ -1,0 +1,155 @@
+# Spatial movement, staff task decisions and interruption evidence for CareOps Sim
+
+## Scope, search and evidence handling
+
+**Research date:** 27 September 2026, Australia/Brisbane.
+
+This was a bounded evidence review for the generic/public-data emergency-department profile of CareOps Sim. I searched for primary observational healthcare/ED evidence on staff location and movement, origin/destination trips, task choice and continuity, supply/equipment retrieval, interruptions, resumption and switching; I also inspected an original open-source hospital-ABM repository for a reusable floorplan/geometry example. PubMed was used for biomedical publication discovery and retrieval; publisher articles/supplements were used where necessary for spatial tables and methods; and the original GitHub repository was inspected at a pinned revision. Studies based only on ED waiting time or length of stay, unrelated clinical gait studies, reviews without primary observations, and detailed later-domain modelling were excluded. The earlier Meng working paper was retained only where it exposes descriptive study methods and assignment structure not available in the final abstract; its earlier regression coefficients were deliberately not mixed with the final published supplement.
+
+The prompt refers to attached reports, a parameter-track specification and the calibration plan/specification, especially **C2**, and asks for comparison with **P2**. No retrievable attachment source was available in this session. I therefore **did not inspect those files**, and the C2/P2 gap assessment below is explicitly provisional, based only on the project context embedded in the research prompt. It should not be read as a line-by-line audit of those attachments.
+
+The strongest spatial ED evidence located was Huguet et al. 2025, which observed a French ED over 46 days using an ultra-wideband indoor-positioning system recording five coordinates per second. Its Methods report 27 allocated tags, while the Results refer to 28 tags, 315 sequences and 16,413,096 coordinates—an internal source inconsistency that should remain visible rather than being “resolved” by assumption. The study smoothed coordinates over 10-second windows and mapped them to functional areas. citeturn17view0turn18view0
+
+The strongest layout-to-behaviour evidence was Meng, Batt and Terwiesch's final 2021 study and supplement. It linked infrared nurse tracking, the architectural floorplan, EMR information and bedside-call data. In the final supplement, bedside distance from the nurses' station was approximately 10–45 m; the full-data regressions used 15,500 encounters. The earlier working-paper version describes six-second infrared observations, 217 nurses and 29,430 patients over five months in 2013 and a fixed adjacent-room assignment structure. citeturn20view0turn22view0turn23view1turn24view0
+
+A key evidential distinction throughout the supplied artefacts is:
+
+**observed/published** = reported by a source; **fitted** = statistical estimate, not a primitive simulator input; **policy** = externally specified operating rule; **elicited** = obtained from domain experts; **synthetic** = explicit modelling baseline only; **unknown** = no value imputed. Scenario ranges and calibration bounds remain `unknown` unless there is an evidential or explicitly proposed basis for them.
+
+## What the primary observations establish
+
+### Spatial movement and task trips
+
+Huguet et al. provide evidence that ED staff movement is sufficiently structured and role-dependent to warrant explicit spatial modelling, but their method does **not** provide an obstacle-constrained route graph. Their “walking distance” is the sum of Euclidean displacements between successive coordinates from the same tag, aggregated hourly. The walking-distance OLS used 3,586 hourly observations and clustered standard errors over 27 tags. That measure can serve as a whole-shift or hourly movement validation target, but it should not be treated as measured shortest-path edge traversal or as a walking-speed distribution. citeturn18view0turn18view1
+
+The same paper is unusually useful for showing why location and activity must be kept separate. Activity regions included care coordination, informatics, transit, preparation, management, stock, care and cleaning/stock, but a “mixed” corridor could contain transit, informatics and care. Consequently, a coordinate in that corridor does not identify whether the person was walking, waiting or doing active work. Reported care-related bounds vary substantially by role—for example, assistant nurses 26–57%, triage nurses 40–45%, ICU nurses 45–53%, waiting-area nurses 34–66%, short-stay nurses 31–66%, doctors 26–39% and on-duty doctors 33–39%—precisely because spatial position alone can leave the activity ambiguous. citeturn17view0turn18view0
+
+This makes the proposed C2 distinction between route replay and activity/service processes important: **movement time should be represented as movement, not absorbed into primitive clinical service times**, and a stationary interval in a corridor should not automatically be labelled either waiting or care.
+
+Meng et al. supply more direct origin/destination structure. Their final supplement reports approximate station-to-bed travel distances from about 10 m to 45 m. Of trips that began and ended at the nurses' station, **83.26% visited a single patient**. The authors state that discussions with the ED suggested this was consistent with a local one-patient-at-a-time safety policy; that is useful evidence of a site workflow mechanism, but not proof of a universal ED rule. citeturn22view0turn23view0
+
+The same study describes fixed clusters of three to four adjacent rooms: nurses signed up for a cluster at the start of the shift and had primary responsibility for patients in those rooms. This is good evidence that **continuity/assignment is persistent state**, not merely a transient queue priority. It does not justify fixing a generic CareOps ED to three- or four-room clusters. citeturn24view0
+
+Distance was associated with altered task-visiting behaviour in the final study. Per additional 10 m, the final full-data regressions estimated −0.393 visits/h, +0.271 min per visit, +3.252 min between visits and +0.016 nurse calls/h; the total nursing-duration coefficient was −0.126 min/h and non-significant in the reported table. These are **fitted, site-specific associations**, conditioned on the study's layout, policy and workflow. They are useful validation/calibration comparators but should not become generic task-selection coefficients. citeturn23view1turn23view2
+
+Historical time-and-motion evidence also supports keeping movement distinct from clinical work. Hollingsworth et al. followed physicians and nurses in 180-minute periods in a 36-bed teaching ED and separately recorded activity and distance walked. Across subjects, 32% of time was direct patient care, 47% indirect care and 21% non-patient activity; role-specific patterns differed substantially. fileciteturn2file4L3-L3 This source is too old and coarse for primitive service-time calibration, but it supports the structural distinction between travel, direct care and indirect work.
+
+### Task choice, continuity and interruptions
+
+The most useful general observation about task choice is that it is **contextual and history-dependent rather than a fixed random draw**. Walter et al. analysed 1,002.3 hours of observations from ED doctors, ward doctors and ward nurses. ED doctors task-switched 6.0 times/h and multitasked 9.2 times/h; task-management strategy depended on work type/complexity and the person involved, and in some settings also on time of day, day of week and the previous strategy. Significant residual variation remained between clinicians. Documentation tended to be treated as lower priority, while incoming direct-care tasks tended to receive higher priority. fileciteturn3file0L3-L3
+
+A later ED-specific Walter study observed 121.7 hours over 58 sessions and coded responses to prompts as task switching, multitasking, acknowledgement, deferral and deflection. Strategy depended on current task, prompt type and location, with switching the most frequent response. fileciteturn3file4L3-L3 This argues against a single context-free “probability of interruption acceptance”.
+
+Ratwani et al. observed 18 attending emergency physicians for two hours each in three urban academic EDs. They recorded an average **12.5 interruptions/h**; 75.4% were immediately engaged and 22.2% were handled by multitasking, while rejection or delay was rare. fileciteturn2file1L3-L3 These proportions are valuable targets for comparable physician observations, but should not be transplanted to nurses, triage or another ED as default transition probabilities.
+
+Nurse interruption burdens are likewise substantial but not numerically interchangeable with physician studies. Forsyth et al. recorded 3,229 interruptions over 372.5 clinical hours and 38 emergency-nurse shifts: mean 8.7 interruptions/h, SD 3.36, with a median interruption duration of only 13 s. Their instrument captured type, priority and location, and most environmental interruptions were low priority. fileciteturn2file3L3-L3 Lin et al., in three units of a Chinese tertiary ED, observed 60 nurses for 25,965 minutes and recorded 2,333 interruptions; source, task and interruption patterns differed between units. fileciteturn4file1L3-L3 The unit differences reinforce the need to preserve shift/unit/staff clustering rather than pool all events as independent samples.
+
+Triage provides a particularly clear example. Johnson et al. observed eight triage nurses during 118 encounters at two adult EDs over six months in 2015, all between 07:00 and 19:00. Sixty-seven encounters, or 57%, were interrupted. Interrupted triage averaged 6.64 min versus 4.54 min when uninterrupted; triage nurses immediately dealt with the interrupter 67% of the time. The study's instrument separately recorded interruption source, cause, interrupted task, nurse reaction, duration and outcomes. fileciteturn6file0L3-L3 This observation structure is more useful for CareOps than the aggregate duration difference itself.
+
+### Resumption and switching overhead
+
+Fong and Ratwani's 457 observed physician interruption episodes show why a simple “Suspend, handle interruption, immediately resume” chain is inadequate as an empirical description. The original task was immediately suspended in 348/457 episodes (76.1%); clinicians initiated another new task during the interruption in 164/457 (35.9%); and in 284/457 episodes (62.1%) they **did not directly resume** the pre-interruption task. fileciteturn2file2L3-L3 The important modelling implication is not to import those three aggregate proportions verbatim, but to retain enough provenance to represent suspension, nested work and subsequent task reselection.
+
+Cole et al. provide evidence for a genuine cost beyond the duration of the interrupter itself. Uninterrupted nursing interventions averaged 296.47 s, while interrupted interventions averaged 682.02 s. After adjustment for intervention type and other factors, interruption was associated with **121.36 s additional intervention duration** (95% CI 79.57–163.15), explicitly excluding the interruption duration. fileciteturn2file0L3-L3 This should **not** be converted into a universal 121.36-s “switch cost”: it is an adjusted task-duration effect in one academic ED, involving nurses/technicians and heterogeneous interventions, not a directly measured resumption-latency distribution.
+
+Supply/equipment disruption is similarly real but poorly parameterised for generic ED use. Tucker and Spear's six-hospital nursing study found a mean 8.4 work-system failures per eight-hour shift; medications, orders, supplies, staffing and equipment were the five most frequent categories. It was not an ED-specific study, so these categories are useful structural evidence, not ED rates. fileciteturn8file0L3-L3 Johnson's ED triage observations add a more specific signal: 10.5% of interruptions were self-interruptions, including remembering an earlier task or retrieving misplaced supplies. fileciteturn6file0L3-L3
+
+No adequate primary ED source was located in this bounded search for reusable **mode-stratified obstacle-constrained speed distributions** for unassisted walking, assisted walking, wheelchair and trolley/stretcher movement, nor for a reusable ED equipment/supply O/D trip matrix. Those values therefore remain **unknown** in the artefacts rather than being replaced by generic pedestrian speeds.
+
+## Implications for deterministic baseline behaviour
+
+The evidence supports a deliberately simple deterministic first baseline, but several choices must be labelled **synthetic/proposed** rather than presented as observed behaviour.
+
+| Candidate baseline | Evidence-backed basis | Proposed CareOps interpretation |
+|---|---|---|
+| Legal deterministic route | Staff movement is material; floorplan distance and indoor position are measurable, but no portable route-choice distribution was identified. citeturn17view0turn22view0 | Shortest legal route by edge length, then stable edge-ID sequence. **Movement speed stays unknown/configured**, not silently defaulted from literature. |
+| Persistent primary assignment | Fixed adjacent-room nurse assignment is directly described in one ED. citeturn24view0 | Retain staff↔patient/zone assignment in authoritative state; use continuity as a policy tie-break, not a universal numeric coefficient. |
+| No generic distance-batching preference | Distance altered observed nurse visitation at one site. citeturn23view1turn23view2 | Charge actual route travel time, but leave a behavioural distance-batching coefficient disabled in the generic baseline. Local calibration may later justify one. |
+| Priority-gated interruption | Switching, multitasking, deferral and other responses are observed and context-dependent. fileciteturn3file4L3-L3 | Use explicit task/prompt priorities and `Suspend` where applicable. Do not sample a literature-derived universal response probability. |
+| Queue re-evaluation after an interruption | Direct resumption fails in 62.1% of observed physician episodes. fileciteturn2file2L3-L3 | On completion of the interrupter, re-evaluate suspended and newly eligible work using deterministic priority/tie-breaks rather than automatically resuming. |
+| Explicit supply/equipment retrieval | Supply/equipment failures and retrieval interruptions are observed. fileciteturn8file0L3-L3 fileciteturn6file0L3-L3 | Make retrieval a separate O/D movement episode so it is not hidden inside clinical service time. |
+| Explicit patient movement mode | No transferable mode-specific ED speed evidence was found. | Require explicit `unassisted_walk`, `assisted_walk`, `wheelchair`, `trolley/stretcher`, etc.; speeds remain unknown until measured/elicited. |
+| Explicit supervision requirement | No robust generic quantitative ED supervision workflow parameter was identified. | Trigger supervision only from credential/task/policy state. No invented supervision propensity or duration. |
+
+The JSON artefact formalises these with the requested fields: observed state, trigger, eligible actions, deterministic tie-break, affected DES events/resources, units, uncertainty, evidence links and architecture notes.
+
+Two zeroes in the rule set require careful interpretation. Distance-based priority modification and a separate additive switching-overhead term are set to **zero only as disabled synthetic baseline mechanisms**, not as claims that the true causal effects are zero. The empirical evidence actually argues that distance can alter behaviour and interruption can lengthen active work. citeturn23view1turn23view2 fileciteturn2file0L3-L3 This convention keeps the initial baseline auditable: a mechanism must be explicitly enabled with evidence rather than acquiring a hidden coefficient.
+
+An open implementation example supports the geometry side of this design. At inspected revision `4f3f6c32872c4b0a1486b47f82c8272c34f70db5`, UCL-ARC's AMR-Hub repository is MIT-licensed and contains a floorplan extractor that converts labelled DXF geometry into labelled room polygons, walls and doors, normalises shared walls to centrelines and serialises simulation geometry to YAML. fileciteturn13file0L2-L5 fileciteturn16file0L2-L5 It is a useful open pattern for **scaled, revision-pinned geometry ingestion**, not evidence for ED walking speeds or task-selection parameters.
+
+## What EHR timestamps cannot identify
+
+The evidence makes a fairly strong identifiability distinction. Meng et al. needed provider-centred infrared tracking, a floorplan and nurse-call data **in addition to** the EMR to observe nurse movement and relate it to patient-room distance; the tracking generated observations every six seconds. citeturn20view0turn24view0 Likewise, the interruption studies required direct observers to record the source, timing, reaction and resumption structure of interruptions. fileciteturn2file1L3-L3 fileciteturn6file0L3-L3
+
+Accordingly, ordinary EHR event timestamps by themselves generally do **not** identify:
+
+* the route taken between two clinical events, detours, obstacle-constrained distance or walking speed;
+* whether an interval was transit, queue waiting, bedside work, desk work or a mixture, particularly in mixed-use areas;
+* patient movement mode or whether movement required an assistant, wheelchair or trolley/stretcher;
+* equipment/supply search and retrieval trips, stockouts, unsuccessful searches and equipment reservation;
+* the complete set of tasks available to a staff member when a task was chosen, which is essential for estimating a choice rule rather than merely describing chosen tasks;
+* interruption source, exact prompt arrival, switch versus multitask versus defer/deflect response, nested self-initiated tasks, or the causal sequence leading to eventual resumption;
+* a switching-overhead term separate from the interruption's own duration;
+* the behavioural reason for continuity or batching;
+* supervision/consult co-working unless it has its own explicit digital event; or
+* simultaneous staff–equipment–patient resource occupancy.
+
+Some of these become partly identifiable after adding staffing/assignment logs, EHR audit trails, nurse-call data, equipment telemetry or RTLS, but the raw EHR milestone stream should remain a **validation/covariate source**, not be reverse-engineered into unobserved primitive service or movement distributions. The Huguet study is especially instructive: even high-frequency position alone could not always classify transit versus informatics/care activity because of mixed-use spaces. citeturn17view0
+
+For task selection, the critical missing object is the **choice set**. Observing that nurse A started task X at 10:31 does not show whether X was chosen over one, five or zero alternative eligible tasks, nor which alternatives belonged to the same assigned patient/zone, had higher urgency, required travel or were blocked by equipment. The supplied protocol therefore records an `eligible_action_set_snapshot` at each decision point. This is a proposed measurement design, not a claim that current EHR systems provide such a field.
+
+## Provisional C2 and P2 gap assessment
+
+For the route-graph/calibration track described in the prompt, the evidence supports deterministic graphs but exposes several details that should be explicit before claiming empirical calibration. A route graph needs metric scale, traversability/access restrictions, semantic O/D nodes, door/connectivity state and a revision/hash. RTLS traces then need an explicit map-matching/transformation layer. Huguet's accumulated straight-line point displacements should not be treated as ground-truth edge paths; Meng's station-to-bed distance is closer to a layout measure but still does not supply a generic route-choice model. citeturn18view0turn22view0
+
+**Provisional C2 gaps based on the prompt description** are therefore: movement mode and speed by mode; treatment of pauses and mixed-use corridor activity; explicit O/D task labels; equipment and stock nodes; location/sensor error and smoothing; route-choice deviations from the deterministic baseline; and staff/shift-level dependence in calibration residuals. The supplied CSV deliberately separates distribution support, observed range, scenario range, parameter uncertainty and calibration bounds; most scenario ranges and bounds remain unknown because the primary evidence does not justify them.
+
+The current P2-style one-resource-per-work-item scope is adequate for a staff member travelling alone or performing a single-resource task. It becomes questionable for **assisted patient movement**, where a patient, a staff member and wheelchair/trolley may have to be simultaneously committed; for tasks requiring contested equipment while staff work; and for true co-located supervision requiring two staff resources. This is an **architecture-review candidate**, not a recommendation silently to implement atomic bundles. The current explicit deferral of atomic bundles should remain visible until local requirements show whether these interactions need exact atomic acquisition or can be represented by a documented approximation.
+
+Multitasking is a second semantic gap. ED doctors in Walter's data multitasked 9.2 times/h, and Ratwani et al. classified 22.2% of physician interruption responses as continuing the primary task while handling the interruption. fileciteturn3file0L3-L3 fileciteturn2file1L3-L3 A simulator allowing only one active work item per staff resource can approximate that behaviour as suspension, deferral or zero-duration information transfer, but should not claim that this is faithful multitasking. A future reviewed extension could represent fractional/parallel attention, but this research does not establish that such a change is necessary for the first generic ED profile.
+
+Suspend/Abort/Restart are closer to the empirical interruption evidence, but provenance matters. Fong and Ratwani show nested new tasks and non-direct resumption. fileciteturn2file2L3-L3 At minimum, the authoritative state should therefore be able to identify the interrupted parent task, interruption/nested task chain, suspension time and eventual first post-interruption task. That can be implemented without assuming a new probabilistic behaviour model; whether current Kairos structures already retain those relationships was not established here.
+
+Continuity similarly needs persistent assignment state. Meng's fixed room-cluster system demonstrates that geography and responsibility can be linked structurally. citeturn24view0 A generic CareOps profile should make the assignment mechanism configurable rather than baking the observed site's room-cluster count into the engine.
+
+## Observation protocol, delivered artefacts and priorities
+
+The minimal proposed protocol combines a **scaled/versioned floorplan**, task-aware direct observation or privacy-governed RTLS, and decision snapshots. Every observed episode is classified separately as transit, queue waiting, active direct care, active indirect care, non-care, supply/equipment retrieval, patient transfer, interruption, supervision/consult or task selection. For movement, it records O/D nodes, observed route/trace and explicit mode. For interruptions it links the pre-interruption task, interrupter, response, nested tasks, first post-interruption task and eventual resumption. For task decisions it records every eligible alternative, not only the chosen work item.
+
+Whole-shift sampling is preferable for interruption and selection processes because the literature shows clustering within clinicians, shifts and units. Walter's analyses found clinician-level heterogeneity and prior-strategy/context effects; Forsyth captured whole 8/12-hour nurse shifts; and Lin found different interruption distributions across three ED units. fileciteturn3file0L3-L3 fileciteturn2file3L3-L3 fileciteturn4file1L3-L3 The protocol therefore proposes pilot sampling across role × shift × ED-zone strata, estimation of staff/shift intraclass correlation from the pilot, and only then a precision-based final sample calculation rather than inventing a universal number of shifts.
+
+Fine-grained movement traces deserve restricted handling. Huguet et al. did not release most underlying location data because of re-identification risk; only limited figure source data were publicly supplied. citeturn18view2 The protocol therefore keeps raw staff/patient location trajectories inside the governed environment and exports approved aggregates.
+
+### Delivered files
+
+| File | Contents | Records |
+|---|---|---:|
+| [abm_spatial_evidence.csv](sandbox:/mnt/data/careops_r3_spatial/abm_spatial_evidence.csv) | Primary evidence, fitted estimates, structural evidence and explicit unknown/gap rows | **48** |
+| [behavior_rules.json](sandbox:/mnt/data/careops_r3_spatial/behavior_rules.json) | Deterministic candidate behavioural rules with fact/inference/proposal separation | **8 rules** |
+| [observation_elicitation_protocol.yaml](sandbox:/mnt/data/careops_r3_spatial/observation_elicitation_protocol.yaml) | Minimal local observation and structured elicitation protocol | **1 protocol** |
+| [source_list.csv](sandbox:/mnt/data/careops_r3_spatial/source_list.csv) | Exact URLs/DOIs, publication/observation dates, source locations, sample/access/licence and repository revision | **14 sources** |
+| [manifest.json](sandbox:/mnt/data/careops_r3_spatial/manifest.json) | Delivered-file record counts, byte counts and SHA-256 hashes | **5 manifested content files** |
+| [README.md](sandbox:/mnt/data/careops_r3_spatial/README.md) | Bundle interpretation and attachment caveat | — |
+| [Complete ZIP bundle](sandbox:/mnt/data/careops_r3_spatial_evidence_bundle.zip) | All files above in one archive | — |
+
+The open-source geometry example in the source list is pinned to AMR-Hub commit `4f3f6c32872c4b0a1486b47f82c8272c34f70db5`; its repository documentation describes hospital geometry, task scheduling and movement, while the floorplan extractor specifically converts labelled DXF floorplans into room/wall/door geometry and YAML. The inspected licence is MIT. fileciteturn11file0L2-L2 fileciteturn13file0L2-L5 fileciteturn16file0L2-L5
+
+### Conflicts and unresolved questions
+
+Several apparent numerical conflicts should remain explicit. Huguet reports **27 tags in Methods but 28 in Results**. citeturn17view0 Walter's paper title says 200 clinicians, while the abstract's subgroups—40 ED doctors, 57 ward doctors and 104 ward nurses—sum to 201. fileciteturn3file0L3-L3 Meng's earlier working-paper core sample and coefficients differ from the final supplement; the artefact therefore uses the **final 15,500-encounter coefficients** and uses the working paper only for descriptive methodology/site workflow. citeturn23view1turn23view2turn24view0
+
+Interruption measures should not be pooled naively. Forsyth's 13-s median covers broad ED-nurse interruptions, while Johnson's triage interruptions can occupy minutes of a triage encounter under a different task and coding framework. fileciteturn2file3L3-L3 fileciteturn6file0L3-L3 Similarly, Walter's 6.0 task switches/h is a **response/work-management rate**, whereas Ratwani's 12.5 interruptions/h is an **incoming interruption rate**; they are not measurements of the same process. fileciteturn3file0L3-L3 fileciteturn2file1L3-L3
+
+Cole's 121.36-s adjusted effect is particularly easy to misuse: it is extra active intervention duration associated with interruption after excluding the interruption duration, not measured dead-time between interruption completion and resumption. fileciteturn2file0L3-L3 The CSV therefore labels it `fitted` and a calibration/validation target rather than a primitive switching-overhead input.
+
+### Prioritised evidence acquisition
+
+The highest-value local acquisition is **task-labelled movement**, not more aggregate ED LOS data. A modest linked dataset containing metric route geometry, staff assignment, task-selection snapshots, explicit walk/wait/work labels, supply/equipment retrievals and interruption/resumption provenance would resolve several currently unidentifiable mechanisms simultaneously. The source literature demonstrates why these data must be provider-centred rather than reconstructed solely from patient-centred EHR milestones. citeturn20view0turn24view0
+
+Next in priority is **assisted movement**: directly time and route-stratify unassisted walking, assisted walking, wheelchair and trolley/stretcher movements, recording the staff and equipment simultaneously committed. No reusable distribution was identified here, and these observations determine whether the current one-resource abstraction is adequate or whether atomic multi-resource acquisition becomes a justified reviewed change.
+
+Third is **equipment/supply retrieval**: record trigger, O/D nodes, distance, search duration, item availability and whether the item must remain held during downstream care. Existing evidence establishes that supplies and equipment disrupt nursing workflow but does not provide a portable ED trip matrix. fileciteturn8file0L3-L3
+
+Fourth is **supervision/co-working**. The bounded search did not yield a quantitative primary ED workflow dataset sufficient to parameterise generic supervision frequency, duration or simultaneous resource occupancy. These remain unknown; they should be observed or elicited explicitly rather than inferred from trainee/attending EHR signatures.
+
+Finally, local interruption observations should concentrate on **decision context and resumption**, not merely count interruptions. The published evidence already establishes that interruption handling is heterogeneous, multitasking exists, and direct resumption is often absent. fileciteturn3file4L3-L3 fileciteturn2file2L3-L3 What CareOps most needs from a local generic/Cairns profile is the state at each decision: current task, incoming task, eligible alternatives, priority, assignment, location, resource availability and eventual resumption path. That would make behavioural calibration identifiable without introducing unsupported fatigue, learning or clinical-deterioration coefficients.

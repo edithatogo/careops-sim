@@ -17,3 +17,5 @@ Status: proposed.
 
 These are candidate research inputs; no parameter acceptance or task completion
 is implied. Full machine-readable report bundles are still needed for row-level audit.
+
+- [Reports 5–8: incorporation and remaining evidence](../../research/ed-research-incorporation-20260927.md)

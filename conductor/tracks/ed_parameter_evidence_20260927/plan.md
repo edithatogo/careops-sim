@@ -8,7 +8,8 @@ population transfer, distribution selection and statistical assumptions.
 
 - [ ] P0.1 Inventory every proposed ED pathway, resource, agent decision, spatial
   feature and experiment/measurement control against E/Q/C specs; record enabled,
-  optional and deferred features and a gap list.
+  optional and deferred features and a gap list. Reconcile reports 5–8 by semantic
+  ID, preserving reconstructed versus original coverage and unresolved artifact access.
 - [ ] P0.2 Define stable parameter IDs, catalogue/evidence/profile schemas, units,
   separate range classes and consumer mappings. Write invalid/unknown/provenance
   fixtures before the schema validator; agree interfaces with E0/C0 owners.
@@ -29,6 +30,8 @@ Entry: P0. May run alongside P2 and engine development.
 - [ ] P1.2 Identify capacities/calendars, triage/clinical-work/diagnostic/cleaning/
   boarding durations, route probabilities and patience evidence. Separate active
   work from elapsed waits/transit; record population and observation limitations.
+  Retrieve the Gerdtz/Bucknall triage table and IHACPA clinician-time report; distinguish
+  mean-only evidence, incomplete fits, synthetic defaults and principal-activity sampling.
 - [ ] P1.3 Populate DES records with evidenced ranges, candidate distributions,
   dependencies and explicit assumptions/gaps. Test units, provenance, probability
   sums and impossible combinations; independently review each source extraction.
@@ -44,9 +47,13 @@ Entry: P0; independent of P1 until the P3 join.
 - [ ] P2.1 Inventory staff/agent attributes, task priorities, zone/skill eligibility,
   interruption/switching/handover and shift/break behavior; identify public evidence
   or simple explicit rules, and where direct observation/elicitation is required.
+  Specify eligible-action snapshots, persistent assignments, interruption ancestry,
+  first subsequent task and eventual resumption; separate incoming prompts from switches.
 - [ ] P2.2 Source example spatial graphs/layouts, scale/connectivity, trips, speeds,
   mobility/assistance and routing rules. Record per-agent/task variability and
   contextual effects; classify fatigue/congestion complexity as deferred or justified.
+  Include movement modes, O/D purposes, graph revision/access restrictions, sensor
+  smoothing and walk/wait/work labels; keep unknown speeds and co-working needs explicit.
 - [ ] P2.3 Populate ABM records and assumptions with ranges/distribution candidates,
   dependence and identification gaps. Test graph/unit consistency and rules against
   small hand-worked examples; flag overlap with DES work/wait durations for P3.
@@ -68,6 +75,8 @@ Entry: P1 and P2; statistics/method decisions require coordinator review.
 - [ ] P3.3 Reconcile DES/ABM boundaries; define conditional sampling order, shared
   factors and seed purposes. Separate variability from uncertain parameters;
   define hard limits, scenario ranges and search bounds with their own rationales.
+  Test arrival-mode generation, future-diagnosis/disposition leakage, cohort-specific
+  ATS denominators and observation missingness separately from clinical priority.
 - [ ] P3.4 Conductor — review and verify phase (workflow.md).
 
 Exit: P-R3/4 reviewed sampling contract for C2 and model configuration. Manual

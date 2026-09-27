@@ -102,3 +102,8 @@ interoperability, runtime profile coverage, hardware acceleration, safe agent
 execution or CI/release acceptance. Those need implementation and executed tests.
 No track checkbox is closed by this assessment; development-readiness remains the
 active implementation track.
+
+## Follow-up received
+
+[Reports 5–8 incorporation](ed-research-incorporation-20260927.md) records reconstruction
+status, new DES/ABM leads and task-level changes. Historical original counts remain unverified.
