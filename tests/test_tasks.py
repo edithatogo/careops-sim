@@ -69,6 +69,11 @@ class SchedulingTests(unittest.TestCase):
         by_id_invalid['Q0.1']['accepted']=True
         with self.assertRaisesRegex(ValueError,'unaccepted prerequisite'):
             tasks.validate(invalid)
+    def test_development_readiness_tasks_can_write_owned_evidence_not_kairos_source(self):
+        by_id={t['id']:t for t in tasks.derive(tasks.ROOT)['tasks']}
+        for identifier in ('D1.1','D1.2','D1.3','D1.4','D1.5'):
+            self.assertIn('conductor/evidence',by_id[identifier]['write_reservations'])
+            self.assertNotIn('libs/kairos',by_id[identifier]['write_reservations'])
     def test_mvp_and_v1_exclude_optional_feature_dependencies(self):
         by_id={t['id']:t for t in tasks.derive(tasks.ROOT)['tasks']}
         def ancestors(identifier):

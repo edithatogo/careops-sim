@@ -26,6 +26,8 @@ OVERRIDES = {
            'conductor/decisions', 'conductor/evidence',
            'conductor/module-readiness.md', 'conductor/current-state.json',
            'conductor/tracks/development_readiness_20260925/plan.md'],
+    'D1': ['tools', 'tests', 'conductor/dependency-policy.md',
+           'conductor/evidence'],
     'P0': ['model-inputs/ed/schema'],
     'P1': ['model-inputs/ed/des'],
     'P2': ['model-inputs/ed/abm'],
