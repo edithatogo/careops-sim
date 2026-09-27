@@ -57,6 +57,7 @@ class SchedulingTests(unittest.TestCase):
         # must not make either task appear dispatchable.
         self.assertIn('D1.6',by_id['Q0.1']['dependencies'])
         self.assertTrue({'D2.5','Q0.4'} <= set(by_id['Q1.1']['dependencies']))
+        self.assertTrue({'conductor/module-readiness.md','conductor/evidence'} <= set(by_id['D0.2']['write_reservations']))
         accepted={t['id'] for t in catalog['tasks'] if t['accepted']}
         self.assertNotIn('Q0.1',[t['id'] for t in tasks.select(catalog,accepted,1)])
         self.assertNotIn('Q1.1',[t['id'] for t in tasks.select(catalog,accepted,20)])

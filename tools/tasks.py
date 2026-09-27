@@ -22,6 +22,8 @@ SCOPES = {
 }
 COORDINATOR_TASKS = {'D1.2','D2.2','D4.1','D5.2','E5.1','E6.1','E7.1','E8.1','P3.2','P3.3'}
 OVERRIDES = {
+    'D0': ['tools', 'tests', 'conductor/dependency-policy.md',
+           'conductor/evidence', 'conductor/module-readiness.md'],
     'P0': ['model-inputs/ed/schema'],
     'P1': ['model-inputs/ed/des'],
     'P2': ['model-inputs/ed/abm'],
