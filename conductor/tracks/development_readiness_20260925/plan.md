@@ -48,7 +48,10 @@ and [reports 10/11](../../evidence/d0.2-research-audit-reports-10-11-20260927.md
 Evidence: [ADR-0001](../../decisions/ADR-0001-ed-native-support-profile.md),
 [capability profile](../../evidence/d0.3-ed-native-profile-20260927.json), and
 [execution/review receipt](../../evidence/d0.3-execution-receipt-20260928.md).
-- [ ] D0.4 Conductor — review and verify phase (workflow.md).
+- [x] D0.4 Conductor — review and verify phase (workflow.md). Independent
+  review found D0.1–D0.3 supported, no false G0 claim, and the product-guidelines
+  setup repair aligned. Fresh-process resume verified D1.1 as next action.
+  Evidence: [D0.4 phase review receipt](../../evidence/d0.4-phase-review-20260928.md).
 
 Exit: reviewed dependency closure, reproducible context recovery, no false G0 claim.
 Manual verification: resume in a fresh session and reach the exact next task.

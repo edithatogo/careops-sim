@@ -10,6 +10,7 @@
 - [Agent and harness engineering](agent-engineering.md)
 - [CI, security and GitHub timing](ci-security-release.md)
 - [Product](product.md)
+- [Product guidelines](product-guidelines.md)
 - [Technology and compatibility](tech-stack.md)
 - [Workflow](workflow.md)
 - [Track registry](tracks.md)
