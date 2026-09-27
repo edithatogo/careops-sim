@@ -6,9 +6,23 @@ checks the exact Rust 1.98.1 compiler and Cargo through `rustup run`. It only
 reads tool versions and host metadata. It does not install, update, or change
 system tools.
 
-From a clean checkout with the Kairos submodule initialized, run
-`python3 tools/bootstrap.py --test-core` to perform that same pinned-toolchain
-check and then execute `rustup run 1.98.1 cargo test --locked` for
+Before running the native suite on a clean machine, install its OS linker and
+Rustup prerequisites. On macOS ARM, install Apple's Command Line Tools and
+Python 3. On Ubuntu/Debian x86_64, install `build-essential`, `curl`, and
+`ca-certificates`, then install the minimal pinned Rust toolchain and add Cargo
+to the current shell:
+
+```sh
+sudo apt-get update
+sudo apt-get install -y build-essential curl ca-certificates
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain 1.98.1
+. "$HOME/.cargo/env"
+```
+
+The supported Linux profile is x86_64 GNU/Linux (glibc); musl and unknown
+libc environments are rejected. From a clean checkout with the Kairos
+submodule initialized, run `python3 tools/bootstrap.py --test-core` to perform
+the pinned-toolchain check and execute `rustup run 1.98.1 cargo test --locked` for
 `kairo-ecs-core`, `kairo-ecs-state`, `kairo-ecs-rng`, `kairo-ecs-des`, and
 `kairo-ecs-abm` in `libs/kairos`. It does not install or update toolchains. Cargo
 may download the locked crates into its cache; compilation writes build artifacts
@@ -29,5 +43,7 @@ only; it does not qualify a clean machine, Linux execution, dependency
 compatibility, or release readiness.
 Likewise, a successful `--test-core` run proves only that the selected core tests
 passed on the current host and checkout. The recorded macOS ARM run does not
-establish fresh-machine setup, Linux execution, consumer compatibility, or release
-readiness; those remain unverified until separately executed and reviewed.
+establish fresh-machine setup, consumer compatibility, or release readiness. The
+recorded Linux run uses a fresh Ubuntu 24.04 x86_64 guest under QEMU emulation on
+Apple Silicon; it verifies the Linux kernel/ABI and glibc path, not bare-metal
+x86_64 hardware performance or release readiness.
