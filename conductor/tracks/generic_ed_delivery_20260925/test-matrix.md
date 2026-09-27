@@ -19,3 +19,11 @@ Cairns validity or performance claim follows from synthetic/native evidence alon
 
 Include the task-specific cases in [reports 9–12 integration](../../research/ed-research-incorporation-9-12-20260927.md)
 when preparing executable packets. These are proposed oracles, not recorded passes.
+
+## Spatial input and display acceptance
+
+P0/E0 define shared spatial identities; C2/E2 verify topology and Micro travel
+costs. E3 preserves replay data; E5 verifies selectable semantic layers, overlay
+totals, live/replay agreement and source-to-metric joins using a two-room fixture.
+See the [spatial plan](../../spatial-visualization.md). Macro must not invent
+transit; unknown positions and display interpolation cannot become observations.

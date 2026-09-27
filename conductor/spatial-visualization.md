@@ -7,14 +7,19 @@ plans and production CAD import are not prerequisites for D0/P0 or native delive
 
 ```mermaid
 flowchart TD
-    A[Spatial capture / CAD] --> B[Validated spatial package]
-    B --> C[Visual geometry: SVG / GeoJSON / glTF adapters]
-    B --> D[Semantic locations and deterministic route graph]
-    C --> E[PixiJS visual front end]
-    D --> F[Kairos Rust DES/ABM backend]
-    F -->|WebSocket snapshots / deltas| E
-    E -->|Validated commands / acknowledgements| F
+    A[CAD / capture / public or manually authored plans] --> B[Import, scale, annotate and validate]
+    B --> C[Versioned spatial model: geometry, semantics, topology]
+    C --> D[Visual assets and selectable locations]
+    C --> E[Routes, zones and resource-location bindings]
+    D --> F[PixiJS spatial interface]
+    E --> G[Kairos Rust DES/ABM]
+    G --> H[State projection and spatial telemetry]
+    H -->|WebSocket live snapshots / deltas| F
+    H --> I[Recorded results and replay]
+    I --> F
+    F -->|Validated scenario / run commands| G
 ```
+
 
 ## Shared spatial contract
 
@@ -26,8 +31,10 @@ artifacts must identify the same package revision and reject mismatches.
 
 SVG, GeoJSON and glTF are candidate interchange/adaptation surfaces, not three
 mandatory interchangeable runtime schemas. Freeze a minimal supported format set
-when implementing the capability. Specify projected/local coordinates explicitly
-for indoor geometry; do not silently reinterpret coordinates as geographic ones.
+when implementing the capability. Use an explicit local metric coordinate frame
+for canonical indoor geometry. RFC 7946 GeoJSON uses WGS84 longitude/latitude;
+export via a documented georeferencing transform when available, and do not label
+arbitrary indoor metre coordinates as conformant GeoJSON.
 A glTF/3D adapter is a later extension where useful, not a promise that the initial
 PixiJS view is a 3D renderer. CAD/capture tool selection and dependencies are
 reviewed and pinned at implementation time.
@@ -91,3 +98,65 @@ change may intentionally alter results; rendering the same spatial revision may 
 Measure command/snapshot latency, memory and transfer costs on declared hardware.
 Capture/CAD acceptance requires reviewed sample conversion and topology evidence;
 no actual Cairns drawing, capture, runtime service or renderer is asserted here.
+
+## Review refinement: incorporating and surfacing spatial information
+
+The intended capability is spatial input, model behavior and explanation together.
+Users can supply or author a layout, review and correct semantic annotations,
+associate resources/activities with locations, run a scenario, and inspect where
+movement, waiting and resource use occur. Generic/public or synthetic layouts
+come first; a later Cairns profile supplies separately reviewed geometry/mappings.
+
+Separate three linked layers under one package revision:
+
+1. Physical geometry: boundaries, doors, corridors, levels and optional landmarks.
+2. Semantic/topological model: room functions, connections, direction/access rules,
+   route distances, origins/destinations and resource-location bindings. Geometry
+   alone cannot establish clinical function, capacity, travel time or concurrency.
+3. Scenario state: occupancy, staff/patient/task locations, queues, assignments,
+   availability and work/transit/wait intervals owned by the simulation.
+
+P0/E0 reserve these identities and relationships early, using a tiny synthetic
+layout; this is schema/interface design, not early CAD-tool implementation. C2/E2
+consume topology in Micro mode; Macro may still show locations/occupancy without
+inventing routes, intermediate positions or spatial delays. Shared DES/ABM state
+and explicit fidelity labels remain required.
+
+E5 must surface selectable rooms/resources/agents with state and provenance,
+floor/layer controls, route inspection, and overlays for occupancy, queues,
+utilization, travel distance/time and waiting locations where recorded. Unknown
+locations remain visibly unknown. Distinguish observed, simulated and interpolated
+positions. Explain metric denominators and observation windows; utilization is not
+physical crowd density, and an occupancy heatmap alone does not imply congestion
+physics or a validated safety threshold. Provide an accessible tabular equivalent.
+
+Use backend telemetry and a shared projection for both live and recorded views.
+Replay requires a versioned layout plus sufficient persisted spatial state/events;
+scheduler logs alone must not be presumed to contain trajectories. Seeking restores
+recorded state or a verified checkpoint/replay path, rather than inventing movement.
+Support comparison of versioned layout scenarios with paired seeds, reporting the
+applicability limits of geometry, travel-speed and service assumptions.
+
+The WebSocket service carries live updates and commands; versioned static assets
+and bulk analysis/replay artifacts can load separately. This prevents repeated
+floor-plan transmission and keeps batch/headless analysis useful without a live
+connection. Reuse the same IDs, schema and state projection across transports.
+
+Additional acceptance: one named location joins source geometry, route node,
+resource, state and exported metric; known-distance transit affects Micro timing;
+Macro does not acquire hidden transit costs; overlay totals reconcile with backend
+summaries; recording/replay and live view agree at the same simulation tick; display
+interpolation never becomes measured output; alternate-layout runs retain explicit
+revision/seed provenance. A two-room synthetic fixture proves the full chain before
+real capture/CAD adapters. Retain 2D/floor-aware scope initially; 3D and crowd models
+remain separately justified extensions.
+
+## Standards checked for this review
+
+- [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946): GeoJSON coordinate semantics;
+  supports the explicit georeferencing boundary above.
+- [glTF 2.0](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html): metre units
+  and axis conventions require explicit conversion to the canonical frame.
+- [OGC IndoorGML](https://www.ogc.org/standards/indoorgml/): useful reference for
+  navigation-oriented indoor modelling. This is not a decision to implement the
+  full standard; review semantic compatibility before adopting an adapter.

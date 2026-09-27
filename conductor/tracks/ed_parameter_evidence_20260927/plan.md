@@ -32,6 +32,7 @@ validity limit. Acceptance requires this track's actual outputs and tests.
 - [ ] P0.2 Define stable parameter IDs, catalogue/evidence/profile schemas, units,
   separate range classes and consumer mappings. Write invalid/unknown/provenance
   fixtures before the schema validator; agree interfaces with E0/C0 owners.
+  Reserve spatial package/revision and location identities, local metric coordinates, geometry/topology links and separate scenario/resource bindings. Use a two-room synthetic fixture; do not wait for CAD tooling.
 - [ ] P0.3 Define source-verification/extraction protocol and split DES/ABM work
   into bounded packets. Each starts with supplied content, traces claims to primary
   sources, and searches only a recorded gap; specify outputs and review rules.
@@ -77,6 +78,7 @@ Entry: P0; independent of P1 until the P3 join.
   contextual effects; classify fatigue/congestion complexity as deferred or justified.
   Include movement modes, O/D purposes, graph revision/access restrictions, sensor
   smoothing and walk/wait/work labels; keep unknown speeds and co-working needs explicit.
+  Document geometry uncertainty, manual annotations and georeferencing separately from routing/clinical assumptions; ordinary indoor metre coordinates are not RFC 7946 GeoJSON.
 - [ ] P2.3 Populate ABM records and assumptions with ranges/distribution candidates,
   dependence and identification gaps. Test graph/unit consistency and rules against
   small hand-worked examples; flag overlap with DES work/wait durations for P3.

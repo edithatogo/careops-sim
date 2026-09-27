@@ -37,6 +37,7 @@ Entry: D1 tool/compatibility decisions; can review domain details alongside Q0/C
 - [ ] E0.2 Create a minimal Rust workspace with ED library/CLI boundary, Kairos path
   dependency and locked builds; define public API/errors, time units and profile
   schema. Keep domain/site/presentation distinct. One-patient example must run.
+  Define stable spatial IDs and geometry/topology/resource bindings with P0; early synthetic layout support preserves later capture/import and visualization compatibility.
 - [ ] E0.3 Inventory public sources/open examples, exact revisions/licences and
   fields; specify assumptions for arrivals/acuity/work/diagnostics/boarding and
   generic layout. Define metric formulas, horizon/warm-up and release support.
@@ -96,6 +97,7 @@ Entry: C5. Owners parent ED adapter plus upstream 22/04/01.
 - [ ] E3.3 Export Arrow/Parquet and summaries with metric denominators, uncertainty,
   censored/unfinished counts and complete provenance; test 1/2/N workers and
   checkpoint equivalence through ED+queue+calibration state.
+  Persist spatial revision and sufficient location/transit records for spatial summaries and later replay; distinguish observed, simulated and interpolated positions. Do not assume scheduler logs alone encode trajectories.
 - [ ] E3.4 Conductor — review and verify phase (workflow.md).
 
 Exit: E-R4/5 and reproducible usable headless API. Manual check: cancel/resume a
@@ -132,10 +134,12 @@ Entry: G1; upstream 05/02/09 coordinated scope, public API review before binding
   with PixiJS for the planned spatial view and a native Kairos runner over
   WebSocket state sync. Qualify optional worker/Wasm profiles separately; keep
   engine and frame clocks independent. Start with a synthetic shared layout.
+  Add selectable rooms/resources/agents, layer/floor controls, route and occupancy/queue/utilization overlays with provenance and accessible tables. Support recorded replay and versioned layout comparison using backend telemetry; unknown positions remain unknown.
 - [ ] E5.3 Test render rates off/30/60, slow consumers/backpressure, memory growth,
   restart/route state, accessibility and useful error reporting. Measure actual
   transfer copies/frame latency; never infer WebGPU compute from rendering.
   Test shared-layout mismatch, known-distance visual/route alignment, dropped/stale deltas, disconnect, duplicate commands and bounded slow-client buffers. Qualify later CAD/capture adapters separately; initial G2 uses a synthetic/public layout and does not imply production CAD support.
+  Verify source-to-location-to-resource-to-metric joins, live/replay agreement and overlay/summary reconciliation. Macro displays must not invent transit; Micro fixture distance must affect travel timing. Static assets and bulk outputs load separately from live state sync.
 - [ ] E5.4 Conductor — review and verify phase (workflow.md).
 
 Exit: G2 usable product with verified exports and interaction; reapply D4 gates
