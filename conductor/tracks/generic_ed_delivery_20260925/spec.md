@@ -69,3 +69,9 @@ upstream contract and publication gates remain applicable to affected changes.
 E0 must review assisted transfer, supervision and contested equipment against single-resource scope before E2. E1 must separate latent state, agent knowledge, provisional disposition and realized outcomes. E2 must preserve assignment and interruption history, distinguish work/travel/wait, and document multitasking approximations without claiming simultaneous attention.
 
 See [reports 5–8 incorporation](../../research/ed-research-incorporation-20260927.md).
+
+## Reports 9–12 integration
+
+The [integration decisions and candidate oracles](../../research/ed-research-incorporation-9-12-20260927.md)
+apply to the tasks in this track. Proposed policies/versions remain review inputs;
+no reported research check substitutes for locally executed acceptance.

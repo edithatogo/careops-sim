@@ -10,6 +10,8 @@ population transfer, distribution selection and statistical assumptions.
   feature and experiment/measurement control against E/Q/C specs; record enabled,
   optional and deferred features and a gap list. Reconcile reports 5–8 by semantic
   ID, preserving reconstructed versus original coverage and unresolved artifact access.
+  Record report 9 as a zero-crosswalk gap audit, not completed F3;
+  missing historical inventories cannot be reconstructed by matching headline counts.
 - [ ] P0.2 Define stable parameter IDs, catalogue/evidence/profile schemas, units,
   separate range classes and consumer mappings. Write invalid/unknown/provenance
   fixtures before the schema validator; agree interfaces with E0/C0 owners.
@@ -69,6 +71,8 @@ Entry: P1 and P2; statistics/method decisions require coordinator review.
 - [ ] P3.1 Write synthetic known-distribution/dependence, censored, sparse-stratum
   and confounded-data fixtures. Specify parameterization/support/tail checks,
   training/hold-out partitions and expected validation failures before fitting.
+  Include explicit censor/event ambiguity, time-of-knowledge, observation
+  window boundaries, patient/day dependence and joint-versus-marginal fixtures.
 - [ ] P3.2 Compare empirical/parametric/conditional candidates with reproducible
   fitting diagnostics and held-out checks; record chosen/rejected families,
   sample limitations and uncertainty. Use explicit assumptions where data cannot fit.

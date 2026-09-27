@@ -1,0 +1,571 @@
+# Deterministic multicore, conservative PDES and distributed execution for CareOps Sim
+
+## Scope, evidence base and repository baseline
+
+**Research date:** 27 September 2026, Australia/Brisbane.
+
+This assessment treats the architecture described in the research prompt—one authoritative Kairos simulation state and clock, deterministic event/seed contracts, Rust-native Kairos/KairoECS, independent multicore before within-run PDES, and later distributed execution—as **elicited project context rather than verified implementation fact** (`SRC-PROJ-001`). I found no basis to silently change those architectural commitments.
+
+The public Kairos repository was directly inspected at commit **`fae901558f07b7b717a676adbafbe2cdc78dea1c`**, dated 25 September 2026 UTC (`SRC-KAIROS-HEAD`). Its immediate parent is **`f26633f30bffc5c0e82717461d90bd13f8c58dc6`** (`SRC-KAIROS-PARENT`). The head commit message reports additions including an external-action API, cross-agent query, self-pool behaviour, monotonic-time and insertion-order handling for externally applied actions, and tests; those are commit-author assertions unless independently traced into code and tests. The immediate parent was identified but **not separately inspected**, and I cannot establish from the available material that it is the project's intended “pinned snapshot”. The two revisions therefore must not be conflated. [`SRC-KAIROS-HEAD`, `SRC-KAIROS-PARENT`]
+
+The requested private/project attachments—particularly `conductor/module-readiness.md`, development-readiness and generic-ED plans, `agent-engineering.md`, and `execution-model.md`—were **not available as attachments in this research session**. A path/name search of the inspected public tree did not locate `module-readiness`. Consequently, this report does **not** claim that the public repository implements the queue, calibration, PDES, checkpoint or distributed plans described in the prompt. Those remain proposals unless separately verified. [`SRC-PROJ-001`, `SRC-KAIROS-HEAD`]
+
+The evidence search was deliberately bounded to the original Kairos repository and foundational primary publications for conservative distributed simulation, distributed snapshots and reproducible parallel random numbers. Secondary surveys, unrelated healthcare simulation literature, later hospital domains, optimistic Time Warp as an implementation recommendation, and GPU execution were excluded. Fujimoto's primary review is nevertheless useful because it explicitly sets out the fundamental synchronisation, communication and load-balancing costs that determine whether parallel DES actually accelerates a model; concurrency alone is not a speedup result. [`SRC-PDES-FUJIMOTO1990`]
+
+A significant evidence limitation remains: **current 27 September 2026 releases of possible external dependencies such as Rayon, MPI implementations/Rust MPI bindings, Rust itself, or other transport/runtime libraries were not authoritatively retrieved during this session.** I therefore make **no “latest version” recommendation** for them and approve no dependency upgrade. That is preferable to presenting an unverified current version. The only current upstream revision directly established here is the Kairos commit above.
+
+No ED service-time distributions, waiting-time distributions or clinical input parameters are introduced in this report. Accordingly, distribution support, observed ranges, parameter uncertainty and calibration bounds are **not applicable to clinical model inputs here**. Numeric ranges in the evaluation fixtures are explicitly **synthetic benchmark scenarios**, not fitted or observed ED quantities.
+
+## Decision memo
+
+The principal conclusion is to separate three problems that are sometimes grouped under “parallel simulation” but have very different semantic costs.
+
+**Independent replications should be the first multicore and distributed target.** Each replication can retain the existing serial event semantics, authoritative state and clock. Parallelism exists between simulations rather than inside one simulation. Provided the replication identifier deterministically selects its random stream, thread/process scheduling need not affect a replication's event history. This gives the cleanest route to using multiple cores and later multiple machines without introducing inter-LP causal synchronisation. Counter-based random-number construction is particularly well suited to making random draws functions of stable semantic addresses rather than execution order. [`SRC-RNG-SALMON2011`, `SRC-RNG-LECUYER2002`]
+
+**Within-run conservative PDES should be an experimental, gated phase rather than the default Kairos scheduler.** Conservative PDES can preserve causality by allowing a logical process to execute only events known to be safe from an earlier incoming message; the classic Chandy–Misra work develops this family of distributed simulation protocols, including communication of lower bounds/null information to avoid waiting indefinitely for messages that cannot arrive. The useful amount of parallelism is controlled by model topology, communication, workload balance and especially usable lookahead. [`SRC-PDES-CM1979`, `SRC-PDES-CM1981`, `SRC-PDES-FUJIMOTO1990`]
+
+For Kairos, **positive lookahead is presently unknown**. It must not be invented from ED waiting time or length-of-stay statistics. A valid PDES lookahead is a guaranteed model-semantic lower bound on how soon one partition can causally affect another, not an empirical average duration. If any permissible cross-partition transition can generate a same-simulation-time event, the relevant time lookahead may be zero. Until every cross-partition event path is analysed, a conservative implementation should therefore support and test zero lookahead explicitly rather than assuming a useful positive bound. [`SRC-PDES-CM1979`, `SRC-PDES-FUJIMOTO1990`]
+
+**Cross-node within-run PDES should be deferred behind shared-memory and same-host process experiments.** Network execution adds serialization, buffering, retry, stale-worker and recovery semantics to synchronization costs already present in parallel DES. Fujimoto's analysis gives no basis to infer speedup solely from available concurrency; real measurements are required. [`SRC-PDES-FUJIMOTO1990`]
+
+**Checkpointing should initially be coordinated at an established simulation-safe frontier.** Chandy and Lamport show how a consistent global state can be captured in a genuinely asynchronous distributed computation, including relevant channel state. That machinery is valuable evidence, but it is unnecessary complexity for the first implementation if Kairos can deliberately stop all LPs at a known safe frontier, drain/account for messages and write one coordinated checkpoint. An asynchronous distributed snapshot should remain a later option rather than being imported into the first PDES prototype. [`SRC-SNAPSHOT-CL1985`]
+
+The recommended sequence is therefore:
+
+> **serial reference → parallel independent replications in threads → independent processes → independent nodes → experimental same-process conservative LPs → same-host multiprocess PDES → cross-node PDES only if benchmarks justify it.**
+
+This is a **policy recommendation**, not a claim of existing capability.
+
+## Determinism, partitioning and recovery contract
+
+The crucial distinction is between causality and deterministic identity. Conservative PDES can guarantee that an event is not processed before a causally earlier event while still allowing events with equal simulation timestamps, or causally independent events, to be executed in a different wall-clock order. That distinction matters because an existing Kairos serial tie-break contract may be stronger than ordinary timestamp causality. [`SRC-PDES-CM1979`, `SRC-PDES-CM1981`, `SRC-PDES-FUJIMOTO1990`]
+
+I recommend three explicit equivalence classes:
+
+**Trace identity — `EQ_TRACE`.** The canonical sequence of committed `(simulation_time, deterministic_tie_key, event_id, mutation_digest)` tuples is identical to the serial reference. This is the strongest contract and should be the initial correctness target for deterministic unit/fixture tests.
+
+**State identity — `EQ_STATE`.** Internal execution order may differ, but a canonical state digest at a specified frontier—preferably every completed timestamp during early validation, and always at termination—is identical. This is acceptable only where the reordered operations are proven independent or commutative under the model contract. It must not be treated as automatically equivalent to trace identity.
+
+**Statistical equivalence — `EQ_STAT`.** Repeated runs agree only in predefined distributions or aggregate statistics. This can be a useful validation target for intentionally nondeterministic or numerically approximate backends, but it is too weak to establish Kairos's deterministic event contract. A race or causality defect can disappear inside an aggregate distribution. This is therefore not sufficient acceptance evidence for the proposed conservative CPU scheduler. [`SRC-PDES-FUJIMOTO1990`, `SRC-RNG-SALMON2011`]
+
+**Ownership.** Every mutable simulation object should have exactly one LP owner at any instant: agents, queue state, resource capacity and resource-specific work state included. Cross-LP code should send timestamped messages rather than retaining direct mutable references into another LP. Queue and resource state should be co-located when practical. Given the project-stated current restriction of one resource/capacity unit per work item and deferral of atomic resource bundles, the first PDES experiment need not solve distributed multi-resource atomic acquisition; introducing it as part of PDES would enlarge two hard problems simultaneously. [`SRC-PROJ-001`; ownership scheme is `policy`]
+
+A proposed cross-LP envelope is:
+
+```text
+run_id
+model_revision
+partition_map_revision
+sender_lp
+sender_incarnation
+sender_sequence
+recipient_lp
+recipient_entity_or_resource
+simulation_time
+event_phase_or_priority
+deterministic_tie_key
+event_id
+payload_schema
+payload
+payload_digest
+```
+
+`event_id` must be stable across retry. `sender_incarnation` distinguishes packets emitted by a worker before and after recovery. `sender_sequence` allows gap/duplicate diagnostics. `partition_map_revision` prevents messages generated under an obsolete ownership map from silently mutating new owners. These are proposed protocol fields, not fields observed in current Kairos.
+
+**Lookahead.** For every directed LP boundary \(i \rightarrow j\), the scheduler needs a certified lower bound \(L_{ij}\) such that state at LP \(i\) committed through time \(t\) cannot cause an event for \(j\) earlier than \(t+L_{ij}\). A measured mean, percentile or fitted ED delay is not such a guarantee. Static lookahead is the simplest first contract; state-dependent lookahead should be accepted only when the lower-bound calculation itself is deterministic and model-validated. [`SRC-PDES-CM1979`, `SRC-PDES-CM1981`]
+
+There is an additional Kairos-specific issue: **a positive timestamp lookahead does not by itself reproduce the serial order of equal-time events**. If `EQ_TRACE` includes a serial insertion/tie-break order, safe advancement must account for the complete ordering key or use a deterministic same-timestamp closure/barrier. Otherwise conservative timestamp correctness can coexist with a different trace. This is why trace identity should be tested independently of ordinary PDES causality.
+
+**Deadlock and progress.** Null/lower-bound messages can allow conservative LPs to prove that no earlier message will arrive, which is the classic way of overcoming deadlock caused by every LP waiting for another's next real event. [`SRC-PDES-CM1979`, `SRC-PDES-CM1981`] A progress watchdog should report an inability to advance but must not “solve” it by breaking the safe-time rule. With zero usable lookahead, the approved behaviour should be a deterministic barrier/closure algorithm or serial fallback, not speculative execution masquerading as conservative PDES.
+
+**Random streams.** A mutable thread-local PRNG whose draw position depends on which worker happens to execute first is incompatible with scheduling-independent trace reproducibility. Counter-based generators instead make a random result a deterministic function of a key and counter, eliminating dependence on mutable sequential consumption. Salmon et al. introduced this construction for parallel random-number generation; L'Ecuyer's long streams and substreams provide another established mechanism for separating simulation streams. [`SRC-RNG-SALMON2011`, `SRC-RNG-LECUYER2002`]
+
+For the proposed Kairos parallel contract, a random draw should be addressed by stable semantic coordinates such as:
+
+```text
+(master_seed,
+ replication_id,
+ entity_or_component_id,
+ causal_event_id,
+ random_purpose_id,
+ draw_index)
+```
+
+That exact tuple is a **policy proposal**, not something specified by the cited papers. `random_purpose_id` is important: adding an unrelated random draw to one part of a handler should not silently shift all subsequent draws associated with other purposes.
+
+**Checkpoint/resume.** A coordinated checkpoint should include at least the model and executable revision, schema versions, simulation frontier, partition map, all owned mutable state, each LP's ordered pending event set, sender sequence counters, receiver deduplication state, LP incarnation data, master seed/RNG addressing schema and integrity hashes. All inter-LP traffic must either be accounted for in the snapshot or excluded by a drain/barrier protocol. This is the coordinated analogue of the consistent-state requirement formalised by Chandy–Lamport. [`SRC-SNAPSHOT-CL1985`]
+
+**Duplicate/retry semantics.** Network “exactly once” should not be assumed. A safer application-level contract is stable message identity plus deduplication, so that retransmission can be permitted while the event's state transition is applied once. Deduplication state must itself survive a checkpoint; otherwise replay after recovery can duplicate effects. A recovered LP should take a new incarnation number and reject delayed packets from an obsolete incarnation. This is a proposed failure/recovery contract.
+
+## Evaluation and failure programme
+
+Performance testing should first answer **whether** there is useful parallelism, not attempt to demonstrate a predetermined speedup. Fujimoto's analysis identifies synchronization, communication, partitioning and load balance as central determinants of PDES efficiency. [`SRC-PDES-FUJIMOTO1990`]
+
+For every configuration, record at least wall-clock elapsed time, committed events/s, total candidate/processed events, CPU time, peak resident memory, worker utilisation, cross-partition message count and bytes, null/lower-bound message count, time blocked waiting for safe advancement, maximum and distribution of LP skew, checkpoint bytes/time, restart time, duplicate/retry count, and the applicable `EQ_TRACE`/`EQ_STATE` result. [`SRC-PDES-FUJIMOTO1990`; metric set otherwise `policy`]
+
+The tests should progress through **real threads, then processes, then physical nodes**:
+
+1. A single-thread reference establishes trace and final-state digests.
+2. Independent replications run at fixed replication IDs under varying real thread counts.
+3. Independent replications run as separately launched OS processes.
+4. The same replications are distributed over at least two physical hosts.
+5. A synthetic partitionable model tests conservative LPs with actual OS threads.
+6. The same fixture moves to multiple localhost processes.
+7. Cross-node within-run execution is attempted only after the preceding fixture retains its equivalence contract and exposes enough useful lookahead to justify the experiment.
+
+The PDES synthetic workload should sweep the two variables most likely to determine the outcome: **cross-partition interaction rate** and **certified lookahead**, including an explicit zero-lookahead case. The fixtures below use logical ticks rather than clinical time; all numeric values are `synthetic`.
+
+Failure testing is as important as throughput:
+
+- zero-lookahead and same-timestamp cyclic traffic must not permit unsafe advancement;
+- message duplication must cause one committed effect;
+- reordering and delay must not alter the applicable deterministic result;
+- old-incarnation traffic after restart must be rejected;
+- interruption immediately before and after checkpoint publication must recover to the same reference result;
+- a corrupt/truncated checkpoint must fail validation rather than partially load;
+- node/worker loss must stop advancement beyond the provable safe frontier;
+- deliberately skewed partitions should expose declining utilisation rather than being hidden by aggregate events/s;
+- repeated thread-scheduling perturbations must not change counter-addressed random values or the required deterministic digest. [`SRC-PDES-CM1979`, `SRC-SNAPSHOT-CL1985`, `SRC-RNG-SALMON2011`]
+
+These tests deliberately avoid a throughput acceptance threshold such as “2× faster”. A backend that is correct but slower is a valid experimental result and evidence against enabling that execution mode for the tested workload.
+
+## Deliverables
+
+This session did not create downloadable binary/file attachments, so the complete requested machine-readable file contents are included below. They are intended to be saved verbatim under the stated names.
+
+**`options.csv` — 9 records**
+
+```csv
+candidate_id,scope,option,evidence_class,status,required_equivalence,dependency_position,principal_benefit,principal_risk,adoption_gate
+OPT-REP-001,independent_replications,"Real-thread parallel independent replications",policy,recommend_first,EQ_TRACE,"Prefer standard Rust facilities or separately reviewed runtime; no new dependency version approved","Uses multicore without changing within-run causality","Shared infrastructure or RNG state could accidentally couple replications","Serial-versus-thread trace identity for every fixed replication_id plus scaling benchmark"
+OPT-REP-002,independent_replications,"Multi-process independent replications",policy,recommend_second,EQ_TRACE,"Transport-neutral result collection","Fault isolation and prepares distributed orchestration","Process startup and result-management overhead","Same deterministic artefacts as OPT-REP-001 and clean crash/retry semantics"
+OPT-REP-003,independent_replications,"Multi-node independent replications",policy,recommend_third,EQ_TRACE,"Scheduler/transport selected only after separate current-release review","Scales ensemble work without within-run PDES","Node heterogeneity, retries and artefact provenance","Replicated results bit/canonical-trace identical across node placement where platform arithmetic contract permits"
+OPT-PDES-001,within_run,"Shared-memory conservative logical processes",policy,experimental_only,"EQ_TRACE initially; EQ_STATE only after reviewed commutativity contract","Requires explicit LP ownership, safe-time and message protocol","Potential within-run CPU parallelism","Zero lookahead, synchronization overhead, hot partitions, altered same-time order","Pass FIX-PDES-001/002/OWN-001/RNG-001 and beat or justify overhead against serial on representative workload"
+OPT-PDES-002,within_run_distributed,"Conservative PDES across processes/nodes",policy,defer,"EQ_TRACE initially","Depends on OPT-PDES-001 plus durable protocol/recovery semantics","Potential scaling of genuinely partitionable large runs","Network communication, retries, deadlock/progress, checkpoint complexity","Shared-memory and localhost-process results first demonstrate correctness and useful concurrency"
+OPT-RNG-001,reproducibility,"Counter-addressed random draws keyed by stable simulation identities",policy,recommend_for_parallel_path,EQ_TRACE,"Generator/implementation version remains subject to compatibility and current-release review","Scheduling-independent random draw identity","Poor key schema can create collisions or semantic instability","Golden vectors, collision/domain-separation review and FIX-RNG-001"
+OPT-CKPT-001,recovery,"Coordinated safe-frontier checkpoint",policy,recommend_before_distributed_pdes,EQ_TRACE,"No asynchronous snapshot dependency required","Simpler consistent restart semantics","Pause time and checkpoint I/O","Crash-before/after-publication tests reproduce reference trace/state"
+OPT-CKPT-002,recovery,"Asynchronous distributed snapshot including channel state",published,defer,EQ_STATE,"Chandy-Lamport-style protocol or equivalent","Can snapshot without globally stopping computation","Substantially greater protocol/state complexity","Only reconsider if coordinated checkpoint pause is empirically unacceptable"
+OPT-PROTO-001,distributed_protocol,"Stable event envelope with owner, incarnation, sequence, event_id, deterministic ordering key and digest",policy,recommend_before_transport_selection,EQ_TRACE,"Transport-neutral","Separates simulation semantics from TCP/MPI/runtime choice","Protocol evolution and durable dedup state","Schema-version tests, stale-incarnation tests and duplicate/reorder failure injection"
+```
+
+**`source_manifest.csv` — 9 records**
+
+```csv
+source_id,source_type,title,authors_or_owner,publication_or_revision_date,observation_date,location_used,sample_size_population,doi,exact_url,access_or_licence,retrieved_date,inspection_status,notes
+SRC-PROJ-001,project_context,"CareOps Sim research prompt: deterministic multicore, PDES and distributed research","User-supplied project context",2026-09-27,2026-09-27,"project_context; research_task; additional_requirements","not applicable","","","elicited/private project context",2026-09-27,inspected,"Architecture and roadmap statements treated as elicited/proposed, not verified implementation"
+SRC-KAIROS-HEAD,source_repository,"Kairos public repository commit fae901558f07b7b717a676adbafbe2cdc78dea1c","edithatogo/kairos",2026-09-25,2026-09-27,"Git commit metadata; recursive repository tree search","not applicable","","https://github.com/edithatogo/kairos/commit/fae901558f07b7b717a676adbafbe2cdc78dea1c","public GitHub repository; repository licence not independently assessed in this session",2026-09-27,inspected,"Latest commit returned by repository commit search; head inspected separately from immediate parent"
+SRC-KAIROS-PARENT,source_repository,"Immediate parent of inspected Kairos head: f26633f30bffc5c0e82717461d90bd13f8c58dc6","edithatogo/kairos",unknown,2026-09-27,"parent SHA in head commit metadata","not applicable","","https://github.com/edithatogo/kairos/commit/f26633f30bffc5c0e82717461d90bd13f8c58dc6","public GitHub repository; repository licence not independently assessed in this session",2026-09-27,metadata_only,"Immediate parent identified but content not separately inspected; cannot assert it is the project's intended pinned snapshot"
+SRC-PDES-CM1979,primary_publication,"Distributed Simulation: A Case Study in Design and Verification of Distributed Programs","K. M. Chandy; J. Misra",1979,not_applicable,"IEEE Transactions on Software Engineering SE-5(5), pp. 440-452","methodological paper; no empirical clinical population","10.1109/TSE.1979.230182","https://doi.org/10.1109/TSE.1979.230182","publisher access/copyright; exact open-access licence not established",2026-09-27,bibliographic_primary_source,"Foundational conservative distributed simulation/deadlock-progress source"
+SRC-PDES-CM1981,primary_publication,"Asynchronous Distributed Simulation via a Sequence of Parallel Computations","K. M. Chandy; J. Misra",1981,not_applicable,"Communications of the ACM 24(4), pp. 198-206","methodological paper; no empirical clinical population","10.1145/358598.358613","https://doi.org/10.1145/358598.358613","ACM publisher access/copyright; exact open-access licence not established",2026-09-27,bibliographic_primary_source,"Conservative asynchronous simulation and progress/lower-bound communication"
+SRC-PDES-FUJIMOTO1990,primary_publication,"Parallel Discrete Event Simulation","Richard M. Fujimoto",1990,not_applicable,"Communications of the ACM 33(10), pp. 30-53","methodological review/analysis; no clinical population","10.1145/84537.84545","https://doi.org/10.1145/84537.84545","ACM publisher access/copyright; exact open-access licence not established",2026-09-27,bibliographic_primary_source,"Primary author publication used for synchronization, communication, lookahead and performance cautions"
+SRC-SNAPSHOT-CL1985,primary_publication,"Distributed Snapshots: Determining Global States of Distributed Systems","K. Mani Chandy; Leslie Lamport",1985,not_applicable,"ACM Transactions on Computer Systems 3(1), pp. 63-75","methodological paper; no empirical clinical population","10.1145/214451.214456","https://doi.org/10.1145/214451.214456","ACM publisher access/copyright; exact open-access licence not established",2026-09-27,bibliographic_primary_source,"Consistent global-state/channel-state basis for later asynchronous checkpoint option"
+SRC-RNG-SALMON2011,primary_publication,"Parallel Random Numbers: As Easy as 1, 2, 3","John K. Salmon; Mark A. Moraes; Ron O. Dror; David E. Shaw",2011,not_applicable,"SC '11 proceedings, article 16, pp. 1-12","methodological/computational evaluation; no clinical population","10.1145/2063384.2063405","https://doi.org/10.1145/2063384.2063405","ACM publisher access/copyright; exact open-access licence not established",2026-09-27,bibliographic_primary_source,"Counter-based random-number generation; supports schedule-independent addressing recommendation"
+SRC-RNG-LECUYER2002,primary_publication,"An Object-Oriented Random-Number Package with Many Long Streams and Substreams","Pierre L'Ecuyer; Richard Simard; E. Jack Chen; W. David Kelton",2002,not_applicable,"Operations Research 50(6), pp. 1073-1075","methodological/software design; no clinical population","10.1287/opre.50.6.1073.358","https://doi.org/10.1287/opre.50.6.1073.358","publisher access/copyright; exact software licence is separate from article and not established here",2026-09-27,bibliographic_primary_source,"Independent streams/substreams alternative for replication separation"
+```
+
+**`decision_memo.md` — 1 document**
+
+```markdown
+# Decision memo: Kairos deterministic multicore / PDES / distributed execution
+
+Research date: 2026-09-27 Australia/Brisbane
+Inspected public Kairos head: fae901558f07b7b717a676adbafbe2cdc78dea1c
+Immediate parent: f26633f30bffc5c0e82717461d90bd13f8c58dc6
+Parent content separately inspected: no
+Private project attachments available: no
+
+## Decision
+
+1. Preserve the current serial authoritative-state/clock semantics as the reference oracle.
+2. Implement/evaluate independent replication parallelism before altering within-run scheduling.
+3. Give each replication a deterministic stream namespace independent of worker/thread placement.
+4. Define trace identity, state identity and statistical equivalence as distinct acceptance contracts.
+5. Do not enable conservative within-run PDES until mutable ownership and cross-LP event envelopes are explicit.
+6. Treat positive lookahead as unknown until proven from model semantics; zero lookahead is a required test.
+7. Start within-run work with real shared-memory threads and synthetic partitionable fixtures.
+8. Use coordinated safe-frontier checkpoints before considering asynchronous distributed snapshots.
+9. Make stable event IDs, deduplication, worker incarnation and sender sequence part of the distributed protocol before selecting transport.
+10. Defer cross-node within-run PDES until thread and localhost-process measurements show useful concurrency after synchronization costs.
+11. Do not infer or promise speedup from theoretical concurrency.
+12. Do not change queue/resource semantics or introduce cross-owner atomic bundles as part of this work.
+13. Do not approve a third-party runtime/package merely because it is its latest release; current release, MSRV/toolchain, licence, platform and Kairos compatibility require a separate primary-source check.
+
+## Equivalence policy
+
+EQ_TRACE:
+Canonical committed event trace is identical to the serial reference.
+
+EQ_STATE:
+Canonical state at agreed simulation frontiers is identical, while internal ordering may differ only under an explicitly reviewed independence/commutativity rule.
+
+EQ_STAT:
+Only predefined ensemble statistics agree. This is not sufficient to validate deterministic conservative PDES.
+
+Initial within-run PDES acceptance target: EQ_TRACE on focused fixtures.
+
+## Go/no-go criterion
+
+A PDES backend is not promoted merely because it is correct.
+Promotion requires both:
+- required deterministic/failure semantics; and
+- representative benchmark evidence that the additional complexity has a justified operational benefit.
+
+A slower but correct experiment is a legitimate no-go result.
+```
+
+**`evaluation_fixtures.yaml` — 8 fixture records**
+
+```yaml
+schema_version: 1
+research_date: "2026-09-27"
+clinical_input_distributions: "none"
+notes:
+  - "All numeric benchmark parameters below are synthetic scenario values."
+  - "They are not observed ED values, fitted parameters, calibration bounds, or primitive service-time estimates."
+  - "Logical tick is a synthetic simulator time unit; no mapping to seconds/minutes is asserted."
+
+fixtures:
+  - id: FIX-REP-001
+    purpose: "Independent replication determinism under real thread scheduling"
+    evidence_class: policy
+    inputs:
+      replications:
+        value_class: synthetic
+        scenario_range: [1, 2, 4, 8, 16, 32]
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      worker_threads:
+        value_class: synthetic
+        scenario_range: [1, 2, 4, 8, 16]
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      seed_contract:
+        value_class: policy
+        value: "master_seed + stable replication_id namespace"
+    outputs:
+      - "canonical trace digest per replication"
+      - "canonical final-state digest per replication"
+      - "wall time"
+      - "CPU time"
+      - "peak RSS"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Each replication has the same trace digest regardless of worker count and scheduling."
+
+  - id: FIX-PDES-001
+    purpose: "Conservative LP ring with configurable certified positive lookahead"
+    evidence_class: synthetic
+    inputs:
+      topology:
+        value_class: synthetic
+        value: "directed ring"
+      logical_processes:
+        value_class: synthetic
+        scenario_range: [2, 4, 8, 16]
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      lookahead_ticks:
+        value_class: synthetic
+        scenario_range: [1, 2, 8, 32]
+        support: "integer >= 1 for this fixture"
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      cross_partition_event_probability:
+        value_class: synthetic
+        scenario_range: [0.01, 0.1, 0.5]
+        support: "[0,1]"
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+    outputs:
+      - "trace/state digests"
+      - "committed events/s"
+      - "cross-LP messages"
+      - "lower-bound/null messages"
+      - "blocked-safe-time fraction"
+      - "LP utilisation"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "No causality violation and serial-reference trace identity for deterministic fixture."
+
+  - id: FIX-PDES-002
+    purpose: "Zero-lookahead and same-timestamp cyclic interaction"
+    evidence_class: synthetic
+    inputs:
+      logical_processes:
+        value_class: synthetic
+        scenario_range: [2, 4, 8]
+      lookahead_ticks:
+        value_class: synthetic
+        value: 0
+        support: "{0}"
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      cross_partition_same_time_cycle:
+        value_class: synthetic
+        value: true
+    outputs:
+      - "progress/fallback mode"
+      - "trace digest"
+      - "deadlock diagnostic"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Must not advance unsafely; deterministic timestamp-closure/barrier or serial fallback is acceptable."
+
+  - id: FIX-OWN-001
+    purpose: "Partition ownership across queue/resource and agent handoff"
+    evidence_class: synthetic
+    inputs:
+      resource_owners:
+        value_class: policy
+        value: "exactly one LP owner per mutable resource/queue"
+      remote_direct_mutation:
+        value_class: policy
+        value: false
+      atomic_multi_resource_bundles:
+        value_class: policy
+        value: false
+    outputs:
+      - "owner invariant violations"
+      - "cross-owner envelopes"
+      - "trace digest"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Every mutation is applied by current owner; cross-owner effects are messages only."
+
+  - id: FIX-CKPT-001
+    purpose: "Coordinated checkpoint, crash and deterministic resume"
+    evidence_class: synthetic
+    inputs:
+      crash_points:
+        value_class: synthetic
+        values:
+          - "before checkpoint publication"
+          - "after checkpoint publication before next event"
+          - "after one post-checkpoint cross-LP send"
+      checkpoint_frontier:
+        value_class: policy
+        value: "globally safe coordinated frontier"
+    outputs:
+      - "checkpoint integrity result"
+      - "resumed trace digest"
+      - "final-state digest"
+      - "recovery wall time"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Successful resume reproduces uninterrupted reference; incomplete/corrupt checkpoint is rejected."
+
+  - id: FIX-DUP-001
+    purpose: "Duplicate, delayed, reordered and stale-incarnation messages"
+    evidence_class: synthetic
+    inputs:
+      duplicate_rate:
+        value_class: synthetic
+        scenario_range: [0.0, 0.01, 0.1]
+        support: "[0,1]"
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      reorder_enabled:
+        value_class: synthetic
+        value: true
+      stale_incarnation_injection:
+        value_class: synthetic
+        value: true
+    outputs:
+      - "delivered messages"
+      - "deduplicated messages"
+      - "rejected stale messages"
+      - "committed event count"
+      - "trace digest"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Retry/duplication causes one effect; obsolete-incarnation packets cause no effect."
+
+  - id: FIX-RNG-001
+    purpose: "Schedule-independent random-number addressing"
+    evidence_class: synthetic
+    inputs:
+      scheduling_perturbations:
+        value_class: synthetic
+        values:
+          - "worker-count variation"
+          - "yield insertion"
+          - "handler sleep/jitter"
+          - "task-order perturbation"
+      rng_address:
+        value_class: policy
+        value: "(master_seed, replication_id, entity/component, causal_event_id, purpose_id, draw_index)"
+    outputs:
+      - "random-address/value golden vectors"
+      - "trace digest"
+      - "final-state digest"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Stable random address returns identical value regardless of execution worker/order."
+
+  - id: FIX-NODE-001
+    purpose: "Physical-node distributed failure/recovery experiment"
+    evidence_class: synthetic
+    prerequisites:
+      - "FIX-PDES-001 passes"
+      - "FIX-PDES-002 passes"
+      - "FIX-CKPT-001 passes"
+      - "FIX-DUP-001 passes"
+    inputs:
+      physical_nodes:
+        value_class: synthetic
+        scenario_range: [2, 4]
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      faults:
+        value_class: synthetic
+        values:
+          - "worker termination"
+          - "message delay"
+          - "connection interruption"
+          - "old-worker packet replay"
+    outputs:
+      - "trace/state digest"
+      - "messages and bytes"
+      - "safe-time stalls"
+      - "checkpoint/recovery time"
+      - "wall time"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "No commit past an unproven safe frontier; recovery either reproduces reference or fails explicitly."
+```
+
+**`proposed_commands.sh` — 15 proposed command invocations**
+
+These commands are deliberately marked **UNEXECUTED**. The proposed `kairos-eval` package/binaries are evaluation-harness interfaces, **not claims that those targets exist at the inspected Kairos commit**.
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+# STATUS: PROPOSED / UNEXECUTED
+# Repository reference: fae901558f07b7b717a676adbafbe2cdc78dea1c
+# Any kairos-eval target below is a proposed harness contract, not an observed current target.
+
+# 1. Existing-tree baseline candidate; verify manifest/feature compatibility before use.
+cargo test --workspace --all-targets --all-features --locked
+
+# 2-5. Independent replications: real threads.
+cargo run --release -p kairos-eval --bin replications -- --fixture FIX-REP-001 --threads 1  --replications 32 --emit-trace-digests
+cargo run --release -p kairos-eval --bin replications -- --fixture FIX-REP-001 --threads 2  --replications 32 --emit-trace-digests
+cargo run --release -p kairos-eval --bin replications -- --fixture FIX-REP-001 --threads 4  --replications 32 --emit-trace-digests
+cargo run --release -p kairos-eval --bin replications -- --fixture FIX-REP-001 --threads 8  --replications 32 --emit-trace-digests
+
+# 6-8. Within-run conservative PDES: include zero lookahead and communication-rate sweep.
+cargo run --release -p kairos-eval --bin pdes -- --fixture FIX-PDES-002 --lps 4 --threads 4 --lookahead-ticks 0 --equivalence trace
+cargo run --release -p kairos-eval --bin pdes -- --fixture FIX-PDES-001 --lps 4 --threads 4 --lookahead-ticks 1 --cross-partition-probability 0.01 --equivalence trace
+cargo run --release -p kairos-eval --bin pdes -- --fixture FIX-PDES-001 --lps 4 --threads 4 --lookahead-ticks 1 --cross-partition-probability 0.50 --equivalence trace
+
+# 9. Same-host real-process experiment.
+cargo run --release -p kairos-eval --bin process-orchestrator -- --fixture FIX-PDES-001 --processes 4 --lookahead-ticks 1 --equivalence trace
+
+# 10. Duplicate/reorder/stale-incarnation injection.
+cargo run --release -p kairos-eval --bin fault-test -- --fixture FIX-DUP-001 --duplicate-rate 0.10 --reorder --inject-stale-incarnation
+
+# 11. Checkpoint/crash/resume.
+cargo run --release -p kairos-eval --bin fault-test -- --fixture FIX-CKPT-001 --crash-point after-checkpoint-publication --resume --compare-uninterrupted
+
+# 12. RNG schedule perturbation.
+cargo run --release -p kairos-eval --bin rng-determinism -- --fixture FIX-RNG-001 --threads 1,2,4,8 --inject-yields --compare-golden-vectors
+
+# 13. Ownership invariant.
+cargo run --release -p kairos-eval --bin ownership-test -- --fixture FIX-OWN-001 --assert-single-owner --forbid-remote-mutation
+
+# 14. Proposed physical-node run; launcher/transport intentionally unresolved.
+cargo run --release -p kairos-eval --bin node-orchestrator -- --fixture FIX-NODE-001 --hosts host-a,host-b --lps-per-host 2 --equivalence trace
+
+# 15. Proposed node-loss run.
+cargo run --release -p kairos-eval --bin node-orchestrator -- --fixture FIX-NODE-001 --hosts host-a,host-b --lps-per-host 2 --kill-worker-after-events 10000 --resume-from-checkpoint --equivalence trace
+```
+
+**`manifest.json` — 6 delivered logical files**
+
+```json
+{
+  "schema_version": 1,
+  "research_date": "2026-09-27",
+  "delivery_mode": "complete inline contents; no binary/download attachment created in this response",
+  "repository": {
+    "url": "https://github.com/edithatogo/kairos",
+    "inspected_commit": "fae901558f07b7b717a676adbafbe2cdc78dea1c",
+    "immediate_parent": "f26633f30bffc5c0e82717461d90bd13f8c58dc6",
+    "parent_content_inspected": false
+  },
+  "files": [
+    {
+      "name": "options.csv",
+      "record_count": 9,
+      "record_definition": "candidate option rows"
+    },
+    {
+      "name": "source_manifest.csv",
+      "record_count": 9,
+      "record_definition": "source rows"
+    },
+    {
+      "name": "decision_memo.md",
+      "record_count": 1,
+      "record_definition": "decision document"
+    },
+    {
+      "name": "evaluation_fixtures.yaml",
+      "record_count": 8,
+      "record_definition": "evaluation fixture objects"
+    },
+    {
+      "name": "proposed_commands.sh",
+      "record_count": 15,
+      "record_definition": "proposed unexecuted command invocations"
+    },
+    {
+      "name": "manifest.json",
+      "record_count": 6,
+      "record_definition": "delivered file entries including this manifest"
+    }
+  ],
+  "clinical_distributions_supplied": 0,
+  "fitted_parameters_supplied": 0,
+  "observed_ed_service_times_supplied": 0,
+  "current_third_party_release_versions_approved": 0
+}
+```
+
+## Conflicts, unresolved questions and prioritised evidence acquisition
+
+The largest conflict is between **ordinary conservative causality** and a potentially stronger Kairos **serial event-order identity** contract. Classic conservative PDES establishes when an event is causally safe; it does not automatically reproduce an arbitrary serial insertion order among equal-time independent events. If Kairos's externally visible reproducibility promise includes that exact ordering, within-run PDES either needs a deterministic global ordering/commit mechanism, timestamp barriers with a specified same-time closure, or a formally reviewed relaxation from `EQ_TRACE` to `EQ_STATE` for independent/commutative operations. That semantic choice should precede implementation. [`SRC-PDES-CM1979`, `SRC-PDES-CM1981`, `SRC-PDES-FUJIMOTO1990`]
+
+A second unresolved issue is **actual lookahead in the generic ED graph**. Nothing in the evidence inspected establishes a positive guaranteed lower bound between partition effects. Waiting times, length of stay, fitted treatment durations, means or quantiles cannot substitute for a causal lower bound. The highest-priority model-specific evidence task is therefore to enumerate every event type able to cross a prospective LP boundary and calculate its minimum permitted timestamp advance from model semantics. Any path permitting zero advance forces zero lookahead for that boundary unless ownership/partitioning is changed.
+
+A third gap is the missing private architecture material. `module-readiness.md`, `execution-model.md`, `agent-engineering.md`, the recorded pinned snapshot and the generic-ED development plans should be reconciled against `fae901…` before the proposed envelope, RNG schema or checkpoint format becomes an architectural decision. In particular, existing Kairos event-key, seed and serialization contracts should be reused rather than duplicated if they already provide the necessary identities.
+
+A fourth gap is **upstream package currency and compatibility**. No current Rayon/MPI/Rust/wgpu release is approved by this research. Before introducing any new runtime, the next dependency-specific review should record the exact current release/tag/commit from its original repository, publication date, MSRV/toolchain requirements, supported targets, licence, unsafe-code implications where relevant, determinism caveats and known open issues, then compare those requirements with Kairos's exact `Cargo.lock` and CI platforms. “Latest” should remain a candidate rather than an upgrade instruction.
+
+The evidence-acquisition priority is therefore:
+
+**First:** recover and inspect the pinned project snapshot and missing architecture documents, and diff that snapshot against `fae901558f07b7b717a676adbafbe2cdc78dea1c`.
+
+**Second:** build a serial trace oracle with canonical event/state digests and document the exact tie-breaking contract. Without this, PDES determinism cannot be stated precisely.
+
+**Third:** inventory current random-number use and define stable semantic draw identities before adding thread-level execution. The counter-based approach is well supported for parallel generation, but the exact algorithm and Rust implementation still require compatibility and golden-vector review. [`SRC-RNG-SALMON2011`, `SRC-RNG-LECUYER2002`]
+
+**Fourth:** benchmark independent replications on actual threads, processes and at least two real machines. This provides useful multicore/distributed capacity while preserving within-run semantics and creates the process orchestration, provenance and failure infrastructure needed later.
+
+**Fifth:** derive a boundary-by-boundary lookahead certificate and ownership graph from the generic ED model. Unknown bounds remain unknown; zero is a legitimate and important result.
+
+**Sixth:** implement only the synthetic conservative-PDES harness, including the zero-lookahead, same-time-cycle, ownership, duplicate, checkpoint and RNG fixtures, before attempting a production ED partition. Conservative synchronization has substantial model-dependent overhead, so advancement to a real ED backend should be evidence-driven rather than assumed from theoretical parallelism. [`SRC-PDES-CM1979`, `SRC-PDES-CM1981`, `SRC-PDES-FUJIMOTO1990`]
+
+**Seventh:** attempt cross-node within-run PDES only after shared-memory and localhost-process experiments establish both the required deterministic semantics and enough exploitable concurrency to justify adding network recovery and checkpoint complexity. A negative scaling result at any earlier stage is a useful conclusion, not a failed research programme. [`SRC-PDES-FUJIMOTO1990`]
+
+The resulting architecture keeps independent replication as the low-risk path to immediate multicore/distributed throughput; treats conservative PDES as a separately evidenced optimisation; makes ownership, lookahead, retries, random draws and checkpoints explicit parts of the deterministic contract; and leaves the existing Kairos architecture unchanged unless the proposed fixtures demonstrate a concrete reason for a reviewed change.

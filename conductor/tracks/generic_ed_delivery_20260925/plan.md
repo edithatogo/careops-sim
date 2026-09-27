@@ -142,12 +142,17 @@ selection dispatched on hardware, not a CPU fallback with a GPU label.
 
 - [ ] E7.1 Define ED LP partition/resource ownership and lookahead constraints;
   write serial-oracle, in-flight message/GVT and zero-lookahead failure tests.
+  Certify each cross-LP minimum causal advance, including same-time
+  cycles; empirical duration means/quantiles are never lookahead guarantees.
 - [ ] E7.2 Integrate actual scheduler/Flow state with conservative PDES and real
   worker communication; preserve task RNG and snapshot contracts. Restrict shared
   resources to a defined owner and model explicit inter-LP messages.
 - [ ] E7.3 Test threaded 1/2/N execution, deadlock/causality/migration boundaries,
   slow workers, checkpoint and final observable state parity. Do not impose an
   identical global cross-LP trace beyond Track 34's contract. Measure speedup.
+  Distinguish trace/state/statistical equivalence per upstream contract;
+  statistical similarity alone cannot pass deterministic CPU acceptance. Record
+  safe-frontier blocking, communication overhead and negative scaling results.
 - [ ] E7.4 Conductor — review and verify phase (workflow.md).
 
 Exit: G3-PDES supported partition/profile, explicit unsupported zero-lookahead
@@ -159,12 +164,18 @@ resource interaction and reconcile all claims/messages with the serial oracle.
 - [ ] E8.1 Specify and test versioned transport envelopes, allocation/entity
   migration ownership, deduplication, reconnect/checkpoint and failure policy;
   extend D4 threat review before network execution.
+  Account for in-flight traffic and persisted deduplication at coordinated
+  checkpoint publication; define event identity, ownership-map revision and restart
+  incarnation compatibility without replacing existing RNG/envelope contracts.
 - [ ] E8.2 Implement real gRPC and MPI adapters within existing owners using
   evaluated current tonic/prost/MPI dependencies at that phase. Pin runtime and
   library versions then; do not add them to the initial native-ED dependency graph.
 - [ ] E8.3 Run actual multi-process/multi-node tests: loss/delay/retry, duplicate
   message/migration, worker failure, bounded shutdown and telemetry aggregation.
   Verify serial/PDES observable parity and profile-specific speed/memory evidence.
+  Exercise crashes before/after checkpoint publication, corrupt snapshots
+  and obsolete incarnation traffic; include independent-replication transport
+  profiles without making multiple physical nodes a C5/E7 prerequisite.
 - [ ] E8.4 Conductor — review and verify phase (workflow.md).
 
 Exit: G3-distributed only for executed runtime profiles. Cloud deployment and

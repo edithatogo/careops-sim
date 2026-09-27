@@ -12,3 +12,8 @@
 
 Current local harness regression cases are in `tests/test_context.py`. Broader
 skill/CI/release tests are planned; a passing link check does not satisfy them.
+
+## Additional research-derived cases
+
+Include the task-specific cases in [reports 9–12 integration](../../research/ed-research-incorporation-9-12-20260927.md)
+when preparing executable packets. These are proposed oracles, not recorded passes.

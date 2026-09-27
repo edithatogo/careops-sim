@@ -368,3 +368,9 @@ be treated as patient-level traces or direct evidence of staff walking behavior.
 C0/C2 must distinguish measured task events from fitted model parameters, RTLS observations from legal paths, and clamped final outcomes from predictive knowledge. Staff/shift clustering and eligible-choice-set availability constrain identifiability; elapsed EHR intervals alone do not identify walking or switching costs.
 
 See [reports 5–8 incorporation](../../research/ed-research-incorporation-20260927.md).
+
+## Reports 9–12 integration
+
+The [integration decisions and candidate oracles](../../research/ed-research-incorporation-9-12-20260927.md)
+apply to the tasks in this track. Proposed policies/versions remain review inputs;
+no reported research check substitutes for locally executed acceptance.

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# STATUS: PROPOSED / UNEXECUTED
+# Repository reference: fae901558f07b7b717a676adbafbe2cdc78dea1c
+# Any kairos-eval target below is a proposed harness contract, not an observed current target.
+
+# 1. Existing-tree baseline candidate; verify manifest/feature compatibility before use.
+cargo test --workspace --all-targets --all-features --locked
+
+# 2-5. Independent replications: real threads.
+cargo run --release -p kairos-eval --bin replications -- --fixture FIX-REP-001 --threads 1  --replications 32 --emit-trace-digests
+cargo run --release -p kairos-eval --bin replications -- --fixture FIX-REP-001 --threads 2  --replications 32 --emit-trace-digests
+cargo run --release -p kairos-eval --bin replications -- --fixture FIX-REP-001 --threads 4  --replications 32 --emit-trace-digests
+cargo run --release -p kairos-eval --bin replications -- --fixture FIX-REP-001 --threads 8  --replications 32 --emit-trace-digests
+
+# 6-8. Within-run conservative PDES: include zero lookahead and communication-rate sweep.
+cargo run --release -p kairos-eval --bin pdes -- --fixture FIX-PDES-002 --lps 4 --threads 4 --lookahead-ticks 0 --equivalence trace
+cargo run --release -p kairos-eval --bin pdes -- --fixture FIX-PDES-001 --lps 4 --threads 4 --lookahead-ticks 1 --cross-partition-probability 0.01 --equivalence trace
+cargo run --release -p kairos-eval --bin pdes -- --fixture FIX-PDES-001 --lps 4 --threads 4 --lookahead-ticks 1 --cross-partition-probability 0.50 --equivalence trace
+
+# 9. Same-host real-process experiment.
+cargo run --release -p kairos-eval --bin process-orchestrator -- --fixture FIX-PDES-001 --processes 4 --lookahead-ticks 1 --equivalence trace
+
+# 10. Duplicate/reorder/stale-incarnation injection.
+cargo run --release -p kairos-eval --bin fault-test -- --fixture FIX-DUP-001 --duplicate-rate 0.10 --reorder --inject-stale-incarnation
+
+# 11. Checkpoint/crash/resume.
+cargo run --release -p kairos-eval --bin fault-test -- --fixture FIX-CKPT-001 --crash-point after-checkpoint-publication --resume --compare-uninterrupted
+
+# 12. RNG schedule perturbation.
+cargo run --release -p kairos-eval --bin rng-determinism -- --fixture FIX-RNG-001 --threads 1,2,4,8 --inject-yields --compare-golden-vectors
+
+# 13. Ownership invariant.
+cargo run --release -p kairos-eval --bin ownership-test -- --fixture FIX-OWN-001 --assert-single-owner --forbid-remote-mutation
+
+# 14. Proposed physical-node run; launcher/transport intentionally unresolved.
+cargo run --release -p kairos-eval --bin node-orchestrator -- --fixture FIX-NODE-001 --hosts host-a,host-b --lps-per-host 2 --equivalence trace
+
+# 15. Proposed node-loss run.
+cargo run --release -p kairos-eval --bin node-orchestrator -- --fixture FIX-NODE-001 --hosts host-a,host-b --lps-per-host 2 --kill-worker-after-events 10000 --resume-from-checkpoint --equivalence trace

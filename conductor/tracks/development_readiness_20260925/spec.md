@@ -43,3 +43,9 @@ Acceptance: D-R1–6 verified by clean bootstrap, harness/skill negative tests,
 current locked candidate integration, real CI required-check behavior and clean
 consumer release rehearsal. Audit snapshot/local tests alone complete only the
 bootstrap slice. Release follows upstream governance and the selected ED profile.
+
+## Reports 9–12 integration
+
+The [integration decisions and candidate oracles](../../research/ed-research-incorporation-9-12-20260927.md)
+apply to the tasks in this track. Proposed policies/versions remain review inputs;
+no reported research check substitutes for locally executed acceptance.

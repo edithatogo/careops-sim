@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# PROPOSED / UNEXECUTED COMMAND FIXTURES.
+# These are harness-design examples, not a claim that they are supported by current Kairos automation.
+set -euo pipefail
+
+# CMD-001 — Record immutable starting identifiers.
+git rev-parse --verify HEAD
+git status --porcelain=v1
+
+# CMD-002 — Create an isolated detached worker tree.
+git worktree add --detach ".harness/worktrees/${RUN_ID}" "${BASE_SHA}"
+
+# CMD-003 — Test the packet base against the authoritative integration head.
+# Interpretation of failure is harness policy; this check alone is NOT sufficient staleness detection.
+git merge-base --is-ancestor "${BASE_SHA}" "${INTEGRATION_HEAD}"
+
+# CMD-004 — Verify exact required artefact digests.
+sha256sum --check "${PACKET_DIGEST_CHECK_FILE}"
+
+# CMD-005 — Enumerate candidate changed paths for ownership validation.
+git diff --name-only "${BASE_SHA}...HEAD"
+
+# CMD-006 — Machine-check that no uncommitted artefact has escaped the candidate record.
+git status --porcelain=v1
+
+# CMD-007 — Rust formatting gate when listed in the packet.
+cargo fmt --all -- --check
+
+# CMD-008 — Targeted Rust test gate; crate/filter MUST come from the packet, not this template.
+cargo test -p "${CRATE}" "${TEST_FILTER}"
+
+# CMD-009 — Optional lint gate only when required by the packet/project toolchain.
+cargo clippy -p "${CRATE}" --all-targets -- -D warnings
+
+# CMD-010 — Record the candidate commit only after worker completion.
+git rev-parse --verify HEAD
+
+# CMD-011 — Re-run dependency/input/skill digest validation immediately before acceptance.
+sha256sum --check "${PRE_ACCEPT_DIGEST_CHECK_FILE}"
+
+# CMD-012 — Remove the isolated worktree only after logs, hashes and candidate commit are durably recorded.
+git worktree remove ".harness/worktrees/${RUN_ID}"

@@ -1,0 +1,73 @@
+# Decision memo — CareOps development-assistant harness
+
+Research date: 2026-09-27 Australia/Brisbane
+Status: proposed evaluation decision, not implementation approval
+
+## Decision
+
+Evaluate OPT-002 against OPT-001.
+
+OPT-002 consists of:
+- immutable content-addressed worker packets;
+- isolated Git worktrees;
+- explicit dependency DAG;
+- parallel execution only for ready workers with disjoint ownership and no shared mutable artefact;
+- exactly one authoritative integration writer;
+- base, dependency, required-input and skill freshness checks before invocation and acceptance;
+- deterministic scope/build/test/hidden-oracle gates before model review;
+- immutable run provenance;
+- rejection followed by a new repair packet rather than mutation of historical evidence.
+
+Do not modify KairoECS simulation clock, state, event ordering or seed contracts for this harness.
+Use `sim_agent` only for simulation participants and `dev_worker` for development assistants.
+
+## Experimental decision
+
+GPT-6 Luna is an eligible test arm because current official documentation confirms availability.
+Its suitability for Kairos is unknown and must be measured.
+
+Run a private synthetic pilot:
+20 fixtures x 3 repetitions x each configuration.
+
+Primary safety metric:
+false_pass_rate = bad_runs_accepted / all_bad_runs
+
+Also measure:
+decision accuracy,
+bad-among-accepted,
+task success,
+human interventions,
+provider-reported cost,
+token counts,
+wall latency,
+model latency where available,
+DAG critical-path makespan.
+
+Do not estimate unavailable billing values.
+
+## Promotion principle
+
+No automatic promotion from "latest" versions.
+No automatic promotion from lower cost or lower latency.
+
+A simpler worker becomes a candidate for routine bounded packets only if:
+1. no critical false pass is observed for ownership, dependency, provenance and unit traps on the agreed promotion set;
+2. decision/task accuracy and intervention burden are not materially worse than the reference configuration under predeclared project-policy margins;
+3. lower cost and/or latency is actually observed;
+4. all artefact/model/skill versions are pinned and reproducible.
+
+The exact allowable degradation margin is a project policy decision, not a published empirical constant.
+
+## Current evidence gaps
+
+The requested attached module-readiness, agent-engineering, execution-model and generic-ED materials were unavailable.
+The parent pinned project snapshot is therefore unidentified.
+No harness experiment was executed.
+No cost, latency, accuracy or intervention result is observed.
+Codex open-issue status was not sufficiently resolved to report issue IDs safely.
+Compatibility of Codex/skills candidates with the pinned Kairos toolchain is untested.
+
+## Change control
+
+Any adoption of OPT-002 should be reviewed as a development-process change.
+It does not itself change simulation semantics or constitute evidence that planned Kairos modules exist.

@@ -14,3 +14,8 @@
 
 Acceptance uses the exact scoped G1/G2/G3 profile. No global Kairos completion,
 Cairns validity or performance claim follows from synthetic/native evidence alone.
+
+## Additional research-derived cases
+
+Include the task-specific cases in [reports 9–12 integration](../../research/ed-research-incorporation-9-12-20260927.md)
+when preparing executable packets. These are proposed oracles, not recorded passes.

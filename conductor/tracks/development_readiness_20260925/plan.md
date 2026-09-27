@@ -17,6 +17,8 @@ requires [workflow](../../workflow.md), evidence and relevant upstream owner rev
 - [ ] D0.2 Turn the module table into capability/owner/gate records, refresh the
   upstream DAG, reconcile prerequisite contracts and classify required vs deferred
   APIs. Test that missing prerequisite evidence blocks a readiness claim.
+  Reconcile Kairos commit/date and Cargo/README versus LICENSE metadata
+  using local objects; report 10 repository identity claims are not authoritative.
 - [ ] D0.3 Define the ED-native support/release profile with 25/30 and independent
   review checklist; preserve upstream global publication holds. Record ADRs.
 - [ ] D0.4 Conductor — review and verify phase (workflow.md).
@@ -38,9 +40,15 @@ Manual verification: resume in a fresh session and reach the exact next task.
 - [ ] D1.4 Write held-out harness/skill evals first, including fake pass, pin drift,
   hidden clamp error and untrusted instructions; test the candidate skills and
   approve only those improving correctness/intervention cost over the baseline.
+  Compare no-skill/pinned-skill and serial/parallel arms on undisclosed
+  variants; split correct unit conversions from injected wrong-output cases. Report
+  known-bad acceptance and bad-among-accepted separately; account for repeated fixtures.
 - [ ] D1.5 Add structured command receipts, input/output hashes and checkpoint
   validation without private payloads. Exercise kill/restart, stale context and
   concurrent-writer rejection; log tool/model version where available.
+  Recheck dependency/input/skill hashes at dispatch and acceptance; preserve
+  immutable attempt lineage, actual changed paths and exact command evidence.
+  Keep current packet/DAG authority; prove hidden-oracle isolation before claims.
 - [ ] D1.6 Conductor — review and verify phase (workflow.md).
 
 Exit: one-command minimal native bootstrap and measured skill evaluations; no

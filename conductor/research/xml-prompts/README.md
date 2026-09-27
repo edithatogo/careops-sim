@@ -36,3 +36,10 @@ F1/F2 returned reports 7/8 with failed original recovery and newly reconstructed
 packages; R2/R3 returned reports 6/5. See [incorporation ledger](../ed-research-incorporation-20260927.md).
 Obtain their actual artifact files before F3. Do not rerun completed broad searches
 or treat the smaller reconstructions as authenticated originals.
+
+## Further research received
+
+Reports 9–12 returned F3 (gap audit only), R8b, R8c and R4.
+See [integration decisions](../ed-research-incorporation-9-12-20260927.md).
+Reports 10/11 contain extractable inline payloads; reports 9/12 still need their
+linked bundles. Avoid another F3 run without the actual inventories attached.

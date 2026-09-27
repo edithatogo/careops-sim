@@ -33,3 +33,8 @@ that changes candidate selection outside the tie tolerance fails compatibility.
 Benchmark ingestion peak memory/throughput, shadow probe overhead, metric sizes
 and 1/2/N candidate throughput. Keep CPU baseline and compiler/hardware recorded;
 no fixed speedup is assumed. Browser/Metal/PDES gates remain separate owner work.
+
+## Additional research-derived cases
+
+Include the task-specific cases in [reports 9–12 integration](../../research/ed-research-incorporation-9-12-20260927.md)
+when preparing executable packets. These are proposed oracles, not recorded passes.

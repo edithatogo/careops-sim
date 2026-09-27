@@ -105,3 +105,11 @@ starting agents. Reviewed small packets carry source hashes, fixed interfaces,
 exact commands, outputs and escalation rules. See [decomposition](execution/decomposition.md).
 The included inventory recipe enables a low-risk initial model trial. Actual Luna
 qualification remains pending; task packaging alone is not evidence of capability.
+
+## Additional evaluation requirements
+
+[Report 11 integration](research/ed-research-incorporation-9-12-20260927.md) extends
+the existing packet protocol: preflight and pre-acceptance hash checks, immutable
+attempt lineage, no-skill controls, undisclosed evaluation variants and distinct
+false-pass denominators. Repeated fixture runs do not establish independent
+confidence observations. A worker cannot waive a deterministic gate.

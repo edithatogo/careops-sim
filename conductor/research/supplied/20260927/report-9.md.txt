@@ -1,0 +1,182 @@
+# Reconciliation of the CareOps Sim Emergency-Department Parameter Inventories
+
+## Executive finding
+
+Research was completed on **27 September 2026** as a bounded F3 reconciliation audit. The most important result is a limitation: **the machine-readable inventories required for a genuine row-by-row reconciliation were not retrievable in this conversation**. The reported **248-family** and **340-parameter** registers, their corrected F1/F2 bundles, and the referenced `spec.md` and review document were not available through the accessible attachment source. Consequently, neither count can honestly be verified, and there is no evidential basis for manufacturing a 248↔340 crosswalk.
+
+I have therefore produced a **gap-audit package rather than pretending to have recovered or reconciled the originals**. Its `id_crosswalk.csv` deliberately contains zero data rows. The package contains eight new, explicitly labelled R2/R3 reconciliation candidates or public-data anchors, eight audited primary/official sources, eight conflicts and nine unresolved evidence items.
+
+**Download the complete package:**  
+[careops_ed_F3_reconciliation_gap_audit_20260927.zip](sandbox:/mnt/data/careops_ed_F3_reconciliation_gap_audit_20260927.zip)
+
+The principal substantive conclusions are:
+
+1. **45,000/year and 65,000/year must remain two separate synthetic ED profiles.** Neither is an evidence-backed facility default, and they must not be averaged into a fictitious 55,000/year hospital.
+2. The previous case-mix factorisation described in F3 is structurally incomplete if it conditions variables on **arrival mode without first generating arrival mode**. The corrected factorisation is acyclic and makes final disposition a **realised outcome**, not an upstream patient characteristic.
+3. The **AIHW triage denominator is not yet safe for direct conversion into simulation probabilities**. The five headline national 2024–25 triage counts sum to 9,091,132, whereas the displayed total is 9,094,312. Meanwhile, AIHW Appendix Table A4 uses *Emergency presentations only* and explicitly says its total includes emergency presentations whose triage category was not reported. The residual of 3,180 therefore must **not** simply be labelled “unknown triage” without obtaining the underlying exact table/extract. citeturn25search1turn26view0turn28view1
+4. Spatial coverage in the candidate inventories should distinguish **geographical anchors** from actual **transit models**. Public sources can supply versioned SA2 geography and hospital latitude/longitude, but not, by themselves, origin-to-ED choice, road travel times, ambulance positioning, retrieval travel, traffic effects or within-campus transit. citeturn25search2turn24search1turn26view1
+5. Atomic multi-resource bundles and changes to same-time ordering remain **review proposals**, not reconciled facts about Kairos and not implemented capabilities. Nothing in this research changes the project-supplied current one-resource-per-work-item contract.
+
+## Inspectability and research method
+
+Before substantive reconciliation, I attempted to inspect the prior F1/F2 artefacts. No retrievable copy of either original/corrected parameter register, the two ZIP bundles, or the referenced project specification/review was exposed through the available attachment source. This is why the deliverable is explicitly versioned **`F3-gap-audit-v1`**, not described as an “original recovery”.
+
+The external search was deliberately narrower than a new ED literature review. It concentrated on sources capable of adjudicating the conflicts in F3: AIHW's 2024–25 emergency-department reporting, the matching METEOR NAPEDC NMDS, Queensland's public ED aggregate dataset, the MyHospitals API schema and ABS statistical geography. No new broad search for primitive task-time distributions or a full ambulance/spatial model was undertaken, consistent with the requested boundary.
+
+AIHW's 2024–25 NAPEDC operational specification is particularly useful because it makes the relevant data semantics explicit. It separately codes arrival transport mode as ambulance/air ambulance/helicopter, police/correctional vehicle, other, or not stated/unknown; separately codes visit type as Emergency presentation, planned return, pre-arranged admission or dead on arrival; and separately records episode-end status. citeturn28view0turn28view2 Triage category is conditionally required for visit types 1, 2 and 3, rather than simply being an unconditional property of every record. citeturn28view1turn28view3
+
+This matters because the administrative data-generating process itself imposes structural constraints on a simulation parameter DAG. It also means that different AIHW tables cannot safely be combined merely because both contain the word “triage”.
+
+The audited AIHW and METEOR material is publicly accessible. AIHW states that material copyable or downloadable from its website is generally released under **CC BY 4.0**, subject to exclusions such as third-party material and separately licensed content; METEOR publishes corresponding CC BY 4.0 terms subject to its exclusions. citeturn25search0turn25search17 Exact source URLs, source locations, observation periods and licence notes are preserved in `sources.csv` and `source_audit.csv`.
+
+## Corrected candidate structure
+
+### Synthetic demand profiles remain separate
+
+The two annual demand figures have been retained as:
+
+| Candidate ID | Canonical candidate | Value | Classification | Use |
+|---|---|---:|---|---|
+| `CP-SYN-045K` | `ed.arrivals.annual_volume.scenario_045k` | 45,000/year | **synthetic** | Scenario alternative |
+| `CP-SYN-065K` | `ed.arrivals.annual_volume.scenario_065k` | 65,000/year | **synthetic** | Scenario alternative |
+
+For orientation only, these correspond arithmetically to 123.29 and 178.08 presentations per day in a 365-day year. Those daily figures are **derived arithmetic means, not Poisson rates, fitted inter-arrival distributions or observed facility volumes**.
+
+No midpoint scenario has been created. If a later experiment requires 55,000/year, that should be declared as a third synthetic experimental condition rather than represented as evidence arising from reconciliation.
+
+### Corrected acyclic case-mix factorisation
+
+The minimum defensible sampling order is:
+
+**facility/scenario/calendar context → arrival event time → type of visit → arrival mode → persistent patient attributes → initial clinical state/acuity → recorded triage/reporting state → routing/care trajectory → optional provisional admission/disposition state → realised final disposition.**
+
+METEOR supports the distinction between visit type, arrival mode, triage and eventual episode-end status. citeturn28view0turn28view2 The ordering above is therefore a **model-design inference from those temporal/data semantics**, rather than a claim that METEOR prescribes a simulation DAG.
+
+A compact candidate factorisation is:
+
+\[
+\begin{aligned}
+P(&T,V,M,X,C_0,A,R,Q,D) =\\
+& P(T)\,
+P(V\mid T)\,
+P(M\mid V,T)\,
+P(X\mid M,V,T)\,
+P(C_0,A\mid X,M,V,T)\\
+&\times P(R\mid C_0,A,X,M,V,T)\,
+P(Q\mid R,C_0,A,X,M,V,T,\mathcal R)\,
+P(D\mid Q,\mathcal R)
+\end{aligned}
+\]
+
+where:
+
+- \(T\) is temporal/facility context and arrival process;
+- \(V\) is type of visit;
+- \(M\) is arrival mode;
+- \(X\) contains persistent demographic/case-mix attributes;
+- \(C_0\) and \(A\) represent initial clinical state and acuity;
+- \(R\) is recorded triage/reporting state;
+- \(Q\) is the evolving ED trajectory and decisions;
+- \(\mathcal R\) denotes resource state;
+- \(D\) is the **realised** episode-end/final disposition.
+
+This fixes the circularity/undefined-conditioning problem: \(M\) exists before another random variable is conditioned on \(M\).
+
+It also prevents a second, subtler problem: using **realised disposition** to sample earlier characteristics or service requirements. METEOR records episode end after the earlier arrival and clinical-care events and has distinct end-status categories including admission/transfer, completion, did-not-wait, leaving after care began, death and dead on arrival. citeturn28view2 Accordingly, final disposition should normally be generated downstream. A model may have a clinician's `provisional_disposition` or `admission_intent`, but that should be a **different, time-varying state** that can change after investigations or reassessment.
+
+For implementation, conditional models need not be decomposed into dozens of independent categorical draws. Empirical joint resampling or a fitted multivariate/conditional model is preferable wherever the source data support dependence between arrival mode, age, triage, presentation type and subsequent service requirements. The important requirement is that the dependency graph remain causal/temporally acyclic and that realised future outcomes are not accidentally fed back into initial-state generation.
+
+## Triage denominator and public-data audit
+
+The highest-impact numerical problem in the inherited research is the proposed construction of triage probabilities.
+
+AIHW's current “Hospitals at a glance” table gives the following 2024–25 figures: Resuscitation 86,831; Emergency 1,608,414; Urgent 3,789,676; Semi-urgent 3,050,990; Non-urgent 555,221; and a displayed total of 9,094,312. citeturn25search1
+
+The five displayed category counts sum to:
+
+\[
+86{,}831+1{,}608{,}414+3{,}789{,}676+3{,}050{,}990+555{,}221
+=9{,}091{,}132
+\]
+
+leaving:
+
+\[
+9{,}094{,}312-9{,}091{,}132=3{,}180.
+\]
+
+It would be tempting to set `triage_unknown = 3,180`. **That has not been done.** The AIHW appendix establishes that the surrounding reporting structure is more complicated: of 9.1 million presentations, 98.9% were classified as Emergency presentations and 0.8% as planned return visits, with the remaining visit types accounting for about 0.2%. Its Table A4 is explicitly restricted to **type of visit = Emergency presentation**, and its footnote says the denominator includes Emergency presentations for which triage category was not reported. citeturn26view0turn27view0 METEOR simultaneously shows that triage reporting is conditional on visit types 1, 2 and 3 and distinguishes type 5 dead on arrival. citeturn28view1
+
+Thus the 3,180 difference is currently best represented as an **unresolved cross-table denominator discrepancy**, not an inferred category count.
+
+Queensland creates a related issue. AIHW Table A4 reports, for Emergency presentations in Queensland, rounded percentages of **1.1% Resuscitation, 21.5% Emergency, 47.0% Urgent, 26.9% Semi-urgent and 3.5% Non-urgent**. These happen to add to 100.0%, but the same table's footnote explicitly states that the total includes Emergency presentations for which triage category was not reported. citeturn26view0turn27view0 Therefore:
+
+\[
+(0.011,0.215,0.470,0.269,0.035)
+\]
+
+has been retained only as a **rounded published validation benchmark**, not elevated to an empirical simulation sampling vector.
+
+The preferred R2 data construction is instead:
+
+\[
+P(V)\rightarrow P(M\mid V,\ldots)\rightarrow
+P(\text{latent/clinical triage}\mid V,M,X,\ldots)
+\rightarrow P(\text{recorded triage/missingness}\mid \ldots)
+\]
+
+with an explicit measurement process if missingness matters. The required next source is the exact AIHW machine-readable count table/extract with a consistent population denominator, visit type and not-reported status.
+
+Queensland's public quarterly ED files are nevertheless useful. The official resource provides facility/HHS identifiers, quarter, triage category, attendance counts, seen-within-clinically-recommended-time percentages, median waiting time, did-not-wait measures, admission metrics and four-hour measures. citeturn24search0turn24search8 These should be treated primarily as **facility-level case-mix and validation targets**. They do not justify back-calculating primitive clinician, triage, diagnostic or treatment service-time distributions from aggregate median waiting times.
+
+## Spatial coverage and Kairos implications
+
+Spatial information is only partially source-ready.
+
+The MyHospitals `ReportingUnitModel` contains `reporting_unit_code`, `reporting_unit_name` and reporting-unit type together with nullable `latitude` and `longitude` numeric fields. citeturn26view1turn27view1 That gives a useful public hospital point anchor, but no source inspected here establishes that those coordinates constitute a routing network or supplies travel-time uncertainty.
+
+ABS provides public digital boundaries for **ASGS Edition 3, July 2021–June 2026**, including SA2 geography in GeoPackage and Shapefile formats. citeturn25search2turn25search8 The current Edition 4 covers **July 2026–June 2031**, with current SA2 boundary files such as `SA2_2026_AUST_GDA2020`; ABS notes that Edition 4's lower statistical geographies were updated for population growth and infrastructure change. citeturn24search1turn24search7 METEOR's 2024–25 NAPEDC specification contains a nine-character SA2 usual-residence field. citeturn28view1
+
+The resulting R3 rule should be:
+
+> **Never silently attach 2024–25 ED observations to 2026 ASGS geography solely because both fields are called SA2.**
+
+Historical input records should retain their geography edition. An official correspondence should be applied explicitly if Edition 3 records later need representation in Edition 4.
+
+The following remain genuinely missing rather than candidates for invented defaults: patient-origin-to-ED choice probabilities, routable road/travel-time matrices, time-of-day congestion, ambulance stations and dynamic posting, ambulance/vehicle locations, interhospital transfer routes, retrieval aviation/ground legs, disruption/weather effects and within-campus movement. MyHospitals coordinates and ASGS polygons are anchors for such work, not substitutes for it. citeturn27view1turn25search2turn24search1
+
+For Kairos, no evidence found in this bounded audit warrants silently changing the architecture supplied in the project context. In particular, **atomic multi-resource acquisition should remain deferred**. A future ED process may indeed require simultaneous nurse–room–equipment or clinician–room resource bundles, but that constitutes a reviewed extension to the current queue contract rather than a parameter reconciliation. The same applies to any additional same-time event-ordering semantics. They belong in an explicit architecture decision record with compatibility, determinism and suspension/pre-emption consequences assessed separately.
+
+## Deliverables, conflicts and evidence-acquisition priorities
+
+The package contains the requested machine-readable artefacts to the extent possible without fabricating missing original rows:
+
+| File | Records | Status |
+|---|---:|---|
+| `candidate_parameters.csv` | 8 | New R2/R3 schema candidates/public anchors only |
+| `id_crosswalk.csv` | **0** | Deliberately empty pending both original registers |
+| `source_audit.csv` | 8 | Audited official/public sources |
+| `sources.csv` | 8 | Source catalogue with exact URLs and extraction locations |
+| `conflicts.csv` | 8 | Resolved, unresolved and deferred conflicts |
+| `missing_evidence.csv` | 9 | Prioritised evidence ledger |
+| `reconciliation_summary.yaml` | — | Machine-readable reconciliation status |
+| `manifest.json` | — | Package version, files, record counts and validation checks |
+| `README.md` | — | Human-readable package notes |
+
+[Download `candidate_parameters.csv`](sandbox:/mnt/data/careops_ed_F3_reconciliation_gap_audit_20260927/candidate_parameters.csv)  
+[Download `id_crosswalk.csv`](sandbox:/mnt/data/careops_ed_F3_reconciliation_gap_audit_20260927/id_crosswalk.csv)  
+[Download `source_audit.csv`](sandbox:/mnt/data/careops_ed_F3_reconciliation_gap_audit_20260927/source_audit.csv)  
+[Download `conflicts.csv`](sandbox:/mnt/data/careops_ed_F3_reconciliation_gap_audit_20260927/conflicts.csv)  
+[Download `missing_evidence.csv`](sandbox:/mnt/data/careops_ed_F3_reconciliation_gap_audit_20260927/missing_evidence.csv)  
+[Download `sources.csv`](sandbox:/mnt/data/careops_ed_F3_reconciliation_gap_audit_20260927/sources.csv)  
+[Download `reconciliation_summary.yaml`](sandbox:/mnt/data/careops_ed_F3_reconciliation_gap_audit_20260927/reconciliation_summary.yaml)  
+[Download `manifest.json`](sandbox:/mnt/data/careops_ed_F3_reconciliation_gap_audit_20260927/manifest.json)  
+[Download `README.md`](sandbox:/mnt/data/careops_ed_F3_reconciliation_gap_audit_20260927/README.md)
+
+The files were syntactically checked after creation: every CSV was reparsed; JSON-valued cells in `candidate_parameters.csv` were parsed; `manifest.json` was parsed as JSON; and `reconciliation_summary.yaml` was successfully parsed with `PyYAML.safe_load`. These executed checks are recorded in the manifest.
+
+The evidence-acquisition order is unambiguous. **P0** is recovery of both full prior registers and their source catalogues, followed by the two referenced project specification/review documents. Until then, claimed 248/340 counts and row-level retained/split/merged/deferred statuses remain unverified. The next P0 external-data issue is the exact AIHW triage table/extract required to settle denominator and missing-category semantics. The AIHW headline counts and Appendix A4 are sufficiently informative to establish that naïvely normalising the rounded published percentages is unsafe, but not sufficient to reconstruct the missing exact probability table. citeturn25search1turn26view0turn28view1
+
+**P1** is the separate spatial/transit evidence package and, only if cross-era geography is required, an authoritative Edition 3↔Edition 4 correspondence. Primitive task-time distributions and detailed joint process dependencies also remain P1/local-data problems: the Queensland quarterly public file is valuable for aggregates and validation, but it does not identify the underlying service-time processes. citeturn24search8
+
+Accordingly, this F3 output is a **single candidate schema and evidence-controlled reconciliation scaffold for R2/R3**, not a concatenation of the two reported inventories and not a claim that CareOps Sim now possesses a merged, locally calibrated or operationally validated ED model.

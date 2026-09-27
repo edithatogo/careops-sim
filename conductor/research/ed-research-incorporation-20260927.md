@@ -100,3 +100,8 @@ then run F3 reconciliation on available reconstructions plus DES/ABM evidence,
 explicitly leaving historical original coverage unresolved. Never expand 51 or 68
 rows artificially to match 248 or 340. R4–R8 research remains useful as previously scoped.
 No plan checkbox or acceptance gate has been closed by document incorporation.
+
+## Subsequent intake
+
+[Reports 9–12](ed-research-incorporation-9-12-20260927.md) add the F3 gap audit,
+parallel runtime, worker harness and calibration-method findings.

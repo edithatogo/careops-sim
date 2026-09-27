@@ -31,6 +31,8 @@ contract available for cross-track review. No queue implementation needed yet.
   ledger separation. Specify seed-purpose derivation through 01. Preserve raw task
   events, provisional/realized disposition, knowledge availability and versioned
   exact/partial/unverified mappings; published standards do not imply local conformance.
+  Define risk-start/last-observed/event/cause/censor-reason semantics and
+  exogenous/primitive/clamp-only/target roles with time-of-knowledge and cluster IDs.
 - [ ] C0.3 Assess [public data/open examples](../../generic-ed-evidence.md),
   recording population, field coverage, licence, revision and assumptions.
   Define synthetic datasets, identifiable/confounded parameter fixtures,
@@ -95,6 +97,8 @@ Entry: C1, C2 and Q4. Owners 21 (probe semantics), 22 (runner), 03 (runtime).
 - [ ] C3.1 Write failing anchor/probe fixtures: early completion, late completion,
   completion exactly at anchor, missing target, impossible resource occupancy,
   repeated events, interrupted transit/work and bounded probe termination.
+  Add the walk+work=5 ridge fixture and independent walk observation;
+  assert objective ties do not imply uniquely identified empirical primitives.
 - [ ] C3.2 Implement observed-ledger replay and isolated predictive probes with
   explicit snapshots. Preserve macro anchor ticks; allow late probes to finish
   in isolated virtual time or return censored/failed. Never rewind the macro run.
@@ -115,6 +119,8 @@ Entry: C0/C1 schemas; may proceed before C3 using synthetic predictions. Owner 2
 - [ ] C4.1 Write analytic W1/KS tests, tied/weighted/unequal/empty cases and
   independent reference fixtures with pinned generator provenance. Add duration
   scaling, large-tick precision, null, censoring and missing-outcome tests.
+  Add equal-marginal/opposite-dependence and W1=180/KS=0.2 tail fixtures;
+  specify a simple joint/conditional diagnostic before optional multivariate metrics.
 - [ ] C4.2 Implement deterministic sorted-CDF W1 and KS D, paired residual
   summaries, grouping/window semantics, counts/validity flags and explicit
   insufficient-data statuses. No automatic classical KS p-value for clustered,
@@ -135,9 +141,14 @@ Entry: C3/C4. Owners 21 (study/search), 22 (runner/CLI), 01 (seed contract).
 - [ ] C5.1 Write failing grid-search, invalid-candidate, tie-ranking, split-leakage,
   failed-probe penalty and resume tests. Test repeated runs and 1/2/N workers
   with randomized wall-clock completion order.
+  Add censoring-rate 2/7, day-versus-row bootstrap, temporal cutoff,
+  paired CRN and precision-cap fixtures from the research integration ledger.
 - [ ] C5.2 Implement bounded candidate enumeration, parameter/unit constraints,
   prespecified normalized objectives, common seed schedules and fixed evaluation
   budgets. Persist all attempts; rank only complete evaluation batches.
+  Record ridges/bound hits and identifiability/MC-indeterminate states;
+  use prespecified batched precision checks inside fixed caps, with valid stopping
+  inference or a fixed confirmation sample. Keep deterministic batch decisions.
 - [ ] C5.3 Extend the existing scenario/seed manifest and CLI with trace verify,
   shadow/free replay, calibrate and compare operations. Preserve legacy inputs;
   emit full study/candidate/configuration/artifact provenance and typed failures.
@@ -163,6 +174,9 @@ Owners 21/12/25, with 03/04/22 and backend-owner handoff.
   held-out cases/time blocks. Report waits/length of stay/throughput/resource use,
   transit/interruption counts, W1/KS/residuals, uncertainty, exclusions and runtime.
   Require correct synthetic expectations; empirical superiority is not presumed.
+  Separate historical-exogenous-input holdout from arrival-generator
+  validation, orthogonally to Macro/Micro fidelity. Freeze thresholds and use fresh
+  seeds; report marginal/joint conflicts and stochastic/input/structural uncertainty.
 - [ ] C6.3 Run feature/API/manifest/Arrow compatibility, deterministic replay and
   performance gates; benchmark ingestion memory, probe overhead, metrics and
   candidate throughput with named data sizes/hardware. Document validity limits.

@@ -142,3 +142,9 @@ movement mode and interruption ancestry; rates of prompts and task switches are 
 Generate all conditional variables without future-information leakage; distinguish
 provisional/realized disposition and agent-known/latent/recorded state. Cohort,
 visit-type and missingness denominators accompany every categorical vector.
+
+## Reports 9–12 integration
+
+The [integration decisions and candidate oracles](../../research/ed-research-incorporation-9-12-20260927.md)
+apply to the tasks in this track. Proposed policies/versions remain review inputs;
+no reported research check substitutes for locally executed acceptance.
