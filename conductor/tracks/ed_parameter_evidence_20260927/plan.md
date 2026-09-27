@@ -55,6 +55,7 @@ Entry: P0. May run alongside P2 and engine development.
   work from elapsed waits/transit; record population and observation limitations.
   Retrieve the Gerdtz/Bucknall triage table and IHACPA clinician-time report; distinguish
   mean-only evidence, incomplete fits, synthetic defaults and principal-activity sampling.
+  Separate physical bay count from staffed/open capacity and monitoring/equipment capability, closures and surge calendars. Keep a dated as-operated register; drawing symbols cannot establish usable beds.
 - [ ] P1.3 Populate DES records with evidenced ranges, candidate distributions,
   dependencies and explicit assumptions/gaps. Test units, provenance, probability
   sums and impossible combinations; independently review each source extraction.
@@ -79,6 +80,7 @@ Entry: P0; independent of P1 until the P3 join.
   Include movement modes, O/D purposes, graph revision/access restrictions, sensor
   smoothing and walk/wait/work labels; keep unknown speeds and co-working needs explicit.
   Document geometry uncertainty, manual annotations and georeferencing separately from routing/clinical assumptions; ordinary indoor metre coordinates are not RFC 7946 GeoJSON.
+  Prefer verified existing CAD over new capture when available; preserve source/revision and derived layer manifest, confirm units/transforms and known distances, and record operational review/unknowns. No real CAD is required for the generic MVP.
 - [ ] P2.3 Populate ABM records and assumptions with ranges/distribution candidates,
   dependence and identification gaps. Test graph/unit consistency and rules against
   small hand-worked examples; flag overlap with DES work/wait durations for P3.
@@ -121,6 +123,7 @@ Entry: P3. This phase produces configuration data, not the E1 model implementati
 - [ ] P4.2 Add malformed/missing/censored examples and expected diagnostics; check
   probability/conditional tables, clock units, support bounds, resource feasibility,
   initialization and provenance. Store manifests/hashes and licensing notes.
+  Include synthetic physical-versus-open capacity, repurposed/closed bay and surge-calendar cases; unknown operational status cannot silently mean available.
 - [ ] P4.3 Document parameter meanings, example loading, limitations and overrides;
   define a separate future Cairns mapping and required local evidence/elicitation.
   Hand off the frozen generic pack to E1 and calibration fixtures to C5.

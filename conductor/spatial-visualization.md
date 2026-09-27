@@ -51,7 +51,7 @@ decoration/interpolation must never change backend topology or resource state.
 Layout edits produce a new reviewed revision for a new run; mid-run topology
 mutation is unsupported until its own deterministic transition contract exists.
 
-## Native backend and WebSocket state sync
+## Replay first; later native WebSocket state sync
 
 Kairos owns simulation time, entity state, routing progress and resource decisions.
 PixiJS provides real-time display, optionally interpolating recorded route progress.
@@ -80,7 +80,8 @@ security and data disclosure boundaries before enablement.
 - P2/P4 maintain spatial provenance, semantic input schemas and synthetic/public
   layout fixtures. Native C2/E2 routing already consumes their deterministic graph.
 - E5 first freezes the layout/snapshot/command contracts and delivers a PixiJS view
-  with a native WebSocket runner profile. Start with a small synthetic layout.
+  from recorded native-run outputs first. Start with a small synthetic layout;
+  add the WebSocket live profile subsequently when useful.
 - Full spatial capture/CAD adapters follow as separately bounded E5 follow-on
   packets after format/sample review. They are not required to declare the initial
   dashboard usable; record their own unimplemented/qualified status explicitly.
@@ -169,3 +170,11 @@ and minimal routing are already covered by P/E/C model plans. Their implementati
 and generic input qualification are pending; no real site configuration is claimed.
 This document's visual, CAD and live-display features remain later E5 work. Basic
 spatial inputs do not require visible geometry or a full spatial package first.
+
+## CAD and replay refinement
+
+Prefer verified existing CAD where available, preserve the original and layer
+manifest, and join geometry to a dated as-operated capacity/capability register.
+Drawing accuracy, operational currency and permissions require separate checks.
+First later visualization replays completed native runs; live WebSocket control
+is a subsequent profile. See [appraisal and qualifications](research/cad-replay-appraisal.md).

@@ -132,8 +132,9 @@ Entry: G1; upstream 05/02/09 coordinated scope, public API review before binding
   Review actual FFI needs, memory/buffer lifetime and supported browser targets.
   Freeze shared spatial-package revision/units/location IDs and WebSocket snapshot/delta/command contracts per the spatial capability plan. Include exact wide integers, sequencing, reconnect/resync and idempotent commands.
 - [ ] E5.2 Build scenario edit/run/compare/export UI; choose presentation components
-  with PixiJS for the planned spatial view and a native Kairos runner over
-  WebSocket state sync. Qualify optional worker/Wasm profiles separately; keep
+  with PixiJS for the planned spatial view, replaying recorded native Kairos
+  results first. Add WebSocket live monitoring/commands as a later profile.
+  Qualify optional worker/Wasm profiles separately; keep
   engine and frame clocks independent. Start with a synthetic shared layout.
   Add selectable rooms/resources/agents, layer/floor controls, route and occupancy/queue/utilization overlays with provenance and accessible tables. Support recorded replay and versioned layout comparison using backend telemetry; unknown positions remain unknown.
 - [ ] E5.3 Test render rates off/30/60, slow consumers/backpressure, memory growth,

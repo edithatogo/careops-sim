@@ -66,3 +66,10 @@ results at render rates 0/30/60 FPS, bounded memory under a slow consumer, actua
 copy counts and frame timings on named hardware. CAD input requires a separate
 validated units/connectivity/route-graph conversion. These are handoff requirements,
 not additional implementation deliverables in the two requested tracks.
+
+## Later CAD/replay notes reviewed
+
+The [CAD/replay appraisal](research/cad-replay-appraisal.md) adds a verified CAD
+source preference and as-operated capacity register. Replay is the first later
+visualization profile; native WebSocket sync follows. Rust-native Kairos remains
+the runtime, with no automatic backend replacement, speed or zero-copy claim.

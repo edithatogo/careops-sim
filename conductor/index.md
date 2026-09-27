@@ -39,3 +39,5 @@ Latest research: [reports 26–30 integration](research/ed-research-incorporatio
 Current status and execution order: [research handoff](research/research-handoff.md).
 
 Later capability: [spatial capture, shared floor plan and live state sync](spatial-visualization.md).
+
+Additional design review: [CAD, operational capacity and replay](research/cad-replay-appraisal.md).
