@@ -67,9 +67,10 @@ Each stable parameter ID records:
 
 ## Evidence and distribution selection
 
-Start with the [public evidence shortlist](../../generic-ed-evidence.md), then
-systematically source original open datasets, source repositories and primary
-research. Record search terms/date, inclusion/exclusion rules and unresolved gaps.
+Start with the completed [research intake](../../research/research-handoff.md)
+and supplied embedded content. Verify relevant claims against original datasets,
+repositories and primary research; use the [public shortlist](../../generic-ed-evidence.md)
+and targeted searches only for demonstrated gaps. Record search terms/date, inclusion/exclusion rules and unresolved gaps.
 Prefer Australian-compatible definitions for the generic baseline; justify any
 transfer from a different health system. Aggregate marginals cannot establish
 patient-level joint distributions, service durations or walking heuristics.

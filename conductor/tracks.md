@@ -36,3 +36,11 @@ formal Q0/C0 contracts; E0 unlocks D2 GitHub/CI, then Q1/C1 can proceed.
   [plan](tracks/ed_parameter_evidence_20260927/plan.md)). Proposed. P0 can start
   immediately; P1 DES and P2 ABM evidence run independently, joining at P3.
   E0/C0 consume P0, C2 consumes P3, E1 consumes P4, and C6 consumes P5.
+
+## Research intake completed
+
+All requested research themes have responses; embedded content is available.
+Remaining tasks verify sources, resolve conflicts, fill specific gaps and deliver
+tested outputs. See [research handoff and next steps](research/research-handoff.md).
+D0.2 and P0.1 are the current preparation candidates; no broad new research round
+is a prerequisite. Track checkboxes continue to represent full delivery acceptance.

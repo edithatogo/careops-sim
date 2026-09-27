@@ -12,3 +12,8 @@
 Do not assert real data follow a family because a synthetic sampler test passed.
 Acceptance thresholds and exact validator/fit commands are frozen in P0/P3 worker
 packets; this planning change does not claim parameter estimates or fit results.
+
+Research intake is complete per the [handoff](../../research/research-handoff.md).
+P0/P1/P2 must detect unsupported claims, missing primary references and duplicated
+semantic records; an absent standalone download alone is not a missing-content
+failure. Verify accepted values from primary material and preserve report lineage.

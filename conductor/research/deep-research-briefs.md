@@ -1,6 +1,9 @@
 # Bounded Deep Research briefs for CareOps Sim
 
-Prepared 2026-09-27. Copy the shared instructions plus one brief per research run.
+Prepared 2026-09-27. Historical briefs: all themes now have responses.
+Use the [current handoff](research-handoff.md); rerun only a demonstrated gap.
+
+ Copy the shared instructions plus one brief per research run.
 Attach the two original reports and, when available, their ZIP packages. For
 engineering briefs also attach the named current specs and relevant Kairos source;
 ask the researcher to state explicitly if they cannot inspect a supplied artifact.

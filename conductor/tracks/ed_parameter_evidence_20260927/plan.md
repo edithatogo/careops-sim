@@ -1,22 +1,40 @@
 # Plan: ED parameter and example-input evidence
 
-Status: proposed. Use [the execution protocol](../../execution-model.md).
+Status: research intake complete; catalogue qualification and implementation pending. Use [the execution protocol](../../execution-model.md).
 Workers handle one parameter family/source at a time; the coordinator reviews
 population transfer, distribution selection and statistical assumptions.
 
+
+## Research already completed and remaining acceptance
+
+Completed: requested research responses received, duplicates reconciled, embedded
+material indexed and relevant findings incorporated into specifications/plans.
+See [research handoff](../../research/research-handoff.md) and its evidence links.
+This completed intake is distinct from the numbered implementation/qualification
+tasks below. No broad repeat search or separate-file recovery is a prerequisite.
+
+Remaining: reuse supplied tables, payloads and narrative; verify relevant primary
+sources/current source code, document citations and transformations, reconcile
+conflicts, and fill only demonstrated gaps. Mark locally authored structured
+records as transcribed or derived; never claim recovery of an unseen original.
+A missing source stays unverified or an explicit synthetic assumption with a
+validity limit. Acceptance requires this track's actual outputs and tests.
+
 ## P0 — Define scope, taxonomy and input schemas
 
-- [ ] P0.1 Inventory every proposed ED pathway, resource, agent decision, spatial
-  feature and experiment/measurement control against E/Q/C specs; record enabled,
-  optional and deferred features and a gap list. Reconcile reports 5–8 by semantic
-  ID, preserving reconstructed versus original coverage and unresolved artifact access.
-  Record report 9 as a zero-crosswalk gap audit, not completed F3;
-  missing historical inventories cannot be reconstructed by matching headline counts.
+- [ ] P0.1 Reconcile the supplied report narrative and embedded tables/payloads
+  against every in-scope ED pathway, resource, agent decision, spatial feature and
+  experiment/measurement control. Create a canonical coverage/gap map with report
+  hash/section/line provenance; distinguish retained, merged, conflicting, deferred
+  and genuinely absent content. Reuse the completed embedded-content index.
+  Historical headline counts are not acceptance targets. F3's incomplete historical
+  crosswalk does not block a new scope-complete catalogue from supplied evidence.
 - [ ] P0.2 Define stable parameter IDs, catalogue/evidence/profile schemas, units,
   separate range classes and consumer mappings. Write invalid/unknown/provenance
   fixtures before the schema validator; agree interfaces with E0/C0 owners.
-- [ ] P0.3 Define reproducible source-search/extraction protocol and split DES/ABM
-  research into disjoint bounded packets with explicit outputs and review rules.
+- [ ] P0.3 Define source-verification/extraction protocol and split DES/ABM work
+  into bounded packets. Each starts with supplied content, traces claims to primary
+  sources, and searches only a recorded gap; specify outputs and review rules.
 - [ ] P0.4 Conductor — review and verify phase (workflow.md).
 
 Exit: P-R1 scope and schema contract accepted. Manual check: trace a patient and
@@ -26,11 +44,12 @@ staff task from arrival to disposition; every consumed input has a proposed ID.
 
 Entry: P0. May run alongside P2 and engine development.
 
-- [ ] P1.1 Search and extract public arrival/case-mix, pathway and hospital-boundary
-  inputs, source definitions/licences and suitable open model examples. Save
+- [ ] P1.1 Transcribe and verify supplied public arrival/case-mix, pathway and hospital-boundary
+  inputs, source definitions/licences and open model examples; search only
+  missing or conflicting evidence. Save
   citations, extraction locations and reproducible transforms, not just links.
   Catalogue specialty/time/calendar-conditioned ED-eligible bed-offer inputs and transfer delays separately from raw hospital discharge counts or sampled boarding times. Record offer persistence/withdrawal and hidden competing-demand assumptions; no universal default follows from report 29.
-- [ ] P1.2 Identify capacities/calendars, triage/clinical-work/diagnostic/cleaning/
+- [ ] P1.2 Verify supplied capacities/calendars, triage/clinical-work/diagnostic/cleaning/
   boarding durations, route probabilities and patience evidence. Separate active
   work from elapsed waits/transit; record population and observation limitations.
   Retrieve the Gerdtz/Bucknall triage table and IHACPA clinician-time report; distinguish
@@ -38,6 +57,7 @@ Entry: P0. May run alongside P2 and engine development.
 - [ ] P1.3 Populate DES records with evidenced ranges, candidate distributions,
   dependencies and explicit assumptions/gaps. Test units, provenance, probability
   sums and impossible combinations; independently review each source extraction.
+  For each empirical claim, record primary URL/DOI, edition/revision, page/table/field, population/period, units, licence, access date and transformation; link the report excerpt separately. Citation tokens alone are unresolved. Record verification outcome and reviewer.
 - [ ] P1.4 Conductor — review and verify phase (workflow.md).
 
 Exit: P-R2 DES evidence pack, with unknowns explicit. Manual check: reproduce a
@@ -47,12 +67,12 @@ source-derived record from its original table and transformation steps.
 
 Entry: P0; independent of P1 until the P3 join.
 
-- [ ] P2.1 Inventory staff/agent attributes, task priorities, zone/skill eligibility,
+- [ ] P2.1 Reconcile supplied staff/agent attributes, task priorities, zone/skill eligibility,
   interruption/switching/handover and shift/break behavior; identify public evidence
   or simple explicit rules, and where direct observation/elicitation is required.
   Specify eligible-action snapshots, persistent assignments, interruption ancestry,
   first subsequent task and eventual resumption; separate incoming prompts from switches.
-- [ ] P2.2 Source example spatial graphs/layouts, scale/connectivity, trips, speeds,
+- [ ] P2.2 Verify supplied spatial examples and fill gaps in graphs/layouts, scale/connectivity, trips, speeds,
   mobility/assistance and routing rules. Record per-agent/task variability and
   contextual effects; classify fatigue/congestion complexity as deferred or justified.
   Include movement modes, O/D purposes, graph revision/access restrictions, sensor
@@ -60,6 +80,7 @@ Entry: P0; independent of P1 until the P3 join.
 - [ ] P2.3 Populate ABM records and assumptions with ranges/distribution candidates,
   dependence and identification gaps. Test graph/unit consistency and rules against
   small hand-worked examples; flag overlap with DES work/wait durations for P3.
+  Use the same primary-source/provenance contract as P1.3; distinguish observed behavior, literature interpretation and chosen heuristic. Maintain a gap record with owner, acquisition route and impact; unsupported values cannot become empirical defaults.
 - [ ] P2.4 Conductor — review and verify phase (workflow.md).
 
 Exit: P-R2 ABM evidence pack. Manual check: explain every interval of one staff

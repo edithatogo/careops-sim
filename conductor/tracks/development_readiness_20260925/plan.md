@@ -9,6 +9,22 @@ assumed authority for unresolved contracts or acceptance decisions.
 Status: bootstrap slice implemented; remaining work planned. All phase completion
 requires [workflow](../../workflow.md), evidence and relevant upstream owner review.
 
+
+## Research already completed and remaining acceptance
+
+Completed: requested research responses received, duplicates reconciled, embedded
+material indexed and relevant findings incorporated into specifications/plans.
+See [research handoff](../../research/research-handoff.md) and its evidence links.
+This completed intake is distinct from the numbered implementation/qualification
+tasks below. No broad repeat search or separate-file recovery is a prerequisite.
+
+Remaining: reuse supplied tables, payloads and narrative; verify relevant primary
+sources/current source code, document citations and transformations, reconcile
+conflicts, and fill only demonstrated gaps. Mark locally authored structured
+records as transcribed or derived; never claim recovery of an unseen original.
+A missing source stays unverified or an explicit synthetic assumption with a
+validity limit. Acceptance requires this track's actual outputs and tests.
+
 ## D0 — Audit and context foundation
 
 - [x] D0.1 Inspect module/CI/toolchain boundaries; record readiness and live registry
@@ -19,6 +35,7 @@ requires [workflow](../../workflow.md), evidence and relevant upstream owner rev
   APIs. Test that missing prerequisite evidence blocks a readiness claim.
   Reconcile Kairos commit/date and Cargo/README versus LICENSE metadata
   using local objects; report 10 repository identity claims are not authoritative.
+  Consume reports 10/11/26/28 as completed research intake; verify each adopted capability/CI/harness claim against the current pinned source and document verified, contradicted or unresolved status.
 - [ ] D0.3 Define the ED-native support/release profile with 25/30 and independent
   review checklist; preserve upstream global publication holds. Record ADRs.
 - [ ] D0.4 Conductor — review and verify phase (workflow.md).

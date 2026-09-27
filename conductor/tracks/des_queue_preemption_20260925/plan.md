@@ -14,6 +14,22 @@ Programme prerequisites: D1 establishes reviewed toolchain/agent contracts befor
 Q0; D2 establishes useful remote CI before Q1 implementation. See
 [development readiness](../development_readiness_20260925/plan.md).
 
+
+## Research already completed and remaining acceptance
+
+Completed: requested research responses received, duplicates reconciled, embedded
+material indexed and relevant findings incorporated into specifications/plans.
+See [research handoff](../../research/research-handoff.md) and its evidence links.
+This completed intake is distinct from the numbered implementation/qualification
+tasks below. No broad repeat search or separate-file recovery is a prerequisite.
+
+Remaining: reuse supplied tables, payloads and narrative; verify relevant primary
+sources/current source code, document citations and transformations, reconcile
+conflicts, and fill only demonstrated gaps. Mark locally authored structured
+records as transcribed or derived; never claim recovery of an unseen original.
+A missing source stays unverified or an explicit synthetic assumption with a
+validity limit. Acceptance requires this track's actual outputs and tests.
+
 ## Q0 — Freeze contracts and compatibility decisions
 
 Entry: reviewed specification, current upstream source/registry refresh. This
@@ -26,6 +42,7 @@ phase resolves design details before shared code is changed.
   boundaries, completion-at-T behavior, cancellation/repriority order, victim
   ties, restart draw reuse and zero-time budgets in executable fixture specs.
   Reconcile report 27 against the local contract: reject shrink below active count, allow idle capacity zero, expire deadline-at-T before grant, complete at T before eviction, and reuse restart draws. Record deliberate SimPy differences; pin reference source before conformance scripts.
+  Use report 27 embedded matrix/timelines as completed research input; verify primary reference semantics and convert accepted cases into local executable oracles. No separate test_cases.json is required to begin.
 - [ ] Q0.3 Reserve Flow event-kind IDs without collisions; define lifecycle
   sidecar and snapshot extension with 01/04/22. Fix relevant stale contract
   links through their existing owners. Agree event/transition join semantics.

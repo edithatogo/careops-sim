@@ -18,6 +18,22 @@ the generic ED fixture delivered by E2, avoiding a second competing model. See
 [development readiness](../development_readiness_20260925/plan.md) and
 [generic ED delivery](../generic_ed_delivery_20260925/plan.md).
 
+
+## Research already completed and remaining acceptance
+
+Completed: requested research responses received, duplicates reconciled, embedded
+material indexed and relevant findings incorporated into specifications/plans.
+See [research handoff](../../research/research-handoff.md) and its evidence links.
+This completed intake is distinct from the numbered implementation/qualification
+tasks below. No broad repeat search or separate-file recovery is a prerequisite.
+
+Remaining: reuse supplied tables, payloads and narrative; verify relevant primary
+sources/current source code, document citations and transformations, reconcile
+conflicts, and fill only demonstrated gaps. Mark locally authored structured
+records as transcribed or derived; never claim recovery of an unseen original.
+A missing source stays unverified or an explicit synthetic assumption with a
+validity limit. Acceptance requires this track's actual outputs and tests.
+
 ## C0 — Data, fidelity and calibration contracts
 
 Entry: specification review and refresh of existing Kairos plans; queue Q0 API
@@ -40,6 +56,7 @@ contract available for cross-track review. No queue implementation needed yet.
   prespecified objective weights/scales, split strategy, numeric tolerances and
   inference validity rules. Record current Arrow dependency/MSRV compatibility
   options; resolve exact versions with 25/30 before adding dependencies.
+  Reuse reports 12/30 and prior embedded evidence; verify primary methods/standards and document exact mappings and gaps. Author local schemas/fixtures from supplied content rather than waiting for named download files.
 - [ ] C0.4 Conductor — review and verify phase (workflow.md).
 
 Exit: reviewed schemas/ADR/test oracles and library/CLI responsibility map.

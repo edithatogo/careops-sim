@@ -12,6 +12,22 @@ assumed authority for unresolved contracts or acceptance decisions.
 Every phase uses [workflow.md](../../workflow.md). Task-level acceptance below is
 mandatory; budgets/thresholds are frozen in E0/D3 before measuring acceptance.
 
+
+## Research already completed and remaining acceptance
+
+Completed: requested research responses received, duplicates reconciled, embedded
+material indexed and relevant findings incorporated into specifications/plans.
+See [research handoff](../../research/research-handoff.md) and its evidence links.
+This completed intake is distinct from the numbered implementation/qualification
+tasks below. No broad repeat search or separate-file recovery is a prerequisite.
+
+Remaining: reuse supplied tables, payloads and narrative; verify relevant primary
+sources/current source code, document citations and transformations, reconcile
+conflicts, and fill only demonstrated gaps. Mark locally authored structured
+records as transcribed or derived; never claim recovery of an unseen original.
+A missing source stays unverified or an explicit synthetic assumption with a
+validity limit. Acceptance requires this track's actual outputs and tests.
+
 ## E0 — Domain contract and minimal buildable skeleton
 
 Entry: D1 tool/compatibility decisions; can review domain details alongside Q0/C0.
@@ -25,6 +41,7 @@ Entry: D1 tool/compatibility decisions; can review domain details alongside Q0/C
   fields; specify assumptions for arrivals/acuity/work/diagnostics/boarding and
   generic layout. Define metric formulas, horizon/warm-up and release support.
   Freeze the report 29 boundary: finite destination-compatible ED-eligible bed offers, explicit offer lifetime/withdrawal and competing-demand assumptions, distinct ambulance arrival/triage/handover/offload/crew-release clocks. No full ward or fleet model is implied.
+  Reuse report 29 acceptance summaries and existing research tables; trace adopted domain claims through the shared P catalogue, document scenario assumptions, and source only demonstrated gaps.
 - [ ] E0.4 Conductor — review and verify phase (workflow.md).
 
 Exit: buildable skeleton and synthetic fixture unlock GitHub D2; not a full ED.
