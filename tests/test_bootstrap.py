@@ -83,8 +83,36 @@ class BootstrapTests(unittest.TestCase):
 
     def test_host_mapping_is_limited_to_supported_targets(self):
         self.assertEqual(bootstrap.detected_host("Darwin", "arm64"), "aarch64-apple-darwin")
-        self.assertEqual(bootstrap.detected_host("Linux", "x86_64"), "x86_64-unknown-linux-gnu")
+        self.assertEqual(bootstrap.detected_host("Linux", "x86_64", "glibc"), "x86_64-unknown-linux-gnu")
+        self.assertIsNone(bootstrap.detected_host("Linux", "x86_64", "musl"))
+        self.assertIsNone(bootstrap.detected_host("Linux", "x86_64", ""))
         self.assertIsNone(bootstrap.detected_host("Linux", "aarch64"))
+
+    def test_core_suite_checks_toolchain_then_runs_five_locked_packages(self):
+        with patch.object(bootstrap, "check") as check, \
+             patch.object(bootstrap, "KAIROS_PATH") as kairos, \
+             patch.object(bootstrap.subprocess, "run") as run:
+            kairos.__truediv__.return_value.is_file.return_value = True
+            run.return_value.returncode = 0
+            bootstrap.test_core()
+        check.assert_called_once()
+        command = run.call_args.args[0]
+        self.assertEqual(command[:5], ["rustup", "run", "1.98.1", "cargo", "test"])
+        self.assertIn("--locked", command)
+        self.assertEqual(
+            [command[index + 1] for index, value in enumerate(command[:-1]) if value == "-p"],
+            list(bootstrap.CORE_PACKAGES),
+        )
+        self.assertEqual(run.call_args.kwargs["cwd"], kairos)
+
+    def test_core_suite_reports_submodule_setup_instructions(self):
+        with patch.object(bootstrap, "check"), \
+             patch.object(bootstrap, "KAIROS_PATH") as kairos, \
+             patch.object(bootstrap.subprocess, "run") as run:
+            kairos.__truediv__.return_value.is_file.return_value = False
+            with self.assertRaisesRegex(bootstrap.BootstrapError, "git submodule update --init --recursive"):
+                bootstrap.test_core()
+            run.assert_not_called()
 
 
 if __name__ == "__main__":

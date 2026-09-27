@@ -13,19 +13,29 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_PATH = ROOT / "tools" / "bootstrap-profile.json"
+KAIROS_PATH = ROOT / "libs" / "kairos"
+CORE_PACKAGES = (
+    "kairo-ecs-core",
+    "kairo-ecs-state",
+    "kairo-ecs-rng",
+    "kairo-ecs-des",
+    "kairo-ecs-abm",
+)
 
 
 class BootstrapError(Exception):
     pass
 
 
-def detected_host(system=None, machine=None):
+def detected_host(system=None, machine=None, libc=None):
     system = system or platform.system()
     machine = (machine or platform.machine()).lower()
     if system == "Darwin" and machine in {"arm64", "aarch64"}:
         return "aarch64-apple-darwin"
     if system == "Linux" and machine in {"x86_64", "amd64"}:
-        return "x86_64-unknown-linux-gnu"
+        libc = (libc if libc is not None else platform.libc_ver()[0]).lower()
+        if libc == "glibc":
+            return "x86_64-unknown-linux-gnu"
     return None
 
 
@@ -101,14 +111,46 @@ def check(profile_path=PROFILE_PATH, host=None, rustup_path=None):
     print(f"Rust {version} ready for {host} (rustc and cargo verified via rustup).")
 
 
+def test_core(profile_path=PROFILE_PATH):
+    """Verify the pinned Rust tools, then run Kairos' locked core test suite."""
+    check(profile_path=profile_path)
+    cargo_manifest = KAIROS_PATH / "Cargo.toml"
+    if not cargo_manifest.is_file():
+        raise BootstrapError(
+            f"Kairos submodule is missing or uninitialized at {KAIROS_PATH}. "
+            "From the repository root, run 'git submodule update --init --recursive', "
+            "then rerun 'python3 tools/bootstrap.py --test-core'."
+        )
+
+    profile = json.loads(Path(profile_path).read_text(encoding="utf-8"))
+    toolchain = profile["rustup_toolchain"]
+    command = ["rustup", "run", toolchain, "cargo", "test", "--locked"]
+    for package in CORE_PACKAGES:
+        command.extend(("-p", package))
+    try:
+        result = subprocess.run(command, cwd=KAIROS_PATH, check=False)
+    except OSError as exc:
+        raise BootstrapError(f"Could not run pinned Cargo test suite: {exc}") from exc
+    if result.returncode:
+        raise BootstrapError(
+            f"Pinned Kairos core test suite failed with exit {result.returncode}."
+        )
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true", help="check the pinned toolchain")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--check", action="store_true", help="check the pinned toolchain")
+    group.add_argument(
+        "--test-core", action="store_true",
+        help="check the pinned toolchain and run the locked Kairos core tests",
+    )
     args = parser.parse_args(argv)
-    if not args.check:
-        parser.error("--check is required")
     try:
-        check()
+        if args.test_core:
+            test_core()
+        else:
+            check()
     except (BootstrapError, OSError, ValueError, KeyError) as exc:
         print(f"Rust toolchain check failed: {exc}", file=sys.stderr)
         return 1
