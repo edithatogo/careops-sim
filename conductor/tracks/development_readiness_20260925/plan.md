@@ -149,3 +149,13 @@ Entry: E4 hardened native v1 and D4; this optional extension cannot block v1.
 
 Exit: demonstrated maintenance loop with bounded cost and correct failures.
 Manual verification: pause and resume a job without duplicate edits or publication.
+
+## MVP gpt-6-luna workpack
+
+Every task in this track that is an ancestor of E2.4 is decomposed in the
+[MVP leaf recipes](../../execution/mvp/README.md) and
+[readable work breakdown](../../execution/mvp/work-breakdown.md). These recipes
+are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
+commands and reviewer acceptance before dispatch. Parent tasks close only after
+all leaf instances and the original phase acceptance pass. Post-MVP tasks are
+outside this workpack. No Luna execution or qualification is implied by coverage.

@@ -28,3 +28,10 @@ leaf dependencies, active-reservation checks and isolated target-repo worktrees.
 After plan changes run `python3 tools/tasks.py build`, inspect the catalog diff,
 then run the checks. Bind the inventory recipe only from a clean committed
 checkout; local packets/artifacts under `.artifacts/` are ignored by Git.
+
+## Complete MVP worker decomposition
+
+The [Luna MVP workpack](mvp/README.md) covers all 80 MVP parent tasks with 239
+bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind reviewed
+context/commands just before dispatch. No autonomous execution or model
+qualification is claimed.

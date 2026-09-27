@@ -113,3 +113,10 @@ the existing packet protocol: preflight and pre-acceptance hash checks, immutabl
 attempt lineage, no-skill controls, undisclosed evaluation variants and distinct
 false-pass denominators. Repeated fixture runs do not establish independent
 confidence observations. A worker cannot waive a deterministic gate.
+
+## Complete MVP worker decomposition
+
+The [Luna MVP workpack](execution/mvp/README.md) covers all 80 MVP parent tasks with 239
+bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind reviewed
+context/commands just before dispatch. No autonomous execution or model
+qualification is claimed.

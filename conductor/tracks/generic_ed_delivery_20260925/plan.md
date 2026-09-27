@@ -221,3 +221,13 @@ does not create later clinical-domain tracks. Manual verification: reproduce a
 network failure and recover or terminate as specified without duplicated patients.
 
 Later spatial capability and follow-on packet boundaries: [spatial plan](../../spatial-visualization.md).
+
+## MVP gpt-6-luna workpack
+
+Every task in this track that is an ancestor of E2.4 is decomposed in the
+[MVP leaf recipes](../../execution/mvp/README.md) and
+[readable work breakdown](../../execution/mvp/work-breakdown.md). These recipes
+are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
+commands and reviewer acceptance before dispatch. Parent tasks close only after
+all leaf instances and the original phase acceptance pass. Post-MVP tasks are
+outside this workpack. No Luna execution or qualification is implied by coverage.

@@ -4,6 +4,10 @@ Read `conductor/index.md`, then run `python3 tools/context.py resume`.
 Also read `conductor/execution-model.md` for serial/parallel scheduling and bounded
 worker packets; run `python3 tools/tasks.py check`.
 Read only the active task's spec, plan, ownership contract and relevant source.
+For MVP work, run `python3 tools/mvp.py check` and read only the selected leaf
+from `conductor/execution/mvp/recipes.json` via `tools/mvp.py show`. Prepare a
+reviewed bound packet with `tools/mvp.py prepare`; recipes are not execution
+authority and future commands must be resolved at dispatch.
 `conductor/current-state.json` records the next task; verify it against Git and
 source before resuming. It is context, not authority to mark work complete.
 

@@ -152,3 +152,13 @@ Entry: P4, E2 and C5. Feeds C6 validation; must not depend on C6 itself.
 Exit: P-R1–6 evidence for the declared scope; C6 may run final held-out model
 validation. Manual check: add a temporary unregistered config field and verify
 coverage fails, then remove it and reproduce the documented generic example.
+
+## MVP gpt-6-luna workpack
+
+Every task in this track that is an ancestor of E2.4 is decomposed in the
+[MVP leaf recipes](../../execution/mvp/README.md) and
+[readable work breakdown](../../execution/mvp/work-breakdown.md). These recipes
+are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
+commands and reviewer acceptance before dispatch. Parent tasks close only after
+all leaf instances and the original phase acceptance pass. Post-MVP tasks are
+outside this workpack. No Luna execution or qualification is implied by coverage.

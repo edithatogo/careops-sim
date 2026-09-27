@@ -232,3 +232,13 @@ C0 adds exact feature-minimal/MSRV/clippy and compatibility commands from existi
 owner gates. C5 freezes executable CLI reproduction commands in the fixtures.
 Each checkpoint stores logs, versions, hashes, tolerances, observed results and
 remaining limitations; planned commands alone are not test evidence.
+
+## MVP gpt-6-luna workpack
+
+Every task in this track that is an ancestor of E2.4 is decomposed in the
+[MVP leaf recipes](../../execution/mvp/README.md) and
+[readable work breakdown](../../execution/mvp/work-breakdown.md). These recipes
+are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
+commands and reviewer acceptance before dispatch. Parent tasks close only after
+all leaf instances and the original phase acceptance pass. Post-MVP tasks are
+outside this workpack. No Luna execution or qualification is implied by coverage.

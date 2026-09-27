@@ -216,6 +216,13 @@ def packet_errors(root, packet, check_git=True):
         source = target/path
         if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != expected:
             errors.append(f'Input hash drift: {path}')
+    for path, expected in packet.get('source_hashes', {}).items():
+        if not safe_relative(path) or not (root/path).is_file() or hashlib.sha256((root/path).read_bytes()).hexdigest() != expected:
+            errors.append(f'Cross-repository source hash drift: {path}')
+    if packet.get('context_budget_bytes'):
+        total = sum((target/path).stat().st_size for path in packet['context_paths'] if (target/path).is_file())
+        if total > packet['context_budget_bytes']:
+            errors.append('Bound context budget exceeded')
     for path in packet['write_paths']:
         if any(overlap(path, protected) for protected in packet['protected_paths']):
             errors.append(f'Protected write path: {path}')

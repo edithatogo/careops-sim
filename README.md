@@ -29,6 +29,7 @@ git submodule update --init --recursive
 python3 tools/context.py resume
 python3 tools/context.py check
 python3 tools/tasks.py check
+python3 tools/mvp.py check
 python3 -m unittest discover -s tests -v
 ```
 
@@ -40,3 +41,5 @@ supplied-evidence reconciliation. Read [AGENTS.md](AGENTS.md); use bounded packe
 and the [serial/parallel protocol](conductor/execution-model.md). Research has
 already been supplied; verify sources and fill specific gaps rather than rerunning
 broad research. See [handoff](conductor/research/research-handoff.md).
+
+For gpt-6-luna execution through the MVP, use the [complete leaf workpack](conductor/execution/mvp/README.md).

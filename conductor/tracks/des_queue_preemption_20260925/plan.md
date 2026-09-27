@@ -176,3 +176,13 @@ pwsh -File scripts/validate_conductor_dag.ps1
 Also run affected clippy/API/feature gates as required by upstream workflow.
 Record exact commands, versions, fixture seeds, output hashes and benchmark
 artifacts. A documentation checklist does not substitute for their execution.
+
+## MVP gpt-6-luna workpack
+
+Every task in this track that is an ancestor of E2.4 is decomposed in the
+[MVP leaf recipes](../../execution/mvp/README.md) and
+[readable work breakdown](../../execution/mvp/work-breakdown.md). These recipes
+are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
+commands and reviewer acceptance before dispatch. Parent tasks close only after
+all leaf instances and the original phase acceptance pass. Post-MVP tasks are
+outside this workpack. No Luna execution or qualification is implied by coverage.

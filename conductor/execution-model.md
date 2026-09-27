@@ -166,3 +166,10 @@ Use [the worker prompt](execution/worker-prompt.md),
 [phase decomposition guide](execution/decomposition.md). The output verifier is
 `tools/verify_inventory.py`; this tests source extraction, not model reasoning
 about architecture or actual simulation readiness.
+
+## Complete MVP worker decomposition
+
+The [Luna MVP workpack](execution/mvp/README.md) covers all 80 MVP parent tasks with 239
+bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind reviewed
+context/commands just before dispatch. No autonomous execution or model
+qualification is claimed.
