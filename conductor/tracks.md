@@ -1,6 +1,6 @@
 # Track registry
 
-- [ ] **DES queues and preemption** — `des_queue_preemption_20260925`
+- [~] **DES queues and preemption** — `des_queue_preemption_20260925`
   ([index](tracks/des_queue_preemption_20260925/index.md),
   [spec](tracks/des_queue_preemption_20260925/spec.md),
   [plan](tracks/des_queue_preemption_20260925/plan.md)). Proposed; upstream owner 03.
