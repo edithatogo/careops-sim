@@ -162,3 +162,9 @@ The existing 143-task DAG and phase gates are retained. Added objectives must be
 split into bounded leaf packets (one oracle/output each) before dispatch; research
 intake does not make long task descriptions safe single-worker packets. No task
 checkbox, current next-task, upstream completion status or parent pin is advanced.
+
+## Embedded-content clarification
+
+See the [content audit](embedded-content-audit.md): substantial tables, fixtures
+and payloads are already supplied inline. Missing standalone bundles do not
+justify treating that content as absent or requiring another upload.

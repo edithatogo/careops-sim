@@ -1,0 +1,9 @@
+| Stable ID | Inputs | Model output / validation target | Device suitability | Synthetic scenario range | Observed range |
+|---|---|---|---|---|---|
+| **K-ELT** | Dense SoA f32 arrays of predictions/reference values | Residuals, clamps, branch-light transforms | High | N = 4,096; 65,536; 1,048,576; 16,777,216 | **Unknown** |
+| **K-W1-PRESORT** | Two equal-length **already sorted** vectors | Scalar one-dimensional W1 | High for reduction; sorting explicitly excluded | Same N range | **Unknown** |
+| **K-KS-CDF** | Two already-built empirical CDF vectors | Scalar KS maximum distance | High for reduction | Same N range | **Unknown** |
+| **K-HIST** | Dense observations + fixed bin definition | Exact integer counts | Moderate/high; atomic contention is a useful stress case | N = 65,536 to 16,777,216; 64/256/1,024 bins | **Unknown** |
+| **K-SCAN** | Histogram/count vector | Prefix counts/CDF | Moderate; worthwhile only above dispatch overhead | 64 to 1,048,576 elements | **Unknown** |
+| **K-CAND** | Predictions/objective inputs for independent parameter candidates | Per-candidate calibration scores and ranking | High when simulation outputs already exist | 8/32/128 candidates × 4,096/65,536 observations | **Unknown** |
+| **K-SORT-FULL** | Unordered raw samples | Full W1/KS preparation + metric | Conditional | N = 4,096; 65,536; 1,048,576 | **Unknown** |

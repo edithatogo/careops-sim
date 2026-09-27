@@ -1,0 +1,47 @@
+```markdown
+# Decision memo: Kairos deterministic multicore / PDES / distributed execution
+
+Research date: 2026-09-27 Australia/Brisbane
+Inspected public Kairos head: fae901558f07b7b717a676adbafbe2cdc78dea1c
+Immediate parent: f26633f30bffc5c0e82717461d90bd13f8c58dc6
+Parent content separately inspected: no
+Private project attachments available: no
+
+## Decision
+
+1. Preserve the current serial authoritative-state/clock semantics as the reference oracle.
+2. Implement/evaluate independent replication parallelism before altering within-run scheduling.
+3. Give each replication a deterministic stream namespace independent of worker/thread placement.
+4. Define trace identity, state identity and statistical equivalence as distinct acceptance contracts.
+5. Do not enable conservative within-run PDES until mutable ownership and cross-LP event envelopes are explicit.
+6. Treat positive lookahead as unknown until proven from model semantics; zero lookahead is a required test.
+7. Start within-run work with real shared-memory threads and synthetic partitionable fixtures.
+8. Use coordinated safe-frontier checkpoints before considering asynchronous distributed snapshots.
+9. Make stable event IDs, deduplication, worker incarnation and sender sequence part of the distributed protocol before selecting transport.
+10. Defer cross-node within-run PDES until thread and localhost-process measurements show useful concurrency after synchronization costs.
+11. Do not infer or promise speedup from theoretical concurrency.
+12. Do not change queue/resource semantics or introduce cross-owner atomic bundles as part of this work.
+13. Do not approve a third-party runtime/package merely because it is its latest release; current release, MSRV/toolchain, licence, platform and Kairos compatibility require a separate primary-source check.
+
+## Equivalence policy
+
+EQ_TRACE:
+Canonical committed event trace is identical to the serial reference.
+
+EQ_STATE:
+Canonical state at agreed simulation frontiers is identical, while internal ordering may differ only under an explicitly reviewed independence/commutativity rule.
+
+EQ_STAT:
+Only predefined ensemble statistics agree. This is not sufficient to validate deterministic conservative PDES.
+
+Initial within-run PDES acceptance target: EQ_TRACE on focused fixtures.
+
+## Go/no-go criterion
+
+A PDES backend is not promoted merely because it is correct.
+Promotion requires both:
+- required deterministic/failure semantics; and
+- representative benchmark evidence that the additional complexity has a justified operational benefit.
+
+A slower but correct experiment is a legitimate no-go result.
+```

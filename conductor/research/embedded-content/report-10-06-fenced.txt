@@ -1,0 +1,226 @@
+```yaml
+schema_version: 1
+research_date: "2026-09-27"
+clinical_input_distributions: "none"
+notes:
+  - "All numeric benchmark parameters below are synthetic scenario values."
+  - "They are not observed ED values, fitted parameters, calibration bounds, or primitive service-time estimates."
+  - "Logical tick is a synthetic simulator time unit; no mapping to seconds/minutes is asserted."
+
+fixtures:
+  - id: FIX-REP-001
+    purpose: "Independent replication determinism under real thread scheduling"
+    evidence_class: policy
+    inputs:
+      replications:
+        value_class: synthetic
+        scenario_range: [1, 2, 4, 8, 16, 32]
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      worker_threads:
+        value_class: synthetic
+        scenario_range: [1, 2, 4, 8, 16]
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      seed_contract:
+        value_class: policy
+        value: "master_seed + stable replication_id namespace"
+    outputs:
+      - "canonical trace digest per replication"
+      - "canonical final-state digest per replication"
+      - "wall time"
+      - "CPU time"
+      - "peak RSS"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Each replication has the same trace digest regardless of worker count and scheduling."
+
+  - id: FIX-PDES-001
+    purpose: "Conservative LP ring with configurable certified positive lookahead"
+    evidence_class: synthetic
+    inputs:
+      topology:
+        value_class: synthetic
+        value: "directed ring"
+      logical_processes:
+        value_class: synthetic
+        scenario_range: [2, 4, 8, 16]
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      lookahead_ticks:
+        value_class: synthetic
+        scenario_range: [1, 2, 8, 32]
+        support: "integer >= 1 for this fixture"
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      cross_partition_event_probability:
+        value_class: synthetic
+        scenario_range: [0.01, 0.1, 0.5]
+        support: "[0,1]"
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+    outputs:
+      - "trace/state digests"
+      - "committed events/s"
+      - "cross-LP messages"
+      - "lower-bound/null messages"
+      - "blocked-safe-time fraction"
+      - "LP utilisation"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "No causality violation and serial-reference trace identity for deterministic fixture."
+
+  - id: FIX-PDES-002
+    purpose: "Zero-lookahead and same-timestamp cyclic interaction"
+    evidence_class: synthetic
+    inputs:
+      logical_processes:
+        value_class: synthetic
+        scenario_range: [2, 4, 8]
+      lookahead_ticks:
+        value_class: synthetic
+        value: 0
+        support: "{0}"
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      cross_partition_same_time_cycle:
+        value_class: synthetic
+        value: true
+    outputs:
+      - "progress/fallback mode"
+      - "trace digest"
+      - "deadlock diagnostic"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Must not advance unsafely; deterministic timestamp-closure/barrier or serial fallback is acceptable."
+
+  - id: FIX-OWN-001
+    purpose: "Partition ownership across queue/resource and agent handoff"
+    evidence_class: synthetic
+    inputs:
+      resource_owners:
+        value_class: policy
+        value: "exactly one LP owner per mutable resource/queue"
+      remote_direct_mutation:
+        value_class: policy
+        value: false
+      atomic_multi_resource_bundles:
+        value_class: policy
+        value: false
+    outputs:
+      - "owner invariant violations"
+      - "cross-owner envelopes"
+      - "trace digest"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Every mutation is applied by current owner; cross-owner effects are messages only."
+
+  - id: FIX-CKPT-001
+    purpose: "Coordinated checkpoint, crash and deterministic resume"
+    evidence_class: synthetic
+    inputs:
+      crash_points:
+        value_class: synthetic
+        values:
+          - "before checkpoint publication"
+          - "after checkpoint publication before next event"
+          - "after one post-checkpoint cross-LP send"
+      checkpoint_frontier:
+        value_class: policy
+        value: "globally safe coordinated frontier"
+    outputs:
+      - "checkpoint integrity result"
+      - "resumed trace digest"
+      - "final-state digest"
+      - "recovery wall time"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Successful resume reproduces uninterrupted reference; incomplete/corrupt checkpoint is rejected."
+
+  - id: FIX-DUP-001
+    purpose: "Duplicate, delayed, reordered and stale-incarnation messages"
+    evidence_class: synthetic
+    inputs:
+      duplicate_rate:
+        value_class: synthetic
+        scenario_range: [0.0, 0.01, 0.1]
+        support: "[0,1]"
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      reorder_enabled:
+        value_class: synthetic
+        value: true
+      stale_incarnation_injection:
+        value_class: synthetic
+        value: true
+    outputs:
+      - "delivered messages"
+      - "deduplicated messages"
+      - "rejected stale messages"
+      - "committed event count"
+      - "trace digest"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Retry/duplication causes one effect; obsolete-incarnation packets cause no effect."
+
+  - id: FIX-RNG-001
+    purpose: "Schedule-independent random-number addressing"
+    evidence_class: synthetic
+    inputs:
+      scheduling_perturbations:
+        value_class: synthetic
+        values:
+          - "worker-count variation"
+          - "yield insertion"
+          - "handler sleep/jitter"
+          - "task-order perturbation"
+      rng_address:
+        value_class: policy
+        value: "(master_seed, replication_id, entity/component, causal_event_id, purpose_id, draw_index)"
+    outputs:
+      - "random-address/value golden vectors"
+      - "trace digest"
+      - "final-state digest"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "Stable random address returns identical value regardless of execution worker/order."
+
+  - id: FIX-NODE-001
+    purpose: "Physical-node distributed failure/recovery experiment"
+    evidence_class: synthetic
+    prerequisites:
+      - "FIX-PDES-001 passes"
+      - "FIX-PDES-002 passes"
+      - "FIX-CKPT-001 passes"
+      - "FIX-DUP-001 passes"
+    inputs:
+      physical_nodes:
+        value_class: synthetic
+        scenario_range: [2, 4]
+        observed_range: unknown
+        parameter_uncertainty: not_applicable
+        calibration_bounds: not_applicable
+      faults:
+        value_class: synthetic
+        values:
+          - "worker termination"
+          - "message delay"
+          - "connection interruption"
+          - "old-worker packet replay"
+    outputs:
+      - "trace/state digest"
+      - "messages and bytes"
+      - "safe-time stalls"
+      - "checkpoint/recovery time"
+      - "wall time"
+    validation_targets:
+      equivalence: EQ_TRACE
+      requirement: "No commit past an unproven safe frontier; recovery either reproduces reference or fails explicitly."
+```

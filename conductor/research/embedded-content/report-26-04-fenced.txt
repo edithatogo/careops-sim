@@ -1,0 +1,9 @@
+```bash
+# PROPOSED / UNEXECUTED / harness not present in inspected commit
+cargo +1.93.0 run --release \
+  --manifest-path experiments/device-numeric-wgpu30/Cargo.toml -- \
+  --backend cpu-single,cpu-multicore,wgpu-metal \
+  --fixtures evaluation_fixtures.yaml \
+  --raw-out results/wgpu30_raw.jsonl \
+  --summary-out results/wgpu30_summary.csv
+```

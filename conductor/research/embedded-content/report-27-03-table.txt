@@ -1,0 +1,5 @@
+| Time | Active after event | Expected result |
+|---|---|---|
+| `3 [synthetic]` | A, B | temporary active count 2 > new capacity 1; **no forced preemption** |
+| `5 [synthetic]` | B | A completes; active count = capacity, so C remains queued |
+| `7 [synthetic]` | C | B completes; active count falls below capacity, so C is granted |

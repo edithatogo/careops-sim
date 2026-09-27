@@ -1,0 +1,10 @@
+| Element | Classification | Recommended treatment |
+|---|---|---|
+| Admission/transfer-ready state | **Source-backed fact + proposed choice** | Keep it endogenous to the ED journey. ACEM distinguishes admission from subsequent physical departure and describes admitted patients awaiting an inpatient bed as shared-care patients. citeturn18view0turn18view1 |
+| Boarding duration | **Inference / proposed choice** | Make it an **output**, from transfer-ready/admission state to physical ED departure. Do not sample it as a primitive delay in staffing/capacity experiments. |
+| Downstream supply | **Proposed choice** | Input a stream of one-unit **ED-eligible compatible bed offers**, not an unlimited pool and not raw discharge timestamps. |
+| Destination | **Proposed choice** | Give each boarder a destination class and each offer an offer class; match only through an explicit compatibility relation. |
+| Queue ordering | **Architecture-preserving choice** | Use existing Kairos queue semantics. This research adopts **no new FIFO, priority or scheduler rule**. |
+| ED location during boarding | **Source-backed fact + proposed choice** | Retain the occupied ED capacity until an explicit physical location transition. ACEM states ED responsibility extends until physical departure and defines overcrowding in terms of physical and/or staffing capacity, including patients waiting to depart. citeturn18view2 |
+| Bed release mechanism inside wards | **Deferred** | Do not model wards, elective arrivals, internal transfers, cleaning or ward discharge mechanisms in the minimum boundary. |
+| Early discharge/elective/ward clustering intervention | **Requires richer model for causal interpretation** | A minimum boundary may perturb the external offer stream as a labelled scenario, but cannot claim to have modelled the downstream mechanism. The published ward-level DES required wards, capacities, movements and competing elective flows to study those interventions. citeturn20view0turn20view3 |

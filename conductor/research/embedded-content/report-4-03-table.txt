@@ -1,0 +1,17 @@
+| Simulation concept | FHIR R4 | HL7 v2 | HL7 v3/RIM | OMOP | Terminology / coding | Residual gap |
+|---|---|---|---|---|---|---|
+| ED episode | `Encounter.identifier`, `status`, `period`, `class`, `location` | PV1/PV2 + ADT event | Encounter/Act | `VISIT_OCCURRENCE` | Local/national encounter codes | Minimal |
+| Age/sex/language | `Patient` | PID | Person/Patient role | `PERSON`, selected observations | AU demographic value sets | Indigenous status and gender semantics need AU-specific handling |
+| Presenting complaint | `Encounter.reasonCode`, Condition/Observation | PV2/OBX/local | Observation/Act | Observation/Condition source fields | **SNOMED CT-AU** preferred | Local presenting-complaint vocabularies may require mapping |
+| ATS category | Proposed coded Observation/profile | OBX/local profile | Observation Act | Observation/source concept | **Australian Triage Scale 1–5** | No universally sufficient core field; AU ATS profile/value set is recommended |
+| Diagnosis | Condition + Encounter diagnosis | DG1 | Observation/Condition Act | `CONDITION_OCCURRENCE` | **ICD-10-AM** and/or SNOMED CT-AU | Edition/version provenance essential |
+| Vital signs | Observation | OBX | Observation Act | `MEASUREMENT` | **LOINC + UCUM** | Minimal when source coding is sound |
+| Medication | MedicationRequest / Administration / Dispense | RX* | Substance administration Act | `DRUG_EXPOSURE` | **AMT/SNOMED CT-AU** | Workflow timing can be richer than OMOP drug exposure |
+| Diagnostic request/result | ServiceRequest + Specimen + Observation/DiagnosticReport | ORC/OBR/SPM/OBX | Act + relationships | Measurement/Specimen/Procedure | **LOINC**, SNOMED CT-AU, UCUM | Order→collection→result→ack timestamps incompletely retained in many warehouses |
+| ED location stay | `Encounter.location.period` + Location | PV1-3 / ADT transfer | Participation in place | `VISIT_DETAIL`, CARE_SITE, LOCATION | Local location codes | Physical/effective capacity history needs operations data |
+| Task ownership | Task.owner + execution period | PRT/ROL/local workflow | Participation | No direct native queue/task table | Staff-role vocabularies | Major OMOP operations gap |
+| Ambulance milestones | Encounter/Task extensions/profile | EMS/local/Z-segments | Acts | Source extension/event table | Ambulance operational code set | **Major gap**: arrival, handover, offload, responsibility transfer and crew release must remain distinct |
+| Bed capacity/state | Location operational status + extension/operational observations | Location master/local | Entity/Role | CARE_SITE/LOCATION plus external table | Local asset taxonomy | Nominal/open/staffed/equipped/compatible capacity not captured by ordinary clinical episode data |
+| Queue priority/pre-emption | Task partly represents realised workflow | Local | Act attributes only partly applicable | No native representation | Model namespace | **Model-only structural rule** |
+| Staff behavioural utility | No appropriate clinical field | None | No appropriate clinical field | None | Model namespace | **Do not force into SNOMED/ICD/LOINC** |
+| Simulation seed/warm-up | FHIR `Parameters` only if exchange is required | None | None | None | Model namespace | Pure simulation metadata |

@@ -1,0 +1,16 @@
+| Local data group | Essential fields / timestamps | FHIR target | HL7 v2/source target | OMOP target or limitation |
+|---|---|---|---|---|
+| Linkage/provenance | `patient_id_pseudo`, `ed_episode_id`, source system, raw timestamp, timezone/precision | Patient/Encounter identifiers, Provenance | PID-3, PV1-19, MSH/EVN metadata | `PERSON`, `VISIT_OCCURRENCE` plus ETL provenance |
+| ED clocks | presentation, registration start/end, triage start/end, first clinician, physical departure | Encounter/status history, Observation, Task | EVN/PV1 plus OBX/Z as locally profiled | Visit start/end; intermediate clocks usually source extensions |
+| Triage | ATS category, reassessments, assessor | Observation profile | OBX/local profile | Observation/source concept |
+| Location | location event ID/code/start/end | Encounter.location + Location | ADT transfer/PV1-3 | `VISIT_DETAIL`, CARE_SITE/LOCATION |
+| Diagnostic orders | order ID/code/time/priority | ServiceRequest | ORC/OBR | Clinical event plus source workflow |
+| Pathology | specimen collection, accession, processing/result release, acknowledgement | Specimen + Observation/DiagnosticReport + Task | SPM/OBR/OBX | `SPECIMEN`/`MEASUREMENT`; acknowledgement generally external |
+| Imaging | request, queue/start, acquisition end, report preliminary/final | ServiceRequest + ImagingStudy + DiagnosticReport | ORC/OBR/OBX | Procedure/measurement plus source workflow |
+| Consultation | request/start/end, specialty | ServiceRequest + Task/PractitionerRole | ORC/PRT/local | Source extension/provider linkage |
+| Admission/access block | admission decision, specialty acceptance, bed request, bed assignment, bed ready, ED departure, ward arrival | Encounter + ServiceRequest/Task + Location periods | ADT/workflow/local timestamps | Visit/Visit Detail plus source operations table |
+| Workforce | staff pseudonym, role/grade, planned/actual shift, breaks/absence, task owner/start/end | Practitioner/Role, Schedule, Task | STF/PRA/PRT + workforce feed | PROVIDER for identity; roster/task state is not naturally native |
+| Resources | resource ID/type, open/closed/cleaning state, staffed/equipped capacity, compatibility | Location/Device + operational extension | location/asset feed | External operations table |
+| Ambulance | ambulance case token, arrival, queue entry, handover start/end, physical offload, responsibility transfer, crew release | EMS Encounter/Task extensions | local EMS feed/Z-segments | Source event extension |
+| Inpatient boundary | ward/ICU bed state, non-ED demand, elective demand, discharge, cleaning, staff availability | Encounter + Location | ADT/location feeds | Visit Detail + external capacity |
+| Outcomes | disposition, LWBS, death, reattendance identifiers | Encounter/Patient | PV1/PV2/ADT | Visit/Death and longitudinal linkage |

@@ -51,3 +51,7 @@ are byte-identical to 12/11/10. See [decisions](../ed-research-incorporation-26-
 All listed themes now have narrative responses. Retrieve the linked artifact
 bundles and reconcile against local contracts before further broad research;
 no F3 completeness claim is possible without the actual inventories.
+
+The [embedded-content audit](../embedded-content-audit.md) supersedes blanket
+requests to retrieve bundles: use supplied inline material first, and identify
+specific missing content before any further research request.

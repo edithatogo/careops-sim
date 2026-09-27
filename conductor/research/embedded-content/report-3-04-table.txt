@@ -1,0 +1,14 @@
+| Actor and decision | Core baseline | Parameters needing local evidence | DES consequence |
+|---|---|---|---|
+| Patient: leave before assessment | competing time-to-event process while waiting | baseline hazard; effects of elapsed wait, ATS, case mix, crowding, time | cancel waiting state and depart |
+| Patient: leave/refuse after treatment starts | phase-specific cause-specific hazard or discrete decision points | local phase-specific coefficients | cancel permissible pending work; depart |
+| Clinician: next task | emergency override → ATS → longest waiting/FIFO within equal priority → continuity | alternative utility weights only if probabilistic behaviour needed | seize compatible resource bundle |
+| Coordinator: clinician assignment | compatibility + priority + continuity | local assignment preferences | clinician–patient binding |
+| Triage team: reassessment | event-driven on clinical change | local criteria/misclassification | priority update/escalation |
+| ED/QAS senior staff: ambulance escalation | Queensland 30-minute review/escalation structure | fidelity and local operational response | offload/escalation event |
+| Bed manager: allocate bed | feasible compatible set followed by priority/wait rule | specialty/compatibility priorities | bed reservation and transfer |
+| Operations manager: surge | local escalation state machine | local thresholds, response delay, persistence | capacity/roster/routing change |
+| Fast-track team: open/close | fixed-hours baseline; optional hysteretic queue rule | \(Q_{\rm on},Q_{\rm off}\), minimum open time | routing/capacity change |
+| Diagnostic service: job selection | clinical class then FIFO | local priority classes | begin test |
+| Inpatient team: discharge work | empirical readiness/task timing | local discharge behaviour | release bed after departure/cleaning |
+| Target-response behaviour | disabled in core model | only estimate if local data support discontinuity | optional routing/priority action |

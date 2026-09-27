@@ -1,0 +1,7 @@
+| Generic ED case | Clinical resource requirement | Q v1 assessment | Scoped approximation |
+|---|---|---|---|
+| Routine clinician assessment | treatment location + one clinician | **Fits** | None required. |
+| Routine boarder medication/observation job | current patient location + one nurse | **Fits**, when one nurse is the only constrained concurrent role | Generate recurrent jobs; do not seize one nurse continuously by default. |
+| Ambulance handover | destination space + receiving clinician/nurse while ambulance/crew remains committed | **Exact formulation can exceed Q v1** if ambulance/crew is also a schedulable resource | Keep `ambulance_held` as non-schedulable interface state; handover job uses destination capacity + one receiver. Valid only while ambulance fleet/paramedic contention is out of scope. |
+| Moderate/non-minimal procedural sedation | procedure location plus proceduralist, sedationist/competent assisting practitioner and at least one assistant concurrently | **Exceeds Q v1** | A composite `sedation_team` token can approximate throughput if the team is effectively dedicated, but cannot support role-specific staffing conclusions. |
+| Cardiac arrest/resuscitation | resuscitation location plus multiple concurrent roles/tasks | **Exceeds Q v1** | Composite `resuscitation_team` may be acceptable only for coarse occupancy/throughput experiments; exact role-level competition remains unsupported. |

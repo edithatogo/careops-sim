@@ -1,0 +1,15 @@
+```mermaid
+erDiagram
+    PATIENT ||--o{ ED_ENCOUNTER : has
+    ED_ENCOUNTER ||--o{ LOCATION_STAY : occupies
+    ED_ENCOUNTER ||--o{ CLINICAL_TASK : requires
+    ED_ENCOUNTER ||--o{ DIAGNOSTIC_REQUEST : generates
+    ED_ENCOUNTER ||--o| AMBULANCE_ATTENDANCE : may_arrive_by
+    ED_ENCOUNTER ||--o| INPATIENT_EPISODE : may_lead_to
+    PRACTITIONER ||--o{ ROSTER_SHIFT : works
+    PRACTITIONER ||--o{ CLINICAL_TASK : owns
+    RESOURCE ||--o{ RESOURCE_STATE : has_history
+    RESOURCE ||--o{ CLINICAL_TASK : constrains
+    DIAGNOSTIC_REQUEST ||--o{ RESULT_EVENT : produces
+    INPATIENT_EPISODE ||--o{ WARD_LOCATION_STAY : contains
+```

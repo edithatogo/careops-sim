@@ -1,0 +1,56 @@
+```yaml
+# PROPOSED SCHEMA — not an implemented Kairos capability
+packet_schema: "careops-worker-packet/v0"
+packet_id: "PKT-..."
+packet_digest: "sha256:<computed-before-launch>"
+
+repository:
+  url: "https://github.com/edithatogo/kairos"
+  base_sha: "<40-hex immutable commit>"
+  expected_integration_head: "<40-hex or explicit policy>"
+
+task:
+  statement: "<bounded task>"
+  owned_paths: ["<glob-or-path>"]
+  blocked_paths: ["<glob-or-path>"]
+
+dependencies:
+  - dependency_id: "<stable-id>"
+    accepted_commit: "<commit-or-null>"
+    artefact_sha256: "<sha256-or-null>"
+    semantic_role: "<why required>"
+    units: "<units-or-N/A>"
+
+required_inputs:
+  - path: "<path>"
+    sha256: "<digest>"
+    role: "<input role>"
+    units: "<units-or-N/A>"
+
+skills:
+  - source_repository: "<exact repo URL>"
+    commit: "<immutable commit>"
+    path: "<SKILL.md path>"
+    blob_or_content_sha256: "<digest>"
+
+execution:
+  model: "<exact provider model ID>"
+  model_snapshot: "<snapshot if provider exposes one; otherwise unknown>"
+  reasoning_effort: "<declared>"
+  network: "deny|allow-listed"
+  package_install: "deny|allow-listed"
+  allowed_commands: ["<exact or patterned commands>"]
+  budget:
+    max_tokens: "<policy or unknown>"
+    max_cost: "<policy or unknown>"
+    max_wall_seconds: "<policy or unknown>"
+
+acceptance:
+  visible_gates: ["<gate IDs>"]
+  hidden_oracle_id: "<not worker-readable>"
+  required_outputs: ["<artefact IDs>"]
+
+lineage:
+  parent_packet_id: null
+  repair_of_run_id: null
+```

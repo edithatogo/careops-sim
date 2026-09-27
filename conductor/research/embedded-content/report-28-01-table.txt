@@ -1,0 +1,17 @@
+| Priority | Control | Specific risk | Relative execution cost* | Recommended gate |
+|---|---|---|---|---|
+| **Critical** | Verify parent gitlink/submodule SHA and cleanliness | Testing the wrong Kairos revision | Low | **D2/R2 blocking** |
+| **Critical** | Execute the declared Rust **1.76 MSRV** | Silent break of supported compiler contract | Medium | **D2/R2 blocking** |
+| **Critical** | Baseline fmt/clippy/test/docs with locked resolution | Ordinary regressions/toolchain drift | Medium | **D2/R2 blocking** |
+| **Critical** | Deterministic trace/replay invariants | Scientifically non-reproducible DES/ABM outputs | Low–Medium | **D2/R2 blocking** |
+| **Critical** | Run full `cargo-deny` licence/bans/advisory/source policy | Licence or dependency-policy violations escape CI | Low–Medium | **D2/R2 blocking** |
+| **Critical** | Enforce full 40-hex action SHAs and least privilege | Mutable action/supply-chain compromise | Low | **D2/R2 blocking** |
+| High | Bounded Cargo feature matrix | Optional features compile only in `all-features` combination | Medium–High | R2 → R3 blocking |
+| High | Property/generative invariants | Scheduler/state edge cases | Medium | R2/R3 |
+| High | Real Arrow IPC cross-implementation tests | False claim of Arrow interoperability | High | **R3 blocking before Arrow claim** |
+| High | Fixed, persistent fuzz campaign | FFI/parser crash/security defects | High | R3 scheduled; R4 critical-target gate |
+| High | Selective Miri and ASan | UB/native-boundary defects | Medium–High/High | R3 scheduled; selected R4 gate |
+| High after API baseline | SemVer checking | Accidental public API break | Medium | R3 informational → R4 blocking |
+| Medium–High | Mutation testing | Tests that execute code without detecting meaningful faults | Very high | R3 scheduled → R4 ratchet |
+| **Critical at release** | Artefact-bound SBOM/provenance plus verification | Attesting the wrong or stale bytes | Medium | **R4 mandatory** |
+| **Critical at release** | Clean, reproducible release + rollback drill | Non-reproducible artefacts or impossible “rollback” assumptions | High | **R4 mandatory** |

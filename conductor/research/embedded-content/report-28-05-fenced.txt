@@ -1,0 +1,10 @@
+```bash
+expected="$(git ls-tree "$PARENT_SHA" "$KAIROS_PATH" | awk '{print $3}')"
+actual="$(git -C "$KAIROS_PATH" rev-parse HEAD)"
+test -n "$expected"
+test "$actual" = "$expected"
+
+test -z "$(git submodule status --recursive | grep -E '^[+\-U]')"
+git -C "$KAIROS_PATH" diff --exit-code
+git -C "$KAIROS_PATH" diff --cached --exit-code
+```

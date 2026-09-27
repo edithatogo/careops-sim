@@ -105,3 +105,9 @@ No plan checkbox or acceptance gate has been closed by document incorporation.
 
 [Reports 9–12](ed-research-incorporation-9-12-20260927.md) add the F3 gap audit,
 parallel runtime, worker harness and calibration-method findings.
+
+## Embedded-content clarification
+
+See the [content audit](embedded-content-audit.md): substantial tables, fixtures
+and payloads are already supplied inline. Missing standalone bundles do not
+justify treating that content as absent or requiring another upload.

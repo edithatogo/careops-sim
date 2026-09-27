@@ -1,0 +1,6 @@
+| Time | Event | Allocation after event | Hand calculation | Expected logical notification |
+|---|---|---|---|---|
+| `0 [synthetic]` | A granted | A | remaining = 10 | `Granted(A)` |
+| `4 [synthetic]` | B preempts A | B | A elapsed = `4−0=4`; A remaining = `10−4=6` | `Preempted(A, Suspend, elapsed=4, remaining=6)` |
+| `7 [synthetic]` | B completes | A resumes | B elapsed = 3; A still has 6 | `Completed(B)`, `Granted(A, remaining=6)` |
+| `13 [synthetic]` | A completes | none | resumed A elapsed = 6; total useful A work = 10 | `Completed(A)` |

@@ -1,0 +1,12 @@
+| Component | DES representation | ABM representation | Important shared state |
+|---|---|---|---|
+| Arrival and triage | arrival process, triage queue, triage service | usually none | age, ATS, complaint, arrival mode |
+| Ambulance interface | ambulance queue, offload positions, handover, crew release | escalation/coordination if required | elapsed POST, clinical priority, ED capacity |
+| ED assessment | queues, clinician tasks, treatment spaces | optional clinician task selection | current clinician, patient state, priority |
+| Diagnostics | order, collection, transport, machine/lab queue, result | usually none | outstanding tests, result state |
+| Consultation | request queue and response | optional specialty acceptance/prioritisation | consultation state |
+| Patient waiting | elapsed time and queue position | leave/stay/refusal decisions | perceived wait, actual wait, clinical state |
+| Admission | decision event, specialty queue, bed request | bed-manager allocation if material | specialty, compatibility, bed state |
+| Boarding | retained ED resources until departure | optional escalation decisions | inpatient status, occupied ED space |
+| Inpatient boundary | wards, competing admissions, LOS, discharge and cleaning | optional bed-management decisions | staffed beds and compatibility |
+| Measurement | observed timestamp-generation process | none | true time versus recorded time |

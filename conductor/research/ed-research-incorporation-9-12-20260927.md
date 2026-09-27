@@ -146,3 +146,9 @@ repeat broad F3 research without supplying actual files. R8b/R8c and R4 now have
 research responses; R5/R6/R7/R8a/R8d remain separate research options. No track
 checkbox changes. New task text is still bounded/split through the existing worker
 packet protocol before execution.
+
+## Embedded-content clarification
+
+See the [content audit](embedded-content-audit.md): substantial tables, fixtures
+and payloads are already supplied inline. Missing standalone bundles do not
+justify treating that content as absent or requiring another upload.

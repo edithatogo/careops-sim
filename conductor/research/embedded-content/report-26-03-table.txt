@@ -1,0 +1,8 @@
+| Contract class | Required behaviour |
+|---|---|
+| **D0 — authoritative exact state** | Event timestamps in their approved representation, sequence/tie-break keys, entity/resource identifiers, queue/resource decisions, run/seed identity and RNG stream/state remain exact and CPU-authoritative. |
+| **D1 — exact integer numeric outputs** | Histogram counts, scans of integer counts and similar kernels must agree exactly when overflow is excluded. |
+| **D2 — floating elementwise outputs** | Compare with a declared CPU reference using max absolute error, max relative error and, for f32 diagnostics, ULP error. Cross-device bit identity is diagnostic only. |
+| **D3 — reductions and calibration objectives** | Compare W1/KS/objective differences against a CPU f64 reference where applicable; enforce mathematical invariants and record error as a function of N. |
+| **D4 — decision stability** | Calibration acceleration must record ranking correlation, winning-candidate identity and threshold flips. A numerically “small” objective difference is not sufficient if it changes the selected parameter set. |
+| **D5 — repeated execution** | Repeat identical fixtures on a fixed backend/device; exact outputs must hash identically where exactness is required, while floating repeatability is recorded rather than assumed. |

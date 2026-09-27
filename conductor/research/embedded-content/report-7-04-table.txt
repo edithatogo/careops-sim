@@ -1,0 +1,19 @@
+| CareOps semantic event/field | Australian canonical source | FHIR/AU Core candidate | HL7 v2 candidate | OMOP candidate | Key caveat |
+|---|---|---|---|---|---|
+| Patient identity | Local identifier/IHI linkage where available | `Patient.identifier` | `PID-3` | `PERSON.person_id` | Pseudonymise before simulation use |
+| ED episode | ED stay/episode identifier | `Encounter.identifier` | visit-number/profile field | `VISIT_OCCURRENCE` | Preserve source-to-simulation key mapping |
+| Presentation | ED presentation date/time | `Encounter.period.start` candidate | ADT/PV1 event context | `visit_start_datetime` | Local Encounter-start semantics must be checked |
+| Clinical-care commencement | NAPEDC clinical-care commencement | Explicit operational event; `Task.executionPeriod.start` only where semantically valid | Often workflow/Z-profile specific | **No lossless generic field** | Do not equate it automatically with encounter start |
+| Physical ED departure | NAPEDC physical departure | `Encounter.period.end` or final location-period end if validated | ADT discharge/transfer event | `visit_end_datetime` plus raw event | Preserve the physical timestamp separately |
+| Triage | ATS/NAPEDC 1–5 | Explicit coded priority/profile | Often PV2/local Z-field | Sidecar/Observation/source field | Generic “priority” is not necessarily ATS |
+| Arrival mode | NAPEDC arrival mode | Local extension/Observation likely | Interface-profile specific | Sidecar/Observation | No universal one-field crosswalk |
+| Current physical location | Local ED location history | `Encounter.location` + period / `Location` | `PV1-3` | `VISIT_DETAIL`/`CARE_SITE` | Need longitudinal moves, not final location alone |
+| Clinician participation | Local provider assignment | `Encounter.participant`, Practitioner/Role | provider fields such as `PV1-7` where used | `PROVIDER` plus event relation | Visit-level attending clinician is insufficient |
+| Diagnosis | ED principal/additional diagnosis | `Condition` / Encounter diagnosis | `DG1` | `CONDITION_OCCURRENCE` | Final diagnosis must not leak backwards into agent knowledge |
+| Investigation request | Source order | `ServiceRequest` | `ORC` + `OBR` | Clinical event tables + raw workflow | Order lifecycle is not losslessly represented by result alone |
+| Active work interval | Local task event | `Task.executionPeriod` when implemented | Workflow-specific messages/Z-segments | **Operational sidecar recommended** | Essential for primitive DES task times |
+| Vital/pathology result | Source Observation/LIS event | `Observation` | `OBX`/`OBR` | `MEASUREMENT` | Observation, collection and issue times differ |
+| Procedure | Source procedure event | `Procedure` | procedure-specific messages | `PROCEDURE_OCCURRENCE` | Operational substeps may not be clinical procedures |
+| Indigenous status | Australian Indigenous Status | AU Core Patient extension | Local implementation | Source/Observation mapping | Preserve not-stated values and governance |
+| Planned disposition | Local clinical workflow state | CarePlan/Task/extension depending system | Local workflow/Z-field | Sidecar/Observation | **Not the same as final disposition** |
+| Realised disposition | NAPEDC episode-end status | Encounter disposition + explicit mapping | ADT/discharge mapping | discharge source/concept fields | Downstream outcome in predictive simulation |

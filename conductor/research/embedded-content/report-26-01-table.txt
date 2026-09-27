@@ -1,0 +1,10 @@
+| Candidate | Integration class | Current compatibility finding | ED assessment |
+|---|---|---|---|
+| **OPT-WGPU-30** | Native Rust host API + WGSL; Metal through wgpu | **Published:** v30.0.1; MSRV 1.93 vs Kairos 1.76. citeturn19search0 fileciteturn6file0L2-L2 | **Proposed policy:** primary benchmark candidate; isolate the experiment until MSRV is reviewed. |
+| **OPT-WGPU-23** | Native Rust host API + WGSL | **Published:** v23.0.1 MSRV 1.76. fileciteturn9file0L2-L2 | **Proposed policy:** compatibility/control probe only, not preferred production pin. |
+| **OPT-MLX-C** | Rust→C FFI→C++ MLX→Metal | **Observed:** inspected mlx-c 0.6.0 source pins MLX 0.32.2. fileciteturn20file0L2-L6 | **Proposed policy:** secondary Apple-Silicon comparator. |
+| **OPT-MLX-RS** | Rust API over FFI/native MLX | **Published:** v0.32.0, MSRV 1.88. fileciteturn23file0L2-L6 fileciteturn24file0L2-L6 | **Proposed policy:** ergonomic comparator; not architectural replacement. |
+| **OPT-CUBECL** | Rust kernel DSL/JIT targeting several backends | **Published:** v0.10.0, MSRV 1.92, edition 2024, wgpu 29. fileciteturn16file0L2-L6 | **Proposed policy:** defer until custom-kernel volume justifies another compiler/runtime layer. |
+| **OPT-CANDLE** | Native Rust tensor/ML framework with Metal backend | **Observed/published:** Candle 0.11.0; inspected workspace does not declare a root `rust-version`; Metal dependencies are present. fileciteturn31file0L2-L6 citeturn18search8 | **Proposed policy:** defer; no demonstrated advantage for these ED kernels. |
+| **OPT-OBJC2-METAL** | Rust bindings to Objective-C Metal + MSL | **Published:** objc2-metal 0.3.2 declares Rust 1.71 and Zlib OR Apache-2.0 OR MIT. citeturn18search2 | **Proposed policy:** direct-Metal escape hatch only if measured wgpu overhead is material. |
+| **OPT-METAL-RS** | Legacy Rust Metal bindings | **Published:** current repository explicitly marks the crate deprecated. citeturn18search5 | **Proposed policy:** reject for new integration. |

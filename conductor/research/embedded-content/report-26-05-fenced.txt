@@ -1,0 +1,10 @@
+```bash
+# PROPOSED / UNEXECUTED / MLX comparator harness not present
+export MLX_ENABLE_TF32=0
+cargo +1.88.0 run --release \
+  --manifest-path experiments/device-numeric-mlx/Cargo.toml -- \
+  --backend cpu-single,cpu-multicore,mlx-gpu \
+  --fixtures evaluation_fixtures.yaml \
+  --raw-out results/mlx_raw.jsonl \
+  --summary-out results/mlx_summary.csv
+```
