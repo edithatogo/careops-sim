@@ -36,10 +36,15 @@ currently name Rust 1.95 as stable, predating this September 2026 evidence.
    candidate is adopted, isolate it in the relevant tool/config package and
    declare/test the minimum consumer floor (candidate 1.85).
 4. Do not make Rayon a required DES/ABM runtime dependency or use it to reorder
-   within-run events. Retain deterministic scheduling semantics. Decide whether
-   to constrain Criterion's benchmark-only transitive graph to compatible
-   versions or formally scope a higher unpublished benchmark-tool floor only
-   after reproducing the chosen resolution at the stated minimum.
+   within-run events. Retain deterministic scheduling semantics. The preferred
+   benchmark-only fix is the tested lock-only compatibility resolution
+   (`clap`/`clap_builder` 4.5.58, `clap_derive` 4.5.55, `clap_lex` 1.0.1,
+   `anstream` 0.6.21, `anstyle-parse` 0.2.7), which passed the full default-
+   feature 24-member workspace tests (228 tests) on Rust 1.76.0 using the
+   scratch lock, and on Rust 1.98.1 using the original lock, both from the
+   pinned Kairos source. Apply it only after owner review. If rejected, owners
+   must approve an explicit unpublished benchmark-tool floor and its support
+   boundary.
 5. Define two separate dependency lanes: a locked tested stable integration
    baseline and a dated advisory canary, each with exact Rust/dependency
    versions, target/features and captured results. Registry latest is never a
@@ -53,8 +58,8 @@ This is a decision proposal, not authorization to change the Kairos submodule.
 Before implementation, record Track 13/25/30/04 owner review and resolve:
 
 - whether Rust 1.76 covers benchmark/dev targets or only published runtime;
-- whether to pin a compatible Criterion/Clap graph or declare a scoped
-  unpublished tool-only floor;
+- whether to accept the tested lock-only Criterion/Clap graph resolution or
+  declare a scoped unpublished tool-only floor;
 - which Kairos package owns Arrow IPC/Parquet and the accepted MSRV;
 - whether the tested Rust 1.98.1 pin replaces the stale 1.95 stable selector,
   and what date/criteria govern the canary lane; and
