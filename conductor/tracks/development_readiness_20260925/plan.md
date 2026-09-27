@@ -38,6 +38,7 @@ validity limit. Acceptance requires this track's actual outputs and tests.
   Consume reports 10/11/26/28 as completed research intake; verify each adopted capability/CI/harness claim against the current pinned source and document verified, contradicted or unresolved status.
 - [ ] D0.3 Define the ED-native support/release profile with 25/30 and independent
   review checklist; preserve upstream global publication holds. Record ADRs.
+  Classify every capability as MVP, native v1 or post-v1 per the delivery contract. Do not require CAD/UI/Wasm/device/network backends or optional repair automation for native acceptance.
 - [ ] D0.4 Conductor — review and verify phase (workflow.md).
 
 Exit: reviewed dependency closure, reproducible context recovery, no false G0 claim.
@@ -133,6 +134,8 @@ Exit: verifiable release candidate evidence, no unresolved critical release risk
 Manual verification: independent install and attestation/checksum verification.
 
 ## D5 — Bounded maintenance automation
+
+Entry: E4 hardened native v1 and D4; this optional extension cannot block v1.
 
 - [ ] D5.1 Add schedules only after CI is reliable: version freshness, documentation
   drift, dependency groups and extended tests. Validate no-change silence,

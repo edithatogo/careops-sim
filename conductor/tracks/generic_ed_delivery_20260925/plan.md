@@ -38,6 +38,7 @@ Entry: D1 tool/compatibility decisions; can review domain details alongside Q0/C
   dependency and locked builds; define public API/errors, time units and profile
   schema. Keep domain/site/presentation distinct. One-patient example must run.
   Define minimal location/zone IDs, capacity/resource bindings and optional route distances with P0. Defer geometry import, visual-asset schemas and UI protocols to E5; do not build a spatial platform for the skeleton.
+  Freeze actual MVP runner/config/output paths and commands with a minimal serial executable example; make units, defaults and errors discoverable. The initial example must not depend on full calibration fitting or UI infrastructure.
 - [ ] E0.3 Inventory public sources/open examples, exact revisions/licences and
   fields; specify assumptions for arrivals/acuity/work/diagnostics/boarding and
   generic layout. Define metric formulas, horizon/warm-up and release support.
@@ -80,6 +81,7 @@ trace a patient through every pathway and reconcile event times with its summary
   censoring, or movement driven by animation time. Make this the shared C6 fixture.
   Cover report 29 ST001–ST009: compatible/unused offers, retained occupancy/care, saturated offload and receiver-staff sensitivity, unsupported multi-role tasks and prohibited causal ward-policy claims. No unsupported deterioration hazard is an implicit default.
   Deliver a documented headless MVP scenario with configurable bed/staff counts and named locations, fixed-seed repeatability, patient/capacity conservation and basic wait/throughput/occupancy tables. No visual or CAD dependency; this is not completed calibration/release qualification.
+  Exercise the delivery-contract MVP recipe: validate and run nominal/constrained scenarios from config without code edits, write basic CSV/JSON summaries and manifest, reject malformed input, and demonstrate a hand-checked capacity change. Basic runner here precedes E3; no C3–C6 completion gate for this MVP.
 - [ ] E2.4 Conductor — review and verify phase (workflow.md).
 
 Exit: E-R2/3; C6 can calibrate/validate the actual generic model. Manual check:
@@ -92,6 +94,7 @@ Entry: C5. Owners parent ED adapter plus upstream 22/04/01.
 - [ ] E3.1 Write public API/CLI tests for validate/run/compare/export, cancellation,
   malformed config, deterministic error codes, output overwrite protection,
   disk-full/interrupted output, seed/replication allocation and crash recovery.
+  Test validate/run/compare/export exit codes and help from a fresh-user walkthrough; include reference scenario selection, overrides, missing files and bounded output. Compare matching metrics with units, denominators, replication uncertainty and incompatible-scenario diagnostics.
 - [ ] E3.2 Integrate existing runner/scenario formats, independent CPU workers,
   checkpointing and progress. Write artifacts atomically; a partial run is clearly
   incomplete and cannot be mistaken for a valid finished experiment.
@@ -99,6 +102,7 @@ Entry: C5. Owners parent ED adapter plus upstream 22/04/01.
   censored/unfinished counts and complete provenance; test 1/2/N workers and
   checkpoint equivalence through ED+queue+calibration state.
   Persist spatial revision and sufficient location/transit records for spatial summaries and later replay; distinguish observed, simulated and interpolated positions. Do not assume scheduler logs alone encode trajectories.
+  For v1 persist ordinary state/route provenance needed for reproducibility; defer visualization-specific delta protocols, replay indexing/player and asset serving to E5.
 - [ ] E3.4 Conductor — review and verify phase (workflow.md).
 
 Exit: E-R4/5 and reproducible usable headless API. Manual check: cancel/resume a
@@ -117,6 +121,7 @@ Entry: Q5, C6, E3 and D3/D4 release evidence.
 - [ ] E4.3 Publish executable docs/examples and migration/support tables; package
   dry-run and test from a clean downstream Rust project at promised toolchains.
   Verify release evidence, dependency pins, licences/SBOM and restore/rollback.
+  Qualify hardened native v1 against the delivery contract: a fresh user installs, edits a documented scenario, runs/compares/exports and troubleshoots an intentional input error without author assistance or Rust edits. Record actual commands, outcomes, support limits and unresolved release blockers.
 - [ ] E4.4 Conductor — review and verify phase (workflow.md).
 
 Exit: G1 complete only after evidence; no production/Cairns validity assertion.

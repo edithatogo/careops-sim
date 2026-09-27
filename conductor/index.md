@@ -41,3 +41,9 @@ Current status and execution order: [research handoff](research/research-handoff
 Later capability: [spatial capture, shared floor plan and live state sync](spatial-visualization.md).
 
 Additional design review: [CAD, operational capacity and replay](research/cad-replay-appraisal.md).
+
+## Authoritative delivery sequence
+
+[Functional MVP → hardened native v1 → extensions](delivery-contract.md) defines the
+required features and acceptance recipes. E2 is the functional headless MVP; E4
+is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.

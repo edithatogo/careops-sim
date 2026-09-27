@@ -83,3 +83,9 @@ not E5 visualization. Bed/staff capacity and minimal locations/routes remain cor
 inputs; visual assets, CAD/capture and WebSocket UI follow later. E3 and native
 qualification evolve this working baseline without implying the early MVP meets
 all release or empirical-validation gates.
+
+## Authoritative delivery sequence
+
+[Functional MVP → hardened native v1 → extensions](../delivery-contract.md) defines the
+required features and acceptance recipes. E2 is the functional headless MVP; E4
+is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.

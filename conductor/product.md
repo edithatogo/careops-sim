@@ -55,3 +55,9 @@ and simple route distances support spatial behavior as needed. Visual floor plan
 CAD/capture, animation, spatial overlays and WebSocket UI integration come later.
 E1/E2 provide runnable slices; E3 evolves usability, and C6/D4/E4 harden/qualify
 the library. E5 is a later interface milestone, not the first point of usefulness.
+
+## Authoritative delivery sequence
+
+[Functional MVP → hardened native v1 → extensions](delivery-contract.md) defines the
+required features and acceptance recipes. E2 is the functional headless MVP; E4
+is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.

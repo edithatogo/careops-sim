@@ -1,0 +1,52 @@
+{
+  "date": "2026-09-27",
+  "cwd": "/Users/doughnut/Documents/careops-sim",
+  "base_commit": "61311555a543c08efff2a90e5ddb70cc9522387f",
+  "scope": "Repository/planning and delivery-stage harness audit; no native runtime acceptance",
+  "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "commands": [
+    {
+      "command": "python3 tools/tasks.py build",
+      "exit": 0
+    },
+    {
+      "command": "python3 tools/context.py check",
+      "exit": 0
+    },
+    {
+      "command": "python3 tools/tasks.py check",
+      "exit": 0
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "exit": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    },
+    {
+      "command": "git submodule status",
+      "exit": 0
+    },
+    {
+      "command": "git remote -v",
+      "exit": 0
+    }
+  ],
+  "results": {
+    "tasks": 143,
+    "milestones": 34,
+    "tests_passed": 33,
+    "parent_remotes": 0,
+    "git_initialized": true,
+    "MVP_runtime": "not implemented",
+    "native_v1": "not implemented",
+    "hosted_CI": "deferred to D2"
+  },
+  "input_hashes": {
+    "conductor/delivery-contract.md": "122407c055b7245905521f7008400ed831880aeae17c14c9e9cebf64fd74eb0e",
+    "conductor/execution/tasks.json": "5584d8f9fc2e1cf8cdccd65e142236c712f2533a80851778252c7e11cd50da8a",
+    "tests/test_tasks.py": "fe353b41836b19efe35b6302538e12ac5d5505d3637e065c27b4ddcc93132608"
+  }
+}

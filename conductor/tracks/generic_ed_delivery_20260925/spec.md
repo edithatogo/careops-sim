@@ -107,3 +107,9 @@ E3 improves the runner/API/exports and recovery, and C6/D4/E4 qualify calibratio
 and the hardened native library. Early usable examples do not claim those later
 gates complete. Existing prerequisites remain; presentation cannot block native
 acceptance. Implement the smallest supported model first and evolve it.
+
+## Authoritative delivery sequence
+
+[Functional MVP → hardened native v1 → extensions](../../delivery-contract.md) defines the
+required features and acceptance recipes. E2 is the functional headless MVP; E4
+is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.

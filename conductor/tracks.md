@@ -44,3 +44,9 @@ Remaining tasks verify sources, resolve conflicts, fill specific gaps and delive
 tested outputs. See [research handoff and next steps](research/research-handoff.md).
 D0.2 and P0.1 are the current preparation candidates; no broad new research round
 is a prerequisite. Track checkboxes continue to represent full delivery acceptance.
+
+## Authoritative delivery sequence
+
+[Functional MVP → hardened native v1 → extensions](delivery-contract.md) defines the
+required features and acceptance recipes. E2 is the functional headless MVP; E4
+is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.

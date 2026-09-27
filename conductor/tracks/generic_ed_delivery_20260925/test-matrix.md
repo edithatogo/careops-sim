@@ -27,3 +27,14 @@ costs. E3 preserves replay data; E5 verifies selectable semantic layers, overlay
 totals, live/replay agreement and source-to-metric joins using a two-room fixture.
 See the [spatial plan](../../spatial-visualization.md). Macro must not invent
 transit; unknown positions and display interpolation cannot become observations.
+
+## Staged usability gates
+
+- E2 MVP: nominal/constrained config-only runs, basic result exports and manifest,
+  seed repeatability, capacity/patient conservation and malformed-input rejection.
+- E4 v1: fresh-consumer install and validate/run/compare/export walkthrough, bounded
+  errors, reproducible batches, recovery and documented limitations.
+- E5+: visuals/live services/Wasm do not enter MVP/v1 prerequisite closure.
+
+The [delivery contract](../../delivery-contract.md) defines the manual recipe;
+record executed evidence before marking the corresponding task complete.

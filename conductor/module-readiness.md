@@ -123,3 +123,9 @@ adds domain input completeness: DES/ABM taxonomy, provenance, ranges, distributi
 dependence, uncertainty and generic examples. P0 gates E0/C0, P3 gates C2, P4
 gates E1 and P5 gates C6. G1 therefore includes actual model-to-catalogue coverage
 and reproducible input examples. This does not introduce a later clinical domain.
+
+## Authoritative delivery sequence
+
+[Functional MVP → hardened native v1 → extensions](delivery-contract.md) defines the
+required features and acceptance recipes. E2 is the functional headless MVP; E4
+is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.

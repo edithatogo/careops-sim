@@ -48,6 +48,24 @@ class SchedulingTests(unittest.TestCase):
         self.assertTrue({'P1.4','P2.4'} <= set(by_id['P3.1']['dependencies']))
         self.assertIn('P4.4',by_id['E1.1']['dependencies'])
         self.assertIn('P5.4',by_id['C6.1']['dependencies'])
+    def test_mvp_and_v1_exclude_optional_feature_dependencies(self):
+        by_id={t['id']:t for t in tasks.derive(tasks.ROOT)['tasks']}
+        def ancestors(identifier):
+            found=set();todo=[identifier]
+            while todo:
+                current=todo.pop()
+                if current not in found:
+                    found.add(current);todo.extend(by_id[current]['dependencies'])
+            return found
+        mvp=ancestors('E2.4');v1=ancestors('E4.4')
+        self.assertTrue({'P4.4','Q4.5','C1.4','C2.4','D2.5'} <= mvp)
+        self.assertFalse(any(x.startswith(('C3.','C4.','C5.','C6.','D4.','E3.','E4.')) for x in mvp))
+        self.assertTrue({'E2.4','E3.4','Q5.4','C6.5','P5.4','D3.5','D4.4'} <= v1)
+        self.assertFalse(any(x.startswith(('E5.','E6.','E7.','E8.','D5.')) for x in v1))
+    def test_post_v1_work_waits_for_native_release_gate(self):
+        by_id={t['id']:t for t in tasks.derive(tasks.ROOT)['tasks']}
+        for identifier in ('E5.1','E6.1','D5.1'):
+            self.assertIn('E4.4',by_id[identifier]['dependencies'])
     def test_nonpositive_worker_count_rejected(self):
         with self.assertRaises(ValueError):tasks.select(self.catalog(),set(),0)
     def test_real_catalog_modes_cover_all_tasks_without_conflict(self):
