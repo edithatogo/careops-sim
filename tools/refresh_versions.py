@@ -8,7 +8,8 @@ import tomllib
 import urllib.request
 
 CRATES = ('arrow-array','arrow-schema','arrow-ipc','parquet','serde','serde_json','toml',
-          'rayon','rand','wgpu','burn','proptest','criterion','insta','cargo-nextest',
+          'rayon','rand','wgpu','burn','proptest','criterion','clap','clap_builder',
+          'insta','cargo-nextest',
           'cargo-deny','cargo-audit','cargo-semver-checks','cargo-llvm-cov',
           'cargo-mutants','cargo-fuzz','zizmor')
 REPOS = ('actions/checkout','actions/upload-artifact','actions/download-artifact',

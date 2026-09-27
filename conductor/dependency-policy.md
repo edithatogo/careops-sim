@@ -7,7 +7,7 @@ URLs, fetch time, release date and declared MSRV. Refresh with
 The snapshot is a candidate inventory, not a tested lockfile or promise that all
 packages should be adopted. Unknown MSRV means unknown, not compatible.
 
-## Verified current candidates, refreshed 2026-09-27
+## Live current candidates, refreshed 2026-09-28
 
 | Area | Registry candidate | Adoption decision |
 | --- | --- | --- |
@@ -16,6 +16,7 @@ packages should be adopted. Unknown MSRV means unknown, not compatible.
 | serde / serde_json | 1.0.229 / 1.0.151 | Evaluate compatible lockfile update in owning change |
 | toml | 1.1.6+spec-1.1.0; MSRV 1.85 | C5 parser migration with old-manifest fixtures |
 | rayon | 1.12.0; MSRV 1.80 | C5 worker candidate; no mandatory within-run scheduler dependency |
+| clap / clap_builder | 4.6.7; MSRV 1.85 | Current Kairos benchmark lock has Clap 4.6.1, which Cargo 1.76 cannot parse; D1.2 must test a Rust-1.76-compatible lock resolution or obtain review for a scoped tool-only floor |
 | rand | 0.10.3; MSRV 1.85 | Optional sampling candidate; do not replace deterministic RNG algorithm silently |
 | wgpu | 30.0.1; MSRV 1.87 | E6 real Metal candidate, gate shader/API/device compatibility |
 | Burn | 0.21.0; MSRV 1.92 | Deferred existing ML track; no dependency added now |
