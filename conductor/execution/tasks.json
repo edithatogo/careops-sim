@@ -801,6 +801,655 @@
       "phase_acceptance_source": "conductor/tracks/development_readiness_20260925/plan.md#D5"
     },
     {
+      "id": "P0.1",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P0",
+      "objective": "Inventory every proposed ED pathway, resource, agent decision, spatial feature and experiment/measurement control against E/Q/C specs; record enabled, optional and deferred features and a gap list.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed/schema"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P0"
+    },
+    {
+      "id": "P0.2",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P0",
+      "objective": "Define stable parameter IDs, catalogue/evidence/profile schemas, units, separate range classes and consumer mappings. Write invalid/unknown/provenance fixtures before the schema validator; agree interfaces with E0/C0 owners.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "P0.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 12
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed/schema"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P0"
+    },
+    {
+      "id": "P0.3",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P0",
+      "objective": "Define reproducible source-search/extraction protocol and split DES/ABM research into disjoint bounded packets with explicit outputs and review rules.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "P0.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed/schema"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P0"
+    },
+    {
+      "id": "P0.4",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P0",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "P0.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 17
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P0"
+    },
+    {
+      "id": "P1.1",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P1",
+      "objective": "Search and extract public arrival/case-mix, pathway and hospital-boundary inputs, source definitions/licences and suitable open model examples. Save citations, extraction locations and reproducible transforms, not just links.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P0.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 26
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed/des"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P1"
+    },
+    {
+      "id": "P1.2",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P1",
+      "objective": "Identify capacities/calendars, triage/clinical-work/diagnostic/cleaning/ boarding durations, route probabilities and patience evidence. Separate active work from elapsed waits/transit; record population and observation limitations.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P1.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 29
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed/des"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P1"
+    },
+    {
+      "id": "P1.3",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P1",
+      "objective": "Populate DES records with evidenced ranges, candidate distributions, dependencies and explicit assumptions/gaps. Test units, provenance, probability sums and impossible combinations; independently review each source extraction.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P1.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 32
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed/des"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P1"
+    },
+    {
+      "id": "P1.4",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P1",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "P1.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 35
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P1"
+    },
+    {
+      "id": "P2.1",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P2",
+      "objective": "Inventory staff/agent attributes, task priorities, zone/skill eligibility, interruption/switching/handover and shift/break behavior; identify public evidence or simple explicit rules, and where direct observation/elicitation is required.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P0.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 44
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed/abm"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P2"
+    },
+    {
+      "id": "P2.2",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P2",
+      "objective": "Source example spatial graphs/layouts, scale/connectivity, trips, speeds, mobility/assistance and routing rules. Record per-agent/task variability and contextual effects; classify fatigue/congestion complexity as deferred or justified.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P2.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 47
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed/abm"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P2"
+    },
+    {
+      "id": "P2.3",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P2",
+      "objective": "Populate ABM records and assumptions with ranges/distribution candidates, dependence and identification gaps. Test graph/unit consistency and rules against small hand-worked examples; flag overlap with DES work/wait durations for P3.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P2.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 50
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed/abm"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P2"
+    },
+    {
+      "id": "P2.4",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P2",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "P2.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 53
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P2"
+    },
+    {
+      "id": "P3.1",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P3",
+      "objective": "Write synthetic known-distribution/dependence, censored, sparse-stratum and confounded-data fixtures. Specify parameterization/support/tail checks, training/hold-out partitions and expected validation failures before fitting.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P1.4",
+        "P2.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 62
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P3"
+    },
+    {
+      "id": "P3.2",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P3",
+      "objective": "Compare empirical/parametric/conditional candidates with reproducible fitting diagnostics and held-out checks; record chosen/rejected families, sample limitations and uncertainty. Use explicit assumptions where data cannot fit.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "P3.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 65
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P3"
+    },
+    {
+      "id": "P3.3",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P3",
+      "objective": "Reconcile DES/ABM boundaries; define conditional sampling order, shared factors and seed purposes. Separate variability from uncertain parameters; define hard limits, scenario ranges and search bounds with their own rationales.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "P3.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 68
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P3"
+    },
+    {
+      "id": "P3.4",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P3",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "P3.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 71
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P3"
+    },
+    {
+      "id": "P4.1",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P4",
+      "objective": "Create schema-valid minimal deterministic, generic nominal and surge/ overload profiles with linked sources or clearly labelled synthetic assumptions; include arrival tables, calendars, graph, distributions and initial state.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P3.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 81
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P4"
+    },
+    {
+      "id": "P4.2",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P4",
+      "objective": "Add malformed/missing/censored examples and expected diagnostics; check probability/conditional tables, clock units, support bounds, resource feasibility, initialization and provenance. Store manifests/hashes and licensing notes.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P4.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 84
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P4"
+    },
+    {
+      "id": "P4.3",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P4",
+      "objective": "Document parameter meanings, example loading, limitations and overrides; define a separate future Cairns mapping and required local evidence/elicitation. Hand off the frozen generic pack to E1 and calibration fixtures to C5.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P4.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 87
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P4"
+    },
+    {
+      "id": "P4.4",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P4",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "P4.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 90
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P4"
+    },
+    {
+      "id": "P5.1",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P5",
+      "objective": "Implement consumer/catalogue coverage checks against the actual model configuration/API: reject missing IDs, unexplained defaults, unused active parameters, unit drift and unsupported profile/schema versions.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "C5.5",
+        "E2.4",
+        "P4.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 100
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P5"
+    },
+    {
+      "id": "P5.2",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P5",
+      "objective": "Load every example through model and calibration runner; test fixed-seed repeatability, Macro/Micro consistency, conditional/dependence preservation, intended diagnostics and sensitivity to selected influential parameters.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P5.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 103
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P5"
+    },
+    {
+      "id": "P5.3",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P5",
+      "objective": "Publish a coverage/evidence/uncertainty report, unresolved acquisition backlog and versioned handoff. Block validated-profile claims on unsupported assumptions; allow explicitly experimental generic scenarios with visible limits.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "P5.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 106
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "model-inputs/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P5"
+    },
+    {
+      "id": "P5.4",
+      "track_id": "ed_parameter_evidence_20260927",
+      "phase": "P5",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "P5.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "line": 109
+      },
+      "context_paths": [
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+        "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ed_parameter_evidence_20260927/plan.md#P5"
+    },
+    {
       "id": "Q0.1",
       "track_id": "des_queue_preemption_20260925",
       "phase": "Q0",
@@ -1508,11 +2157,12 @@
       "kind": "contract_decision",
       "accepted": false,
       "dependencies": [
-        "D1.6"
+        "D1.6",
+        "P0.4"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 23
+        "line": 26
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1539,7 +2189,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 26
+        "line": 29
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1566,7 +2216,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 29
+        "line": 32
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1593,7 +2243,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 35
+        "line": 38
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1621,7 +2271,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 45
+        "line": 48
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1649,7 +2299,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 48
+        "line": 51
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1677,7 +2327,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 51
+        "line": 54
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1705,7 +2355,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 54
+        "line": 57
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1728,11 +2378,12 @@
       "kind": "bounded_work",
       "accepted": false,
       "dependencies": [
-        "C0.4"
+        "C0.4",
+        "P3.4"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 66
+        "line": 69
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1761,7 +2412,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 69
+        "line": 72
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1790,7 +2441,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 72
+        "line": 75
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1819,7 +2470,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 76
+        "line": 79
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1848,7 +2499,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 86
+        "line": 89
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1876,7 +2527,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 89
+        "line": 92
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1904,7 +2555,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 92
+        "line": 95
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1932,7 +2583,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 95
+        "line": 98
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1959,7 +2610,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 106
+        "line": 109
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -1987,7 +2638,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 109
+        "line": 112
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2015,7 +2666,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 113
+        "line": 116
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2043,7 +2694,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 116
+        "line": 119
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2071,7 +2722,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 126
+        "line": 129
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2099,7 +2750,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 129
+        "line": 132
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2127,7 +2778,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 132
+        "line": 135
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2155,7 +2806,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 135
+        "line": 138
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2183,7 +2834,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 138
+        "line": 141
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2208,11 +2859,12 @@
       "dependencies": [
         "C5.5",
         "E2.4",
+        "P5.4",
         "Q5.4"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 149
+        "line": 152
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2240,7 +2892,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 153
+        "line": 156
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2268,7 +2920,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 157
+        "line": 160
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2296,7 +2948,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 160
+        "line": 163
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2324,7 +2976,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 164
+        "line": 167
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2347,11 +2999,12 @@
       "kind": "contract_decision",
       "accepted": false,
       "dependencies": [
-        "D1.6"
+        "D1.6",
+        "P0.4"
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 16
+        "line": 19
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2380,7 +3033,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 18
+        "line": 21
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2409,7 +3062,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 21
+        "line": 24
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2438,7 +3091,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 24
+        "line": 27
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2464,11 +3117,12 @@
         "C2.4",
         "D2.5",
         "E0.4",
+        "P4.4",
         "Q4.5"
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 33
+        "line": 36
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2496,7 +3150,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 36
+        "line": 39
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2524,7 +3178,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 39
+        "line": 42
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2552,7 +3206,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 42
+        "line": 45
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2579,7 +3233,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 49
+        "line": 52
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2607,7 +3261,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 51
+        "line": 54
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2635,7 +3289,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 54
+        "line": 57
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2663,7 +3317,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 57
+        "line": 60
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2691,7 +3345,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 66
+        "line": 69
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2719,7 +3373,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 69
+        "line": 72
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2747,7 +3401,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 72
+        "line": 75
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2775,7 +3429,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 75
+        "line": 78
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2803,7 +3457,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 84
+        "line": 87
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2831,7 +3485,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 87
+        "line": 90
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2859,7 +3513,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 90
+        "line": 93
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2887,7 +3541,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 93
+        "line": 96
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2914,7 +3568,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 103
+        "line": 106
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2944,7 +3598,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 106
+        "line": 109
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -2974,7 +3628,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 109
+        "line": 112
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3004,7 +3658,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 112
+        "line": 115
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3031,7 +3685,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 124
+        "line": 127
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3058,7 +3712,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 127
+        "line": 130
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3085,7 +3739,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 129
+        "line": 132
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3112,7 +3766,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 133
+        "line": 136
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3139,7 +3793,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 140
+        "line": 143
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3167,7 +3821,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 142
+        "line": 145
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3195,7 +3849,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 145
+        "line": 148
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3223,7 +3877,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 148
+        "line": 151
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3250,7 +3904,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 156
+        "line": 159
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3278,7 +3932,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 159
+        "line": 162
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3306,7 +3960,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 162
+        "line": 165
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",
@@ -3334,7 +3988,7 @@
       ],
       "source": {
         "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-        "line": 165
+        "line": 168
       },
       "context_paths": [
         "conductor/tracks/generic_ed_delivery_20260925/spec.md",

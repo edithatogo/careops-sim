@@ -2,7 +2,7 @@
 
 Start with [the protocol](../execution-model.md).
 
-- [Task catalog](tasks.json): generated from all four track plans and metadata.
+- [Task catalog](tasks.json): generated from all five track plans and metadata.
 - [Decomposition](decomposition.md): bounded worker leaves and coordinator joins.
 - [Packet template](packet-template.json): bind before dispatch; never executable as-is.
 - [First inventory recipe](packets/D0.2.inventory.json): source-extraction canary.

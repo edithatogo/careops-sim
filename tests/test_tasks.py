@@ -39,6 +39,15 @@ class SchedulingTests(unittest.TestCase):
     def test_false_acceptance_rejected(self):
         with self.assertRaisesRegex(ValueError,'unaccepted prerequisite'):
             tasks.validate({'tasks':[task('Q0.1'),task('Q0.2',['Q0.1'],accepted=True)]})
+    def test_parameter_research_parallel_join_and_delivery_barriers(self):
+        catalog=tasks.derive(tasks.ROOT)
+        by_id={t['id']:t for t in catalog['tasks']}
+        self.assertIn('P0.4',by_id['P1.1']['dependencies'])
+        self.assertIn('P0.4',by_id['P2.1']['dependencies'])
+        self.assertFalse(any(tasks.overlap(a,b) for a in by_id['P1.1']['write_reservations'] for b in by_id['P2.1']['write_reservations']))
+        self.assertTrue({'P1.4','P2.4'} <= set(by_id['P3.1']['dependencies']))
+        self.assertIn('P4.4',by_id['E1.1']['dependencies'])
+        self.assertIn('P5.4',by_id['C6.1']['dependencies'])
     def test_nonpositive_worker_count_rejected(self):
         with self.assertRaises(ValueError):tasks.select(self.catalog(),set(),0)
     def test_real_catalog_modes_cover_all_tasks_without_conflict(self):
@@ -53,7 +62,7 @@ class SchedulingTests(unittest.TestCase):
                 for other in wave[i+1:]:
                     self.assertFalse(any(tasks.overlap(a,b) for a in by_id[identifier]['write_reservations'] for b in by_id[other]['write_reservations']))
             accepted.update(wave)
-        self.assertEqual(len(accepted),119)
+        self.assertEqual(len(accepted),len(catalog['tasks']))
 
 class PacketTests(unittest.TestCase):
     def setUp(self):

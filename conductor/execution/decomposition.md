@@ -1,4 +1,4 @@
-# Decomposition guide for all four tracks
+# Decomposition guide for all five tracks
 
 The catalog covers every plan task. The rows below constrain **how to prepare
 small worker packets** within those tasks; they do not mark code ready or bypass
@@ -79,3 +79,21 @@ an unavailable backend is `blocked`, never replaced with an unlabeled mock pass.
 - Combined behavior tests pass on the integrated head, including previously
   passing sibling leaves. Test counts/artifacts correspond to that head.
 - Only then update the parent checkbox/catalog and unlock dependents.
+
+
+## ED parameter-evidence track
+
+| Phase | Smaller-model worker packets | Coordinator/reviewer join |
+| --- | --- | --- |
+| P0 | One subsystem input inventory; one schema negative example | Scope, stable IDs, units and evidence/range semantics |
+| P1 | One DES parameter family from one pinned primary source | Population transfer, elapsed/work separation, source readback |
+| P2 | One staff behavior or spatial parameter family/source | Evidence versus assumed heuristic; deferred complexity |
+| P3 | Reproduce one approved fit/diagnostic or conditional draw | Distribution selection, dependence, identifiability and uncertainty |
+| P4 | One sample table/profile fragment and its schema checks | Consistent joint generic pack, licence/provenance and Cairns gaps |
+| P5 | One model-consumer coverage check or example-load fixture | Complete bidirectional coverage and actual-model qualification |
+
+P1 writes DES evidence and P2 writes ABM evidence under distinct paths after the
+shared P0 schema is accepted. Shared catalogue/profile changes integrate through
+the coordinator. Packets must identify exact source/revision/field, units, required
+range classes and output schema; unsupported quantities are explicit unknowns.
+A worker must not invent a plausible-looking estimate to complete a record.

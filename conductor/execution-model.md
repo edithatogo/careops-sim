@@ -1,6 +1,6 @@
 # Serial, parallel and smaller-model execution
 
-The four tracks share one task graph and one acceptance standard. Choose
+The five tracks share one task graph and one acceptance standard. Choose
 `serial` with one worker, or `parallel` with a bounded worker count. No separate
 parallel implementation plan, weakened test suite or reordered simulation events
 is introduced. Development-agent parallelism is distinct from simulated PDES.
@@ -26,7 +26,7 @@ The user can run the entire workflow serially; no task requires multiple agents.
 
 ## Task catalog and source of truth
 
-`conductor/execution/tasks.json` indexes all 119 existing plan tasks. Each entry
+`conductor/execution/tasks.json` indexes all current plan tasks. Each entry
 contains its exact objective, source plan/phase, prerequisite tasks, conservative
 write reservations, required context and phase acceptance text. Plan checkboxes
 remain the accepted task-status source; a worker report does not check them off.
@@ -38,7 +38,7 @@ exists. Phase-entry dependencies resolve to the prerequisite phase's closeout
 **task**, not merely its first coding task. Tasks inside a phase default to serial
 order; an approved packet may split a task into independent leaves with a join.
 
-The catalog is a planning/preparation schedule, not 119 preapproved code jobs.
+The catalog is a planning/preparation schedule, not a set of preapproved code jobs.
 Future APIs do not yet exist: turning speculative file names into runnable
 commands would be misleading. Packet preparation is a mandatory executable step,
 with validation before worker dispatch. Preparation can read disjoint areas in

@@ -18,9 +18,13 @@ SCOPES = {
     'Q': ['libs/kairos/crates/kairo-ecs-des', 'libs/kairos/crates/kairo-ecs-state'],
     'C': ['libs/kairos/crates/kairo-ecs-calibration', 'libs/kairos/crates/kairo-ecs-arrow'],
     'E': ['crates/careops-ed', 'tests/ed'],
+    'P': ['model-inputs/ed'],
 }
-COORDINATOR_TASKS = {'D1.2','D2.2','D4.1','D5.2','E5.1','E6.1','E7.1','E8.1'}
+COORDINATOR_TASKS = {'D1.2','D2.2','D4.1','D5.2','E5.1','E6.1','E7.1','E8.1','P3.2','P3.3'}
 OVERRIDES = {
+    'P0': ['model-inputs/ed/schema'],
+    'P1': ['model-inputs/ed/des'],
+    'P2': ['model-inputs/ed/abm'],
     'D2': ['.github', 'libs/kairos/.github'],
     'Q0': ['conductor/design/queue'],
     'Q4': ['libs/kairos/crates/kairo-ecs-des', 'libs/kairos/crates/kairo-ecs-abm',
@@ -42,7 +46,7 @@ OVERRIDES = {
 
 def key(task):
     prefix, phase, number = re.fullmatch(r'([A-Z])(\d+)\.(\d+)', task['id']).groups()
-    return ({'D': 0, 'Q': 1, 'C': 2, 'E': 3}.get(prefix, 9), int(phase), int(number))
+    return ({'D': 0, 'P': 1, 'Q': 2, 'C': 3, 'E': 4}.get(prefix, 9), int(phase), int(number))
 
 
 def derive(root):

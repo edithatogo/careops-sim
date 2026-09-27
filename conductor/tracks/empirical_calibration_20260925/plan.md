@@ -1,5 +1,8 @@
 # Phased implementation plan: empirical calibration and validation
 
+Parameter evidence is owned by the [parameter track](../ed_parameter_evidence_20260927/plan.md): P0 precedes C0, P3 supplies the reviewed sampling contract for C2, and P5 qualification precedes C6. C0/C1 source/mapping work consumes the shared catalogue rather than duplicating domain research.
+
+
 Execution: use the shared [serial/parallel protocol](../../execution-model.md) and
 [small-packet decomposition guide](../../execution/decomposition.md). The task
 catalog preserves every prerequisite and phase closeout. Prepare and validate

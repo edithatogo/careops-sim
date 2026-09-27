@@ -105,3 +105,12 @@ cargo test --locked --offline -p kairo-ecs-core -p kairo-ecs-state -p kairo-ecs-
 Result: **60 tests passed**, no failures. This is existing baseline behavior,
 not the new queue/calibration/ED acceptance suite. Submodule source and pin remain
 unchanged. See [development evidence](evidence/development-audit.md).
+
+
+## Parameter and input-evidence prerequisite (2026-09-27)
+
+The [dedicated parameter track](tracks/ed_parameter_evidence_20260927/plan.md)
+adds domain input completeness: DES/ABM taxonomy, provenance, ranges, distributions,
+dependence, uncertainty and generic examples. P0 gates E0/C0, P3 gates C2, P4
+gates E1 and P5 gates C6. G1 therefore includes actual model-to-catalogue coverage
+and reproducible input examples. This does not introduce a later clinical domain.

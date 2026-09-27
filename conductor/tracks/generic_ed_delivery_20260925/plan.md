@@ -1,5 +1,8 @@
 # Plan: generic ED library delivery
 
+Input evidence is owned by the [parameter track](../ed_parameter_evidence_20260927/plan.md): P0 precedes E0 and P4 supplies the frozen example profiles before E1. E2 supplies the actual model for P5 coverage checks. E0 source discovery reuses this work rather than maintaining a second catalogue.
+
+
 Execution: use the shared [serial/parallel protocol](../../execution-model.md) and
 [small-packet decomposition guide](../../execution/decomposition.md). The task
 catalog preserves every prerequisite and phase closeout. Prepare and validate

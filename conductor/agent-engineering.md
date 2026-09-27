@@ -99,7 +99,7 @@ created as a side effect of writing this plan.
 
 The user requested serial or parallel execution, including smaller models such as
 gpt-6-luna. [The execution protocol](execution-model.md) now defines coordinator,
-worker and reviewer roles; all 119 tasks have machine-readable prerequisite and
+worker and reviewer roles; all current tasks have machine-readable prerequisite and
 reservation records. A tested planner proposes serial/parallel schedules without
 starting agents. Reviewed small packets carry source hashes, fixed interfaces,
 exact commands, outputs and escalation rules. See [decomposition](execution/decomposition.md).

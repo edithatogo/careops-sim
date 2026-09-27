@@ -28,3 +28,9 @@ For Cairns, revisit pathway/triage/bed definitions, arrival patterns, staffing a
 skills, spaces/routes, diagnostics, cleaning, admission/boarding and timestamp
 meaning with local evidence. These later inputs are not prerequisites for the
 current framework specification or generic ED model.
+
+
+The [ED parameter-evidence track](tracks/ed_parameter_evidence_20260927/plan.md)
+now owns systematic source discovery/extraction, applicable ranges/distributions,
+assumptions and example profiles. This shortlist remains a starting point, not a
+complete parameter evidence base or validation of any numerical default.
