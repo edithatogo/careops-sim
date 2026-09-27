@@ -39,7 +39,7 @@ If rustup is missing, install it explicitly from [rustup.rs](https://rustup.rs/)
 If the pinned toolchain is missing, run `rustup toolchain install 1.98.1` and
 rerun the check. On an unsupported host, use a supported host or propose a
 reviewed profile update. A successful check proves local version/host metadata
-only; it does not qualify a clean machine, Linux execution, dependency
+only; it does not qualify a clean-machine setup, consumer dependency
 compatibility, or release readiness.
 Likewise, a successful `--test-core` run proves only that the selected core tests
 passed on the current host and checkout. The recorded macOS ARM run does not
