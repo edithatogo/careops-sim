@@ -37,3 +37,5 @@ remains available in
 Latest research: [reports 26–30 integration](research/ed-research-incorporation-26-30-20260927.md); reports 23–25 are verified duplicates.
 
 Current status and execution order: [research handoff](research/research-handoff.md).
+
+Later capability: [spatial capture, shared floor plan and live state sync](spatial-visualization.md).

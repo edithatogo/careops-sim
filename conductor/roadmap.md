@@ -39,3 +39,10 @@ composition and other clinical domain models are not implementation work here.
 
 Create detailed tracks for later stages only when requested. No detailed tracks
 for stages 2–7 have been created.
+
+## Later spatial and live visualization requirement
+
+The [spatial capability plan](spatial-visualization.md) records capture/CAD → a shared versioned
+floor-plan package → PixiJS visualization and Kairos simulation, connected through
+WebSocket state sync. Early native development uses synthetic graphs; full capture/
+CAD adapters are separately qualified later. The backend remains authoritative.

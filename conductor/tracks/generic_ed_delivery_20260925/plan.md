@@ -127,12 +127,15 @@ Entry: G1; upstream 05/02/09 coordinated scope, public API review before binding
 - [ ] E5.1 Freeze a narrow snapshot/command ABI and implement native/Wasm parity
   fixtures for IDs/u128 time, configuration, progress, cancellation and errors.
   Review actual FFI needs, memory/buffer lifetime and supported browser targets.
+  Freeze shared spatial-package revision/units/location IDs and WebSocket snapshot/delta/command contracts per the spatial capability plan. Include exact wide integers, sequencing, reconnect/resync and idempotent commands.
 - [ ] E5.2 Build scenario edit/run/compare/export UI; choose presentation components
-  after prototype measurement (Pixi optional). Run simulation in a worker or
-  explicit local runner; keep engine and frame clocks independent.
+  with PixiJS for the planned spatial view and a native Kairos runner over
+  WebSocket state sync. Qualify optional worker/Wasm profiles separately; keep
+  engine and frame clocks independent. Start with a synthetic shared layout.
 - [ ] E5.3 Test render rates off/30/60, slow consumers/backpressure, memory growth,
   restart/route state, accessibility and useful error reporting. Measure actual
   transfer copies/frame latency; never infer WebGPU compute from rendering.
+  Test shared-layout mismatch, known-distance visual/route alignment, dropped/stale deltas, disconnect, duplicate commands and bounded slow-client buffers. Qualify later CAD/capture adapters separately; initial G2 uses a synthetic/public layout and does not imply production CAD support.
 - [ ] E5.4 Conductor — review and verify phase (workflow.md).
 
 Exit: G2 usable product with verified exports and interaction; reapply D4 gates
@@ -205,3 +208,5 @@ Exit: G3-distributed only for executed runtime profiles. Cloud deployment and
 browser WebGPU continue through existing 39/43/33 owner plans if needed; this phase
 does not create later clinical-domain tracks. Manual verification: reproduce a
 network failure and recover or terminate as specified without duplicated patients.
+
+Later spatial capability and follow-on packet boundaries: [spatial plan](../../spatial-visualization.md).

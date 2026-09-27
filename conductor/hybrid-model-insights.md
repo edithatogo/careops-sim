@@ -2,6 +2,9 @@
 
 User-supplied note reviewed on 2026-09-25. Its recommendations are treated as
 design hypotheses, with the following disposition in the requested tracks.
+The later [user spatial requirement](spatial-visualization.md) selects a native
+Kairos/WebSocket/PixiJS profile; the earlier worker-first preference below is now
+an optional profile rather than the default spatial architecture.
 
 | Insight | Decision and concrete incorporation |
 | --- | --- |

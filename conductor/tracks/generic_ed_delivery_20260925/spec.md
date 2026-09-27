@@ -81,3 +81,10 @@ no reported research check substitutes for locally executed acceptance.
 The [research decisions and acceptance cases](../../research/ed-research-incorporation-26-30-20260927.md)
 refine this track without completing implementation gates. External versions and
 missing bundle contents remain unverified; existing ownership and DAG apply.
+
+## Later spatial and live visualization requirement
+
+The [spatial capability plan](../../spatial-visualization.md) records capture/CAD → a shared versioned
+floor-plan package → PixiJS visualization and Kairos simulation, connected through
+WebSocket state sync. Early native development uses synthetic graphs; full capture/
+CAD adapters are separately qualified later. The backend remains authoritative.

@@ -33,3 +33,10 @@ older version assumptions: Rust 1.98.1 is locally tested; Arrow 60 requires MSRV
 upstream manifests. Optional latest dependencies are candidates, not installed
 or validated merely by appearing in the snapshot. The lightweight local context
 harness uses Python stdlib for developer orchestration only.
+
+## Later spatial and live visualization requirement
+
+The [spatial capability plan](spatial-visualization.md) records capture/CAD → a shared versioned
+floor-plan package → PixiJS visualization and Kairos simulation, connected through
+WebSocket state sync. Early native development uses synthetic graphs; full capture/
+CAD adapters are separately qualified later. The backend remains authoritative.
