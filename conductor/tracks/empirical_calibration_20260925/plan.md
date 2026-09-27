@@ -33,6 +33,7 @@ contract available for cross-track review. No queue implementation needed yet.
   exact/partial/unverified mappings; published standards do not imply local conformance.
   Define risk-start/last-observed/event/cause/censor-reason semantics and
   exogenous/primitive/clamp-only/target roles with time-of-knowledge and cluster IDs.
+  Preserve event occurrence versus nullable source-recorded/message-created times, location intervals, ED episode end versus physical departure, and observed/derived/defaulted lineage. Reconcile report 30 provisional IDs with this schema; freeze exact source standards editions without assuming local availability.
 - [ ] C0.3 Assess [public data/open examples](../../generic-ed-evidence.md),
   recording population, field coverage, licence, revision and assumptions.
   Define synthetic datasets, identifiable/confounded parameter fixtures,
@@ -54,6 +55,7 @@ Entry: C0. Owners 04 (IO), 21 (semantics); can proceed alongside Q1–Q3.
   ambiguity, nulls, duplicate IDs, invalid chronology and overflow. Include missing
   triage/cohort denominators, distinct administrative/physical departure and future-
   outcome leakage fixtures; observed task events must survive lossy standards mappings.
+  Add report 30 negative transformations: meta.lastUpdated as event recording, MSH-7 as occurrence, A08 as automatic physical movement, and OMOP visit end as observed departure without lineage. Test reversed intervals, minute precision and valid boarding after episode end.
 - [ ] C1.2 Implement optional Arrow IPC/Parquet features, bounded RecordBatch
   readers and typed schemas. Preserve custom smoke-format compatibility without
   mislabelling it IPC. Lock dependencies and verify feature-minimal/MSRV builds.

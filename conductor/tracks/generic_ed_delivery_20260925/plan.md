@@ -24,6 +24,7 @@ Entry: D1 tool/compatibility decisions; can review domain details alongside Q0/C
 - [ ] E0.3 Inventory public sources/open examples, exact revisions/licences and
   fields; specify assumptions for arrivals/acuity/work/diagnostics/boarding and
   generic layout. Define metric formulas, horizon/warm-up and release support.
+  Freeze the report 29 boundary: finite destination-compatible ED-eligible bed offers, explicit offer lifetime/withdrawal and competing-demand assumptions, distinct ambulance arrival/triage/handover/offload/crew-release clocks. No full ward or fleet model is implied.
 - [ ] E0.4 Conductor — review and verify phase (workflow.md).
 
 Exit: buildable skeleton and synthetic fixture unlock GitHub D2; not a full ED.
@@ -42,6 +43,7 @@ Entry: D2, Q4, C1/C2 reviewed implementation; no C6 dependency yet.
 - [ ] E1.3 Implement admission boarding/discharge and optional abandonment/transfer
   policies, with terminal reason/censoring and endpoint timestamps. Version policy
   choices and test time bounds, run-horizon endings and unfinished work.
+  Consume bed offers once, retain ED occupancy through actual transfer, and retain recurrent boarder-care tasks. Do not infer ward-policy or community ambulance effects from external boundary scenarios; validate unused/expired offers and compatible destinations.
 - [ ] E1.4 Conductor — review and verify phase (workflow.md).
 
 Exit: generic flow conserves all patients/outcomes under E-R1/4. Manual verification:
@@ -54,9 +56,11 @@ trace a patient through every pathway and reconcile event times with its summary
 - [ ] E2.2 Implement minimal agent dispatch, Macro/Micro route/work execution and
   phased resource claims avoiding unsupported atomic multi-resource acquisition.
   Shift reductions must honor the resource shrink/in-flight-work contract.
+  Reject implicit resource-plus-space atomic claims: v1 grants one unit of one resource per work item. Coordinate separate occupancy/reservation lifecycles explicitly. Multi-person sedation/resuscitation/assisted transfer requires visible unsupported status or reviewed dedicated, non-overlapping composite-team approximation.
 - [ ] E2.3 Add a composed synthetic ED fixture, simultaneous events and restart/
   resume edge cases; verify no double allocation, leaks, starvation hidden by
   censoring, or movement driven by animation time. Make this the shared C6 fixture.
+  Cover report 29 ST001–ST009: compatible/unused offers, retained occupancy/care, saturated offload and receiver-staff sensitivity, unsupported multi-role tasks and prohibited causal ward-policy claims. No unsupported deterioration hazard is an implicit default.
 - [ ] E2.4 Conductor — review and verify phase (workflow.md).
 
 Exit: E-R2/3; C6 can calibrate/validate the actual generic model. Manual check:
@@ -127,12 +131,14 @@ metadata records this explicitly. It does not wait for browser development.
 - [ ] E6.1 Profile batch numeric workloads and choose a kernel with measurable
   end-to-end benefit (initial candidate: batched numeric metrics/transit evaluation).
   Write CPU/device oracle, precision/ranking and fallback/error tests first.
+  Profile report 26 workload candidates and real batch sizes; separate presorted equal-size W1 reduction from full weighted/unequal W1. Freeze intended-use numeric/ranking tolerances before held-out measurements; exact integer/event contracts stay exact.
 - [ ] E6.2 Implement real wgpu/WGSL device path in owner 32, pin tested dependencies
   and record device/driver/compiler details. Keep queue arbitration CPU-owned.
 - [ ] E6.3 Run actual Apple hardware parity/throughput/transfer/memory tests,
   unavailable-device behavior and representative end-to-end benchmark. If no
   material gain, retain experimental status and document findings rather than
   declaring acceleration successful. MLX replacement requires comparative ADR.
+  Measure cold/compile/staging/encoding/kernel/synchronization/readback and full end-to-end costs against production multicore CPU, plus resident chains, memory and median/p95. Preserve upstream million-agent speedup gate separately. MLX FFI is an optional comparator, not Rust-native module implementation; CPU validates near-tie decisions and owns RNG/event insertion.
 - [ ] E6.4 Conductor — review and verify phase (workflow.md).
 
 Exit: G3-Metal only for measured supported kernels. Manual check: prove backend

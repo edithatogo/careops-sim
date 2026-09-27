@@ -148,3 +148,9 @@ visit-type and missingness denominators accompany every categorical vector.
 The [integration decisions and candidate oracles](../../research/ed-research-incorporation-9-12-20260927.md)
 apply to the tasks in this track. Proposed policies/versions remain review inputs;
 no reported research check substitutes for locally executed acceptance.
+
+## Reports 26–30 integration
+
+The [research decisions and acceptance cases](../../research/ed-research-incorporation-26-30-20260927.md)
+refine this track without completing implementation gates. External versions and
+missing bundle contents remain unverified; existing ownership and DAG apply.

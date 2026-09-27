@@ -282,3 +282,9 @@ upstream registry/handoff updates and applicable phase gates.
 Q0 reviews assisted transport, co-working, interruption ancestry and ED reselection needs. Clinical task selection belongs in the ED adapter and must conform to approved Suspend/Abort/Restart and deterministic ordering. Atomic bundles, fractional multitasking and new scheduler precedence remain deferred unless explicitly redesigned and tested.
 
 See [reports 5–8 incorporation](../../research/ed-research-incorporation-20260927.md).
+
+## Reports 26–30 integration
+
+The [research decisions and acceptance cases](../../research/ed-research-incorporation-26-30-20260927.md)
+refine this track without completing implementation gates. External versions and
+missing bundle contents remain unverified; existing ownership and DAG apply.

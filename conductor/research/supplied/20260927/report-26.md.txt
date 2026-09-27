@@ -1,0 +1,223 @@
+# Rust-native Metal and MLX assessment for CareOps Sim
+
+**Research date:** 27 September 2026, Australia/Brisbane.  
+**Decision status:** **no production backend change recommended yet**. The evidence supports a bounded benchmark phase: retain the existing Kairos CPU-authoritative architecture, evaluate current wgpu/WGSL-on-Metal as the primary device path, and use MLX as an Apple-Silicon comparator for genuinely batch-numeric work. Event ordering, the authoritative clock/state, resource decisions and the Kairos seed/RNG contract should remain on their approved CPU path.
+
+## Scope, method and inspected baseline
+
+I included primary sources only for substantive technical conclusions: the public Kairos source tree at a fixed revision, upstream source/release metadata, official API documentation, the current W3C WGSL specification, Apple Metal documentation, and selected upstream issue trackers where they expose unresolved implementation risks. I excluded secondary benchmark blogs, unrelated LLM throughput claims, and GPU claims that could not be mapped to the proposed ED numeric workloads. Open issues are treated as **risk signals**, not as proof of performance or failure on CareOps workloads.
+
+The attachments named in the prompt — including the current Kairos roadmap, `module-readiness.md`, development-readiness/generic-ED specifications, `agent-engineering.md`, and `execution-model.md` — were **not exposed as searchable attachments in this session**. I therefore did not claim to inspect them. In particular, I cannot identify the “parent pinned snapshot” mentioned in those unavailable materials.
+
+The public Kairos snapshot actually inspected was:
+
+`fae901558f07b7b717a676adbafbe2cdc78dea1c`  
+`https://github.com/edithatogo/kairos/commit/fae901558f07b7b717a676adbafbe2cdc78dea1c`
+
+It was committed on 19 May 2026. Its immediate Git parent is `f11e0be7dcf8cad705741a44b651ca953e269ae2`; **that Git parent must not be assumed to be the project’s attachment-pinned parent snapshot**, because the attachment carrying that pin was unavailable. fileciteturn21file0L2-L7 fileciteturn21file0L38-L41 fileciteturn22file0L2-L2
+
+At that inspected commit, the workspace declares Rust **1.76** as its MSRV and includes `kairo-ecs-gpu`; the GPU crate itself has feature names for `wgpu-backend` and `cuda-backend` but no corresponding GPU dependency. fileciteturn3file0L2-L2 fileciteturn4file0L2-L2 The checked-in `WgpuBackend` explicitly states that the real `wgpu` dependency is not included and returns `UnsupportedBackend`; this is therefore **observed implementation state**, not merely an interpretation of a roadmap. fileciteturn13file0L2-L2
+
+The architectural note is already well aligned with the proposed boundary here: CPU code owns flat source/result buffers; an accelerator uploads, dispatches and downloads; GPU code does not directly mutate core ECS structures; and CPU orchestration/validation remains authoritative. The documented memory and 256-thread dispatch checks are explicitly described as hardware-independent contract checks rather than performance evidence. fileciteturn14file0L2-L2
+
+The Track 32 specification similarly frames GPU work as an accelerator rather than a scheduler replacement. Its future acceptance target includes same-seed parity and a ≥10× result on a million-agent ABM compared with a **single-thread CPU** baseline, but the source also says the real backend and GPU-runner evidence were still blocked. fileciteturn12file0L2-L2 For this ED-focused assessment, I recommend **adding a multicore-production-CPU comparison as a separate evaluation gate**, not silently replacing that existing Track 32 criterion. The existing `kairo-ecs-bench` crate already uses Criterion and has scheduler, state and hybrid bench targets, giving a natural source-compatible place for CPU benchmarking, although no device-numeric benchmark exists in the inspected manifest. fileciteturn38file0L2-L6
+
+No ED service-time distribution, arrival distribution or fitted parameter is introduced by this research. Because the generic-ED attachments were unavailable, **observed ED batch-size ranges, target hardware, parameter uncertainty and calibration bounds are unknown**. The benchmark sizes delivered with this report are explicitly **synthetic scenario ranges**, not observations.
+
+## Upstream compatibility and candidate options
+
+As of the research date, the current wgpu release found upstream is **v30.0.1**, released 22 August 2026. citeturn19search0 Its workspace requires Rust **1.93**, whereas Kairos currently declares 1.76. fileciteturn6file0L2-L2 This makes the current release a good **technical evaluation candidate**, but not an automatic dependency upgrade. By contrast, wgpu **v23.0.1** declares Rust 1.76 and can serve as an MSRV-compatible control, although its age relative to current upstream is itself a reason not to choose it automatically. fileciteturn9file0L2-L2
+
+MLX upstream is at **v0.32.2**, released 25 August 2026. citeturn19search2 The inspected official `mlx-c` source revision `ebc88f10caa1b625e6b581437a8dea6df8a70085` declares `MLX_C_VERSION 0.6.0`, requires C++20, and by default fetches MLX **v0.32.2**. Thus an MLX-C experiment can be pinned reproducibly even though it is not a Rust-native implementation. fileciteturn20file0L2-L6
+
+The community `mlx-rs` binding is now at **v0.32.0**, released 12 September 2026; its release pins MLX 0.32.2 / `mlx-sys` 0.6.0 and records a substantial API revision. fileciteturn23file0L2-L6 Its declared Rust MSRV is **1.88.0**, so it also cannot enter the current Kairos workspace without an explicit MSRV decision. It is best classified as a **Rust API over an FFI/native MLX stack**, not as a pure-Rust Metal implementation. fileciteturn24file0L2-L6 The project itself describes these as unofficial Rust bindings to MLX. citeturn19search20
+
+| Candidate | Integration class | Current compatibility finding | ED assessment |
+|---|---|---|---|
+| **OPT-WGPU-30** | Native Rust host API + WGSL; Metal through wgpu | **Published:** v30.0.1; MSRV 1.93 vs Kairos 1.76. citeturn19search0 fileciteturn6file0L2-L2 | **Proposed policy:** primary benchmark candidate; isolate the experiment until MSRV is reviewed. |
+| **OPT-WGPU-23** | Native Rust host API + WGSL | **Published:** v23.0.1 MSRV 1.76. fileciteturn9file0L2-L2 | **Proposed policy:** compatibility/control probe only, not preferred production pin. |
+| **OPT-MLX-C** | Rust→C FFI→C++ MLX→Metal | **Observed:** inspected mlx-c 0.6.0 source pins MLX 0.32.2. fileciteturn20file0L2-L6 | **Proposed policy:** secondary Apple-Silicon comparator. |
+| **OPT-MLX-RS** | Rust API over FFI/native MLX | **Published:** v0.32.0, MSRV 1.88. fileciteturn23file0L2-L6 fileciteturn24file0L2-L6 | **Proposed policy:** ergonomic comparator; not architectural replacement. |
+| **OPT-CUBECL** | Rust kernel DSL/JIT targeting several backends | **Published:** v0.10.0, MSRV 1.92, edition 2024, wgpu 29. fileciteturn16file0L2-L6 | **Proposed policy:** defer until custom-kernel volume justifies another compiler/runtime layer. |
+| **OPT-CANDLE** | Native Rust tensor/ML framework with Metal backend | **Observed/published:** Candle 0.11.0; inspected workspace does not declare a root `rust-version`; Metal dependencies are present. fileciteturn31file0L2-L6 citeturn18search8 | **Proposed policy:** defer; no demonstrated advantage for these ED kernels. |
+| **OPT-OBJC2-METAL** | Rust bindings to Objective-C Metal + MSL | **Published:** objc2-metal 0.3.2 declares Rust 1.71 and Zlib OR Apache-2.0 OR MIT. citeturn18search2 | **Proposed policy:** direct-Metal escape hatch only if measured wgpu overhead is material. |
+| **OPT-METAL-RS** | Legacy Rust Metal bindings | **Published:** current repository explicitly marks the crate deprecated. citeturn18search5 | **Proposed policy:** reject for new integration. |
+
+CubeCL is technically attractive because it keeps kernel authoring in Rust and can target multiple runtimes, but there are two concrete reasons not to insert it now. First, v0.10.0 raises the toolchain substantially relative to Kairos. Second, open issue #1451 documents that its wgpu runtime cannot currently honour a requested subgroup/plane size through WGSL or SPIR-V, because the required pipeline control is not exposed by wgpu 29/30. fileciteturn35file0L3-L7 That does not block simple ED kernels, but it reduces the value of adopting a tuning abstraction before a demonstrated need exists.
+
+There are also current Metal-specific wgpu risk signals worth keeping in the acceptance suite. Issue #5738 remains open and describes excess command-buffer/pass splitting on Metal, with reported CPU encoding savings from consolidation; its impact is workload-dependent rather than a universal GPU slowdown. fileciteturn36file0L3-L7 fileciteturn36file0L28-L35 Issue #10019, opened in August 2026, reports subgroup-operation test failures on Metal involving divergent control flow. fileciteturn26file0L3-L7 These support starting with ordinary workgroup reductions and simple, branch-light kernels rather than making subgroup tricks an initial dependency.
+
+MLX also has a current thread/stream issue #4506 investigated against v0.32.2. The report is primarily about Swift/CUDA resource lifetime and thread-local stream behaviour, so it should **not** be extrapolated into a claim that the proposed single-device Metal benchmark is unsafe; it does justify logging thread/stream ownership and adding repeated stress runs before any embedded runtime adoption. fileciteturn37file0L3-L7 fileciteturn37file0L24-L30
+
+## ED workload fit and data-movement economics
+
+The central technical distinction is not “CPU versus GPU”; it is **regular batched numerical work versus irregular stateful scheduling work**.
+
+The following workload set is therefore **synthetic/proposed**, with stable IDs. No row claims to describe an observed Cairns or generic-ED batch size.
+
+| Stable ID | Inputs | Model output / validation target | Device suitability | Synthetic scenario range | Observed range |
+|---|---|---|---|---|---|
+| **K-ELT** | Dense SoA f32 arrays of predictions/reference values | Residuals, clamps, branch-light transforms | High | N = 4,096; 65,536; 1,048,576; 16,777,216 | **Unknown** |
+| **K-W1-PRESORT** | Two equal-length **already sorted** vectors | Scalar one-dimensional W1 | High for reduction; sorting explicitly excluded | Same N range | **Unknown** |
+| **K-KS-CDF** | Two already-built empirical CDF vectors | Scalar KS maximum distance | High for reduction | Same N range | **Unknown** |
+| **K-HIST** | Dense observations + fixed bin definition | Exact integer counts | Moderate/high; atomic contention is a useful stress case | N = 65,536 to 16,777,216; 64/256/1,024 bins | **Unknown** |
+| **K-SCAN** | Histogram/count vector | Prefix counts/CDF | Moderate; worthwhile only above dispatch overhead | 64 to 1,048,576 elements | **Unknown** |
+| **K-CAND** | Predictions/objective inputs for independent parameter candidates | Per-candidate calibration scores and ranking | High when simulation outputs already exist | 8/32/128 candidates × 4,096/65,536 observations | **Unknown** |
+| **K-SORT-FULL** | Unordered raw samples | Full W1/KS preparation + metric | Conditional | N = 4,096; 65,536; 1,048,576 | **Unknown** |
+
+The crucial separation is **K-W1-PRESORT versus K-SORT-FULL**. A fast GPU reduction over sorted vectors is not evidence that the full W1/KS pipeline is fast if sorting or empirical-CDF construction dominates. The benchmark contract therefore forbids reporting the reduction-only time as the full calibration metric time.
+
+The natural acceleration target for bounded grid search is likewise the **independent candidate scoring stage** after simulation outputs have been produced. It is not evidence for accelerating the DES itself. An irregular future-event queue, tie-breaking, capacity/resource transitions, Suspend/Abort/Restart state changes and subsequent deterministic scheduling should stay on the CPU path. This follows both the existing Kairos GPU architecture, which leaves orchestration and validation on CPU, and the basic economics of device dispatch. fileciteturn14file0L2-L2 MLX’s own unified-memory documentation gives an illustrative example where very small repeated operations are better on CPU because they are GPU-overhead-bound, despite sharing the same memory pool. citeturn17search0
+
+### wgpu transfer path
+
+Apple Silicon changes the meaning of “host/device transfer” but does **not** make transfer accounting disappear. Metal shared storage lets the CPU and GPU access system memory, and shared mode is the default for buffers and textures on Apple-silicon GPUs; Apple still requires scheduled accesses on one processor to complete before the other accesses the same shared resource. citeturn16search0turn16search4
+
+At the wgpu API layer, `Queue::write_buffer` immediately copies the caller’s bytes into staging memory. `StagingBelt` exists specifically to make many small staging allocations cheaper. citeturn16search7turn16search30 On readback, mapped-buffer access and GPU use are mutually exclusive; mapping therefore introduces an explicit synchronisation boundary even on unified-memory hardware. citeturn16search5turn16search10
+
+The practical inference is that **PCIe bandwidth is the wrong cost model for an Apple-silicon benchmark**, but “zero cost” is equally wrong. The relevant measured quantities are host-side copying/staging, command encoding/submission, cache/coherency and synchronisation, mapping/readback, and whether buffers remain resident across a chain of kernels. citeturn16search0turn16search7turn16search10
+
+### MLX transfer path
+
+MLX is deliberately designed around Apple Silicon unified memory: MLX arrays live in the common memory pool and an operation can be scheduled on CPU or GPU without a conventional explicit device-transfer operation. citeturn17search0turn17search2 That makes it an important comparator.
+
+However, this does **not** establish zero-copy ingress from existing Kairos `Vec`/Arrow-derived CPU buffers. MLX’s official interoperability documentation explicitly states that creating an MLX array from a CPU tensor copies data into MLX-owned storage. DLPack can provide zero-copy import for Metal tensors in suitable circumstances when the underlying Metal buffer is not private, but an equivalent safe Rust/Kairos path has **not been established in this research**. citeturn17search1
+
+The MLX benchmark must therefore time four distinct states: host-owned Rust input → MLX array creation; resident MLX GPU computation; evaluation/synchronisation; and export to a host-owned result. A second resident-data experiment should upload/create once and execute 10 and 100 operations before export. Only the latter tests MLX’s strongest architectural case.
+
+MLX is also lazy, and the first call through `compile()` builds a graph, optimises it, generates code and compiles it. Cold compile time therefore cannot be mixed into hot steady-state timing or silently excluded from one-shot timing. citeturn17search3
+
+## Determinism and numerical contract
+
+WGSL does not support a portable “same floating bits on every backend” contract. The current specification defines f32 and optionally f16 shader floating types and deliberately gives GPU-portability latitude in floating evaluation; WGSL does not specify a single rounding mode for all operations and permits implementation-dependent behaviour within stated accuracy bounds. citeturn16search3turn16search16 This is enough to rule out bitwise cross-device f32 equality as a sensible general CareOps contract.
+
+MLX requires the same distinction. Its GPU path does not support `float64`; f64 arrays are CPU-only. citeturn17search5 Moreover, MLX may use reduced internal precision for float32 matrix-multiplication-family operations unless `MLX_ENABLE_TF32=0` is set, so that environment setting must be logged whenever matmul/convolution/attention-like fixtures are introduced. citeturn17search4
+
+MLX random functions use an implicit global PRNG by default and are based on a splittable Threefry counter PRNG, with explicit keys available. citeturn17search6 That is useful MLX behaviour but **not evidence of equivalence to Kairos’s seed contract**. The initial device fixtures should therefore contain deterministic arrays generated by the existing Kairos host RNG path; MLX or WGSL must not silently generate replacement stochastic inputs.
+
+I propose the following reviewed contract, with status **policy**, not implemented capability:
+
+| Contract class | Required behaviour |
+|---|---|
+| **D0 — authoritative exact state** | Event timestamps in their approved representation, sequence/tie-break keys, entity/resource identifiers, queue/resource decisions, run/seed identity and RNG stream/state remain exact and CPU-authoritative. |
+| **D1 — exact integer numeric outputs** | Histogram counts, scans of integer counts and similar kernels must agree exactly when overflow is excluded. |
+| **D2 — floating elementwise outputs** | Compare with a declared CPU reference using max absolute error, max relative error and, for f32 diagnostics, ULP error. Cross-device bit identity is diagnostic only. |
+| **D3 — reductions and calibration objectives** | Compare W1/KS/objective differences against a CPU f64 reference where applicable; enforce mathematical invariants and record error as a function of N. |
+| **D4 — decision stability** | Calibration acceleration must record ranking correlation, winning-candidate identity and threshold flips. A numerically “small” objective difference is not sufficient if it changes the selected parameter set. |
+| **D5 — repeated execution** | Repeat identical fixtures on a fixed backend/device; exact outputs must hash identically where exactness is required, while floating repeatability is recorded rather than assumed. |
+
+A production numeric tolerance is deliberately **unknown**, rather than fabricated. The first correctness pass should generate frozen error distributions before performance is used in an adoption decision. A reviewed tolerance can then be registered per kernel/dtype/size class. That avoids either an unjustifiably loose universal epsilon or a false promise of bitwise equivalence that WGSL and MLX do not provide. citeturn16search16turn17search4
+
+If a device result eventually influences a future event time, the deterministic pattern should be: compute values into a fixed-index result vector; synchronise; validate/reconcile them on CPU in stable index order; and only then perform authoritative event insertion/tie-breaking on the existing scheduler path. That preserves the one-state/one-clock architecture while still allowing batch arithmetic to be accelerated.
+
+## Benchmark and evaluation design
+
+The existing Track 32 single-thread baseline remains useful for continuity, but an ED device decision should be based on **end-to-end break-even against the actual multicore CPU implementation used in CareOps**, on the same host. A GPU kernel that is 20× faster after its operands are resident can still lose when a one-shot ED scoring array is created, submitted, synchronised and read back. Conversely, an accelerator can be valuable when calibration can keep the same arrays resident across many candidate operations. This is precisely why the benchmark separates timing layers. The existing Track 32 single-thread target is documented in Kairos, but this multicore comparison is an explicit proposed addition for this evaluation. fileciteturn12file0L2-L2
+
+The **synthetic** fixture protocol delivered with this report specifies 10 warm-up iterations, 50 measured iterations and 100 identical-input repeatability runs. Those counts are policy/test-design choices, not published performance facts. Each backend records raw samples as well as median/p95/min/max.
+
+For each kernel/backend/size, record:
+
+1. cold runtime/device/pipeline or graph initialisation;
+2. hot kernel time with resident inputs, where trustworthy device timestamping exists;
+3. host ingress;
+4. synchronisation/readback;
+5. complete one-shot wall time;
+6. upload once → 10 kernels → download once;
+7. upload once → 100 kernels → download once;
+8. peak memory and all correctness metrics.
+
+The CPU side should include both a single-thread reference and the production-intended multicore path. The host record should contain exact Apple SoC/model, CPU/GPU core counts, RAM, macOS build, Xcode/SDK, Rust compiler, backend/runtime versions and power conditions. **None of those hardware values is populated here because no target machine was specified or benchmarked.**
+
+The most useful decision output is not a single speedup number but a **break-even curve**:
+
+\[
+S_{\mathrm{e2e}}(N)=
+\frac{T_{\mathrm{CPU,multicore}}(N)}
+{T_{\mathrm{ingress}}(N)+T_{\mathrm{device}}(N)+T_{\mathrm{sync/readback}}(N)}
+\]
+
+and, for resident chains,
+
+\[
+S_{\mathrm{resident}}(N,k)=
+\frac{\sum_{i=1}^{k}T_{\mathrm{CPU,multicore},i}}
+{T_{\mathrm{ingress}}+\sum_{i=1}^{k}T_{\mathrm{device},i}+T_{\mathrm{readback}}}.
+\]
+
+Those formulae are **proposed benchmark definitions**, not fitted results. No numerical speedup is reported because no benchmark was run.
+
+The supplied command file includes both existing-source checks and proposed future harness invocations. Every command is marked **UNEXECUTED**. Representative proposed commands are:
+
+```bash
+# PROPOSED / UNEXECUTED / harness not present in inspected commit
+cargo +1.93.0 run --release \
+  --manifest-path experiments/device-numeric-wgpu30/Cargo.toml -- \
+  --backend cpu-single,cpu-multicore,wgpu-metal \
+  --fixtures evaluation_fixtures.yaml \
+  --raw-out results/wgpu30_raw.jsonl \
+  --summary-out results/wgpu30_summary.csv
+```
+
+```bash
+# PROPOSED / UNEXECUTED / MLX comparator harness not present
+export MLX_ENABLE_TF32=0
+cargo +1.88.0 run --release \
+  --manifest-path experiments/device-numeric-mlx/Cargo.toml -- \
+  --backend cpu-single,cpu-multicore,mlx-gpu \
+  --fixtures evaluation_fixtures.yaml \
+  --raw-out results/mlx_raw.jsonl \
+  --summary-out results/mlx_summary.csv
+```
+
+Using an isolated experimental manifest is intentional: wgpu 30 requires Rust 1.93 and mlx-rs 0.32.0 requires 1.88, so evaluation should not silently move the Kairos workspace away from its declared Rust 1.76 contract. fileciteturn6file0L2-L2 fileciteturn24file0L2-L6
+
+## Decision memo and delivered artefacts
+
+The technical decision is **retain architecture, benchmark before adoption**.
+
+**wgpu/WGSL remains the preferred primary path** because it fits the checked-in GPU facade and CPU-authoritative ownership model while maintaining a native Rust host API and broader portability. Current wgpu 30 should be evaluated rather than automatically merged because of its MSRV jump and current Metal-specific open issues. fileciteturn14file0L2-L2 fileciteturn6file0L2-L2
+
+**MLX is the strongest secondary comparator**, particularly for dense chained transforms, reductions and candidate-score graphs that can remain resident. Its unified-memory model is genuinely relevant on Apple Silicon, but it does not turn arbitrary Rust host buffers into zero-copy MLX arrays automatically. It also introduces C/C++/FFI/runtime ownership rather than preserving a wholly Rust-native implementation. citeturn17search0turn17search1
+
+**CubeCL is a later architectural option**, not the immediate answer. It may become attractive if CareOps accumulates many custom compute kernels and wants one Rust kernel language across Metal/other backends; current MSRV/runtime maturity and subgroup-control limitations make that extra layer unjustified before workload evidence exists. fileciteturn16file0L2-L6 fileciteturn35file0L3-L7
+
+**Direct `objc2-metal` should be a profiling-triggered escape hatch**, not the default. Its MSRV fits the current Kairos floor, but the price is Apple-only resource/synchronisation management plus Metal shader/tooling ownership. citeturn18search2 The older `metal-rs` route should not be started anew because upstream explicitly deprecates it. citeturn18search5
+
+### Downloadable deliverables
+
+The complete artefact bundle, including exact source URLs and retrieval metadata, is:
+
+**[Download the complete R8a Metal/MLX research bundle](sandbox:/mnt/data/r8a_metal_mlx_assessment_bundle.zip)**
+
+| Delivered file | Records | Contents |
+|---|---:|---|
+| [options.csv](sandbox:/mnt/data/r8a_metal_mlx_assessment/options.csv) | 8 candidate rows | Stable candidate IDs, versions/revisions, MSRV, integration class, licence, issues, fallback and recommendation |
+| [source_manifest.csv](sandbox:/mnt/data/r8a_metal_mlx_assessment/source_manifest.csv) | 39 source rows | Exact URLs, publication/commit date, retrieval date, location, access/licence and evidence status |
+| [decision_memo.md](sandbox:/mnt/data/r8a_metal_mlx_assessment/decision_memo.md) | 1 memo | Architecture/decision recommendation and hard gates |
+| [evaluation_fixtures.yaml](sandbox:/mnt/data/r8a_metal_mlx_assessment/evaluation_fixtures.yaml) | 7 workload fixtures | K-ELT through K-SORT-FULL, synthetic ranges, model roles, correctness and transfer protocol |
+| [proposed_commands.sh](sandbox:/mnt/data/r8a_metal_mlx_assessment/proposed_commands.sh) | 5 command groups | Concrete reproduction/evaluation commands, all explicitly marked unexecuted |
+| [benchmark_contract.json](sandbox:/mnt/data/r8a_metal_mlx_assessment/benchmark_contract.json) | 1 contract | Mandatory result fields and forbidden benchmark interpretations |
+| [manifest.json](sandbox:/mnt/data/r8a_metal_mlx_assessment/manifest.json) | 1 manifest | Delivered files, record counts, byte sizes, SHA-256 values and inspected revision |
+
+The manifest records **61 delivered data records excluding the manifest itself**. No benchmark result, fitted speedup, transfer latency or numerical tolerance was generated; the files therefore do not disguise synthetic fixtures as observed data.
+
+Critical source anchors include the Kairos inspected commit above, current wgpu releases at `https://github.com/gfx-rs/wgpu/releases`, the current WGSL recommendation at `https://www.w3.org/TR/WGSL/`, MLX v0.32.2 documentation at `https://ml-explore.github.io/mlx/build/html/`, official MLX-C at `https://github.com/ml-explore/mlx-c`, and CubeCL at `https://github.com/tracel-ai/cubecl`. The downloadable source manifest gives all 39 exact URLs and the specific field/section used for each.
+
+## Conflicts, unresolved questions and priority evidence actions
+
+The first conflict is **current dependency versus current Kairos MSRV**. Current wgpu 30.0.1 requires Rust 1.93 while the inspected Kairos workspace declares 1.76; mlx-rs and CubeCL likewise exceed that floor. fileciteturn6file0L2-L2 fileciteturn24file0L2-L6 fileciteturn16file0L2-L6 The correct response is not to freeze automatically on an old dependency and not to upgrade silently: benchmark current technology in isolation, then make MSRV change a separately reviewed architectural decision.
+
+The second conflict is **unified memory versus API-level copies**. Apple Silicon and MLX genuinely offer shared physical memory, but wgpu `Queue::write_buffer` still stages/copies caller data and MLX CPU-origin array creation can copy into MLX storage. citeturn16search4turn16search7turn17search1 Consequently, claims such as “Metal has no transfer cost” or “MLX is automatically zero-copy from Kairos” are unsupported.
+
+The third conflict is **deterministic simulation versus floating accelerator semantics**. Exact event/RNG/order contracts are compatible with device acceleration only when numeric device results are reconciled behind that boundary. WGSL’s floating specification and MLX’s precision/device rules do not justify requiring portable float bit identity. citeturn16search16turn17search4turn17search5
+
+The highest-priority missing evidence is therefore not another GPU framework survey. It is the **actual ED numeric workload envelope**: array dimensions, number of independent calibration candidates, number of W1/KS evaluations per calibration iteration, whether samples are already sorted/reused, how many transforms can stay resident, and the fraction of run time currently consumed by those numeric stages. Those values are currently **unknown**, because the generic-ED attachments were unavailable.
+
+The next evidence action is a frozen CPU fixture and profile from the generic/public-data ED path. It should establish **observed** batch-size distributions and current multicore timings before any hardware speedup threshold is set. Only then can the synthetic N grid be mapped to a real scenario range and a production break-even criterion be defined.
+
+After that, run the same frozen arrays through wgpu 30 on the target Apple hardware, decomposing ingress, resident kernel, synchronisation/readback and end-to-end time. Include `K-W1-PRESORT` and `K-SORT-FULL` separately, exact histogram tests, and candidate-ranking stability. wgpu’s Metal pass-overhead and subgroup issues make these simple explicit fixtures more informative than a generic tensor benchmark. fileciteturn36file0L3-L7 fileciteturn26file0L3-L7
+
+Then run MLX 0.32.2 over the identical frozen arrays, measuring host→MLX creation rather than assuming it away, separating cold compile from hot execution, and testing both one-shot and resident chains. citeturn17search1turn17search3 The comparison should answer a narrow question: whether MLX’s graph/runtime machinery produces a meaningful end-to-end advantage on the **actual ED batch-numeric stages**, not whether MLX is fast at machine learning generally.
+
+Finally, set reviewed per-kernel numerical tolerances from the frozen correctness evidence **before** using throughput as an adoption criterion, and re-run the whole suite through the CPU fallback. Until those steps are complete, the defensible architectural conclusion is: **keep CPU event ordering and authoritative simulation semantics unchanged; pursue wgpu/WGSL as the primary Rust-native accelerator experiment; use MLX as a deliberately FFI-based Apple-Silicon comparator; and do not infer that either tensor/GPU path accelerates irregular DES.**

@@ -29,6 +29,7 @@ Entry: P0. May run alongside P2 and engine development.
 - [ ] P1.1 Search and extract public arrival/case-mix, pathway and hospital-boundary
   inputs, source definitions/licences and suitable open model examples. Save
   citations, extraction locations and reproducible transforms, not just links.
+  Catalogue specialty/time/calendar-conditioned ED-eligible bed-offer inputs and transfer delays separately from raw hospital discharge counts or sampled boarding times. Record offer persistence/withdrawal and hidden competing-demand assumptions; no universal default follows from report 29.
 - [ ] P1.2 Identify capacities/calendars, triage/clinical-work/diagnostic/cleaning/
   boarding durations, route probabilities and patience evidence. Separate active
   work from elapsed waits/transit; record population and observation limitations.
@@ -100,6 +101,7 @@ Entry: P3. This phase produces configuration data, not the E1 model implementati
 - [ ] P4.3 Document parameter meanings, example loading, limitations and overrides;
   define a separate future Cairns mapping and required local evidence/elicitation.
   Hand off the frozen generic pack to E1 and calibration fixtures to C5.
+  Use report 30 temporal crosswalk as a candidate mapping with unknown local availability; require Cairns location boundary, source profiles, correction rules and ETL lineage before treating timestamps as observed.
 - [ ] P4.4 Conductor — review and verify phase (workflow.md).
 
 Exit: P-R3/6 and complete synthetic/public-backed input shapes; schema checks pass.

@@ -1,0 +1,225 @@
+# Staged Rust CI, quality and security research for CareOps Sim / Kairos
+
+**Research date:** 27 September 2026, Australia/Brisbane  
+**Research task:** staged Rust CI, quality, interoperability, supply-chain and release controls for the Kairos/KairoECS workspace used by CareOps Sim  
+**Inspected public Kairos revision:** `fae901558f07b7b717a676adbafbe2cdc78dea1c`  
+**Inspected revision URL:** `https://github.com/edithatogo/kairos/commit/fae901558f07b7b717a676adbafbe2cdc78dea1c`  
+**Parent-pinned CareOps Kairos snapshot:** **unknown / unavailable in this session**  
+**Execution status:** **research and configuration inspection only; proposed commands were not executed and confer no release or security acceptance**
+
+## Executive decision
+
+The evidence supports a **staged rather than monolithic CI design**. Kairos already has substantial CI/security scaffolding, but the inspected public revision should still be regarded as **R2 implementation evidence, not release/security evidence**. Its own readiness document defines R2 as a real implementation slice, R3 as requiring conformance for public APIs, and R4 as requiring full quality, packaging, SBOM, provenance and red-team gates; it also explicitly says that planning text alone is insufficient and that closeout must identify commands actually exercised. fileciteturn24file0L2-L6
+
+The most important changes are not more exotic testing. They are fixing several evidence gaps at the base of the stack:
+
+| Priority | Control | Specific risk | Relative execution cost* | Recommended gate |
+|---|---|---|---|---|
+| **Critical** | Verify parent gitlink/submodule SHA and cleanliness | Testing the wrong Kairos revision | Low | **D2/R2 blocking** |
+| **Critical** | Execute the declared Rust **1.76 MSRV** | Silent break of supported compiler contract | Medium | **D2/R2 blocking** |
+| **Critical** | Baseline fmt/clippy/test/docs with locked resolution | Ordinary regressions/toolchain drift | Medium | **D2/R2 blocking** |
+| **Critical** | Deterministic trace/replay invariants | Scientifically non-reproducible DES/ABM outputs | Low–Medium | **D2/R2 blocking** |
+| **Critical** | Run full `cargo-deny` licence/bans/advisory/source policy | Licence or dependency-policy violations escape CI | Low–Medium | **D2/R2 blocking** |
+| **Critical** | Enforce full 40-hex action SHAs and least privilege | Mutable action/supply-chain compromise | Low | **D2/R2 blocking** |
+| High | Bounded Cargo feature matrix | Optional features compile only in `all-features` combination | Medium–High | R2 → R3 blocking |
+| High | Property/generative invariants | Scheduler/state edge cases | Medium | R2/R3 |
+| High | Real Arrow IPC cross-implementation tests | False claim of Arrow interoperability | High | **R3 blocking before Arrow claim** |
+| High | Fixed, persistent fuzz campaign | FFI/parser crash/security defects | High | R3 scheduled; R4 critical-target gate |
+| High | Selective Miri and ASan | UB/native-boundary defects | Medium–High/High | R3 scheduled; selected R4 gate |
+| High after API baseline | SemVer checking | Accidental public API break | Medium | R3 informational → R4 blocking |
+| Medium–High | Mutation testing | Tests that execute code without detecting meaningful faults | Very high | R3 scheduled → R4 ratchet |
+| **Critical at release** | Artefact-bound SBOM/provenance plus verification | Attesting the wrong or stale bytes | Medium | **R4 mandatory** |
+| **Critical at release** | Clean, reproducible release + rollback drill | Non-reproducible artefacts or impossible “rollback” assumptions | High | **R4 mandatory** |
+
+\*Cost classes are **policy estimates, not measured Kairos runtimes**. They are deliberately qualitative until the proposed commands have been executed.
+
+This sequencing keeps the user-specified **GitHub-creation boundary at D2**. It does not promote GitHub automation, release machinery, security claims, Arrow support or any later architecture merely because configuration files exist.
+
+The strongest immediate decision is therefore:
+
+> **Approve the staged control architecture, but do not accept release/security readiness.** Make identity, MSRV, deterministic correctness, complete dependency/licence checks and immutable workflow dependencies the D2/R2 foundation. Real Arrow interoperability, deeper dynamic analysis and API compatibility belong at R3. Exact-artefact provenance, reproducibility and rollback belong at R4, and require recorded successful execution.
+
+## Evidence boundary and inspected repository state
+
+The requested source attachments were not available through the conversation's uploaded-file interface. In particular, I could not inspect the stated parent commit/gitlink, `conductor/module-readiness.md`, the development-readiness and generic-ED specifications/plans, or `agent-engineering.md` and `execution-model.md`. The public repository does contain `conductor/implementation-readiness.md`, last verified there on 17 May 2026, but that is **not a substitute for the unavailable parent-pinned material**. fileciteturn24file0L2-L6
+
+Accordingly, all implementation-specific findings below refer to public upstream revision `fae901558f07b7b717a676adbafbe2cdc78dea1c`, not to an assumed CareOps snapshot.
+
+The root workspace at that revision declares Rust edition 2021, Apache-2.0, `rust-version = "1.76"` and `unsafe_code = "forbid"`. It contains the core/state/RNG/DES/ABM crates as well as Arrow, FFI, GPU/WebGPU, PDES, MPI/gRPC and other later-phase crates. fileciteturn3file0L2-L6 The accompanying `rust-toolchain.toml`, however, requests the floating `stable` channel rather than Rust 1.76. fileciteturn13file0L2-L6
+
+That distinction matters. Cargo's `rust-version` is the package's minimum supported Rust version, so a “stable passes” result does not demonstrate that 1.76 still works. citeturn22search26 The current Rust stable release on the research date is **1.98.1**, published 3 September 2026 to repair a vtable-generation miscompilation in 1.98.0. citeturn21search2turn21search8
+
+The inspected `ci-core.yml` already has a strong basic structure: read-only `contents`, checkout pinned to a full SHA with credentials not persisted, `cargo fmt`, Clippy over workspace/all-targets/all-features with warnings denied, `cargo-nextest`, rustdoc warnings denied, plus `cargo-deny` and `cargo-audit`. fileciteturn6file0L2-L6 Its principal weaknesses are that it runs only on floating stable rather than the advertised MSRV, and its `cargo deny` invocation covers only **advisories and sources**.
+
+That latter point is an actual enforcement gap rather than a theoretical recommendation. `deny.toml` defines an allow-list of licences, wildcard dependency denial, duplicate-version warning behaviour, yanked/unmaintained policy, and permitted dependency sources. fileciteturn14file0L2-L6 Yet both the core and policy workflows shown invoke `cargo deny check advisories sources`, omitting `licenses` and `bans`. fileciteturn6file0L2-L6 fileciteturn7file0L2-L6 The policy workflow also installs `cargo-deny` and `cargo-audit` without explicit versions, undermining tool-level reproducibility. fileciteturn7file0L2-L6
+
+The toolchain workflow has a second concrete mismatch: its stable lane expects a `1.95` prefix and beta another `1.x` prefix, while current stable is now 1.98.1, and it contains no Rust-1.76 lane. fileciteturn23file0L2-L6 citeturn21search2 This is precisely the sort of CI policy drift that a two-lane model avoids: **a fixed MSRV acceptance lane plus a current-stable canary/acceptance lane whose update is intentional**.
+
+No workflow execution log tied to the exact inspected SHA was obtained during this research. That does not establish that no workflow ever ran; it means this assessment has no execution evidence on which to grant security or release acceptance.
+
+### Research method
+
+Sources were included when they were one of: the original Kairos repository at a fixed SHA; official Rust/Cargo documentation or Rust security/release communications; Apache Arrow specifications and the original `arrow-rs` repository; official GitHub Actions security/provenance documentation; or original repositories/releases of the evaluated Rust tooling. Secondary blogs and unauditable version aggregators were excluded.
+
+For software artefacts, “sample size” and “population” are not meaningful empirical fields, so they are recorded as **N/A software artefact**, rather than fabricated. Publication/release date, retrieval date, exact revision/version, source location, access/licence status and transformation/use notes are captured in the downloadable `source_manifest.csv`.
+
+## Staged control architecture
+
+The existing repository's own R0–R4 vocabulary is a useful backbone, but the project-specific D2 boundary should remain distinct from those repository readiness labels. fileciteturn24file0L2-L6
+
+At **D2/R2**, controls should answer three questions before consuming expensive CI time: *Am I testing the intended source? Does the promised build contract still work? Are basic correctness and supply-chain policies intact?*
+
+For a parent repository that pins Kairos as a submodule, the first job should derive the expected commit from the parent gitlink and compare it with the actual checked-out submodule HEAD. It should also fail for uninitialised (`-`), worktree-mismatched (`+`) or conflicted (`U`) recursive submodules and for dirty tracked changes. Because the parent snapshot was unavailable, I could not establish whether CareOps already does this. **CI-016 is therefore an evidence-acquisition requirement as much as a control recommendation.**
+
+The Rust acceptance matrix should then include an exact **1.76.0 lane**, because that is what the current manifest promises, and a reviewed current toolchain such as **1.98.1**. fileciteturn3file0L2-L6 citeturn21search2 A floating `stable` lane remains useful as a canary but should not be the sole statement of compiler compatibility.
+
+Feature testing should also become more discriminating. `--all-features` detects one important configuration but cannot prove that each individual optional feature is self-contained. `cargo-hack` **0.6.45**, released 30 May 2026, is a current candidate for bounded `--each-feature` checking. fileciteturn27file0L1-L2 An exhaustive powerset should not be the default because its cost grows rapidly; combinations should be selected where architecture creates genuine interaction risk.
+
+For this simulation framework, a **determinism gate is more important than generic code coverage percentages**. Ordinary unit tests can all pass while event ordering, RNG partitioning or replay varies across runs. The R2 fixture should therefore run a canonical fixed-seed scenario repeatedly in both debug and release, compare canonical event/state digests, and explicitly exercise equal-time/equal-priority tie breaking. Parallel parity should be added only when real within-run parallelism exists; doing it now would falsely imply a capability the project has explicitly staged for later.
+
+At **R3**, the emphasis changes from “does the implementation slice build?” to “does its claimed public behaviour survive independent tests?” That is the correct point for bounded feature combinations, SemVer checking after a legitimate API baseline exists, true Arrow interoperability, property/generative tests, persistent fuzzing, selective Miri/ASan and mutation evidence.
+
+At **R4**, the unit of evidence must become the **release candidate and its exact artefact**, not merely the source tree. GitHub's own documentation stresses that generating an attestation alone does not provide the intended assurance unless consumers actually verify it. citeturn22search5turn22search3 The R4 pipeline should therefore build once from an exact clean commit/tag, transfer that immutable artefact forward, generate its SBOM, attest it, verify the attestation, perform independent reproducibility comparison, and exercise the rollback procedure.
+
+## Compatibility and current upstream decisions
+
+“Latest” has deliberately been treated as a **candidate**, not as an instruction to upgrade.
+
+| Component | Current candidate observed on 27 Sep 2026 | Kairos inspected state | Compatibility decision |
+|---|---|---|---|
+| Rust | **1.98.1**, 3 Sep 2026 | manifest MSRV 1.76; toolchain floats stable | Add 1.98.1/current stable lane, **retain actual 1.76 acceptance** unless MSRV is formally changed. citeturn21search2 |
+| cargo-nextest | **0.9.145**, 16 Sep 2026 | pinned 0.9.133 | Candidate update after trial; no automatic upgrade. |
+| cargo-deny | **0.20.2**, 9 Jul 2026 | pinned 0.18.9 in core; unversioned install in policy | Candidate update plus full `advisories bans licenses sources` execution after config-compatibility trial. |
+| cargo-audit | **0.22.2**, 5 Jun 2026 | pinned 0.22.1 in core; unversioned in policy | Minor candidate update; retain as defence in depth. |
+| cargo-hack | **0.6.45**, 30 May 2026 | not observed | Suitable feature-matrix candidate after execution trial. fileciteturn27file0L1-L2 |
+| cargo-msrv | **0.19.3**, 25 Mar 2026 | not observed | Useful diagnostic, but cannot replace actually compiling/testing on 1.76. |
+| cargo-semver-checks | **0.50.0**, 1 Aug 2026 | not observed | Introduce only once a legitimate public/release baseline exists. fileciteturn28file0L1-L2 |
+| cargo-fuzz | **0.13.2**, 9 Jun 2026 | unpinned `cargo install cargo-fuzz` | Pin only after trial; more importantly, fix the toolchain to nightly. |
+| cargo-mutants | **27.1.0**, 2 Jun 2026 | not observed | Scheduled candidate; establish a measured baseline before blocking. |
+| proptest | **1.11.0** | not observed | **Do not adopt blindly**: published `rust-version` is 1.85, above Kairos MSRV 1.76. |
+| actionlint | **1.7.12**, 30 Mar 2026 | `go run ...@v1.7.7` | Upgrade candidate; install by reproducible mechanism rather than a mutable tag. |
+| zizmor CLI | **1.30.1**, 9 Sep 2026 | action wrapper annotated v0.5.3 | Evaluate current action/CLI pair; do not assume wrapper version maps directly to CLI version. fileciteturn26file0L1-L2 |
+| Syft | **1.52.0**, 17 Sep 2026 | installed through pinned Anchore action | Candidate current SBOM engine; current release publishes checksums/signatures. fileciteturn29file0L1-L2 |
+| arrow-rs | **60.0.0**, published 15 Sep 2026; tag commit `ef1fa157977633f0ba21aa921f9ef3d5c669235b` | no Arrow dependency | **Not compatible with present MSRV policy:** 60.0.0 raises MSRV to Rust 1.88. fileciteturn19file0L1-L2 fileciteturn20file0L1-L12 |
+
+The Arrow result is the most consequential compatibility finding. The current `kairo-ecs-arrow` manifest depends only on `kairo-ecs-types`; it does **not** depend on `arrow`, `arrow-array`, `arrow-ipc`, `parquet` or an equivalent implementation. fileciteturn15file0L2-L6 Its code defines field descriptors that use names such as `UInt16`, `Utf8` and `FixedSizeBinary`, but the concrete inspected serialisation path is a bespoke tab-separated “smoke” representation plus JSON/NDJSON rather than an Apache Arrow `RecordBatch` and IPC stream. fileciteturn17file0L1-L2
+
+This means the current public implementation is useful **schema/scaffolding evidence**, but is not evidence of Arrow interoperability. Planning material elsewhere in the repository mentions RecordBatch/IPC/Parquet, which reinforces rather than removes that distinction. fileciteturn16file0L1-L11
+
+At the same time, simply adding the newest `arrow-rs` is not acceptable: release 60.0.0 explicitly includes an MSRV uplift to **Rust 1.88**, whereas Kairos promises 1.76. fileciteturn19file0L1-L2 The project therefore needs a reviewed decision:
+
+**Either** raise Kairos' MSRV with downstream compatibility evidence, **or** identify an older/alternative Arrow implementation that is explicitly demonstrated under 1.76. This research does **not** silently choose either option.
+
+When real Arrow support is added, its acceptance fixture should follow Arrow's own integration-testing pattern: producer A writes, consumer B reads and compares with the canonical dataset, then reverse the producer/consumer roles. Apache Arrow describes integration testing across producer/consumer implementation pairs in this way. citeturn21search17 Tests should preserve field order, datatypes, nullability, schema metadata, empty and multiple batches, boundary integer values and any project-specific time representation. A custom self-roundtrip is insufficient because the same defect may exist in both writer and reader.
+
+Security treatment should also distinguish Arrow interfaces. Apache Arrow warns that the C Data Interface contains raw process pointers and should never be consumed from an **untrusted producer**; IPC is a serialised interface but still requires defensive validation for untrusted inputs. citeturn21search1turn21search12 That makes IPC the appropriate cross-process/public-data interoperability test surface here unless a trusted in-process C Data Interface boundary is explicitly designed.
+
+## Dynamic analysis, workflow security and release trust
+
+The inspected fuzz configuration contains a specific fixable defect: it installs **stable** Rust and then runs `cargo fuzz`. fileciteturn8file0L2-L6 The official Rust Fuzz Book states that `cargo-fuzz` requires nightly because it relies on `-Z` sanitizer support. citeturn21search7turn21search22 Consequently, the present configuration should not be cited as successful fuzzing merely because the YAML exists. It must first execute successfully on a dated nightly.
+
+The present 60-second weekly `ffi_boundary` target is best regarded as a smoke test. fileciteturn8file0L2-L6 R3 should add persistent corpora and crash artefact retention, then extend targets to any real binary/IPC parsing and high-risk state-machine boundaries. R4 security acceptance should require that discovered crashers have either been fixed and converted into reproducible regression cases or explicitly waived with owner/rationale.
+
+Miri should remain **selective**, not be pushed onto every PR. The repository already runs it on core and state in a daily nightly job. fileciteturn9file0L2-L6 A new upstream security consideration makes the toolchain/cache relationship important: on 21 September 2026 the Rust Security Response Team disclosed that Miri had stored all environment variables under `target/`, which could expose secrets when such output was shared through GitHub Actions caches; the fix was available in the 22 September nightly. citeturn22search2 The inspected Miri job itself has only read permissions and no shown secrets, so this is **not evidence that Kairos leaked a secret**. The operational conclusion is narrower: pin the acceptance Miri nightly to 22 September 2026 or later after compatibility testing, and avoid sharing Miri `target` caches from secret-bearing jobs into less-trusted contexts.
+
+ASan is most valuable at FFI and future real Arrow/native boundaries. ThreadSanitizer becomes materially more useful when the proposed multicore/within-run parallel execution is actually implemented; enabling it today as a “parallel safety” acceptance gate would overstate current capability. Rust sanitizers remain nightly/unstable and target dependent. citeturn21search7
+
+Mutation testing should similarly be staged. At R3, run it on small critical crates such as scheduler/state/RNG logic and study surviving mutants. A global percentage chosen before measuring Kairos would be arbitrary. At R4, a ratchet over previously measured critical-code performance is defensible; an unexplained “90% mutation score” is not.
+
+On GitHub Actions hardening, the repository is already better than many projects: inspected workflows commonly use full commit SHAs, `contents: read` and `persist-credentials: false`. fileciteturn6file0L2-L6 fileciteturn21file0L2-L6 The problem is that the policy checker searches only for `@main`, `@master`, `@latest` and `@HEAD`. fileciteturn7file0L2-L6 A mutable `@v4` or `@v4.9.0` could pass that regex.
+
+GitHub's current guidance is unambiguous: a **full-length commit SHA is the only immutable action reference**, least privilege should be used for `GITHUB_TOKEN`, and repository/organisation settings can require full-length action SHA pinning. citeturn21search0turn21search3 The recommended hierarchy is therefore platform enforcement first, structural workflow analysis second, and the simple regex only as a supplemental guard.
+
+This matters in the current threat environment rather than as abstract hardening. On 20 August 2026 the Rust security team documented malicious versions including `arrayref 0.3.10`, which remained online for 86 minutes before deletion, and on 17 September warned of ongoing targeted attacks against prominent Rust maintainers. citeturn22search0turn22search28 These incidents do not imply Kairos was compromised. They justify treating dependency identity, lockfile review, owner credentials and release provenance as active risks.
+
+For release provenance, the current workflows have the right ingredients but need a stronger artefact chain. `release-attestations.yml` and `sbom-attestations.yml` both check out source, expect an artefact tree under `dist`, generate an SPDX JSON SBOM with Syft and then call GitHub attestation actions. fileciteturn11file0L2-L6 fileciteturn12file0L2-L6 In the inspected YAML there is no visible build or download step that introduces the exact previous release artefact into those jobs. This is a **configuration inference, not an execution finding**: on a clean runner, the workflow needs an explicit, provenance-preserving way to obtain the actual bytes it is meant to attest.
+
+GitHub recommends verifying release artefacts explicitly, for example:
+
+```bash
+gh attestation verify "$ARTIFACT" -R edithatogo/kairos
+```
+
+and, for SPDX SBOM attestations, verifying the appropriate predicate type. citeturn22search3 GitHub also emphasises that an attestation links artefacts to source/build provenance but is **not itself evidence that the software is secure**. citeturn22search5
+
+Release rollback needs equally precise semantics. The current release workflow is intentionally dry-run only but uses `cargo package --allow-dirty`. fileciteturn10file0L2-L6 A final acceptance build should not allow a dirty tree. Cargo also documents that crates.io publication is generally permanent: a version cannot be overwritten and its code cannot simply be deleted. A yank prevents new resolution in the normal case while existing lockfiles can continue to use the version. citeturn22search1turn22search6
+
+Therefore a Kairos crates.io rollback procedure should mean **stop promotion, identify the compromised/bad digest, publish a corrected SemVer release through the normal R4 gates, and yank the defective version where appropriate**—not “restore the previous bytes at the same version”.
+
+## Delivered evaluation package
+
+The research package contains stable candidate IDs, evidence labels and all proposed commands explicitly marked **unexecuted**.
+
+**Complete bundle:** [Download all research artefacts as ZIP](sandbox:/mnt/data/kairos_staged_ci_research_2026-09-27.zip)  
+Bundle SHA-256: `52d97c6b10007991af3bab89db74c0b962b1bfa4e5eab3c22f8b4bc336ca39dc`
+
+| File | Records | Purpose |
+|---|---:|---|
+| [options.csv](sandbox:/mnt/data/kairos_staged_ci_research_2026-09-27/options.csv) | 16 | Stable control IDs `CI-001`–`CI-016`, risk, relative cost, gate, current observation, compatibility evidence and recommendation |
+| [source_manifest.csv](sandbox:/mnt/data/kairos_staged_ci_research_2026-09-27/source_manifest.csv) | 45 | Primary-source register with evidence class, publication/retrieval dates, revision/version, exact URL, source location, access/licence note, N/A population field and use |
+| [source_list.txt](sandbox:/mnt/data/kairos_staged_ci_research_2026-09-27/source_list.txt) | 45 | Compact source list |
+| [evaluation_fixtures.json](sandbox:/mnt/data/kairos_staged_ci_research_2026-09-27/evaluation_fixtures.json) | 12 | Concrete deterministic, Arrow, submodule, workflow, fuzz, reproducibility and rollback fixtures |
+| [evaluation_commands.yaml](sandbox:/mnt/data/kairos_staged_ci_research_2026-09-27/evaluation_commands.yaml) | 15 command groups | Proposed commands, all globally labelled `PROPOSED_UNEXECUTED` |
+| [decision_memo.md](sandbox:/mnt/data/kairos_staged_ci_research_2026-09-27/decision_memo.md) | 8 sections | Standalone decision memo |
+| [manifest.json](sandbox:/mnt/data/kairos_staged_ci_research_2026-09-27/manifest.json) | file manifest | Delivery manifest with record counts, byte counts and SHA-256 hashes |
+
+The evaluation commands include, among others, exact parent-gitlink comparison, a Rust-1.76 MSRV lane, Rust-1.98.1 baseline lane, `cargo-hack`, complete `cargo-deny`, dated-nightly fuzz/Miri commands, ASan, mutation testing, SemVer checking, future Arrow interop commands, artefact attestation verification and clean release/rollback commands. They are deliberately **not represented as having passed**.
+
+For example, the parent/submodule fixture is built around this invariant:
+
+```bash
+expected="$(git ls-tree "$PARENT_SHA" "$KAIROS_PATH" | awk '{print $3}')"
+actual="$(git -C "$KAIROS_PATH" rev-parse HEAD)"
+test -n "$expected"
+test "$actual" = "$expected"
+
+test -z "$(git submodule status --recursive | grep -E '^[+\-U]')"
+git -C "$KAIROS_PATH" diff --exit-code
+git -C "$KAIROS_PATH" diff --cached --exit-code
+```
+
+The proposed compiler gates explicitly separate current and minimum supported Rust:
+
+```bash
+# Current accepted compiler candidate — unexecuted
+cargo +1.98.1 clippy --workspace --all-targets --all-features --locked -- -D warnings
+cargo +1.98.1 test --workspace --all-features --locked
+
+# Declared MSRV — unexecuted
+cargo +1.76.0 check --workspace --all-targets --locked
+cargo +1.76.0 test --workspace --locked
+```
+
+The proposed dependency policy fixes the presently omitted checks:
+
+```bash
+cargo deny check advisories bans licenses sources
+cargo audit
+```
+
+The proposed fuzz lane fixes the stable/nightly mismatch:
+
+```bash
+cargo +nightly-2026-09-22 fuzz run ffi_boundary -- -max_total_time=60
+```
+
+A longer scheduled run is separately included; the 60-second invocation remains only a smoke test. The 22 September date is a conservative candidate boundary following the Miri cache fix, not a claim that this nightly has been tested against Kairos. citeturn22search2
+
+The future Arrow fixtures are marked `requires_implementation: true`, so their presence cannot be confused with an implemented current capability.
+
+## Conflicts, unresolved questions and prioritised evidence acquisition
+
+The central unresolved technical conflict is **MSRV versus real Arrow support**. Kairos currently advertises Rust 1.76. fileciteturn3file0L2-L6 Current `arrow-rs` 60.0.0 is a candidate only and raises its MSRV to Rust 1.88. fileciteturn19file0L1-L2 Until that conflict is explicitly reviewed, neither “use latest Arrow” nor “raise MSRV” should enter implementation silently.
+
+The second unresolved issue is **source identity**. The public upstream commit inspected here is not proven to be the CareOps parent-pinned snapshot. The highest-priority evidence acquisition is therefore the parent commit, the Kairos submodule path and gitlink SHA, recursive submodule state, and the unavailable attachment set. Only then can this report's configuration findings be mapped reliably to the actual CareOps development snapshot.
+
+The third issue is **execution evidence**. Configuration inspection found useful scaffolding and several likely defects, but security/release readiness is an empirical gate. In priority order:
+
+1. **Recover the exact CareOps parent snapshot and run CI-016 first.** Archive parent SHA, expected Kairos gitlink SHA, actual submodule SHA and clean recursive status.
+2. **Execute the D2/R2 foundation on that exact snapshot:** Rust 1.76, current accepted Rust, fmt/clippy/tests/docs, deterministic trace fixtures, complete `cargo-deny` policy and immutable-action checks. Capture exact tool versions, exit codes and logs.
+3. **Resolve the MSRV/Arrow decision before implementing genuine Arrow.** Do not infer Arrow compliance from the current custom smoke representation. When chosen, execute bidirectional IPC fixtures against an independent implementation and malformed-input tests. Apache Arrow's own integration model supports producer/consumer cross-testing rather than self-roundtrip alone. citeturn21search17
+4. **Repair fuzzing and stabilise dynamic-analysis toolchains.** Use a dated compatible nightly for fuzz/Miri, retain corpora/crashers, then introduce ASan at FFI/serialization edges. Do not introduce TSan as a current capability claim until parallel execution is real.
+5. **Establish public-API and mutation baselines at R3.** SemVer checks require a genuine prior public baseline; mutation thresholds require measured Kairos results rather than an invented percentage.
+6. **Run the complete R4 release drill before any release/security acceptance.** Build from a clean immutable commit; build independently twice under a defined environment; compare the defined artefact/content hashes; generate the SBOM from the exact shipped artefact; attest that same digest; independently run `gh attestation verify`; execute package dry-runs; and rehearse the actual crates.io response path of corrected release plus yank where appropriate. GitHub explicitly says attestations should be verified, while Cargo explicitly documents that a published version cannot simply be overwritten. citeturn22search3turn22search1
+
+The architecture therefore does **not** need wholesale CI expansion now. It needs stricter identity and contract evidence at D2/R2, then deliberately staged depth. That preserves Kairos' current architecture and the generic-ED-first CareOps scope while making later Arrow, parallelism, security and release claims contingent on the exact execution evidence that those claims require.

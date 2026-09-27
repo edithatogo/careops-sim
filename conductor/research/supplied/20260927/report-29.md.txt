@@ -1,0 +1,220 @@
+# Minimum ED boundary and operational decision cases
+
+## Research frame and evidence base
+
+**Research date:** 27 September 2026, Australia/Brisbane.
+
+**Scope.** This review addresses only the smallest defensible inpatient-release and ambulance-offload boundary needed for a generic/public-data ED model, with a later distinct Cairns profile. Detailed ward, elective-surgery, birthing, outpatient, waitlist and whole-hospital modelling are treated only as comparators or later escalation points, not as current implementation scope.
+
+**Attachment limitation.** The prompt referred to generic ED, queue and parameter specifications and two reports, but no retrievable attachments were available in this research session. They were therefore **not inspected**. Statements about Kairos/KairoECS, Q v1, deterministic event/seed contracts and the proposed calibration architecture are treated as user-supplied project context rather than independently verified implementation facts.
+
+The search prioritised: official Queensland Health directives and data specifications; AIHW national ED specifications; current ACEM/ANZCA and Australian Resuscitation Council material; primary Australian studies of ambulance offload and ED nursing workload; and the 2026 Queensland studies of access block, occupancy and ward-level discrete-event simulation. Reviews, commentary and overseas studies were excluded where an Australian primary or official source answered the boundary question. Aggregate ED waiting-time and length-of-stay statistics were excluded as evidence for primitive service-time distributions.
+
+The strongest downstream comparator is the 2026 Queensland ward-level DES. It used every ED presentation, inpatient episode and ward movement at three principal-referral hospitals with more than 900 beds each; represented verified ward capacities, elective and ED admissions, and individual ward movements; and used FIFO ward queues. Importantly for this review, its clustering intervention pooled only **eligible wards** rather than treating the hospital as an unlimited homogeneous bed stock. citeturn20view0turn20view1 The FIFO rule is a property of that published model, **not** evidence for changing Kairos scheduler order.
+
+The related 25-hospital Queensland occupancy cohort found site-specific flow deterioration and reported that a 10-percentage-point increase in occupancy correlated with 0.32 hours, or 19 minutes, greater ED LOS overall and 33 minutes among admitted ED patients; weekday admissions and discharges were reported as up to three times weekend levels. These are associations, not primitive release-time distributions, but they make a strong case against IID, time-invariant downstream delays. citeturn17view2 A second 25-hospital cohort covering 2018–2022 found worsening POST performance alongside access block and a strong positive association between the two; the authors interpreted the findings as supporting attention to ward-bed access and hospital capacity. citeturn17view1
+
+AIHW's 2024–25 national ED appendix also illustrates why end-to-end ED times should not be reverse-engineered into task durations: 14,415 presentations were excluded from waiting-time statistics for missing or invalid clinical-care commencement times, ED LOS was invalid for 2,933 records, and clinical-care duration could not be calculated for 414,799 records. citeturn17view4 Queensland's data-request specifications instead expose the useful event structure directly—presentation, triage, service commencement, episode end and physical departure in the Emergency Data Collection, and admission/separation, care type, transfer and elective-status fields in QHAPDC—although exact dates/times can require strong justification. citeturn21view1turn21view2
+
+**Overall conclusion:** the smallest boundary that remains useful for ED staffing/capacity/boarding questions is **not a sampled boarding delay and not a generic inpatient-bed pool**. It is a **finite, specialty-compatible stream of ED-eligible inpatient placement offers**, matched to endogenous ED boarders while their ED space and relevant care workload remain represented until physical departure.
+
+## Recommended minimum boundary
+
+The distinction between fact, inference and proposed model choice is material here.
+
+| Element | Classification | Recommended treatment |
+|---|---|---|
+| Admission/transfer-ready state | **Source-backed fact + proposed choice** | Keep it endogenous to the ED journey. ACEM distinguishes admission from subsequent physical departure and describes admitted patients awaiting an inpatient bed as shared-care patients. citeturn18view0turn18view1 |
+| Boarding duration | **Inference / proposed choice** | Make it an **output**, from transfer-ready/admission state to physical ED departure. Do not sample it as a primitive delay in staffing/capacity experiments. |
+| Downstream supply | **Proposed choice** | Input a stream of one-unit **ED-eligible compatible bed offers**, not an unlimited pool and not raw discharge timestamps. |
+| Destination | **Proposed choice** | Give each boarder a destination class and each offer an offer class; match only through an explicit compatibility relation. |
+| Queue ordering | **Architecture-preserving choice** | Use existing Kairos queue semantics. This research adopts **no new FIFO, priority or scheduler rule**. |
+| ED location during boarding | **Source-backed fact + proposed choice** | Retain the occupied ED capacity until an explicit physical location transition. ACEM states ED responsibility extends until physical departure and defines overcrowding in terms of physical and/or staffing capacity, including patients waiting to depart. citeturn18view2 |
+| Bed release mechanism inside wards | **Deferred** | Do not model wards, elective arrivals, internal transfers, cleaning or ward discharge mechanisms in the minimum boundary. |
+| Early discharge/elective/ward clustering intervention | **Requires richer model for causal interpretation** | A minimum boundary may perturb the external offer stream as a labelled scenario, but cannot claim to have modelled the downstream mechanism. The published ward-level DES required wards, capacities, movements and competing elective flows to study those interventions. citeturn20view0turn20view3 |
+
+### Why the boundary event should be an offer, not a discharge
+
+A physical ward discharge is not equivalent to a bed becoming available to a particular ED patient. Compatibility, cleaning/preparation, internal allocation, direct/elective demand and other constraints intervene. That is an inference from the richer evidence: the Queensland DES needed ward-specific capacities, all movements and both elective and ED admissions, while its sharing intervention applied to selected eligible wards rather than all beds. citeturn20view0turn20view1
+
+The proposed minimal event should therefore mean:
+
+> **“At simulation time \(t\), one inpatient placement opportunity that is eligible for one patient in destination class \(d\) is made available to the ED.”**
+
+Each event contributes **one finite token**. Existing Kairos matching semantics choose among eligible waiting patients. Receiving an offer may begin a further transfer-completion interval; it does not automatically release the ED cubicle before the patient's physical move.
+
+This interface deliberately hides *why* the opportunity arose. Consequently it can answer “what happens to ED occupancy and boarding if downstream placement opportunities become more or less available?”, but cannot answer “would changing ward rounds, discharge paperwork or elective scheduling create those opportunities?”
+
+### Conditional sampling that is defensible
+
+The offer stream can be fitted or resampled when appropriate patient-level/bed-management data exist, but the evidence does not support a numerical distribution for the generic public-data profile today.
+
+**Proposed conditioning:** destination class, hour of day, day of week, season/calendar and site. The strong weekday/weekend and site heterogeneity in the Queensland cohort supports those dimensions. citeturn17view2 If data permit, day- or shift-level joint templates, or a shared downstream-pressure state, are preferable to independent class-specific IID draws because congestion is likely to be correlated across services; that latter point is a modelling inference, not an observed parameter.
+
+Other defensible boundary samples are:
+
+- destination class, when not directly observed, from a fitted/elicited conditional model using only information available by the admission decision;
+- post-assignment physical-transfer delay, if transporter/ward-receiving staffing is explicitly outside the experiment;
+- scheduled specialty-review events for boarders, provided inpatient-team staffing is not itself the intervention.
+
+Their **distribution support, observed range, scenario range, parameter uncertainty and calibration bounds remain unknown** until suitable data are acquired. Those dimensions are separate columns in `boundary_decisions.csv`; no missing values have been invented.
+
+### Finite vacancy semantics remain one important open choice
+
+The absolute minimum event-only implementation needs a rule for an offer arriving when no eligible ED boarder exists. `BD-008` proposes, for review, that such an offer be **ephemeral rather than banked indefinitely**. That prevents a hidden accumulation of “free” generic beds and crudely represents competition from non-ED demand.
+
+This is explicitly **synthetic model policy**, not a sourced hospital fact. Its limitation is important: if a real inpatient vacancy remains open for a later ED patient, immediate expiry understates availability. With bed-assignment/vacancy data, the better extension would be a finite destination-specific vacancy state with empirically supported persistence/withdrawal behaviour.
+
+That one unresolved semantic is preferable to silently assuming unlimited pooled beds.
+
+## Ambulance offload and boarding resource retention
+
+### Offload boundary
+
+For the generic ED, the prehospital ambulance arrival process can remain an **external arrival input**, while the interval from ED-interface arrival to physical release of the ambulance becomes endogenous. This deliberately stops short of a QAS fleet/dispatch model: ambulance-held minutes are an ED output but do not feed back into community response times in this phase.
+
+Queensland's current published transfer protocol defines POST from presentation at the ED triage point to transfer to an ED bed; states that patients are triaged on arrival; says the hospital assumes overall responsibility from triage; and aims for transfer into an appropriate treatment area with completed handover within 30 minutes. It also requires review after 30 minutes and provides for clinically assessed offload after at least one hour in specified circumstances. citeturn18view8turn27view0
+
+Those are **Queensland policy values, not generic model constants**. Moreover, the webpage still displays an effective date of 1 October 2021 and a review date of 1 October 2024. Because the review date has passed, the policy should be re-verified at the point a Cairns-specific profile is built rather than silently hard-coded now. citeturn27view0
+
+The minimum interface should therefore retain at least:
+
+`ambulance_arrival → triage/profile-specific responsibility timestamp → waiting/offload state → receiving-space + handover work → physical offload/handover completed → ambulance released`
+
+ACEM separately defines offloading as transfer from the ambulance stretcher into an appropriate ED area and defines off-stretcher delay in terms of inability to complete transfer because an appropriate staffed clinical space is unavailable. citeturn18view6 This supports treating POST/offload as an ED-interface output rather than adding an independent random delay to each ambulance arrival.
+
+There is also empirical reason to retain hospital-side staffing in that mechanism. A Queensland evaluation of an ambulance-offload nurse included 6,045 people and 7,010 ambulance presentations and concluded that such a role could support immediate care requirements during periods of ED busyness; that means a model in which POST is independent of receiving staff cannot answer an offload-staffing question. citeturn25search3turn25search14
+
+### Boarding does not release ED resources
+
+Admission should not trigger a blanket resource release. ACEM describes admitted patients awaiting beds as shared-care patients, states that ED responsibility extends until physical departure, and explicitly includes patients waiting for departure in the population contributing to physical/staffing crowding. citeturn18view1turn18view2
+
+The minimum model should consequently retain:
+
+**Physical capacity.** The patient's actual ED location stays occupied until a physical move. A move from cubicle to chair, observation/short-stay, corridor or designated boarding area should be a location-state transition, not a fictitious departure from ED capacity.
+
+**ED nursing workload.** Routine boarder care should continue to produce work items—observation, medication/symptom management and response to deterioration—but this does **not** imply one continuously seized nurse per boarder. A prospective Australian ambulance-bay study found 640 of 4,068 presentations occupied the ambulance bay after triage; 205 underwent dependency assessment, and investigators measured 152.1 hours of direct nursing care, particularly reassessment and pain management. This establishes that such patients can consume material ED nursing work, but a single-centre 2016 workload study is not a transferable service-duration distribution. citeturn24view0
+
+**Specialty medical responsibility.** ACEM describes shared care between emergency medicine and inpatient specialties for admitted patients awaiting beds. citeturn18view1 The proposed minimum therefore represents planned inpatient-team review as a boundary event unless inpatient specialty staffing itself becomes an experimental variable. Once that staffing is being tested, the resource must move inside the endogenous model.
+
+**Emergency deterioration.** Boarders remain capable of generating new acute ED demand. That is one reason “admitted” cannot be treated as an absorbing state that merely holds a bed token.
+
+## Q v1 concurrency boundary
+
+Q v1's stated allowance of one capacity unit plus one resource per work item is sufficient for many ordinary ED abstractions: one clinician in a treatment location, one nurse care episode at a patient's occupied location, or a diagnostic machine represented as capacity plus one constrained operator.
+
+It is **not** sufficient for every clinically meaningful generic ED operation.
+
+| Generic ED case | Clinical resource requirement | Q v1 assessment | Scoped approximation |
+|---|---|---|---|
+| Routine clinician assessment | treatment location + one clinician | **Fits** | None required. |
+| Routine boarder medication/observation job | current patient location + one nurse | **Fits**, when one nurse is the only constrained concurrent role | Generate recurrent jobs; do not seize one nurse continuously by default. |
+| Ambulance handover | destination space + receiving clinician/nurse while ambulance/crew remains committed | **Exact formulation can exceed Q v1** if ambulance/crew is also a schedulable resource | Keep `ambulance_held` as non-schedulable interface state; handover job uses destination capacity + one receiver. Valid only while ambulance fleet/paramedic contention is out of scope. |
+| Moderate/non-minimal procedural sedation | procedure location plus proceduralist, sedationist/competent assisting practitioner and at least one assistant concurrently | **Exceeds Q v1** | A composite `sedation_team` token can approximate throughput if the team is effectively dedicated, but cannot support role-specific staffing conclusions. |
+| Cardiac arrest/resuscitation | resuscitation location plus multiple concurrent roles/tasks | **Exceeds Q v1** | Composite `resuscitation_team` may be acceptable only for coarse occupancy/throughput experiments; exact role-level competition remains unsupported. |
+
+For procedural sedation, PG09(G) says that non-minimal techniques normally involve a proceduralist, an additional practitioner acting as sedationist or competent assisting practitioner, and at least one further staff member; it also requires an assistant to the sedationist to be exclusively available at induction and emergence as needed. citeturn22view0 Its personnel appendix depicts three-person alternatives for moderate sedation. citeturn21view4 This is an unambiguous real ED case where “one resource” is not merely a modelling convenience but an incorrect representation if individual staffing availability is the question.
+
+Cardiac arrest is similarly not one clinician doing one job. The ARC guideline describes ongoing CPR while other interventions occur and states that, when sufficient personnel are present, a team leader allocates resuscitation roles/rotation, rhythm/shock timing, medication administration and documentation. It does **not** specify a universal fixed headcount in that passage, so none has been invented here. citeturn22view2turn23view0
+
+### What should not be used as a workaround
+
+Serially acquiring multiple real staff resources is not a safe unreviewed substitute for atomic bundles. It can cause one resource to be held while waiting for another, making results depend on acquisition order and potentially creating artificial resource hoarding or deadlock-like states. That conclusion is a queueing/software-design inference, not a claim that Kairos currently behaves that way.
+
+Composite team resources are the least disruptive scoped approximation, but only when the research question does **not** concern the team's internal role composition. A composite sedation team cannot tell whether an ED is short of nurses versus doctors; a composite resuscitation team cannot represent the same clinician simultaneously being demanded by another pathway.
+
+The ambulance case has a cleaner first-phase approximation: because the current question is ED offload rather than ambulance-fleet dispatch, the ambulance/crew can remain an entity/interface **held state** rather than a schedulable Kairos hospital resource. The handover work item then needs only one receiving resource and one destination capacity. This preserves ambulance-held minutes without pretending that a QAS crew competes with an ED nurse pool. The limitation is explicit: it cannot answer fleet availability, paramedic utilisation, community response-time feedback or genuinely multi-person physical-transfer questions.
+
+No new atomic-bundle scheduler, acquisition order or priority rule is proposed by this research.
+
+## Worked clinician acceptance cases
+
+Nine detailed Given/When/Then stories are supplied in `clinician_acceptance_stories.yaml`. The review set is deliberately mixed: some should pass the proposed minimum boundary; some expose an approximation; and some should be rejected as requiring a richer model.
+
+| ID | Scenario | Acceptance point |
+|---|---|---|
+| **ST-001** | Medical and orthopaedic boarders; one medical offer | Only an explicitly compatible patient can consume the offer. No universal pool is created. Eligible rather than universal sharing is consistent with the richer Queensland comparator. citeturn20view1 |
+| **ST-002** | Offer arrives with no eligible boarder | Candidate event-only semantics do not bank it indefinitely. Clinicians/bed managers must decide whether immediate expiry, bounded persistence or finite vacancy state best represents the target service. |
+| **ST-003** | Patient admitted while still in a cubicle | Admission does not free the cubicle; capacity changes only on physical movement. This reflects ACEM's physical-departure boundary. citeturn18view2 |
+| **ST-004** | Boarder remains for hours | Boarder continues generating nursing work rather than becoming operationally inert; published Australian ambulance-bay data demonstrate substantive post-triage ED nursing workload. citeturn24view0 |
+| **ST-005** | Ambulance reaches saturated ED | Arrival/triage and physical offload remain separate events; ambulance-held time continues until handover. Queensland's exact responsibility and threshold rules remain profile-specific. citeturn18view8 |
+| **ST-006** | Add a dedicated receiving/offload nurse | Receiving waits and offload can change endogenously. A model with independently sampled fixed POST fails this staffing acceptance case. The intervention is grounded in the Queensland offload-nurse study, without hard-coding its effect size. citeturn25search14 |
+| **ST-007** | Moderate procedural sedation during ED congestion | Exact resource acquisition exceeds Q v1; any composite-team approximation must be visible and cannot support individual-role staffing conclusions. citeturn22view0turn21view4 |
+| **ST-008** | Boarder suffers cardiac arrest | Multiple resuscitation roles must be recognised; no fixed team size or new scheduler order is invented. Exact role-level concurrency remains an atomic-bundle gap. citeturn22view2 |
+| **ST-009** | User asks whether ward discharge one hour earlier helps ED | The minimum model may perturb the offer stream as a **synthetic** counterfactual, but cannot claim to model the ward mechanism. The Queensland ward DES is evidence that answering this causally needs richer downstream representation. citeturn20view1turn20view3 |
+
+The critical acceptance distinction is therefore:
+
+**ED-side staffing/capacity question → minimum boundary is adequate** when downstream opportunities can legitimately be treated as external.
+
+**Question about how inpatient operations create those opportunities → minimum boundary is inadequate**, and the model should escalate rather than disguise a whole-hospital intervention as a changed random delay.
+
+## Deliverables and manifest
+
+The machine-readable artefacts use stable IDs (`BD-*`, `ST-*`, `SRC-*`). `boundary_decisions.csv` contains explicit columns for statement class, provenance/value label, units, distribution support, observed range, scenario range, parameter uncertainty, calibration bounds, dependence/conditioning, censoring, transfer limitations, Q v1 impact and source IDs.
+
+| File | Records | Purpose |
+|---|---:|---|
+| `boundary_decisions.csv` | 21 | Primary boundary decision register |
+| `boundary_decisions.json` | 21 | JSON representation of the same decision candidates |
+| `clinician_acceptance_stories.yaml` | 9 | Worked clinician-review/acceptance stories |
+| `boundary_profile_candidate.yaml` | 1 | Proposed minimum boundary configuration and guardrails |
+| `source_register.csv` | 15 | Exact URLs/DOIs, dates, observation periods, samples, locations, access/licence terms, revisions and extraction steps |
+| `manifest.json` | 1 manifest | File counts, provenance-label definitions and research limitations |
+| `README.md` | 1 | Compact artefact notes |
+
+**Complete bundle:** [Download all research artefacts](sandbox:/mnt/data/careops_ed_boundary_research_bundle.zip)
+
+**Primary requested CSV:** [Download boundary_decisions.csv](sandbox:/mnt/data/careops_ed_boundary_research/boundary_decisions.csv)
+
+**Clinician cases:** [Download clinician_acceptance_stories.yaml](sandbox:/mnt/data/careops_ed_boundary_research/clinician_acceptance_stories.yaml)
+
+**Candidate boundary profile:** [Download boundary_profile_candidate.yaml](sandbox:/mnt/data/careops_ed_boundary_research/boundary_profile_candidate.yaml)
+
+**Full source list:** [Download source_register.csv](sandbox:/mnt/data/careops_ed_boundary_research/source_register.csv)
+
+**Manifest:** [Download manifest.json](sandbox:/mnt/data/careops_ed_boundary_research/manifest.json)
+
+**JSON decisions:** [Download boundary_decisions.json](sandbox:/mnt/data/careops_ed_boundary_research/boundary_decisions.json)
+
+**Artefact notes:** [Download README.md](sandbox:/mnt/data/careops_ed_boundary_research/README.md)
+
+The source register records, among other limitations, that the 2026 ward-level Queensland study's underlying ambulance and hospital records cannot be shared because of ethics and regulatory restrictions. citeturn20view4 Queensland's request specifications show that useful event timestamps can in principle be requested but that full dates/times frequently require strong justification. citeturn21view1turn21view2 Thus the files deliberately leave empirical bed-offer distributions, local compatibility probabilities and boarder task-duration distributions **unknown** rather than substituting published LOS summaries.
+
+## Conflicts, unresolved questions and evidence priorities
+
+### Conflicts and limits in the evidence
+
+**“One inpatient bed pool” versus clinical compatibility.** The strongest relevant modelling study shows substantial gains from ward sharing, but it shares **selected eligible wards**, not every bed indiscriminately, and discusses possible consequences of non-ideal ward placement. citeturn20view1turn19search0 The evidence therefore supports explicit compatibility/overflow rules; it does not support unlimited pooling.
+
+**Minimal boundary versus richer causal inference.** The 2026 ward DES found substantial effects from selected ward clustering, maintenance-care removal, elective changes and earlier discharge patterns. citeturn20view3turn19search0 Those findings strengthen the case that downstream operations matter, but also show why an external offer stream cannot credibly establish *which* inpatient operational intervention caused a change. The minimum boundary is intentionally a separation boundary, not a substitute whole-hospital model.
+
+**Queensland ambulance policy currency.** The official page remains accessible and specifies the 30-minute rules, but its displayed review date passed in October 2024. citeturn27view0 Those values should therefore remain **published/profile-candidate**, not silently treated as a newly verified 2026 Cairns configuration.
+
+**Ambulance-bay nursing evidence is transferable structurally, not numerically.** The Varndell study demonstrates that post-triage ambulance-bay patients consume ED nursing resources, but it is a single-centre four-week study from 2016. citeturn24view0 It justifies retaining nursing demand; it does not justify importing its care-time distribution into a generic 2026 ED.
+
+**Public ED aggregates cannot identify primitive service times.** AIHW defines and quality-checks composite intervals, with substantial missingness in some timing measures. citeturn17view4 Those statistics are suitable validation targets and context, not evidence for decomposing treatment into unseen primitive tasks.
+
+### Unresolved design questions
+
+The most consequential unresolved question is **offer persistence**: should an ED-eligible opportunity that is not immediately used disappear, remain available for a bounded period, or create a finite vacancy? `BD-008` deliberately marks immediate expiry as **synthetic candidate policy requiring bed-management review**, rather than a settled design.
+
+The second is **destination-class granularity**. “Medical”, “surgical”, “critical care” and perhaps a small number of additional classes may be sufficient for a generic model, but neither the reviewed public data nor professional policies establish the right class map. Local admission-unit/ward data and clinician review are needed before this becomes a fitted or elicited parameter rather than a synthetic taxonomy.
+
+The third is **boarder workload generation**. The structural conclusion that boarders continue consuming ED care is well supported. citeturn18view1turn18view2turn24view0 The frequency, duration and dependency of those tasks remain unknown and should not be invented.
+
+The fourth is **whether composite resources are adequate for first-phase resuscitation and sedation**. Clinical guidance establishes real multi-person concurrency. citeturn22view0turn22view2 Whether its frequency and impact justify bringing atomic bundles forward is an architectural/product decision that should be informed by local event frequency and the intended staffing questions, not silently resolved by this review.
+
+### Prioritised evidence acquisition
+
+**Highest priority:** obtain linked ED–admitted-patient/bed-management event data sufficient to reconstruct the interval from admission/transfer readiness through bed allocation to physical ED departure, with destination specialty/unit and explicit handling of competing non-ED demand. Queensland EDC and QHAPDC specifications show that many of the necessary ED and admitted-patient event fields exist, although access and timestamp granularity require approval. citeturn21view1turn21view2 This acquisition would determine destination classes, class-specific offer streams, temporal dependence, offer persistence and transfer delays without pretending that ED LOS is a service-time distribution.
+
+**Next priority:** obtain or elicit explicit destination compatibility and overflow/outlier rules from bed management and admitting specialties. This is what prevents the minimum boundary from degenerating into unlimited pooled capacity; the published ward DES's eligible-ward construction provides precedent for modelling compatibility explicitly. citeturn20view1
+
+**Next priority:** collect boarder-state nursing workload data or a defensible local proxy, including medication/observation jobs, deterioration and location changes. Published ambulance-bay evidence establishes the phenomenon but is not sufficient for a transferable quantitative law. citeturn24view0
+
+**Next priority:** for the Cairns profile, re-confirm the current Queensland POST directive, local interpretation of responsibility/handover timestamps, physical ambulance-arrival-area capacity, escalation practice and whether dedicated offload roles operate. The 2021 protocol should not be assumed current merely because the webpage remains accessible after its stated review date. citeturn27view0
+
+**Then:** quantify the frequency and operational significance of procedures that exceed Q v1—especially procedural sedation and resuscitation—before deciding whether atomic bundles need to move forward in the architecture. The clinical need for simultaneous roles is already established; the missing evidence is how much approximation bias matters for the intended CareOps Sim experiments. citeturn22view0turn22view2
+
+The resulting research recommendation is therefore deliberately narrow: **retain the existing Kairos architecture and scheduler semantics; add, as a reviewed proposal rather than an assumed capability, a finite specialty-compatible inpatient-offer boundary, persistent ED resource use through physical departure, and endogenous hospital-side ambulance offload. Keep ward mechanisms external until a downstream intervention itself becomes the research question. Atomic resource bundles remain deferred, but procedural sedation and resuscitation are concrete generic ED cases where Q v1 is knowingly approximate rather than exact.**

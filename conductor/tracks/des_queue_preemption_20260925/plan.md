@@ -25,6 +25,7 @@ phase resolves design details before shared code is changed.
 - [ ] Q0.2 Freeze one-unit queue semantics, independent preemption flags, deadline
   boundaries, completion-at-T behavior, cancellation/repriority order, victim
   ties, restart draw reuse and zero-time budgets in executable fixture specs.
+  Reconcile report 27 against the local contract: reject shrink below active count, allow idle capacity zero, expire deadline-at-T before grant, complete at T before eviction, and reuse restart draws. Record deliberate SimPy differences; pin reference source before conformance scripts.
 - [ ] Q0.3 Reserve Flow event-kind IDs without collisions; define lifecycle
   sidecar and snapshot extension with 01/04/22. Fix relevant stale contract
   links through their existing owners. Agree event/transition join semantics.
@@ -77,6 +78,7 @@ Entry: Q2. Owner 03 with 01 snapshot/RNG review.
 - [ ] Q3.1 Write failing three-strategy fixtures with low work(10) at 0 and urgent
   work(2) at 3; cover nested interruptions, multiple victims, equal priorities,
   non-preemptible holders and zero-remaining completion at the interruption tick.
+  Add report 27 independent oracle: low work(10) at 0, urgent work(3) at 4; urgent ends 7, low ends 13 Suspend / 17 Restart / aborts 4. Original completion at 10 must be a stale no-op.
 - [ ] Q3.2 Implement eviction selection and atomic lease replacement, elapsed/
   remaining/cumulative effort, suspended context, attempt revisions, cancel-token
   invalidation and explicit cancellation while suspended.
@@ -121,6 +123,7 @@ Owners 03/12/25; coordinate 22/32/34/35 without rewriting backend plans.
 - [ ] Q5.1 Add deterministic conformance fixtures for all boundary/strategy cases.
   Compare canonical output hashes on repeated serial runs and independent
   replications at 1/2/N local workers. Run property seeds in debug and release.
+  Run a bounded pinned SimPy comparison for shared semantics; intentional differences use local expected traces. AllOf is not atomic acquisition; queued cancel, active lease release and scheduled-event cancellation have separate oracles.
 - [ ] Q5.2 Benchmark FIFO/priority queues, rekey/cancel churn, high interruption
   rates, and many resources at representative queue/active sizes. Record latency,
   throughput, memory and active-victim scan costs against the legacy baseline;

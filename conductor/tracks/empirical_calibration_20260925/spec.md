@@ -60,7 +60,9 @@ charting timestamp is the time an activity actually occurred.
 | source_event_key | Utf8 unique per dataset; reject duplicate keys, or apply an explicitly recorded dedup policy |
 | event_kind | Versioned controlled vocabulary: arrival, triage_start/end, bed_assigned, bed_entered, service_start/end, discharge, etc.; mapping may register extensions |
 | occurrence | UInt32 occurrence/task index to disambiguate repeated events |
-| observed_at | Arrow Timestamp with explicit units/timezone, canonical UTC representation; original unit retained in provenance |
+| observed_at | Event occurrence timestamp, not entry/message/update time; Arrow Timestamp with explicit units/timezone, canonical UTC representation; original precision retained in provenance |
+| recorded_at, message_created_at | Nullable source-recorded and message-creation timestamps, separately mapped; never substitute for occurrence |
+| time_lineage | Versioned observed/derived/defaulted/unknown classification and mapping provenance for each timestamp |
 | relative_ticks | FixedSizeBinary(16), little-endian u128, same tick representation as event_log.v1 |
 | source_order | UInt64 stable source row/event ordinal used only as a final tie-break |
 | resource_key, actor_key, location_key | Nullable Utf8; absence is meaningful and reported |
@@ -374,3 +376,14 @@ See [reports 5–8 incorporation](../../research/ed-research-incorporation-20260
 The [integration decisions and candidate oracles](../../research/ed-research-incorporation-9-12-20260927.md)
 apply to the tasks in this track. Proposed policies/versions remain review inputs;
 no reported research check substitutes for locally executed acceptance.
+
+## Reports 26–30 integration
+
+The [research decisions and acceptance cases](../../research/ed-research-incorporation-26-30-20260927.md)
+refine this track without completing implementation gates. External versions and
+missing bundle contents remain unverified; existing ownership and DAG apply.
+
+C0 also freezes location-interval representation and distinct `episode_end` and
+`physical_departure` event kinds. Source minute precision and unknown timezones
+remain explicit; normalization must not fabricate observed precision. The report
+30 field IDs are provisional and do not replace case/event keys above.

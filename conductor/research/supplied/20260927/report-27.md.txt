@@ -1,0 +1,253 @@
+# Queue/preemption reference semantics and test cases
+
+## Scope, evidence boundary and research method
+
+**Research date:** 27 September 2026, Australia/Brisbane.
+
+This review is deliberately bounded to queueing, allocation, preemption and event-collision semantics for the proposed CareOps Sim queue layer. It does not treat later surgery, birthing, outpatient, waitlist, whole-hospital or whole-health modelling as in scope.
+
+A material evidence limitation affects the conclusions: **the detailed CareOps Q specification/plan named in the research prompt was not available through the conversation attachments, and searches of the connected Drive/Linear sources for the distinctive terms `Suspend`, `Abort`, `Restart`, `atomic bundles`, `deadline`, `grant` and `preemption` did not locate an identifiable copy.** Consequently, the only project-intent facts attributed to CareOps are those explicitly supplied in the prompt: one resource and one capacity unit per work item, proposed `Suspend`/`Abort`/`Restart`, and atomic bundles deferred. All finer semantics below are therefore either source-backed facts about Kairos/SimPy or clearly marked **[policy] proposed for review**, not assertions about an unavailable Q spec.
+
+The Kairos evidence was inspected at the exact public `main` revision `fae901558f07b7b717a676adbafbe2cdc78dea1c`, whose commit timestamp is 19 May 2026 22:41:11 UTC; that revision was the repository's reported `main` head when queried. fileciteturn13file0L1-L13 The repository is dual-licensed Apache-2.0 or MIT. fileciteturn12file0L1-L7
+
+For SimPy, the reference version is **4.1.2 [published]**. PyPI records the release files on 24 May 2026, MIT licensing, Python ≥3.8, source-distribution SHA-256 `76ef36b71e0436ba94e55febc001c78879e493a323f045bbcfbb0b216e9b1fbc`, and wheel SHA-256 `43071f84b6512c9b4fcb33ef057f240ccb1d1f3b263f9b4f9229d072e310b372`. citeturn27search0 The official GitLab tag page identifies the 4.1.2 release commit by short hash `f4381649`, dated 23 May 2026. citeturn27search22 Official stable 4.1.2 documentation was inspected. Raw GitLab 4.1.2 source endpoints could not be fetched by the web retrieval layer in this session, so **no claim below is presented as having been verified against those raw source files**; wherever source-level detail was not available from official documentation, it remains qualified.
+
+Evidence labels used throughout are:
+
+**[observed]** directly inspected source/repository state; **[published]** official documentation or publication; **[elicited]** supplied in the research prompt; **[policy]** a proposed reference choice requiring project review; **[synthetic]** a deliberately constructed test fixture. There are **no fitted values** in this work.
+
+There are also no service-time distributions or ED calibration data in this semantics review. Accordingly, **distribution support, observed empirical range, parameter uncertainty and calibration bounds are all N/A**; scenario times and priorities below are **[synthetic]** test values only. Censoring is N/A. These fixtures are not transferable as ED service-time estimates and must not be interpreted as such.
+
+## What Kairos actually implements in the inspected snapshot
+
+The current Kairos scheduler is much firmer evidence than the queue proposal. Its `QueueEntry::cmp` reverses Rust `BinaryHeap` comparison so dispatch is ordered by **simulation time ascending, then numeric priority ascending, then monotonically assigned sequence ascending [observed]**. `schedule()` assigns both an `EventId` and sequence; `step()` removes the live event from `pending`, advances the authoritative clock to its event time and dispatches it. `cancel(EventId)` removes the ID from `pending`; cancelled heap entries are then lazily discarded by `prune_dead_entries()`. fileciteturn6file0L1-L7 The repository's own tests explicitly check time→priority→sequence dispatch and that cancellation removes an event without reordering the remaining live events. fileciteturn7file0L1-L7
+
+That ordering should therefore be treated as an architectural invariant rather than redesigned for the queue layer:
+
+\[
+\boxed{(\text{time},\ \text{event priority},\ \text{sequence})}
+\]
+
+with smaller time first, smaller numeric priority first, then smaller sequence first. **[observed]** fileciteturn6file0L1-L7
+
+The current `kairo-ecs-des::Resource`, by contrast, is a small preview primitive rather than the proposed queue/preemption system. It stores `capacity`, `available` and a `VecDeque<EntityId>`. A request consumes exactly one available slot; if none is available, the entity is appended to the back of the deque. `release()` either pops the front waiter—effectively transferring the slot—or increments `available` up to `capacity`. There is no request token, owner set, request priority, deadline, preemption policy, `Suspend`, `Abort`, `Restart`, queued-request cancellation, runtime capacity mutator or atomic bundle API in that inspected file. **[observed]** fileciteturn8file0L1-L7 The Flow specification establishes the intended common DES/ABM kernel but does not add these queue semantics. fileciteturn9file0L1-L7
+
+This distinction matters. The proposal must **not** be reverse-imputed into current behaviour.
+
+There is also a useful counterexample in the present preview primitive. Because `release()` takes no ownership/request token, a caller can invoke it without proving which active allocation is being relinquished. With capacity one and multiple queued entities, repeated erroneous `release()` calls can successively pop waiters. That follows directly from the inspected implementation and means the existing `Resource` cannot itself serve as a reference oracle for ownership-safe preemption. **[observed/inference from source]** fileciteturn8file0L1-L7
+
+## SimPy reference semantics and relevant DES literature
+
+SimPy is useful as a comparison implementation, but it should not become CareOps's implicit specification.
+
+A SimPy `Resource` represents capacity slots through explicit `Request` events; a request triggers when access is granted, and the resource retains request events for its current users. A `PriorityResource` orders pending requests by ascending numeric priority. A `PriorityRequest` documents its sorting key as **priority, request time, then preemption flag**: lower numeric priority is more important, earlier request time is more important, and a preempting request is more important at the final component. citeturn28view0
+
+A `PreemptiveResource` can displace an existing user. The displaced process receives an `Interrupt` whose cause is a `Preempted` value containing the preempting process, the time the victim began using the resource (`usage_since`), and the resource lost. SimPy therefore supplies enough information to calculate elapsed work, but it does **not** dictate whether model work should resume, restart or terminate after the interruption. citeturn28view0 Its current Machine Shop example demonstrates exactly this division: preemption/interrupt mechanics come from the framework, whereas continuation of interrupted work is model logic. citeturn27search2
+
+Two SimPy details deserve particular attention for conformance tests:
+
+* A waiting resource event can be interrupted and then either yielded again to keep waiting or explicitly `cancel()`led; context-manager resource events automatically cancel a still-pending request on exceptional exit. citeturn28view0turn28view1
+* `release()` is deliberately permissive: the documentation states that releasing a resource succeeds immediately even if the process was not actually using it. This is a SimPy behaviour, not a desirable CareOps ownership invariant to copy automatically. citeturn28view0turn28view1
+
+SimPy's simulation clock is deterministic rather than concurrent at one instant: events sharing a simulation time are processed serially in event-queue order, and ordinary same-time ties preserve scheduling order. citeturn28view2 This is conceptually compatible with Kairos's stronger explicit `(time, priority, sequence)` contract, but it does **not** create a general semantic rule such as “deadline always beats grant” or “completion always beats preemption”. Those are model/event-priority choices.
+
+SimPy also has condition events including `AnyOf` and `AllOf`; those conditions wait for constituent events. They do not turn independent resource requests into an atomic multi-resource transaction. citeturn28view3 Thus `AllOf([r1.request(), r2.request()])` must not be used as evidence that SimPy supplies atomic resource bundles: either individual request may acquire its resource while the other remains pending.
+
+The older queueing literature is useful principally for terminology. Chang's 1965 *Preemptive Priority Queues* distinguishes **preemptive-resume** from preemptive-repeat disciplines, including repeat-identical and repeat-different variants; the publisher record is *Operations Research* 13(5), 820–827, DOI `10.1287/opre.13.5.820`. citeturn29search0 Gaver's 1962 *A Waiting Line with Interrupted Service, Including Priorities*, *JRSS Series B* 24(1), 73–90, DOI `10.1111/j.2517-6161.1962.tb00438.x`, provides an earlier analytical treatment of single-server interrupted service. citeturn29search1turn29search3 These are analytical queueing models, not empirical healthcare samples, so their **sample size/population is N/A** for CareOps calibration.
+
+That literature supports one important modelling conclusion: “what happens to partially completed service after interruption” is not incidental implementation detail. It is part of the queue discipline and must be explicit. That is why `Suspend`, `Abort` and `Restart` should have separate conformance tests rather than being collapsed into a generic “preempted” state.
+
+## Conformance matrix
+
+The table deliberately separates **SimPy behaviour**, **Kairos behaviour actually observed**, and the **CareOps reference choice proposed for review**.
+
+| Stable ID | Question | SimPy 4.1.2 | Kairos inspected snapshot | CareOps reference oracle |
+|---|---|---|---|---|
+| `CM-FIFO-TIE-001` | FIFO/equal-priority tie | **[published]** Priority requests use priority, request time and preempt flag; same-time simulation events are deterministic. Exact equal-key queue sequence is not separately specified in the API text. citeturn28view0turn28view2 | **[observed]** scheduled events use sequence as final tie-break; current simple Resource uses `VecDeque`. fileciteturn6file0L1-L7 fileciteturn8file0L1-L7 | **[policy]** Make enqueue sequence explicit after queue priority. Never add a hidden tie-break around Kairos's scheduler sequence. |
+| `CM-PRIORITY-001` | Priority direction | **[published]** smaller numeric value = higher priority. citeturn28view0 | **[observed]** smaller numeric event priority dispatches first; current Resource itself has no queue priority. fileciteturn6file0L1-L7 | **[policy]** If not already fixed by the unavailable Q spec, use the same lower-number-is-earlier convention. |
+| `CM-DEADLINE-GRANT-001` | Deadline vs grant | **[published]** no deadline field in the Resource request contract; deadlines/reneging are composed from events. citeturn28view0turn28view3 | **[observed]** any same-tick events are already deterministically ordered by event priority and sequence. fileciteturn6file0L1-L7 | **[policy]** Do not invent a second ordering mechanism. Encode the intended precedence through existing event priorities, and make the later event validate current state. Exact intended precedence is **unknown** until Q spec retrieval. |
+| `CM-COMP-PREEMPT-001` | Completion vs preemption | **[published]** preemption acts when the higher-priority request is processed; there is no documented universal “completion wins” convention. citeturn28view0 | **[observed]** priority/sequence already settles event order. fileciteturn6file0L1-L7 | **[policy]** Test both scheduler-valid orders. Later handler must be stale-safe. A zero-remaining preemption at exact completion requires an explicit Q-spec rule. |
+| `CM-CANCEL-001` | Cancellation | **[published]** pending SimPy resource events expose `cancel()`; granted usage ends through `release(request)`. citeturn28view0 | **[observed]** scheduler event cancellation exists and is idempotent via the pending set; current Resource queue has no equivalent request cancellation API. fileciteturn6file0L1-L7 fileciteturn8file0L1-L7 | **[policy]** Separate queued-work cancellation, scheduled-event cancellation and active-work termination. |
+| `CM-STALE-001` | Stale events | **[published]** interrupting a process does not by itself mean “cancel every event it had been awaiting”; pending resource requests may remain live unless cancelled. citeturn28view1 | **[observed]** successful core `cancel(EventId)` ensures the event is pruned before dispatch; cancellation after dispatch/unknown ID fails. fileciteturn6file0L1-L7 | **[policy]** Cancel obsolete completions where possible **and** validate work-attempt generation/state before any mutation. |
+| `CM-SUSPEND-001` | Suspend | **[published]** SimPy provides `usage_since` and interruption, but resume logic is model code. citeturn28view0turn27search2 | **[observed]** no such work-item primitive is present in inspected DES source. fileciteturn8file0L1-L7 | **[policy]** Interpret as preemptive-resume: retain progress; `remaining := max(0, remaining_before − elapsed)`. |
+| `CM-ABORT-001` | Abort | **[published]** no built-in SimPy service discipline named Abort. citeturn28view0 | **[observed]** absent from inspected DES primitive. fileciteturn8file0L1-L7 | **[policy]** Terminal for the current work item: release once, record lost/unperformed work if needed, do not requeue. |
+| `CM-RESTART-001` | Restart | **[published]** preemptive-repeat is distinct from preemptive-resume in classical queueing theory. citeturn29search0 | **[observed]** absent from inspected DES primitive. fileciteturn8file0L1-L7 | **[policy]** Candidate default: repeat-identical—discard progress, restore the originally sampled full requirement, increment attempt generation, do not silently draw a new service time. Whether the Q spec instead intends re-sampling is **unknown**. |
+| `CM-CAPACITY-001` | Capacity change | **[published]** standard SimPy Resource documents a positive constructor capacity and read-only-style public capacity surface; no normal runtime resize operation is documented. citeturn28view0turn28view1 | **[observed]** current Resource has a stored capacity but no public capacity mutator in the inspected file. fileciteturn8file0L1-L7 | **[policy]** Increase: fill newly free slots in queue order. Decrease: candidate default is non-preemptive drain, not implicit forced preemption. |
+| `CM-BUNDLE-001` | Atomic resource bundles | **[published]** condition events can wait on several events but do not make independent resource grants atomic. citeturn28view3 | **[observed]** present Resource operation concerns one resource/request at a time. fileciteturn8file0L1-L7 | **[elicited]** explicitly deferred. Conformance should assert **unsupported**, not synthesize atomicity from sequential requests. |
+
+The strongest convergence is therefore around **deterministic ordering and explicit policy**. The important divergences are that SimPy's resource layer is more permissive than a likely ECS ownership contract, whereas current Kairos's `Resource` is substantially simpler than the proposed queue abstraction. Neither should silently determine the CareOps design.
+
+## Hand-worked event timelines and counterexamples
+
+All times, work quantities and priorities in this section are **[synthetic]**. They are exact test fixtures, not observed ED data. Notification names such as `Granted`, `Preempted` and `DeadlineExpired` are **[policy] logical assertions**, not claims that those Rust enum variants already exist.
+
+### Suspend as preemptive-resume
+
+`TC-SUSPEND-001` uses capacity `1 [synthetic]`. A starts at `t=0`, has full required work `10`, queue priority `5`; B arrives at `t=4`, has priority `1` and work `3`.
+
+| Time | Event | Allocation after event | Hand calculation | Expected logical notification |
+|---|---|---|---|---|
+| `0 [synthetic]` | A granted | A | remaining = 10 | `Granted(A)` |
+| `4 [synthetic]` | B preempts A | B | A elapsed = `4−0=4`; A remaining = `10−4=6` | `Preempted(A, Suspend, elapsed=4, remaining=6)` |
+| `7 [synthetic]` | B completes | A resumes | B elapsed = 3; A still has 6 | `Completed(B)`, `Granted(A, remaining=6)` |
+| `13 [synthetic]` | A completes | none | resumed A elapsed = 6; total useful A work = 10 | `Completed(A)` |
+
+This is the proposed **preemptive-resume** interpretation, not a statement of existing implementation. SimPy provides the corresponding interruption timing information but leaves the work arithmetic to the model. citeturn28view0turn27search2
+
+### Abort and Restart must not collapse into Suspend
+
+For the same A/B setup, `TC-ABORT-001 [synthetic]` gives A four units of completed elapsed time before interruption. Under the proposed Abort oracle, A becomes terminal at `t=4`; its `6` units of unperformed work may be reported for audit but are never requeued. B therefore runs `t=4…7`, with no later A allocation. **[policy]**
+
+For `TC-RESTART-001 [synthetic]`, A again loses four units at `t=4`, but its next attempt resets to full required work `10`:
+
+\[
+\text{elapsed discarded}=4,\qquad
+\text{new remaining}=10
+\]
+
+B runs `4…7`; A's new attempt runs `7…17`. The proposed oracle increments an attempt generation so the old completion associated with A's first attempt cannot mutate the restarted attempt. **[policy]**
+
+This specific “reuse the original 10 rather than draw again” choice is **not yet established CareOps behaviour**. It is a candidate mapping to classical preemptive-repeat-identical semantics and has the desirable property of not changing the RNG consumption contract merely because a preemption occurred. The alternative—repeat-different/re-sample—must be explicit if intended. Chang's literature makes the distinction between resume and repeat disciplines material rather than cosmetic. citeturn29search0
+
+### Deadline and grant at exactly the same tick
+
+The unavailable Q spec prevents declaring one side the winner. The safest conformance suite therefore contains the two scheduler-valid branches rather than smuggling in a new tie rule.
+
+Assume A releases at `t=5 [synthetic]` and waiting B has a deadline at `t=5 [synthetic]`.
+
+**`TC-DEADLINE-GRANT-A` — release/grant event precedes deadline by the existing Kairos event key**
+
+1. A completion/release executes.
+2. B becomes granted.
+3. B's deadline event executes later and finds B no longer waiting.
+4. Expected assertion: `DeadlineHandlerIgnoredAsStale(B)`.
+
+**`TC-DEADLINE-GRANT-B` — deadline precedes release by the existing Kairos event key**
+
+1. Deadline removes/cancels B from waiting eligibility.
+2. A completes/releases.
+3. No grant may be issued to B.
+4. Expected assertion: `DeadlineExpired(B)` and `NoGrantToCancelledB`.
+
+Both branches preserve Kairos's existing event ordering. fileciteturn6file0L1-L7 The eventual Q contract should determine which event-kind priority/sequence is generated, rather than introducing a queue subsystem with a competing hidden notion of simultaneity.
+
+### Completion and preemption at exactly the same tick
+
+`TC-COMP-PREEMPT-A/B` is the more important collision counterexample.
+
+Let A start at `t=0 [synthetic]` with required work `5`; a higher-priority B request is processed at `t=5`.
+
+If **A completion executes first**, then:
+
+\[
+elapsed_A=5,\qquad remaining_A=0
+\]
+
+A transitions to completed, releases the slot, and B receives a normal grant. There should be **no `Preempted(A)` notification**.
+
+If **B's preempt request executes first**, naïve arithmetic says the victim has:
+
+\[
+remaining_A=\max(0,5-(5-0))=0.
+\]
+
+A system that nevertheless transitions A to “Suspended with zero remaining” and then processes the old completion can emit contradictory state transitions or a double completion. **[synthetic counterexample]**
+
+The reviewed Q spec therefore needs one of two things: either its existing event priorities make completion precede preemption at the boundary, or it defines how a zero-remaining victim is normalised. What it should **not** do is rely on unspecified container iteration or thread timing; Kairos already supplies deterministic event order. fileciteturn6file0L1-L7
+
+### Cancellation and stale completion
+
+`TC-STALE-COMPLETE-001 [synthetic]` tests a classic stale-event failure:
+
+* A starts at `t=0`, required work `10`; completion `E1` is scheduled for `t=10`.
+* At `t=4`, A is suspended: elapsed `4`, remaining `6`.
+* `E1` is cancelled. The observed Kairos core contract says successful cancellation removes the event from the pending set, so it must not dispatch at `t=10`. fileciteturn6file0L1-L7
+* A resumes at `t=7`; replacement completion `E2` is scheduled for `t=13`.
+* At `t=10`, assertion: `E1` produces no state mutation.
+* At `t=13`, `E2` completes the active attempt.
+
+The **[policy]** additional generation check is deliberate defence in depth: `(work_id, attempt_generation)` on a completion should still match authoritative work state before mutation. That protects future implementations where cancellation may race with dispatch or where distributed/parallel backends have a different physical cancellation mechanism without changing logical semantics.
+
+### Capacity shrink and resource-bundle counterexamples
+
+`TC-CAP-DOWN-001 [synthetic]` starts with capacity `2`, active A and B, queued C, then changes capacity to `1` at `t=3`. The proposed non-preemptive shrink oracle is:
+
+| Time | Active after event | Expected result |
+|---|---|---|
+| `3 [synthetic]` | A, B | temporary active count 2 > new capacity 1; **no forced preemption** |
+| `5 [synthetic]` | B | A completes; active count = capacity, so C remains queued |
+| `7 [synthetic]` | C | B completes; active count falls below capacity, so C is granted |
+
+This is **[policy]**, because neither the inspected Kairos primitive nor the standard documented SimPy Resource supplies the requested runtime resizing contract. fileciteturn8file0L1-L7 citeturn28view0
+
+The bundle counterexample `TC-BUNDLE-DEFER-001 [synthetic]` is intentionally simple:
+
+1. capacity(R1)=capacity(R2)=1;
+2. A acquires R1 and waits for R2;
+3. B acquires R2 and waits for R1;
+4. neither can progress.
+
+That is a valid outcome for independent resource requests and shows why waiting for multiple request events is not the same thing as atomic acquisition. SimPy's condition-event machinery does not change the underlying independent grants. citeturn28view3 Under the supplied CareOps scope, the correct reference outcome is therefore **“atomic bundles unsupported/deferred” [elicited]**, not an invented partial implementation.
+
+## Delivered artefacts and source register
+
+The machine-readable package contains **11 conformance rows, 14 test cases, 40 event-timeline rows and 12 source records**. No implementation task is marked complete.
+
+**Complete bundle:** [Download all research artefacts as ZIP](sandbox:/mnt/data/careops_queue_preemption_reference_2026-09-27.zip)
+
+| File | Contents |
+|---|---|
+| [manifest.json](sandbox:/mnt/data/careops_queue_preemption_reference/manifest.json) | Delivered-file manifest, record counts, byte counts and SHA-256 hashes |
+| [conformance_matrix.csv](sandbox:/mnt/data/careops_queue_preemption_reference/conformance_matrix.csv) | 11 source-separated conformance decisions/gaps |
+| [test_cases.json](sandbox:/mnt/data/careops_queue_preemption_reference/test_cases.json) | 14 stable-ID test-oracle proposals and counterexamples |
+| [event_timelines.csv](sandbox:/mnt/data/careops_queue_preemption_reference/event_timelines.csv) | 40 hand-worked timeline records with allocations, elapsed/remaining work and assertions |
+| [reference_semantics.yaml](sandbox:/mnt/data/careops_queue_preemption_reference/reference_semantics.yaml) | Architectural invariants, proposed choices and unknowns |
+| [sources.csv](sandbox:/mnt/data/careops_queue_preemption_reference/sources.csv) | Full source list with URL/DOI, version/revision, publication and observation dates, field/page/code locations, sample/population, licence/access and extraction notes |
+| [search_notes.json](sandbox:/mnt/data/careops_queue_preemption_reference/search_notes.json) | Search, inclusion/exclusion strategy and limitations |
+
+The test artefacts distinguish **model/test inputs**—capacity, arrivals, queue priority, required work, event order and preemption policy—from **expected outputs/validation targets**—allocation intervals, elapsed/remaining work, final state and logical notifications. All numerical fixture values are labelled **synthetic**.
+
+The principal exact source locations are:
+
+| Source | Exact location and access |
+|---|---|
+| Kairos scheduler | `https://github.com/edithatogo/kairos/blob/fae901558f07b7b717a676adbafbe2cdc78dea1c/crates/kairo-ecs-core/src/lib.rs` — exact revision `fae901558f07b7b717a676adbafbe2cdc78dea1c`; Apache-2.0 OR MIT. fileciteturn6file0L1-L7 |
+| Kairos DES Resource | `https://github.com/edithatogo/kairos/blob/fae901558f07b7b717a676adbafbe2cdc78dea1c/crates/kairo-ecs-des/src/lib.rs` — `Resource`, `request`, `release`, tests. fileciteturn8file0L1-L7 |
+| Kairos Flow spec | `https://github.com/edithatogo/kairos/blob/fae901558f07b7b717a676adbafbe2cdc78dea1c/conductor/tracks/03-flow-des-trajectory-abm-behavior/spec.md`. fileciteturn9file0L1-L7 |
+| SimPy release | `https://pypi.org/project/simpy/` — version 4.1.2, 24 May 2026, MIT. citeturn27search0 |
+| SimPy release tag | `https://gitlab.com/team-simpy/simpy/-/tags` — tag 4.1.2, displayed commit `f4381649`, 23 May 2026. citeturn27search22 |
+| SimPy resource API | `https://simpy.readthedocs.io/en/stable/api_reference/simpy.resources.html` — `Resource` lines 17–27, `PriorityResource` 55–60, `PreemptiveResource` 85–112, `PriorityRequest` 125–147, base request cancellation 318–407. citeturn28view0 |
+| SimPy resource guide | `https://simpy.readthedocs.io/en/stable/topical_guides/resources.html` — interrupts/cancellation and resource ownership concepts. citeturn28view1 |
+| SimPy scheduling | `https://simpy.readthedocs.io/en/stable/topical_guides/time_and_scheduling.html` — deterministic same-time event scheduling. citeturn28view2 |
+| SimPy events | `https://simpy.readthedocs.io/en/stable/api_reference/simpy.events.html` — interrupts and condition events. citeturn28view3 |
+| Chang | Wei Chang, *Preemptive Priority Queues*, *Operations Research* 13(5):820–827, DOI `10.1287/opre.13.5.820`; `https://pubsonline.informs.org/doi/10.1287/opre.13.5.820`. Publisher metadata/abstract inspected; full article not assumed inspected. citeturn29search0 |
+| Gaver | D. P. Gaver Jr, *A Waiting Line with Interrupted Service, Including Priorities*, *JRSS B* 24(1):73–90, DOI `10.1111/j.2517-6161.1962.tb00438.x`; `https://academic.oup.com/jrsssb/article/24/1/73/7035156`. Publisher metadata/abstract inspected; full article not assumed inspected. citeturn29search1turn29search3 |
+| Schruben | Lee W. Schruben, *Simulation Modeling with Event Graphs*, *Communications of the ACM* 26(11):957–963, DOI `10.1145/182.358460`; `https://doi.org/10.1145/182.358460`. Used only as methodological support for explicit simultaneous-event testing; full text was not inspected in this session. citeturn29search9 |
+
+## Conflicts, unresolved questions and evidence priorities
+
+### Conflicts and cautions
+
+**The largest conflict is evidentiary rather than algorithmic:** the requested detailed CareOps Q spec was unavailable. Therefore none of the proposed tie, preemption, restart or resize choices should be promoted from **[policy]** to “project contract” until checked against an immutable copy of that specification.
+
+**Current Kairos is not the proposal.** The core scheduler has a clear deterministic contract, but the current DES `Resource` is a simple FIFO, single-slot-per-request primitive without request ownership tokens, work-progress state or preemption modes. fileciteturn6file0L1-L7 fileciteturn8file0L1-L7 Tests written against the research proposal must therefore not be reported as existing Kairos capability.
+
+**SimPy is a comparison point, not a compatibility target.** In particular, SimPy deliberately allows permissive release behaviour and leaves interrupted-work semantics to model code. citeturn28view0turn28view1 A stricter ECS contract can legitimately diverge.
+
+**`Restart` is under-specified.** Classical preemptive-repeat policy can mean repeat-identical or repeat-different; those alternatives have different stochastic and RNG consequences. citeturn29search0 The reference package uses repeat-identical only as an explicit **[policy] proposed default**, not as a discovered requirement.
+
+**Runtime capacity zero is unresolved.** SimPy's ordinary `Resource` requires positive capacity, while the inspected Kairos constructor accepts a `u64` and therefore can be constructed with zero in source as written. citeturn28view1 fileciteturn8file0L1-L7 Whether zero means “resource offline”, is invalid, or is permitted only through a future capacity schedule needs an explicit CareOps decision.
+
+### Prioritised evidence-acquisition actions
+
+**Highest priority — recover and freeze the actual Q spec/plan.** Record its immutable revision/hash and extract, verbatim at field/section level, the intended queue key, queue-priority direction, deadline/grant rule, completion/preemption rule, cancellation state machine, exact definitions of Suspend/Abort/Restart, capacity-change semantics and event/notification vocabulary. Until then, `CM-DEADLINE-GRANT-001`, `CM-COMP-PREEMPT-001`, `CM-RESTART-001` and `CM-CAPACITY-001` remain unresolved policy candidates.
+
+**Highest priority — record the event-kind priorities that realise those choices.** The goal should be to express collision precedence through the already-authoritative Kairos `(time, priority, sequence)` mechanism, not add another ordering subsystem. The paired collision cases in `test_cases.json` can then collapse from parameterised alternatives into single expected oracles. fileciteturn6file0L1-L7
+
+**High priority — obtain an immutable raw SimPy 4.1.2 source snapshot.** Verify `resource.py`, `base.py`, `core.py` and `events.py` at tag 4.1.2/commit `f4381649…`, record full commit SHA and line locations, and run minimal reference scripts for equal-priority/same-time queue ties, mixed priority/preemption, pending cancellation and same-tick condition-event races. The official 4.1.2 documentation is adequate for the present semantic comparison, but the research request specifically asked for primary source and the raw source could not be inspected through the available fetch path. citeturn27search22turn28view0
+
+**High priority — resolve Restart sampling and stale-event identity together.** Decide explicitly whether a restart reuses the original sampled full work requirement or draws a fresh requirement, and define the attempt/generation identity carried by completion events. This is needed to make deterministic seed consumption and stale-event rejection independently testable.
+
+**Next priority — freeze capacity-change invariants.** Decide whether capacity decrease is non-preemptive drain or an explicit source of preemption, whether capacity zero is legal, and which queued items receive newly created capacity. These should be policy-level conformance tests before any implementation claim.
+
+**Deferred — atomic bundles.** The current scope already says bundles are deferred. The appropriate present test is therefore negative: no API or example should claim that independent requests, `AllOf`-style waiting or sequential acquisition provides atomic multi-resource allocation. Any bundle protocol belongs in a separately reviewed phase rather than being smuggled into this queue contract.

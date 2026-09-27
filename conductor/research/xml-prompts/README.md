@@ -43,3 +43,11 @@ Reports 9–12 returned F3 (gap audit only), R8b, R8c and R4.
 See [integration decisions](../ed-research-incorporation-9-12-20260927.md).
 Reports 10/11 contain extractable inline payloads; reports 9/12 still need their
 linked bundles. Avoid another F3 run without the actual inventories attached.
+
+## Final research themes received
+
+Reports 26/27/28/29/30 return R8a/R7/R8d/R5/R6 respectively. Reports 23–25
+are byte-identical to 12/11/10. See [decisions](../ed-research-incorporation-26-30-20260927.md).
+All listed themes now have narrative responses. Retrieve the linked artifact
+bundles and reconcile against local contracts before further broad research;
+no F3 completeness claim is possible without the actual inventories.

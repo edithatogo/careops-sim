@@ -33,3 +33,5 @@ The local audit/context bootstrap is implemented; simulation implementation and
 full development/release acceptance remain outstanding. Earlier product discovery
 remains available in
 [the product discovery document](../docs/product-draft.md).
+
+Latest research: [reports 26–30 integration](research/ed-research-incorporation-26-30-20260927.md); reports 23–25 are verified duplicates.

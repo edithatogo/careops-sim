@@ -34,6 +34,7 @@ Manual verification: resume in a fresh session and reach the exact next task.
 - [ ] D1.2 Resolve Arrow/TOML/Rayon versus MSRV with owners 25/30. Update affected
   manifests, policy checks and docs together; keep existing core promises unless
   an approved transition applies. Separate stable baseline and dated canary lane.
+  Review report 26/28 version claims against live registries and supported targets; no reported latest version is approved by intake. Test advertised MSRV explicitly and record any reviewed transition; keep MLX C/C++ and Rust-wrapper toolchains distinct.
 - [ ] D1.3 Inventory available Conductor/security/browser skills; source or author
   context-resume, deterministic-review, calibration-review and dependency-upgrade
   skills only for missing behaviors. Record source commit/licence/hash and tools.
@@ -68,6 +69,7 @@ Entry: D1 and E0's buildable skeleton/fixture. Follow
 - [ ] D2.3 Pin action commit SHAs and tool versions; run actionlint/zizmor, secret
   scan and full dependency policy. Set narrow permissions, budgets, concurrency,
   cache keys and native Linux/macOS ARM lanes appropriate to the support promise.
+  Audit full cargo-deny advisories/bans/licenses/sources, immutable action SHAs including rejection of mutable version tags, recursive submodule identity and cache trust separation. Report 28 upstream workflow findings require source readback; upstream R0–R4 labels do not replace D phases.
 - [ ] D2.4 Add exact-parent-pin Kairos integration plus upstream owner CI; verify
   the parent fails against an incompatible pin even if upstream tests passed.
 - [ ] D2.5 Conductor — review and verify phase (workflow.md).
@@ -84,6 +86,7 @@ not workflow presence alone. Manual verification: clone remotely and run the fix
   explicit; preserve advisories/licence/bans/source gates.
 - [ ] D3.3 Add nextest/doctest, feature/MSRV/semver/schema and mutation/coverage
   checks for critical paths. Audit flaky tests with owner/expiry, not hidden retries.
+  Use a bounded supported feature matrix, independent bidirectional Arrow interoperability and separate doctests. Mutation thresholds and semver comparisons require legitimate baselines; nightly/Miri/security-advisory claims need verified versions before adoption.
 - [ ] D3.4 Establish representative ED/load/memory/cancellation/soak benchmarks;
   set recorded budgets before release and maintain existing upstream thresholds.
   Test slow consumers, oversized input, zero-time loops and exhausted storage.
@@ -99,9 +102,11 @@ Entry: E3 integrated runner, Q5 and C6; native library packaging is finalized in
 - [ ] D4.1 Review input/FFI/agent/build/output trust boundaries and misuse cases;
   resolve release-blocking findings and test resource limits. Record local-data
   and networking entry gates without presuming real EHR access.
+  Treat Arrow C Data pointers as trusted in-process interfaces only; use validated bounded IPC across process boundaries. Apply sanitizers/Miri to actual unsafe surfaces and concurrency checks when real parallel code exists.
 - [ ] D4.2 Rehearse clean-consumer package/install, licence notices, SBOM, checksum
   and provenance generation/verification with owners 15/16/20/25/28/42/44.
   Test expired/wrong-commit evidence and an incompatible schema as failures.
+  Build once from clean locked source; bind checksums, SBOM and attestations to the same actual artifact bytes and verify as consumer. Reject missing/substituted artifacts and dirty release inputs; rehearse corrected-version/yank policy without rewriting immutable releases.
 - [ ] D4.3 Rehearse rollback to last-known-good pins and checkpoint migration;
   verify reproducibility across claimed platforms and create release notes and
   explicit unsupported-feature list. No autonomous public publication.
