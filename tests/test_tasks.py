@@ -48,6 +48,23 @@ class SchedulingTests(unittest.TestCase):
         self.assertTrue({'P1.4','P2.4'} <= set(by_id['P3.1']['dependencies']))
         self.assertIn('P4.4',by_id['E1.1']['dependencies'])
         self.assertIn('P5.4',by_id['C6.1']['dependencies'])
+
+    def test_queue_implementation_waits_for_readiness_and_ci_milestones(self):
+        catalog=tasks.derive(tasks.ROOT)
+        by_id={t['id']:t for t in catalog['tasks']}
+        # Q0 contract review requires the accepted D1 closeout. Q1 code work
+        # additionally requires D2 and the Q0 closeout; a Q-local DAG alone
+        # must not make either task appear dispatchable.
+        self.assertIn('D1.6',by_id['Q0.1']['dependencies'])
+        self.assertTrue({'D2.5','Q0.4'} <= set(by_id['Q1.1']['dependencies']))
+        accepted={t['id'] for t in catalog['tasks'] if t['accepted']}
+        self.assertNotIn('Q0.1',[t['id'] for t in tasks.select(catalog,accepted,1)])
+        self.assertNotIn('Q1.1',[t['id'] for t in tasks.select(catalog,accepted,20)])
+        invalid=copy.deepcopy(catalog)
+        by_id_invalid={t['id']:t for t in invalid['tasks']}
+        by_id_invalid['Q0.1']['accepted']=True
+        with self.assertRaisesRegex(ValueError,'unaccepted prerequisite'):
+            tasks.validate(invalid)
     def test_mvp_and_v1_exclude_optional_feature_dependencies(self):
         by_id={t['id']:t for t in tasks.derive(tasks.ROOT)['tasks']}
         def ancestors(identifier):
