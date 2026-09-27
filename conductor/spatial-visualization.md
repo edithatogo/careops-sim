@@ -116,8 +116,9 @@ Separate three linked layers under one package revision:
 3. Scenario state: occupancy, staff/patient/task locations, queues, assignments,
    availability and work/transit/wait intervals owned by the simulation.
 
-P0/E0 reserve these identities and relationships early, using a tiny synthetic
-layout; this is schema/interface design, not early CAD-tool implementation. C2/E2
+P0/E0 define only the minimal location IDs, resource/capacity bindings and optional
+route distances needed by the headless model. Full shared geometry/asset/import
+schemas are deferred to E5; early inputs need no drawing or renderer. C2/E2
 consume topology in Micro mode; Macro may still show locations/occupancy without
 inventing routes, intermediate positions or spatial delays. Shared DES/ABM state
 and explicit fidelity labels remain required.
@@ -160,3 +161,11 @@ remain separately justified extensions.
 - [OGC IndoorGML](https://www.ogc.org/standards/indoorgml/): useful reference for
   navigation-oriented indoor modelling. This is not a decision to implement the
   full standard; review semantic compatibility before adopting an adapter.
+
+## MVP scope takes priority
+
+Bed counts, treatment-space capacity, staff/equipment resources, named locations
+and minimal routing are already covered by P/E/C model plans. Their implementation
+and generic input qualification are pending; no real site configuration is claimed.
+This document's visual, CAD and live-display features remain later E5 work. Basic
+spatial inputs do not require visible geometry or a full spatial package first.

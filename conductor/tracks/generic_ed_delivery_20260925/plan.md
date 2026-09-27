@@ -37,7 +37,7 @@ Entry: D1 tool/compatibility decisions; can review domain details alongside Q0/C
 - [ ] E0.2 Create a minimal Rust workspace with ED library/CLI boundary, Kairos path
   dependency and locked builds; define public API/errors, time units and profile
   schema. Keep domain/site/presentation distinct. One-patient example must run.
-  Define stable spatial IDs and geometry/topology/resource bindings with P0; early synthetic layout support preserves later capture/import and visualization compatibility.
+  Define minimal location/zone IDs, capacity/resource bindings and optional route distances with P0. Defer geometry import, visual-asset schemas and UI protocols to E5; do not build a spatial platform for the skeleton.
 - [ ] E0.3 Inventory public sources/open examples, exact revisions/licences and
   fields; specify assumptions for arrivals/acuity/work/diagnostics/boarding and
   generic layout. Define metric formulas, horizon/warm-up and release support.
@@ -79,6 +79,7 @@ trace a patient through every pathway and reconcile event times with its summary
   resume edge cases; verify no double allocation, leaks, starvation hidden by
   censoring, or movement driven by animation time. Make this the shared C6 fixture.
   Cover report 29 ST001–ST009: compatible/unused offers, retained occupancy/care, saturated offload and receiver-staff sensitivity, unsupported multi-role tasks and prohibited causal ward-policy claims. No unsupported deterioration hazard is an implicit default.
+  Deliver a documented headless MVP scenario with configurable bed/staff counts and named locations, fixed-seed repeatability, patient/capacity conservation and basic wait/throughput/occupancy tables. No visual or CAD dependency; this is not completed calibration/release qualification.
 - [ ] E2.4 Conductor — review and verify phase (workflow.md).
 
 Exit: E-R2/3; C6 can calibrate/validate the actual generic model. Manual check:
@@ -142,7 +143,7 @@ Entry: G1; upstream 05/02/09 coordinated scope, public API review before binding
   Verify source-to-location-to-resource-to-metric joins, live/replay agreement and overlay/summary reconciliation. Macro displays must not invent transit; Micro fixture distance must affect travel timing. Static assets and bulk outputs load separately from live state sync.
 - [ ] E5.4 Conductor — review and verify phase (workflow.md).
 
-Exit: G2 usable product with verified exports and interaction; reapply D4 gates
+Exit: G2 later interactive product with verified exports and interaction; reapply D4 gates
 for introduced browser/input/FFI surfaces. Manual check: user runs and compares
 staffing scenarios and obtains the same results in headless mode.
 

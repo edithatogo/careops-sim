@@ -32,7 +32,7 @@ validity limit. Acceptance requires this track's actual outputs and tests.
 - [ ] P0.2 Define stable parameter IDs, catalogue/evidence/profile schemas, units,
   separate range classes and consumer mappings. Write invalid/unknown/provenance
   fixtures before the schema validator; agree interfaces with E0/C0 owners.
-  Reserve spatial package/revision and location identities, local metric coordinates, geometry/topology links and separate scenario/resource bindings. Use a two-room synthetic fixture; do not wait for CAD tooling.
+  Define bed/treatment-space counts, room/zone IDs, staff/equipment capacity and optional route distances as ordinary model inputs. Keep units and stable IDs extensible; detailed geometry/import/visual schemas wait for E5. A tiny named-location fixture is sufficient.
 - [ ] P0.3 Define source-verification/extraction protocol and split DES/ABM work
   into bounded packets. Each starts with supplied content, traces claims to primary
   sources, and searches only a recorded gap; specify outputs and review rules.

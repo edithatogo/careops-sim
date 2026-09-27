@@ -46,3 +46,12 @@ tracks for the generic ED library, dashboard and existing backend profiles.
 [Module readiness](module-readiness.md) distinguishes these completion levels.
 The engine/model implementations remain planned; current local verification
 covers baseline Kairos tests and the context harness only.
+
+## MVP-first priority
+
+First deliver a working headless generic ED with configurable resource counts,
+capacity/staffing, patient flow and reproducible numeric results. Locations/zones
+and simple route distances support spatial behavior as needed. Visual floor plans,
+CAD/capture, animation, spatial overlays and WebSocket UI integration come later.
+E1/E2 provide runnable slices; E3 evolves usability, and C6/D4/E4 harden/qualify
+the library. E5 is a later interface milestone, not the first point of usefulness.

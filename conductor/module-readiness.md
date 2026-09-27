@@ -12,12 +12,21 @@ cross-cutting development gates. Development-readiness (D) and generic-ED delive
 | --- | --- | --- |
 | G0: development ready | Reproducible Rust environment, contracts, capability baseline, evaluated agent harness and usable CI | D0–D2; Q0/C0/E0 reviewed |
 | G1: native ED library complete | Generic ED model, headless API/runner, real telemetry, calibration, multicore replications, reproducible package with docs and release checks | Q5, C6, E4, D3/D4 |
-| G2: first usable product | G1 plus interactive scenario dashboard, exports and native/browser contract tests | E5, D4 release profile evidence |
+| G2: later interactive product | G1 plus interactive scenario dashboard, exports and native/browser contract tests | E5, D4 release profile evidence |
 | G3: accelerated/parallel profiles | Actual Metal, then within-run PDES, then distributed acceptance; measured correctness and performance | E6/E7/E8 separately; no all-or-nothing backend claim |
 
 A completed native library does not imply every Kairos ecosystem module has been
 implemented. Every module is classified below. Deferred capabilities must remain
 explicitly unavailable; never pass an availability check through a CPU mock.
+
+## Working MVP before full qualification
+
+E1's runnable pathway and E2's integrated headless fixture provide the first useful
+model increments. E2 MVP acceptance requires a documented run with configurable
+beds/staff/locations, deterministic outputs, conserved patients/capacity and basic
+wait/throughput/occupancy summaries. It is not G1 release/calibration completion.
+E3 improves API/exports/recovery; C6/D4/E4 establish G1 qualification. Visualization,
+CAD/capture, WebSocket UI service and accelerated backends are later work.
 
 ## Crate coverage and evidence required
 

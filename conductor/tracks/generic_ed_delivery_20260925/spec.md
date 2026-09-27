@@ -8,8 +8,9 @@ surgery/birthing/outpatient/waitlist/hospital/health tracks are not created.
 Deliver a Rust-native ED model using Kairos's deterministic DES/ABM Flow runtime,
 with a small public API, validated configuration, headless batch runner, metrics,
 calibration and reproducible examples. Generic/public baseline first; later Cairns
-ED is a separate site profile. The first usable product also includes the
-previously requested scenario dashboard, without coupling core execution to UI.
+ED is a separate site profile. The first working MVP is headless: a runnable generic ED with configurable
+inputs and useful numeric outputs. The scenario dashboard and spatial visuals
+follow later, without coupling core execution to UI.
 
 Proposed parent workspace boundaries (freeze names/layout in E0): reusable domain
 model crate, CLI/runner adapter and test/fixture crates; browser presentation is
@@ -61,7 +62,7 @@ No blanket porting of their Python implementations is implied.
 
 Acceptance: E-R1–9 are qualified per [G0–G3](../../module-readiness.md), with task-
 level tests in the plan. G1 is the completed native library; G2 adds the promised
-first usable product; backend profiles are separate later milestones. All
+later interactive product; backend profiles are separate later milestones. All
 upstream contract and publication gates remain applicable to affected changes.
 
 ## Research integration requirements
@@ -88,3 +89,21 @@ The [spatial capability plan](../../spatial-visualization.md) records capture/CA
 floor-plan package → PixiJS visualization and Kairos simulation, connected through
 WebSocket state sync. Early native development uses synthetic graphs; full capture/
 CAD adapters are separately qualified later. The backend remains authoritative.
+
+## MVP-first delivery clarification
+
+The working MVP covers configured beds/treatment spaces and staff capacity,
+queues, patient flow, resource occupancy and basic outcome/resource summaries.
+Use named locations/zones and a small route/distance graph where Micro transit is
+needed; no drawn floor plan, CAD importer, PixiJS, WebSocket service, replay UI or
+heatmap is needed. Counts and operational capacity are model inputs independent
+of visual geometry. Generic values must be sourced or explicitly synthetic;
+Cairns values are not assumed.
+
+E1 produces the runnable pathway slice; E2's integrated fixture is the initial
+headless MVP candidate. Require deterministic repeatability, patient/capacity
+conservation and a documented executable scenario with basic tabular outcomes.
+E3 improves the runner/API/exports and recovery, and C6/D4/E4 qualify calibration
+and the hardened native library. Early usable examples do not claim those later
+gates complete. Existing prerequisites remain; presentation cannot block native
+acceptance. Implement the smallest supported model first and evolve it.

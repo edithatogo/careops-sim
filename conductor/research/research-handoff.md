@@ -75,3 +75,11 @@ accepted complete. The completed research intake above is separately recorded,
 so that software-completion figures are not inflated. No user clarification is
 needed to start the next tasks. Repository owner/name/visibility is resolved at
 D2; Cairns-specific evidence remains a later site-profile requirement.
+
+## MVP clarification
+
+First usefulness is the headless E1/E2 model and its basic reproducible outputs,
+not E5 visualization. Bed/staff capacity and minimal locations/routes remain core
+inputs; visual assets, CAD/capture and WebSocket UI follow later. E3 and native
+qualification evolve this working baseline without implying the early MVP meets
+all release or empirical-validation gates.
