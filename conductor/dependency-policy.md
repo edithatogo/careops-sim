@@ -16,7 +16,7 @@ packages should be adopted. Unknown MSRV means unknown, not compatible.
 | serde / serde_json | 1.0.229 / 1.0.151 | Evaluate compatible lockfile update in owning change |
 | toml | 1.1.6+spec-1.1.0; MSRV 1.85 | C5 parser migration with old-manifest fixtures |
 | rayon | 1.12.0; MSRV 1.80 | C5 worker candidate; no mandatory within-run scheduler dependency |
-| clap / clap_builder | 4.6.7; MSRV 1.85 | Current Kairos benchmark lock has Clap 4.6.1, which Cargo 1.76 cannot parse. A six-package lock-only compatibility resolution passed the default-feature 24-member workspace at 1.76 in a pinned-source scratch archive; owner review is required before applying it. |
+| clap / clap_builder | 4.6.7; MSRV 1.85 | The original Kairos benchmark lock resolved Clap 4.6.1, which Cargo 1.76 cannot parse. The Kairos owner approved a six-package lock-only resolution, committed on `codex/d12-bench-lock-msrv` and tested across the default-feature workspace at Rust 1.76.0 and 1.98.1; the parent pin/evidence records the exact commit. |
 | rand | 0.10.3; MSRV 1.85 | Optional sampling candidate; do not replace deterministic RNG algorithm silently |
 | wgpu | 30.0.1; MSRV 1.87 | E6 real Metal candidate, gate shader/API/device compatibility |
 | Burn | 0.21.0; MSRV 1.92 | Deferred existing ML track; no dependency added now |
@@ -30,8 +30,9 @@ packages should be adopted. Unknown MSRV means unknown, not compatible.
 | Codex CLI | rust-v0.157.1 | Observed upstream candidate; not a claim about this desktop app's version |
 
 Sources are the linked crates.io/GitHub/Rust distribution endpoints in the JSON.
-No production dependency, host toolchain, application model or upstream submodule
-was upgraded by this audit. Current Kairos HEAD still matches the reviewed pin.
+No production dependency, host toolchain or application model was upgraded by
+this audit. The only upstream change is the owner-approved benchmark-only lock
+resolution; it does not change Kairos manifests, runtime dependencies or MSRV.
 Conductor v0.4.1 is still its latest observed release; default-branch HEAD is now
 `6e8f9a860bcdd6a2c423473c12e745200688c633`. Evaluate that commit in an isolated
 canary before deciding whether an unreleased change improves this workflow.

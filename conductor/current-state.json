@@ -3,7 +3,7 @@
   "updated_at": "2026-09-28",
   "active_track": "development_readiness_20260925",
   "active_phase": "D1",
-  "next_action": "D1.1 is accepted in 9b06a42 with combined bootstrap and consumer evidence. D1.2 has a live candidate refresh and pinned-source scratch proof that a six-package Clap-family lock-only change passes the full default-feature 24-member Kairos workspace (228 tests) at Rust 1.76.0, while the original lock passes at Rust 1.98.1 (assessment conductor/evidence/d1.2-compatibility-assessment-20260928.md; proposal conductor/decisions/ADR-0002-dependency-msrv-boundaries-proposed.md). Obtain Track 13/25/30/04 owner review before applying the Kairos lockfile change or altering compatibility promises; Arrow/TOML candidate package boundaries remain pending contract review. Keep the current Kairos pin; Q0 remains gated by D1; Q1 source work remains gated by D2 and Q0.",
+  "next_action": "D1.1 is accepted in 9b06a42. The Kairos owner approved the six-package benchmark-only Cargo.lock fix; it is committed in libs/kairos as 45679c119732b56858e0f5a4c9d4788323f63122 on codex/d12-bench-lock-msrv and passed the 228-test/64-suite workspace plus downstream consumer checks on Rust 1.76.0 and 1.98.1 (conductor/evidence/d1.2-compatibility-assessment-20260928.md). The parent pin is being integrated to that exact commit. D1.2 remains open for owner resolution of the broader Rust 1.76 dev-target boundary, Arrow/TOML package ownership and floors, and stable/canary toolchain policy; do not infer these from the lock approval. Q0 remains gated by D1; Q1 source work remains gated by D2 and Q0.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/index.md",
@@ -28,7 +28,7 @@
     "conductor/decisions/ADR-0002-dependency-msrv-boundaries-proposed.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "fae901558f07b7b717a676adbafbe2cdc78dea1c",
+    "libs/kairos": "45679c119732b56858e0f5a4c9d4788323f63122",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   }
 }
