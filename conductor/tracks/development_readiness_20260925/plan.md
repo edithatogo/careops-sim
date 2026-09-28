@@ -65,9 +65,9 @@ Manual verification: resume in a fresh session and reach the exact next task.
   manifests, policy checks and docs together; keep existing core promises unless
   an approved transition applies. Separate stable baseline and dated canary lane.
   Review report 26/28 version claims against live registries and supported targets; no reported latest version is approved by intake. Test advertised MSRV explicitly and record any reviewed transition; keep MLX C/C++ and Rust-wrapper toolchains distinct.
-- [ ] D1.3 Inventory available Conductor/security/browser skills; source or author
+- [x] D1.3 Inventory available Conductor/security/browser skills; source or author
   context-resume, deterministic-review, calibration-review and dependency-upgrade
-  skills only for missing behaviors. Record source commit/licence/hash and tools.
+  skills only for missing behaviors. Record source commit/licence/hash and tools; evidence: [D1.3 inventory and verification](../../evidence/d1.3-skill-inventory-20260928.md).
 - [ ] D1.4 Write held-out harness/skill evals first, including fake pass, pin drift,
   hidden clamp error and untrusted instructions; test the candidate skills and
   approve only those improving correctness/intervention cost over the baseline.
