@@ -27,8 +27,7 @@ OVERRIDES = {
            'conductor/module-readiness.md', 'conductor/current-state.json',
            'conductor/tracks/development_readiness_20260925/plan.md'],
     'D1': ['tools', 'tests', 'conductor/dependency-policy.md',
-           'conductor/evidence', '.agents/skills',
-           'conductor/tracks/development_readiness_20260925/agent-contract.md'],
+           'conductor/evidence'],
     'P0': ['model-inputs/ed/schema'],
     'P1': ['model-inputs/ed/des'],
     'P2': ['model-inputs/ed/abm'],
@@ -53,6 +52,7 @@ TASK_OVERRIDES = {
     'D1.3': ['tools', 'tests', 'conductor/dependency-policy.md',
              'conductor/evidence', '.agents/skills',
              'conductor/tracks/development_readiness_20260925/agent-contract.md'],
+    'D1.4': ['tools', 'tests', 'conductor/evidence'],
 }
 
 
@@ -101,7 +101,7 @@ def derive(root):
                             TASK_OVERRIDES.get(task_id, OVERRIDES.get(phase, SCOPES[phase[0]])))
             context_paths = [str((folder/f).relative_to(root)) for f in
                              ('spec.md', 'plan.md', 'test-matrix.md', 'agent-contract.md')]
-            if task_id == 'D1.3':
+            if task_id in ('D1.3', 'D1.4'):
                 context_paths.extend(['AGENTS.md', 'conductor/agent-engineering.md'])
             tasks.append({
                 'id': task_id, 'track_id': meta['track_id'], 'phase': phase,
