@@ -227,7 +227,7 @@
       "id": "D1.4",
       "track_id": "development_readiness_20260925",
       "phase": "D1",
-      "objective": "Preregister the eval policy, then run matched no-skill/pinned-skill serial/parallel evaluations covering fake pass, pin drift, clamp, untrusted instructions, determinism, MSRV, and both correct and wrong unit handling. Include a repeated scheduling case and keep it out of independent-case denominators. Add a standard-library scorer and focused tests for pair validation, candidate/mode breakdown, known-bad acceptance, bad-among-accepted, repeated/excluded cases and missing measurements. Pilot result: baseline 6/7, skill-assisted 7/7, pooled 13/14; known-bad acceptance 0/12. The determinism candidate has one correctness improvement (0/1 vs 1/1); calibration (4/4) and dependency (2/2) candidates tie. Keep all candidates unpromoted because this small supervised pilot does not establish repeatable task-class benefit. Exact output sizes and tool cost/latency were unavailable; no technical oracle isolation or hidden-evaluation claim is made. Evidence: [pre-registered policy](../../evidence/d1.4-evaluation-policy-20260928.md), [pilot analysis](../../evidence/d1.4-supervised-skill-pilot-20260928.md), [scored records](../../evidence/d1.4-skill-pilot-results-20260928.json), and [machine score](../../evidence/d1.4-skill-pilot-score-20260928.json); scorer [implementation](../../../tools/skill_eval.py) and [tests](../../../tests/test_skill_eval.py). Technical isolation remains D1.5.",
+      "objective": "Preregister the eval policy, then run matched no-skill/pinned-skill serial/parallel evaluations covering fake pass, pin drift, clamp, untrusted instructions, determinism, MSRV, and both correct and wrong unit handling. Include a repeated scheduling case and keep it out of independent-case denominators. Add a standard-library scorer and focused tests for pair validation, candidate/mode breakdown, known-bad acceptance, bad-among-accepted, repeated/excluded cases and missing measurements. Pilot result: baseline 6/7, skill-assisted 7/7, pooled 13/14; known-bad acceptance 0/12. The determinism candidate has one correctness improvement (0/1 vs 1/1); calibration (4/4) and dependency (2/2) candidates tie. Keep all candidates unpromoted because this small supervised pilot does not establish repeatable task-class benefit. Exact output sizes and tool cost/latency were unavailable; no technical oracle isolation or hidden-evaluation claim is made. Evidence: [pre-registered policy](../../evidence/d1.4-evaluation-policy-20260928.md), [pilot analysis](../../evidence/d1.4-supervised-skill-pilot-20260928.md), [scored records](../../evidence/d1.4-skill-pilot-results-20260928.json), and [machine score](../../evidence/d1.4-skill-pilot-score-20260928.json); scorer [implementation](../../../tools/skill_eval.py) and [tests](../../../tests/test_skill_eval.py). The pilot is not hidden or technically isolated; hidden evaluation stays off until the D2 execution boundary probe passes.",
       "kind": "bounded_work",
       "accepted": true,
       "dependencies": [
@@ -258,15 +258,15 @@
       "id": "D1.5",
       "track_id": "development_readiness_20260925",
       "phase": "D1",
-      "objective": "Add structured command receipts, input/output hashes and checkpoint validation without private payloads. Exercise kill/restart, stale context and concurrent-writer rejection; log tool/model version where available. Recheck dependency/input/skill hashes at dispatch and acceptance; preserve immutable attempt lineage, actual changed paths and exact command evidence. Keep current packet/DAG authority; prove hidden-oracle isolation before claims.",
+      "objective": "Add structured command receipts, input/output hashes and checkpoint validation without private payloads. Exercise kill/restart, stale context and concurrent-writer rejection; log tool/model version where available. Recheck dependency/input/skill hashes at dispatch and acceptance; preserve immutable attempt lineage, actual changed paths and exact command evidence. Keep current packet/DAG authority. Closeout evidence: receipt validator, dispatch/acceptance drift verifier, recovery fixture, and ownership/evaluation boundary reports in `conductor/evidence/d1.5-*-20260928.md`. Synthetic recovery and planner-level reservation checks pass. No atomic multi-coordinator lease or shared-host hidden-oracle isolation is claimed; hidden evaluations remain off until D2 local execution-boundary evidence is available.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "D1.4"
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 90
+        "line": 92
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -296,7 +296,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 96
+        "line": 103
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -324,7 +324,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 106
+        "line": 113
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -352,7 +352,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 109
+        "line": 116
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -380,7 +380,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 112
+        "line": 119
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -408,7 +408,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 116
+        "line": 123
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -436,7 +436,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 118
+        "line": 125
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -463,7 +463,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 125
+        "line": 132
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -492,7 +492,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 127
+        "line": 134
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -521,7 +521,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 130
+        "line": 137
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -550,7 +550,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 133
+        "line": 140
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -579,7 +579,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 136
+        "line": 143
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -609,7 +609,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 145
+        "line": 152
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -638,7 +638,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 149
+        "line": 156
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -667,7 +667,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 153
+        "line": 160
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -696,7 +696,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 156
+        "line": 163
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -724,7 +724,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 165
+        "line": 172
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -753,7 +753,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 168
+        "line": 175
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -782,7 +782,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 171
+        "line": 178
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -811,7 +811,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 173
+        "line": 180
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",

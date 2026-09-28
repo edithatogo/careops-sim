@@ -86,13 +86,20 @@ Manual verification: resume in a fresh session and reach the exact next task.
   records](../../evidence/d1.4-skill-pilot-results-20260928.json), and
   [machine score](../../evidence/d1.4-skill-pilot-score-20260928.json); scorer
   [implementation](../../../tools/skill_eval.py) and
-  [tests](../../../tests/test_skill_eval.py). Technical isolation remains D1.5.
-- [ ] D1.5 Add structured command receipts, input/output hashes and checkpoint
+  [tests](../../../tests/test_skill_eval.py). The pilot is not hidden or
+  technically isolated; hidden evaluation stays off until the D2 execution
+  boundary probe passes.
+- [x] D1.5 Add structured command receipts, input/output hashes and checkpoint
   validation without private payloads. Exercise kill/restart, stale context and
   concurrent-writer rejection; log tool/model version where available.
   Recheck dependency/input/skill hashes at dispatch and acceptance; preserve
   immutable attempt lineage, actual changed paths and exact command evidence.
-  Keep current packet/DAG authority; prove hidden-oracle isolation before claims.
+  Keep current packet/DAG authority. Closeout evidence: receipt validator,
+  dispatch/acceptance drift verifier, recovery fixture, and ownership/evaluation
+  boundary reports in `conductor/evidence/d1.5-*-20260928.md`. Synthetic recovery
+  and planner-level reservation checks pass. No atomic multi-coordinator lease or
+  shared-host hidden-oracle isolation is claimed; hidden evaluations remain off
+  until D2 local execution-boundary evidence is available.
 - [ ] D1.6 Conductor — review and verify phase (workflow.md).
 
 Exit: one-command minimal native bootstrap and measured skill evaluations; no
