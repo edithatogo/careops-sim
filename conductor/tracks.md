@@ -20,8 +20,8 @@ milestone Q4. See [milestones and ownership](kairos-enhancements.md).
   [plan](tracks/development_readiness_20260925/plan.md)). In progress: D0.1–D0.4
   audit and phase closeout complete; D1.1 is accepted. D1.2 is active: the Kairos
   owner approved its policy direction, and Rust 1.76/1.98.1/beta checks plus
-  toolchain/CI updates are implemented and locally reviewed. Kairos/parent commits
-  and D1.2 phase acceptance remain. Skill, CI and release work remain.
+  toolchain/CI updates are implemented and locally reviewed. Kairos and parent commits are integrated; D1.2 local acceptance is recorded,
+  with formal phase review at D1.6. D1.3 is next; CI and release work remain.
 - [ ] **Generic ED library delivery** — `generic_ed_delivery_20260925`
   ([index](tracks/generic_ed_delivery_20260925/index.md),
   [spec](tracks/generic_ed_delivery_20260925/spec.md),

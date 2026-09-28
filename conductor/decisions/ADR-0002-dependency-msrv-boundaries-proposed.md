@@ -93,4 +93,4 @@ local Track 13 audit found RUSTSEC-2026-0204 in the benchmark dev graph; its MSR
 is 1.61 and both cargo-deny and cargo-audit pass. Existing
 package promises remain unchanged. Any future compatibility change must update
 contracts, CI, dependency policy and docs together. The parent pin should
-advance only after review and integration evidence are recorded.
+is now pinned to `339af4e7365e70ad7e67fe3e934e4fb215fbaf8b`; local integration passed. Formal phase acceptance remains at D1.6.
