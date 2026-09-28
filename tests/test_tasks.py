@@ -28,6 +28,16 @@ class SchedulingTests(unittest.TestCase):
         self.assertFalse(tasks.overlap('src/des','src/descriptive'))
     def test_active_reservations_block_selection(self):
         self.assertEqual(tasks.select(self.catalog(),{'D0.1'},4,['queue','arrow']),[])
+    def test_active_reservation_descendant_blocks_overlapping_task_only(self):
+        catalog={'tasks':[task('Q1.1',paths=['resources/des']),
+                          task('C1.1',paths=['reports'])]}
+        selected=tasks.select(catalog,set(),4,['resources/des/worker'])
+        self.assertEqual([item['id'] for item in selected],['C1.1'])
+    def test_active_reservation_ancestor_blocks_overlapping_task_only(self):
+        catalog={'tasks':[task('Q1.2',paths=['resources/des/worker']),
+                          task('C1.2',paths=['reports'])]}
+        selected=tasks.select(catalog,set(),4,['resources/des'])
+        self.assertEqual([item['id'] for item in selected],['C1.2'])
     def test_unaccepted_prerequisites_block(self):
         self.assertEqual(tasks.select(self.catalog(),set(),4)[0]['id'],'D0.1')
     def test_cycle_rejected(self):
