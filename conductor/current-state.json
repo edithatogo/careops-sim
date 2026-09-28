@@ -3,7 +3,7 @@
   "updated_at": "2026-09-28",
   "active_track": "development_readiness_20260925",
   "active_phase": "D1",
-  "next_action": "D1.1 is accepted in 9b06a42. The Kairos owner approved the six-package benchmark-only Cargo.lock fix; it is committed in libs/kairos as 45679c119732b56858e0f5a4c9d4788323f63122 on codex/d12-bench-lock-msrv and passed the 228-test/64-suite workspace plus downstream consumer checks on Rust 1.76.0 and 1.98.1 (conductor/evidence/d1.2-compatibility-assessment-20260928.md). The parent pin is updated to that exact commit. D1.2 remains open for owner resolution of the broader Rust 1.76 dev-target boundary, Arrow/TOML package ownership and floors, and stable/canary toolchain policy; do not infer these from the lock approval. Q0 remains gated by D1; Q1 source work remains gated by D2 and Q0.",
+  "next_action": "D1.1 is accepted in 9b06a42. On 2026-09-28, the Kairos owner approved D1.2 policy direction: preserve the full default-feature workspace MSRV at Rust 1.76; keep future Arrow/Parquet separate at candidate floor 1.88 after Track 04 schema review; keep TOML out of core and, if adopted, separate at candidate floor 1.85; keep Rayon out of deterministic runtime scheduling; pin the developer/integration baseline to Rust 1.98.1 and maintain a dated, non-blocking beta snapshot at 1.99.0-beta.8. Implementation and local tests are recorded in conductor/evidence/d1.2-compatibility-assessment-20260928.md and Kairos Track 30 evidence. Track 13 initially found RUSTSEC-2026-0204; Kairos Cargo.lock now pins patched crossbeam-epoch 0.9.20 (MSRV 1.61), the Track 13 PowerShell gate now detects cargo-audit as a Cargo plugin; cargo-deny and cargo-audit both pass. The local Track 13/30 Conductor review found no blocking findings; Kairos implementation is committed as a67dcf17f8c5462b1428531b91122dbbebf672a6, with final evidence commits through 339af4e7365e70ad7e67fe3e934e4fb215fbaf8b on codex/d12-bench-lock-msrv; the parent pin is updated to 339af4e7365e70ad7e67fe3e934e4fb215fbaf8b. D1.2 remains open pending final pinned integration checks and phase acceptance. Q0 remains gated by D1; Q1 source work remains gated by D2 and Q0.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/index.md",
@@ -28,7 +28,7 @@
     "conductor/decisions/ADR-0002-dependency-msrv-boundaries-proposed.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "45679c119732b56858e0f5a4c9d4788323f63122",
+    "libs/kairos": "339af4e7365e70ad7e67fe3e934e4fb215fbaf8b",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   }
 }

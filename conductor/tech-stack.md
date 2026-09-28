@@ -14,10 +14,13 @@
   runtime requirement. Julia, Mojo and MLX are not required by these tracks.
 - CPU replications use isolated run state and deterministic result merging.
   Existing Tracks 32/34/35 own GPU/Metal, PDES and distributed execution.
-- Baseline workspace: Rust 2021, declared MSRV 1.76, toolchain file `stable`.
-  Resolve current dependency versions at implementation time; lock them and
-  verify MSRV. Change the supported toolchain only through Tracks 25/30.
-- Git submodule pins: Kairos `fae901558f07b7b717a676adbafbe2cdc78dea1c`;
+- Baseline workspace: Rust 2021, declared MSRV 1.76 for default features, exact
+  tested developer/integration toolchain 1.98.1. Track 13 CI separately exercises
+  the Rust 1.76 default-feature workspace. The dated Rust 1.99.0-beta.8 snapshot
+  (observed 2026-09-27) is a non-blocking canary. Change this policy only through
+  the reviewed Track 25/30 contracts.
+- Git submodule pins: Kairos development branch `codex/d12-bench-lock-msrv`
+  at reviewed D1.2 commit `339af4e7365e70ad7e67fe3e934e4fb215fbaf8b`;
   Conductor `7a5c560a4fdf5297be58594cc37527eb12790272` (`conductor-v0.4.1`).
   A pin records the reviewed baseline, not a perpetual claim to be latest.
 
@@ -28,11 +31,12 @@ See [the alignment decisions](../docs/kairos-alignment.md) and
 ## Current development audit
 
 [Dependency policy](dependency-policy.md) and its live source snapshot supersede
-older version assumptions: Rust 1.98.1 is locally tested; Arrow 60 requires MSRV
-1.88, above Kairos's declared 1.76. D1/C0 resolve compatibility before updating
-upstream manifests. Optional latest dependencies are candidates, not installed
-or validated merely by appearing in the snapshot. The lightweight local context
-harness uses Python stdlib for developer orchestration only.
+older version assumptions: Rust 1.98.1 is pinned and the 1.76 default-feature
+workspace floor is tested. Arrow 60 requires MSRV 1.88, above Kairos's declared
+1.76, so any future use belongs in a separate package after C1 schema review.
+Optional latest dependencies remain candidates, not approved additions. The
+lightweight local context harness uses Python stdlib for developer orchestration
+only.
 
 ## Later spatial and live visualization requirement
 

@@ -1,8 +1,7 @@
 # ADR-0002: Dependency and MSRV boundaries for the ED-native profile
 
-- Status: partially approved; the exact benchmark-only lock resolution below is
-  approved and implemented; remaining compatibility-boundary decisions require
-  the relevant Track 13/25/30/04 owner reviews
+- Status: owner-approved direction; Track 13/30 local implementation review passed;
+  D1.2 source commits and formal phase acceptance remain pending
 - Date: 2026-09-28
 - Parent base reviewed: `9b06a425abfe86b68dc96e0b8388ef6f4e239f7f`
 - Kairos source reviewed: `fae901558f07b7b717a676adbafbe2cdc78dea1c`
@@ -49,37 +48,49 @@ currently name Rust 1.95 as stable, predating this September 2026 evidence.
    this resolution is later rejected, owners must approve an explicit
    unpublished benchmark-tool floor and its support boundary.
 5. Define two separate dependency lanes: a locked tested stable integration
-   baseline and a dated advisory canary, each with exact Rust/dependency
-   versions, target/features and captured results. Registry latest is never a
-   required integration input until the candidate is installed, resolved and
-   tested. Keep MLX's C++/Metal/Xcode/Clang lane separate from Rust wrapper
-   validation.
+   baseline at Rust 1.98.1 and a dated advisory beta snapshot (Rust
+   1.99.0-beta.8 observed 2026-09-27), each with exact Rust/dependency versions,
+   target/features and captured results. The beta selector is floating and its
+   job is non-blocking; the recorded expected-version mismatch forces a visible
+   refresh instead of silently redefining the snapshot. Registry latest is
+   never a required integration input until the candidate is installed,
+   resolved and tested. Keep MLX's C++/Metal/Xcode/Clang lane separate from Rust
+   wrapper validation.
 
 ## Approval and implementation gate
 
-The Kairos owner (user-confirmed in this conversation) approved only the exact
-benchmark-only six-package Cargo.lock resolution listed in decision 4 on
-2026-09-28. This approval does not approve manifest/MSRV, API, CI, Arrow/TOML,
-stable-selector or other compatibility changes. The approved lock change is
-committed in Kairos as `45679c119732b56858e0f5a4c9d4788323f63122`; the full
-workspace passed at Rust 1.76.0 and 1.98.1 on macOS ARM. See the updated
+The Kairos owner approved the direction in decisions 1-3 and 5 on 2026-09-28:
+preserve the tested Rust 1.76 default-feature workspace floor; put future
+Arrow/Parquet behind a separately reviewed package boundary at candidate floor
+1.88; keep TOML parsing out of core and, if adopted, isolate it at candidate
+floor 1.85; pin CI/developer stable to the tested 1.98.1 baseline and maintain
+the dated advisory beta snapshot above. Decision 4's exact benchmark-only
+six-package lock resolution was separately approved and committed earlier as
+`45679c119732b56858e0f5a4c9d4788323f63122`.
+
+The exact baseline, toolchain selectors, workflow checks and Track 30 validator
+were updated together. Local Track 13/30 review found no blocking findings. The
+final implementation run passed the 228-test, 64-suite default-feature
+workspace on Rust 1.76.0 and Rust 1.98.1 and compiled
+the workspace on Rust 1.99.0-beta.8. See the updated
 [D1.2 compatibility assessment](../evidence/d1.2-compatibility-assessment-20260928.md)
-for commands and log hashes.
+for exact commands, log hashes and remaining integration gates. Owner approval
+and local review do not imply D1.2 phase acceptance.
 
-The following decisions remain open and require the relevant Track 13/25/30/04
-owner review before changing compatibility promises or adding dependencies:
+The following integration and acceptance gates remain before D1.2 can close:
 
-- whether Rust 1.76 covers benchmark/dev targets or only published runtime;
-- whether Rust 1.76 covers benchmark/dev targets beyond the repaired Criterion
-  graph or a scoped unpublished tool-only floor is required;
-- which Kairos package owns Arrow IPC/Parquet and the accepted MSRV;
-- whether the tested Rust 1.98.1 pin replaces the stale 1.95 stable selector,
-  and what date/criteria govern the canary lane; and
-- what Track 25 version-drop notice, compatibility ADR and affected-owner
-  review apply to each exact package root.
+- commit the reviewed Kairos source and parent evidence, then update the parent
+  pin to the exact reviewed commit;
+- verify the root's Track 25 compatibility contract is unchanged and the
+  version-drop policy is not triggered because no existing MSRV is raised;
+- retain Arrow/Parquet schema ownership and independent interoperability as a
+  prerequisite for any future package implementation; and
+- rerun parent D1.2 and integration tests from the final recorded Kairos pin.
 
-For those remaining decisions, preserve existing package promises until
-reviewed. Any approved compatibility change must update contracts, CI,
-dependency policy and docs together. The parent pin may advance to the lock-only
-commit above after integration evidence is recorded; this does not imply the
-remaining decisions are accepted.
+No Arrow, Parquet, TOML, or Rayon dependency is added by this decision. A separate
+Cargo.lock-only security update pins patched `crossbeam-epoch 0.9.20` after the
+local Track 13 audit found RUSTSEC-2026-0204 in the benchmark dev graph; its MSRV
+is 1.61 and both cargo-deny and cargo-audit pass. Existing
+package promises remain unchanged. Any future compatibility change must update
+contracts, CI, dependency policy and docs together. The parent pin should
+advance only after review and integration evidence are recorded.
