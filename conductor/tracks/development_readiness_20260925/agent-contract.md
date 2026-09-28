@@ -7,6 +7,11 @@ The parent owns ED domain logic, local developer tooling and integration. Kairos
 owners retain reusable engine/Arrow/runner/FFI/backend changes. Review shared
 manifests/contracts before edits and use separate commits/pin updates.
 
+Project-local Agent Skills under `.agents/skills/` are parent-owned developer
+workflow assets. D1.3 may inventory and author bounded candidates there; D1.4
+owns held-out evaluation and promotion. Do not copy third-party skill text into
+that directory without source/license review and a separate provenance record.
+
 Parallel-safe work must have disjoint paths and bounded acceptance. One writer
 owns a shared file. Delegate only under applicable session authorization; this
 contract defines responsibilities and does not start agents. No new public

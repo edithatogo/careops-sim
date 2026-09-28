@@ -61,7 +61,7 @@ Manual verification: resume in a fresh session and reach the exact next task.
 - [x] D1.1 Add bootstrap tests for missing/wrong tools and clean macOS ARM/Linux
   environments. Resolve Rust 1.98.1/current registry candidates; pin versions and
   record platform checksums. Test minimum/current consumer dependency resolution.
-- [ ] D1.2 Resolve Arrow/TOML/Rayon versus MSRV with owners 25/30. Update affected
+- [x] D1.2 Resolve Arrow/TOML/Rayon versus MSRV with owners 25/30. Update affected
   manifests, policy checks and docs together; keep existing core promises unless
   an approved transition applies. Separate stable baseline and dated canary lane.
   Review report 26/28 version claims against live registries and supported targets; no reported latest version is approved by intake. Test advertised MSRV explicitly and record any reviewed transition; keep MLX C/C++ and Rust-wrapper toolchains distinct.

@@ -27,7 +27,8 @@ OVERRIDES = {
            'conductor/module-readiness.md', 'conductor/current-state.json',
            'conductor/tracks/development_readiness_20260925/plan.md'],
     'D1': ['tools', 'tests', 'conductor/dependency-policy.md',
-           'conductor/evidence'],
+           'conductor/evidence', '.agents/skills',
+           'conductor/tracks/development_readiness_20260925/agent-contract.md'],
     'P0': ['model-inputs/ed/schema'],
     'P1': ['model-inputs/ed/des'],
     'P2': ['model-inputs/ed/abm'],
@@ -47,6 +48,11 @@ OVERRIDES = {
     'E6': ['libs/kairos/crates/kairo-ecs-gpu'],
     'E7': ['libs/kairos/crates/kairo-ecs-pdes', 'libs/kairos/crates/kairo-ecs-des'],
     'E8': ['libs/kairos/crates/kairo-ecs-mpi', 'libs/kairos/crates/kairo-ecs-grpc'],
+}
+TASK_OVERRIDES = {
+    'D1.3': ['tools', 'tests', 'conductor/dependency-policy.md',
+             'conductor/evidence', '.agents/skills',
+             'conductor/tracks/development_readiness_20260925/agent-contract.md'],
 }
 
 
@@ -91,15 +97,19 @@ def derive(root):
             siblings.append(task_id)
             review = 'Conductor — review and verify phase' in match[3]
             kind = 'review_integrate' if review else ('contract_decision' if phase.endswith('0') or task_id in COORDINATOR_TASKS else 'bounded_work')
-            reservations = (['conductor/tracks'] if review else OVERRIDES.get(phase, SCOPES[phase[0]]))
+            reservations = (['conductor/tracks'] if review else
+                            TASK_OVERRIDES.get(task_id, OVERRIDES.get(phase, SCOPES[phase[0]])))
+            context_paths = [str((folder/f).relative_to(root)) for f in
+                             ('spec.md', 'plan.md', 'test-matrix.md', 'agent-contract.md')]
+            if task_id == 'D1.3':
+                context_paths.extend(['AGENTS.md', 'conductor/agent-engineering.md'])
             tasks.append({
                 'id': task_id, 'track_id': meta['track_id'], 'phase': phase,
                 'objective': ' '.join(objective), 'kind': kind,
                 'accepted': match[1] == 'x',
                 'dependencies': dependencies,
                 'source': {'path': str(plan.relative_to(root)), 'line': source_line},
-                'context_paths': [str((folder/f).relative_to(root)) for f in
-                                  ('spec.md', 'plan.md', 'test-matrix.md', 'agent-contract.md')],
+                'context_paths': context_paths,
                 'write_reservations': list(reservations),
                 'dispatch_gate': 'reviewed_leaf_packet_required',
                 'model_route': 'coordinator' if kind != 'bounded_work' else 'gpt-6-luna_candidate_after_packet_review',
