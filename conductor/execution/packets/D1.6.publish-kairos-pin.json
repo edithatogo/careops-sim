@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "packet_id": "D1.6.publish-kairos-pin",
+  "task_id": "D1.6",
+  "target_repo": "libs/kairos",
+  "base_commit": "BIND_AT_DISPATCH",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6-sol",
+  "status": "example_requires_binding",
+  "objective": "Publish the already-reviewed Kairos toolchain branch codex/d12-bench-lock-msrv at exact commit 339af4e7365e70ad7e67fe3e934e4fb215fbaf8b to its configured origin using a non-force push, then prove the origin branch ref resolves to that exact commit. Do not open a PR, merge, change the parent submodule pin, or alter source files in this packet.",
+  "context_paths": [
+    "conductor/workflow.md",
+    "conductor/tracks/30-toolchain-version-support-matrix/handoff.md",
+    "conductor/tracks/30-toolchain-version-support-matrix/test-matrix.md",
+    "conductor/tracks/13-ci-cd-quality-supply-chain/handoff.md"
+  ],
+  "input_paths": [
+    "conductor/workflow.md",
+    "conductor/tracks/30-toolchain-version-support-matrix/handoff.md",
+    "conductor/tracks/30-toolchain-version-support-matrix/test-matrix.md",
+    "conductor/tracks/13-ci-cd-quality-supply-chain/handoff.md"
+  ],
+  "input_hashes": {},
+  "write_paths": [
+    ".artifacts/d1_6_pin_publication/result.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "conductor",
+    "crates",
+    ".github"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "Publication scope is exactly one new or fast-forward branch ref refs/heads/codex/d12-bench-lock-msrv at 339af4e7365e70ad7e67fe3e934e4fb215fbaf8b in the preconfigured origin. The push must be non-force and reject divergence. Result JSON records exact origin URL (without credentials), old/new ref state, argv, exit code, output hash, timestamp, and unresolved issues. No PR, merge, tag, release, source edit, or parent pin change.",
+  "steps": [
+    "Verify the target checkout is clean, HEAD equals the bound expected Kairos commit, branch name is codex/d12-bench-lock-msrv, and origin is the expected edithatogo/kairos repository.",
+    "Confirm the remote branch ref is absent or already at the exact expected commit; stop if it points elsewhere.",
+    "Run a non-mutating git push --dry-run with the exact source and destination refs; inspect the proposed update.",
+    "Run the exact non-force git push origin refs/heads/codex/d12-bench-lock-msrv:refs/heads/codex/d12-bench-lock-msrv.",
+    "Read back the remote ref with git ls-remote and require its SHA to equal 339af4e7365e70ad7e67fe3e934e4fb215fbaf8b; write the structured result artifact."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/heads/codex/d12-bench-lock-msrv"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "The only output row has exact SHA 339af4e7365e70ad7e67fe3e934e4fb215fbaf8b and ref refs/heads/codex/d12-bench-lock-msrv. Empty, multiple, or different rows fail acceptance."
+    }
+  ],
+  "acceptance": [
+    "The only remote mutation is a normal fast-forward/new branch push to the configured Kairos origin; no force update is allowed.",
+    "The remote ref readback exactly matches the pinned commit and branch name.",
+    "The Kairos working tree remains clean and HEAD remains the bound commit.",
+    "Result artifact is factual and records command evidence; publication alone does not close D1.6. A clean parent checkout reproduction is a separate closeout step."
+  ],
+  "result_path": ".artifacts/d1_6_pin_publication/result.json",
+  "stop_conditions": [
+    "Target base, branch, cleanliness, origin URL, or remote ref differs from the bound values",
+    "Dry-run proposes any ref other than the exact requested branch",
+    "Push would require force, credentials are unavailable, or remote rejects the update",
+    "Need to modify source, manifests, lockfiles, parent pin, PR, or merge state"
+  ],
+  "size_exception": null
+}

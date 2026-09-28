@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "packet_id": "D1.6.publish-kairos-pin",
+  "task_id": "D1.6",
+  "attempt": 1,
+  "status": "ready_for_review",
+  "target_repo": "libs/kairos",
+  "base_commit": "339af4e7365e70ad7e67fe3e934e4fb215fbaf8b",
+  "result": {
+    "packet_sha256": "e301a912a467823555bfdaa59c27a0177ed2e81f52a9d9ca2f079e4c214efdc2",
+    "kairos_head": "339af4e7365e70ad7e67fe3e934e4fb215fbaf8b",
+    "kairos_origin": "https://github.com/edithatogo/kairos.git",
+    "remote_ref": "339af4e7365e70ad7e67fe3e934e4fb215fbaf8b\trefs/heads/codex/d12-bench-lock-msrv"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "packet-check",
+        ".artifacts/packets/D1.6.publish-kairos-pin.json"
+      ],
+      "exit_code": 0,
+      "output": "errors: []"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "libs/kairos",
+        "push",
+        "--dry-run",
+        "origin",
+        "refs/heads/codex/d12-bench-lock-msrv:refs/heads/codex/d12-bench-lock-msrv"
+      ],
+      "exit_code": 0,
+      "output": "new branch codex/d12-bench-lock-msrv -> codex/d12-bench-lock-msrv"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "libs/kairos",
+        "push",
+        "origin",
+        "refs/heads/codex/d12-bench-lock-msrv:refs/heads/codex/d12-bench-lock-msrv"
+      ],
+      "exit_code": 0,
+      "output": "new branch codex/d12-bench-lock-msrv -> codex/d12-bench-lock-msrv"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "libs/kairos",
+        "ls-remote",
+        "origin",
+        "refs/heads/codex/d12-bench-lock-msrv"
+      ],
+      "exit_code": 0,
+      "output": "339af4e7365e70ad7e67fe3e934e4fb215fbaf8b\trefs/heads/codex/d12-bench-lock-msrv"
+    }
+  ],
+  "scope": "One non-force branch ref only. No PR, merge, tag, release, source edit or parent pin change.",
+  "unresolved_issues": [
+    "GitHub Actions/PR status not part of this publication packet; clean-source submodule reproduction is recorded separately."
+  ]
+}
