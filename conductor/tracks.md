@@ -18,8 +18,10 @@ milestone Q4. See [milestones and ownership](kairos-enhancements.md).
   ([index](tracks/development_readiness_20260925/index.md),
   [spec](tracks/development_readiness_20260925/spec.md),
   [plan](tracks/development_readiness_20260925/plan.md)). In progress: D0.1–D0.4
-  audit and phase closeout complete; D1.1 is next. Toolchain, skill, CI and
-  release work remain.
+  audit and phase closeout complete; D1.1 is accepted. D1.2 is active: the
+  Kairos owner-approved benchmark lock fix is integrated, while broader MSRV,
+  Arrow/TOML ownership and stable/canary decisions remain open. Toolchain, skill,
+  CI and release work remain.
 - [ ] **Generic ED library delivery** — `generic_ed_delivery_20260925`
   ([index](tracks/generic_ed_delivery_20260925/index.md),
   [spec](tracks/generic_ed_delivery_20260925/spec.md),
@@ -43,8 +45,8 @@ formal Q0/C0 contracts; E0 unlocks D2 GitHub/CI, then Q1/C1 can proceed.
 All requested research themes have responses; embedded content is available.
 Remaining tasks verify sources, resolve conflicts, fill specific gaps and deliver
 tested outputs. See [research handoff and next steps](research/research-handoff.md).
-D0.2 and P0.1 are the current preparation candidates; no broad new research round
-is a prerequisite. Track checkboxes continue to represent full delivery acceptance.
+D1.2 is the current development-readiness task; no broad new research round is a
+prerequisite. Track checkboxes continue to represent full delivery acceptance.
 
 ## Authoritative delivery sequence
 
