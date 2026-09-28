@@ -227,9 +227,9 @@
       "id": "D1.4",
       "track_id": "development_readiness_20260925",
       "phase": "D1",
-      "objective": "Write held-out harness/skill evals first, including fake pass, pin drift, hidden clamp error and untrusted instructions; test the candidate skills and approve only those improving correctness/intervention cost over the baseline. Compare no-skill/pinned-skill and serial/parallel arms on undisclosed variants; split correct unit conversions from injected wrong-output cases. Report known-bad acceptance and bad-among-accepted separately; account for repeated fixtures.",
+      "objective": "Preregister the eval policy, then run matched no-skill/pinned-skill serial/parallel evaluations covering fake pass, pin drift, clamp, untrusted instructions, determinism, MSRV, and both correct and wrong unit handling. Include a repeated scheduling case and keep it out of independent-case denominators. Add a standard-library scorer and focused tests for pair validation, candidate/mode breakdown, known-bad acceptance, bad-among-accepted, repeated/excluded cases and missing measurements. Pilot result: baseline 6/7, skill-assisted 7/7, pooled 13/14; known-bad acceptance 0/12. The determinism candidate has one correctness improvement (0/1 vs 1/1); calibration (4/4) and dependency (2/2) candidates tie. Keep all candidates unpromoted because this small supervised pilot does not establish repeatable task-class benefit. Exact output sizes and tool cost/latency were unavailable; no technical oracle isolation or hidden-evaluation claim is made. Evidence: [pre-registered policy](../../evidence/d1.4-evaluation-policy-20260928.md), [pilot analysis](../../evidence/d1.4-supervised-skill-pilot-20260928.md), [scored records](../../evidence/d1.4-skill-pilot-results-20260928.json), and [machine score](../../evidence/d1.4-skill-pilot-score-20260928.json); scorer [implementation](../../../tools/skill_eval.py) and [tests](../../../tests/test_skill_eval.py). Technical isolation remains D1.5.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "D1.3"
       ],
@@ -266,7 +266,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 77
+        "line": 90
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -296,7 +296,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 83
+        "line": 96
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -324,7 +324,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 93
+        "line": 106
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -352,7 +352,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 96
+        "line": 109
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -380,7 +380,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 99
+        "line": 112
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -408,7 +408,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 103
+        "line": 116
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -436,7 +436,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 105
+        "line": 118
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -463,7 +463,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 112
+        "line": 125
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -492,7 +492,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 114
+        "line": 127
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -521,7 +521,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 117
+        "line": 130
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -550,7 +550,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 120
+        "line": 133
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -579,7 +579,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 123
+        "line": 136
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -609,7 +609,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 132
+        "line": 145
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -638,7 +638,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 136
+        "line": 149
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -667,7 +667,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 140
+        "line": 153
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -696,7 +696,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 143
+        "line": 156
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -724,7 +724,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 152
+        "line": 165
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -753,7 +753,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 155
+        "line": 168
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -782,7 +782,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 158
+        "line": 171
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -811,7 +811,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 160
+        "line": 173
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",

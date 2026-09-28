@@ -68,12 +68,25 @@ Manual verification: resume in a fresh session and reach the exact next task.
 - [x] D1.3 Inventory available Conductor/security/browser skills; source or author
   context-resume, deterministic-review, calibration-review and dependency-upgrade
   skills only for missing behaviors. Record source commit/licence/hash and tools; evidence: [D1.3 inventory and verification](../../evidence/d1.3-skill-inventory-20260928.md).
-- [ ] D1.4 Write held-out harness/skill evals first, including fake pass, pin drift,
-  hidden clamp error and untrusted instructions; test the candidate skills and
-  approve only those improving correctness/intervention cost over the baseline.
-  Compare no-skill/pinned-skill and serial/parallel arms on undisclosed
-  variants; split correct unit conversions from injected wrong-output cases. Report
-  known-bad acceptance and bad-among-accepted separately; account for repeated fixtures.
+- [x] D1.4 Preregister the eval policy, then run matched no-skill/pinned-skill
+  serial/parallel evaluations covering fake pass, pin drift, clamp, untrusted
+  instructions, determinism, MSRV, and both correct and wrong unit handling.
+  Include a repeated scheduling case and keep it out of independent-case
+  denominators. Add a standard-library scorer and focused tests for pair
+  validation, candidate/mode breakdown, known-bad acceptance, bad-among-accepted,
+  repeated/excluded cases and missing measurements. Pilot result: baseline 6/7,
+  skill-assisted 7/7, pooled 13/14; known-bad acceptance 0/12. The determinism
+  candidate has one correctness improvement (0/1 vs 1/1); calibration (4/4) and
+  dependency (2/2) candidates tie. Keep all candidates unpromoted because this
+  small supervised pilot does not establish repeatable task-class benefit.
+  Exact output sizes and tool cost/latency were unavailable; no technical oracle
+  isolation or hidden-evaluation claim is made. Evidence: [pre-registered
+  policy](../../evidence/d1.4-evaluation-policy-20260928.md), [pilot
+  analysis](../../evidence/d1.4-supervised-skill-pilot-20260928.md), [scored
+  records](../../evidence/d1.4-skill-pilot-results-20260928.json), and
+  [machine score](../../evidence/d1.4-skill-pilot-score-20260928.json); scorer
+  [implementation](../../../tools/skill_eval.py) and
+  [tests](../../../tests/test_skill_eval.py). Technical isolation remains D1.5.
 - [ ] D1.5 Add structured command receipts, input/output hashes and checkpoint
   validation without private payloads. Exercise kill/restart, stale context and
   concurrent-writer rejection; log tool/model version where available.
