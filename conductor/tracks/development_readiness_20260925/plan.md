@@ -100,7 +100,7 @@ Manual verification: resume in a fresh session and reach the exact next task.
   and planner-level reservation checks pass. No atomic multi-coordinator lease or
   shared-host hidden-oracle isolation is claimed; hidden evaluations remain off
   until D2 local execution-boundary evidence is available.
-- [ ] D1.6 Conductor — review and verify phase (workflow.md).
+- [x] D1.6 Conductor — review and verify phase (workflow.md).
 
 Exit: one-command minimal native bootstrap and measured skill evaluations; no
 runtime Python dependency. Manual verification: reproduce from a clean checkout.
