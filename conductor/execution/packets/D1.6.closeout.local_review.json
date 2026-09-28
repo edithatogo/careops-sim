@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "packet_id": "D1.6.closeout.local_review",
+  "task_id": "D1.6",
+  "target_repo": ".",
+  "base_commit": "BIND_AT_DISPATCH",
+  "model_role": "independent_reviewer",
+  "model_candidate": "gpt-6-luna",
+  "status": "example_requires_binding",
+  "objective": "Independently review the updated D1 phase coordinator readback and D1.6 clean-source reproduction evidence against the development-readiness plan. Decide whether D1.6's clean-checkout manual criterion is now met, verify D1.1-D1.5 evidence boundaries and D1/D2 scope, and return a recommendation with factual discrepancies. Do not accept D1.6, check plan boxes, update current-state/catalog/recipes, publish, open a PR, or merge.",
+  "context_paths": [
+    "AGENTS.md",
+    "conductor/workflow.md",
+    "conductor/execution-model.md",
+    "conductor/tracks/development_readiness_20260925/spec.md",
+    "conductor/tracks/development_readiness_20260925/plan.md",
+    "conductor/tracks/development_readiness_20260925/test-matrix.md",
+    "conductor/tracks/development_readiness_20260925/agent-contract.md",
+    "conductor/current-state.json",
+    "conductor/evidence/d1.6-coordinator-readback-draft-20260928.md",
+    "conductor/evidence/d1.6-clean-source-reproduction-20260928.md",
+    "conductor/evidence/d1.6-clean-source-reproduction-20260928.json",
+    "conductor/evidence/d1.6-kairos-pin-publication-20260928.md",
+    "conductor/evidence/d1.6-kairos-pin-publication-20260928.json",
+    "conductor/evidence/d1.6-phase-review-proposal-20260928.md",
+    "conductor/evidence/d1.6-coordinator-disposition-20260928.md",
+    "conductor/tracks/development_readiness_20260925/d1-evidence-d1-1-to-d1-3-draft.md",
+    "conductor/tracks/development_readiness_20260925/d1-evidence-d1-4-to-d1-5-draft.md",
+    "conductor/evidence/d1.2-track13-security-remediation-20260928.md",
+    "conductor/evidence/d1.4-skill-pilot-results-20260928.json",
+    "conductor/evidence/d1.4-skill-pilot-score-20260928.json",
+    "conductor/evidence/d1.5-recovery-implementation-20260928.md",
+    "conductor/evidence/d1.5-ownership-implementation-20260928.md",
+    "conductor/execution/tasks.json",
+    "conductor/execution/mvp/recipes.json"
+  ],
+  "input_paths": [
+    "AGENTS.md",
+    "conductor/workflow.md",
+    "conductor/execution-model.md",
+    "conductor/tracks/development_readiness_20260925/spec.md",
+    "conductor/tracks/development_readiness_20260925/plan.md",
+    "conductor/tracks/development_readiness_20260925/test-matrix.md",
+    "conductor/tracks/development_readiness_20260925/agent-contract.md",
+    "conductor/current-state.json",
+    "conductor/evidence/d1.6-coordinator-readback-draft-20260928.md",
+    "conductor/evidence/d1.6-clean-source-reproduction-20260928.md",
+    "conductor/evidence/d1.6-clean-source-reproduction-20260928.json",
+    "conductor/evidence/d1.6-kairos-pin-publication-20260928.md",
+    "conductor/evidence/d1.6-kairos-pin-publication-20260928.json",
+    "conductor/evidence/d1.6-phase-review-proposal-20260928.md",
+    "conductor/evidence/d1.6-coordinator-disposition-20260928.md",
+    "conductor/tracks/development_readiness_20260925/d1-evidence-d1-1-to-d1-3-draft.md",
+    "conductor/tracks/development_readiness_20260925/d1-evidence-d1-4-to-d1-5-draft.md",
+    "conductor/evidence/d1.2-track13-security-remediation-20260928.md",
+    "conductor/evidence/d1.4-skill-pilot-results-20260928.json",
+    "conductor/evidence/d1.4-skill-pilot-score-20260928.json",
+    "conductor/evidence/d1.5-recovery-implementation-20260928.md",
+    "conductor/evidence/d1.5-ownership-implementation-20260928.md",
+    "conductor/execution/tasks.json",
+    "conductor/execution/mvp/recipes.json"
+  ],
+  "input_hashes": {},
+  "write_paths": [
+    "conductor/evidence/d1.6-phase-review-proposal-20260928-v2.md",
+    ".artifacts/mvp/D1.6.closeout.local_review.attempt2/result.json",
+    ".artifacts/mvp/D1.6.closeout.local_review.attempt2/receipt.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/tracks",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json",
+    "conductor/execution/mvp/recipes.json"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "Return an independent recommendation only. The coordinator retains D1.6 and D1 acceptance authority. A passing fresh local clone of committed parent source with exact submodule fetches may satisfy the D1 manual criterion; do not infer parent GitHub cloning, hosted Actions, Windows, clean-image macOS, bare-metal Linux, hidden-oracle isolation, or release readiness.",
+  "steps": [
+    "Read the bound context and verify its hashes; compare the coordinator readback with the authoritative D1 plan and current-state.",
+    "Inspect all 19 clean-source command receipts and their local logs. Verify parent SHA, Kairos and Conductor pin SHAs, configured Kairos origin, clean status, exact test totals and command outputs.",
+    "Check the publication record, historical hold, D1.1-D1.5 reconciliations, and that residual hosted/platform claims stay explicitly unverified.",
+    "Run the exact planning verification commands and record actual timestamps, exit codes, output hashes and tool versions in the result/receipt.",
+    "Write a concise independent proposal in the reserved path. Recommend accept or hold and name any factual discrepancy or unresolved gate; do not alter status records."
+  ],
+  "verification": [
+    {
+      "argv": ["python3", "tools/context.py", "check"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All active track links and current-state context paths resolve with no errors."
+    },
+    {
+      "argv": ["python3", "tools/tasks.py", "check"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "The task catalog still covers all tasks with a valid prerequisite DAG."
+    },
+    {
+      "argv": ["python3", "tools/mvp.py", "check"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "MVP parent/leaf coverage, joins, context hashes and objective hashes remain valid."
+    }
+  ],
+  "acceptance": [
+    "Every factual claim is supported by a bound source or current command output.",
+    "The recommendation explicitly assesses whether fresh configured-source reproduction satisfies D1's manual criterion.",
+    "D1.4 small-sample and hidden-oracle limits, D1.5 synthetic recovery/single-coordinator limits, and D2 hosted/release gates remain intact.",
+    "No plan checkbox, current-state acceptance, task catalog, MVP recipe or remote repository state is changed."
+  ],
+  "result_path": ".artifacts/mvp/D1.6.closeout.local_review.attempt2/result.json",
+  "stop_conditions": [
+    "Any bound input hash or base commit has drifted",
+    "Clean-source logs are missing or contradict the JSON receipt",
+    "A material D1.1-D1.5 discrepancy or unresolved D1 exit criterion is found",
+    "Requested write falls outside the reserved proposal/result/receipt paths"
+  ],
+  "size_exception": null
+}
