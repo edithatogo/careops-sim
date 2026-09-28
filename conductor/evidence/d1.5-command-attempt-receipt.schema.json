@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://careops-sim.local/schemas/command-attempt-receipt-v1.json",
+  "title": "CareOps Sim command attempt receipt",
+  "description": "Metadata-only execution receipt. It records worker-reported or coordinator-captured evidence but does not itself attest that a command ran.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "packet_id",
+    "attempt_id",
+    "target_repo",
+    "base_commit",
+    "worker",
+    "started_at_utc",
+    "finished_at_utc",
+    "inputs_sha256",
+    "commands",
+    "outputs_sha256",
+    "changed_paths",
+    "status",
+    "unresolved_issues"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "packet_id": { "$ref": "#/$defs/identifier" },
+    "attempt_id": { "$ref": "#/$defs/identifier" },
+    "supersedes_attempt_id": {
+      "oneOf": [
+        { "$ref": "#/$defs/identifier" },
+        { "type": "null" }
+      ],
+      "description": "Set for a retry or replacement; never overwrite the prior attempt receipt."
+    },
+    "target_repo": { "$ref": "#/$defs/safePath" },
+    "base_commit": { "$ref": "#/$defs/sha1" },
+    "worker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent_id", "model", "model_version", "reasoning_effort"],
+      "properties": {
+        "agent_id": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "model_version": {
+          "oneOf": [
+            { "type": "string", "minLength": 1 },
+            { "type": "null" }
+          ]
+        },
+        "reasoning_effort": { "type": "string", "minLength": 1 }
+      }
+    },
+    "started_at_utc": { "$ref": "#/$defs/utcTimestamp" },
+    "finished_at_utc": { "$ref": "#/$defs/utcTimestamp" },
+    "inputs_sha256": { "$ref": "#/$defs/pathDigestMap" },
+    "seed_sha256": { "$ref": "#/$defs/sha256" },
+    "commands": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "argv",
+          "cwd",
+          "started_at_utc",
+          "finished_at_utc",
+          "expected_exit",
+          "exit_code",
+          "stdout_sha256",
+          "stdout_bytes",
+          "stderr_sha256",
+          "stderr_bytes",
+          "evidence_source",
+          "tool_versions"
+        ],
+        "properties": {
+          "argv": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1, "maxLength": 256 }
+          },
+          "cwd": { "$ref": "#/$defs/safePath" },
+          "started_at_utc": { "$ref": "#/$defs/utcTimestamp" },
+          "finished_at_utc": { "$ref": "#/$defs/utcTimestamp" },
+          "expected_exit": { "type": "integer" },
+          "exit_code": { "type": "integer" },
+          "stdout_sha256": { "$ref": "#/$defs/sha256" },
+          "stdout_bytes": { "type": "integer", "minimum": 0 },
+          "stderr_sha256": { "$ref": "#/$defs/sha256" },
+          "stderr_bytes": { "type": "integer", "minimum": 0 },
+          "evidence_source": {
+            "const": "worker_reported",
+            "description": "Worker-submitted receipts are untrusted reports. Coordinator captures are recorded separately in coordinator-owned evidence."
+          },
+          "tool_versions": {
+            "type": "object",
+            "additionalProperties": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        }
+      }
+    },
+    "outputs_sha256": { "$ref": "#/$defs/pathDigestMap" },
+    "changed_paths": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/safePath" }
+    },
+    "status": { "enum": ["ready_for_review", "blocked"] },
+    "unresolved_issues": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 512 }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "status": { "const": "ready_for_review" } },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": { "unresolved_issues": { "maxItems": 0 } }
+      }
+    }
+  ],
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.-]+$"
+    },
+    "sha1": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "utcTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?Z$",
+      "description": "The consumer must assert date-time format and validate chronological ordering; JSON Schema format may otherwise be annotation-only."
+    },
+    "safePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^(?:\\.|(?!/)(?![A-Za-z]:)(?!.*\\\\)(?!.*//)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*\\/$).+)$",
+      "description": "Canonical repository-relative POSIX path (or '.' for the repository root); no dot segments, repeated/trailing separators, absolute paths, drive prefixes, backslashes, or parent traversal."
+    },
+    "pathDigestMap": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/safePath" },
+      "additionalProperties": { "$ref": "#/$defs/sha256" }
+    }
+  }
+}
