@@ -66,6 +66,9 @@ class SchedulingTests(unittest.TestCase):
         # closeouts. Q1 code work additionally requires D2 and the Q0 closeout;
         # a Q-local DAG alone must not make implementation appear dispatchable.
         self.assertIn('D1.6',by_id['Q0.1']['dependencies'])
+        self.assertEqual(
+            by_id['Q0.2']['write_reservations'],
+            ['conductor/design/queue','libs/kairos/conductor/design/queue'])
         self.assertTrue({'D2.5','Q0.4'} <= set(by_id['Q1.1']['dependencies']))
         self.assertTrue({'conductor/module-readiness.md','conductor/evidence'} <= set(by_id['D0.2']['write_reservations']))
         self.assertTrue({'conductor/decisions','conductor/current-state.json',

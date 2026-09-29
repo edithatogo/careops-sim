@@ -32,7 +32,7 @@ OVERRIDES = {
     'P1': ['model-inputs/ed/des'],
     'P2': ['model-inputs/ed/abm'],
     'D2': ['.github', 'libs/kairos/.github'],
-    'Q0': ['conductor/design/queue'],
+    'Q0': ['conductor/design/queue', 'libs/kairos/conductor/design/queue'],
     'Q4': ['libs/kairos/crates/kairo-ecs-des', 'libs/kairos/crates/kairo-ecs-abm',
            'libs/kairos/crates/kairo-ecs-arrow', 'libs/kairos/crates/kairo-ecs-cli'],
     'C0': ['conductor/design/calibration'],

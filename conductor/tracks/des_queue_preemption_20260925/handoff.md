@@ -7,7 +7,7 @@ prepared for Kairos Track 03. Q0.1 architecture/compatibility is accepted with
 the Kairos owner disposition and local evidence in
 `conductor/evidence/q0.1-phase-acceptance-20260929.md`. The Kairos development
 branch is synchronized with current upstream and pinned locally at
-`2df72fd852aa3a4d9f3d1a4ea041bc86e5c98bee`; it contains Q0.1 design documents,
+`25177e5644ecb132c4df2cba1b4a0aeed1d08cb6`; it contains Q0.1 design documents,
 not queue runtime implementation.
 
 ## Next implementation action

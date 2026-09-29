@@ -6,7 +6,7 @@
 - Proposed by: CareOps Sim coordinator
 - Owner direction recorded: 2026-09-29, Kairos repository owner directed adoption of the four recommended Q0.1 dispositions; see [owner decision receipt](../../evidence/q0.1-owner-decision-package-20260929.md)
 - Technical review: independent Track 01/03/25 reviews; see the owner decision receipt
-- Reviewed Kairos development commit: `2df72fd852aa3a4d9f3d1a4ea041bc86e5c98bee` (synchronized with `origin/main` `0c77e89`; reviewed runtime source trees are unchanged from the hash-bound base below)
+- Reviewed Kairos development commit: `25177e5644ecb132c4df2cba1b4a0aeed1d08cb6` (synchronized with `origin/main` `9ae5461`; reviewed runtime source trees are unchanged from the hash-bound base below)
 - Parent submodule pin: `libs/kairos`
 
 ## Context
@@ -19,7 +19,7 @@ separately owns a `Scheduler`, `World`, and `ComponentRegistry`; the existing
 `ComponentRegistry` uses Rust type erasure and has no portable encoding contract.
 These current APIs must not be mistaken for an existing unified hybrid runtime.
 
-The runtime source hashes are bound to Kairos upstream `764048a89872eae74e35bd92c5dff8a1527bd5b1` and were compared against current `origin/main` `0c77e89` and development commit `2df72fd`. The reviewed Rust source trees are unchanged across those revisions; the current core source includes upstream's release-mode pending-event cleanup fix. Source hashes and differences are recorded in [the refreshed source review](../../evidence/q0.1-current-source-review-20260929.md).
+The runtime source hashes are bound to Kairos upstream `764048a89872eae74e35bd92c5dff8a1527bd5b1` and were compared against current `origin/main` `9ae5461` and development commit `25177e56`. The reviewed Rust source trees are unchanged across those revisions; the current core source includes upstream's release-mode pending-event cleanup fix. Source hashes and differences are recorded in [the refreshed source review](../../evidence/q0.1-current-source-review-20260929.md).
 
 This decision addresses architecture and compatibility only. Q0.2 owns queue,
 tie, preemption and same-tick semantics. Q0.3 owns event-kind allocation,
