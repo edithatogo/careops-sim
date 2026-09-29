@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "task_id": "Q0.1",
+  "leaf_id": "Q0.1.codec",
+  "instance_id": "owned_context_boundary",
+  "decision": "accepted",
+  "accepted_at": "2026-09-29",
+  "coordinator": "root",
+  "independent_reviewer": "p41_nominal_review",
+  "review_summary": "Independent review verified WorldSnapshot is entity-ID-only from state source, Track 22 checkpoint/resume commands are scaffold only per handoff, source hashes and output hash match, and proposal assigns future checkpoint ownership without claiming live resume support. No substantive blocker found.",
+  "packet": {
+    "path": ".artifacts/packets/Q0.1.codec.owned_context_boundary.json",
+    "sha256": "057b9ce208a9de13179cadea8573b24d8992927d83d4410ada1b52a3b6936969",
+    "base_commit": "f6096862d931154d4293ddd30f0f4939e38323b5"
+  },
+  "result_path": "libs/kairos/.artifacts/mvp/Q0.1.codec.owned_context_boundary/result.json",
+  "artifact_hashes": {
+    "libs/kairos/conductor/research/careops-flow-context-codec-proposal-20260929.md": "b95dfa28adf40309bcceca34a2c966139ffae6386347da008e35eaac51b3162d"
+  },
+  "verification": [
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "^## (Decision|Current boundary|Future codec ownership|Determinism and compatibility gates|Open owner review)",
+        "conductor/research/careops-flow-context-codec-proposal-20260929.md"
+      ],
+      "cwd": "libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "All five required sections found at lines 7, 13, 21, 27, and 39."
+    },
+    {
+      "argv": [
+        "python3",
+        "-c",
+        "from pathlib import Path; p=Path('conductor/research/careops-flow-context-codec-proposal-20260929.md'); s=p.read_text(); assert all(x in s for x in ['WorldSnapshot','Track 22','scaffold','in-memory','serde','Track 03']); assert not any(line.endswith((' ','\\t')) for line in s.splitlines())"
+      ],
+      "cwd": "libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "Required terms present and no trailing whitespace."
+    },
+    {
+      "argv": [
+        "sha256sum",
+        "conductor/research/careops-flow-runtime-contract-proposal-20260929.md",
+        "crates/kairo-ecs-state/src/lib.rs",
+        "conductor/tracks/22-experiment-runner-scenario-management/handoff.md"
+      ],
+      "cwd": "libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "Bound hashes unchanged: 508bcb56db337279722a3837c502abb582964f6c9f71cafc1a37702a70ce3b35; 88cf420d5cb2b083bd76e8882a83fcc049001e905e197bba2785f72c1ec5aead; 42ae54173323c75b3d31b3b8cff4bb43612e7486a54048c2f4207082a6d7a420."
+    }
+  ],
+  "scope_limit": "Accepts only Q0.1.codec ownership proposal. Does not complete Q0.1, authorize Q0.2/Q1, approve a portable codec, or claim resumable checkpoints exist.",
+  "integration_commit": null,
+  "integration_note": "Proposal is ready to commit on Kairos development branch; parent pin updates only after that commit."
+}
