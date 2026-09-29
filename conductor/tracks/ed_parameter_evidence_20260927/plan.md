@@ -22,7 +22,7 @@ validity limit. Acceptance requires this track's actual outputs and tests.
 
 ## P0 — Define scope, taxonomy and input schemas
 
-- [ ] P0.1 Reconcile the supplied report narrative and embedded tables/payloads
+- [x] P0.1 Reconcile the supplied report narrative and embedded tables/payloads
   against every in-scope ED pathway, resource, agent decision, spatial feature and
   experiment/measurement control. Create a canonical coverage/gap map with report
   hash/section/line provenance; distinguish retained, merged, conflicting, deferred
