@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "task_id": "Q0.1",
+  "leaf_id": "Q0.1.surface",
+  "instance_id": "source_api_inventory",
+  "decision": "accepted",
+  "accepted_at": "2026-09-29",
+  "coordinator": "root",
+  "independent_reviewer": "p41_nominal_review",
+  "review_summary": "Reviewer confirmed source line references, all seven source hashes, no-match search, 23 passing DES/ABM tests, corrected per-type ComponentRegistry removal wording, and matching output hash.",
+  "packet": {
+    "path": ".artifacts/packets/Q0.1.surface.source_api_inventory.json",
+    "sha256": "90b86e9d935cc1acb71ae29f5c58f4a7410cf1d0ab32f3bf6428b68c0de953bb",
+    "base_commit": "339af4e7365e70ad7e67fe3e934e4fb215fbaf8b"
+  },
+  "result_path": "libs/kairos/.artifacts/mvp/Q0.1.surface.source_api_inventory/result.json",
+  "artifact_hashes": {
+    "libs/kairos/conductor/research/careops-flow-api-inventory-20260929.md": "103526f7458f973435b05f98d52cb08f85d80be30a5e11b1613aaa75b1c98631"
+  },
+  "verification": [
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "FlowRuntime|ResourceCapacity|ClaimQueue|ActiveAllocations|ResourceRequest|PreemptionStrategy",
+        "crates/kairo-ecs-des/src",
+        "crates/kairo-ecs-abm/src"
+      ],
+      "cwd": "libs/kairos",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "pass: expected no matches"
+    },
+    {
+      "argv": [
+        "sha256sum",
+        "crates/kairo-ecs-des/src/lib.rs",
+        "crates/kairo-ecs-abm/src/lib.rs",
+        "crates/kairo-ecs-state/src/lib.rs",
+        "crates/kairo-ecs-core/src/lib.rs",
+        "crates/kairo-ecs-types/src/lib.rs",
+        "crates/kairo-ecs-rng/src/lib.rs",
+        "docs/design/protected-surface-inventory.json"
+      ],
+      "cwd": "libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "pass: seven source digests match"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.98.1",
+        "cargo",
+        "test",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm"
+      ],
+      "cwd": "libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "pass: 23 package tests and zero-case doc-test suites"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "pass: no whitespace errors"
+    }
+  ],
+  "scope_limit": "This accepts only the current-source inventory leaf. It does not accept ADR-0003, complete Q0.1, authorize Q0.2, or claim the requested queue/preemption API exists.",
+  "integration_commit": "7a9dd965e8987c3cd30c78ab32b6f009d947efe3",
+  "integration_note": "Inventory accepted and committed on Kairos development branch; parent pin updated after independent review."
+}

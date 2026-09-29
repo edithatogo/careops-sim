@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-28",
+  "updated_at": "2026-09-29",
   "active_track": "des_queue_preemption_20260925",
   "active_phase": "Q0",
-  "next_action": "D1 is locally closed by coordinator acceptance (conductor/evidence/d1.6-coordinator-acceptance-20260928.md). Q0.1 ADR draft exists at conductor/design/queue/ADR-0003-flow-runtime-contract-proposed.md and has passed three read-only source/compatibility reviews; those are not Kairos maintainer signoffs. It is blocked from acceptance because Track 25's protected-surface inventory omits the existing crates/kairo-ecs-des root and the required Track 01/03/25 decisions/API review remain pending. Do not freeze Q0.2 or start Q1 until the root/policy and adapter/core owner decisions are resolved. P0.1 parameter-evidence reconciliation is independently ready for separate work. The Kairos toolchain branch is pushed but has no PR, hosted Actions run or merge; the parent has no remote. D2.1 also waits for E0.4; parent GitHub creation waits for D2.1 and the D2.2 owner/name/visibility gate. Hosted Actions, Windows, clean-image macOS, bare-metal Linux, hidden-oracle isolation, and remote parent clone remain unverified.",
+  "next_action": "Q0.1.surface source/API inventory was coordinator-accepted after independent review and committed in Kairos at 7a9dd965e8987c3cd30c78ab32b6f009d947efe3. Next prepare Q0.1.runtime against that exact pin: freeze the additive shared FlowRuntime, typed handles/errors, checked per-runtime operation budget and Flow-owned component cleanup. Then Q0.1.codec must choose in-memory owned Rust continuation context and explicitly defer portable checkpoint codecs to the later Track 22/Q4 contract. Q0.1.review must resolve Track 01/03/25 ownership and complete the exact DES protected-root/API compatibility artifacts. Do not freeze Q0.2 fixtures or start Q1 until Q0.1 is accepted. P0.1 parameter-evidence reconciliation is independently ready. The new Kairos branch is local/unpushed; no PR or hosted Actions evidence exists for this work. The parent has no remote; parent GitHub creation, hosted Actions, Windows, clean-image macOS, bare-metal Linux, hidden-oracle isolation, and remote parent clone remain unverified.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/index.md",
@@ -51,10 +51,11 @@
     "conductor/evidence/d1.6-kairos-pin-publication-20260928.json",
     "conductor/evidence/d1.6-clean-source-reproduction-20260928.md",
     "conductor/evidence/d1.6-clean-source-reproduction-20260928.json",
-    "conductor/execution/packets/D1.6.closeout.local_review.json"
+    "conductor/execution/packets/D1.6.closeout.local_review.json",
+    "conductor/evidence/q0.1-surface-acceptance-20260929.json"
   ],
   "submodule_pins": {
-    "libs/kairos": "339af4e7365e70ad7e67fe3e934e4fb215fbaf8b",
+    "libs/kairos": "7a9dd965e8987c3cd30c78ab32b6f009d947efe3",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   }
 }
