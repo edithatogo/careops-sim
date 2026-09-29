@@ -48,7 +48,8 @@ The coordinator prepared a 101-ID consumer/unit/profile mapping proposal at
 Its coverage check and review boundary are recorded in
 [`p0.2-usage-matrix-proposal-20260929.md`](../../evidence/p0.2-usage-matrix-proposal-20260929.md).
 This is draft input to E0/C0 review; it does not close P0.2 or freeze keys,
-units, empirical values, or profiles.
+units, empirical values, or profiles. The bounded owner review and blank 101-row
+response template are in [the E0/C0 review brief](../../evidence/p0.2-e0-c0-owner-review-brief-20260930.md).
 
 ## P1 — Source DES demand, pathway, resource and duration evidence
 
