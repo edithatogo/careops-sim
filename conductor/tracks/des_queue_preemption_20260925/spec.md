@@ -175,11 +175,27 @@ T cannot grant at T even if release dispatches before its timeout token. Command
 with competing effects not covered by these two boundary rules resolve by core
 order. Tests must cover both insertion orders and multiple scheduler priorities.
 
-Zero-duration work receives a grant and one same-tick completion. Per-tick
-transition/notification limits and the existing max-events limit terminate
-zero-time feedback loops with a structured limit result, never an unbounded loop.
+Zero-duration work receives a grant and one same-tick completion. FlowRuntime
+requires a positive `max_same_tick_flow_transitions` run setting, recorded in the
+run manifest. It counts each committed Flow lifecycle transition and each
+delivered Flow continuation notification at its simulation tick, cumulatively
+across repeated run calls at that tick. Before a transition or notification
+would exceed the configured budget, execution stops with a structured
+`SameTickBudgetExceeded { at_ticks, limit }` outcome; no partial state transition
+is committed and the pending continuation remains inspectable. That tick is
+halted for the run; another call cannot reset the counter and bypass the bound.
+Advancing to a later tick resets the per-tick count. The existing `max_events`
+argument remains an independent per-call dispatch bound. Tests use a deliberately
+small positive budget to verify exact-boundary success, over-budget stop,
+preserved pending work, repeat-call behavior and reset on a later tick. The public
+default is selected with the runtime configuration work in Q1 and must be finite
+and positive; a worker must not invent it in fixture data.
+
 Raw scheduler events for other domains are dispatched through registered domain
-handlers; a Flow wrapper does not silently ignore or reinterpret them.
+handlers; a Flow wrapper does not silently ignore or reinterpret them. Only Flow
+lifecycle transitions and delivered Flow continuation notifications count
+toward the Flow-specific same-tick budget; unrelated raw events remain governed
+by the scheduler's `max_events` bound.
 
 ## 7. Public API additions
 

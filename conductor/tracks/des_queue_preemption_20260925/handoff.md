@@ -4,26 +4,28 @@
 
 Q0.1 architecture/compatibility is accepted with local owner disposition and
 `conductor/evidence/q0.1-phase-acceptance-20260929.md`. Q0.2.queue,
-Q0.2.boundaries and Q0.2.strategies synthetic fixture leaves are integrated;
-see their parent evidence records. The SimPy 4.1.2 reference/difference table is
-committed in Kairos at `4811af0d4a9e3e392232c95e62f09980e85316be`; its independent
-review is pending. Kairos remains synced with `origin/main` at
-`384e8546d69f9cbf2746fcb2ab646263256e6dec` and is pinned at the reference-table
+Q0.2.boundaries and Q0.2.strategies fixture leaves and the Q0.2.reference
+comparison are integrated; see their parent evidence records. The independently
+reviewed SimPy 4.1.2 table is committed in Kairos at
+`34af27b76158a3feba3ae6fe26ce182c56e4e5e8`. Kairos is synced with `origin/main`
+at `384e8546d69f9cbf2746fcb2ab646263256e6dec` and pinned at that reference
 commit. There is no queue runtime implementation.
 
-Q0.2 is still open. Before its joined review, add a trace for selecting the
-latest admission among equally urgent eligible victims and settle a configurable
-same-tick Flow transition budget. Current Kairos source has caller-supplied
-`max_events`, but no per-tick Flow transition/notification budget; prose alone
-does not satisfy the guardrail requirement. Then complete Q0.2 join review,
+Q0.2 is still open. The spec now settles a configurable finite same-tick Flow
+transition budget contract; its numeric default belongs to Q1 runtime configuration.
+A reviewed `Q0.2.guardrails` leaf must add traces for selecting the latest admission
+among equally urgent eligible victims, zero-duration completion, and exact/over
+budget outcomes. Current Kairos source has caller-supplied `max_events`, but no
+per-tick Flow guard yet. Then complete Q0.2 join review,
 Q0.3 event IDs/lifecycle joins, and Q0.4 phase review. Q1 remains gated on Q0
 closeout and D2 hosted-CI readiness.
 
 ## Next implementation action
 
-Prepare a bounded Luna-sized Q0.2 guardrail packet after reference review and
-Kairos source inspection are recorded. Freeze a deterministic victim-tie trace
-and explicit finite per-tick budget semantics with a small test cap. Do not begin
+Prepare and execute the bounded Luna-sized `Q0.2.guardrails` packet from the
+reviewed recipe and accepted Q0.2.reference receipt. Cover deterministic
+victim-tie selection and the explicit finite per-tick budget semantics with a
+small test cap. Do not begin
 Q1 until the Q0.2 fixture joins and Q0.3/Q0.4 are accepted. All runtime phases
 Q1-Q5 remain open.
 

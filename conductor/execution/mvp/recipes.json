@@ -2833,7 +2833,7 @@
     },
     {
       "task_id": "Q0.2",
-      "task_objective_sha256": "edf0b20809681853f4a97bbcdff4162f29212298d65a40292f6b16d34f6fd115",
+      "task_objective_sha256": "42c9ca28c1bb0fdb9f6a443149b0e463001bbf0fa79c15d50e89bf7c541ce6e9",
       "parent_dependencies": [
         "Q0.1"
       ],
@@ -2925,6 +2925,25 @@
           "max_context_bytes": 24000,
           "max_corrections": 2,
           "existing_recipe": null
+        },
+        {
+          "id": "Q0.2.guardrails",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Victim-tie and zero-time budget golden trace fixture",
+          "oracle": "Latest-admission victim tie, zero-duration completion, and finite per-tick budget boundaries are explicit and match the approved contract; no default is invented.",
+          "dependencies": [
+            "Q0.2.reference"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "One cohesive guardrail fixture instance; all cases join before parent review.",
+          "timebox_minutes": 60,
+          "max_write_paths": 2,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
         }
       ]
     },
@@ -2955,7 +2974,7 @@
           "output": "Event-kind collision inventory/proposal",
           "oracle": "Every new Flow kind is uniquely assigned through core owner contract",
           "dependencies": [
-            "Q0.2.reference"
+            "Q0.2.guardrails"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",

@@ -3,7 +3,7 @@
   "updated_at": "2026-09-30",
   "active_track": "des_queue_preemption_20260925",
   "active_phase": "Q0",
-  "next_action": "Q0.1, Q0.2.queue, Q0.2.boundaries, and Q0.2.strategies fixture leaves are integrated; see their acceptance records. Kairos now includes a committed SimPy 4.1.2 API-reference comparison at 4811af0d4a9e3e392232c95e62f09980e85316be; independent review is pending. Q0.2 remains open: add/verify victim tie-break trace coverage and resolve a configurable same-tick transition budget because current Kairos source has only caller-supplied max_events and no per-tick Flow guard. Then run Q0.2 joined review, Q0.3 event IDs/lifecycle joins, and Q0.4 phase review. Do not begin Q1 until Q0 closeout and D2 hosted-CI readiness. Global serial scheduler selects P0.2; preserve its pending E0/C0 owner review and original manual walkthrough gates. GitHub creation remains gated on D2.",
+  "next_action": "Q0.1, Q0.2.queue, Q0.2.boundaries, Q0.2.strategies and Q0.2.reference leaf artifacts are integrated; see acceptance evidence. Q0.2 remains open. Next execute Q0.2.guardrails: golden traces for latest-admission victim ties, zero-duration grant/completion and configured same-tick budget exact/overflow/pending/repeat/reset behavior. The spec now defines the budget contract; numeric default remains a Q1 runtime-configuration decision. After the guardrails leaf, perform Q0.2 joined review, Q0.3 event-kind/lifecycle work, and Q0.4 phase review. Do not begin runtime Q1 until Q0 closeout and D2 readiness gates. Global serial scheduler selects P0.2; preserve E0/C0 owner review and original manual walkthrough prerequisites. GitHub creation remains gated on D2.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/index.md",
@@ -78,10 +78,12 @@
     "conductor/evidence/q0.1-phase-acceptance-20260929.md",
     "conductor/evidence/q0.2-priority-fifo-leaf-acceptance-20260929.md",
     "conductor/evidence/q0.2-strategies-leaf-acceptance-20260930.md",
-    "conductor/evidence/q0.2-boundaries-leaf-acceptance-20260930.md"
+    "conductor/evidence/q0.2-boundaries-leaf-acceptance-20260930.md",
+    "conductor/evidence/q0.2-reference-leaf-acceptance-20260930.md",
+    "conductor/tracks/des_queue_preemption_20260925/test-matrix.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "4811af0d4a9e3e392232c95e62f09980e85316be",
+    "libs/kairos": "34af27b76158a3feba3ae6fe26ce182c56e4e5e8",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   }
 }
