@@ -44,7 +44,7 @@ phase resolves design details before shared code is changed.
   ties, restart draw reuse and zero-time budgets in executable fixture specs.
   Reconcile report 27 against the local contract: reject shrink below active count, allow idle capacity zero, expire deadline-at-T before grant, complete at T before eviction, and reuse restart draws. Record deliberate SimPy differences; pin reference source before conformance scripts.
   Use report 27 embedded matrix/timelines as completed research input; verify primary reference semantics and convert accepted cases into local executable oracles. Include a latest-admission victim-tie trace, zero-duration grant/completion, and configured same-tick budget exact-boundary/overflow/preserved-pending/reset cases including delivered notifications. Test same-tick cancel/reprioritize order for both equal-priority insertion orders and scheduler-priority precedence. A cancelled claim stays terminal; resubmission uses a new claim identity. No separate test_cases.json is required to begin.
-- [ ] Q0.3 Reserve Flow event-kind IDs without collisions; define the lifecycle
+- [x] Q0.3 Reserve Flow event-kind IDs without collisions; define the lifecycle
   sidecar with 01/04. Align checkpoint integration with Track 22's contract if
   available; do not define a competing snapshot format. Fix stale contract
   links through their owners and agree event/transition join semantics.

@@ -62,7 +62,7 @@ class SchedulingTests(unittest.TestCase):
     def test_queue_implementation_waits_for_readiness_and_ci_milestones(self):
         catalog=tasks.derive(tasks.ROOT)
         by_id={t['id']:t for t in catalog['tasks']}
-        # Q0.3 contract work is next after the accepted Q0.2 design closeout.
+        # Q0.4 phase review is next after the accepted Q0.3 design closeout.
         # Q1 code work additionally requires D2 and the Q0 closeout;
         # a Q-local DAG alone must not make implementation appear dispatchable.
         self.assertIn('D1.6',by_id['Q0.1']['dependencies'])
@@ -75,7 +75,7 @@ class SchedulingTests(unittest.TestCase):
                          'conductor/tracks/development_readiness_20260925/plan.md'}
                         <= set(by_id['D0.3']['write_reservations']))
         accepted={t['id'] for t in catalog['tasks'] if t['accepted']}
-        self.assertIn('Q0.3',[t['id'] for t in tasks.select(catalog,accepted,20)])
+        self.assertIn('Q0.4',[t['id'] for t in tasks.select(catalog,accepted,20)])
         self.assertNotIn('Q1.1',[t['id'] for t in tasks.select(catalog,accepted,20)])
         invalid=copy.deepcopy(catalog)
         by_id_invalid={t['id']:t for t in invalid['tasks']}
