@@ -48,7 +48,7 @@ phase resolves design details before shared code is changed.
   sidecar with 01/04. Align checkpoint integration with Track 22's contract if
   available; do not define a competing snapshot format. Fix stale contract
   links through their owners and agree event/transition join semantics.
-- [ ] Q0.4 Conductor — review and verify phase (workflow.md).
+- [x] Q0.4 Conductor — review and verify phase (workflow.md).
 
 Exit evidence: reviewed ADR/schema/API examples and expected traces for all tie
 cases. Manual check: trace the 0/3/5 interruption example and timeout-at-release
