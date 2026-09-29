@@ -41,6 +41,15 @@ validity limit. Acceptance requires this track's actual outputs and tests.
 Exit: P-R1 scope and schema contract accepted. Manual check: trace a patient and
 staff task from arrival to disposition; every consumed input has a proposed ID.
 
+### P0.2 review artifact (proposal)
+
+The coordinator prepared a 101-ID consumer/unit/profile mapping proposal at
+[`parameter-usage-matrix-proposal.json`](../../../model-inputs/ed/schema/parameter-usage-matrix-proposal.json).
+Its coverage check and review boundary are recorded in
+[`p0.2-usage-matrix-proposal-20260929.md`](../../evidence/p0.2-usage-matrix-proposal-20260929.md).
+This is draft input to E0/C0 review; it does not close P0.2 or freeze keys,
+units, empirical values, or profiles.
+
 ## P1 — Source DES demand, pathway, resource and duration evidence
 
 Entry: P0. May run alongside P2 and engine development.

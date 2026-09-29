@@ -177,6 +177,8 @@ Parent plan: [P0.2](../../tracks/ed_parameter_evidence_20260927/plan.md)
 | P0.2.schema | Evidence/range/schema proposal and negative examples | Unknown differs from zero; support/range/uncertainty/search bounds remain distinct | . / worker |
 | P0.2.capacity | Capacity/location schema fixture | Physical beds differ from open/staffed capacity; minimal location/route units require no drawing | . / worker |
 | P0.2.validator | Approved schema validator | Malformed units/provenance/IDs fail and minimal valid synthetic record passes | . / worker |
+| P0.2.usage-matrix | Consumer/unit/profile coverage matrix | Every registered ID appears once with proposed consumer, unit class and profile stage; draft status remains explicit | . / worker |
+| P0.2.interface-review | E0/C0 joint interface disposition | Named owners review the matrix and record clock/unit/config choices; unresolved decisions block P0.2 | . / proposal_or_review |
 
 ## P0.3
 
@@ -804,4 +806,3 @@ Parent plan: [E2.4](../../tracks/generic_ed_delivery_20260925/plan.md)
 | --- | --- | --- | --- |
 | E2.4.evidence | Phase evidence reconciliation | Every parent task has integrated output and executed gates; unresolved failures prevent acceptance | . / worker |
 | E2.4.closeout | Coordinator phase acceptance record | Independent readback agrees with evidence and upstream gates; only coordinator updates checkbox/catalog/pin | . / proposal_or_review |
-

@@ -1,0 +1,1641 @@
+{
+  "schema_version": 1,
+  "status": "proposed",
+  "source_parameter_registry": "parameter-ids.json",
+  "row_count": 101,
+  "review_boundary": {
+    "purpose": "close the P0.2 consumer, unit-class and profile-coverage design gap",
+    "not_authority_for": "public CLI key freeze, empirical estimates, distributions, profile acceptance, or Kairos API changes",
+    "time_unit_recommendation": "Use seconds as the CareOps ED configuration normalization unit and convert to integer SimTime ticks at E0; C0 must confirm source timezone, precision and rounding contracts.",
+    "review_owners": [
+      "E0 generic ED owner",
+      "C0 calibration owner",
+      "CareOps coordinator"
+    ],
+    "limitations": [
+      "Candidate key roots derive from parameter families, not an implemented configuration parser.",
+      "Composite values require units on numeric leaves.",
+      "MVP/profile assignments are stage proposals and may be disabled/not_applicable per scenario.",
+      "Any review_required unit class must be resolved or explicitly marked not_applicable before schema freeze.",
+      "Structured-unit classes define where units are attached; they do not select clinical policy values, category coding, or fitted distributions."
+    ]
+  },
+  "entries": [
+    {
+      "parameter_id": "ed.demandcasemix.arrivals",
+      "family": "demand_case_mix",
+      "proposed_config_key": "demand.arrivals",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI scenario configuration",
+      "unit_contract": {
+        "class": "rate_or_schedule",
+        "proposal": "patients/hour or timestamped arrival schedule; select one representation per profile"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.demandcasemix.calendarprofile",
+      "family": "demand_case_mix",
+      "proposed_config_key": "demand.calendarprofile",
+      "consumer": "Proposed CareOps ED model/config",
+      "unit_contract": {
+        "class": "schedule_or_interval",
+        "proposal": "absolute instants carry explicit timezone; intervals use declared ED clock unit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.demandcasemix.surgeprofile",
+      "family": "demand_case_mix",
+      "proposed_config_key": "demand.surgeprofile",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI scenario configuration",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.demandcasemix.arrivalmode",
+      "family": "demand_case_mix",
+      "proposed_config_key": "demand.arrivalmode",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.demandcasemix.agemix",
+      "family": "demand_case_mix",
+      "proposed_config_key": "demand.agemix",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "probability_or_conditional_table",
+        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.demandcasemix.casetypemix",
+      "family": "demand_case_mix",
+      "proposed_config_key": "demand.casetypemix",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "probability_or_conditional_table",
+        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.demandcasemix.acuitymix",
+      "family": "demand_case_mix",
+      "proposed_config_key": "demand.acuitymix",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "probability_or_conditional_table",
+        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.demandcasemix.jointcasemix",
+      "family": "demand_case_mix",
+      "proposed_config_key": "demand.jointcasemix",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "probability_or_conditional_table",
+        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.demandcasemix.referrals",
+      "family": "demand_case_mix",
+      "proposed_config_key": "demand.referrals",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_probability_table",
+        "proposal": "category labels and conditional proportions with explicit denominator; count-valued input declares patient count"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.demandcasemix.transfers",
+      "family": "demand_case_mix",
+      "proposed_config_key": "demand.transfers",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_probability_table",
+        "proposal": "category labels and conditional proportions with explicit denominator; count-valued input declares patient count"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.demandcasemix.repeatpresentations",
+      "family": "demand_case_mix",
+      "proposed_config_key": "demand.repeatpresentations",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_probability_table",
+        "proposal": "category labels and conditional proportions with explicit denominator; count-valued input declares patient count"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.registration",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.registration",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "pathway state/transition data; numeric durations/probabilities appear as typed leaves"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.triage",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.triage",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "pathway state/transition data; numeric durations/probabilities appear as typed leaves"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.assessment",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.assessment",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "pathway state/transition data; numeric durations/probabilities appear as typed leaves"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.diagnostics",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.diagnostics",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "pathway state/transition data; numeric durations/probabilities appear as typed leaves"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.treatment",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.treatment",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "pathway state/transition data; numeric durations/probabilities appear as typed leaves"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.observation",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.observation",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "pathway state/transition data; numeric durations/probabilities appear as typed leaves"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.reassessment",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.reassessment",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.consult",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.consult",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "pathway state/transition data; numeric durations/probabilities appear as typed leaves"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.discharge",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.discharge",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "pathway state/transition data; numeric durations/probabilities appear as typed leaves"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.admission",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.admission",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "pathway state/transition data; numeric durations/probabilities appear as typed leaves"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.transfer",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.transfer",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "pathway state/transition data; numeric durations/probabilities appear as typed leaves"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.abandonment",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.abandonment",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "probability_or_conditional_table",
+        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.routingprobability",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.routingprobability",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "probability_or_conditional_table",
+        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.repeatloops",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.repeatloops",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.priorities",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.priorities",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.deadlines",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.deadlines",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert from explicit source/config unit to ED clock ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.despathways.preemption",
+      "family": "des_pathways",
+      "proposed_config_key": "pathways.preemption",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.durations.intrinsicwork",
+      "family": "durations",
+      "proposed_config_key": "durations.intrinsicwork",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert to integer ED SimTime ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.durations.setup",
+      "family": "durations",
+      "proposed_config_key": "durations.setup",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert to integer ED SimTime ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.durations.turnaround",
+      "family": "durations",
+      "proposed_config_key": "durations.turnaround",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert to integer ED SimTime ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.durations.reportreviewdelay",
+      "family": "durations",
+      "proposed_config_key": "durations.reportreviewdelay",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert from explicit source/config unit to ED clock ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.durations.cleaning",
+      "family": "durations",
+      "proposed_config_key": "durations.cleaning",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert to integer ED SimTime ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.durations.handover",
+      "family": "durations",
+      "proposed_config_key": "durations.handover",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.durations.disposition",
+      "family": "durations",
+      "proposed_config_key": "durations.disposition",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert to integer ED SimTime ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.durations.boarding",
+      "family": "durations",
+      "proposed_config_key": "durations.boarding",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert to integer ED SimTime ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.durations.transit",
+      "family": "durations",
+      "proposed_config_key": "durations.transit",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert to integer ED SimTime ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.staffroles",
+      "family": "resources",
+      "proposed_config_key": "resources.staffroles",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.staffcounts",
+      "family": "resources",
+      "proposed_config_key": "resources.staffcounts",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "count_or_capacity",
+        "proposal": "non-negative integer count; resource identity and availability are separate"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.rosters",
+      "family": "resources",
+      "proposed_config_key": "resources.rosters",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "schedule_or_interval",
+        "proposal": "absolute instants carry explicit timezone; intervals use declared ED clock unit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.breaks",
+      "family": "resources",
+      "proposed_config_key": "resources.breaks",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "schedule_or_interval",
+        "proposal": "absolute instants carry explicit timezone; intervals use declared ED clock unit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.absenceovertime",
+      "family": "resources",
+      "proposed_config_key": "resources.absenceovertime",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "schedule_or_capacity_delta",
+        "proposal": "staff count and effective time intervals, with explicit local timezone"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.supervision",
+      "family": "resources",
+      "proposed_config_key": "resources.supervision",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "count_or_capacity",
+        "proposal": "non-negative integer count; resource identity and availability are separate"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.taskconcurrency",
+      "family": "resources",
+      "proposed_config_key": "resources.taskconcurrency",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "count_or_capacity",
+        "proposal": "non-negative integer count; resource identity and availability are separate"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.beds",
+      "family": "resources",
+      "proposed_config_key": "resources.beds",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "count_or_capacity",
+        "proposal": "non-negative integer count; resource identity and availability are separate"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.rooms",
+      "family": "resources",
+      "proposed_config_key": "resources.rooms",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "count_or_capacity",
+        "proposal": "non-negative integer count; resource identity and availability are separate"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.equipment",
+      "family": "resources",
+      "proposed_config_key": "resources.equipment",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "count_or_capacity",
+        "proposal": "non-negative integer count; resource identity and availability are separate"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.opencalendars",
+      "family": "resources",
+      "proposed_config_key": "resources.opencalendars",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "schedule_or_interval",
+        "proposal": "absolute instants carry explicit timezone; intervals use declared ED clock unit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.outages",
+      "family": "resources",
+      "proposed_config_key": "resources.outages",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "schedule_or_interval",
+        "proposal": "absolute instants carry explicit timezone; intervals use declared ED clock unit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.reservations",
+      "family": "resources",
+      "proposed_config_key": "resources.reservations",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "schedule_or_interval",
+        "proposal": "absolute instants carry explicit timezone; intervals use declared ED clock unit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.resources.cleaningcapacity",
+      "family": "resources",
+      "proposed_config_key": "resources.cleaningcapacity",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "count_or_capacity",
+        "proposal": "non-negative integer count; resource identity and availability are separate"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.agentattributes",
+      "family": "abm_staff_behavior",
+      "proposed_config_key": "staff_behavior.agentattributes",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.assignment",
+      "family": "abm_staff_behavior",
+      "proposed_config_key": "staff_behavior.assignment",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.zoneskilleligibility",
+      "family": "abm_staff_behavior",
+      "proposed_config_key": "staff_behavior.zoneskilleligibility",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.taskchoice",
+      "family": "abm_staff_behavior",
+      "proposed_config_key": "staff_behavior.taskchoice",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.reassessment",
+      "family": "abm_staff_behavior",
+      "proposed_config_key": "staff_behavior.reassessment",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.urgencyfifo",
+      "family": "abm_staff_behavior",
+      "proposed_config_key": "staff_behavior.urgencyfifo",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "ordinal_policy",
+        "proposal": "stable priority ordering and FIFO tie-break; no physical unit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.communicationhandover",
+      "family": "abm_staff_behavior",
+      "proposed_config_key": "staff_behavior.communicationhandover",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.interruptionresumption",
+      "family": "abm_staff_behavior",
+      "proposed_config_key": "staff_behavior.interruptionresumption",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "agent rule/attribute record; numeric leaves declare their unit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.switchingoverhead",
+      "family": "abm_staff_behavior",
+      "proposed_config_key": "staff_behavior.switchingoverhead",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert from explicit source/config unit to ED clock ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.spatialabm.graphtopology",
+      "family": "spatial_abm",
+      "proposed_config_key": "spatial.graphtopology",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_optional_spatial",
+        "profile_use": "synthetic named locations/routes may be used; geometry import and visualization excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.spatialabm.scaledistance",
+      "family": "spatial_abm",
+      "proposed_config_key": "spatial.scaledistance",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "distance",
+        "proposal": "m"
+      },
+      "profile_coverage": {
+        "stage": "MVP_optional_spatial",
+        "profile_use": "synthetic named locations/routes may be used; geometry import and visualization excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.spatialabm.locations",
+      "family": "spatial_abm",
+      "proposed_config_key": "spatial.locations",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_optional_spatial",
+        "profile_use": "synthetic named locations/routes may be used; geometry import and visualization excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.spatialabm.routesconnectivity",
+      "family": "spatial_abm",
+      "proposed_config_key": "spatial.routesconnectivity",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_optional_spatial",
+        "profile_use": "synthetic named locations/routes may be used; geometry import and visualization excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.spatialabm.walkingspeedvariation",
+      "family": "spatial_abm",
+      "proposed_config_key": "spatial.walkingspeedvariation",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "speed",
+        "proposal": "m/s"
+      },
+      "profile_coverage": {
+        "stage": "MVP_optional_spatial",
+        "profile_use": "synthetic named locations/routes may be used; geometry import and visualization excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.spatialabm.equipmentsupplytrips",
+      "family": "spatial_abm",
+      "proposed_config_key": "spatial.equipmentsupplytrips",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "count_or_capacity",
+        "proposal": "non-negative integer count; resource identity and availability are separate"
+      },
+      "profile_coverage": {
+        "stage": "MVP_optional_spatial",
+        "profile_use": "synthetic named locations/routes may be used; geometry import and visualization excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.spatialabm.routechoice",
+      "family": "spatial_abm",
+      "proposed_config_key": "spatial.routechoice",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_optional_spatial",
+        "profile_use": "synthetic named locations/routes may be used; geometry import and visualization excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.spatialabm.travelinterruptions",
+      "family": "spatial_abm",
+      "proposed_config_key": "spatial.travelinterruptions",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "route/movement rule; distance uses m, speed m/s, time s in explicit fields"
+      },
+      "profile_coverage": {
+        "stage": "MVP_optional_spatial",
+        "profile_use": "synthetic named locations/routes may be used; geometry import and visualization excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.spatialabm.congestion",
+      "family": "spatial_abm",
+      "proposed_config_key": "spatial.congestion",
+      "consumer": "Future spatial fidelity owner; consumer not applicable until that scope is approved",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "deferred_or_post_v1",
+        "profile_use": "excluded unless a separately reviewed extension enables it"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.patientbehavior.patience",
+      "family": "patient_behavior",
+      "proposed_config_key": "patient_behavior.patience",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert from explicit source/config unit to ED clock ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.patientbehavior.abandonment",
+      "family": "patient_behavior",
+      "proposed_config_key": "patient_behavior.abandonment",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "probability_or_conditional_table",
+        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.patientbehavior.mobilityassistance",
+      "family": "patient_behavior",
+      "proposed_config_key": "patient_behavior.mobilityassistance",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "patient attribute/rule; age, count, probability or time leaves carry explicit units"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.patientbehavior.routingcompliance",
+      "family": "patient_behavior",
+      "proposed_config_key": "patient_behavior.routingcompliance",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_contract": {
+        "class": "probability_or_conditional_table",
+        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.patientbehavior.companions",
+      "family": "patient_behavior",
+      "proposed_config_key": "patient_behavior.companions",
+      "consumer": "Future patient-behavior owner; consumer not applicable until relevance is established",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "patient attribute/rule; age, count, probability or time leaves carry explicit units"
+      },
+      "profile_coverage": {
+        "stage": "deferred_or_post_v1",
+        "profile_use": "excluded unless a separately reviewed extension enables it"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.hospitalinterfaces.admissiondemand",
+      "family": "hospital_interfaces",
+      "proposed_config_key": "hospital_boundary.admissiondemand",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow boundary",
+      "unit_contract": {
+        "class": "count_schedule_or_policy",
+        "proposal": "finite capacity/offer/transport/diagnostic boundary record; numeric leaves carry explicit units"
+      },
+      "profile_coverage": {
+        "stage": "MVP_boundary_minimum",
+        "profile_use": "finite ED-eligible bed offers only where required by admission/boarding fixture; broader hospital mechanisms excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.hospitalinterfaces.inpatientbedavailability",
+      "family": "hospital_interfaces",
+      "proposed_config_key": "hospital_boundary.inpatientbedavailability",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow boundary",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_boundary_minimum",
+        "profile_use": "finite ED-eligible bed offers only where required by admission/boarding fixture; broader hospital mechanisms excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.hospitalinterfaces.transfertransport",
+      "family": "hospital_interfaces",
+      "proposed_config_key": "hospital_boundary.transfertransport",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow boundary",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_boundary_minimum",
+        "profile_use": "finite ED-eligible bed offers only where required by admission/boarding fixture; broader hospital mechanisms excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.hospitalinterfaces.diagnosticdependencies",
+      "family": "hospital_interfaces",
+      "proposed_config_key": "hospital_boundary.diagnosticdependencies",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow boundary",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_boundary_minimum",
+        "profile_use": "finite ED-eligible bed offers only where required by admission/boarding fixture; broader hospital mechanisms excluded"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.hospitalinterfaces.wholehospitalmechanisms",
+      "family": "hospital_interfaces",
+      "proposed_config_key": "hospital_boundary.wholehospitalmechanisms",
+      "consumer": "Future hospital-domain owner; consumer not applicable to generic ED MVP",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "deferred_or_post_v1",
+        "profile_use": "excluded unless a separately reviewed extension enables it"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.optionalcomplexity.fatigue",
+      "family": "optional_complexity",
+      "proposed_config_key": "extensions.fatigue",
+      "consumer": "Future CareOps ED ABM profile; no current Kairos consumer",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "deferred_or_post_v1",
+        "profile_use": "excluded unless a separately reviewed extension enables it"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.optionalcomplexity.learning",
+      "family": "optional_complexity",
+      "proposed_config_key": "extensions.learning",
+      "consumer": "Future CareOps ED ABM profile; no current Kairos consumer",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "deferred_or_post_v1",
+        "profile_use": "excluded unless a separately reviewed extension enables it"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.optionalcomplexity.crowdingfeedback",
+      "family": "optional_complexity",
+      "proposed_config_key": "extensions.crowdingfeedback",
+      "consumer": "Future CareOps ED model profile; Kairos 03 Flow only after scoped acceptance",
+      "unit_contract": {
+        "class": "structured_extension",
+        "proposal": "deferred extension schema; numeric leaves carry explicit units if enabled"
+      },
+      "profile_coverage": {
+        "stage": "deferred_or_post_v1",
+        "profile_use": "excluded unless a separately reviewed extension enables it"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.optionalcomplexity.detailedphysiology",
+      "family": "optional_complexity",
+      "proposed_config_key": "extensions.detailedphysiology",
+      "consumer": "Future CareOps ED model profile; no current Kairos consumer",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "deferred_or_post_v1",
+        "profile_use": "excluded unless a separately reviewed extension enables it"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.initialization",
+      "family": "experiment_controls",
+      "proposed_config_key": "experiment.initialization",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI",
+      "unit_contract": {
+        "class": "schedule_or_interval",
+        "proposal": "absolute instants carry explicit timezone; intervals use declared ED clock unit"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.ongoingworkages",
+      "family": "experiment_controls",
+      "proposed_config_key": "experiment.ongoingworkages",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert from explicit source/config unit to ED clock ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.warmup",
+      "family": "experiment_controls",
+      "proposed_config_key": "experiment.warmup",
+      "consumer": "Proposed Kairos 22 CLI; Kairos 21 calibration",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert from explicit source/config unit to ED clock ticks"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.horizon",
+      "family": "experiment_controls",
+      "proposed_config_key": "experiment.horizon",
+      "consumer": "Proposed Kairos 22 CLI",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert from explicit source/config unit to ED clock ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.replications",
+      "family": "experiment_controls",
+      "proposed_config_key": "experiment.replications",
+      "consumer": "Proposed Kairos 22 CLI; Kairos 21 calibration",
+      "unit_contract": {
+        "class": "count_or_capacity",
+        "proposal": "non-negative integer count; resource identity and availability are separate"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.seedstreams",
+      "family": "experiment_controls",
+      "proposed_config_key": "experiment.seedstreams",
+      "consumer": "Proposed Kairos 01 seed/order contract; Kairos 22 CLI experiment orchestration",
+      "unit_contract": {
+        "class": "seed_identity",
+        "proposal": "unsigned integer seed plus named purpose; exact width owned by Kairos 01"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.timeunits",
+      "family": "experiment_controls",
+      "proposed_config_key": "experiment.timeunits",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert from explicit source/config unit to ED clock ticks"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.modeoverrides",
+      "family": "experiment_controls",
+      "proposed_config_key": "experiment.modeoverrides",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "MVP_candidate",
+        "profile_use": "candidate input for deterministic/minimal, generic nominal, or surge profiles according to pathway applicability"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.observationcensoringwindows",
+      "family": "experiment_controls",
+      "proposed_config_key": "experiment.observationcensoringwindows",
+      "consumer": "Proposed Kairos 22 CLI; Kairos 21 calibration",
+      "unit_contract": {
+        "class": "probability_or_conditional_table",
+        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.calibrationbounds",
+      "family": "experiment_controls",
+      "proposed_config_key": "experiment.calibrationbounds",
+      "consumer": "Proposed Kairos 21 calibration",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.measurementmapping.observedelapsedinterval",
+      "family": "measurement_mapping",
+      "proposed_config_key": "observations.observedelapsedinterval",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; preserve original precision and source-unit provenance"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.measurementmapping.queuedelay",
+      "family": "measurement_mapping",
+      "proposed_config_key": "observations.queuedelay",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert from explicit source/config unit to ED clock ticks"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.measurementmapping.eventdefinitions",
+      "family": "measurement_mapping",
+      "proposed_config_key": "observations.eventdefinitions",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.measurementmapping.inclusioncriteria",
+      "family": "measurement_mapping",
+      "proposed_config_key": "observations.inclusioncriteria",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.measurementmapping.metricdenominators",
+      "family": "measurement_mapping",
+      "proposed_config_key": "observations.metricdenominators",
+      "consumer": "Proposed Kairos 21 calibration; Kairos 22 CLI reporting",
+      "unit_contract": {
+        "class": "categorical_or_structured",
+        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.measurementmapping.timestampprecisiondelay",
+      "family": "measurement_mapping",
+      "proposed_config_key": "observations.timestampprecisiondelay",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "unit_contract": {
+        "class": "time",
+        "proposal": "s canonical input; convert from explicit source/config unit to ED clock ticks"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.measurementmapping.missingness",
+      "family": "measurement_mapping",
+      "proposed_config_key": "observations.missingness",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "unit_contract": {
+        "class": "probability_or_conditional_table",
+        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    },
+    {
+      "parameter_id": "ed.measurementmapping.censoring",
+      "family": "measurement_mapping",
+      "proposed_config_key": "observations.censoring",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "unit_contract": {
+        "class": "probability_or_conditional_table",
+        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+      },
+      "profile_coverage": {
+        "stage": "hardened_v1",
+        "profile_use": "calibration/validation/experiment profiles; not required for functional MVP"
+      },
+      "mapping_status": "proposed_requires_E0_C0_owner_review",
+      "evidence_status": "identity_only_no_value_or_distribution_asserted"
+    }
+  ]
+}

@@ -9,9 +9,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TOOL = ROOT / "tools" / "validate_ed_parameters.py"
+MATRIX_TOOL = ROOT / "tools" / "validate_ed_usage_matrix.py"
 SCHEMA = ROOT / "model-inputs/ed/schema/parameter-record.schema.json"
 REGISTRY = ROOT / "model-inputs/ed/schema/parameter-ids.json"
 FIXTURES = ROOT / "model-inputs/ed/schema/schema-negative-examples.json"
+USAGE_MATRIX = ROOT / "model-inputs/ed/schema/parameter-usage-matrix-proposal.json"
 
 
 class ParameterValidationTests(unittest.TestCase):
@@ -54,6 +56,14 @@ class ParameterValidationTests(unittest.TestCase):
         result = self.invoke(record)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("parameter_id is not registered", result.stderr)
+
+    def test_usage_matrix_covers_all_registered_ids_and_marks_proposals(self):
+        result = subprocess.run(
+            [sys.executable, str(MATRIX_TOOL), "--registry", str(REGISTRY), "--matrix", str(USAGE_MATRIX)],
+            cwd=ROOT, text=True, capture_output=True, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("101 registered IDs", result.stdout)
 
 
 if __name__ == "__main__":

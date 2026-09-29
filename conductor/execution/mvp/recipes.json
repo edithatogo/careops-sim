@@ -1363,6 +1363,44 @@
           "max_context_bytes": 24000,
           "max_corrections": 2,
           "existing_recipe": null
+        },
+        {
+          "id": "P0.2.usage-matrix",
+          "target_repo": ".",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Consumer, unit-class and profile-coverage matrix for every registered ED parameter ID",
+          "oracle": "Every registered ID occurs exactly once; consumers match the registry; candidate config key, unit contract and profile stage are present; all rows remain explicitly proposed pending E0/C0 review",
+          "dependencies": [
+            "P0.2.validator"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one shared catalogue matrix; do not split a shared registry/schema edit across workers",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
+          "id": "P0.2.interface-review",
+          "target_repo": ".",
+          "model": "gpt-6-luna",
+          "role": "proposal_or_review",
+          "output": "E0/C0 joint interface disposition for parameter consumers, units, clock conversion and profile applicability",
+          "oracle": "Named E0 and C0 owner responses are recorded for each proposed choice; unresolved items remain open and block P0.2 closeout",
+          "dependencies": [
+            "P0.2.usage-matrix"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one joint owner review; do not infer owner approval from a validator pass or general project approval",
+          "timebox_minutes": 60,
+          "max_write_paths": 2,
+          "max_commands": 2,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
         }
       ]
     },
@@ -1393,7 +1431,7 @@
           "output": "Source-verification record template",
           "oracle": "Primary URL/DOI/revision/table/population/licence/transform and report hash/line are separate",
           "dependencies": [
-            "P0.2.validator"
+            "P0.2.interface-review"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
@@ -1492,7 +1530,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 48
+        "line": 57
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -1570,7 +1608,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 53
+        "line": 62
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -1667,7 +1705,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 59
+        "line": 68
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -1745,7 +1783,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 63
+        "line": 72
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -1804,7 +1842,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 72
+        "line": 81
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -1882,7 +1920,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 77
+        "line": 86
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -1960,7 +1998,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 84
+        "line": 93
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -2038,7 +2076,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 88
+        "line": 97
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -2098,7 +2136,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 97
+        "line": 106
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -2177,7 +2215,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 102
+        "line": 111
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -2255,7 +2293,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 105
+        "line": 114
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -2333,7 +2371,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 110
+        "line": 119
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -2392,7 +2430,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 120
+        "line": 129
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -2470,7 +2508,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 123
+        "line": 132
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -2567,7 +2605,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 127
+        "line": 136
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -2645,7 +2683,7 @@
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 131
+        "line": 140
       },
       "context_sources": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
