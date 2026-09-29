@@ -31,7 +31,7 @@ checkout; local packets/artifacts under `.artifacts/` are ignored by Git.
 
 ## Complete MVP worker decomposition
 
-The [Luna MVP workpack](mvp/README.md) covers all 80 MVP parent tasks with 239
+The [Luna MVP workpack](mvp/README.md) covers all 80 MVP parent tasks with 241
 bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind reviewed
 context/commands just before dispatch. No autonomous execution or model
 qualification is claimed.
