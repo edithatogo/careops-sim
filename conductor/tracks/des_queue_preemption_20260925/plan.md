@@ -35,7 +35,7 @@ validity limit. Acceptance requires this track's actual outputs and tests.
 Entry: reviewed specification, current upstream source/registry refresh. This
 phase resolves design details before shared code is changed.
 
-- [ ] Q0.1 Record an ADR for additive FlowRuntime, legacy DESContext/Resource
+- [x] Q0.1 Record an ADR for additive FlowRuntime, legacy DESContext/Resource
   compatibility, one authoritative DES/ABM world, owned in-memory continuation
   context and public handle/error types. Defer portable checkpoint codecs to
   Track 22; review with 01/03/25.

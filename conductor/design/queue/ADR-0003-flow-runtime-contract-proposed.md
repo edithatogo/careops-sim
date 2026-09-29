@@ -1,11 +1,12 @@
 # ADR-0003: Additive FlowRuntime and queue API boundary
 
-- Status: **proposed; upstream owner/API review pending**
+- Status: **Q0.1 architecture direction approved by Kairos owner; Q0.2/Q0.3 semantics and implementation gates remain open**
 - Date: 2026-09-28
 - CareOps track: `des_queue_preemption_20260925`, Q0.1
 - Proposed by: CareOps Sim coordinator
-- Required review: Kairos Tracks 01 (core/state), 03 (Flow/DES/ABM), and 25 (API compatibility)
-- Reviewed Kairos source commit: `23a057a1893279f9f44b0673ad6a15beb1ad28f3`
+- Owner direction recorded: 2026-09-29, Kairos repository owner directed adoption of the four recommended Q0.1 dispositions; see [owner decision receipt](../../evidence/q0.1-owner-decision-package-20260929.md)
+- Technical review: independent Track 01/03/25 reviews; see the owner decision receipt
+- Reviewed Kairos development commit: `2df72fd852aa3a4d9f3d1a4ea041bc86e5c98bee` (synchronized with `origin/main` `0c77e89`; reviewed runtime source trees are unchanged from the hash-bound base below)
 - Parent submodule pin: `libs/kairos`
 
 ## Context
@@ -18,15 +19,14 @@ separately owns a `Scheduler`, `World`, and `ComponentRegistry`; the existing
 `ComponentRegistry` uses Rust type erasure and has no portable encoding contract.
 These current APIs must not be mistaken for an existing unified hybrid runtime.
 
-The reviewed branch is based on Kairos `fae901558f07b7b717a676adbafbe2cdc78dea1c`.
-The intervening changes through `339af4e` affect toolchain, workflow, lockfile,
-and evidence files; the DES, ABM, core, state, types, and RNG Rust source files
-are unchanged from that baseline. The source hashes below bind this review.
+The runtime source hashes are bound to Kairos upstream `764048a89872eae74e35bd92c5dff8a1527bd5b1` and were compared against current `origin/main` `0c77e89` and development commit `2df72fd`. The reviewed Rust source trees are unchanged across those revisions; the current core source includes upstream's release-mode pending-event cleanup fix. Source hashes and differences are recorded in [the refreshed source review](../../evidence/q0.1-current-source-review-20260929.md).
 
-This proposal addresses architecture and compatibility only. Q0.2 owns queue,
+This decision addresses architecture and compatibility only. Q0.2 owns queue,
 tie, preemption and same-tick semantics. Q0.3 owns event-kind allocation,
-lifecycle telemetry, snapshot encoding and owner coordination. It does not
-authorize implementation or alter upstream task status.
+lifecycle telemetry, snapshot encoding and event/transition join semantics. The
+decision authorizes these settled directions to proceed into those design phases;
+it does not authorize queue implementation, alter upstream task status, or waive
+D2, Q0.2/Q0.3, implementation testing, or release review.
 
 ## Decision proposed
 
@@ -175,8 +175,8 @@ remain satisfied.
 | Review item | Proposed classification |
 |---|---|
 | Affected crate | `crates/kairo-ecs-des` |
-| Protected root | **Missing from the current Track 25 protected-surface inventory** |
-| Proposed surface family / stage | Rust API / experimental, subject to adding the exact DES root to the inventory and aligned policy/release artifacts |
+| Protected root | `crates/kairo-ecs-des` and `crates/kairo-ecs-abm`, now registered as experimental Rust API roots |
+| Proposed surface family / stage | Rust API / experimental; Q0.1 owner-approved architecture direction, with exact-symbol review held until Q0.2/Q0.3 and implementation |
 | Additive only | Yes, if existing `DESContext`, `Resource`, and ABM entry points stay source- and behavior-compatible |
 | Scheduler/event ordering | No change |
 | RNG algorithm or seed derivation | No change |
@@ -191,18 +191,13 @@ remain satisfied.
 | Conformance fixtures / replay | Existing fixtures remain unchanged; new deterministic Flow fixtures are required before implementation acceptance |
 | Batch use | Multiple commands may be submitted before dispatch; no vectorized batch or performance guarantee is made until measured |
 | Consumer migration | None required to keep using legacy API; optional migration example is Q4 |
-| Release hold | **Yes until Track 25 adds/classifies the exact DES root and completes API review.** This proposal does not authorize release |
+| Release hold | **Yes.** Exact-symbol Track 25 review, implementation evidence, compatibility checks, and release signoff remain open; this ADR does not authorize release |
 
-Track 25's exact-root rule currently makes this proposal unreviewable as a
-completed API change: `crates/kairo-ecs-des` is absent from
-`docs/design/protected-surface-inventory.json`, although it is a checked-in
-workspace crate and appears in `conductor/package-matrix.md`. The proposed
-resolution is to add DES as an `experimental` Rust API root and align
-`conductor/contracts/versioning-compatibility.md`, `conductor/api-design-review.md`,
-`docs/release/compatibility.md`, the API review record, and the compatibility
-validator. Track 25 and Kairos maintainers must approve that policy change; this
-CareOps ADR cannot edit or accept it on their behalf. If owners reject adding the
-root, they must provide another policy-compliant API boundary before Q0.2.
+The Kairos owner approved registering both affected roots as experimental. The
+inventory, versioning policy, compatibility matrix, release note, per-root
+preimplementation dispositions, and validator now align. This records the
+architecture and protected-root boundary only; it is not a completed review of
+concrete public symbols or a release approval.
 
 The normal Track 25 API review record must cover the concrete Q1/Q4 public
 surface and answer its Rust, C ABI, Arrow, Python, R, Julia, TypeScript/Wasm,
@@ -223,18 +218,19 @@ does not declare Track 25 approval.
    commands; specify the dependency and deterministic event-kind-to-handler
    dispatch route and how it avoids reusing `BehaviorSimulation`'s separate
    runtime.
-3. **Track 25:** Add/classify the missing exact DES protected root, then confirm
-   experimental/additive classification, required API review, legacy
-   compatibility fixtures, and any migration/release note.
+3. **Track 25:** After Q0.2/Q0.3 and implementation settle the concrete surface,
+   review exact DES and ABM symbols, legacy compatibility fixtures, and any
+   migration/release note. Keep release held until that review is complete.
 
-Independent subagent reviews found (a) the Track 03 adapter needs its own
+Independent technical reviews found (a) the Track 03 adapter needs its own
 read-only component-aware context and buffered checked-command dispatch
 contract, (b) Track 01's
 current counter and generation behavior prevents the broad checked-counter and
-stale-handle claims, and (c) the DES crate is missing from Track 25's protected
-root inventory. This ADR incorporates those findings. These reviews are not
-upstream maintainer signoffs. Track 01/03/25 owner decisions and an updated API
-review remain required before Q0.1 closes or Q0.2 fixtures freeze.
+stale-handle claims, and (c) both DES and ABM roots must be protected. This ADR
+incorporates those findings. These reviews are not upstream maintainer
+signoffs. The owner-approved Q0.1 architecture dispositions are recorded in
+the linked decision receipt; Q0.2/Q0.3 semantics, implementation review, and
+release gates remain open.
 
 ## Source evidence at the reviewed pin
 

@@ -2,16 +2,23 @@
 
 ## Current state
 
-Specification, phased plan, test matrix, risks and ownership boundaries prepared
-for review against Kairos `fae901558f07b7b717a676adbafbe2cdc78dea1c`.
-This is a local CareOps coordination track extending upstream Track 03.
-No Kairos implementation or upstream status/pin change is part of this delivery.
+Specification, phased plan, test matrix, risks and ownership boundaries are
+prepared for Kairos Track 03. Q0.1 architecture/compatibility is accepted with
+the Kairos owner disposition and local evidence in
+`conductor/evidence/q0.1-phase-acceptance-20260929.md`. The Kairos development
+branch is synchronized with current upstream and pinned locally at
+`2df72fd852aa3a4d9f3d1a4ea041bc86e5c98bee`; it contains Q0.1 design documents,
+not queue runtime implementation.
 
 ## Next implementation action
 
-Review the spec and execute Q0: refresh source/registry, resolve the scoped
-ADR and contracts, then add the phase's tests. Respect all milestone entry gates.
-All implementation checkboxes remain open through final milestone Q5.
+Q0.2 is next: prepare and review the bounded queue, boundary, strategy, and
+reference packets listed in the MVP work breakdown; validate primary SimPy
+semantics, reconcile supplied report 27, and write executable fixture
+specifications with explicit intentional differences. Q0.3 then freezes event
+IDs and lifecycle joins; Q0.4 reviews the contract phase. Start Q1 implementation
+only after Q0 closeout and D2 hosted-CI readiness. All runtime implementation
+phases Q1-Q5 remain open.
 
 ## Evidence to carry forward
 
