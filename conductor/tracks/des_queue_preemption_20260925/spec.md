@@ -60,13 +60,17 @@ lease revision. Revision/sequence overflow returns an error, never wraps silentl
 | `ResourceRequest` on request entity | resource, owner, optional work; priority_level, original_enqueue_sequence, submitted_at, optional waiting_deadline, `can_preempt: bool`, `on_preempt: Option<PreemptionStrategy>`, state, revision |
 | `RequestState` | Queued, Active, Suspended, Completed, Released, TimedOut, Cancelled, Aborted; terminal states have reason/time and no active lease |
 | `PreemptionStrategy` | `Suspend`, `Abort`, `Restart`; policy of the work being interrupted |
-| `WorkSpec` on work entity | Original sampled duration, registered continuation/context reference and codec version; optional purpose-specific RNG identity |
+| `WorkSpec` on work entity | Original sampled duration, registered continuation identity and runtime-owned typed context; optional purpose-specific RNG identity |
 | `InterruptedWork` on work entity | elapsed_ticks (useful work in current attempt), remaining_ticks, original_duration, cumulative_busy_ticks, attempt, interruption_count, interrupted_at, suspended_context, pending_resume_policy |
 | `WorkSchedule` on work entity | completion_event: Option<EventId>, lease_revision, work_revision; stale scheduled events must not match a replacement attempt |
-| `SuspendedContext` | Versioned owned Rust task data or a typed handle into runtime-owned data with registered encode/decode hooks; no borrowed pointers, closures, Python objects or anonymous `Any` snapshot promises |
+| `SuspendedContext` | Typed, owned Rust context retained in the live FlowRuntime; no borrowed pointers, closures, Python objects or anonymous `Any` checkpoint promises |
 
-Checkpoint schemas explicitly encode component types. ComponentRegistry's
-in-memory type erasure is not a portable serialization format. Validate entity
+The queue track does not define a checkpoint schema or codec registry.
+ComponentRegistry's in-memory type erasure is not a portable serialization
+format; the existing WorldSnapshot contains live entity IDs only. Portable
+checkpoint/resume semantics belong to Kairos Track 22, coordinated with the
+core/state, behavior, RNG and compatibility owners. Until that contract exists,
+queue suspend/resume operates in the same live runtime only. Validate entity
 liveness/generation on every command; despawn cleans associated claims, leases
 and task references before recycling the actor handle.
 
@@ -95,8 +99,9 @@ and task references before recycling the actor handle.
   discard state. Non-preemptible manual leases remain valid.
 - Cancel/release handles are idempotent: return `AlreadyTerminal` for a known
   terminal claim and `StaleHandle` for a recycled entity/generation; never free
-  capacity twice. Keep terminal records until an explicit prune/checkpoint
-  boundary; stale handles remain invalid afterwards.
+  capacity twice. Keep terminal records until an explicit prune boundary or runtime teardown;
+  stale handles remain invalid afterwards. Portable checkpoint retention is
+  outside this track.
 
 ## 5. Preemption contract
 
@@ -213,10 +218,11 @@ state. Restart emits Preempted on eviction and Restarted on subsequent grant.
 
 - Canonicalize queue/resource/notification iteration; ComponentStore dense order
   and HashMap iteration cannot determine outcomes.
-- Checkpoint world IDs, registered contexts, queue/admission sequences, active
-  leases, revisions, remaining work, pending commands/notifications, deadlines,
-  clock/scheduler order and RNG states. Compare resumed and uninterrupted runs.
-  Implement via Track 01/22 contracts; do not invent a second snapshot format.
+- Compare event-boundary stop/continue on the same live runtime with an
+  uninterrupted run. Portable checkpoint capture/restore of world IDs,
+  components, queue/admission sequences, leases, revisions, pending work,
+  scheduler state and RNG belongs to Track 22's later coordinated contract; do
+  not invent a second snapshot format or claim save/restore support here.
 - Derive task/attempt/purpose streams under a versioned Track 01 rule. No wall
   clock, worker identity or thread order enters seeds. Reuse original draws for
   Suspend/Restart. DESContext::new(seed) alone currently provides no such proof.
@@ -256,8 +262,9 @@ reviewed work. Rust-only components cannot accidentally appear in a stable C ABI
 - Q-04 Same-time completion/preemption, timeout/release, repriority/cancel and
   zero-duration cases satisfy the declared tie contract without time reversal.
 - Q-05 Byte-identical canonical integer lifecycle outputs across repeated seeded
-  serial runs, worker counts and checkpoint/resume. Backend float metrics have
-  separate tolerance contracts; queue outputs do not.
+  serial runs, worker counts and same-runtime event-boundary stop/continue.
+  Portable checkpoint/resume is not a queue-track acceptance gate. Backend
+  float metrics have separate tolerance contracts; queue outputs do not.
 - Q-06 Legacy fixtures and public compatibility gates still pass; users can build
   a resource/preemptible task without manual component attachment.
 - Q-07 Queue insert/remove/rekey scales logarithmically in waiting-claim count;

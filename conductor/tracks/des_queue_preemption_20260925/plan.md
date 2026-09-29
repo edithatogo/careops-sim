@@ -36,16 +36,18 @@ Entry: reviewed specification, current upstream source/registry refresh. This
 phase resolves design details before shared code is changed.
 
 - [ ] Q0.1 Record an ADR for additive FlowRuntime, legacy DESContext/Resource
-  compatibility, single authoritative DES/ABM world, task/context codecs and
-  public handle/error types; review with 01/03/25.
+  compatibility, one authoritative DES/ABM world, owned in-memory continuation
+  context and public handle/error types. Defer portable checkpoint codecs to
+  Track 22; review with 01/03/25.
 - [ ] Q0.2 Freeze one-unit queue semantics, independent preemption flags, deadline
   boundaries, completion-at-T behavior, cancellation/repriority order, victim
   ties, restart draw reuse and zero-time budgets in executable fixture specs.
   Reconcile report 27 against the local contract: reject shrink below active count, allow idle capacity zero, expire deadline-at-T before grant, complete at T before eviction, and reuse restart draws. Record deliberate SimPy differences; pin reference source before conformance scripts.
   Use report 27 embedded matrix/timelines as completed research input; verify primary reference semantics and convert accepted cases into local executable oracles. No separate test_cases.json is required to begin.
-- [ ] Q0.3 Reserve Flow event-kind IDs without collisions; define lifecycle
-  sidecar and snapshot extension with 01/04/22. Fix relevant stale contract
-  links through their existing owners. Agree event/transition join semantics.
+- [ ] Q0.3 Reserve Flow event-kind IDs without collisions; define the lifecycle
+  sidecar with 01/04. Align checkpoint integration with Track 22's contract if
+  available; do not define a competing snapshot format. Fix stale contract
+  links through their owners and agree event/transition join semantics.
 - [ ] Q0.4 Conductor — review and verify phase (workflow.md).
 
 Exit evidence: reviewed ADR/schema/API examples and expected traces for all tie
@@ -90,7 +92,7 @@ terminal reasons. Snapshot records match committed state after each event.
 
 ## Q3 — Suspend, Abort and Restart
 
-Entry: Q2. Owner 03 with 01 snapshot/RNG review.
+Entry: Q2. Owner 03 with 01 interruption-state/RNG review.
 
 - [ ] Q3.1 Write failing three-strategy fixtures with low work(10) at 0 and urgent
   work(2) at 3; cover nested interruptions, multiple victims, equal priorities,
@@ -106,22 +108,25 @@ Entry: Q2. Owner 03 with 01 snapshot/RNG review.
 
 Exit: Q-03 completion ticks are 12/15/absent; urgent completion=5 for all three;
 zero duplicate grants/releases/completions. Manual check: audit every busy and
-waiting interval, interruption record and saved/restored context for the fixture.
+waiting interval and the owned in-memory interruption context for the fixture.
 
 ## Q4 — Declarative Flow, ABM adapter and lifecycle telemetry
 
-Entry: Q3; reviewed 04 sidecar and 01/22 checkpoint contracts. Owner 03;
-04 owns encoding; 22 owns runner/snapshot integration.
+Entry: Q3; reviewed 04 lifecycle-sidecar contract. Owner 03; 04 owns telemetry
+encoding. Portable checkpoint work is deferred to Track 22 and is not required
+to enter or exit this queue phase.
 
 - [ ] Q4.1 Write API-level integration tests for acquire/priority/can_preempt/
   preemptible/deadline/work builders, non-reentrant notifications, behavior
   callbacks and a single shared DES/ABM time/world.
-- [ ] Q4.2 Implement builders, domain dispatch hooks, registered context codecs,
-  deterministic notification order and bounded zero-duration feedback handling.
-  Add a migration example retaining the old FIFO API.
-- [ ] Q4.3 Add resource_lifecycle.v1 telemetry and checkpoint/resume support with
-  owning tracks. Preserve event_log.v1. Restore queue sequences, leases, pending
-  commands, completion revisions, RNG state and suspended work.
+- [ ] Q4.2 Implement builders, domain dispatch hooks for typed in-memory
+  continuation context, deterministic notification order and bounded
+  zero-duration feedback handling. Do not add portable codecs without an
+  accepted Track 22 contract. Add a migration example retaining the old FIFO API.
+- [ ] Q4.3 Add resource_lifecycle.v1 telemetry with owning tracks and preserve
+  event_log.v1. Portable checkpoint/resume integration is a separate Track 22
+  handoff; if its contract is unavailable, record it as deferred rather than
+  blocking the queue API or claiming save/restore support.
 - [ ] Q4.4 Add a synthetic workflow fixture: named staff, urgent interruption,
   staged staff/bed claims and bed cleaning before reavailability. Keep clinical
   rules in the adapter and avoid atomic multi-resource claims not supported by v1.
@@ -129,8 +134,9 @@ Entry: Q3; reviewed 04 sidecar and 01/22 checkpoint contracts. Owner 03;
 
 Exit: Q-05/Q-06 integration evidence; calibration C3 can consume the stable API.
 Manual check: create an interruptible task using the fluent API with no manual
-component attachment; pause while suspended, restore and compare terminal state
-and canonical lifecycle records to uninterrupted execution.
+component attachment; pause at an event boundary in the same runtime, continue,
+and compare terminal state and canonical lifecycle records to uninterrupted
+execution. Portable checkpoint/restore requires separate Track 22 evidence.
 
 ## Q5 — Conformance, performance and upstream handoff
 
@@ -146,7 +152,8 @@ Owners 03/12/25; coordinate 22/32/34/35 without rewriting backend plans.
   throughput, memory and active-victim scan costs against the legacy baseline;
   retain upstream acceptance targets and review any regressions.
 - [ ] Q5.3 Run feature-minimal/legacy/API compatibility gates; document migration,
-  starvation, one-resource limits, checkpoint compatibility and result provenance.
+  starvation, one-resource limits, the Track 22 checkpoint boundary and result
+  provenance. Do not claim queue-owned portable checkpoint compatibility.
   Hand off single-LP ownership/zero-lookahead restrictions and queue fixtures to
   existing PDES/distributed owners; flag Metal queue execution as unsupported.
 - [ ] Q5.4 Conductor — review and verify phase (workflow.md).

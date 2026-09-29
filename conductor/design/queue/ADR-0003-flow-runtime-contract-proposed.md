@@ -5,7 +5,7 @@
 - CareOps track: `des_queue_preemption_20260925`, Q0.1
 - Proposed by: CareOps Sim coordinator
 - Required review: Kairos Tracks 01 (core/state), 03 (Flow/DES/ABM), and 25 (API compatibility)
-- Reviewed Kairos source commit: `0baa8c7f26ecf9a107d69cd971652ae66bab13d7`
+- Reviewed Kairos source commit: `23a057a1893279f9f44b0673ad6a15beb1ad28f3`
 - Parent submodule pin: `libs/kairos`
 
 ## Context
@@ -250,6 +250,7 @@ review remain required before Q0.1 closes or Q0.2 fixtures freeze.
 | `conductor/contracts/versioning-compatibility.md` | `7099dfefa5a369a39f1bdc62091cc50348560c6337d07812cf1b42298c23188a` |
 | `conductor/research/careops-flow-runtime-contract-proposal-20260929.md` | `508bcb56db337279722a3837c502abb582964f6c9f71cafc1a37702a70ce3b35` |
 | `conductor/research/careops-flow-context-codec-proposal-20260929.md` | `b95dfa28adf40309bcceca34a2c966139ffae6386347da008e35eaac51b3162d` |
+| `conductor/research/careops-flow-api-review-gate-proposal-20260929.md` | `2d27faf5970a4c18503f050c452b58e0eddc0b4ae6800d4770994031dc89c02f` |
 
 ## Consequences and next gates
 

@@ -15,7 +15,7 @@ that test targets already exist. Each failed invariant blocks its phase.
 | queue_work_accounting / Q3 | Unit | Suspended waits excluded; restart discards attempt progress but retains cumulative busy ticks; unchanged original draw; context restored | Q-03 |
 | flow_notifications / Q4 | Integration | Exactly-once transitions, stable ordinal, committed state visible; reentrant callback mutation prohibited; bounded zero-time loops terminate | Q-04/06 |
 | flow_shared_world / Q4 | Integration | DES pathway and ABM staff behavior share IDs/clock/registry; cleaning delays next bed availability | Q-01/06 |
-| queue_checkpoint_replay / Q4–Q5 | Determinism | Stop before/at/after eviction and grant; restore queues, contexts, tokens, RNG, sequence; exact canonical trace and terminal state equality | Q-05 |
+| queue_event_boundary_resume / Q4–Q5 | Determinism | Stop before/at/after eviction and grant, continue in the same live runtime; exact canonical trace and terminal state equality against uninterrupted execution. Portable checkpoint restore is deferred to Track 22 | Q-05 |
 | queue_worker_invariance / Q5 | Determinism | Same replication IDs/seeds at 1/2/N workers and permuted finish order; canonical integer outputs byte-identical | Q-05 |
 | queue_legacy_compat / Q5 | Regression/API | Existing Resource/DESContext FIFO fixtures and protected API surface remain valid; no new mandatory core dependencies | Q-06 |
 | queue_scaling / Q5 | Benchmark | Queue sizes 10/1,000/100,000; varied active capacity, tie/churn/interruption rates; record time/memory and legacy comparison | Q-07 |
