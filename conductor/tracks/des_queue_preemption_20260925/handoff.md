@@ -11,18 +11,23 @@ reviewed SimPy 4.1.2 table is committed in Kairos at
 at `384e8546d69f9cbf2746fcb2ab646263256e6dec` and pinned at that reference
 commit. There is no queue runtime implementation.
 
-All five planned Q0.2 leaves have accepted artifacts: priority/FIFO,
-deadline/capacity, Suspend/Abort/Restart, the SimPy 4.1.2 comparison, and the
-victim-tie/zero-time guardrail fixture. The current fixture remains synthetic;
-there is no queue runtime implementation, and the per-tick budget's numeric
-default is a Q1 configuration decision.
+The original Q0.2 queue/FIFO, deadline/capacity, Suspend/Abort/Restart,
+SimPy-reference, and victim-tie/zero-time guardrail artifacts are integrated.
+An independent parent-join review found four follow-ups before Q0.2 closeout:
+use a distinct request identity after cancellation; add same-tick cancel/reprioritize
+ordering cases across insertion order and scheduler priority; count a delivered
+notification in the finite-budget oracle; update stale reference-note coverage
+language. The bounded `Q0.2.join_followups` leaf is now in the reviewed MVP DAG.
+The per-tick budget remains proposed design; its numeric runtime default belongs
+to Q1. There is no queue runtime implementation.
 
 ## Next implementation action
 
-Run the Q0.2 parent join review across all five artifacts and the phase exit
-criteria. If accepted, close Q0.2 and continue with Q0.3 event-kind/lifecycle
-joins, then Q0.4 phase review. Q1 remains gated on Q0 closeout and D2 hosted-CI
-readiness. All runtime phases Q1-Q5 remain open.
+Execute `Q0.2.join_followups` from its reviewed Luna packet, then rerun the full
+Q0.2 parent join against spec, plan, test matrix, report 27 reconciliation, and
+all artifact hashes. If accepted, proceed to Q0.3 event-kind/lifecycle joins and
+Q0.4 phase review. Q1 remains gated on Q0 closeout and D2 hosted-CI readiness.
+All runtime phases Q1-Q5 remain open.
 
 ## Evidence to carry forward
 

@@ -2833,7 +2833,7 @@
     },
     {
       "task_id": "Q0.2",
-      "task_objective_sha256": "42c9ca28c1bb0fdb9f6a443149b0e463001bbf0fa79c15d50e89bf7c541ce6e9",
+      "task_objective_sha256": "3520dde6f419fb4a3f9df8b54d53cd954817f31e458ac38e72ec230f6be5780b",
       "parent_dependencies": [
         "Q0.1"
       ],
@@ -2944,6 +2944,25 @@
           "max_context_bytes": 24000,
           "max_corrections": 2,
           "existing_recipe": null
+        },
+        {
+          "id": "Q0.2.join_followups",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Same-tick cancel/reprioritize and notification-budget traces; terminal identity and reference-note corrections",
+          "oracle": "A cancelled request is never reused; same-tick cancellation/reprioritization follows Scheduler ordering in both insertion orders and with priority precedence; delivered notifications count toward the same-tick budget; reference note reflects integrated and remaining coverage accurately.",
+          "dependencies": [
+            "Q0.2.guardrails"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "One joined correction packet with separate expected traces for each independent ordering/budget case.",
+          "timebox_minutes": 90,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
         }
       ]
     },
@@ -2974,7 +2993,7 @@
           "output": "Event-kind collision inventory/proposal",
           "oracle": "Every new Flow kind is uniquely assigned through core owner contract",
           "dependencies": [
-            "Q0.2.guardrails"
+            "Q0.2.join_followups"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",

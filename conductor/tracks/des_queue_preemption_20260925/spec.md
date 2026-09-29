@@ -78,7 +78,10 @@ and task references before recycling the actor handle.
 
 - Lower numeric priority is more urgent. Within a priority, original admission
   sequence is FIFO. Reprioritization retains that sequence; cancel+resubmit gets
-  a new sequence. Default behavior is no preemption in either direction.
+  a new sequence and a new claim/request identity (a caller may retain its
+  separate patient/owner identity). A cancelled request handle remains terminal
+  and cannot be submitted again. Default behavior is no preemption in either
+  direction.
 - Drain the best eligible claims after a capacity change, release, completion,
   timeout, cancellation or priority change. Suspended/restarting claims share the
   same queue and retain their original sequence. They do not bypass more urgent
@@ -174,6 +177,13 @@ work finished exactly at T is not a preemption victim at T. A claim with deadlin
 T cannot grant at T even if release dispatches before its timeout token. Commands
 with competing effects not covered by these two boundary rules resolve by core
 order. Tests must cover both insertion orders and multiple scheduler priorities.
+For a queued request receiving cancel and reprioritize commands at the same tick,
+their actual Scheduler priority/insertion sequence decides which command runs
+first: cancel-first makes the later reprioritize return `AlreadyTerminal`; a
+reprioritize-first command updates the queued priority while retaining admission
+sequence, then the later cancellation makes the request terminal. Test both
+insertion orders at equal scheduler priority and a case where scheduler priority
+overrides insertion order. These outcomes do not change global event ordering.
 
 Zero-duration work receives a grant and one same-tick completion. FlowRuntime
 requires a positive `max_same_tick_flow_transitions` run setting, recorded in the
@@ -187,7 +197,8 @@ halted for the run; another call cannot reset the counter and bypass the bound.
 Advancing to a later tick resets the per-tick count. The existing `max_events`
 argument remains an independent per-call dispatch bound. Tests use a deliberately
 small positive budget to verify exact-boundary success, over-budget stop,
-preserved pending work, repeat-call behavior and reset on a later tick. The public
+preserved pending work, repeat-call behavior, delivered-notification counting,
+and reset on a later tick. The public
 default is selected with the runtime configuration work in Q1 and must be finite
 and positive; a worker must not invent it in fixture data.
 
