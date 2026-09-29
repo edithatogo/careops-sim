@@ -40,6 +40,15 @@ composition and other clinical domain models are not implementation work here.
 Create detailed tracks for later stages only when requested. No detailed tracks
 for stages 2–7 have been created.
 
+## Conditional Kairos event-kind registry
+
+After the headless MVP and native v1, evaluate a global event-kind registry or
+typed namespaces if actual cross-runtime collisions or validation requirements
+arise. This is an exploratory candidate, not an MVP or v1 dependency. Track 01
+and Track 25 should assess migration of `EventKind::Custom(u32)` and its Arrow,
+FFI and CLI representations before committing to a global contract. Until then,
+FlowRuntime uses the locally reserved 4000–4003 range in the Kairos core contract.
+
 ## Later spatial and live visualization requirement
 
 The [spatial capability plan](spatial-visualization.md) records capture/CAD → a shared versioned
