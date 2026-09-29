@@ -1,0 +1,930 @@
+{
+  "schema_version": 1,
+  "status": "proposed",
+  "namespace": "ed.",
+  "id_format": "ed.<family_id_map value>.<stable lowercase alphanumeric key>",
+  "family_id_map": {
+    "demand_case_mix": "demandcasemix",
+    "des_pathways": "despathways",
+    "durations": "durations",
+    "resources": "resources",
+    "abm_staff_behavior": "abmstaffbehavior",
+    "spatial_abm": "spatialabm",
+    "patient_behavior": "patientbehavior",
+    "hospital_interfaces": "hospitalinterfaces",
+    "optional_complexity": "optionalcomplexity",
+    "experiment_controls": "experimentcontrols",
+    "measurement_mapping": "measurementmapping"
+  },
+  "entries": [
+    {
+      "parameter_id": "ed.demandcasemix.arrivals",
+      "family": "demand_case_mix",
+      "semantic_name": "Time-varying arrival demand",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI scenario configuration",
+      "scope_status": "active_candidate",
+      "notes": "Generative arrival input; schedules and values are defined separately."
+    },
+    {
+      "parameter_id": "ed.demandcasemix.calendarprofile",
+      "family": "demand_case_mix",
+      "semantic_name": "Calendar and seasonal demand profile",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config",
+      "scope_status": "active_candidate",
+      "notes": "Generative demand modifier; applicability and values remain to be established."
+    },
+    {
+      "parameter_id": "ed.demandcasemix.surgeprofile",
+      "family": "demand_case_mix",
+      "semantic_name": "Surge demand profile",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI scenario configuration",
+      "scope_status": "active_candidate",
+      "notes": "Scenario input; distinct profiles remain distinct unless semantic equivalence is reviewed."
+    },
+    {
+      "parameter_id": "ed.demandcasemix.arrivalmode",
+      "family": "demand_case_mix",
+      "semantic_name": "Arrival mode",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Categorical case attribute used by the modeled pathway."
+    },
+    {
+      "parameter_id": "ed.demandcasemix.agemix",
+      "family": "demand_case_mix",
+      "semantic_name": "Age mix",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Case-mix input; values and denominator are not specified here."
+    },
+    {
+      "parameter_id": "ed.demandcasemix.casetypemix",
+      "family": "demand_case_mix",
+      "semantic_name": "Case-type mix",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Case-mix input; values and denominator are not specified here."
+    },
+    {
+      "parameter_id": "ed.demandcasemix.acuitymix",
+      "family": "demand_case_mix",
+      "semantic_name": "Acuity mix",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Case-mix input; preserve category and denominator semantics."
+    },
+    {
+      "parameter_id": "ed.demandcasemix.jointcasemix",
+      "family": "demand_case_mix",
+      "semantic_name": "Joint case-mix dependence",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Dependence structure is not assumed or specified by this identity."
+    },
+    {
+      "parameter_id": "ed.demandcasemix.referrals",
+      "family": "demand_case_mix",
+      "semantic_name": "Referral arrivals",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Boundary arrival category where enabled by the model scope."
+    },
+    {
+      "parameter_id": "ed.demandcasemix.transfers",
+      "family": "demand_case_mix",
+      "semantic_name": "Transfer arrivals",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Boundary arrival category where enabled by the model scope."
+    },
+    {
+      "parameter_id": "ed.demandcasemix.repeatpresentations",
+      "family": "demand_case_mix",
+      "semantic_name": "Repeat presentations",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Applicability and linkage semantics require a scoped model decision."
+    },
+    {
+      "parameter_id": "ed.despathways.registration",
+      "family": "des_pathways",
+      "semantic_name": "Registration stage",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Distinct pathway stage input; does not define a clinical policy."
+    },
+    {
+      "parameter_id": "ed.despathways.triage",
+      "family": "des_pathways",
+      "semantic_name": "Triage stage and routing",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Pathway stage input; does not define a clinical policy."
+    },
+    {
+      "parameter_id": "ed.despathways.assessment",
+      "family": "des_pathways",
+      "semantic_name": "Assessment stage",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Pathway stage input."
+    },
+    {
+      "parameter_id": "ed.despathways.diagnostics",
+      "family": "des_pathways",
+      "semantic_name": "Diagnostic stage",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Pathway stage and dependency input."
+    },
+    {
+      "parameter_id": "ed.despathways.treatment",
+      "family": "des_pathways",
+      "semantic_name": "Treatment stage",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Pathway stage input."
+    },
+    {
+      "parameter_id": "ed.despathways.observation",
+      "family": "des_pathways",
+      "semantic_name": "Observation stage",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Pathway stage input where enabled."
+    },
+    {
+      "parameter_id": "ed.despathways.reassessment",
+      "family": "des_pathways",
+      "semantic_name": "Reassessment stage",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Pathway stage and timing rule input."
+    },
+    {
+      "parameter_id": "ed.despathways.consult",
+      "family": "des_pathways",
+      "semantic_name": "Consult stage",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Pathway stage where enabled."
+    },
+    {
+      "parameter_id": "ed.despathways.discharge",
+      "family": "des_pathways",
+      "semantic_name": "Discharge route",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Disposition route input."
+    },
+    {
+      "parameter_id": "ed.despathways.admission",
+      "family": "des_pathways",
+      "semantic_name": "Admission route",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Provisional and realized disposition remain distinct."
+    },
+    {
+      "parameter_id": "ed.despathways.transfer",
+      "family": "des_pathways",
+      "semantic_name": "Transfer route",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Disposition route input."
+    },
+    {
+      "parameter_id": "ed.despathways.abandonment",
+      "family": "des_pathways",
+      "semantic_name": "Leaving without being seen route",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Optional pathway route; enabled status is profile-specific."
+    },
+    {
+      "parameter_id": "ed.despathways.routingprobability",
+      "family": "des_pathways",
+      "semantic_name": "Pathway routing probabilities",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Probability values and conditioning are outside this identity proposal."
+    },
+    {
+      "parameter_id": "ed.despathways.repeatloops",
+      "family": "des_pathways",
+      "semantic_name": "Repeat pathway loops",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Loop structure and limits require explicit model configuration."
+    },
+    {
+      "parameter_id": "ed.despathways.priorities",
+      "family": "des_pathways",
+      "semantic_name": "Pathway priorities",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Priority semantics are subject to the accepted Flow contract."
+    },
+    {
+      "parameter_id": "ed.despathways.deadlines",
+      "family": "des_pathways",
+      "semantic_name": "Pathway deadlines",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Deadline behavior is subject to the accepted Flow contract."
+    },
+    {
+      "parameter_id": "ed.despathways.preemption",
+      "family": "des_pathways",
+      "semantic_name": "Pathway preemption policy",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Interruption behavior is subject to the accepted Flow contract."
+    },
+    {
+      "parameter_id": "ed.durations.intrinsicwork",
+      "family": "durations",
+      "semantic_name": "Intrinsic active work duration",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Generative active work is distinct from observed elapsed intervals."
+    },
+    {
+      "parameter_id": "ed.durations.setup",
+      "family": "durations",
+      "semantic_name": "Setup duration",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Generative duration component."
+    },
+    {
+      "parameter_id": "ed.durations.turnaround",
+      "family": "durations",
+      "semantic_name": "Turnaround duration",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Generative duration component."
+    },
+    {
+      "parameter_id": "ed.durations.reportreviewdelay",
+      "family": "durations",
+      "semantic_name": "Report and review delay",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Delay input kept separate from active work."
+    },
+    {
+      "parameter_id": "ed.durations.cleaning",
+      "family": "durations",
+      "semantic_name": "Cleaning duration",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Generative duration component."
+    },
+    {
+      "parameter_id": "ed.durations.handover",
+      "family": "durations",
+      "semantic_name": "Handover duration",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Generative duration component."
+    },
+    {
+      "parameter_id": "ed.durations.disposition",
+      "family": "durations",
+      "semantic_name": "Disposition duration",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Generative duration component."
+    },
+    {
+      "parameter_id": "ed.durations.boarding",
+      "family": "durations",
+      "semantic_name": "Boarding duration",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "ED time after admission decision is distinct from active work."
+    },
+    {
+      "parameter_id": "ed.durations.transit",
+      "family": "durations",
+      "semantic_name": "Transit duration",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Travel component, distinct from queue delay and active work."
+    },
+    {
+      "parameter_id": "ed.resources.staffroles",
+      "family": "resources",
+      "semantic_name": "Staff roles and skills",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Eligibility attributes; no staffing values are set here."
+    },
+    {
+      "parameter_id": "ed.resources.staffcounts",
+      "family": "resources",
+      "semantic_name": "Staff resource counts",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Physical or configured counts remain distinct from staffed availability."
+    },
+    {
+      "parameter_id": "ed.resources.rosters",
+      "family": "resources",
+      "semantic_name": "Staff rosters",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Time-varying resource availability input."
+    },
+    {
+      "parameter_id": "ed.resources.breaks",
+      "family": "resources",
+      "semantic_name": "Staff breaks",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Calendar input."
+    },
+    {
+      "parameter_id": "ed.resources.absenceovertime",
+      "family": "resources",
+      "semantic_name": "Staff absence and overtime",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Availability modifiers; no values are set here."
+    },
+    {
+      "parameter_id": "ed.resources.supervision",
+      "family": "resources",
+      "semantic_name": "Supervision capacity",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Resource constraint where included in the model."
+    },
+    {
+      "parameter_id": "ed.resources.taskconcurrency",
+      "family": "resources",
+      "semantic_name": "Task concurrency constraints",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Concurrency semantics follow the accepted Flow contract."
+    },
+    {
+      "parameter_id": "ed.resources.beds",
+      "family": "resources",
+      "semantic_name": "ED bed capacity",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Physical capacity is distinct from staffed, open and compatible capacity."
+    },
+    {
+      "parameter_id": "ed.resources.rooms",
+      "family": "resources",
+      "semantic_name": "Treatment room capacity",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Room capacity and compatibility remain explicit inputs."
+    },
+    {
+      "parameter_id": "ed.resources.equipment",
+      "family": "resources",
+      "semantic_name": "Equipment capacity and availability",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Equipment capability and availability input."
+    },
+    {
+      "parameter_id": "ed.resources.opencalendars",
+      "family": "resources",
+      "semantic_name": "Resource opening calendars",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Time-varying open state, distinct from physical count."
+    },
+    {
+      "parameter_id": "ed.resources.outages",
+      "family": "resources",
+      "semantic_name": "Resource outages",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Availability interruption input."
+    },
+    {
+      "parameter_id": "ed.resources.reservations",
+      "family": "resources",
+      "semantic_name": "Resource reservations",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Reservation semantics follow the accepted Flow contract."
+    },
+    {
+      "parameter_id": "ed.resources.cleaningcapacity",
+      "family": "resources",
+      "semantic_name": "Cleaning capacity",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Resource availability for cleaning tasks."
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.agentattributes",
+      "family": "abm_staff_behavior",
+      "semantic_name": "Staff agent attributes",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Only attributes required by declared model fidelity are included."
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.assignment",
+      "family": "abm_staff_behavior",
+      "semantic_name": "Staff assignment behavior",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Assignment policy is explicit model configuration."
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.zoneskilleligibility",
+      "family": "abm_staff_behavior",
+      "semantic_name": "Zone and skill eligibility",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Eligibility mapping input."
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.taskchoice",
+      "family": "abm_staff_behavior",
+      "semantic_name": "Staff task choice policy",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Transparent policy input; unobserved choices are not presented as evidence."
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.reassessment",
+      "family": "abm_staff_behavior",
+      "semantic_name": "Staff reassessment behavior",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Behavior input where represented."
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.urgencyfifo",
+      "family": "abm_staff_behavior",
+      "semantic_name": "Urgency and FIFO dispatch rules",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Dispatch rules follow the accepted Flow contract."
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.communicationhandover",
+      "family": "abm_staff_behavior",
+      "semantic_name": "Communication and handover behavior",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Behavior input; no unobserved heuristic is inferred."
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.interruptionresumption",
+      "family": "abm_staff_behavior",
+      "semantic_name": "Interruption and resumption behavior",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Interruption lineage follows the accepted Flow contract."
+    },
+    {
+      "parameter_id": "ed.abmstaffbehavior.switchingoverhead",
+      "family": "abm_staff_behavior",
+      "semantic_name": "Task switching overhead",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Separate duration/policy input; evidence is not asserted."
+    },
+    {
+      "parameter_id": "ed.spatialabm.graphtopology",
+      "family": "spatial_abm",
+      "semantic_name": "Location graph topology",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Optional spatial input; named-location fixtures may be used."
+    },
+    {
+      "parameter_id": "ed.spatialabm.scaledistance",
+      "family": "spatial_abm",
+      "semantic_name": "Spatial scale and distance",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Units and interpretation must be supplied with a future profile."
+    },
+    {
+      "parameter_id": "ed.spatialabm.locations",
+      "family": "spatial_abm",
+      "semantic_name": "Named locations",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Minimal named locations; no CAD or site layout is asserted."
+    },
+    {
+      "parameter_id": "ed.spatialabm.routesconnectivity",
+      "family": "spatial_abm",
+      "semantic_name": "Route connectivity",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Optional graph input."
+    },
+    {
+      "parameter_id": "ed.spatialabm.walkingspeedvariation",
+      "family": "spatial_abm",
+      "semantic_name": "Walking speed variation",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Optional input; no unsupported default is supplied."
+    },
+    {
+      "parameter_id": "ed.spatialabm.equipmentsupplytrips",
+      "family": "spatial_abm",
+      "semantic_name": "Equipment and supply trips",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Optional travel-demand input."
+    },
+    {
+      "parameter_id": "ed.spatialabm.routechoice",
+      "family": "spatial_abm",
+      "semantic_name": "Route choice behavior",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Optional policy input; no route policy is selected here."
+    },
+    {
+      "parameter_id": "ed.spatialabm.travelinterruptions",
+      "family": "spatial_abm",
+      "semantic_name": "Travel interruptions",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Optional travel behavior input."
+    },
+    {
+      "parameter_id": "ed.spatialabm.congestion",
+      "family": "spatial_abm",
+      "semantic_name": "Spatial congestion interactions",
+      "owner": "CareOps ED domain",
+      "consumer": "Future spatial fidelity owner; consumer not applicable until that scope is approved",
+      "scope_status": "deferred",
+      "notes": "Deferred until explicitly modeled and justified; no congestion mechanism is currently defined."
+    },
+    {
+      "parameter_id": "ed.patientbehavior.patience",
+      "family": "patient_behavior",
+      "semantic_name": "Patient patience behavior",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Only enabled when supported by a declared scenario; no distribution is asserted."
+    },
+    {
+      "parameter_id": "ed.patientbehavior.abandonment",
+      "family": "patient_behavior",
+      "semantic_name": "Patient abandonment behavior",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Optional behavior linked to the declared leaving-without-being-seen route."
+    },
+    {
+      "parameter_id": "ed.patientbehavior.mobilityassistance",
+      "family": "patient_behavior",
+      "semantic_name": "Mobility and assistance needs",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Only represented where relevant; no values or behavioral distributions are asserted."
+    },
+    {
+      "parameter_id": "ed.patientbehavior.routingcompliance",
+      "family": "patient_behavior",
+      "semantic_name": "Routing compliance behavior",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "scope_status": "active_candidate",
+      "notes": "Optional behavior; no compliance rate is asserted."
+    },
+    {
+      "parameter_id": "ed.patientbehavior.companions",
+      "family": "patient_behavior",
+      "semantic_name": "Patient companion behavior",
+      "owner": "CareOps ED domain",
+      "consumer": "Future patient-behavior owner; consumer not applicable until relevance is established",
+      "scope_status": "deferred",
+      "notes": "Include only if relevant to the declared model; unsupported companion detail is deferred."
+    },
+    {
+      "parameter_id": "ed.hospitalinterfaces.admissiondemand",
+      "family": "hospital_interfaces",
+      "semantic_name": "External admission demand",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow boundary",
+      "scope_status": "active_candidate",
+      "notes": "Bounded external hospital interface; not a whole-hospital model."
+    },
+    {
+      "parameter_id": "ed.hospitalinterfaces.inpatientbedavailability",
+      "family": "hospital_interfaces",
+      "semantic_name": "Inpatient bed availability and release",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow boundary",
+      "scope_status": "active_candidate",
+      "notes": "Boundary state input; detailed inpatient mechanisms are outside this ED scope."
+    },
+    {
+      "parameter_id": "ed.hospitalinterfaces.transfertransport",
+      "family": "hospital_interfaces",
+      "semantic_name": "Transfer and transport availability",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow boundary",
+      "scope_status": "active_candidate",
+      "notes": "External interface input."
+    },
+    {
+      "parameter_id": "ed.hospitalinterfaces.diagnosticdependencies",
+      "family": "hospital_interfaces",
+      "semantic_name": "External diagnostic dependencies",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow boundary",
+      "scope_status": "active_candidate",
+      "notes": "Boundary dependency input; exact services remain scenario-defined."
+    },
+    {
+      "parameter_id": "ed.hospitalinterfaces.wholehospitalmechanisms",
+      "family": "hospital_interfaces",
+      "semantic_name": "Whole-hospital bed and discharge mechanisms",
+      "owner": "CareOps ED domain",
+      "consumer": "Future hospital-domain owner; consumer not applicable to generic ED MVP",
+      "scope_status": "deferred",
+      "notes": "Deferred because detailed inpatient, elective, discharge and whole-hospital mechanisms are outside the ED MVP boundary."
+    },
+    {
+      "parameter_id": "ed.optionalcomplexity.fatigue",
+      "family": "optional_complexity",
+      "semantic_name": "Staff fatigue effects",
+      "owner": "Future ABM domain owner",
+      "consumer": "Future CareOps ED ABM profile; no current Kairos consumer",
+      "scope_status": "deferred",
+      "notes": "Deferred until evidence and decision relevance justify activation; no mechanism is defined."
+    },
+    {
+      "parameter_id": "ed.optionalcomplexity.learning",
+      "family": "optional_complexity",
+      "semantic_name": "Staff learning effects",
+      "owner": "Future ABM domain owner",
+      "consumer": "Future CareOps ED ABM profile; no current Kairos consumer",
+      "scope_status": "deferred",
+      "notes": "Deferred until evidence and decision relevance justify activation; no mechanism is defined."
+    },
+    {
+      "parameter_id": "ed.optionalcomplexity.crowdingfeedback",
+      "family": "optional_complexity",
+      "semantic_name": "Crowding interaction effects",
+      "owner": "Future ED domain owner",
+      "consumer": "Future CareOps ED model profile; Kairos 03 Flow only after scoped acceptance",
+      "scope_status": "deferred",
+      "notes": "Deferred until evidence, decision relevance and a scoped interaction mechanism are reviewed."
+    },
+    {
+      "parameter_id": "ed.optionalcomplexity.detailedphysiology",
+      "family": "optional_complexity",
+      "semantic_name": "Detailed patient physiology",
+      "owner": "Future ED domain owner",
+      "consumer": "Future CareOps ED model profile; no current Kairos consumer",
+      "scope_status": "deferred",
+      "notes": "Deferred as outside the declared minimal ED fidelity unless evidence and decision relevance justify a later scope change."
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.initialization",
+      "family": "experiment_controls",
+      "semantic_name": "Run initialization state",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI",
+      "scope_status": "active_candidate",
+      "notes": "Includes initial occupancy and state configuration."
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.ongoingworkages",
+      "family": "experiment_controls",
+      "semantic_name": "Ages of ongoing work at initialization",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI",
+      "scope_status": "active_candidate",
+      "notes": "Initialization input for work already in progress."
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.warmup",
+      "family": "experiment_controls",
+      "semantic_name": "Warm-up period",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 22 CLI; Kairos 21 calibration",
+      "scope_status": "active_candidate",
+      "notes": "Experiment control; metric exclusion handling remains explicitly mapped."
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.horizon",
+      "family": "experiment_controls",
+      "semantic_name": "Simulation horizon",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 22 CLI",
+      "scope_status": "active_candidate",
+      "notes": "Experiment control; no time value or unit is supplied here."
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.replications",
+      "family": "experiment_controls",
+      "semantic_name": "Replication plan",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 22 CLI; Kairos 21 calibration",
+      "scope_status": "active_candidate",
+      "notes": "Experiment control; count and design remain scenario-defined."
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.seedstreams",
+      "family": "experiment_controls",
+      "semantic_name": "Seed purposes and streams",
+      "owner": "Kairos Track 01 core seed/order owner",
+      "consumer": "Proposed Kairos 01 seed/order contract; Kairos 22 CLI experiment orchestration",
+      "scope_status": "active_candidate",
+      "notes": "Seed purpose and sampling level must remain explicit; no RNG/API contract is frozen."
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.timeunits",
+      "family": "experiment_controls",
+      "semantic_name": "Model time units",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI",
+      "scope_status": "active_candidate",
+      "notes": "Unit identity only; no resolution or runtime type is defined."
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.modeoverrides",
+      "family": "experiment_controls",
+      "semantic_name": "Scenario mode overrides",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI",
+      "scope_status": "active_candidate",
+      "notes": "Explicit scenario control; supported modes remain implementation-defined."
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.observationcensoringwindows",
+      "family": "experiment_controls",
+      "semantic_name": "Observation and censoring windows",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 22 CLI; Kairos 21 calibration",
+      "scope_status": "active_candidate",
+      "notes": "Experiment and observation controls; distinct from generated inputs."
+    },
+    {
+      "parameter_id": "ed.experimentcontrols.calibrationbounds",
+      "family": "experiment_controls",
+      "semantic_name": "Calibration parameter bounds",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 21 calibration",
+      "scope_status": "active_candidate",
+      "notes": "Bounds are distinct from physical limits, observed ranges and scenario ranges; no values are defined here."
+    },
+    {
+      "parameter_id": "ed.measurementmapping.observedelapsedinterval",
+      "family": "measurement_mapping",
+      "semantic_name": "Observed elapsed interval measurement",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "scope_status": "active_candidate",
+      "notes": "Observed interval identity for trace mapping and validation; it is not a primitive generative work duration."
+    },
+    {
+      "parameter_id": "ed.measurementmapping.queuedelay",
+      "family": "measurement_mapping",
+      "semantic_name": "Observed queue delay measurement",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "scope_status": "active_candidate",
+      "notes": "Observed validation target; simulated queue delay is endogenous and is an outcome, not an input parameter."
+    },
+    {
+      "parameter_id": "ed.measurementmapping.eventdefinitions",
+      "family": "measurement_mapping",
+      "semantic_name": "Observed event definitions",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "scope_status": "active_candidate",
+      "notes": "Observed event semantics and mapping versions; separate from generative pathway inputs."
+    },
+    {
+      "parameter_id": "ed.measurementmapping.inclusioncriteria",
+      "family": "measurement_mapping",
+      "semantic_name": "Observation inclusion criteria",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "scope_status": "active_candidate",
+      "notes": "Defines observed-data population selection; no criteria are prescribed here."
+    },
+    {
+      "parameter_id": "ed.measurementmapping.metricdenominators",
+      "family": "measurement_mapping",
+      "semantic_name": "Metric denominator definitions",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 21 calibration; Kairos 22 CLI reporting",
+      "scope_status": "active_candidate",
+      "notes": "Measurement semantics; distinct from model-generated outcomes."
+    },
+    {
+      "parameter_id": "ed.measurementmapping.timestampprecisiondelay",
+      "family": "measurement_mapping",
+      "semantic_name": "Timestamp precision and recording delay",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "scope_status": "active_candidate",
+      "notes": "Occurrence and recording times remain separate mapped observations."
+    },
+    {
+      "parameter_id": "ed.measurementmapping.missingness",
+      "family": "measurement_mapping",
+      "semantic_name": "Observed-data missingness mapping",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "scope_status": "active_candidate",
+      "notes": "Missingness is explicit measurement metadata, not a generative default."
+    },
+    {
+      "parameter_id": "ed.measurementmapping.censoring",
+      "family": "measurement_mapping",
+      "semantic_name": "Observed-data censoring mapping",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
+      "scope_status": "active_candidate",
+      "notes": "Censoring semantics apply to observed traces and validation targets."
+    }
+  ]
+}
