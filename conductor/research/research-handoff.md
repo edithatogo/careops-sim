@@ -56,6 +56,11 @@ file is required when adequate content is present in the report.
    E5 dashboard and E6 Metal may then proceed in separate ownership areas, followed
    by E7 PDES and E8 distributed qualification as the current DAG specifies.
 
+The first P0.1 coverage/gap map draft is now at
+[`model-inputs/ed/schema/supplied-research-coverage.md`](../../model-inputs/ed/schema/supplied-research-coverage.md).
+It covers the declared parameter families and preserves conflicts and primary-
+source verification gaps; it is pending coordinator review and does not close P0.1.
+
 The authoritative schedule is metadata plus `tools/tasks.py`; this summary does
 not remove any detailed dependency. Serial operation is fully supported. Parallel
 operation requires reserved disjoint paths, approved interfaces and bounded packets.

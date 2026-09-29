@@ -6,8 +6,10 @@ source-version verification or clinical validation is claimed by this intake.
 ## Intake and provenance
 
 Original bytes and SHA-256 hashes are retained in the [manifest](supplied/20260927/manifest.json).
-Reports 23/24/25 match archived reports 12/11/10 respectively, byte for byte.
-Their aliases are recorded without duplicate archive files.
+Reports 13–25 are byte-identical aliases of reports 5, 6, 10, 11 or 12;
+reports 23/24/25 match 12/11/10 respectively. Their aliases are recorded
+without duplicate archive files. The archive manifest retains each supplied
+report number and its exact hash-to-canonical-report mapping.
 
 | Report | Research response | Task destinations |
 | --- | --- | --- |

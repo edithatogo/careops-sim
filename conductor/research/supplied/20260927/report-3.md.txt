@@ -1,0 +1,420 @@
+# Hybrid ABM–DES Emergency Department Model: Evidence-Backed Parameterisation Specification
+
+## Executive synthesis
+
+This research was conducted to **25 September 2026**, using an Australian public emergency department as the reference setting, with Queensland evidence prioritised and a regional referral hospital treated as the principal modelling archetype. The result is a parameterisation specification rather than a claim that any one published ED provides a transferable set of numerical inputs.
+
+The central finding is that a defensible hybrid model requires substantially more than arrival rates, treatment times and bed counts. Within the declared boundary—ED operations, ambulance offload and a finite inpatient system—I identified **248 parameter families across the 18 requested domains**. In implementation, many of these expand further by ATS category, age, stream, presenting complaint, arrival mode, hour, weekday, test type, staff grade, ward, specialty and other strata. Of these families, 139 are classified as core, 42 as essential boundary inputs, 20 as advanced behavioural inputs, 35 as optional extensions and 12 as intervention settings.
+
+Australian national administrative data are strong enough to specify reporting definitions and provide broad case-mix and performance validation targets. In 2024–25 Australian public EDs recorded about 9.1 million presentations; the national median waiting time was 18 minutes, the 90th percentile 118 minutes, 67% of patients were seen within the relevant ATS time, and 53% completed their ED stay within four hours. These are useful **validation benchmarks**, but they are not primitive simulation inputs and should not be used to manufacture service-time distributions. citeturn16view0turn17view1
+
+The same distinction is critical for ED length of stay. AIHW defines ED length of stay from presentation to physical departure; in 2024–25 the national median was 3 hours 48 minutes, with admitted patients having a median of 6 hours 13 minutes versus 3 hours 10 minutes for non-admitted patients. These should emerge from queues, activities and downstream capacity in the model rather than being independently sampled when those mechanisms are explicitly represented. citeturn17view2
+
+Queensland evidence strongly supports including the inpatient boundary rather than modelling the ED in isolation. Recent Queensland studies using large multi-hospital datasets report strong relationships between inpatient occupancy, ED flow, access block and ambulance ramping, while a 2026 ward-level DES study showed that interventions affecting inpatient discharge, ward utilisation and non-acute occupancy can materially alter ED performance. Those studies do **not** justify importing a universal bed-occupancy threshold or a causal coefficient into a new model; they support explicitly modelling hospital-wide constraints and calibrating them locally. citeturn21view1turn22view0turn21view2
+
+The recommended hybrid architecture is therefore:
+
+**DES as the operational backbone:** arrivals, activities, queues, resources, diagnostics, treatment spaces, staffing, boarding, inpatient beds, transfers and all clocks.
+
+**ABM only for genuine decisions and adaptive interactions:** patient abandonment/refusal, clinician task choice where this is a research question, resource assignment, ambulance escalation, bed-management decisions, surge activation and optional target-responsive behaviour.
+
+**A separate observation layer:** actual physical/clinical events are distinguished from administrative timestamps and KPI clocks. This matters because Queensland audit work has demonstrated that ambulance offload measurements can be affected by missing, invalid and inconsistent timestamps. citeturn16view4
+
+Hybrid ED simulation is methodologically feasible: published models have combined agent-based decision mechanisms with DES patient-flow processes, including alternative clinician/resource allocation strategies. The evidence supports hybridisation where behaviour adds explanatory value; it does not support turning every heterogeneous patient into an autonomous agent. citeturn20search34turn13search2
+
+The complete machine-readable research package is available here:
+
+**[Download the complete ABM–DES research package](sandbox:/mnt/data/ed_abm_des_deep_research_package.zip)**
+
+It contains the full 248-family register rather than only the condensed tables shown below.
+
+## Recommended model boundary and architecture
+
+The minimum viable model should start when a patient first enters the ED demand process and terminate at physical ED departure, while retaining enough upstream and downstream structure to reproduce ambulance queues and access block. AIHW's national ED metadata explicitly distinguishes presentation, triage, commencement of clinical care, episode end and physical departure; the model should preserve these as separate events rather than representing “arrival”, “seen” and “departure” with only three timestamps. citeturn17view1turn16view1
+
+For patients arriving by ambulance, Queensland policy gives the model an especially useful separation of states. Patient off-stretcher time is measured from presentation of the patient by QAS at the ED triage point to transfer to an ED bed, with a target of less than 30 minutes. Patients remaining on an ambulance stretcher require repeated review at 30-minute intervals, and the protocol specifies further escalation for patients remaining on stretchers for an hour or more. These are **operational rules and performance targets**, not stochastic offload-time distributions. citeturn16view3
+
+The downstream boundary needs at least specialty-sensitive staffed inpatient capacity, competing non-ED admissions, elective activity, inpatient length of stay, ward transfers, discharge timing, bed cleaning and compatibility constraints. A single generic “hospital bed” pool is inadequate when the purpose includes access block. The 2026 Queensland DES study explicitly represented ward-level patient flow, and the related 25-hospital cohort found hospital-specific choke points rather than evidence for one universal occupancy threshold. citeturn21view1turn22view0
+
+A practical event/state decomposition is:
+
+| Component | DES representation | ABM representation | Important shared state |
+|---|---|---|---|
+| Arrival and triage | arrival process, triage queue, triage service | usually none | age, ATS, complaint, arrival mode |
+| Ambulance interface | ambulance queue, offload positions, handover, crew release | escalation/coordination if required | elapsed POST, clinical priority, ED capacity |
+| ED assessment | queues, clinician tasks, treatment spaces | optional clinician task selection | current clinician, patient state, priority |
+| Diagnostics | order, collection, transport, machine/lab queue, result | usually none | outstanding tests, result state |
+| Consultation | request queue and response | optional specialty acceptance/prioritisation | consultation state |
+| Patient waiting | elapsed time and queue position | leave/stay/refusal decisions | perceived wait, actual wait, clinical state |
+| Admission | decision event, specialty queue, bed request | bed-manager allocation if material | specialty, compatibility, bed state |
+| Boarding | retained ED resources until departure | optional escalation decisions | inpatient status, occupied ED space |
+| Inpatient boundary | wards, competing admissions, LOS, discharge and cleaning | optional bed-management decisions | staffed beds and compatibility |
+| Measurement | observed timestamp-generation process | none | true time versus recorded time |
+
+A **single global event clock and scheduler** is preferable unless the software architecture forces separate ABM and DES clocks. Every patient should have one canonical identity and one authoritative state. ABM decisions should schedule, cancel or reprioritise DES events; they should not separately simulate a second copy of the patient's movement. The same principle applies to resources: a doctor, treatment bay or CT scanner should have one ownership state at a given instant.
+
+Tasks needing multiple resources should generally request an atomic compatible bundle—for example, patient + resuscitation bay + appropriately skilled clinician + nurse + relevant equipment—where the real process requires simultaneous availability. Otherwise the model can generate impossible intermediate states in which one scarce resource is held indefinitely while waiting for another.
+
+Same-time-event ordering also needs an explicit rule. A suitable transparent baseline is:
+
+`clinical emergency → resource release → completion → queued allocation → routine arrival`
+
+with a monotonic event-sequence identifier breaking ties within a class. This is a **proposed implementation convention**, not an observed clinical rule, and should be included in structural sensitivity testing. Transparent specification of model logic, inputs, implementation and experimentation is consistent with the aims of the STRESS simulation-reporting framework. citeturn13search15
+
+Most importantly, several familiar ED measures change role once the process producing them is modelled:
+
+| Measure | Correct role in an explicit queueing model |
+|---|---|
+| Waiting time to clinician | endogenous output / validation target |
+| Ambulance POST | endogenous output / validation target |
+| ED length of stay | endogenous output / validation target |
+| Boarding duration | endogenous output / validation target |
+| ED occupancy after initiation | endogenous state/output |
+| Inpatient occupancy after initiation | endogenous state/output |
+| Initial ED census | input / initial condition |
+| Initial ward occupancy | input / initial condition |
+| ATS maximum wait | policy parameter |
+| Number of staffed compatible spaces | input |
+| Active task duration | input distribution |
+| Arrival intensity | exogenous input |
+
+This distinction prevents the common circular construction in which, for example, an ED model both simulates a clinician queue and independently samples “time to doctor”.
+
+## Complete parameter catalogue
+
+The full register contains **248 parameter families**. The table below is the compact domain map; every family, role, unit, representation, source class, uncertainty treatment and data requirement is expanded in [parameters.csv](sandbox:/mnt/data/ed_abm_des_research_package/parameters.csv).
+
+| Domain | Families | Required content | Preferred representation |
+|---|---:|---|---|
+| **D01 Demand and arrivals** | 14 | annual activity, hourly/day/seasonal intensity, holidays, trend, surges, referral source, transfer arrivals, clustering/batches | empirical time-varying intensity; NHPP baseline only after diagnostics; renewal/Cox/empirical day-resampling if needed |
+| **D02 Patient attributes and joint case mix** | 18 | age, sex, pregnancy, paediatric status, ATS, complaint, diagnosis, injury, comorbidity, frailty, mental health, isolation, interpreter, equity variables, rurality, prior use | empirical joint resampling or conditional generative model |
+| **D03 Prehospital and ambulance** | 14 | ambulance share, arrival/triage/offload, handover, crew release, turnaround, offload capacity, review/escalation, retrieval, bypass | explicit queue/resource process; policy thresholds deterministic |
+| **D04 Reception and triage** | 11 | registration/triage service, staff, ATS, reassessment, misclassification, streaming and bypass | positive service-time distribution + policy rules + conditional classification |
+| **D05 Care pathways** | 16 | assessments, reviews, procedures, observation, consultation, repeated work, parallelism, discharge, short stay, death | state-dependent pathway graph with competing/parallel events |
+| **D06 Physical/effective capacity** | 14 | resus, acute, fast-track, mental-health, isolation and short-stay spaces; surge; opening, cleaning, equipment, downtime | integer time-varying capacities + compatibility constraints |
+| **D07 Workforce** | 17 | rosters by grade, breaks, absence, overtime, redeployment, skills, supervision, handover, productivity, interruptions | roster schedules + task-skill matrix + shift/staff random effects |
+| **D08 Diagnostics/support** | 16 | pathology, imaging, transport, processing, reporting, consultation, pharmacy, porters, competing workload, opening hours | component queues and positive task durations |
+| **D09 Queue/resource allocation** | 13 | urgency, ageing, overrides, clinician allocation, resource bundles, pre-emption, reservation, overflow, blocking, tie-breaking | explicit deterministic/probabilistic operating rules |
+| **D10 Clinical trajectories/safety** | 10 | latent clinical state, deterioration, recovery, reassessment, adverse events, mortality, treatment response | multi-state/competing-risk process when in scope |
+| **D11 Patient/carer decisions** | 10 | LWBS, departure after treatment starts, balking, perceived wait, refusal, alternatives, reattendance, carers/transport | time-to-event/choice models |
+| **D12 Staff/organisation behaviour** | 10 | task choice, risk tolerance, communication, cooperation, bed allocation, discharge priority, crowding response, learning | decision rules or locally fitted choice models |
+| **D13 Admission/boarding/inpatient flow** | 17 | admission, specialty, acceptance, ward capacity, staffing, compatibility, elective/non-ED demand, LOS, discharge, cleaning, transport, boarding | ward-level DES boundary |
+| **D14 Discharge/external constraints** | 11 | readiness, medicines, transport, family, home care, rehabilitation, residential care, mental health, repatriation, social barriers | external queues/time-to-event processes |
+| **D15 Networks/disruptions** | 11 | interhospital choice/acceptance, retrieval, diversion, mutual aid, epidemic/weather, failures, workforce shock | optional network/scenario module |
+| **D16 Intervention settings** | 12 | staffing, streaming, diagnostics, senior assessment, discharge coordination, SSU, offload, beds, admission avoidance, community alternatives, fidelity | scenario-controlled changes to mechanisms |
+| **D17 Costs/outcomes** | 14 | workforce, ambulance, diagnostics, facilities, inpatient/community costs, implementation, patient time, utility, horizon, discounting, perspective | simulated resource quantity × unit cost |
+| **D18 Initialisation/simulation/observation** | 20 | initial queues/resources/staff/inpatient state, residual times, warm-up, horizon, replications, RNG, CRN, event ordering, timestamp error, calibration/validation | explicit simulation-control and observation model |
+
+Australian public data are particularly useful for D01–D04 and D18. For example, the 2024–25 national ATS distribution was published as approximately 1.0% resuscitation, 18% emergency, 42% urgent, 34% semi-urgent and 6.1% non-urgent. Because those displayed percentages are rounded and total 101.1%, a simulation probability vector must either use unrounded source data or transparently renormalise them; they should not be entered verbatim as independent probabilities. citeturn18view0
+
+The same source reports that 30% of ED presentations ended in admission and 59% departed without admission or referral, while 4.1% left at their own risk. Admission also varies substantially with age, so a single unconditional 0.30 admission probability would destroy an important dependence. These figures are best used as national marginal checks while the actual admission model is conditioned on local case mix. citeturn18view0turn16view0
+
+The ATS timing rules belong in D04 as policy parameters. The Australasian Triage Scale specifies maximum times of immediate treatment for category 1, then 10, 30, 60 and 120 minutes for categories 2–5, together with category-specific performance thresholds. ACEM also characterises triage as a relatively brief assessment and requires reassessment when clinical status changes. None of those statements supplies the distribution of actual queue waits or the complete distribution of triage service time in a particular ED. citeturn7view2turn7view3
+
+D13 is unusually important because Australian evidence indicates that access block cannot be understood from ED resources alone. In the 25-hospital Queensland cohort, increasing occupancy was associated with increased ED length of stay, but the authors also identified site-specific variation and cautioned against assuming one universally applicable occupancy threshold. In the related DES work, discharge timing, elective/non-acute load and ward-sharing policies changed simulated access block. Accordingly, the model should contain **specialty-specific effective beds and flows rather than a scalar hospital occupancy parameter**. citeturn22view0turn21view1
+
+For physical capacity, the relevant quantity is:
+
+\[
+C_{\mathrm{effective}}(t,p)=
+\#\{\text{spaces open at }t
+\land \text{staffed}
+\land \text{equipped}
+\land \text{compatible with patient }p\}.
+\]
+
+This is deliberately different from nominal bed count. A physically vacant isolation room without appropriate staffing, for example, should not automatically behave as available capacity.
+
+For diagnostics, an end-to-end turnaround time should be decomposed where data allow:
+
+\[
+T_{\mathrm{result}}
+=
+T_{\mathrm{order\rightarrow collection}}
++
+T_{\mathrm{collection}}
++
+T_{\mathrm{transport}}
++
+T_{\mathrm{processing}}
++
+T_{\mathrm{report}}
++
+T_{\mathrm{communication/action}}.
+\]
+
+If a source system supplies only an end-to-end turnaround time, that can be used as a single distribution. It must **not** be combined with separately simulated component times that are already contained within it.
+
+The minimum public-data field set is well aligned with this architecture. AIHW's ED NMDS includes distinct presentation and departure events, transport information and episode-end information, and it treats patients as within the ED data scope until they physically depart. That supports keeping administrative episode status separate from physical location. citeturn16view1
+
+## Behaviour, distributions and dependence
+
+A hybrid ABM earns its complexity only where actions depend on information, interaction or adaptive state. I therefore recommend treating demographics, ATS and complaint as attributes on the patient entity, while reserving agents for decisions whose removal would change the question being studied. Published hybrid ED models likewise use ABM to represent decisions/resource-assignment strategies while DES represents operational flow. citeturn20search34turn13search2
+
+The machine-readable specification contains **12 explicit behavioural-rule families** in [behavioural_rules.json](sandbox:/mnt/data/ed_abm_des_research_package/behavioural_rules.json). The principal ones are:
+
+| Actor and decision | Core baseline | Parameters needing local evidence | DES consequence |
+|---|---|---|---|
+| Patient: leave before assessment | competing time-to-event process while waiting | baseline hazard; effects of elapsed wait, ATS, case mix, crowding, time | cancel waiting state and depart |
+| Patient: leave/refuse after treatment starts | phase-specific cause-specific hazard or discrete decision points | local phase-specific coefficients | cancel permissible pending work; depart |
+| Clinician: next task | emergency override → ATS → longest waiting/FIFO within equal priority → continuity | alternative utility weights only if probabilistic behaviour needed | seize compatible resource bundle |
+| Coordinator: clinician assignment | compatibility + priority + continuity | local assignment preferences | clinician–patient binding |
+| Triage team: reassessment | event-driven on clinical change | local criteria/misclassification | priority update/escalation |
+| ED/QAS senior staff: ambulance escalation | Queensland 30-minute review/escalation structure | fidelity and local operational response | offload/escalation event |
+| Bed manager: allocate bed | feasible compatible set followed by priority/wait rule | specialty/compatibility priorities | bed reservation and transfer |
+| Operations manager: surge | local escalation state machine | local thresholds, response delay, persistence | capacity/roster/routing change |
+| Fast-track team: open/close | fixed-hours baseline; optional hysteretic queue rule | \(Q_{\rm on},Q_{\rm off}\), minimum open time | routing/capacity change |
+| Diagnostic service: job selection | clinical class then FIFO | local priority classes | begin test |
+| Inpatient team: discharge work | empirical readiness/task timing | local discharge behaviour | release bed after departure/cleaning |
+| Target-response behaviour | disabled in core model | only estimate if local data support discontinuity | optional routing/priority action |
+
+The Queensland ambulance rule is one of the few behavioural/operational mechanisms for which a defensible numerical threshold can be inserted without local estimation: the current protocol centres on a less-than-30-minute transfer target, recurrent review of patients remaining on stretchers, and enhanced escalation at prolonged waits. The model should still distinguish **policy fidelity** from the policy itself. citeturn16view3
+
+For patient abandonment, a better baseline than “5% of people leave” is a competing-event survival model:
+
+\[
+h_{i,L}(t)
+=
+h_{0,s(i)}(t)
+\exp\left[
+\beta^\top X_i(t)+b_i
+\right],
+\]
+
+where \(s(i)\) can stratify by ATS/stream, \(X_i(t)\) can contain elapsed wait and time-varying operational information, and \(b_i\) is an optional persistent individual random effect. The scheduled abandonment event disappears when clinical care starts. The coefficients should be estimated locally rather than reverse-engineered from an aggregate “left at own risk” percentage, because the national episode-end proportion contains no information about the temporal hazard generating that outcome. AIHW does provide the aggregate outcome needed for external plausibility checking. citeturn18view0
+
+Arrival intensity can initially be represented as:
+
+\[
+\lambda(t)
+=
+\lambda_0
+H_{h(t)}
+D_{d(t)}
+S_{m(t)}
+P_{\mathrm{holiday}}(t)
+Z_{\mathrm{day}},
+\]
+
+with the deterministic multipliers normalised so they preserve the intended annual total. A non-homogeneous Poisson process is a reasonable **candidate baseline**, not an assumption to defend regardless of data. Local hourly and daily counts should first be checked for overdispersion, residual autocorrelation, clustered events and excess day-to-day variation. Depending on those diagnostics, a renewal model, Cox/doubly-stochastic process, empirical day resampling or explicit surge process may be more appropriate.
+
+Positive task durations should similarly not be assigned one universal family. The recommended sequence is empirical inspection → censoring/truncation assessment → conditional stratification → candidate fit → tail and predictive checking. Candidate distributions include lognormal, gamma and Weibull forms, but an empirical distribution may be preferable where sample size is large. Exact parameterisation must be stored. For example, a lognormal should explicitly state
+
+\[
+\ln T\sim N(\mu,\sigma^2),
+\qquad
+\operatorname{median}(T)=e^\mu,
+\]
+
+rather than merely recording “lognormal(15, 5)”.
+
+At least six different uncertainty concepts must remain distinct:
+
+| Type | What varies | Sampling level |
+|---|---|---|
+| Patient heterogeneity | attributes and latent patient characteristics | once per patient |
+| Event stochasticity | a given patient's stochastic task/event outcomes | per eligible event |
+| Staff/shift heterogeneity | persistent productivity/behaviour differences | staff member or shift |
+| Parameter uncertainty | unknown fitted population parameters | outer-loop posterior/bootstrap draw |
+| Structural uncertainty | alternative model mechanisms | separate model scenario |
+| Measurement error | observed versus true timestamps/codes | observation layer |
+
+A common implementation error is to convert parameter uncertainty into extra patient-level noise. For example, if the mean service time is estimated uncertainly, one should ordinarily draw one candidate mean for an uncertainty replicate and then generate the patients conditional on it—not independently redraw the estimated mean for every patient.
+
+Dependencies are equally important. The [dependencies.csv](sandbox:/mnt/data/ed_abm_des_research_package/dependencies.csv) file contains 30 explicit consistency constraints. The most consequential are joint case mix, ambulance/offload/access-block feedback, diagnostic shared workload, staff-space compatibility, specialty-specific bed compatibility, boarding resource retention, competing abandonment/treatment events and a separate measurement process.
+
+For categorical case mix, the recommended hierarchy is:
+
+\[
+P(Age,ATS,Mode,Complaint,Disposition,\ldots),
+\]
+
+estimated by empirical joint resampling when sufficient data exist, or factorised conditionally into defensible components such as
+
+\[
+P(Age)\,
+P(ATS\mid Age,Mode)\,
+P(Complaint\mid Age,ATS)\,
+P(Disposition\mid Age,ATS,Complaint,\ldots).
+\]
+
+Independent marginal sampling should be avoided. National data show, for example, that admission varies strongly by age, while transport mode and acuity also differ, demonstrating why unconditional marginal draws can create synthetic patients that have the wrong joint structure. citeturn16view0turn18view0
+
+## Illustrative regional-referral configuration
+
+The accompanying [example_inputs.yaml](sandbox:/mnt/data/ed_abm_des_research_package/example_inputs.yaml) is an **illustrative, internally structured input file, not a calibrated model of Cairns Hospital or any other named facility**. It deliberately separates transferred national values, policy values and synthetic placeholders.
+
+The evidence-backed portion is comparatively small:
+
+| Input or target | Example | Status |
+|---|---:|---|
+| ATS 1 probability | 0.00989 | national rounded distribution, renormalised |
+| ATS 2 probability | 0.17804 | national rounded distribution, renormalised |
+| ATS 3 probability | 0.41543 | national rounded distribution, renormalised |
+| ATS 4 probability | 0.33630 | national rounded distribution, renormalised |
+| ATS 5 probability | 0.06034 | national rounded distribution, renormalised |
+| ATS maximum wait | 0/10/30/60/120 min | policy setting |
+| Queensland POST target | <30 min | policy/KPI |
+| Ambulance review interval while delayed | 30 min | Queensland operational rule |
+| prolonged offload escalation point | 60 min | Queensland operational rule |
+| national admission share | ~0.30 | validation/context target |
+| national median time to clinical care | 18 min | validation target |
+| national 90th percentile wait | 118 min | validation target |
+| national seen-on-time proportion | 0.67 | validation target |
+| national median ED LOS | 228 min | validation target |
+| national 90th percentile ED LOS | 676 min | validation target |
+| national 90th percentile admitted ED LOS | 1,137 min | validation target |
+
+The ATS case mix and disposition benchmarks come from 2024–25 Australian public ED data; the timing benchmarks come from AIHW's national waiting-time and ED-duration reporting. citeturn18view0turn16view0turn17view2 The ATS timing thresholds are professional-standard policy values rather than observed queue-time distributions. citeturn7view2turn7view3 The ambulance thresholds are Queensland operational policy. citeturn16view3
+
+The remainder of the exemplar is deliberately synthetic:
+
+| Synthetic example | Value in example file | Interpretation |
+|---|---:|---|
+| Annual ED presentations | 65,000/year | regional-referral scale placeholder |
+| Mean daily activity | 178.1/day | derived from synthetic annual volume |
+| Offload positions | 4 | placeholder |
+| Resuscitation bays | 3 | placeholder |
+| Acute treatment spaces | 18 | placeholder |
+| Fast-track spaces | 8 | placeholder |
+| Isolation-capable spaces | 3 | placeholder |
+| Mental-health spaces | 2 | placeholder |
+| Short-stay beds | 10 | placeholder |
+| Surge positions | 6 | optional placeholder |
+| Initial medical assessment | lognormal median 15 min, \(\sigma=0.55\) | distribution-format example |
+| Clinician review | lognormal median 10 min, \(\sigma=0.50\) | distribution-format example |
+| Cleaning | lognormal median 10 min, \(\sigma=0.35\) | distribution-format example |
+| Lab processing component | lognormal median 60 min, \(\sigma=0.45\) | distribution-format example |
+| X-ray order-to-completion | lognormal median 45 min, \(\sigma=0.50\) | distribution-format example |
+| CT order-to-completion | lognormal median 75 min, \(\sigma=0.45\) | distribution-format example |
+| Specialist response | lognormal median 90 min, \(\sigma=0.65\) | distribution-format example |
+| Inpatient staffed beds | 420 | placeholder |
+| Initial inpatient occupancy | 90% | initialisation placeholder, not a threshold |
+| Warm-up | 28 days | starting simulation-control choice |
+| Analysed horizon | 365 days | simulation-control choice |
+| Initial replications | 100 | starting value; increase to precision target |
+
+Those values are there to demonstrate exact input syntax and interconnection. They should **not** be described as literature-based plausible ranges or adopted for service planning without replacement.
+
+The example specifies the synthetic lognormal assessment time as:
+
+\[
+\ln(T_{\rm assessment}/{\rm min})
+\sim
+N(\ln15,\;0.55^2),
+\]
+
+which makes its mathematical support \(T>0\) explicit. That is substantially safer than describing the input as “15 ± something” and leaving the implementation convention ambiguous.
+
+A useful distinction for all parameter ranges is:
+
+\[
+\text{support}
+\ne
+\text{observed range}
+\ne
+\text{central empirical interval}
+\ne
+\text{CI for a fitted parameter}
+\ne
+\text{scenario range}.
+\]
+
+For the many ED process times for which the public evidence did not supply suitable individual-level observations, the register therefore reports **local data required** rather than fabricating an evidence-based plausible range. This is one of the main findings of the research: public aggregate performance data are rich in outcomes but sparse in the primitive micro-process distributions required for an operational simulator.
+
+The inpatient example is particularly important. The synthetic 90% initial occupancy is only an initial state. After time zero, occupancy must be generated from admissions, transfers, LOS, discharge and bed reopening. It should not be maintained at 90%, nor should an arbitrary “85% safe threshold” be imposed. The Queensland 25-hospital study specifically found that the relation between occupancy and flow varied across facilities. citeturn22view0
+
+## Calibration, validation and local data acquisition
+
+Local parameterisation should proceed in four layers.
+
+First, **measure what is directly measurable**: arrivals, case mix, rosters, staffed spaces, activity durations, diagnostic timestamps, consultation requests, location changes, ambulance milestones, bed requests and inpatient movements. These should not be converted into calibration parameters merely because calibration is computationally convenient.
+
+Second, **fit stochastic input models** to those observations. Service-time fits should retain right-censoring and interruption information; arrivals should be tested for temporal overdispersion; repeated visits should retain person-level clustering; and probability models should preserve the simplex.
+
+Third, **calibrate only latent or genuinely unobserved mechanisms**, such as an abandonment hazard when the exact time of the patient's decision is unknown, staff choice preferences, latent deterioration states, or a measurement-error mechanism.
+
+Fourth, **treat alternative mechanisms as structural uncertainty**, not as another coefficient to optimise until overall LOS matches. Examples include centralised versus clinician-autonomous allocation, whether fast track is dynamic, how inpatient overflow works, whether target-responsive behaviour exists, and whether an external community service is represented explicitly.
+
+The minimum local extraction is set out in [data_requirements.csv](sandbox:/mnt/data/ed_abm_des_research_package/data_requirements.csv). The core relational structure should contain:
+
+| Dataset | Essential fields |
+|---|---|
+| Encounter | pseudonymous encounter/person ID, presentation, triage, clinical-care start, episode end, physical departure, ATS, arrival mode, complaint, diagnosis, disposition |
+| Event log | event ID/type/time, encounter, resource/staff identifier, source system |
+| Locations | physical and administrative location, start/end times |
+| Treatment resources | resource type, compatibility, opening/closure intervals |
+| Rosters | pseudonymous staff ID, role/grade, planned and actual shift, breaks, absence, redeployment |
+| Diagnostics | order, collection, receipt, processing/result and acknowledgement times |
+| Ambulance | hospital arrival, triage, off-stretcher/handover, crew-release milestones |
+| Inpatient | ED link, specialty, ward/bed movements, discharge readiness/departure |
+| Bed state | staffed/open beds by ward and interval, bed availability/cleaning |
+| Costing | quantities, unit costs, price year and whether costs are bundled |
+
+AIHW's national metadata provides a strong starting point for encounter-level definitions, particularly the distinction among clinical-care commencement, episode end and physical departure. citeturn16view1turn17view1 Local extracts should retain higher-resolution operational timestamps where available rather than replacing them with only nationally reported aggregates.
+
+Measurement provenance is not optional. Queensland audit evidence found missing and invalid ambulance offload records, including negative intervals and timestamp/interface problems. Therefore every timestamp ideally carries its source system, whether it was automatically generated or manually entered, its native precision and any later correction. citeturn16view4
+
+A high-quality validation programme should not stop at matching mean ED LOS. It should compare, using an independent period where possible:
+
+\[
+\begin{aligned}
+&\text{arrival counts by hour/day/season},\\
+&\text{ATS and case-mix joint distributions},\\
+&\text{time-to-clinician quantiles by ATS},\\
+&\text{queue length and occupancy distributions},\\
+&\text{POST distribution and ambulance queue size},\\
+&\text{diagnostic turnaround distributions},\\
+&\text{admission probability by case-mix strata},\\
+&\text{decision-to-bed and boarding distributions},\\
+&\text{ED LOS by admission status},\\
+&\text{ward occupancy and discharge time-of-day},\\
+&\text{LWBS by waiting duration and patient stratum},\\
+&\text{staff/resource utilisation and concurrency}.
+\end{aligned}
+\]
+
+National values provide a useful external sense-check, but they should not force a regional Queensland model to reproduce the Australian mean. AIHW's figures pool a heterogeneous set of public EDs and show performance differences by hospital peer group. citeturn17view1turn16view0
+
+Queensland evidence offers additional structural validation. A model that claims to represent access block should be capable of reproducing qualitatively and quantitatively plausible links between downstream bed conditions, ED boarding and ambulance offload without imposing those outcome relationships directly. Recent Queensland work provides empirical benchmarks for those relationships and demonstrates that inpatient processes matter to ED behaviour. citeturn21view1turn22view0turn21view2
+
+Verification should precede calibration. Essential invariants include conservation of patients; no negative queues; no resource double-booking; no patient in two mutually exclusive physical locations; probabilities summing to one; compatible units; correct cancellation of obsolete events; correct resource release after interruption/departure; and equivalence to a reduced pure-DES model when optional ABM decision mechanisms are disabled. The full implementation and experiment should also be reported with enough detail for reproduction, consistent with STRESS principles. citeturn13search15
+
+For Monte Carlo experimentation, the supplied starting configuration uses 100 replications only as an initial value. Replication count should instead be increased until the Monte Carlo confidence interval for the primary comparison reaches a pre-specified precision. Common random numbers are appropriate for paired policy comparisons provided stochastic mechanisms have stable, separate random streams.
+
+Costs should be accumulated from simulated resource use rather than applied merely as a cost per ED attendance when the purpose is economic comparison of operational changes. Local payroll, finance and procurement data are preferable; IHACPA's National Hospital Cost Data Collection provides an Australian public-hospital costing reference for broader unit-cost provenance. Bundled bed-day or activity-based costs must not be added to separately modelled staff and diagnostic costs without an explicit de-duplication rule. citeturn14search11
+
+QALYs and longer-term outcomes should remain outside the core model unless there is a defensible causal link from an ED process change—such as delay or treatment timing—to the subsequent health state. Operational improvement alone is not sufficient evidence for assigning a QALY gain.
+
+## Research artefacts, evidence gaps and conclusions
+
+The research package translates the report into interoperable modelling artefacts:
+
+| Artefact | Content |
+|---|---|
+| **[parameters.csv](sandbox:/mnt/data/ed_abm_des_research_package/parameters.csv)** | 248 parameter families with domain, role, units, representation, distribution guidance, examples, provenance and local-data needs |
+| **[coverage_matrix.csv](sandbox:/mnt/data/ed_abm_des_research_package/coverage_matrix.csv)** | 41 model elements mapped to parameter families |
+| **[dependencies.csv](sandbox:/mnt/data/ed_abm_des_research_package/dependencies.csv)** | 30 explicit dependence and consistency requirements |
+| **[behavioural_rules.json](sandbox:/mnt/data/ed_abm_des_research_package/behavioural_rules.json)** | 12 ABM decision mechanisms with triggers, information, equations and resulting DES events |
+| **[example_inputs.yaml](sandbox:/mnt/data/ed_abm_des_research_package/example_inputs.yaml)** | fully labelled illustrative regional-referral configuration |
+| **[data_requirements.csv](sandbox:/mnt/data/ed_abm_des_research_package/data_requirements.csv)** | proposed linked local-data schema |
+| **[sources.csv](sandbox:/mnt/data/ed_abm_des_research_package/sources.csv)** | source catalogue with relevance and transferability notes |
+| **[references.bib](sandbox:/mnt/data/ed_abm_des_research_package/references.bib)** | bibliography suitable for the modelling project |
+| **[search_log.txt](sandbox:/mnt/data/ed_abm_des_research_package/search_log.txt)** | research scope and evidence limitations |
+| **[complete ZIP package](sandbox:/mnt/data/ed_abm_des_deep_research_package.zip)** | all files together |
+
+The **best-supported inputs before obtaining hospital-level data** are definitions and policy settings: ATS categories and timing targets, Queensland ambulance-transfer rules, national ED timestamp semantics, national marginal case mix and broad validation outcomes. citeturn7view2turn16view3turn16view1turn18view0
+
+The **highest-priority local measurements** are arrival profiles and joint case mix; actual staffing and breaks; compatible staffed treatment capacity; clinician contact durations; detailed diagnostic components; specialist-response processes; admission decision and specialty allocation; ward-specific effective capacity, competing admissions, LOS and discharge timing; ambulance offload and crew-release events; and patient-abandonment event timing. These parameters sit on the causal pathways that produce the major ED outputs and cannot be recovered reliably from aggregate ED LOS alone.
+
+The **highest-priority structural uncertainties** are clinician/resource assignment, dynamic streaming, pre-emption, boarding workload, ward-sharing rules, behavioural adaptation to crowding, external-service constraints and patient abandonment. They should be compared as alternative structures rather than hidden inside broad calibration coefficients.
+
+The **most important evidence warning** is that public ED statistics frequently describe outcomes rather than primitive mechanisms. The fact that Australian patients had a median 18-minute wait in 2024–25 does not tell us the duration of medical assessment, the staffing level, the diagnostic process or the queue discipline that generated that wait. Likewise, the national 3-hour-48-minute median ED stay is a system-level result, not a suitable patient-level “LOS distribution” for a model that already simulates the system. citeturn16view0turn17view2
+
+The **most important boundary conclusion** is that a serious Australian ED model should not terminate at the admission decision. Queensland evidence indicates that access block, ward occupancy, ambulance ramping and ED throughput are coupled, and recent simulation work demonstrates substantial effects from inpatient-side changes. The minimum credible boundary for access-block questions therefore extends through ward-compatible bed creation and physical departure from the ED. citeturn21view1turn22view0turn21view2
+
+The **most important ABM conclusion** is almost the inverse: do not turn ordinary heterogeneity into unnecessary agency. The minimum model can remain predominantly DES. ABM should be added where an actor observes system state and makes a consequential choice—patient abandonment, task selection, resource allocation, escalation, bed negotiation or adaptive operational policy. That division keeps the hybrid model interpretable and makes it possible to switch behavioural mechanisms off, recover a simpler DES limiting case and determine whether added behavioural complexity actually changes decisions. Published hybrid ED work provides precedent for precisely this use of agent-based decision logic alongside DES patient flow. citeturn20search34turn13search2
+
+Finally, no current New Zealand operational parameter set has been imported merely to fill gaps. Cross-country values should be represented as a separate comparator stratum with their own definitions and observation period rather than silently pooled with Australian inputs. Similarly, First Nations status, language, remoteness and socioeconomic variables are retained where appropriate for equity and access analyses, but should not be transformed into unsupported biological or behavioural causal mechanisms.
+
+Taken together, the resulting specification is sufficiently complete to define the **schema and mechanics** of a combined ED ABM–DES model, and sufficiently explicit to populate a synthetic prototype. It is **not yet a locally calibrated operational digital twin**. The transition from the former to the latter depends principally on obtaining linked, timestamp-rich ED, roster, ambulance and inpatient microdata—not on finding more aggregate waiting-time statistics.
