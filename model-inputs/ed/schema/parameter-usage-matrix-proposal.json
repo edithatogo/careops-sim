@@ -555,8 +555,8 @@
       "proposed_config_key": "durations.handover",
       "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
       "unit_contract": {
-        "class": "categorical_or_structured",
-        "proposal": "no single scalar unit; every numeric leaf declares its unit and category coding"
+        "class": "time",
+        "proposal": "s canonical input; convert to integer ED SimTime ticks"
       },
       "profile_coverage": {
         "stage": "MVP_candidate",
@@ -1355,8 +1355,8 @@
       "proposed_config_key": "experiment.initialization",
       "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI",
       "unit_contract": {
-        "class": "schedule_or_interval",
-        "proposal": "absolute instants carry explicit timezone; intervals use declared ED clock unit"
+        "class": "categorical_or_structured",
+        "proposal": "initial occupancy/state record; each numeric leaf declares its own unit and coding"
       },
       "profile_coverage": {
         "stage": "MVP_candidate",
@@ -1483,8 +1483,8 @@
       "proposed_config_key": "experiment.observationcensoringwindows",
       "consumer": "Proposed Kairos 22 CLI; Kairos 21 calibration",
       "unit_contract": {
-        "class": "probability_or_conditional_table",
-        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+        "class": "schedule_or_interval",
+        "proposal": "observation and censoring windows use declared time units; preserve event and censoring semantics"
       },
       "profile_coverage": {
         "stage": "hardened_v1",
@@ -1611,8 +1611,8 @@
       "proposed_config_key": "observations.missingness",
       "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
       "unit_contract": {
-        "class": "probability_or_conditional_table",
-        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+        "class": "categorical_or_structured",
+        "proposal": "explicit observed-data missingness metadata and mapping policy; numeric leaves declare units if present"
       },
       "profile_coverage": {
         "stage": "hardened_v1",
@@ -1627,8 +1627,8 @@
       "proposed_config_key": "observations.censoring",
       "consumer": "Proposed Kairos 04 Arrow trace mapping; Kairos 21 calibration",
       "unit_contract": {
-        "class": "probability_or_conditional_table",
-        "proposal": "dimensionless values in [0,1], denominators/conditioning explicit"
+        "class": "categorical_or_structured",
+        "proposal": "explicit observed-trace censoring semantics and mapping; numeric leaves declare units if present"
       },
       "profile_coverage": {
         "stage": "hardened_v1",
