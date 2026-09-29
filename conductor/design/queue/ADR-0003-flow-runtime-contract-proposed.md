@@ -1,6 +1,6 @@
 # ADR-0003: Additive FlowRuntime and queue API boundary
 
-- Status: **Q0.1 architecture direction approved by Kairos owner; Q0.2/Q0.3 semantics and implementation gates remain open**
+- Status: **Q0.1 architecture direction approved by Kairos owner; Q0.2 and Q0.3 design contracts subsequently accepted; implementation gates remain open**
 - Date: 2026-09-28
 - CareOps track: `des_queue_preemption_20260925`, Q0.1
 - Proposed by: CareOps Sim coordinator
@@ -26,7 +26,9 @@ tie, preemption and same-tick semantics. Q0.3 owns event-kind allocation,
 lifecycle telemetry, snapshot encoding and event/transition join semantics. The
 decision authorizes these settled directions to proceed into those design phases;
 it does not authorize queue implementation, alter upstream task status, or waive
-D2, Q0.2/Q0.3, implementation testing, or release review.
+D2, implementation testing, or release review. Q0.2 and Q0.3 design decisions
+were later accepted in their parent join records; the Q0.1 decision did not
+prejudge those reviews.
 
 ## Decision proposed
 
@@ -229,8 +231,9 @@ current counter and generation behavior prevents the broad checked-counter and
 stale-handle claims, and (c) both DES and ABM roots must be protected. This ADR
 incorporates those findings. These reviews are not upstream maintainer
 signoffs. The owner-approved Q0.1 architecture dispositions are recorded in
-the linked decision receipt; Q0.2/Q0.3 semantics, implementation review, and
-release gates remain open.
+the linked decision receipt. Q0.2 and Q0.3 design semantics were subsequently
+accepted in their parent join records; implementation review and release gates
+remain open.
 
 ## Source evidence at the reviewed pin
 
