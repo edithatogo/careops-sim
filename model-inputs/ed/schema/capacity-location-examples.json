@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "status": "proposed",
+  "note": "Every case is synthetic only: values are illustrative test data, not empirical observations and not recommended generic ED defaults.",
+  "cases": [
+    {
+      "case_id": "synthetic-capacity-difference",
+      "synthetic_only": true,
+      "record": {
+        "schema_version": 1,
+        "status": "proposed",
+        "capacity": {
+          "unit": "treatment_space",
+          "equipment": [
+            {
+              "capability": "continuous_monitoring",
+              "status": "available"
+            },
+            {
+              "capability": "portable_ultrasound",
+              "status": "unknown",
+              "reason": "Synthetic fixture demonstrates explicit unknown capability."
+            }
+          ],
+          "physical_status": "known",
+          "physical_count": 12,
+          "availability_status": "known",
+          "open_count": 10,
+          "staffed_count": 8
+        },
+        "locations": [
+          {
+            "location_id": "loc-triage",
+            "name": "Triage",
+            "zone_id": "zone-entry"
+          },
+          {
+            "location_id": "loc-treatment-a",
+            "name": "Treatment Area A",
+            "zone_id": "zone-treatment"
+          }
+        ],
+        "routes": [
+          {
+            "from_location_id": "loc-triage",
+            "to_location_id": "loc-treatment-a",
+            "distance": {
+              "value": 18.5,
+              "unit": "m"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "synthetic-unknown-capacity-minimal-route",
+      "synthetic_only": true,
+      "record": {
+        "schema_version": 1,
+        "status": "proposed",
+        "capacity": {
+          "unit": "treatment_space",
+          "equipment": [
+            {
+              "capability": "cardiac_monitor",
+              "status": "unknown",
+              "reason": "Synthetic unknown capability."
+            }
+          ],
+          "physical_status": "unknown",
+          "physical_count": null,
+          "availability_status": "unknown",
+          "open_count": null,
+          "staffed_count": null,
+          "availability_reason": "Unknown availability must not imply that any space is open or staffed."
+        },
+        "locations": [
+          {
+            "location_id": "loc-waiting",
+            "name": "Waiting Area",
+            "zone_id": "zone-public"
+          },
+          {
+            "location_id": "loc-imaging",
+            "name": "Imaging",
+            "zone_id": "zone-diagnostics"
+          }
+        ],
+        "routes": [
+          {
+            "from_location_id": "loc-waiting",
+            "to_location_id": "loc-imaging",
+            "distance": {
+              "value": 0,
+              "unit": "m"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

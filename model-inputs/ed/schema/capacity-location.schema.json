@@ -1,0 +1,322 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://careops-sim.invalid/schemas/capacity-location.schema.json",
+  "title": "Proposed CareOps ED capacity and minimal location record",
+  "description": "Proposed, geometry-free model-input shape. It defines quantities and identifiers, not recommended hospital defaults or an E0/C0 runtime API.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "capacity",
+    "locations",
+    "routes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "status": {
+      "const": "proposed"
+    },
+    "capacity": {
+      "$ref": "#/$defs/capacity"
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/location"
+      }
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/route"
+      }
+    }
+  },
+  "$defs": {
+    "capacity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unit",
+        "physical_status",
+        "physical_count",
+        "availability_status",
+        "open_count",
+        "staffed_count",
+        "equipment"
+      ],
+      "properties": {
+        "unit": {
+          "const": "treatment_space"
+        },
+        "physical_status": {
+          "enum": [
+            "known",
+            "unknown"
+          ]
+        },
+        "physical_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "availability_status": {
+          "enum": [
+            "known",
+            "unknown"
+          ]
+        },
+        "open_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "staffed_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "availability_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "equipment": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/equipment"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "physical_status": {
+                "const": "known"
+              }
+            },
+            "required": [
+              "physical_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "physical_count": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "physical_status": {
+                "const": "unknown"
+              }
+            },
+            "required": [
+              "physical_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "physical_count": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability_status": {
+                "const": "known"
+              }
+            },
+            "required": [
+              "availability_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "open_count": {
+                "type": "integer"
+              },
+              "staffed_count": {
+                "type": "integer"
+              }
+            },
+            "not": {
+              "required": [
+                "availability_reason"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability_status": {
+                "const": "unknown"
+              }
+            },
+            "required": [
+              "availability_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "availability_reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "open_count": {
+                "type": "null"
+              },
+              "staffed_count": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "availability_reason"
+            ]
+          }
+        }
+      ]
+    },
+    "equipment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capability",
+        "status"
+      ],
+      "properties": {
+        "capability": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "available",
+            "unavailable",
+            "unknown"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "unknown"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "reason"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "available",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "reason"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "location_id",
+        "name",
+        "zone_id"
+      ],
+      "properties": {
+        "location_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "zone_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from_location_id",
+        "to_location_id",
+        "distance"
+      ],
+      "properties": {
+        "from_location_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to_location_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "distance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "unit"
+          ],
+          "properties": {
+            "value": {
+              "type": "number",
+              "minimum": 0
+            },
+            "unit": {
+              "const": "m"
+            }
+          }
+        }
+      }
+    }
+  }
+}
