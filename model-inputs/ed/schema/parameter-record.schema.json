@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://careops-sim.invalid/schemas/parameter-record.schema.json",
+  "title": "Proposed CareOps ED catalogue record",
+  "description": "Proposed catalogue-record contract. The namespace pattern does not replace validation against the complete parameter ID registry.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "status", "parameter_id", "semantic_name", "definition",
+    "owner", "consumer", "subsystem", "entity_task_pathway", "applicability",
+    "mode", "type", "unit", "granularity", "population", "period", "site",
+    "conditioning", "value_kind", "value_status", "physical_limits",
+    "observed_sample_range", "generic_scenario_range", "uncertainty_interval",
+    "calibration_bounds", "evidence_class", "confidence_limitations", "rationale",
+    "provenance", "dependence", "variability_epistemic", "calibration"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "status": { "const": "proposed" },
+    "parameter_id": {
+      "type": "string",
+      "pattern": "^ed\\.(demandcasemix|despathways|durations|resources|abmstaffbehavior|spatialabm|patientbehavior|hospitalinterfaces|optionalcomplexity|experimentcontrols|measurementmapping)\\.[a-z0-9]+$"
+    },
+    "semantic_name": { "type": "string", "minLength": 1 },
+    "definition": { "type": "string", "minLength": 1 },
+    "owner": { "type": "string", "minLength": 1 },
+    "consumer": { "type": "string", "minLength": 1 },
+    "subsystem": { "enum": ["DES", "ABM", "shared", "measurement", "experiment"] },
+    "entity_task_pathway": { "type": ["string", "array"], "minLength": 1 },
+    "applicability": { "type": ["string", "object"] },
+    "mode": { "type": ["string", "array"] },
+    "type": { "type": "string", "minLength": 1 },
+    "unit": { "type": "string", "minLength": 1 },
+    "granularity": { "type": "string", "minLength": 1 },
+    "population": { "type": "string", "minLength": 1 },
+    "period": { "type": "string", "minLength": 1 },
+    "site": { "type": "string", "minLength": 1 },
+    "conditioning": { "type": ["string", "object", "array"] },
+    "value_kind": {
+      "enum": ["fixed_constant", "categorical_rule", "schedule_table", "graph", "empirical_sample", "parametric_distribution", "regression_hazard", "structured_policy", "measurement", "output"]
+    },
+    "value_status": { "$ref": "#/$defs/valueState" },
+    "value": {},
+    "physical_limits": { "$ref": "#/$defs/rangeState" },
+    "observed_sample_range": { "$ref": "#/$defs/rangeState" },
+    "generic_scenario_range": { "$ref": "#/$defs/rangeState" },
+    "uncertainty_interval": { "$ref": "#/$defs/rangeState" },
+    "calibration_bounds": { "$ref": "#/$defs/rangeState" },
+    "reference_default": {},
+    "distribution": { "$ref": "#/$defs/distribution" },
+    "evidence_class": { "enum": ["observed", "published", "fitted", "elicited", "synthetic_assumption", "not_yet_assessed"] },
+    "confidence_limitations": { "type": "string", "minLength": 1 },
+    "rationale": { "type": "string", "minLength": 1 },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "dependence": { "$ref": "#/$defs/dependence" },
+    "variability_epistemic": { "$ref": "#/$defs/uncertaintyDescription" },
+    "calibration": { "$ref": "#/$defs/calibration" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "value_status": { "properties": { "status": { "const": "known" } }, "required": ["status"] } }, "required": ["value_status"] },
+      "then": { "required": ["value"] }
+    },
+    {
+      "if": { "properties": { "value_status": { "properties": { "status": { "enum": ["unknown", "not_applicable", "deferred"] } }, "required": ["status"] } }, "required": ["value_status"] },
+      "then": { "not": { "required": ["value"] } }
+    },
+    {
+      "if": { "properties": { "value_kind": { "const": "parametric_distribution" } }, "required": ["value_kind"] },
+      "then": { "required": ["distribution"] }
+    }
+  ],
+  "$defs": {
+    "valueState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["known", "unknown", "not_applicable", "deferred"] },
+        "reason": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        { "if": { "properties": { "status": { "enum": ["unknown", "not_applicable", "deferred"] } }, "required": ["status"] }, "then": { "required": ["reason"] } },
+        { "if": { "properties": { "status": { "const": "known" } }, "required": ["status"] }, "then": { "not": { "required": ["reason"] } } }
+      ]
+    },
+    "rangeState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "provenance", "rationale"],
+      "properties": {
+        "status": { "enum": ["known", "unknown", "not_applicable", "deferred"] },
+        "minimum": {}, "maximum": {}, "values": {},
+        "unit": { "type": "string", "minLength": 1 },
+        "provenance": { "type": "string", "minLength": 1 },
+        "rationale": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        { "if": { "properties": { "status": { "const": "known" } }, "required": ["status"] }, "then": { "anyOf": [{ "required": ["minimum", "maximum"] }, { "required": ["values"] }] } },
+        { "if": { "properties": { "status": { "enum": ["unknown", "not_applicable", "deferred"] } }, "required": ["status"] }, "then": { "required": ["reason"], "not": { "anyOf": [{ "required": ["minimum"] }, { "required": ["maximum"] }, { "required": ["values"] }] } } }
+      ]
+    },
+    "distribution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["family", "parameterization", "support", "sampler_version"],
+      "properties": {
+        "family": { "type": "string", "minLength": 1 },
+        "parameterization": { "type": "object", "minProperties": 1 },
+        "support": {}, "truncation": {}, "rounding": {}, "mixture_point_mass": {},
+        "conditioning": {}, "sampler_version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source", "version", "location", "licence_access", "retrieved_at", "content_hash", "transformation", "sample_size", "exclusions_censoring", "fit_diagnostics", "holdout_evidence", "transfer_limits"],
+      "properties": {
+        "source": { "type": "string", "minLength": 1 }, "version": { "type": "string", "minLength": 1 },
+        "location": { "type": "string", "minLength": 1 }, "licence_access": { "type": "string", "minLength": 1 },
+        "retrieved_at": { "type": ["string", "null"] }, "content_hash": { "type": ["string", "null"] },
+        "transformation": { "type": "string", "minLength": 1 }, "sample_size": { "type": ["integer", "null"], "minimum": 0 },
+        "exclusions_censoring": { "type": "string", "minLength": 1 }, "fit_diagnostics": { "type": "string", "minLength": 1 },
+        "holdout_evidence": { "type": "string", "minLength": 1 }, "transfer_limits": { "type": "string", "minLength": 1 }
+      }
+    },
+    "dependence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["groups", "latent_factors_correlations", "temporal_persistence", "conditional_sampling_order", "independence_assumption"],
+      "properties": {
+        "groups": { "type": ["array", "string"] }, "latent_factors_correlations": { "type": ["array", "string", "object"] },
+        "temporal_persistence": { "type": ["string", "object"] }, "conditional_sampling_order": { "type": ["array", "string"] },
+        "independence_assumption": { "type": "string", "minLength": 1 }
+      }
+    },
+    "uncertaintyDescription": {
+      "type": "object", "additionalProperties": false,
+      "required": ["within_run_variability", "epistemic_uncertainty", "sampling_level", "seed_purpose"],
+      "properties": {
+        "within_run_variability": { "type": "string", "minLength": 1 }, "epistemic_uncertainty": { "type": "string", "minLength": 1 },
+        "sampling_level": { "type": "string", "minLength": 1 }, "seed_purpose": { "type": "string", "minLength": 1 }
+      }
+    },
+    "calibration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "rationale", "feasible_bounds_reference", "observational_targets"],
+      "properties": {
+        "status": { "enum": ["fixed", "calibratable", "unidentifiable", "sensitivity_only", "deferred"] },
+        "rationale": { "type": "string", "minLength": 1 }, "feasible_bounds_reference": { "type": "string", "minLength": 1 },
+        "observational_targets": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
