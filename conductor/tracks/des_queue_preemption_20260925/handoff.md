@@ -2,23 +2,24 @@
 
 ## Current state
 
-Specification, phased plan, test matrix, risks and ownership boundaries are
-prepared for Kairos Track 03. Q0.1 architecture/compatibility is accepted with
-the Kairos owner disposition and local evidence in
-`conductor/evidence/q0.1-phase-acceptance-20260929.md`. The Kairos development
-branch is synchronized with current upstream and pinned locally at
-`25177e5644ecb132c4df2cba1b4a0aeed1d08cb6`; it contains Q0.1 design documents,
-not queue runtime implementation.
+Q0.1 architecture/compatibility is accepted with the Kairos owner disposition
+and local evidence in `conductor/evidence/q0.1-phase-acceptance-20260929.md`.
+The first bounded Q0.2 leaf (`Q0.2.queue`) is accepted and committed as a
+synthetic design-stage fixture; see
+`conductor/evidence/q0.2-priority-fifo-leaf-acceptance-20260929.md`. Kairos is
+synchronized with `origin/main` at `384e8546d69f9cbf2746fcb2ab646263256e6dec`
+and pinned locally at `4d51b576802c5194f55df056ce5100aebdbc9361`. No queue
+runtime implementation exists yet.
 
 ## Next implementation action
 
-Q0.2 is next: prepare and review the bounded queue, boundary, strategy, and
-reference packets listed in the MVP work breakdown; validate primary SimPy
-semantics, reconcile supplied report 27, and write executable fixture
-specifications with explicit intentional differences. Q0.3 then freezes event
-IDs and lifecycle joins; Q0.4 reviews the contract phase. Start Q1 implementation
-only after Q0 closeout and D2 hosted-CI readiness. All runtime implementation
-phases Q1-Q5 remain open.
+Continue Q0.2 with `Q0.2.boundaries`, then `Q0.2.strategies`, then
+`Q0.2.reference`, as ordered by the reviewed MVP workpack. Reconcile supplied
+report 27, verify primary SimPy semantics, and specify all boundary/strategy
+cases with explicit intentional differences. Q0.3 then freezes event IDs and
+lifecycle joins; Q0.4 reviews the contract phase. Start Q1 implementation only
+after Q0 closeout and D2 hosted-CI readiness. All runtime implementation phases
+Q1-Q5 remain open.
 
 ## Evidence to carry forward
 
