@@ -2,25 +2,29 @@
 
 ## Current state
 
-Q0.1 architecture/compatibility is accepted with the Kairos owner disposition
-and local evidence in `conductor/evidence/q0.1-phase-acceptance-20260929.md`.
-The first bounded Q0.2 leaf (`Q0.2.queue`) is accepted and committed as a
-synthetic design-stage fixture; see
-`conductor/evidence/q0.2-priority-fifo-leaf-acceptance-20260929.md`. Kairos is
-also synchronized with `origin/main` at `384e8546d69f9cbf2746fcb2ab646263256e6dec`
-and pinned locally at `481dab069f160194754613dc5850e0b7777e6033`. The
-`Q0.2.boundaries` synthetic fixture leaf is accepted; see
-`conductor/evidence/q0.2-boundaries-leaf-acceptance-20260930.md`. No queue runtime
-implementation exists yet.
+Q0.1 architecture/compatibility is accepted with local owner disposition and
+`conductor/evidence/q0.1-phase-acceptance-20260929.md`. Q0.2.queue,
+Q0.2.boundaries and Q0.2.strategies synthetic fixture leaves are integrated;
+see their parent evidence records. The SimPy 4.1.2 reference/difference table is
+committed in Kairos at `4811af0d4a9e3e392232c95e62f09980e85316be`; its independent
+review is pending. Kairos remains synced with `origin/main` at
+`384e8546d69f9cbf2746fcb2ab646263256e6dec` and is pinned at the reference-table
+commit. There is no queue runtime implementation.
+
+Q0.2 is still open. Before its joined review, add a trace for selecting the
+latest admission among equally urgent eligible victims and settle a configurable
+same-tick Flow transition budget. Current Kairos source has caller-supplied
+`max_events`, but no per-tick Flow transition/notification budget; prose alone
+does not satisfy the guardrail requirement. Then complete Q0.2 join review,
+Q0.3 event IDs/lifecycle joins, and Q0.4 phase review. Q1 remains gated on Q0
+closeout and D2 hosted-CI readiness.
 
 ## Next implementation action
 
-Continue Q0.2 with `Q0.2.strategies`, then `Q0.2.reference`, as ordered by the
-reviewed MVP workpack. Reconcile supplied report 27, verify primary SimPy
-semantics, and specify all strategy cases with explicit intentional differences.
-Q0.3 then freezes event IDs and
-lifecycle joins; Q0.4 reviews the contract phase. Start Q1 implementation only
-after Q0 closeout and D2 hosted-CI readiness. All runtime implementation phases
+Prepare a bounded Luna-sized Q0.2 guardrail packet after reference review and
+Kairos source inspection are recorded. Freeze a deterministic victim-tie trace
+and explicit finite per-tick budget semantics with a small test cap. Do not begin
+Q1 until the Q0.2 fixture joins and Q0.3/Q0.4 are accepted. All runtime phases
 Q1-Q5 remain open.
 
 ## Evidence to carry forward

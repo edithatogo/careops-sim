@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-29",
+  "updated_at": "2026-09-30",
   "active_track": "des_queue_preemption_20260925",
   "active_phase": "Q0",
-  "next_action": "Q0.1 architecture/compatibility is accepted. Q0.2.queue and Q0.2.boundaries synthetic fixture leaves are accepted; see conductor/evidence/q0.2-priority-fifo-leaf-acceptance-20260929.md and conductor/evidence/q0.2-boundaries-leaf-acceptance-20260930.md. Kairos is synced through origin/main 384e8546d69f9cbf2746fcb2ab646263256e6dec and pinned locally at 481dab069f160194754613dc5850e0b7777e6033. Q0.2 remains open: next is Q0.2.strategies, then Q0.2.reference; Q0.3 event IDs/lifecycle joins and Q0.4 phase review follow. The global serial scheduler currently selects P0.2 first; parallel preparation exposes P0.2 and eligible Q work as separate candidates, subject to packet prerequisites/reservations. Prepare reviewed Luna-sized packets and coordinator-review every result. Do not begin Q1 implementation until Q0.2-Q0.4 closeout and D2 hosted-CI readiness. P0.1 research coverage is accepted. P0.2 parameter schema and mapping work remains open: accepted leaves do not accept the proposed catalogue/matrix; E0/C0 interface-owner review, accepted mapping changes, original manual walkthrough, capacity arithmetic, and route endpoint validation remain prerequisites to P0.3 or schema/API freeze. Kairos changes remain local/unpushed; there is no PR or hosted Actions evidence. Parent GitHub creation remains gated on D2.",
+  "next_action": "Q0.1, Q0.2.queue, Q0.2.boundaries, and Q0.2.strategies fixture leaves are integrated; see their acceptance records. Kairos now includes a committed SimPy 4.1.2 API-reference comparison at 4811af0d4a9e3e392232c95e62f09980e85316be; independent review is pending. Q0.2 remains open: add/verify victim tie-break trace coverage and resolve a configurable same-tick transition budget because current Kairos source has only caller-supplied max_events and no per-tick Flow guard. Then run Q0.2 joined review, Q0.3 event IDs/lifecycle joins, and Q0.4 phase review. Do not begin Q1 until Q0 closeout and D2 hosted-CI readiness. Global serial scheduler selects P0.2; preserve its pending E0/C0 owner review and original manual walkthrough gates. GitHub creation remains gated on D2.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/index.md",
@@ -77,10 +77,11 @@
     "conductor/evidence/q0.1-current-source-review-20260929.md",
     "conductor/evidence/q0.1-phase-acceptance-20260929.md",
     "conductor/evidence/q0.2-priority-fifo-leaf-acceptance-20260929.md",
+    "conductor/evidence/q0.2-strategies-leaf-acceptance-20260930.md",
     "conductor/evidence/q0.2-boundaries-leaf-acceptance-20260930.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "481dab069f160194754613dc5850e0b7777e6033",
+    "libs/kairos": "4811af0d4a9e3e392232c95e62f09980e85316be",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   }
 }
