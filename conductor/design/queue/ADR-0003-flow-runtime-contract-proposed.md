@@ -5,7 +5,7 @@
 - CareOps track: `des_queue_preemption_20260925`, Q0.1
 - Proposed by: CareOps Sim coordinator
 - Required review: Kairos Tracks 01 (core/state), 03 (Flow/DES/ABM), and 25 (API compatibility)
-- Reviewed Kairos source commit: `339af4e7365e70ad7e67fe3e934e4fb215fbaf8b`
+- Reviewed Kairos source commit: `0baa8c7f26ecf9a107d69cd971652ae66bab13d7`
 - Parent submodule pin: `libs/kairos`
 
 ## Context
@@ -68,12 +68,15 @@ The proposed surface uses typed opaque newtypes:
 Callers do not construct or mutate internal queue/allocation components. All
 Flow-owned commands validate liveness, state, and time before state changes.
 `Scheduler::schedule` currently increments sequence/index/stat counters
-unchecked, while `World::despawn` wraps the entity generation. FlowRuntime
-cannot promise that these existing Track 01 limits are overflow-safe while
-consuming those APIs unchanged. A counter-safe release contract requires Track
-01 owner review and either additive checked core/state APIs or a supported-use
-limit that prevents reaching wrap. A local `FlowError` cannot undo a wrapped
-counter.
+unchecked, while `World::despawn` wraps the entity generation. The Q0.1 runtime
+proposal specifies a supported-use envelope: a private, fresh runtime rejects
+any operation beyond `u32::MAX` successful scheduled events, entity creations,
+or entity despawns, with every mutation routed through its facade. This bounds
+the unchecked counters and generations in supported Flow use without claiming
+that the underlying APIs are globally overflow-safe. Track 01 must review the
+assumptions and cleanup contract before implementation; broader checked
+core/state APIs would require separate upstream work. A local `FlowError`
+cannot undo a wrapped counter if callers bypass the facade.
 
 Past-time admission is a Flow-boundary error enforced before calling
 `Scheduler::schedule`; the current raw scheduler accepts past times and can
@@ -91,25 +94,24 @@ callbacks or promise synchronous grant. Runtime state changes occur only in
 deterministic dispatch. Calling code observes queue/allocation state through
 read-only runtime queries and ordered lifecycle records.
 
-### 3. Keep resumable behavior owned; leave codec design provisional
+### 3. Keep continuation context owned; defer portable checkpoint codecs
 
 Interruptible work must not make a borrowed pointer, closure, Python object, or
-unversioned `Any` value into a portable checkpoint contract. The proposed
-direction is a registered continuation key plus owned, versioned context data;
-whether this uses a runtime-local codec registry, a typed Rust context with
-codecs only at snapshot boundaries, or another Track 01/03-compatible design
-remains open. `ContextCodecId`, payload encoding and handler-registration
-signatures are provisional, not current Kairos capabilities or a Q0.1 freeze.
-Handler implementations remain Rust code in the owning model/adapter.
+unversioned `Any` value into a portable checkpoint contract. The Q0.1 codec
+proposal selects one typed, owned, in-memory continuation context within the
+shared FlowRuntime, with deterministic registration identity and explicit
+lifecycle. It does not add `serde`, a codec registry, public serialization API,
+or portable checkpoint claims. Handler implementations remain Rust code in
+the owning model/adapter; exact handler-registration signatures remain a Track
+03 review item.
 
-The current `ComponentRegistry` remains an in-memory type-erased store, not a
-serialization format, and it has no operation to remove an entity from every
-registered component store. This ADR does not define snapshot bytes or
-checkpoint compatibility. A Flow-owned typed insertion/despawn facade must
-retain cleanup functions so despawning an entity removes all components and
-associated queue/work state without changing Track 01 code; Track 01 must review
-that ownership strategy. Track 01 and Track 22 review later snapshot/restore
-encoding with Q0.3/Q4; no cross-version persistent save-file promise follows.
+The current `kairo-ecs-state::WorldSnapshot` is a deterministic view of live
+entity IDs only; it omits component values, scheduler state, RNG state, Flow
+queues/work, and behavior registrations. The Track 22 CLI checkpoint and
+resume commands are scaffold surfaces, not complete save/restore semantics.
+Track 22 owns the later versioned portable checkpoint contract, coordinated
+with Tracks 01, 03, 04, and 25. No second Flow snapshot standard or
+cross-version persistent save-file promise follows from this ADR.
 
 ### 4. Preserve scheduler and ownership boundaries
 
@@ -213,13 +215,14 @@ does not declare Track 25 approval.
 ## Review questions for owning tracks
 
 1. **Track 01:** Confirm a DES-owned facade can compose one scheduler, world and
-   registry while consuming Track 01 APIs only; resolve checked scheduling,
-   counter/generation overflow limits, and Flow-owned cleanup of every typed
-   component on despawn. Existing scheduler/world APIs do not provide these
-   guarantees.
+   registry while consuming Track 01 APIs only; review the private-runtime
+   `u32::MAX` operation caps and Flow-owned typed cleanup hooks. The caps bound
+   supported facade use; they do not change global core/state guarantees.
 2. **Track 03:** Approve a new Flow behavior adapter/context with read-only
-   shared state and buffered checked commands; specify event-kind-to-handler
-   routing and how it avoids reusing `BehaviorSimulation`'s separate runtime.
+   shared state, owned in-memory continuation context, and buffered checked
+   commands; specify the dependency and deterministic event-kind-to-handler
+   dispatch route and how it avoids reusing `BehaviorSimulation`'s separate
+   runtime.
 3. **Track 25:** Add/classify the missing exact DES protected root, then confirm
    experimental/additive classification, required API review, legacy
    compatibility fixtures, and any migration/release note.
@@ -245,12 +248,14 @@ review remain required before Q0.1 closes or Q0.2 fixtures freeze.
 | `crates/kairo-ecs-rng/src/lib.rs` | `68397e53959221c17a9705da1dd6e23a8221df9825e879222cdd9b154029a991` |
 | `conductor/contracts/core-contract.md` | `6ad1804b8a5cbc1d7cd4ae5888b2527cc2864ce9b13b972f3e58fbc64622bf60` |
 | `conductor/contracts/versioning-compatibility.md` | `7099dfefa5a369a39f1bdc62091cc50348560c6337d07812cf1b42298c23188a` |
+| `conductor/research/careops-flow-runtime-contract-proposal-20260929.md` | `508bcb56db337279722a3837c502abb582964f6c9f71cafc1a37702a70ce3b35` |
+| `conductor/research/careops-flow-context-codec-proposal-20260929.md` | `b95dfa28adf40309bcceca34a2c966139ffae6386347da008e35eaac51b3162d` |
 
 ## Consequences and next gates
 
 - Q0.2 writes executable semantics and boundary fixtures against an accepted ADR.
-- Q0.3 reserves event kinds and agrees lifecycle/snapshot ownership with Tracks
-  01/04/12/22.
+- Q0.3 reserves event kinds and agrees lifecycle/telemetry ownership with
+  Tracks 01/04/12; portable checkpoint ownership remains with Track 22/Q4.
 - Q0.4 closes only after owner review, Q0.2/Q0.3 outputs, and the manual tie-case
   calculations in the queue plan are independently checked.
 - Q1 code work remains gated by D2 and this contract review.
