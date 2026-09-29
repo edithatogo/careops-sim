@@ -23,9 +23,9 @@ to Q1. There is no queue runtime implementation.
 
 ## Next implementation action
 
-Complete the final coordinator Q0.2 parent-join disposition after reconciling
-all artifact hashes and review findings. If accepted, proceed to Q0.3
-event-kind/lifecycle joins and Q0.4 phase review. Q1 remains gated on Q0 closeout and D2 hosted-CI readiness.
+Q0.2 design criteria are accepted. The next queue-track milestone is Q0.3
+event-kind/lifecycle joins, followed by Q0.4 phase review. The global serial
+scheduler currently selects P0.2; runtime Q1 remains gated on Q0 closeout and D2. Q1 remains gated on Q0 closeout and D2 hosted-CI readiness.
 All runtime phases Q1-Q5 remain open.
 
 ## Evidence to carry forward

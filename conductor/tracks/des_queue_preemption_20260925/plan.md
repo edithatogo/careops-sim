@@ -39,7 +39,7 @@ phase resolves design details before shared code is changed.
   compatibility, one authoritative DES/ABM world, owned in-memory continuation
   context and public handle/error types. Defer portable checkpoint codecs to
   Track 22; review with 01/03/25.
-- [ ] Q0.2 Freeze one-unit queue semantics, independent preemption flags, deadline
+- [x] Q0.2 Freeze one-unit queue semantics, independent preemption flags, deadline
   boundaries, completion-at-T behavior, cancellation/repriority order, victim
   ties, restart draw reuse and zero-time budgets in executable fixture specs.
   Reconcile report 27 against the local contract: reject shrink below active count, allow idle capacity zero, expire deadline-at-T before grant, complete at T before eviction, and reuse restart draws. Record deliberate SimPy differences; pin reference source before conformance scripts.
