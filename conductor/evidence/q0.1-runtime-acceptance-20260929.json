@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "task_id": "Q0.1",
+  "leaf_id": "Q0.1.runtime",
+  "instance_id": "shared_runtime_handles",
+  "decision": "accepted",
+  "accepted_at": "2026-09-29",
+  "coordinator": "root",
+  "independent_reviewer": "p41_nominal_review",
+  "review_summary": "Independent review verified bound inputs and output hash, checked the operation caps against scheduler/entity generation behavior and typed ComponentRegistry cleanup feasibility, then rechecked the cleanup atomicity and terminal-claim disposal clarifications. No blocking issue found. Owner and Track 01/03/25 decisions remain open; Q0.1 is not complete.",
+  "packet": {
+    "path": ".artifacts/packets/Q0.1.runtime.shared_runtime_handles.json",
+    "sha256": "79000be204f285b786abed769a099995c2b81d21bc71879415ed2c37f8b10b79",
+    "base_commit": "7a9dd965e8987c3cd30c78ab32b6f009d947efe3"
+  },
+  "result_path": "libs/kairos/.artifacts/mvp/Q0.1.runtime.shared_runtime_handles/result.json",
+  "artifact_hashes": {
+    "libs/kairos/conductor/research/careops-flow-runtime-contract-proposal-20260929.md": "508bcb56db337279722a3837c502abb582964f6c9f71cafc1a37702a70ce3b35"
+  },
+  "verification": [
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "^## (Decision|Handles and errors|Overflow and cleanup|Compatibility boundary|Open owner review)",
+        "conductor/research/careops-flow-runtime-contract-proposal-20260929.md"
+      ],
+      "cwd": "libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "All five required contract sections were found at lines 7, 26, 36, 50, and 60."
+    },
+    {
+      "argv": [
+        "python3",
+        "-c",
+        "from pathlib import Path; p=Path('conductor/research/careops-flow-runtime-contract-proposal-20260929.md'); s=p.read_text(); assert all(x in s for x in ['u32::MAX','ComponentRegistry','legacy','Track 03','Q0.1.codec']); assert not any(line.rstrip('\\n').endswith((' ','\\t')) for line in s.splitlines())"
+      ],
+      "cwd": "libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "Required budget, cleanup, compatibility, unresolved Track 03 and deferred codec terms are present; trailing-whitespace assertion passed."
+    },
+    {
+      "argv": [
+        "sha256sum",
+        "conductor/research/careops-flow-api-inventory-20260929.md",
+        "crates/kairo-ecs-des/Cargo.toml",
+        "crates/kairo-ecs-abm/Cargo.toml",
+        "docs/design/protected-surface-inventory.json"
+      ],
+      "cwd": "libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "All four values matched the packet-bound input hashes."
+    }
+  ],
+  "scope_limit": "Accepts only the Q0.1.runtime contract proposal leaf. It does not approve its owner-review questions, complete Q0.1, authorize Q0.2 or Q1, or claim queue/preemption APIs exist.",
+  "integration_commit": null,
+  "integration_note": "Proposal is ready to commit on Kairos development branch; parent pin updates only after that commit."
+}
