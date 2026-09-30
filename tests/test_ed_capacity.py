@@ -57,6 +57,20 @@ class EDCapacityValidationTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("duplicates 'loc-triage'", result.stderr)
 
+    def test_duplicate_zone_ids_fail(self):
+        record = copy.deepcopy(self.valid_records[0])
+        record["zones"].append(copy.deepcopy(record["zones"][0]))
+        result = self.invoke(record)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("zones[2].zone_id duplicates 'zone-entry'", result.stderr)
+
+    def test_location_with_unknown_zone_fails(self):
+        record = copy.deepcopy(self.valid_records[0])
+        record["locations"][0]["zone_id"] = "zone-missing"
+        result = self.invoke(record)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("references unknown zone 'zone-missing'", result.stderr)
+
     def test_route_to_unknown_location_fails(self):
         record = copy.deepcopy(self.valid_records[0])
         record["routes"][0]["to_location_id"] = "loc-missing"

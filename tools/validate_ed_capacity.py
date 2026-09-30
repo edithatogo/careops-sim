@@ -65,6 +65,26 @@ def _semantic_errors(record: Any) -> list[str]:
                     errors.append(f"locations[{index}].location_id duplicates {location_id!r}")
                 location_ids.add(location_id)
 
+    zones = record.get("zones")
+    zone_ids: set[str] = set()
+    if isinstance(zones, list):
+        for index, zone in enumerate(zones):
+            if not isinstance(zone, dict):
+                continue
+            zone_id = zone.get("zone_id")
+            if isinstance(zone_id, str):
+                if zone_id in zone_ids:
+                    errors.append(f"zones[{index}].zone_id duplicates {zone_id!r}")
+                zone_ids.add(zone_id)
+
+    if isinstance(locations, list):
+        for index, location in enumerate(locations):
+            if not isinstance(location, dict):
+                continue
+            zone_id = location.get("zone_id")
+            if isinstance(zone_id, str) and zone_id not in zone_ids:
+                errors.append(f"locations[{index}].zone_id references unknown zone {zone_id!r}")
+
     routes = record.get("routes")
     if isinstance(routes, list):
         for index, route in enumerate(routes):
@@ -75,9 +95,6 @@ def _semantic_errors(record: Any) -> list[str]:
                 if isinstance(endpoint, str) and endpoint not in location_ids:
                     errors.append(f"routes[{index}].{field} references unknown location {endpoint!r}")
 
-    # The current schema has no zone or resource registries, so it cannot
-    # distinguish a valid zone_id from an unknown one. Add such checks only
-    # alongside an explicit registry contract; never infer one from references.
     return errors
 
 

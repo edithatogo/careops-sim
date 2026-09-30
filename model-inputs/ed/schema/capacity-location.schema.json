@@ -2,19 +2,20 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://careops-sim.invalid/schemas/capacity-location.schema.json",
   "title": "Proposed CareOps ED capacity and minimal location record",
-  "description": "Proposed, geometry-free model-input shape. It defines quantities and identifiers, not recommended hospital defaults or an E0/C0 runtime API.",
+  "description": "Proposed v2 geometry-free model-input shape. It defines quantities and identifiers, not recommended hospital defaults or an E0/C0 runtime API.",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "schema_version",
     "status",
     "capacity",
+    "zones",
     "locations",
     "routes"
   ],
   "properties": {
     "schema_version": {
-      "const": 1
+      "const": 2
     },
     "status": {
       "const": "proposed"
@@ -33,9 +34,33 @@
       "items": {
         "$ref": "#/$defs/route"
       }
+    },
+    "zones": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/zone"
+      }
     }
   },
   "$defs": {
+    "zone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "zone_id",
+        "name"
+      ],
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
     "capacity": {
       "type": "object",
       "additionalProperties": false,
