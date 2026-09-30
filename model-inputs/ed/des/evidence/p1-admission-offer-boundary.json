@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "record_id": "p1-hassanzadeh-admission-offer-boundary-gap-2026",
+  "evidence_type": "unresolved_gap",
+  "parameter_ids": [
+    "ed.hospitalinterfaces.inpatientbedavailability"
+  ],
+  "gap": {
+    "missing_evidence": "The inspected primary source does not identify directly observed ED-eligible bed-offer events, an offer denominator, destination-specialty compatibility, offer persistence/expiry, or withdrawal times. It describes a ward-level simulation built from ED presentations, inpatient episodes, and patient ward-transfer movements at three principal referral hospitals. Those patient movements and ward-capacity records do not establish when a placement opportunity became eligible for a particular ED patient or how long such an opportunity remained available.",
+    "owner": "P1.1 coordinator and ED pathway/hospital-interface model owner; local bed-management data custodian to be identified",
+    "impact": "This source cannot supply an empirical offer rate, temporal availability process, compatibility map, persistence rule, or withdrawal rule. No numeric offer or transfer default can be populated. The ward DES's FIFO ward queues, verified capacities, elective and ED admissions, and counterfactual discharge/clustering scenarios describe its model and interventions; they are not observed ED-facing offers. R29's one-unit finite offer for a compatible destination class, optional transfer-completion interval, and proposed temporal conditioning are a proposed model boundary, not findings or parameter values from Hassanzadeh et al. Any use of that interface before local evidence exists must be labelled as a synthetic scenario assumption and cannot support causal claims about ward discharge, elective scheduling, or bed release mechanisms.",
+    "searches_performed": [
+      "Inspected the bound primary article snapshot .artifacts/sources/queensland-ward-des-pmc.html, SHA-256 ebc61c9fb85985ff9c0993320ab1a0f866d7ab490d4e30f93eaed4d4607aaeb5: Hassanzadeh et al., 'Strategies for Reducing Access Block and Waiting Time for Patients Seeking Emergency Hospital Care: Results of a Ward-Level Discrete Event Simulation at Queensland's Largest Public Hospitals', Medical Journal of Australia 2026;224(2):e70142, DOI 10.5694/mja2.70142, PMC12946774. Snapshot inspection date 2026-10-01.",
+      "Read the abstract and Methods sections 2.1, 2.1.1, 2.1.2, 2.1.3, and 2.1.4 (article anchors mja270142-sec-0002 and mja270142-sec-0008 through mja270142-sec-0018). The article states that its inputs comprised ED presentations, inpatient episodes, and ward-transfer movements at three principal referral Australian hospitals; simulation activity covered 2021-03-01 to 2022-08-31, with reported results for 2021-09-01 to 2022-08-31. Its ward model included elective and ED admissions, wards with verified capacities, and FIFO ward queues.",
+      "Searched the pinned article text for offer, bed offer, availability, eligible bed, compatibility, destination, specialty, transfer, discharge, expiry, withdrawal, weekday, weekend, and season. The text describes ward movement timing, bed capacity, and policy scenarios, but no ED-eligible offer event, compatible destination field, offer denominator, offer persistence/expiry, or withdrawal event. Generic mention of bed availability does not define an offer event.",
+      "Compared the separate supplied R29 report lineage, SHA-256 f6764b6e89715404bc494c78aa6a3ea582d3e57f978ca68edf7c4ccbc5aa7db6, lines 27-54 and 200-212. Lines 27-54 explicitly classify the compatible offer stream, finite-token semantics, and conditioning dimensions as proposed choices or modelling inferences; lines 200-212 describe evidence acquisition priorities. R29 is not primary evidence that such offers were observed in the Hassanzadeh source."
+    ],
+    "next_action": "Obtain an approved linked ED-admission and bed-management event source that identifies when a placement opportunity became eligible for an ED patient, destination specialty/unit compatibility, offer occurrence and expiry/withdrawal times, temporal/calendar fields, population/site/period, denominator, and competing non-ED demand. Bind that source as a separate bounded packet, preserve its provenance and units, and request independent readback before fitting or using an empirical input. Until then, keep any offer-stream changes as explicitly synthetic scenarios without a numeric default."
+  },
+  "report_lineage": {
+    "report_sha256": "f6764b6e89715404bc494c78aa6a3ea582d3e57f978ca68edf7c4ccbc5aa7db6",
+    "section": "Report 29: admission-offer boundary, conditional sampling, and evidence acquisition",
+    "line_start": 27,
+    "line_count": 28
+  },
+  "review": {
+    "reviewer": "P1.1 offers boundary-source packet worker",
+    "reviewed_at": "2026-10-01",
+    "outcome": "needs_review",
+    "notes": "The exact bound PMC article snapshot and its methods were inspected. The article evidences a richer Queensland ward-level DES and its model inputs and scenarios; it does not establish ED-eligible offer events or their compatibility, persistence, or withdrawal. R29 is retained as separate proposed-contract lineage. This unresolved gap supplies no offer rate, distribution, compatibility policy, persistence rule, or transfer default. Coordinator review remains required."
+  }
+}

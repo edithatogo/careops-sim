@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "record_id": "p1-hassanzadeh-ed-transfer-transport-interval-gap-2026",
+  "evidence_type": "unresolved_gap",
+  "parameter_ids": [
+    "ed.hospitalinterfaces.transfertransport"
+  ],
+  "gap": {
+    "missing_evidence": "Hassanzadeh et al. report an ED waiting-time measure from identification as ready to depart until physical ED departure, and describe timestamped ward movements including a bed-allocation timestamp. The source does not define an observed transfer/transport start event and physical-transfer end event as a separate interval, nor report that interval conditioned jointly by destination specialty/unit and time or operational calendar. The ready-to-depart-to-ED-exit measure therefore cannot be treated as transport time or used to derive a transfer-delay distribution.",
+    "owner": "P1.1 coordinator and the ED pathway/bed-management data owner",
+    "impact": "No empirical ED-to-inpatient transfer/transport duration, distribution, or destination/time/calendar conditioning can be populated from this source. ED boarding/readiness wait, bed allocation, physical transfer, and ward length of stay must remain distinct. Using the reported mean ED waiting time or ward length of stay as a transfer delay would conflate different events and could introduce a fabricated model default.",
+    "searches_performed": [
+      "Inspected the bound PMC HTML snapshot for Hassanzadeh et al., Medical Journal of Australia 2026;224(2):e70142, DOI 10.5694/mja2.70142 (PMC12946774); local snapshot SHA-256 ebc61c9fb85985ff9c0993320ab1a0f866d7ab490d4e30f93eaed4d4607aaeb5, matching the packet-bound hash.",
+      "Opened the primary PMC article and checked Methods sections 2.1, 2.1.1 and 2.1.2/Table 1: three principal referral hospitals; study activity 1 March 2021–31 August 2022 with reported results 1 September 2021–31 August 2022; data include ED presentations, inpatient episodes and ward transfer movements; Table 1 defines waiting time as ready-to-depart to physical ED departure.",
+      "Checked Limitations section 4.1: the ward-movement data had a single timestamp for inpatient bed allocation; bed release was assumed at next-ward admission or final hospital discharge, and bed preparation time was unavailable. This is not a timestamp pair for physical ED-to-ward transfer.",
+      "Checked the article's reported measures and methods for separate physical-transfer start/end events and destination-specialty/time/calendar-conditioned transfer intervals. No such interval or conditioning is reported. Ward bed utilisation/length-of-stay measures and inpatient ward movements describe other processes.",
+      "Compared against supplied report R29 lines 27–54 and 200–212: it separates boarding from physical departure and prioritises linked ED–admitted-patient/bed-management event data with destination and event definitions. The report is lineage/context only, not primary-source evidence."
+    ],
+    "next_action": "Acquire authorised linked ED–admitted-patient and bed-management event data with explicit timestamps for transfer initiation and physical ED departure/ward arrival, destination specialty or unit, site, and time/calendar fields. Establish whether the interval is elapsed or active time and document missingness/censoring and denominator. Keep bed-allocation, readiness/boarding, physical transfer and ward LOS events separate; then bind the exact data extract/schema as a new source packet and request independent readback. Do not populate a numeric value or default before that evidence is available."
+  },
+  "report_lineage": {
+    "report_sha256": "f6764b6e89715404bc494c78aa6a3ea582d3e57f978ca68edf7c4ccbc5aa7db6",
+    "section": "Prioritised evidence acquisition: linked ED–admitted-patient/bed-management event data",
+    "line_start": 200,
+    "line_count": 13
+  },
+  "review": {
+    "reviewer": "P1.1 transfer-source packet worker",
+    "reviewed_at": "2026-10-01",
+    "outcome": "needs_review",
+    "notes": "Bound source hash and primary PMC article were inspected. The article supports a site-specific ready-to-depart-to-physical-ED-departure waiting measure and ward-movement/bed-allocation timing, but not a separate destination/time/calendar-conditioned physical transfer interval. Boarding, bed allocation and ward LOS do not establish transfer duration. No value or model default is proposed; independent coordinator readback remains required."
+  }
+}
