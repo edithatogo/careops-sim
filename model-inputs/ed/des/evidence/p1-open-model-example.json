@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "record_id": "p1-hsma-branching-optional-paths-teaching-example",
+  "evidence_type": "open_model_method_example",
+  "parameter_ids": [
+    "ed.despathways.routingprobability"
+  ],
+  "classification": {
+    "source_kind": "synthetic_teaching_method_example",
+    "empirical_ed_routing_evidence": false,
+    "numeric_values_adopted": false,
+    "use_limit": "Describes source-code structure only. Source choices, frequencies, probabilities, distributions, durations, patient mix, and outcomes are not evidence for real ED routing and are not transferred into parameter records."
+  },
+  "source": {
+    "repository": "https://github.com/hsma-programme/simpy_visualisation",
+    "commit": "47bbd6b502dbd5b34934b9328ad6796745ec583f",
+    "path": "examples/ex_2_branching_and_optional_paths/model_classes.py",
+    "file_sha256": "33ad89e5b55771de7088f32cbf1cc7e2eac781b8de1c746f1f80b1f6b8fa8d83",
+    "byte_length": 40510,
+    "retrieved_at": "2026-10-01",
+    "retrieval_and_hash_procedure": "Verified local checkout HEAD with git rev-parse; verified exact committed file using git show at the bound commit/path; computed SHA-256 over full file bytes. For each line range, split bytes with line endings preserved and computed SHA-256 over the inclusive one-based original lines.",
+    "line_ranges": [
+      {
+        "lines": "128-147",
+        "sha256": "1d0199024783e63c8ea18c4291b79dd4469d74f14917476bead71bc282a2a03a",
+        "context": "Scenario documentation and initialization context for sampled pathway parameters."
+      },
+      {
+        "lines": "230-267",
+        "sha256": "f4dc0fee96e2fd27fbc9d95d1d9e72a97369bbffc03e775428f241929a4a8743",
+        "context": "Creates sampled distributions used for patient class and optional-treatment decisions; no parameter values are adopted here."
+      },
+      {
+        "lines": "270-320",
+        "sha256": "300a5adb7d487d5239623910a0ef7b619000c8e6b0876f09e6bf23dea126f30b",
+        "context": "Defines a distinct trauma pathway class and its sequential pathway outline."
+      },
+      {
+        "lines": "495-555",
+        "sha256": "03ad2f2c56ed7fcad8ccb53fe26240670939e6775b0d5b296c6660d1e72e1935",
+        "context": "Defines the non-trauma pathway class and describes a post-examination optional treatment structure."
+      },
+      {
+        "lines": "713-790",
+        "sha256": "461de9c98d54c26c11cdcb7e61b628f1372abd2a767a53113c2017a20fec25c6",
+        "context": "Implementation of an optional treatment branch after examination, followed by shared departure handling."
+      },
+      {
+        "lines": "1030-1088",
+        "sha256": "40a053c6df4f9d47a3ce78dd33da44f63b95fb41a314da1584d364ed619293de",
+        "context": "Samples an arrival class, constructs the corresponding pathway object, and starts its process."
+      }
+    ]
+  },
+  "method_observed": {
+    "arrival_class_branch": "The arrivals generator samples a class attribute and conditionally constructs one of two pathway classes; each pathway then executes as its own process.",
+    "optional_path": "Within the non-trauma process, a sampled treatment-requirement attribute controls whether the treatment resource step runs after examination; patients then rejoin shared departure handling.",
+    "generalizable_method_description": "A teaching model can represent pathway alternatives as separate process classes and optional downstream steps as a conditional branch controlled by a sampled attribute. The code illustrates one implementation pattern only."
+  },
+  "licence": {
+    "path": "LICENSE",
+    "commit": "47bbd6b502dbd5b34934b9328ad6796745ec583f",
+    "identifier": "MIT",
+    "file_sha256": "f9b3d3e3ae197925319525593869135880a48edd132608f912265259e7d72242",
+    "notice_requirement": "Redistributions or substantial portions must include the copyright and permission notice from the licence file.",
+    "copyright": "Copyright (c) 2024 Sammi Rosser"
+  },
+  "r3_gap_lineage": {
+    "role": "contextual_gap_lineage_only",
+    "report_id": "R3",
+    "locator": "Supplied R3 pathway-family discussion, lines 93-100, as recorded in model-inputs/ed/schema/p1-source-packet-plan.json for packet p1-open-model-example.",
+    "attribution_limit": "R3 does not cite HSMA and is not evidence for this code example. The HSMA source was selected through a separately recorded P1.1 gap search."
+  },
+  "claim_boundaries": {
+    "kairos_behavior": "No claim that this method exists in or describes Kairos.",
+    "careops_ed_policy": "No CareOps ED policy, configuration, routing choice, or default is asserted.",
+    "empirical_inference": "No empirical ED pathway frequency, route probability, or outcome inference is made."
+  },
+  "review": {
+    "reviewer": "P1.1 pathways packet worker",
+    "reviewed_at": "2026-10-01",
+    "outcome": "pending_independent_readback",
+    "notes": "Pinned source and prescribed line hashes and MIT licence hash matched locally. The method summary is limited to the source-defined branching structure. Independent readback and coordinator acceptance remain outstanding."
+  }
+}
