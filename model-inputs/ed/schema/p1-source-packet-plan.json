@@ -2,7 +2,7 @@
   "schema_version": 1,
   "track": "P1",
   "status": "preparation_only",
-  "packet_count": 17,
+  "packet_count": 18,
   "packets": [
     {
       "packet_id": "p1-aihw-aggregates",
@@ -595,6 +595,74 @@
         "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
       ],
       "dependency_gate": "Dispatch only after coordinator binds exact primary URL/DOI, revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and reviewer; no empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p1-open-model-example",
+      "phase_task": "P1.1",
+      "family": "des_pathways",
+      "parameter_ids": [
+        "ed.despathways.routingprobability"
+      ],
+      "source_report_lead": {
+        "report_id": "R3",
+        "locator": "Supplied R3 pathway-family discussion, lines 93-100 (contextual gap lineage; it does not cite HSMA); the P1.1 plan separately requires open model examples. The HSMA source below is a separately identified teaching-method example."
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "The P1.1 open-model-example requirement lacks a pinned and independently read back code example documenting branching and optional pathway structure. R3 lines 93-100 provide pathway-family gap context only and are not claimed as a citation to HSMA. The selected HSMA code is synthetic/teaching method material, not empirical ED routing evidence.",
+      "search_scope": "Verify only the pinned HSMA example file and its repository licence. Catalogue its source-defined pathway and branching method as an illustrative structure; do not use its choices, frequencies, probabilities, durations, patient mix or outcomes as empirical ED evidence or Kairos behavior/policy.",
+      "output_path": "model-inputs/ed/des/evidence/p1-open-model-example.json",
+      "extraction_fields": [
+        "exact repository URL, commit 47bbd6b502dbd5b34934b9328ad6796745ec583f, path examples/ex_2_branching_and_optional_paths/model_classes.py, byte length and full-file SHA-256",
+        "exact cited line ranges and SHA-256 computed over the original line bytes including line endings; independently verify the bound hashes",
+        "repository LICENSE path, exact pinned commit, licence identifier and licence-file SHA-256",
+        "source-defined method: pathway classes, branch/optional-path locations and source context, with no transfer of numeric values into an ED parameter record",
+        "explicit classification as a synthetic/teaching method example, not empirical routing evidence",
+        "explicit distinction between source method, proposed Kairos engine capability and CareOps ED policy/configuration; no claim that this method exists in Kairos or sets ED policy",
+        "retrieval date, reproducible retrieval/hash procedure and separate supplied R3 gap-lineage locator"
+      ],
+      "pinned_code_source": {
+        "repository": "https://github.com/hsma-programme/simpy_visualisation",
+        "commit": "47bbd6b502dbd5b34934b9328ad6796745ec583f",
+        "path": "examples/ex_2_branching_and_optional_paths/model_classes.py",
+        "file_sha256": "33ad89e5b55771de7088f32cbf1cc7e2eac781b8de1c746f1f80b1f6b8fa8d83",
+        "line_hashes": [
+          {
+            "lines": "128-147",
+            "sha256": "1d0199024783e63c8ea18c4291b79dd4469d74f14917476bead71bc282a2a03a"
+          },
+          {
+            "lines": "230-267",
+            "sha256": "f4dc0fee96e2fd27fbc9d95d1d9e72a97369bbffc03e775428f241929a4a8743"
+          },
+          {
+            "lines": "270-320",
+            "sha256": "300a5adb7d487d5239623910a0ef7b619000c8e6b0876f09e6bf23dea126f30b"
+          },
+          {
+            "lines": "495-555",
+            "sha256": "03ad2f2c56ed7fcad8ccb53fe26240670939e6775b0d5b296c6660d1e72e1935"
+          },
+          {
+            "lines": "1030-1088",
+            "sha256": "40a053c6df4f9d47a3ce78dd33da44f63b95fb41a314da1584d364ed619293de"
+          }
+        ],
+        "license": {
+          "path": "LICENSE",
+          "identifier": "MIT",
+          "sha256": "f9b3d3e3ae197925319525593869135880a48edd132608f912265259e7d72242"
+        }
+      },
+      "worker_oracle": "Independently retrieve the exact commit/path, verify the complete file hash and cited line hashes, verify the pinned MIT licence/hash, and describe only the demonstrated pathway/branching method. The result must label the source as teaching/synthetic method material and explicitly exclude empirical ED routing evidence, Kairos behavior and CareOps ED policy; stop with unresolved_gap if any binding fails.",
+      "independent_readback_oracle": "A reviewer independently fetches commit 47bbd6b502dbd5b34934b9328ad6796745ec583f, recomputes the complete file, cited-line and LICENSE hashes, confirms the exact paths/lines/method, and records pass/partial/contradiction/unresolved with reason. Reviewer confirms the separate R3 gap lineage and that no HSMA attribution, empirical routing inference, Kairos implementation claim or ED policy claim has been introduced.",
+      "stop_conditions": [
+        "Stop if the exact commit or file path cannot be retrieved, or the full-file or cited-line hash differs; record the discrepancy and return unresolved_gap.",
+        "Stop if the MIT licence cannot be independently verified at the exact commit or the licence hash differs.",
+        "Stop if the selected code does not demonstrate the stated pathway/branching method at the pinned lines.",
+        "Stop if the result would require treating a teaching example as observed or empirical ED routing evidence, or as Kairos implementation or ED policy.",
+        "Stop before selecting, copying or fitting any numeric value, probability, distribution or policy; escalate unresolved scope to the coordinator."
+      ],
+      "dependency_gate": "Preparation only. At dispatch the coordinator binds the exact commit/path, confirms all full-file, line-range and licence hashes, fixes the exact output path and names the independent reviewer. No empirical use, Kairos implementation claim or ED policy adoption until independent readback is accepted and a separate owner decision authorizes any such use."
     }
   ]
 }
