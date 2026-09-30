@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://careops-sim.invalid/schemas/capacity-location.schema.json",
   "title": "Proposed CareOps ED capacity and minimal location record",
-  "description": "Proposed v2 geometry-free model-input shape. It defines quantities and identifiers, not recommended hospital defaults or an E0/C0 runtime API.",
+  "description": "Proposed v3 synthetic model-input shape. Configured capacity is separate from observed traces; this schema defines no clinical defaults or runtime API.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,336 +11,121 @@
     "capacity",
     "zones",
     "locations",
-    "routes"
+    "resource_buckets",
+    "task_classes",
+    "staff_roles",
+    "eligibility"
   ],
   "properties": {
-    "schema_version": {
-      "const": 2
-    },
-    "status": {
-      "const": "proposed"
-    },
-    "capacity": {
-      "$ref": "#/$defs/capacity"
-    },
-    "locations": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/location"
-      }
-    },
-    "routes": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/route"
-      }
-    },
-    "zones": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/zone"
-      }
-    }
+    "schema_version": { "const": 3 },
+    "status": { "const": "proposed" },
+    "capacity": { "$ref": "#/$defs/capacity" },
+    "zones": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/zone" } },
+    "locations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/location" } },
+    "resource_buckets": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/resource" } },
+    "task_classes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/task_class" } },
+    "staff_roles": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/staff_role" } },
+    "eligibility": { "type": "array", "items": { "$ref": "#/$defs/eligibility" } },
+    "routes": { "type": "array", "items": { "$ref": "#/$defs/route" } }
   },
   "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "count": { "type": ["integer", "null"], "minimum": 0 },
+    "knownStatus": { "enum": ["known", "unknown"] },
     "zone": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "zone_id",
-        "name"
-      ],
+      "type": "object", "additionalProperties": false,
+      "required": ["zone_id", "name"],
+      "properties": { "zone_id": { "$ref": "#/$defs/id" }, "name": { "$ref": "#/$defs/id" } }
+    },
+    "location": {
+      "type": "object", "additionalProperties": false,
+      "required": ["location_id", "name", "zone_id"],
       "properties": {
-        "zone_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "name": {
-          "type": "string",
-          "minLength": 1
-        }
+        "location_id": { "$ref": "#/$defs/id" }, "name": { "$ref": "#/$defs/id" },
+        "zone_id": { "$ref": "#/$defs/id" }
       }
     },
     "capacity": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "unit",
-        "physical_status",
-        "physical_count",
-        "availability_status",
-        "open_count",
-        "staffed_count",
-        "equipment"
-      ],
+      "type": "object", "additionalProperties": false,
+      "description": "Aggregate treatment-space reporting constraint only; never an allocatable resource pool.",
+      "required": ["unit", "bucket_completeness", "physical_status", "physical_count", "availability_status", "open_count", "staffed_count"],
       "properties": {
-        "unit": {
-          "const": "treatment_space"
-        },
-        "physical_status": {
-          "enum": [
-            "known",
-            "unknown"
-          ]
-        },
-        "physical_count": {
-          "type": [
-            "integer",
-            "null"
-          ],
-          "minimum": 0
-        },
-        "availability_status": {
-          "enum": [
-            "known",
-            "unknown"
-          ]
-        },
-        "open_count": {
-          "type": [
-            "integer",
-            "null"
-          ],
-          "minimum": 0
-        },
-        "staffed_count": {
-          "type": [
-            "integer",
-            "null"
-          ],
-          "minimum": 0
-        },
-        "availability_reason": {
-          "type": "string",
-          "minLength": 1
-        },
-        "equipment": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/equipment"
-          }
-        }
+        "unit": { "const": "treatment_space" },
+        "bucket_completeness": { "enum": ["complete", "incomplete", "unknown"] },
+        "physical_status": { "$ref": "#/$defs/knownStatus" }, "physical_count": { "$ref": "#/$defs/count" },
+        "availability_status": { "$ref": "#/$defs/knownStatus" },
+        "open_count": { "$ref": "#/$defs/count" }, "staffed_count": { "$ref": "#/$defs/count" },
+        "availability_reason": { "$ref": "#/$defs/id" },
+        "equipment": { "type": "array", "items": { "$ref": "#/$defs/equipment" } }
       },
       "allOf": [
-        {
-          "if": {
-            "properties": {
-              "physical_status": {
-                "const": "known"
-              }
-            },
-            "required": [
-              "physical_status"
-            ]
-          },
-          "then": {
-            "properties": {
-              "physical_count": {
-                "type": "integer"
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "physical_status": {
-                "const": "unknown"
-              }
-            },
-            "required": [
-              "physical_status"
-            ]
-          },
-          "then": {
-            "properties": {
-              "physical_count": {
-                "type": "null"
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "availability_status": {
-                "const": "known"
-              }
-            },
-            "required": [
-              "availability_status"
-            ]
-          },
-          "then": {
-            "properties": {
-              "open_count": {
-                "type": "integer"
-              },
-              "staffed_count": {
-                "type": "integer"
-              }
-            },
-            "not": {
-              "required": [
-                "availability_reason"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "availability_status": {
-                "const": "unknown"
-              }
-            },
-            "required": [
-              "availability_status"
-            ]
-          },
-          "then": {
-            "properties": {
-              "availability_reason": {
-                "type": "string",
-                "minLength": 1
-              },
-              "open_count": {
-                "type": "null"
-              },
-              "staffed_count": {
-                "type": "null"
-              }
-            },
-            "required": [
-              "availability_reason"
-            ]
-          }
-        }
+        { "if": { "properties": { "physical_status": { "const": "known" } } }, "then": { "properties": { "physical_count": { "type": "integer" } } } },
+        { "if": { "properties": { "physical_status": { "const": "unknown" } } }, "then": { "properties": { "physical_count": { "type": "null" } } } },
+        { "if": { "properties": { "availability_status": { "const": "known" } } }, "then": { "properties": { "open_count": { "type": "integer" }, "staffed_count": { "type": "integer" } }, "not": { "required": ["availability_reason"] } } },
+        { "if": { "properties": { "availability_status": { "const": "unknown" } } }, "then": { "properties": { "open_count": { "type": "null" }, "staffed_count": { "type": "null" } }, "required": ["availability_reason"] } }
       ]
     },
     "equipment": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "capability",
-        "status"
-      ],
-      "properties": {
-        "capability": {
-          "type": "string",
-          "minLength": 1
-        },
-        "status": {
-          "enum": [
-            "available",
-            "unavailable",
-            "unknown"
-          ]
-        },
-        "reason": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
+      "type": "object", "additionalProperties": false, "required": ["capability", "status"],
+      "properties": { "capability": { "$ref": "#/$defs/id" }, "status": { "enum": ["available", "unavailable", "unknown"] }, "reason": { "$ref": "#/$defs/id" } },
       "allOf": [
-        {
-          "if": {
-            "properties": {
-              "status": {
-                "const": "unknown"
-              }
-            },
-            "required": [
-              "status"
-            ]
-          },
-          "then": {
-            "required": [
-              "reason"
-            ]
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "status": {
-                "enum": [
-                  "available",
-                  "unavailable"
-                ]
-              }
-            },
-            "required": [
-              "status"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "reason"
-              ]
-            }
-          }
-        }
+        { "if": { "properties": { "status": { "const": "unknown" } } }, "then": { "required": ["reason"] } },
+        { "if": { "properties": { "status": { "enum": ["available", "unavailable"] } } }, "then": { "not": { "required": ["reason"] } } }
       ]
     },
-    "location": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "location_id",
-        "name",
-        "zone_id"
-      ],
+    "resource": {
+      "type": "object", "additionalProperties": false,
+      "required": ["resource_id", "resource_class", "location_id", "zone_id", "physical_status", "physical_count", "availability_status", "open_count", "staffed_count", "capabilities"],
       "properties": {
-        "location_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "name": {
-          "type": "string",
-          "minLength": 1
-        },
-        "zone_id": {
-          "type": "string",
-          "minLength": 1
-        }
+        "resource_id": { "$ref": "#/$defs/id" }, "resource_class": { "$ref": "#/$defs/id" },
+        "location_id": { "$ref": "#/$defs/id" }, "zone_id": { "$ref": "#/$defs/id" },
+        "pool_group_id": { "$ref": "#/$defs/id" },
+        "physical_status": { "$ref": "#/$defs/knownStatus" }, "physical_count": { "$ref": "#/$defs/count" },
+        "availability_status": { "$ref": "#/$defs/knownStatus" }, "open_count": { "$ref": "#/$defs/count" },
+        "staffed_count": { "$ref": "#/$defs/count" }, "availability_reason": { "$ref": "#/$defs/id" },
+        "capabilities": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true }
+      },
+      "allOf": [
+        { "if": { "properties": { "physical_status": { "const": "known" } } }, "then": { "properties": { "physical_count": { "type": "integer" } } } },
+        { "if": { "properties": { "physical_status": { "const": "unknown" } } }, "then": { "properties": { "physical_count": { "type": "null" } } } },
+        { "if": { "properties": { "availability_status": { "const": "known" } } }, "then": { "properties": { "open_count": { "type": "integer" }, "staffed_count": { "type": "integer" } }, "not": { "required": ["availability_reason"] } } },
+        { "if": { "properties": { "availability_status": { "const": "unknown" } } }, "then": { "properties": { "open_count": { "type": "null" }, "staffed_count": { "type": "null" } }, "required": ["availability_reason"] } }
+      ]
+    },
+    "task_class": {
+      "type": "object", "additionalProperties": false, "required": ["task_class_id", "name"],
+      "properties": { "task_class_id": { "$ref": "#/$defs/id" }, "name": { "$ref": "#/$defs/id" }, "required_resource_classes": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true } }
+    },
+    "staff_role": {
+      "type": "object", "additionalProperties": false, "required": ["staff_role_id", "name", "counts"],
+      "properties": {
+        "staff_role_id": { "$ref": "#/$defs/id" }, "name": { "$ref": "#/$defs/id" },
+        "counts": { "type": "array", "items": { "$ref": "#/$defs/staff_count" }, "minItems": 1 }
       }
     },
-    "route": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "from_location_id",
-        "to_location_id",
-        "distance"
-      ],
+    "staff_count": {
+      "type": "object", "additionalProperties": false,
+      "required": ["basis", "status", "count", "reference"],
       "properties": {
-        "from_location_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "to_location_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "distance": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "value",
-            "unit"
-          ],
-          "properties": {
-            "value": {
-              "type": "number",
-              "minimum": 0
-            },
-            "unit": {
-              "const": "m"
-            }
-          }
-        }
+        "basis": { "enum": ["employed", "rostered", "present", "task_eligible"] },
+        "status": { "$ref": "#/$defs/knownStatus" }, "count": { "$ref": "#/$defs/count" },
+        "reference": { "$ref": "#/$defs/id" }, "reason": { "$ref": "#/$defs/id" }
+      },
+      "allOf": [
+        { "if": { "properties": { "status": { "const": "known" } } }, "then": { "properties": { "count": { "type": "integer" } }, "not": { "required": ["reason"] } } },
+        { "if": { "properties": { "status": { "const": "unknown" } } }, "then": { "properties": { "count": { "type": "null" } }, "required": ["reason"] } }
+      ]
+    },
+    "eligibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["staff_role_id", "task_class_id", "zone_id"],
+      "properties": { "staff_role_id": { "$ref": "#/$defs/id" }, "task_class_id": { "$ref": "#/$defs/id" }, "zone_id": { "$ref": "#/$defs/id" }, "location_id": { "$ref": "#/$defs/id" } }
+    },
+    "route": {
+      "type": "object", "additionalProperties": false, "required": ["from_location_id", "to_location_id", "distance"],
+      "properties": {
+        "from_location_id": { "$ref": "#/$defs/id" }, "to_location_id": { "$ref": "#/$defs/id" },
+        "distance": { "type": "object", "additionalProperties": false, "required": ["value", "unit"], "properties": { "value": { "type": "number", "minimum": 0 }, "unit": { "const": "m" } } }
       }
     }
   }

@@ -1,120 +1,110 @@
 {
   "schema_version": 1,
   "status": "proposed",
-  "note": "Every case is synthetic only: values are illustrative test data, not empirical observations and not recommended generic ED defaults.",
+  "note": "Synthetic structural examples only; counts are not empirical observations or recommended ED defaults. Observed occupancy and assignments belong in trace records.",
   "cases": [
     {
-      "case_id": "synthetic-capacity-difference",
+      "case_id": "synthetic-known-static-macro",
       "synthetic_only": true,
       "record": {
-        "schema_version": 2,
+        "schema_version": 3,
         "status": "proposed",
         "capacity": {
           "unit": "treatment_space",
-          "equipment": [
-            {
-              "capability": "continuous_monitoring",
-              "status": "available"
-            },
-            {
-              "capability": "portable_ultrasound",
-              "status": "unknown",
-              "reason": "Synthetic fixture demonstrates explicit unknown capability."
-            }
-          ],
+          "bucket_completeness": "complete",
           "physical_status": "known",
           "physical_count": 12,
           "availability_status": "known",
           "open_count": 10,
-          "staffed_count": 8
+          "staffed_count": 8,
+          "equipment": [
+            { "capability": "monitoring", "status": "available" },
+            { "capability": "ultrasound", "status": "unknown", "reason": "Synthetic unknown capability example." }
+          ]
         },
-        "locations": [
-          {
-            "location_id": "loc-triage",
-            "name": "Triage",
-            "zone_id": "zone-entry"
-          },
-          {
-            "location_id": "loc-treatment-a",
-            "name": "Treatment Area A",
-            "zone_id": "zone-treatment"
-          }
-        ],
-        "routes": [
-          {
-            "from_location_id": "loc-triage",
-            "to_location_id": "loc-treatment-a",
-            "distance": {
-              "value": 18.5,
-              "unit": "m"
-            }
-          }
-        ],
         "zones": [
-          {
-            "zone_id": "zone-entry",
-            "name": "Entry"
-          },
-          {
-            "zone_id": "zone-treatment",
-            "name": "Treatment"
-          }
+          { "zone_id": "zone-entry", "name": "Entry" },
+          { "zone_id": "zone-treatment", "name": "Treatment" }
+        ],
+        "locations": [
+          { "location_id": "loc-triage", "name": "Triage", "zone_id": "zone-entry" },
+          { "location_id": "loc-treatment-a", "name": "Treatment A", "zone_id": "zone-treatment" },
+          { "location_id": "loc-treatment-b", "name": "Treatment B", "zone_id": "zone-treatment" }
+        ],
+        "resource_buckets": [
+          { "resource_id": "res-space-a", "resource_class": "treatment_space", "location_id": "loc-treatment-a", "zone_id": "zone-treatment", "pool_group_id": "pool-treatment", "physical_status": "known", "physical_count": 6, "availability_status": "known", "open_count": 5, "staffed_count": 4, "capabilities": ["treatment"] },
+          { "resource_id": "res-space-b", "resource_class": "treatment_space", "location_id": "loc-treatment-b", "zone_id": "zone-treatment", "pool_group_id": "pool-treatment", "physical_status": "known", "physical_count": 6, "availability_status": "known", "open_count": 5, "staffed_count": 4, "capabilities": ["treatment"] },
+          { "resource_id": "res-monitor-a", "resource_class": "monitor", "location_id": "loc-treatment-a", "zone_id": "zone-treatment", "physical_status": "known", "physical_count": 2, "availability_status": "known", "open_count": 2, "staffed_count": 2, "capabilities": ["monitoring"] }
+        ],
+        "task_classes": [
+          { "task_class_id": "task-assessment", "name": "Assessment", "required_resource_classes": ["treatment_space"] }
+        ],
+        "staff_roles": [
+          { "staff_role_id": "role-clinician", "name": "Clinician", "counts": [ { "basis": "present", "status": "known", "count": 3, "reference": "synthetic-initial-state" } ] }
+        ],
+        "eligibility": [
+          { "staff_role_id": "role-clinician", "task_class_id": "task-assessment", "zone_id": "zone-treatment" }
         ]
       }
     },
     {
-      "case_id": "synthetic-unknown-capacity-minimal-route",
+      "case_id": "synthetic-unknown-unused-capacity-macro",
       "synthetic_only": true,
       "record": {
-        "schema_version": 2,
+        "schema_version": 3,
         "status": "proposed",
         "capacity": {
           "unit": "treatment_space",
-          "equipment": [
-            {
-              "capability": "cardiac_monitor",
-              "status": "unknown",
-              "reason": "Synthetic unknown capability."
-            }
-          ],
+          "bucket_completeness": "unknown",
           "physical_status": "unknown",
           "physical_count": null,
           "availability_status": "unknown",
           "open_count": null,
           "staffed_count": null,
-          "availability_reason": "Unknown availability must not imply that any space is open or staffed."
+          "availability_reason": "Synthetic fixture leaves aggregate treatment-space capacity unresolved."
         },
+        "zones": [ { "zone_id": "zone-public", "name": "Public" } ],
+        "locations": [ { "location_id": "loc-waiting", "name": "Waiting", "zone_id": "zone-public" } ],
+        "resource_buckets": [
+          { "resource_id": "res-optional-seat", "resource_class": "waiting_seat", "location_id": "loc-waiting", "zone_id": "zone-public", "physical_status": "unknown", "physical_count": null, "availability_status": "unknown", "open_count": null, "staffed_count": null, "availability_reason": "Optional unused bucket is explicitly unknown.", "capabilities": [] }
+        ],
+        "task_classes": [ { "task_class_id": "task-observation", "name": "Observation" } ],
+        "staff_roles": [
+          { "staff_role_id": "role-support", "name": "Support", "counts": [ { "basis": "rostered", "status": "unknown", "count": null, "reference": "synthetic-initial-state", "reason": "No present capacity is inferred from this rostered count." } ] }
+        ],
+        "eligibility": []
+      }
+    },
+    {
+      "case_id": "synthetic-route-declared",
+      "synthetic_only": true,
+      "record": {
+        "schema_version": 3,
+        "status": "proposed",
+        "capacity": {
+          "unit": "treatment_space",
+          "bucket_completeness": "incomplete",
+          "physical_status": "known",
+          "physical_count": 2,
+          "availability_status": "known",
+          "open_count": 2,
+          "staffed_count": 1
+        },
+        "zones": [ { "zone_id": "zone-route", "name": "Route Example" } ],
         "locations": [
-          {
-            "location_id": "loc-waiting",
-            "name": "Waiting Area",
-            "zone_id": "zone-public"
-          },
-          {
-            "location_id": "loc-imaging",
-            "name": "Imaging",
-            "zone_id": "zone-diagnostics"
-          }
+          { "location_id": "loc-route-a", "name": "Route Origin", "zone_id": "zone-route" },
+          { "location_id": "loc-route-b", "name": "Route Destination", "zone_id": "zone-route" }
         ],
+        "resource_buckets": [
+          { "resource_id": "res-route-space", "resource_class": "treatment_space", "location_id": "loc-route-b", "zone_id": "zone-route", "physical_status": "known", "physical_count": 2, "availability_status": "known", "open_count": 2, "staffed_count": 1, "capabilities": ["treatment"] }
+        ],
+        "task_classes": [ { "task_class_id": "task-route-example", "name": "Route Example" } ],
+        "staff_roles": [
+          { "staff_role_id": "role-route-example", "name": "Route Example", "counts": [ { "basis": "present", "status": "known", "count": 1, "reference": "synthetic-initial-state" } ] }
+        ],
+        "eligibility": [],
         "routes": [
-          {
-            "from_location_id": "loc-waiting",
-            "to_location_id": "loc-imaging",
-            "distance": {
-              "value": 0,
-              "unit": "m"
-            }
-          }
-        ],
-        "zones": [
-          {
-            "zone_id": "zone-public",
-            "name": "Public"
-          },
-          {
-            "zone_id": "zone-diagnostics",
-            "name": "Diagnostics"
-          }
+          { "from_location_id": "loc-route-a", "to_location_id": "loc-route-b", "distance": { "value": 18.5, "unit": "m" } }
         ]
       }
     }
