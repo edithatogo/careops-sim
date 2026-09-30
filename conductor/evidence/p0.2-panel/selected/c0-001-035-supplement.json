@@ -1,0 +1,291 @@
+{
+  "artifact": "P0.2 C0 independent supplemental row review",
+  "review_scope": "CSV data rows 1-35; row-specific supplement addressing generic rationales in .artifacts/p02/c0-001-035.json",
+  "reviewer_id": "C0 independent reviewer /root/p02_c0_detail_review_a",
+  "session_id": "codex-subtask:/root/p02_c0_detail_review_a",
+  "reviewed_at": "2026-09-30",
+  "base_commit": "16d79a5c0eff9fb60969b9e7829b5c67cdf63e46",
+  "authority_note": "Independent recommendations only; the parent brief leaves coordinator disposition and matrix acceptance open.",
+  "rows": [
+    {
+      "row": 1,
+      "parameter_id": "ed.demandcasemix.arrivals",
+      "C0_disposition": "accept",
+      "C0_rationale": "The selected representation is a generative arrival input: a rate process or explicit occurrence schedule, not an observed target by itself. Observed arrival occurrences can calibrate the chosen process only with an exposure window, cohort inclusion and missingness counts; schedule timestamps need the dataset/run origin, source zone, retained precision and declared conversion policy.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Demand and case mix; §Evidence and distribution selection; conductor/tracks/empirical_calibration_20260925/spec.md §3 Validation and normalization; §7 Calibration and validation procedure; model-inputs/ed/schema/parameter-ids.json ed.demandcasemix.arrivals",
+      "C0_replacement": ""
+    },
+    {
+      "row": 2,
+      "parameter_id": "ed.demandcasemix.calendarprofile",
+      "C0_disposition": "revise",
+      "C0_rationale": "A calendar profile generates time-varying demand; calendar labels are not calibration targets. Absolute instants and recurring local times have different conversion needs: UTC origin/zone/precision for instants, and IANA zone plus explicit fold/gap handling for recurrence. Counts by time block can target the profile only when occurrence time and each block's exposure are preserved.",
+      "C0_evidence_locator": "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md §Timestamped schedules; conductor/design/p0.2-interface-disposition-draft-20260930.md §3 Absolute schedules; conductor/tracks/empirical_calibration_20260925/spec.md §3 Validation and normalization; model-inputs/ed/schema/parameter-ids.json ed.demandcasemix.calendarprofile",
+      "C0_replacement": "Replacement: represent recurrence in a declared ED clock/calendar with IANA zone and fold/gap policy; represent absolute events with original timestamp precision, explicit zone and dataset origin, normalize before checked tick conversion, and retain occurrence separate from recorded time."
+    },
+    {
+      "row": 3,
+      "parameter_id": "ed.demandcasemix.surgeprofile",
+      "C0_disposition": "accept",
+      "C0_rationale": "The surge profile is a scenario generator for a time-varying intensity or schedule; it is not evidence that a surge distribution exists. Empirical targets may be occurrence counts/rates over prespecified intervals with exposure and a declared baseline comparison; do not infer burst dependence from calendar labels alone.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Demand and case mix; §Evidence and distribution selection; conductor/tracks/empirical_calibration_20260925/spec.md §3 Dataset manifest and validation; model-inputs/ed/schema/parameter-ids.json ed.demandcasemix.surgeprofile",
+      "C0_replacement": ""
+    },
+    {
+      "row": 4,
+      "parameter_id": "ed.demandcasemix.arrivalmode",
+      "C0_disposition": "accept",
+      "C0_rationale": "Arrival mode is a generated case attribute that selects an arrival pathway (for example, the modeled mode categories); it is not a duration target. Observed mode proportions can calibrate category weights only with the arrival cohort as denominator, explicit unknown/missing categories and compatible site/period strata; mode-specific timing targets require occurrence anchors for each stream.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Demand and case mix; §Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md §3 TraceMapping and quality exclusions; model-inputs/ed/schema/parameter-ids.json ed.demandcasemix.arrivalmode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 5,
+      "parameter_id": "ed.demandcasemix.agemix",
+      "C0_disposition": "accept",
+      "C0_rationale": "Age mix generates patient attributes; it does not directly target elapsed time. Observed age-band counts can calibrate a conditional table only when bands, arrival-cohort denominator, missing-age handling and applicable population are fixed; marginal age counts cannot establish dependence with acuity or case type.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Catalogue record contract; §Reports 26–30 integration; conductor/tracks/empirical_calibration_20260925/spec.md §7 data partition and §6 metric strata; model-inputs/ed/schema/parameter-ids.json ed.demandcasemix.agemix",
+      "C0_replacement": ""
+    },
+    {
+      "row": 6,
+      "parameter_id": "ed.demandcasemix.casetypemix",
+      "C0_disposition": "accept",
+      "C0_rationale": "Case-type mix generates an arrival attribute/pathway selector. A fitted table needs a named mutually exclusive or explicitly overlapping classification and the eligible-arrival denominator; observed diagnosis or final disposition must not leak into a case type known only later in the simulated episode.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Catalogue record contract; §Reports 26–30 integration (cohort, missingness and no future-information leakage); conductor/tracks/empirical_calibration_20260925/spec.md §7 data partition; model-inputs/ed/schema/parameter-ids.json ed.demandcasemix.casetypemix",
+      "C0_replacement": ""
+    },
+    {
+      "row": 7,
+      "parameter_id": "ed.demandcasemix.acuitymix",
+      "C0_disposition": "accept",
+      "C0_rationale": "Acuity mix generates the initial acuity attribute under a declared triage coding and cohort denominator. Observed triage acuity can target that distribution only when the recorded scale/version and timing are mapped; reassessment acuity is a separate later observation and must not overwrite the arrival attribute.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Catalogue record contract; §Reports 26–30 integration (realized versus recorded state); conductor/tracks/empirical_calibration_20260925/spec.md §3 TraceMapping; model-inputs/ed/schema/parameter-ids.json ed.demandcasemix.acuitymix",
+      "C0_replacement": ""
+    },
+    {
+      "row": 8,
+      "parameter_id": "ed.demandcasemix.jointcasemix",
+      "C0_disposition": "accept",
+      "C0_rationale": "Joint case mix is a generative dependence table, not an observed target in itself. Calibration requires patient-level linked attributes and a declared cohort denominator; multiplying separately observed age, case-type and acuity marginals would invent independence and cannot recover their joint distribution.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Catalogue record contract; §Reports 26–30 integration (marginals do not establish joint dependence); conductor/tracks/empirical_calibration_20260925/spec.md §7 training-only fitting; model-inputs/ed/schema/parameter-ids.json ed.demandcasemix.jointcasemix",
+      "C0_replacement": ""
+    },
+    {
+      "row": 9,
+      "parameter_id": "ed.demandcasemix.referrals",
+      "C0_disposition": "accept",
+      "C0_rationale": "Referral categories are generated case inputs or routing conditions, depending on the row's declared semantics; referral proportions are targetable only from the arriving cohort with a source/unknown category and denominator. Referral destination after assessment is an outcome and must not be used as a known-at-arrival covariate.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Catalogue record contract; §Reports 26–30 integration (latent, known and recorded state); conductor/tracks/empirical_calibration_20260925/spec.md §3 occurrence mapping; model-inputs/ed/schema/parameter-ids.json ed.demandcasemix.referrals",
+      "C0_replacement": ""
+    },
+    {
+      "row": 10,
+      "parameter_id": "ed.demandcasemix.transfers",
+      "C0_disposition": "accept",
+      "C0_rationale": "Transfers describe a generated arrival/cohort category only if the parameter is incoming ED transfers; outgoing transfer disposition is a later pathway outcome. The mapping must settle direction and eligible population before fitting, then use occurrence-time arrivals and denominator counts; a transfer label alone is not elapsed transfer time.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Demand and case mix; §Hospital interfaces; conductor/design/p0.2-interface-disposition-draft-20260930.md §5 Probability and observation boundaries; model-inputs/ed/schema/parameter-ids.json ed.demandcasemix.transfers",
+      "C0_replacement": ""
+    },
+    {
+      "row": 11,
+      "parameter_id": "ed.demandcasemix.repeatpresentations",
+      "C0_disposition": "accept",
+      "C0_rationale": "Repeat-presentation status is generated from an explicitly defined lookback/linkage rule and is not a within-episode repeat loop. Observed proportions need the eligible arrival cohort, lookback coverage and linkage/missingness denominator; without those, this category is not identifiable from isolated episode rows.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Catalogue record contract; §Reports 26–30 integration (cohort and missingness denominator); conductor/tracks/empirical_calibration_20260925/spec.md §7 partition by patient/episode; model-inputs/ed/schema/parameter-ids.json ed.demandcasemix.repeatpresentations",
+      "C0_replacement": ""
+    },
+    {
+      "row": 12,
+      "parameter_id": "ed.despathways.registration",
+      "C0_disposition": "accept",
+      "C0_rationale": "Registration pathway structure is a generated sequence/policy. Registration occurrence start/end or completion may be observed targets when source timestamps represent event occurrence; chart entry/message times remain separate, and an arrival-to-registration interval must not be attributed wholly to registration work if it includes queueing.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways; conductor/tracks/empirical_calibration_20260925/spec.md §3 observed_at vs recorded_at; §4 Avoid double counting; model-inputs/ed/schema/parameter-ids.json ed.despathways.registration",
+      "C0_replacement": ""
+    },
+    {
+      "row": 13,
+      "parameter_id": "ed.despathways.triage",
+      "C0_disposition": "accept",
+      "C0_rationale": "Triage path and branching rules are generated inputs; mapped triage start/end and observed branch/outcome can be calibration targets. Require occurrence semantics and triage-scale/version, and separate time waiting for triage from active triage work before fitting a duration leaf.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways and §Durations; conductor/tracks/empirical_calibration_20260925/spec.md §3 TraceMapping; §4 Avoid double counting; model-inputs/ed/schema/parameter-ids.json ed.despathways.triage",
+      "C0_replacement": ""
+    },
+    {
+      "row": 14,
+      "parameter_id": "ed.despathways.assessment",
+      "C0_disposition": "accept",
+      "C0_rationale": "Assessment sequence/branching is a generated pathway; assessment occurrence events can target a replay probe when mapped to the correct task occurrence. Arrival-to-assessment elapsed time combines queue and possibly transit, so it does not by itself identify assessment work duration.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways; conductor/tracks/empirical_calibration_20260925/spec.md §4 Avoid double counting; §5 Shadow replay; model-inputs/ed/schema/parameter-ids.json ed.despathways.assessment",
+      "C0_replacement": ""
+    },
+    {
+      "row": 15,
+      "parameter_id": "ed.despathways.diagnostics",
+      "C0_disposition": "accept",
+      "C0_rationale": "Diagnostic ordering and conditions are generated pathway inputs; order/result timestamps are not automatically test start/completion times. Calibration targets need distinct order, specimen/procedure start, result availability and review events where those stages are modeled, with censoring and missing-result counts.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways; conductor/tracks/empirical_calibration_20260925/spec.md §3 occurrence/recorded timestamp separation; §4 Avoid double counting; model-inputs/ed/schema/parameter-ids.json ed.despathways.diagnostics",
+      "C0_replacement": ""
+    },
+    {
+      "row": 16,
+      "parameter_id": "ed.despathways.treatment",
+      "C0_disposition": "accept",
+      "C0_rationale": "Treatment pathway choice is generated from modeled case state; observed treatment-start/end anchors can target replay only when they identify the treatment occurrence. A broad arrival-to-treatment interval is unsuitable as intrinsic treatment work because queue, assessment and transit may be included.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways; conductor/tracks/empirical_calibration_20260925/spec.md §4 Avoid double counting; §5 shadow probes; model-inputs/ed/schema/parameter-ids.json ed.despathways.treatment",
+      "C0_replacement": ""
+    },
+    {
+      "row": 17,
+      "parameter_id": "ed.despathways.observation",
+      "C0_disposition": "accept",
+      "C0_rationale": "Observation admission and reassessment schedule are generated pathway decisions; observed observation entry/exit and reassessment occurrences can be separate targets. Bed assignment is not physical occupancy: map bed-entered/occupied and release events to the modeled state, and account for censoring at the observation window.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways and §Resources; conductor/tracks/empirical_calibration_20260925/spec.md §3 observed_at and §5 observed macro ledger; model-inputs/ed/schema/parameter-ids.json ed.despathways.observation",
+      "C0_replacement": ""
+    },
+    {
+      "row": 18,
+      "parameter_id": "ed.despathways.reassessment",
+      "C0_disposition": "accept",
+      "C0_rationale": "Reassessment loop rules are generated inputs; the measured reassessment occurrences are target events only when every repeated task has an occurrence index and the due/eligible context is known. Prompt/switch counts do not identify the interval or work duration without at-risk time and staff availability.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways; §Reports 5–8 integration (observation concurrency and repeated events); conductor/tracks/empirical_calibration_20260925/spec.md §3 occurrence; §4 staff/task semantics; model-inputs/ed/schema/parameter-ids.json ed.despathways.reassessment",
+      "C0_replacement": ""
+    },
+    {
+      "row": 19,
+      "parameter_id": "ed.despathways.consult",
+      "C0_disposition": "accept",
+      "C0_rationale": "Consult triggers and destination are generated pathway inputs. Consult request, acceptance, arrival and completion are distinct observable targets; an elapsed request-to-completion target includes waiting/availability and cannot be assigned solely to consult work unless those components are separately represented.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways; conductor/tracks/empirical_calibration_20260925/spec.md §3 TraceMapping; §4 Avoid double counting; model-inputs/ed/schema/parameter-ids.json ed.despathways.consult",
+      "C0_replacement": ""
+    },
+    {
+      "row": 20,
+      "parameter_id": "ed.despathways.discharge",
+      "C0_disposition": "accept",
+      "C0_rationale": "Discharge branch/decision is generated; observed discharge decision, departure-ready and actual-departure events are distinct targets. Keep boarding or transport after a decision separate from disposition work and retain departures outside the observation window as censored/unfinished, not zero-duration outcomes.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways and §Hospital interfaces; conductor/design/p0.2-interface-disposition-draft-20260930.md §5 Probability and observation boundaries; conductor/tracks/empirical_calibration_20260925/spec.md §3 censoring; model-inputs/ed/schema/parameter-ids.json ed.despathways.discharge",
+      "C0_replacement": ""
+    },
+    {
+      "row": 21,
+      "parameter_id": "ed.despathways.admission",
+      "C0_disposition": "accept",
+      "C0_rationale": "Admission decision and offer/acceptance/transport/departure sequence are generated boundary behavior. Observed admission decision is a pathway target; boarding is a separate emergent interval ending at actual ED departure while the resource remains occupied, and inpatient availability/withdrawal/competing demand must be observed or explicitly assumed.",
+      "C0_evidence_locator": "conductor/design/p0.2-interface-disposition-draft-20260930.md §5 Probability and observation boundaries; conductor/tracks/ed_parameter_evidence_20260927/spec.md §Hospital interfaces; conductor/tracks/empirical_calibration_20260925/spec.md §3 resource/time mapping and §5 anchors; model-inputs/ed/schema/parameter-ids.json ed.despathways.admission",
+      "C0_replacement": ""
+    },
+    {
+      "row": 22,
+      "parameter_id": "ed.despathways.transfer",
+      "C0_disposition": "accept",
+      "C0_rationale": "Outgoing transfer decision/path is generated; observed transfer request, destination offer, acceptance, transport and ED departure are distinct targets. A transfer label is not evidence for a travel or boarding duration, and unavailable destinations/withdrawn offers require explicit exposure and outcome accounting.",
+      "C0_evidence_locator": "conductor/design/p0.2-interface-disposition-draft-20260930.md §5 Probability and observation boundaries; conductor/tracks/ed_parameter_evidence_20260927/spec.md §Hospital interfaces; conductor/tracks/empirical_calibration_20260925/spec.md §3 quality/censoring; model-inputs/ed/schema/parameter-ids.json ed.despathways.transfer",
+      "C0_replacement": ""
+    },
+    {
+      "row": 23,
+      "parameter_id": "ed.despathways.abandonment",
+      "C0_disposition": "accept",
+      "C0_rationale": "Abandonment hazard/decision is generated behavior; observed leave-before-assessment or leave-before-treatment is a target only with a defined eligible risk set and time at risk. Distinguish abandonment from administrative discharge and right censoring, and report missing departure reasons so exclusions cannot improve fit invisibly.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Patient behavior and §Evidence and distribution selection; conductor/tracks/empirical_calibration_20260925/spec.md §3 censoring and exclusions; §6 missing/outcome rates; model-inputs/ed/schema/parameter-ids.json ed.despathways.abandonment",
+      "C0_replacement": ""
+    },
+    {
+      "row": 24,
+      "parameter_id": "ed.despathways.routingprobability",
+      "C0_disposition": "accept",
+      "C0_rationale": "Routing probabilities generate branch choices conditional on state; they are calibratable only against observed choices with the eligible alternative set and state at decision time. Aggregate pathway counts without availability/conditioning cannot identify choice probabilities, and route-choice probability must not be confused with spatial path length or travel time.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways and §Reports 5–8 integration (eligible choice sets); conductor/tracks/empirical_calibration_20260925/spec.md §4 Spatial contract; §7 identifiability; model-inputs/ed/schema/parameter-ids.json ed.despathways.routingprobability",
+      "C0_replacement": ""
+    },
+    {
+      "row": 25,
+      "parameter_id": "ed.despathways.repeatloops",
+      "C0_disposition": "accept",
+      "C0_rationale": "Repeat-loop rules generate repeated pathway transitions; observations can target loop counts/transitions only when task occurrences and episode boundaries are retained. A completed-event count alone is biased by window truncation, so include eligible cases, observation window and unfinished/censored loops.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways; conductor/tracks/empirical_calibration_20260925/spec.md §3 occurrence/censoring; §7 partition and candidate evaluation; model-inputs/ed/schema/parameter-ids.json ed.despathways.repeatloops",
+      "C0_replacement": ""
+    },
+    {
+      "row": 26,
+      "parameter_id": "ed.despathways.priorities",
+      "C0_disposition": "accept",
+      "C0_rationale": "Priority rules generate a selection policy; observed service order can target it only if the decision-time eligible task/staff set, priority state and stable tie-break inputs are available. Realized order alone is confounded by staff availability and cannot identify a priority score or urgency rule.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §ABM staff behavior and §Reports 5–8 integration (eligible choice sets, assignment); conductor/tracks/empirical_calibration_20260925/spec.md §4 Micro staff behavior; §7 identifiability; model-inputs/ed/schema/parameter-ids.json ed.despathways.priorities",
+      "C0_replacement": ""
+    },
+    {
+      "row": 27,
+      "parameter_id": "ed.despathways.deadlines",
+      "C0_disposition": "revise",
+      "C0_rationale": "A deadline is a generated pathway constraint or target threshold, not an observed duration distribution. Deadline-attainment diagnostics require a declared clock origin and the relevant occurrence endpoint; an absolute timestamp also needs source zone/precision, while a relative deadline needs a versioned duration-to-tick scale and checked rounding.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways; conductor/tracks/empirical_calibration_20260925/spec.md §3 timestamp normalization and §5 paired observed/predicted endpoint; conductor/design/p0.2-interface-disposition-draft-20260930.md §2 Durations and ticks and §3 Absolute schedules; libs/kairos/crates/kairo-ecs-types/src/lib.rs:53-105",
+      "C0_replacement": "Replacement: keep seconds for relative deadline durations; distinguish relative limits from absolute instants, bind each to the versioned time profile/origin and explicit zone/precision where applicable, and reject overflow or unsupported precision."
+    },
+    {
+      "row": 28,
+      "parameter_id": "ed.despathways.preemption",
+      "C0_disposition": "accept",
+      "C0_rationale": "Preemption rule is a generative scheduler/policy input, not a directly fitted elapsed time. Target evidence needs interruption, suspend/resume, completed-work and task ancestry records; counts of interruptions require eligible active tasks and exposure, and preemption semantics remain owned by queue/Flow contracts.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §DES pathways and §ABM staff behavior; conductor/tracks/empirical_calibration_20260925/spec.md §4 interruptible tasks; §5 replay; conductor/tracks/des_queue_preemption_20260925/plan.md Q0.2–Q0.4 accepted contracts; model-inputs/ed/schema/parameter-ids.json ed.despathways.preemption",
+      "C0_replacement": ""
+    },
+    {
+      "row": 29,
+      "parameter_id": "ed.durations.intrinsicwork",
+      "C0_disposition": "revise",
+      "C0_rationale": "Intrinsic work is a generative active-work duration and a candidate fit parameter only if mapped observation endpoints isolate active work from setup, queue, transit and interruption/resumption. The seconds input unit is sound, but conversion into integer ticks must bind to the versioned ED tick quantum and a declared exactness/rounding rule; `SimTime` stores integer ticks without a physical scale.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Durations and §Evidence and distribution selection; conductor/tracks/empirical_calibration_20260925/spec.md §3 timestamp conversion; §4 Avoid double counting; conductor/design/p0.2-interface-disposition-draft-20260930.md §2 Durations and ticks; libs/kairos/crates/kairo-ecs-types/src/lib.rs:53-105",
+      "C0_replacement": "Replacement: seconds are canonical input; fit only from occurrence-mapped endpoints that isolate active work, and convert under a versioned tick quantum with checked range and declared exactness/rounding and precision-loss reporting."
+    },
+    {
+      "row": 30,
+      "parameter_id": "ed.durations.setup",
+      "C0_disposition": "revise",
+      "C0_rationale": "Setup is a separate generated work component; it can be a target only when event mapping distinguishes setup start/end from active service, queue and transit. Seconds remain the input unit, with tick quantum, range checks and rounding counted under the selected profile version.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Durations; conductor/tracks/empirical_calibration_20260925/spec.md §3 TraceMapping; §4 Avoid double counting; conductor/design/p0.2-interface-disposition-draft-20260930.md §2; libs/kairos/crates/kairo-ecs-types/src/lib.rs:53-105",
+      "C0_replacement": "Replacement: retain seconds; require setup-specific occurrence endpoints and declared included process before fitting, then convert using the versioned tick quantum and explicit checked rounding policy."
+    },
+    {
+      "row": 31,
+      "parameter_id": "ed.durations.turnaround",
+      "C0_disposition": "revise",
+      "C0_rationale": "Turnaround is an elapsed generated delay whose meaning may include external processing but should not silently include ED queue or transit. Calibration requires turnaround-specific occurrence endpoints and a declared inclusion boundary; seconds-to-ticks still depends on a versioned quantum and rounding policy.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Durations; conductor/tracks/empirical_calibration_20260925/spec.md §3 timestamp lineage; §4 Avoid double counting; conductor/design/p0.2-interface-disposition-draft-20260930.md §2; libs/kairos/crates/kairo-ecs-types/src/lib.rs:53-105",
+      "C0_replacement": "Replacement: retain seconds; specify the turnaround event pair and external/ED components included, then use a versioned tick quantum with checked conversion and declared rounding."
+    },
+    {
+      "row": 32,
+      "parameter_id": "ed.durations.reportreviewdelay",
+      "C0_disposition": "revise",
+      "C0_rationale": "Report/review delay is generated elapsed time; observed target endpoints must mean report availability and review occurrence, not order time, message creation or chart entry. Preserve recorded timestamps as separate lineage, and bind second-to-tick conversion to the versioned quantum and rounding contract.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Durations; conductor/tracks/empirical_calibration_20260925/spec.md §3 observed_at, recorded_at and message_created_at; §4 Avoid double counting; conductor/design/p0.2-interface-disposition-draft-20260930.md §2; libs/kairos/crates/kairo-ecs-types/src/lib.rs:53-105",
+      "C0_replacement": "Replacement: retain seconds; require occurrence-time endpoints for report availability/review and separate recorded/message time, then convert through the versioned tick quantum with checked declared rounding."
+    },
+    {
+      "row": 33,
+      "parameter_id": "ed.durations.cleaning",
+      "C0_disposition": "revise",
+      "C0_rationale": "Cleaning is generated resource work; its target must use cleaning start/completion events and must not substitute bed assignment, patient departure or bed release for physical occupancy. Conversion requires a versioned tick quantum and declared rounding; timing observations also need to identify whether cleaning is serialized or overlaps other work.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Durations and §Resources; conductor/tracks/empirical_calibration_20260925/spec.md §3 event mapping; §4 bed cleaning/resource lifecycle; conductor/design/p0.2-interface-disposition-draft-20260930.md §2; libs/kairos/crates/kairo-ecs-types/src/lib.rs:53-105",
+      "C0_replacement": "Replacement: retain seconds; map cleaning occurrence start/end separately from bed occupancy/release and declare concurrency, then convert using versioned tick quantum and explicit rounding."
+    },
+    {
+      "row": 34,
+      "parameter_id": "ed.durations.handover",
+      "C0_disposition": "revise",
+      "C0_rationale": "Handover is generated staff work; calibrate only with handover-specific occurrence anchors and an overlap/concurrency rule. Aggregate shift change or patient elapsed time does not isolate it, and second-to-tick conversion needs a versioned quantum and declared rounding.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Durations and §ABM staff behavior; conductor/tracks/empirical_calibration_20260925/spec.md §3 TraceMapping; §4 Avoid double counting; conductor/design/p0.2-interface-disposition-draft-20260930.md §2; libs/kairos/crates/kairo-ecs-types/src/lib.rs:53-105",
+      "C0_replacement": "Replacement: retain seconds; define handover occurrence endpoints and concurrent-work treatment before fitting, then convert using the versioned tick quantum and explicit rounding."
+    },
+    {
+      "row": 35,
+      "parameter_id": "ed.durations.disposition",
+      "C0_disposition": "revise",
+      "C0_rationale": "Disposition work is generated after a decision and must exclude boarding, bed search, transport and other departure delay; observed decision-ready, work completion and actual ED departure are separate possible targets. Only the work interval can fit this duration, with explicit censoring; tick conversion remains profile-versioned.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md §Durations and §Hospital interfaces; conductor/design/p0.2-interface-disposition-draft-20260930.md §5 Probability and observation boundaries; conductor/tracks/empirical_calibration_20260925/spec.md §3 censoring; §4 Avoid double counting; conductor/design/p0.2-interface-disposition-draft-20260930.md §2; libs/kairos/crates/kairo-ecs-types/src/lib.rs:53-105",
+      "C0_replacement": "Replacement: retain seconds; define disposition-work endpoints and explicitly exclude boarding/transport intervals, then convert with versioned tick quantum, checked range and declared rounding."
+    }
+  ]
+}

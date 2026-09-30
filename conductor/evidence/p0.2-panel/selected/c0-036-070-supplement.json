@@ -1,0 +1,292 @@
+{
+  "packet_id": "P0.2.C0.rows-036-070.supplement",
+  "reviewer_role": "C0 empirical calibration/data interface",
+  "reviewer_id": "/root/p02_c0_detail_review_b",
+  "session_id": "/root/p02_c0_detail_review_b-20260930",
+  "base_commit": "16d79a5c0eff9fb60969b9e7829b5c67cdf63e46",
+  "reviewed_at": "2026-09-30",
+  "source_file": "model-inputs/ed/schema/p0.2-owner-review-response-template.csv",
+  "scope": "Independent row-specific C0 supplement for data rows 36 through 70 inclusive. Uses the prior packet only to target generic rationales. Contract review only; no empirical numeric values, values/distributions, source data or E0 disposition asserted.",
+  "rows": [
+    {
+      "data_row": 36,
+      "parameter_id": "ed.durations.boarding",
+      "disposition": "revise",
+      "rationale": "Boarding is an elapsed boundary interval, not intrinsic ED service work: observed disposition/physical-departure anchors may include downstream bed or transfer delay. A fitted boarding target and a generated residual boundary delay must not represent the same interval; episode end and physical departure also remain distinct.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#3-4; conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event-and-validation; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Define boarding start/end anchors and whether the model owns a residual boundary delay. Treat observed elapsed boarding as a target only when its event mapping and censoring are explicit; retain seconds/source precision and use the C0-declared checked tick conversion."
+    },
+    {
+      "data_row": 37,
+      "parameter_id": "ed.durations.transit",
+      "disposition": "revise",
+      "rationale": "A scalar transit duration is usable for Macro aggregate timing, while Micro transit is generated from route distance and walking speed. Fitting and replaying the same observed travel interval as both a duration and movement cost would double count it.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#3-4; conductor/tracks/empirical_calibration_20260925/spec.md#Spatial-contract; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Restrict this key to an explicitly declared Macro travel interval or residual; in Micro derive travel ticks from graph distance and speed. Map observed start/end occurrence separately from recorded/message time and declare source precision, origin, and tick rounding."
+    },
+    {
+      "data_row": 38,
+      "parameter_id": "ed.resources.staffroles",
+      "disposition": "accept",
+      "rationale": "Staff role labels and skill categories are categorical generative configuration. They have no scalar physical unit; any numeric leaf such as an explicitly defined grade or count needs its own coding and unit. Observed role records can describe staffing context, but aggregate throughput does not identify role composition.",
+      "evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md#Catalogue-record-contract; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements",
+      "replacement": null
+    },
+    {
+      "data_row": 39,
+      "parameter_id": "ed.resources.staffcounts",
+      "disposition": "revise",
+      "rationale": "A single staff count can mean employed headcount, rostered, present, or eligible capacity; these are different snapshots and have different calibration roles. Only declared as-operated counts can be observed covariates/targets; service or queue outcomes cannot recover them uniquely.",
+      "evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md#Parameter-coverage-inventory; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Validation-and-normalization",
+      "replacement": "Name the count basis and reference time/window (for example, rostered versus present/eligible); keep staff identity and interval availability separate. Map observed counts with provenance and denominator, and do not infer staff counts from throughput or wait metrics."
+    },
+    {
+      "data_row": 40,
+      "parameter_id": "ed.resources.rosters",
+      "disposition": "revise",
+      "rationale": "Roster instants and effective intervals are configuration inputs with local recurrence semantics; observed clock-in/out or roster records are evidence with occurrence time distinct from entry/update time. A timezone label alone does not resolve DST folds, gaps, source precision, or the trace origin.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/spec.md#Validation-and-normalization; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "For absolute timestamps require offset/timezone and original precision; normalize instants to UTC. For recurring rosters preserve the IANA zone, recurrence, and fold/gap policy. State observation origin and checked interval-to-tick rounding separately."
+    },
+    {
+      "data_row": 41,
+      "parameter_id": "ed.resources.breaks",
+      "disposition": "revise",
+      "rationale": "A break rule changes a staff member\u2019s availability interval, while observed break start/end times are trace events; subtracting it again from an observed busy interval would double count unavailable time. Local recurring break schedules also encounter DST ambiguity.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Represent planned break recurrence and effective availability as inputs; map actual break occurrence as a separate observation with event provenance and censoring. Require zone/precision and the C0-declared UTC-origin/tick conversion for instants and intervals."
+    },
+    {
+      "data_row": 42,
+      "parameter_id": "ed.resources.absenceovertime",
+      "disposition": "revise",
+      "rationale": "Absence/overtime is a time-varying capacity delta, not just a net headcount. Planned adjustments are generative schedule inputs; recorded staffing presence is evidence, and downstream capacity/queue outcomes do not identify the staffing cause.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Retain signed staff-count delta, affected roles/resources, effective interval, and source time lineage as distinct fields. Specify timezone/DST, precision, and tick conversion for interval boundaries; map as-operated presence independently if used for calibration."
+    },
+    {
+      "data_row": 43,
+      "parameter_id": "ed.resources.supervision",
+      "disposition": "revise",
+      "rationale": "Supervision count is only meaningful with a declared scope and time: supervisors present, supervisory capacity, and a supervision ratio are not interchangeable. Numeric ratio leaves require a denominator and cannot be identified from aggregate service outcomes.",
+      "evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md#Catalogue-record-contract; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements",
+      "replacement": "Define whether this is a capacity count or an explicit supervisor-to-eligible-staff rule; state the role/population and effective interval. Keep observed staffing snapshots and calibration targets separately mapped with denominator/provenance."
+    },
+    {
+      "data_row": 44,
+      "parameter_id": "ed.resources.taskconcurrency",
+      "disposition": "revise",
+      "rationale": "Task concurrency is a limit on simultaneous work for a named resource or actor, not a count of tasks observed over a shift. Calibration needs the eligible workload and exposure interval; observed simultaneous tasks are telemetry, not a substitute for configured capacity.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event-and-validation; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Declare owner (staff/resource/pathway), concurrency scope, and whether the integer is a simultaneous-slot limit. Keep observed task intervals and concurrency measurements separate; do not infer the limit from aggregate counts without identified eligible work."
+    },
+    {
+      "data_row": 45,
+      "parameter_id": "ed.resources.beds",
+      "disposition": "revise",
+      "rationale": "Bed inventory is physical capacity, while open, staffed, usable, monitored, or occupied beds vary by time and capability. Observed occupancy can be a trace state/target, but it must not be substituted for the physical inventory or silently used to raise replay capacity.",
+      "evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md#Parameter-coverage-inventory; conductor/tracks/empirical_calibration_20260925/spec.md#Validation-and-normalization; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution",
+      "replacement": "Keep physical bed IDs/count distinct from effective open/staffed/usable capacity and occupancy intervals; give time-varying availability explicit intervals and provenance. Validate observed occupancy against the declared capacity and preserve any mismatch as a blocker/diagnostic."
+    },
+    {
+      "data_row": 46,
+      "parameter_id": "ed.resources.rooms",
+      "disposition": "revise",
+      "rationale": "A room count is physical inventory, not necessarily treatment capacity: room function, concurrent use, closure, and assigned resource are separate. Occupancy events are observations and cannot establish the count of rooms available to the modeled pathway.",
+      "evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md#Parameter-coverage-inventory; conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event-and-validation; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution",
+      "replacement": "Declare stable room/location identity and distinguish physical rooms from pathway-eligible and time-effective capacity. Map observed room entry/exit separately from room inventory; validate overlapping use against the declared effective capacity."
+    },
+    {
+      "data_row": 47,
+      "parameter_id": "ed.resources.equipment",
+      "disposition": "revise",
+      "rationale": "Equipment inventory count does not represent working, available, or pathway-compatible capacity, and equipment allocation can vary over time. Observed equipment use is a possible trace covariate/target only with a resource identity and exposure; it does not identify inventory by itself.",
+      "evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md#Parameter-coverage-inventory; conductor/tracks/empirical_calibration_20260925/spec.md#Validation-and-normalization; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution",
+      "replacement": "Keep physical item identity/count separate from capability, status, availability intervals, and allocation events. Declare the count basis; map use/occupancy observations and their windows separately and check concurrent claims against capacity."
+    },
+    {
+      "data_row": 48,
+      "parameter_id": "ed.resources.opencalendars",
+      "disposition": "revise",
+      "rationale": "Opening calendars define when a resource/pathway can be used; they are exogenous configuration, not observed utilization. Recurring local opening times need DST rules, while observation timestamps retain actual occurrence, precision, and recording lineage.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Validation-and-normalization; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Preserve calendar recurrence in an explicit zone with fold/gap policy and effective dates. Treat observed openings/closures as separate events; normalize absolute instants to UTC and convert intervals using the declared C0 origin/resolution/rounding."
+    },
+    {
+      "data_row": 49,
+      "parameter_id": "ed.resources.outages",
+      "disposition": "revise",
+      "rationale": "An outage schedule is an input that changes effective capacity; an observed equipment/bed failure event has an occurrence time and possibly a later record time. Treating outage duration as both a capacity clamp and a fitted service delay would conflate mechanisms.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/spec.md#Validation-and-normalization; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Represent outage cause/state and effective start/end separately from downstream delay targets. Preserve source zone/precision and occurrence versus recorded time; declare DST policy for recurring schedules and checked tick conversion."
+    },
+    {
+      "data_row": 50,
+      "parameter_id": "ed.resources.reservations",
+      "disposition": "revise",
+      "rationale": "A reservation is a claim/state with an owner and effective interval, not observed physical occupancy; queue and cleaning lifecycle may delay actual release. Reservation events are observations only under a separately defined mapping and cannot be equated with bed entry/exit.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Require reservation owner/resource and state transitions plus effective interval semantics. Map observed reservation, assignment, and physical entry/exit as distinct events; declare timezone/precision/origin/tick conversion for timed boundaries."
+    },
+    {
+      "data_row": 51,
+      "parameter_id": "ed.resources.cleaningcapacity",
+      "disposition": "revise",
+      "rationale": "Cleaning capacity may mean cleaning staff/equipment slots or completed cleaning throughput, while bed cleaning is also a timed task that gates bed release. A count alone cannot express cleaning work duration or the observation window for completed cleans.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Define capacity as named cleaning resources or concurrent cleaning slots; model clean-task duration separately in seconds/ticks. Map clean start/end and bed-ready events separately, retaining observed versus generated timing and capacity provenance."
+    },
+    {
+      "data_row": 52,
+      "parameter_id": "ed.abmstaffbehavior.agentattributes",
+      "disposition": "revise",
+      "rationale": "Agent attributes are generative staff-level inputs; observed staff/shift traits or sampled task outcomes are not interchangeable. Staff and shift clustering and the eligible-choice set limit identifiability, so aggregate service metrics cannot justify assigning latent attributes.",
+      "evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md#Catalogue-record-contract; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements",
+      "replacement": "Specify entity scope, category coding, numeric-leaf units, and whether attributes are fixed or vary by shift/time. Mark observed, derived, elicited, or assumed lineage; fit only against separately mapped staff-level evidence with cluster structure and identifiability limits."
+    },
+    {
+      "data_row": 53,
+      "parameter_id": "ed.abmstaffbehavior.assignment",
+      "disposition": "revise",
+      "rationale": "Assignment is a generative dispatch/assignment rule or state, while observed staff-to-task assignments are trace events. Actual assignments depend on eligible staff and task availability; outcomes alone cannot reveal the rule that selected one staff member.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements",
+      "replacement": "Distinguish configured assignment policy/state from observed assignment events. For calibration of choices preserve the eligible set, event occurrence, actor/task identities and time lineage; do not infer policy from aggregate duration or throughput."
+    },
+    {
+      "data_row": 54,
+      "parameter_id": "ed.abmstaffbehavior.zoneskilleligibility",
+      "disposition": "revise",
+      "rationale": "Zone/skill eligibility defines which staff were allowed to act at a decision point, an essential denominator for assessing assignment choices. A skill label is not evidence of current availability, and observed assignments do not show the unchosen eligible alternatives.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Version eligibility categories and effective intervals; record the choice-set snapshot, availability, role/skill and relevant task state when comparing observed assignment choices. Treat the rule as generated configuration and empirical choices as distinct observations."
+    },
+    {
+      "data_row": 55,
+      "parameter_id": "ed.abmstaffbehavior.taskchoice",
+      "disposition": "revise",
+      "rationale": "Task-choice rules generate which eligible work a staff agent selects. Observed task starts alone omit tasks that were available but not selected, so an unconditional choice probability would have an unknown denominator and confounded urgency/eligibility.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Keep policy/rule inputs distinct from observed task-choice events. Any fitted choice model must preserve eligible actions, decision time, task/actor state and conditioning variables; otherwise label the rule as an explicit assumption and do not claim empirical calibration."
+    },
+    {
+      "data_row": 56,
+      "parameter_id": "ed.abmstaffbehavior.reassessment",
+      "disposition": "revise",
+      "rationale": "Reassessment is a policy/event process, not a single scalar. Configured trigger/interval rules generate reassessment; observed reassessment timestamps are targets only when event occurrence and recording delay are separated and the patient remains under observation.",
+      "evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md#Parameter-coverage-inventory; conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/spec.md#Validation-and-normalization",
+      "replacement": "Represent trigger, cadence/threshold and applicable cohort as separate rule fields with declared time units. Map observed reassessment occurrences and observation-window censoring independently; retain event versus recorded/message timestamps and tick conversion."
+    },
+    {
+      "data_row": 57,
+      "parameter_id": "ed.abmstaffbehavior.urgencyfifo",
+      "disposition": "revise",
+      "rationale": "Urgency/FIFO is a deterministic ordering rule without a physical unit; observed queue order or wait outcomes do not directly measure its parameters, especially when priority eligibility and simultaneous arrivals are incompletely observed. It can remain a declared policy input for the candidate profile.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Freeze the priority ordering and stable tie-break as a policy version; keep priority/arrival occurrence and resource eligibility mappings explicit. Treat observed wait/sequence as validation outcomes, not a numeric calibration target unless the decision inputs are fully mapped."
+    },
+    {
+      "data_row": 58,
+      "parameter_id": "ed.abmstaffbehavior.communicationhandover",
+      "disposition": "revise",
+      "rationale": "Communication/handover includes discrete interactions and may include duration, but the matrix\u2019s structured class gives no timing or event definition for numeric leaves. Incoming prompts, actual handover work and subsequent task switches are distinct, and message timestamps are not event occurrence.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Keep handover policy/interaction kind categorical; give any active-work duration seconds/source precision and explicit anchors. Map incoming prompt, handover start/end and task switch/resumption as distinct events with occurrence/recorded/message lineage."
+    },
+    {
+      "data_row": 59,
+      "parameter_id": "ed.abmstaffbehavior.interruptionresumption",
+      "disposition": "revise",
+      "rationale": "Interruption and resumption rules need task identity and ancestry: an incoming prompt is not necessarily a switch, and a gap between task events is not necessarily active switching work. Observed interruption/resumption times can be censored or recorded late.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/plan.md#C0; conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements",
+      "replacement": "Preserve interrupted task, cause/prompt, first subsequent task, eventual resumption and occurrence/recorded timestamps. Keep policy inputs separate from those observations; declare seconds and checked ticks for any explicit timed component."
+    },
+    {
+      "data_row": 60,
+      "parameter_id": "ed.abmstaffbehavior.switchingoverhead",
+      "disposition": "revise",
+      "rationale": "Switching overhead is active work attributable to changing context, not the whole elapsed gap between interrupted and next task; that gap may contain queueing, suspension, handover or unobserved work. EHR elapsed intervals alone do not identify switching cost.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Define active switching work and start/end events in seconds with source precision; keep queue, suspension and resumption elapsed times separate as observations/targets. Convert with the C0-declared checked tick rule and preserve uncertainty/identifiability limits."
+    },
+    {
+      "data_row": 61,
+      "parameter_id": "ed.spatialabm.graphtopology",
+      "disposition": "accept",
+      "rationale": "Graph topology is a versioned generative representation of candidate walkable connections. It is not an observed staff trajectory or proof that an edge is legally accessible; optional MVP scope supports synthetic named locations/routes while geometry import remains outside scope.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Spatial-contract; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements; conductor/tracks/ed_parameter_evidence_20260927/plan.md#P0.2-review-artifact",
+      "replacement": null
+    },
+    {
+      "data_row": 62,
+      "parameter_id": "ed.spatialabm.scaledistance",
+      "disposition": "accept",
+      "rationale": "Metres are a coherent distance unit for the optional synthetic graph. Distance is a generative edge/input measure; observed travel duration is a separate target and cannot be derived from distance without route and speed assumptions.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Spatial-contract; conductor/tracks/empirical_calibration_20260925/spec.md#4-Dual-fidelity-execution; conductor/tracks/ed_parameter_evidence_20260927/plan.md#P0.2-review-artifact",
+      "replacement": null
+    },
+    {
+      "data_row": 63,
+      "parameter_id": "ed.spatialabm.locations",
+      "disposition": "revise",
+      "rationale": "A location catalogue is structured identity, while any coordinates/scale are numeric leaves requiring a declared coordinate frame and units. In the optional MVP, named synthetic locations are sufficient; imported geometry or observed location fixes require separate lineage and must not be treated as ground-truth routes.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Spatial-contract; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements; conductor/tracks/ed_parameter_evidence_20260927/plan.md#P0.2-review-artifact",
+      "replacement": "Keep stable location IDs and type/zone categories distinct from coordinates. If coordinates are present, declare frame, scale/unit and provenance; limit candidate MVP to named synthetic locations unless an explicit reviewed geometry source is in scope."
+    },
+    {
+      "data_row": 64,
+      "parameter_id": "ed.spatialabm.routesconnectivity",
+      "disposition": "revise",
+      "rationale": "Route connectivity is a generated graph edge/access rule, whereas recorded paths may be sensor-smoothed observations and do not prove a legal or walkable path. Edge distance, movement speed and elapsed travel time are separate quantities; initial contract excludes congestion-dependent edge costs.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Spatial-contract; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements; conductor/tracks/ed_parameter_evidence_20260927/plan.md#P0.2-review-artifact",
+      "replacement": "Version the graph and edge IDs; represent access/connectivity separately from distance and travel time. Treat observed tracks as evidence with sensor/transform provenance, not direct graph truth; keep congestion disabled absent an extension and observations."
+    },
+    {
+      "data_row": 65,
+      "parameter_id": "ed.spatialabm.walkingspeedvariation",
+      "disposition": "accept",
+      "rationale": "Metres per second is the appropriate speed unit for the optional movement model. Speed variation is a generative input; observed origin/destination travel intervals are separate timestamped targets and do not isolate speed unless route distance and movement mode are also known.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Spatial-contract; conductor/tracks/empirical_calibration_20260925/spec.md#Validation-and-normalization; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements",
+      "replacement": null
+    },
+    {
+      "data_row": 66,
+      "parameter_id": "ed.spatialabm.equipmentsupplytrips",
+      "disposition": "revise",
+      "rationale": "The registry\u2019s count class risks conflating trip events/exposure with equipment inventory or capacity. A trip count also has no meaning without purpose, observation window and opportunity denominator; trips may be generated events or observed movement targets.",
+      "evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md#Parameter-coverage-inventory; conductor/tracks/empirical_calibration_20260925/spec.md#Normalized-trace-event.v1; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Separate equipment/supply trip event type and count window/exposure from equipment capacity. Define trip purpose and origin/destination; map observed trip timestamps with source precision and do not infer a capacity count from trip frequency."
+    },
+    {
+      "data_row": 67,
+      "parameter_id": "ed.spatialabm.routechoice",
+      "disposition": "revise",
+      "rationale": "Route-choice behavior is conditional on the available reachable alternatives and the staff/task context at decision time. Observed chosen paths or aggregate travel times omit the unchosen set and cannot identify route preference; a policy distribution needs an explicit denominator.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Spatial-contract; conductor/tracks/empirical_calibration_20260925/spec.md#Research-integration-requirements; conductor/tracks/ed_parameter_evidence_20260927/spec.md#Evidence-and-distribution-selection",
+      "replacement": "Version route-choice policy and record the reachable eligible alternatives, graph version, origin/destination, movement mode, decision occurrence and conditioning state for fitted choices. Keep observed path data separate and provenance-qualified; do not infer probabilities from aggregate transit time."
+    },
+    {
+      "data_row": 68,
+      "parameter_id": "ed.spatialabm.travelinterruptions",
+      "disposition": "revise",
+      "rationale": "Travel interruption occurrence/cause is a behavior rule, while duration and movement progress are separate timed/mechanical quantities. If interruption delay is included in the transit target and separately generated as delay, travel can be counted twice; a missed endpoint is censored rather than zero.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Spatial-contract; conductor/tracks/empirical_calibration_20260925/spec.md#Trace-driven-shadow-replay; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Separate interruption trigger/cause, elapsed pause and movement progress; numeric time leaves use seconds/source precision and declared tick rounding. Preserve observed interruption event lineage and censoring independently from generated travel behavior."
+    },
+    {
+      "data_row": 69,
+      "parameter_id": "ed.spatialabm.congestion",
+      "disposition": "defer",
+      "rationale": "Congestion is expressly post-MVP: the current spatial contract uses fixed graph costs and does not model occupancy-dependent edge costs. There is no accepted congestion exposure/event mapping or target in this C0 scope.",
+      "evidence_locator": "conductor/tracks/empirical_calibration_20260925/spec.md#Spatial-contract; conductor/tracks/ed_parameter_evidence_20260927/spec.md#Parameter-coverage-inventory; conductor/tracks/empirical_calibration_20260925/plan.md#C0",
+      "replacement": "Keep deferred until a separately reviewed extension defines congestion mechanism, exposure, event/time mapping, units, identifiability and fixtures; do not enable calibration or infer local congestion values under this row."
+    },
+    {
+      "data_row": 70,
+      "parameter_id": "ed.patientbehavior.patience",
+      "disposition": "revise",
+      "rationale": "Patience is a latent generative abandonment threshold/rule; observed queue time before abandonment is a right-censored outcome for patients who remain. Treating completed waits as patience values loses censoring and confounds queue conditions with behavior.",
+      "evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md#Validation-and-normalization; conductor/tracks/ed_parameter_evidence_20260927/spec.md#Trace-driven-shadow-replay; conductor/tracks/ed_parameter_evidence_20260927/spec.md#Evidence-and-distribution-selection",
+      "replacement": "Define threshold or hazard form and conditioning separately from observed abandonment event, last-known-at-risk time and censor reason. Map occurrence/recording time distinctly; preserve seconds/source precision and declared tick conversion."
+    }
+  ]
+}

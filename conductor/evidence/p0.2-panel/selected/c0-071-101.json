@@ -1,0 +1,453 @@
+{
+  "artifact_version": 1,
+  "review_role": "C0 empirical calibration/data interface",
+  "reviewer_id": "agent:/root/p02_c0_c",
+  "session_id": "/root/p02_c0_c",
+  "base_commit": "16d79a5c0eff9fb60969b9e7829b5c67cdf63e46",
+  "reviewed_at": "2026-09-30",
+  "scope": {
+    "csv_data_rows": [
+      71,
+      101
+    ],
+    "row_count": 31,
+    "source": "model-inputs/ed/schema/p0.2-owner-review-response-template.csv"
+  },
+  "cross_cutting_note": "No empirical values or fitted distributions were inferred. ED durations may be normalized to seconds, but seconds-per-tick, origin, and the conversion behavior for values not exactly representable remain unresolved and must be frozen by C0. Absolute timestamps retain source timezone/offset and precision in an adapter; Kairos SimTime itself is integer logical ticks.",
+  "rows": [
+    {
+      "row": 71,
+      "parameter_id": "ed.patientbehavior.abandonment",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative abandonment behavior is a model input, not an observed target. A probability is meaningful only for the explicitly declared leaving-without-being-seen pathway and an eligible-patient denominator; no value or fitted distribution is accepted here.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 71 (CSV line 72)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/70",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ],
+      "replacement": "No replacement; accept the proposed C0 unit/role subject to the cross-cutting tick-conversion deferral in row 90."
+    },
+    {
+      "row": 72,
+      "parameter_id": "ed.patientbehavior.mobilityassistance",
+      "C0_disposition": "accept",
+      "C0_rationale": "Mobility/assistance is an input attribute or rule where relevant. It is not a direct target by itself; calibrate only from observed attributes/assistance records with population and time provenance, and do not infer walking cost from elapsed EHR intervals.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 72 (CSV line 73)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/71",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ],
+      "replacement": "No replacement; accept the proposed C0 unit/role subject to the cross-cutting tick-conversion deferral in row 90."
+    },
+    {
+      "row": 73,
+      "parameter_id": "ed.patientbehavior.routingcompliance",
+      "C0_disposition": "accept",
+      "C0_rationale": "Routing compliance is generative behavior. Keep any observed compliance outcome separate and condition the input on a defined routing opportunity and eligibility denominator; no rate is asserted.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 73 (CSV line 74)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/72",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ],
+      "replacement": "No replacement; accept the proposed C0 unit/role subject to the cross-cutting tick-conversion deferral in row 90."
+    },
+    {
+      "row": 74,
+      "parameter_id": "ed.patientbehavior.companions",
+      "C0_disposition": "not_applicable",
+      "C0_rationale": "Deferred identity has no current generic ED or C0 consumer. If activated later, review the mechanism, applicability, time semantics, and measurement mapping before calibration.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 74 (CSV line 75)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/73",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ]
+    },
+    {
+      "row": 75,
+      "parameter_id": "ed.hospitalinterfaces.admissiondemand",
+      "C0_disposition": "revise",
+      "C0_rationale": "This row is external admission demand, but its proposed profile-use text describes inpatient bed offers. Keep admission requests/demand distinct from bed availability and patient disposition; model it as an exogenous boundary input. Any observed boundary schedule is an input with source time provenance, not an ED outcome target.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 75 (CSV line 76)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/74",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L34-L38"
+      ],
+      "replacement": "Replace profile use with: \u201cExogenous, time-stamped external admission-demand input where needed by the declared admission/boarding fixture; keep separate from inpatient bed-offer/availability and ED disposition targets. Use only a source-backed or explicitly synthetic schedule; do not fit from aggregate ED boarding alone.\u201d"
+    },
+    {
+      "row": 76,
+      "parameter_id": "ed.hospitalinterfaces.inpatientbedavailability",
+      "C0_disposition": "accept",
+      "C0_rationale": "Inpatient bed availability/release is exogenous boundary state, distinct from ED boarding/length-of-stay outcomes. Preserve source observation times and availability intervals; do not infer bed availability from patient wait or discharge timestamps.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 76 (CSV line 77)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/75",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L34-L38"
+      ],
+      "replacement": "No replacement; accept the proposed C0 unit/role subject to the cross-cutting tick-conversion deferral in row 90."
+    },
+    {
+      "row": 77,
+      "parameter_id": "ed.hospitalinterfaces.transfertransport",
+      "C0_disposition": "accept",
+      "C0_rationale": "Transfer/transport availability is an exogenous boundary input when enabled. A separately observed transport delay may be a target only when its start/end events are defined; do not fit it from an undifferentiated patient elapsed interval.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 77 (CSV line 78)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/76",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L34-L38"
+      ],
+      "replacement": "No replacement; accept the proposed C0 unit/role subject to the cross-cutting tick-conversion deferral in row 90."
+    },
+    {
+      "row": 78,
+      "parameter_id": "ed.hospitalinterfaces.diagnosticdependencies",
+      "C0_disposition": "accept",
+      "C0_rationale": "External diagnostic dependency is a boundary input. Keep availability/turnaround inputs distinct from observed ED process outcomes and define event endpoints before any delay is fitted.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 78 (CSV line 79)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/77",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L34-L38"
+      ],
+      "replacement": "No replacement; accept the proposed C0 unit/role subject to the cross-cutting tick-conversion deferral in row 90."
+    },
+    {
+      "row": 79,
+      "parameter_id": "ed.hospitalinterfaces.wholehospitalmechanisms",
+      "C0_disposition": "not_applicable",
+      "C0_rationale": "Whole-hospital mechanisms are explicitly deferred and outside the generic ED C0 interface. No current target or generation contract should be assigned.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 79 (CSV line 80)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/78",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ]
+    },
+    {
+      "row": 80,
+      "parameter_id": "ed.optionalcomplexity.fatigue",
+      "C0_disposition": "not_applicable",
+      "C0_rationale": "Fatigue has no current mechanism or consumer and is deferred. Do not infer fatigue from shift-level outcome differences absent a defined observation and identification design.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 80 (CSV line 81)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/79",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ]
+    },
+    {
+      "row": 81,
+      "parameter_id": "ed.optionalcomplexity.learning",
+      "C0_disposition": "not_applicable",
+      "C0_rationale": "Learning has no current mechanism or consumer and is deferred. A future effect needs explicit temporal state and a separately reviewed observation design.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 81 (CSV line 82)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/80",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ]
+    },
+    {
+      "row": 82,
+      "parameter_id": "ed.optionalcomplexity.crowdingfeedback",
+      "C0_disposition": "not_applicable",
+      "C0_rationale": "Crowding feedback is deferred pending a scoped mechanism. Aggregate crowding/outcome association alone does not identify a generative feedback function.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 82 (CSV line 83)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/81",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ]
+    },
+    {
+      "row": 83,
+      "parameter_id": "ed.optionalcomplexity.detailedphysiology",
+      "C0_disposition": "not_applicable",
+      "C0_rationale": "Detailed physiology is explicitly deferred from the declared minimal fidelity; no current calibration interface applies.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 83 (CSV line 84)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/82",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ]
+    },
+    {
+      "row": 84,
+      "parameter_id": "ed.experimentcontrols.initialization",
+      "C0_disposition": "accept",
+      "C0_rationale": "Initialization is a generative initial-state input. Anchor simulation time at run start; encode ongoing-task ages as elapsed durations at that origin. If source records use absolute timestamps, retain their source timezone/precision before deriving ages; do not treat initial-state observations as post-start outcomes.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 84 (CSV line 85)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/83",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ],
+      "replacement": "No replacement; accept the proposed C0 unit/role subject to the cross-cutting tick-conversion deferral in row 90."
+    },
+    {
+      "row": 85,
+      "parameter_id": "ed.experimentcontrols.ongoingworkages",
+      "C0_disposition": "accept",
+      "C0_rationale": "Ongoing-work age is elapsed time at initialization, not an absolute civil timestamp. Preserve source event/time provenance when derived from records; normalize to seconds, then convert only under the still-unresolved declared tick quantum and conversion rule.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 85 (CSV line 86)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/84",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ],
+      "replacement": "No replacement; accept the proposed C0 unit/role subject to the cross-cutting tick-conversion deferral in row 90."
+    },
+    {
+      "row": 86,
+      "parameter_id": "ed.experimentcontrols.warmup",
+      "C0_disposition": "accept",
+      "C0_rationale": "Warm-up is an experiment duration relative to run origin, with no timezone. Express in canonical seconds; metric exclusion is a study window and must be reported separately from generated patient/process data. Tick conversion remains subject to C0 resolution.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 86 (CSV line 87)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/85",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ],
+      "replacement": "No replacement; accept the proposed C0 unit/role subject to the cross-cutting tick-conversion deferral in row 90."
+    },
+    {
+      "row": 87,
+      "parameter_id": "ed.experimentcontrols.horizon",
+      "C0_disposition": "accept",
+      "C0_rationale": "Horizon is elapsed simulation duration from run origin, not a civil timestamp. Seconds are a suitable canonical input unit; tick conversion requires the declared resolution and checked conversion contract.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 87 (CSV line 88)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/86",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ],
+      "replacement": "No replacement; accept the proposed C0 unit/role subject to the cross-cutting tick-conversion deferral in row 90."
+    },
+    {
+      "row": 88,
+      "parameter_id": "ed.experimentcontrols.replications",
+      "C0_disposition": "accept",
+      "C0_rationale": "Replication count is an experiment-design control, not an empirical target or ED-generative parameter. Keep the sampling/cluster unit and candidate/replication identities explicit; no count is asserted.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 88 (CSV line 89)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/87",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ]
+    },
+    {
+      "row": 89,
+      "parameter_id": "ed.experimentcontrols.seedstreams",
+      "C0_disposition": "accept",
+      "C0_rationale": "Seed purpose/stream identity supports reproducibility of generated inputs and calibration candidates; it is not a fitted parameter or target. Leave width and exact derivation to Kairos 01 and preserve named purpose/sampling level.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 89 (CSV line 90)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/88",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ]
+    },
+    {
+      "row": 90,
+      "parameter_id": "ed.experimentcontrols.timeunits",
+      "C0_disposition": "defer",
+      "C0_rationale": "Seconds are a reasonable canonical ED configuration unit, but this row explicitly leaves time resolution/runtime type undefined. Kairos SimTime stores integer ticks and the engine has no civil-time or timezone conversion; C0 has not fixed tick quantum, run origin convention, or rounding/rejection rule. Do not claim seconds-to-ticks conversion is settled.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 90 (CSV line 91)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/89",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "libs/kairos/crates/kairo-ecs-types/src/lib.rs#L51-L65",
+        "libs/kairos/conductor/quality-frontier-20260928.md#L17"
+      ],
+      "replacement": "Retain seconds as the normalized external duration unit. Defer acceptance of tick conversion until C0 freezes a per-run or contract-level tick quantum (exact seconds-per-tick), simulation origin, checked seconds-to-ticks conversion, and behavior for nonrepresentable values; preserve absolute source timestamps and timezone handling in the ED/IO adapter, outside SimTime."
+    },
+    {
+      "row": 91,
+      "parameter_id": "ed.experimentcontrols.modeoverrides",
+      "C0_disposition": "revise",
+      "C0_rationale": "Mode/fidelity overrides affect generated trajectories and metric comparability; they are controls, not calibration parameters. Candidate comparisons must hold the resolved mode constant or report mode as a prespecified stratum, and record it in run/metric provenance.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 91 (CSV line 92)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/90",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ],
+      "replacement": "Replace C0 profile-use semantics with: \u201cScenario control fixed within each calibration comparison or declared as a prespecified comparison stratum; record resolved mode in run/metric provenance. Do not optimize mode jointly as a fitted parameter.\u201d"
+    },
+    {
+      "row": 92,
+      "parameter_id": "ed.experimentcontrols.observationcensoringwindows",
+      "C0_disposition": "revise",
+      "C0_rationale": "The unit proposal does not distinguish relative intervals from absolute civil-time windows. Observation windows need an explicit anchor; absolute source instants retain original offset/timezone and source precision, while durations/windows are relative to a declared run, episode, or study origin. DST resolution belongs to the adapter; integer ticks cannot retain civil-time semantics.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 92 (CSV line 93)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/91",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ],
+      "replacement": "Replace unit contract with: \u201cDeclare each window as elapsed duration or absolute source-time interval. Durations use canonical seconds and a named run/episode/study origin; absolute timestamps retain source offset/timezone, DST resolution, and original precision. Convert to ticks only under the frozen C0 tick quantum/rule; never invent finer precision.\u201d"
+    },
+    {
+      "row": 93,
+      "parameter_id": "ed.experimentcontrols.calibrationbounds",
+      "C0_disposition": "accept",
+      "C0_rationale": "Calibration bounds constrain candidate generation and must be separate from physical limits, observed sample ranges, scenario ranges, and uncertainty. Numeric leaves need units and source/rationale; bounds do not turn observed targets into generative inputs.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 93 (CSV line 94)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/92",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36"
+      ]
+    },
+    {
+      "row": 94,
+      "parameter_id": "ed.measurementmapping.observedelapsedinterval",
+      "C0_disposition": "revise",
+      "C0_rationale": "This is an observed measurement, not a primitive generative work duration. Preserve the source event pair and raw timestamp values, source timezone/offset, precision and recording-time lineage; derive elapsed seconds only after event mapping. Do not equate elapsed interval with intrinsic service, queue, or transit without endpoint evidence.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 94 (CSV line 95)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/93",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/93"
+      ],
+      "replacement": "Replace unit contract with: \u201cObserved target/measurement only; retain raw source timestamps, event endpoints, source units, timezone/offset, precision and occurrence-versus-recording times. Derive canonical elapsed seconds with a versioned mapping; map to ticks only under frozen C0 conversion without fabricating precision. The interval is not a primitive service-time input.\u201d"
+    },
+    {
+      "row": 95,
+      "parameter_id": "ed.measurementmapping.queuedelay",
+      "C0_disposition": "revise",
+      "C0_rationale": "Registry semantics identify queue delay as an observed validation target; simulated queue delay is endogenous. The matrix time-unit wording alone does not prevent reusing the measured target as a generative input. Define queue entry and service-grant endpoints, eligible cohort/denominator, exclusions and censoring; retain the observed target separately from simulated outcome.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 95 (CSV line 96)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/94",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/94"
+      ],
+      "replacement": "Replace unit contract with: \u201cObserved target only: specify queue-entry and grant/start events, clock/source provenance, cohort and denominator, missingness/censoring, and canonical duration unit. Keep observed and simulated queue-delay fields separate; never use this target as an input parameter. Tick normalization is conditional on frozen C0 conversion.\u201d"
+    },
+    {
+      "row": 96,
+      "parameter_id": "ed.measurementmapping.eventdefinitions",
+      "C0_disposition": "accept",
+      "C0_rationale": "Event definitions are measurement mappings, separate from pathway-generation rules. Version the source-to-canonical mapping; preserve event occurrence time separately from nullable source-recorded/message-created times, and retain distinct episode_end and physical_departure semantics.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 96 (CSV line 97)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/95",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/95"
+      ]
+    },
+    {
+      "row": 97,
+      "parameter_id": "ed.measurementmapping.inclusioncriteria",
+      "C0_disposition": "accept",
+      "C0_rationale": "Inclusion criteria define the observed-data cohort, not a generative rule. Prespecify and version them before fitting/evaluation; retain exclusions and prevent future outcome or post-hoc selection from leaking into predictors or calibration targets.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 97 (CSV line 98)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/96",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/96"
+      ]
+    },
+    {
+      "row": 98,
+      "parameter_id": "ed.measurementmapping.metricdenominators",
+      "C0_disposition": "accept",
+      "C0_rationale": "Metric denominators are measurement semantics. Define eligible cases/events and conditioning variables explicitly, report reference/simulation counts plus excluded, unmatched and censored counts, and keep denominators distinct from generated demand or pathway probabilities.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 98 (CSV line 99)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/97",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/97"
+      ]
+    },
+    {
+      "row": 99,
+      "parameter_id": "ed.measurementmapping.timestampprecisiondelay",
+      "C0_disposition": "revise",
+      "C0_rationale": "Timestamp precision and recording delay are different concepts. Source precision cannot be upgraded by normalization, and a recording delay cannot be inferred from timestamp granularity alone. Preserve absolute-time timezone/offset and occurrence versus recording times independently.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 99 (CSV line 100)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/98",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/98"
+      ],
+      "replacement": "Replace unit contract with: \u201cMeasurement metadata: preserve raw occurrence and source-recorded/message-created timestamps separately, each with source precision, timezone/offset where absolute, and provenance. Represent recording delay separately with an evidence-backed or unknown status; never infer it from timestamp resolution. Normalize without fabricating precision and convert only under frozen C0 rules.\u201d"
+    },
+    {
+      "row": 100,
+      "parameter_id": "ed.measurementmapping.missingness",
+      "C0_disposition": "accept",
+      "C0_rationale": "Missingness belongs to observed-data metadata and cohort/metric accounting, not an implicit generated default. Preserve field-level missingness reason where available; report missing/outcome rates and exclusions separately, and do not claim first-release survival or missing-data correction.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 100 (CSV line 101)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/99",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/99"
+      ]
+    },
+    {
+      "row": 101,
+      "parameter_id": "ed.measurementmapping.censoring",
+      "C0_disposition": "accept",
+      "C0_rationale": "Censoring belongs to observed traces/targets. Preserve risk start, last observed time, event/cause, censor reason and observation window; do not encode censor time as an exact completion or silently drop censored cases. Report censoring separately; no survival correction is implied.",
+      "evidence_locator": [
+        "model-inputs/ed/schema/p0.2-owner-review-response-template.csv:data row 101 (CSV line 102)",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/100",
+        "conductor/tracks/ed_parameter_evidence_20260927/spec.md#L28-L38",
+        "conductor/tracks/empirical_calibration_20260925/spec.md#L127-L133,#L203-L243,#L256-L273,#L370-L388",
+        "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md#L14-L17,#L31-L36",
+        "model-inputs/ed/schema/parameter-ids.json#/entries/100"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+{
+  "artifact": "P0.2 independent C0 role review",
+  "reviewer_role": "C0 empirical calibration/data interface",
+  "reviewer_id": "/root/p02_c0_a_resume",
+  "session_id": "/root/p02_c0_a_resume (agent task in current session)",
+  "base_commit": "16d79a5c0eff9fb60969b9e7829b5c67cdf63e46",
+  "reviewed_at": "2026-09-30",
+  "scope": "Rows 1-35 (CSV data rows after header); no E0 result files read; no empirical numeric guesses.",
+  "entries": [
+    {
+      "row": 1,
+      "parameter_id": "ed.demandcasemix.arrivals",
+      "C0_disposition": "defer",
+      "C0_rationale": "Generative exogenous arrival input, not an observation target. The proposed patients/hour or timestamped schedule alternatives are distinguishable representations, but the rate-to-event conversion depends on a declared ED tick quantum and schedule origin. No empirical rate or distribution is asserted.",
+      "C0_evidence_locator": "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md \u00a7Canonical duration unit and \u00a7Timestamped schedules; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 UTC conversion and dataset origin",
+      "C0_replacement": "Replacement: keep patients/hour or explicit event schedule as alternatives; bind schedule instants to a declared timezone, DST policy and scenario origin, then convert using a versioned tick quantum with counted declared rounding."
+    },
+    {
+      "row": 2,
+      "parameter_id": "ed.demandcasemix.calendarprofile",
+      "C0_disposition": "defer",
+      "C0_rationale": "Generative calendar modifier; local-calendar interpretation, timezone/DST policy and conversion to run-relative ticks are not specified. It is not a calibration target itself. No seasonal values are inferred.",
+      "C0_evidence_locator": "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md \u00a7Timestamped schedules; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 UTC conversion precedes subtraction from one dataset origin",
+      "C0_replacement": "Replacement: distinguish recurring local calendar rules from absolute UTC instants; require IANA/source timezone and explicit ambiguous/nonexistent DST-time policy, retain source precision, and anchor converted instants to a declared run origin."
+    },
+    {
+      "row": 3,
+      "parameter_id": "ed.demandcasemix.surgeprofile",
+      "C0_disposition": "accept",
+      "C0_rationale": "Structured exogenous scenario modifier, not a calibration target. C0 accepts only the leaf-level contract: each time-valued leaf needs explicit units/origin/timezone as applicable and no numeric values or distributions are implied.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Experiment controls and \u00a7Example input pack; conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md \u00a7Canonical duration unit",
+      "C0_replacement": ""
+    },
+    {
+      "row": 4,
+      "parameter_id": "ed.demandcasemix.arrivalmode",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative exogenous case attribute or arrival-category input, not an observed calibration target. Explicit category conditioning and denominator are appropriate; marginal aggregates do not establish joint case-mix dependence, and no proportions or empirical values are asserted.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Parameter coverage inventory and \u00a7Reports 26\u201330 integration (cohort and missingness denominators; aggregate marginals do not establish joint distributions); model-inputs/ed/schema/parameter-ids.json entry ed.demandcasemix.arrivalmode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 5,
+      "parameter_id": "ed.demandcasemix.agemix",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative exogenous case attribute or arrival-category input, not an observed calibration target. Explicit category conditioning and denominator are appropriate; marginal aggregates do not establish joint case-mix dependence, and no proportions or empirical values are asserted.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Parameter coverage inventory and \u00a7Reports 26\u201330 integration (cohort and missingness denominators; aggregate marginals do not establish joint distributions); model-inputs/ed/schema/parameter-ids.json entry ed.demandcasemix.agemix",
+      "C0_replacement": ""
+    },
+    {
+      "row": 6,
+      "parameter_id": "ed.demandcasemix.casetypemix",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative exogenous case attribute or arrival-category input, not an observed calibration target. Explicit category conditioning and denominator are appropriate; marginal aggregates do not establish joint case-mix dependence, and no proportions or empirical values are asserted.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Parameter coverage inventory and \u00a7Reports 26\u201330 integration (cohort and missingness denominators; aggregate marginals do not establish joint distributions); model-inputs/ed/schema/parameter-ids.json entry ed.demandcasemix.casetypemix",
+      "C0_replacement": ""
+    },
+    {
+      "row": 7,
+      "parameter_id": "ed.demandcasemix.acuitymix",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative exogenous case attribute or arrival-category input, not an observed calibration target. Explicit category conditioning and denominator are appropriate; marginal aggregates do not establish joint case-mix dependence, and no proportions or empirical values are asserted.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Parameter coverage inventory and \u00a7Reports 26\u201330 integration (cohort and missingness denominators; aggregate marginals do not establish joint distributions); model-inputs/ed/schema/parameter-ids.json entry ed.demandcasemix.acuitymix",
+      "C0_replacement": ""
+    },
+    {
+      "row": 8,
+      "parameter_id": "ed.demandcasemix.jointcasemix",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative exogenous case attribute or arrival-category input, not an observed calibration target. Explicit category conditioning and denominator are appropriate; marginal aggregates do not establish joint case-mix dependence, and no proportions or empirical values are asserted.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Parameter coverage inventory and \u00a7Reports 26\u201330 integration (cohort and missingness denominators; aggregate marginals do not establish joint distributions); model-inputs/ed/schema/parameter-ids.json entry ed.demandcasemix.jointcasemix",
+      "C0_replacement": ""
+    },
+    {
+      "row": 9,
+      "parameter_id": "ed.demandcasemix.referrals",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative exogenous case attribute or arrival-category input, not an observed calibration target. Explicit category conditioning and denominator are appropriate; marginal aggregates do not establish joint case-mix dependence, and no proportions or empirical values are asserted.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Parameter coverage inventory and \u00a7Reports 26\u201330 integration (cohort and missingness denominators; aggregate marginals do not establish joint distributions); model-inputs/ed/schema/parameter-ids.json entry ed.demandcasemix.referrals",
+      "C0_replacement": ""
+    },
+    {
+      "row": 10,
+      "parameter_id": "ed.demandcasemix.transfers",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative exogenous case attribute or arrival-category input, not an observed calibration target. Explicit category conditioning and denominator are appropriate; marginal aggregates do not establish joint case-mix dependence, and no proportions or empirical values are asserted.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Parameter coverage inventory and \u00a7Reports 26\u201330 integration (cohort and missingness denominators; aggregate marginals do not establish joint distributions); model-inputs/ed/schema/parameter-ids.json entry ed.demandcasemix.transfers",
+      "C0_replacement": ""
+    },
+    {
+      "row": 11,
+      "parameter_id": "ed.demandcasemix.repeatpresentations",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative exogenous case attribute or arrival-category input, not an observed calibration target. Explicit category conditioning and denominator are appropriate; marginal aggregates do not establish joint case-mix dependence, and no proportions or empirical values are asserted.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Parameter coverage inventory and \u00a7Reports 26\u201330 integration (cohort and missingness denominators; aggregate marginals do not establish joint distributions); model-inputs/ed/schema/parameter-ids.json entry ed.demandcasemix.repeatpresentations",
+      "C0_replacement": ""
+    },
+    {
+      "row": 12,
+      "parameter_id": "ed.despathways.registration",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 13,
+      "parameter_id": "ed.despathways.triage",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 14,
+      "parameter_id": "ed.despathways.assessment",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 15,
+      "parameter_id": "ed.despathways.diagnostics",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 16,
+      "parameter_id": "ed.despathways.treatment",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 17,
+      "parameter_id": "ed.despathways.observation",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 18,
+      "parameter_id": "ed.despathways.reassessment",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 19,
+      "parameter_id": "ed.despathways.consult",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 20,
+      "parameter_id": "ed.despathways.discharge",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 21,
+      "parameter_id": "ed.despathways.admission",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 22,
+      "parameter_id": "ed.despathways.transfer",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 23,
+      "parameter_id": "ed.despathways.abandonment",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 24,
+      "parameter_id": "ed.despathways.routingprobability",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 25,
+      "parameter_id": "ed.despathways.repeatloops",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 26,
+      "parameter_id": "ed.despathways.priorities",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 27,
+      "parameter_id": "ed.despathways.deadlines",
+      "C0_disposition": "defer",
+      "C0_rationale": "A deadline is a generative pathway rule, not an observed calibration target. Seconds are a suitable external duration unit, but its conversion to integer ticks is underdetermined until the ED tick quantum and rounding policy are versioned.",
+      "C0_evidence_locator": "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md \u00a7Canonical duration unit; libs/kairos/crates/kairo-ecs-types/src/lib.rs:53-105 (ticks are integer storage; no physical tick scale)",
+      "C0_replacement": "Replacement: preserve seconds at the ED configuration boundary; convert only under a declared tick-quantum/version and explicit checked rounding rule, rejecting overflow or unsupported precision."
+    },
+    {
+      "row": 28,
+      "parameter_id": "ed.despathways.preemption",
+      "C0_disposition": "accept",
+      "C0_rationale": "Generative pathway or policy input; it is not itself an observed target. C0 accepts the typed structured boundary only: numeric duration leaves need explicit units, and empirical fitting must map observed occurrence endpoints and denominators without treating pathway identities as fitted values. No policy or numeric value is endorsed.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7DES pathways and \u00a7Catalogue record contract; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a75 ReplayMode",
+      "C0_replacement": ""
+    },
+    {
+      "row": 29,
+      "parameter_id": "ed.durations.intrinsicwork",
+      "C0_disposition": "defer",
+      "C0_rationale": "Generative active-work duration, potentially calibratable only from observations that isolate active work. Elapsed arrival-to-treatment observations cannot identify it by themselves because queue and transit would be double-counted. Tick quantum and rounding are not fixed by SimTime.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Evidence and distribution selection (distinguish elapsed time from active work); conductor/tracks/empirical_calibration_20260925/spec.md \u00a74 Avoid double counting; libs/kairos/crates/kairo-ecs-types/src/lib.rs:53-105",
+      "C0_replacement": "Replacement: retain seconds as input unit, require mapped start/end events and evidence that isolates active work, then convert through a versioned tick scale with declared/countable rounding."
+    },
+    {
+      "row": 30,
+      "parameter_id": "ed.durations.setup",
+      "C0_disposition": "defer",
+      "C0_rationale": "Generative setup duration; only becomes calibratable when observation mapping separates setup from active work, waiting and transit. Physical tick scale and rounding remain unresolved.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Durations; conductor/tracks/empirical_calibration_20260925/spec.md \u00a74 Avoid double counting and \u00a73 TraceMapping",
+      "C0_replacement": "Replacement: retain seconds; identify start/end semantics and included process before fitting, then use declared tick quantum and rounding with precision-loss reporting."
+    },
+    {
+      "row": 31,
+      "parameter_id": "ed.durations.turnaround",
+      "C0_disposition": "defer",
+      "C0_rationale": "Generative elapsed turnaround delay, not necessarily staff work. Observation mapping must define which external processing and queue components are included; integer tick scale and rounding are not yet defined.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Durations; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a74 Avoid double counting",
+      "C0_replacement": "Replacement: retain seconds; specify occurrence anchors and included/excluded process, keep it distinct from active work and queue delay, then convert using versioned tick quantum and explicit rounding."
+    },
+    {
+      "row": 32,
+      "parameter_id": "ed.durations.reportreviewdelay",
+      "C0_disposition": "defer",
+      "C0_rationale": "Generative report/review elapsed delay. A measured interval is a calibration target only when occurrence timestamps identify the intended endpoints; charting/recording time cannot substitute. Tick quantum and rounding are unresolved.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Durations; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 observed_at vs recorded_at and \u00a74 Avoid double counting",
+      "C0_replacement": "Replacement: retain seconds; require event-occurrence endpoint mapping and preserve recording timestamps separately, then convert with versioned tick quantum and declared rounding."
+    },
+    {
+      "row": 33,
+      "parameter_id": "ed.durations.cleaning",
+      "C0_disposition": "defer",
+      "C0_rationale": "Generative cleaning duration; a measured target must use cleaning start/end occurrence events, not bed-release or patient-flow elapsed intervals. Physical tick scale and rounding are unspecified.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Durations and \u00a7Resources; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 observed_at and \u00a74 bed cleaning lifecycle",
+      "C0_replacement": "Replacement: retain seconds; map cleaning occurrence start/end separately from bed occupancy/release, then convert using versioned tick quantum and explicit rounding."
+    },
+    {
+      "row": 34,
+      "parameter_id": "ed.durations.handover",
+      "C0_disposition": "defer",
+      "C0_rationale": "Generative handover duration; calibratable only with handover-specific event anchors and a defined overlap rule. Broad elapsed intervals can conflate waiting or concurrent work. Tick quantum and rounding remain open.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Durations and \u00a7ABM staff behavior; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 TraceMapping and \u00a74 Avoid double counting",
+      "C0_replacement": "Replacement: retain seconds; define handover occurrence anchors and concurrency treatment before fitting, then convert by declared tick scale and rounding."
+    },
+    {
+      "row": 35,
+      "parameter_id": "ed.durations.disposition",
+      "C0_disposition": "defer",
+      "C0_rationale": "Generative disposition duration; its event endpoints must distinguish active disposition work from boarding, transport, or other elapsed time. No observation mapping or physical tick scale is frozen.",
+      "C0_evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md \u00a7Durations and \u00a7Hospital interfaces; conductor/tracks/empirical_calibration_20260925/spec.md \u00a73 observed_at and \u00a74 Avoid double counting",
+      "C0_replacement": "Replacement: retain seconds; declare what disposition covers and endpoint event semantics, keep boarding/transport separate where modeled, and convert using versioned tick quantum with declared rounding."
+    }
+  ]
+}

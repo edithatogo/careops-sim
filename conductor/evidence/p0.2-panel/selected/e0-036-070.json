@@ -1,0 +1,289 @@
+{
+  "artifact": "P0.2 preparatory E0-role review",
+  "reviewer_role": "E0 \u2014 generic ED model/configuration",
+  "reviewer_id": "Codex subagent /root/p02_e0_b",
+  "reviewer_session_id": "/root/p02_e0_b (task identity; host session ID unavailable)",
+  "base_commit": "16d79a5c0eff9fb60969b9e7829b5c67cdf63e46",
+  "reviewed_at": "2026-09-30",
+  "scope": {
+    "template": "model-inputs/ed/schema/p0.2-owner-review-response-template.csv",
+    "csv_data_rows": "36-70 inclusive",
+    "row_count": 35
+  },
+  "rows": [
+    {
+      "csv_data_row": 36,
+      "parameter_id": "ed.durations.boarding",
+      "disposition": "revise",
+      "rationale": "Keep seconds as the canonical duration unit, but define this as elapsed ED occupancy from a provisional admission/boarding state until realized transfer or another explicit terminal event. Do not independently sample a boarding duration or release the ED bed at the bed-offer event; that would double count time or release occupancy too early.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/plan.md:62-65; conductor/tracks/generic_ed_delivery_20260925/spec.md:30-33",
+      "replacement": "Unit contract: seconds for observed/derived elapsed boarding intervals; runtime end is realized transfer/discharge, with offer availability, boarding wait and recurrent boarder-care tasks represented separately. Candidate profile use only when admission/boarding is enabled."
+    },
+    {
+      "csv_data_row": 37,
+      "parameter_id": "ed.durations.transit",
+      "disposition": "revise",
+      "rationale": "Seconds are suitable for a genuine configured external transport interval, but local Micro travel should be derived from route distance and movement speed, while Macro mode should not silently add transit. The present key conflates local travel with external transfer transport and can double count movement.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:28-29,95-100; conductor/tracks/generic_ed_delivery_20260925/plan.md:45",
+      "replacement": "Unit contract: seconds only for explicitly defined external transport intervals; local staff/patient route travel is derived from graph distance and applicable speed. Split the config key/semantic when both are needed. Mark external transport pathway/profile applicability explicitly."
+    },
+    {
+      "csv_data_row": 38,
+      "parameter_id": "ed.resources.staffroles",
+      "disposition": "accept",
+      "rationale": "Structured role/skill categories are ordinary ED domain inputs; every numeric leaf can declare its own unit. Keep role/skill eligibility in the ED adapter and avoid encoding staffing policy as an engine default.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27; conductor/tracks/generic_ed_delivery_20260925/plan.md:73-78"
+    },
+    {
+      "csv_data_row": 39,
+      "parameter_id": "ed.resources.staffcounts",
+      "disposition": "accept",
+      "rationale": "Non-negative counts are appropriate scenario-level staffing capacity inputs. Where ABM identity or assignment is required, expand counts to stable synthetic agent identities; a count alone does not define assignment or availability.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27,95-100; conductor/tracks/generic_ed_delivery_20260925/plan.md:83"
+    },
+    {
+      "csv_data_row": 40,
+      "parameter_id": "ed.resources.rosters",
+      "disposition": "accept",
+      "rationale": "Roster schedules are in-scope capacity inputs. Keep explicit timezone on absolute instants and distinguish them from run-relative intervals; recurring local-calendar/DST resolution remains a C0 time-boundary decision.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27; conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md:32-33"
+    },
+    {
+      "csv_data_row": 41,
+      "parameter_id": "ed.resources.breaks",
+      "disposition": "accept",
+      "rationale": "Break schedules are in-scope; model their effective capacity intervals and explicit in-flight-work behavior rather than treating breaks as duration samples or silently dropping active work. C0 still owns timestamp precision and conversion details.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27; conductor/tracks/generic_ed_delivery_20260925/plan.md:73-78; conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md:32-33"
+    },
+    {
+      "csv_data_row": 42,
+      "parameter_id": "ed.resources.absenceovertime",
+      "disposition": "revise",
+      "rationale": "The scheduled capacity delta is a valid domain input, but \u201cexplicit local timezone\u201d is ambiguous and the proposed schedule type should distinguish absolute instants from run-relative intervals. Preserve non-negative resulting capacity and in-flight-work rules.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27; conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md:32-33",
+      "replacement": "Unit contract: integer staff-capacity delta plus half-open effective intervals; absolute instants include an explicit IANA timezone identifier, while run-relative intervals use the declared ED clock unit. Validate resulting capacity and shift-end/in-flight-work behavior."
+    },
+    {
+      "csv_data_row": 43,
+      "parameter_id": "ed.resources.supervision",
+      "disposition": "accept",
+      "rationale": "A supervision role/capacity input is consistent with staff resources if it is a separately available resource and the profile states its eligibility relationship. It must not imply atomic supervisor-plus-worker acquisition or validate unsupported multi-person work.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27,70; conductor/tracks/generic_ed_delivery_20260925/plan.md:78"
+    },
+    {
+      "csv_data_row": 44,
+      "parameter_id": "ed.resources.taskconcurrency",
+      "disposition": "revise",
+      "rationale": "A scalar concurrency count is ambiguous between resource capacity and simultaneous attention by one staff agent. The latter is not an MVP assumption; the contract explicitly excludes claiming that multitasking is represented as simultaneous attention.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:70; conductor/tracks/generic_ed_delivery_20260925/plan.md:75-78; conductor/tracks/des_queue_preemption_20260925/spec.md:14-18,316",
+      "replacement": "Unit contract: define only named-resource capacity as non-negative integer units; if agent task concurrency is retained as a distinct behavior, defer it or explicitly document a reviewed approximation and its limits. Do not use this field to authorize concurrent work by one agent."
+    },
+    {
+      "csv_data_row": 45,
+      "parameter_id": "ed.resources.beds",
+      "disposition": "accept",
+      "rationale": "Bed count/capacity is a core configurable MVP input independent of visual geometry. Keep identity, occupancy and availability distinct; a finite inpatient bed offer is a boundary event, not a new ED bed or an automatic ED release.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:95-100; conductor/tracks/generic_ed_delivery_20260925/plan.md:62-65,83"
+    },
+    {
+      "csv_data_row": 46,
+      "parameter_id": "ed.resources.rooms",
+      "disposition": "accept",
+      "rationale": "Room/treatment-space capacity is an MVP input and may have a lifecycle separate from bed capacity. Do not assume a one-to-one room/bed mapping; bind occupancy/reservation explicitly.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:95-100; conductor/tracks/generic_ed_delivery_20260925/plan.md:78,83"
+    },
+    {
+      "csv_data_row": 47,
+      "parameter_id": "ed.resources.equipment",
+      "disposition": "accept",
+      "rationale": "Equipment identities and availability are ordinary model resources. This count contract is suitable for equipment capacity, provided contested/multi-equipment tasks do not imply atomic bundles beyond the Q contract.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27,70; conductor/tracks/des_queue_preemption_20260925/spec.md:14-18"
+    },
+    {
+      "csv_data_row": 48,
+      "parameter_id": "ed.resources.opencalendars",
+      "disposition": "accept",
+      "rationale": "Opening calendars are ordinary capacity schedules. Their intervals should identify the affected resource/location and whether changes affect active work; absolute-time timezone, precision and DST resolution require C0 alignment.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27; conductor/tracks/generic_ed_delivery_20260925/plan.md:73-78; conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md:32-33"
+    },
+    {
+      "csv_data_row": 49,
+      "parameter_id": "ed.resources.outages",
+      "disposition": "accept",
+      "rationale": "Outages are schedule-driven capacity reductions and fit the MVP resource model when target identity and active-use/shrink behavior are explicit. Do not allow negative capacity or silently evict active allocations.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27; conductor/tracks/generic_ed_delivery_20260925/plan.md:73-78; conductor/evidence/q0.2-parent-join-acceptance-20260930.md:30"
+    },
+    {
+      "csv_data_row": 50,
+      "parameter_id": "ed.resources.reservations",
+      "disposition": "accept",
+      "rationale": "Reservations fit the MVP if target, lifecycle, expiry/release and occupancy are explicit and separate from atomic multi-resource acquisition. A reservation is not an implicit resource bundle.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/plan.md:73-78; conductor/tracks/des_queue_preemption_20260925/spec.md:14-18"
+    },
+    {
+      "csv_data_row": 51,
+      "parameter_id": "ed.resources.cleaningcapacity",
+      "disposition": "accept",
+      "rationale": "Cleaning capacity is an ordinary non-negative resource count for the E2 cleaning lifecycle. Keep cleaner-resource capacity separate from the cleaning duration and from the bed/room becoming available.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/plan.md:73-78 (cleaning lifecycle acceptance)"
+    },
+    {
+      "csv_data_row": 52,
+      "parameter_id": "ed.abmstaffbehavior.agentattributes",
+      "disposition": "accept",
+      "rationale": "Typed agent attributes are compatible with the ABM boundary; structured numeric leaves need explicit units/coding. Limit attributes to declared model behavior and avoid unsupported demographic or clinical detail.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27,70; conductor/tracks/ed_parameter_evidence_20260927/spec.md:14-23"
+    },
+    {
+      "csv_data_row": 53,
+      "parameter_id": "ed.abmstaffbehavior.assignment",
+      "disposition": "accept",
+      "rationale": "Assignment is a valid ED-side policy/config input. Separate initial/eligible assignment from the assignment and interruption history that the runtime must preserve; no engine-specific queue behavior belongs in this key.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:70; conductor/tracks/generic_ed_delivery_20260925/plan.md:73-78"
+    },
+    {
+      "csv_data_row": 54,
+      "parameter_id": "ed.abmstaffbehavior.zoneskilleligibility",
+      "disposition": "accept",
+      "rationale": "Zone and skill eligibility are explicit MVP staff inputs and should constrain dispatch against named zones/resources. Keep location IDs distinct from visual geometry and require no CAD import.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27,95-100; conductor/tracks/generic_ed_delivery_20260925/plan.md:40,73-78"
+    },
+    {
+      "csv_data_row": 55,
+      "parameter_id": "ed.abmstaffbehavior.taskchoice",
+      "disposition": "accept",
+      "rationale": "The ED adapter owns task choice. For MVP this should be a small explicit deterministic or otherwise reviewed policy tied to eligible tasks; do not infer clinical decisions or task probabilities from this identity row.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:70; conductor/tracks/des_queue_preemption_20260925/spec.md:316"
+    },
+    {
+      "csv_data_row": 56,
+      "parameter_id": "ed.abmstaffbehavior.reassessment",
+      "disposition": "accept",
+      "rationale": "Reassessment behavior may be configured when the pathway/profile enables it, but its triggering rule and time semantics must be explicit. Do not invent unobserved frequencies or require it in every generic fixture.",
+      "evidence_locator": "conductor/tracks/ed_parameter_evidence_20260927/spec.md:14-23,45-50; conductor/tracks/generic_ed_delivery_20260925/plan.md:56-65"
+    },
+    {
+      "csv_data_row": 57,
+      "parameter_id": "ed.abmstaffbehavior.urgencyfifo",
+      "disposition": "accept",
+      "rationale": "A stable ordinal priority policy with FIFO tie-break aligns with the reviewed queue contract. ED-side priority assignment remains explicit; this key must not invent acuity thresholds or override Q ordering.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:25-27; conductor/tracks/des_queue_preemption_20260925/spec.md:10-18,57"
+    },
+    {
+      "csv_data_row": 58,
+      "parameter_id": "ed.abmstaffbehavior.communicationhandover",
+      "disposition": "accept",
+      "rationale": "Handover can be a structured ED behavior input if task timing and ownership are explicit and it does not simulate simultaneous attention by assumption. It may be omitted from profiles where the pathway does not use it.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/plan.md:73-78; conductor/tracks/generic_ed_delivery_20260925/spec.md:70"
+    },
+    {
+      "csv_data_row": 59,
+      "parameter_id": "ed.abmstaffbehavior.interruptionresumption",
+      "disposition": "accept",
+      "rationale": "The ED adapter must choose an explicit supported Suspend/Abort/Restart policy and retain interruption ancestry/resumption state. This is a valid MVP candidate only for work whose behavior is covered by the Q API.",
+      "evidence_locator": "conductor/tracks/des_queue_preemption_20260925/spec.md:10-18,64,316; conductor/tracks/generic_ed_delivery_20260925/spec.md:70"
+    },
+    {
+      "csv_data_row": 60,
+      "parameter_id": "ed.abmstaffbehavior.switchingoverhead",
+      "disposition": "accept",
+      "rationale": "Seconds are an acceptable domain normalization unit at the E0 boundary. Define whether overhead is active work or elapsed delay and ensure it is not also included in service duration; C0 must still accept tick precision and rounding.",
+      "evidence_locator": "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md:31-33; conductor/tracks/ed_parameter_evidence_20260927/spec.md:14-23"
+    },
+    {
+      "csv_data_row": 61,
+      "parameter_id": "ed.spatialabm.graphtopology",
+      "disposition": "accept",
+      "rationale": "A small synthetic named-location graph is allowed when Micro transit is needed; geometry import, floor-plan capture and visualization are outside this MVP input. Keep graph direction/access semantics explicit.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:95-100; conductor/tracks/generic_ed_delivery_20260925/plan.md:40"
+    },
+    {
+      "csv_data_row": 62,
+      "parameter_id": "ed.spatialabm.scaledistance",
+      "disposition": "accept",
+      "rationale": "Metres are a suitable canonical distance unit for an optional synthetic route graph. Do not represent drawing scale or imported coordinates as evidence of actual travel distance.",
+      "evidence_locator": "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md:34; conductor/tracks/generic_ed_delivery_20260925/spec.md:95-100"
+    },
+    {
+      "csv_data_row": 63,
+      "parameter_id": "ed.spatialabm.locations",
+      "disposition": "accept",
+      "rationale": "Named locations are within the MVP and need stable IDs plus any declared numeric coordinates/units; do not require map geometry or visualization.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/plan.md:40; conductor/tracks/generic_ed_delivery_20260925/spec.md:95-100"
+    },
+    {
+      "csv_data_row": 64,
+      "parameter_id": "ed.spatialabm.routesconnectivity",
+      "disposition": "accept",
+      "rationale": "Connectivity is a suitable structured optional Micro input, provided route adjacency/access and distance fields are explicit and Macro mode does not acquire fabricated transit time.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:28-29,95-100; conductor/tracks/generic_ed_delivery_20260925/plan.md:40,75-78"
+    },
+    {
+      "csv_data_row": 65,
+      "parameter_id": "ed.spatialabm.walkingspeedvariation",
+      "disposition": "accept",
+      "rationale": "Metres/second is appropriate for optional speed inputs. Keep walking speed distinct from route distance and use the movement mode/agent context to derive travel time; no numeric distribution or default is endorsed.",
+      "evidence_locator": "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md:34; conductor/tracks/generic_ed_delivery_20260925/spec.md:28-29,95-100"
+    },
+    {
+      "csv_data_row": 66,
+      "parameter_id": "ed.spatialabm.equipmentsupplytrips",
+      "disposition": "revise",
+      "rationale": "A trip is an event or demand pattern, not an equipment count/capacity. Equipment inventory/availability already belongs in resources.equipment; this field should describe optional retrieval-trip events without duplicating stock.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:95-100; conductor/tracks/generic_ed_delivery_20260925/plan.md:75-78",
+      "replacement": "Unit class: categorical_or_structured. Unit contract: trip/event schedule or rule, with explicit count, time, route and purpose fields where applicable; inventory and resource availability remain in resources.equipment. Keep optional-spatial stage only when Micro movement/retrieval is enabled."
+    },
+    {
+      "csv_data_row": 67,
+      "parameter_id": "ed.spatialabm.routechoice",
+      "disposition": "accept",
+      "rationale": "Route-choice rules are optional spatial behavior. A deterministic shortest/declared path is sufficient where choice behavior is not enabled; no empirical route-choice probabilities or extra congestion mechanism are implied.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:95-100; conductor/tracks/generic_ed_delivery_20260925/plan.md:75-78"
+    },
+    {
+      "csv_data_row": 68,
+      "parameter_id": "ed.spatialabm.travelinterruptions",
+      "disposition": "accept",
+      "rationale": "This is only an optional Micro movement rule. If enabled, define interruption eligibility, route progress and resumption explicitly under the supported ED/Q lifecycle; do not treat movement as animation time or infer a delay distribution.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/plan.md:75-81; conductor/tracks/generic_ed_delivery_20260925/spec.md:70; conductor/tracks/des_queue_preemption_20260925/spec.md:64,316"
+    },
+    {
+      "csv_data_row": 69,
+      "parameter_id": "ed.spatialabm.congestion",
+      "disposition": "defer",
+      "rationale": "Keep congestion outside the generic MVP and current E0 consumer contract. It is already classified as deferred and needs a separately scoped spatial-fidelity decision before any consumer or profile is enabled.",
+      "evidence_locator": "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md:36; conductor/tracks/generic_ed_delivery_20260925/spec.md:88-100",
+      "replacement": "Retain deferred_or_post_v1 stage; no E0 consumer or MVP profile use until a separately reviewed extension is approved."
+    },
+    {
+      "csv_data_row": 70,
+      "parameter_id": "ed.patientbehavior.patience",
+      "disposition": "accept",
+      "rationale": "Patience is a valid optional input only for a profile that enables abandonment; it is not required in every generic scenario. Use seconds at the domain boundary and do not treat a threshold as an empirically supported distribution or as the abandonment policy itself.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/plan.md:62-65; conductor/tracks/generic_ed_delivery_20260925/spec.md:30-33; conductor/tracks/ed_parameter_evidence_20260927/spec.md:14-23"
+    }
+  ],
+  "cross_cutting_issues": [
+    {
+      "topic": "Single-resource and supervision boundary",
+      "finding": "Count/capacity fields must not imply atomic resource-plus-space or multi-person claims. Supervision may be represented as distinct capacity/eligibility, but composite-team clinical tasks remain unsupported unless an explicit reviewed approximation is accepted.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:70; conductor/tracks/generic_ed_delivery_20260925/plan.md:78; conductor/tracks/des_queue_preemption_20260925/spec.md:14-18,316"
+    },
+    {
+      "topic": "Attention and concurrency",
+      "finding": "Do not encode concurrent tasks per staff agent as a simple capacity count or claim simultaneous attention. If modeled later, name and validate the approximation separately.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:70; conductor/tracks/des_queue_preemption_20260925/spec.md:316"
+    },
+    {
+      "topic": "Movement versus duration",
+      "finding": "For Micro mode, local travel should derive from route/distance and applicable speed; Macro must not invent transit. External transport and boarding intervals require distinct event boundaries so elapsed time is not duplicated or ED occupancy released on an offer alone.",
+      "evidence_locator": "conductor/tracks/generic_ed_delivery_20260925/spec.md:28-33,95-100; conductor/tracks/generic_ed_delivery_20260925/plan.md:45,62-65,75-78"
+    },
+    {
+      "topic": "Temporal configuration",
+      "finding": "E0 can accept seconds as the ED input normalization unit and explicit timezone metadata for absolute schedules. C0 must still resolve tick granularity, origin, precision, DST, rounding and source timestamp semantics before the conversion contract is frozen.",
+      "evidence_locator": "conductor/evidence/p0.2-e0-c0-owner-review-brief-20260930.md:31-33"
+    }
+  ],
+  "limitations": "This is an E0-role recommendation on interface shape, generic MVP applicability and profile stage only. It does not complete the independent C0 review, establish evidence or numeric values, implement/approve configuration APIs, or close P0.2. The review brief requires coordinator resolution of the cross-cutting decisions and any unresolved MVP interface."
+}
