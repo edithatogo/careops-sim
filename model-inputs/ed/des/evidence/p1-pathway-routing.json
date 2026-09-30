@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "record_id": "p1-aihw-episode-end-admission-not-routing-2024-25",
+  "evidence_type": "unresolved_gap",
+  "parameter_ids": [
+    "ed.despathways.routingprobability"
+  ],
+  "gap": {
+    "missing_evidence": "The bound AIHW appendix does not provide a decision-time eligible route choice set, conditioning variables, or denominator for a conditional routing probability. Appendix PDF SHA-256 a7988e025d65a6a37b31c5b10403b35a718eb2d2b45607a947af82acabd6a53c.",
+    "owner": "P1.1 coordinator and ED pathway model owner",
+    "impact": "No empirical routing probability or admission-policy default can be populated. AIHW reports a realized episode-end status, which is an outcome after the care episode rather than a decision-time route. The appendix says national emergency presentations had about 30% episode end status 'Admitted to this hospital'; referred-to-another-hospital-for-admission patients are excluded. This must not be used as a routing probability.",
+    "searches_performed": [
+      "Inspected bound official AIHW Emergency department care 2024–25 Appendix PDF at page 8, Table A4 and the adjacent admitted-by-triage narrative; local PDF SHA-256 a7988e025d65a6a37b31c5b10403b35a718eb2d2b45607a947af82acabd6a53c.",
+      "Confirmed Table A4 reports emergency-presentation proportions by triage category and jurisdiction, not destination or pathway choices.",
+      "Checked the appendix narrative: it describes episode-end status 'Admitted to this hospital', gives approximate national and triage-specific proportions, and excludes patients referred to another hospital for admission; it points to main-report Tables 4.13 and 4.14, whose exact cells are not included in this appendix.",
+      "Compared with supplied report R3, SHA-256 304bbd2e30d8af34e002e1603c647860a110432a1a0e3ac68cbe8e5143db8eaf, lines 406–412, which identifies admission decision and specialty allocation as local measurements and warns that public statistics describe outcomes rather than primitive mechanisms."
+    ],
+    "next_action": "Obtain a source that observes the decision-time pathway choice set and eligible denominator, with conditioning variables and disposition status defined at that decision point. If pursuing the AIHW main-report tables, bind the exact edition and tables 4.13/4.14 as a separate bounded source check; retain those realized proportions only as outcome/comparability evidence. Record any later transformation and licence/access terms, then request independent source readback."
+  },
+  "report_lineage": {
+    "report_sha256": "304bbd2e30d8af34e002e1603c647860a110432a1a0e3ac68cbe8e5143db8eaf",
+    "section": "Evidence priorities and warning about outcome statistics",
+    "line_start": 406,
+    "line_count": 7
+  },
+  "review": {
+    "reviewer": "P1.1 pathways packet worker",
+    "reviewed_at": "2026-10-01",
+    "outcome": "needs_review",
+    "notes": "Bound appendix bytes and cited page were inspected. The source supports triage mix and realized episode-end admission-status comparisons only; it does not establish decision-time routing probabilities or their denominator. No numeric policy, default, or route distribution is supplied. Coordinator review and independent source readback remain required."
+  }
+}
