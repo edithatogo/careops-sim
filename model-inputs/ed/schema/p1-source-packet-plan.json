@@ -2,7 +2,7 @@
   "schema_version": 1,
   "track": "P1",
   "status": "preparation_only",
-  "packet_count": 7,
+  "packet_count": 17,
   "packets": [
     {
       "packet_id": "p1-aihw-aggregates",
@@ -150,8 +150,8 @@
         "locator": "ED boundary/offload and finite vacancy semantics; report 29 lines 21-68, 88-101"
       },
       "source_status": "unverified_lead",
-      "named_gap": "Verify whether the cited primary source defines specialty-conditioned ED-eligible bed offers, finite offer persistence/withdrawal and the transition boundary; local offer and competing-demand observations remain absent.",
-      "search_scope": "Retrieve only the primary source behind the R29 bed-offer/finite-vacancy claim and the fields needed to establish offer semantics; do not model ward discharge, elective demand or whole-hospital flow.",
+      "named_gap": "Verify whether a primary source supports specialty-, time- and calendar-conditioned ED-eligible bed offers, finite persistence/withdrawal and transition semantics; no local offer or competing-demand observations are supplied.",
+      "search_scope": "At dispatch, bind only the primary source behind the R29 bed-offer/finite-vacancy lead and inspect explicit specialty compatibility, offer timing/calendar, persistence and withdrawal fields; absent fields remain named gaps. Do not infer rates from raw hospital discharges or sampled boarding times.",
       "output_path": "model-inputs/ed/des/evidence/p1-admission-offer-boundary.json",
       "extraction_fields": [
         "primary source URL/DOI and exact edition/revision",
@@ -227,6 +227,366 @@
         "licence/access, retrieval date and separate R4 lineage"
       ],
       "worker_oracle": "A calendar claim is supported only by an explicit source field and temporal semantics; otherwise preserve a named capacity/calendar evidence gap.",
+      "independent_readback_oracle": "Reviewer independently retrieves the exact pinned primary source, recomputes SHA-256, locates the cited table/field, reproduces the extraction and denominator/units, and records pass/partial/contradiction/unresolved with reason; report lineage stays separate.",
+      "stop_conditions": [
+        "Stop if the pinned primary source or required table cannot be accessed; return unresolved_gap with searches and owner.",
+        "Stop if source population, period, units, denominator, revision or licence cannot be established.",
+        "Stop if the report lead conflicts with the primary source or the assigned parameter family is not identifiable.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Dispatch only after coordinator binds exact primary URL/DOI, revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and reviewer; no empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p1-case-mix-denominators",
+      "phase_task": "P1.1",
+      "family": "demand_case_mix",
+      "parameter_ids": [
+        "ed.demandcasemix.acuitymix",
+        "ed.demandcasemix.casetypemix"
+      ],
+      "source_report_lead": {
+        "report_id": "R8",
+        "locator": "case-mix denominator audit, lines 44-89; corroborating R7 corrected case mix/disposition, lines 23-58"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Supplied case-mix marginals have unresolved cohort/denominator definitions and do not identify joint patient-level dependence; identify one source-defined case-mix vector and keep other strata unresolved.",
+      "search_scope": "At dispatch, inspect only the cited source table(s) needed to establish one declared cohort and its case-mix denominators; do not combine incompatible cohorts or infer a joint distribution.",
+      "output_path": "model-inputs/ed/des/evidence/p1-case-mix-denominators.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field/row locator",
+        "population/site, cohort and observation period",
+        "source-defined event/measure, denominator and units",
+        "precision, missingness/censoring and limitations",
+        "licence/access and retrieval date",
+        "separate supplied-report lineage and reproducible transformation"
+      ],
+      "worker_oracle": "One cohort-specific source vector and denominator are transcribed or returned unresolved; no joint dependence or unsourced category share is inferred.",
+      "independent_readback_oracle": "Reviewer independently binds the exact primary source at dispatch, recomputes its source hash, locates the cited fields, reproduces definitions/denominators/units, and records pass/partial/contradiction/unresolved with reason; report lineage remains separate.",
+      "stop_conditions": [
+        "Stop if the future-bound primary source or required table/field is inaccessible; record the exact search and return unresolved_gap.",
+        "Stop if population, period, denominator, units, revision or licence cannot be established.",
+        "Stop if source content does not support the assigned family or conflicts with the supplied report lead.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. At future dispatch the coordinator must bind exact primary URL/DOI, edition/revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and independent reviewer; no empirical use until readback is accepted."
+    },
+    {
+      "packet_id": "p1-pathway-routing",
+      "phase_task": "P1.1",
+      "family": "des_pathways",
+      "parameter_ids": [
+        "ed.despathways.routingprobability"
+      ],
+      "source_report_lead": {
+        "report_id": "R3",
+        "locator": "pathway tables, lines 41-52 and 87-106; R29 boundary cases, lines 21-36 and 130-151"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Source-defined conditional route probabilities and pathway denominators are not verified; provisional and realized disposition must remain distinct.",
+      "search_scope": "At dispatch, bind one primary source and one pathway decision point; capture its eligible choice set, conditioning variables and denominator only. Do not leak final diagnosis/disposition into agent-known state or combine pathways.",
+      "output_path": "model-inputs/ed/des/evidence/p1-pathway-routing.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field/row locator",
+        "population/site, cohort and observation period",
+        "source-defined event/measure, denominator and units",
+        "precision, missingness/censoring and limitations",
+        "licence/access and retrieval date",
+        "separate supplied-report lineage and reproducible transformation",
+        "eligible route choice set and decision point",
+        "conditioning variables and whether disposition is provisional or realized"
+      ],
+      "worker_oracle": "Only explicitly source-reported conditional route probabilities and denominators are recorded; missing branches remain unknown.",
+      "independent_readback_oracle": "Reviewer independently binds the exact primary source at dispatch, recomputes its source hash, locates the cited fields, reproduces definitions/denominators/units, and records pass/partial/contradiction/unresolved with reason; report lineage remains separate.",
+      "stop_conditions": [
+        "Stop if the future-bound primary source or required table/field is inaccessible; record the exact search and return unresolved_gap.",
+        "Stop if population, period, denominator, units, revision or licence cannot be established.",
+        "Stop if source content does not support the assigned family or conflicts with the supplied report lead.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. At future dispatch the coordinator must bind exact primary URL/DOI, edition/revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and independent reviewer; no empirical use until readback is accepted."
+    },
+    {
+      "packet_id": "p1-transfer-delay",
+      "phase_task": "P1.1",
+      "family": "hospital_interfaces",
+      "parameter_ids": [
+        "ed.hospitalinterfaces.transfertransport"
+      ],
+      "source_report_lead": {
+        "report_id": "R3",
+        "locator": "boarding/inpatient boundary, lines 50-51 and 91-104; R29 boundary/offload, lines 21-68 and 88-101"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Transfer/transport delay evidence conditioned on destination specialty, time and operational calendar is not established by the supplied material.",
+      "search_scope": "At dispatch, inspect one primary source for a directly observed transfer/transport interval and its destination/time/calendar conditioning; do not use hospital discharge counts or treat ED boarding as transport delay.",
+      "output_path": "model-inputs/ed/des/evidence/p1-transfer-delay.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field/row locator",
+        "population/site, cohort and observation period",
+        "source-defined event/measure, denominator and units",
+        "precision, missingness/censoring and limitations",
+        "licence/access and retrieval date",
+        "separate supplied-report lineage and reproducible transformation",
+        "transfer start/stop event definitions and physical transition",
+        "destination/specialty conditioning",
+        "calendar/time conditioning and elapsed versus active interval"
+      ],
+      "worker_oracle": "Transfer/transport evidence is separated from boarding and other waits; absent conditioning or event definitions remain unresolved.",
+      "independent_readback_oracle": "Reviewer independently binds the exact primary source at dispatch, recomputes its source hash, locates the cited fields, reproduces definitions/denominators/units, and records pass/partial/contradiction/unresolved with reason; report lineage remains separate.",
+      "stop_conditions": [
+        "Stop if the future-bound primary source or required table/field is inaccessible; record the exact search and return unresolved_gap.",
+        "Stop if population, period, denominator, units, revision or licence cannot be established.",
+        "Stop if source content does not support the assigned family or conflicts with the supplied report lead.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. At future dispatch the coordinator must bind exact primary URL/DOI, edition/revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and independent reviewer; no empirical use until readback is accepted."
+    },
+    {
+      "packet_id": "p1-diagnostic-durations",
+      "phase_task": "P1.2",
+      "family": "durations",
+      "parameter_ids": [
+        "ed.durations.turnaround",
+        "ed.durations.reportreviewdelay"
+      ],
+      "source_report_lead": {
+        "report_id": "R12",
+        "locator": "fitting/identifiability and duration field limitations, lines 19-65, 97-130 and 216-266; R6 primitive work cautions, lines 17-46"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Diagnostic turnaround and report/review delays lack independently verified source-defined intervals, populations and separation from queue/active work.",
+      "search_scope": "At dispatch, bind one diagnostic source and extract only explicitly timed turnaround or report/review intervals; keep active work, queueing, elapsed time and timestamp delays separate.",
+      "output_path": "model-inputs/ed/des/evidence/p1-diagnostic-durations.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field/row locator",
+        "population/site, cohort and observation period",
+        "source-defined event/measure, denominator and units",
+        "precision, missingness/censoring and limitations",
+        "licence/access and retrieval date",
+        "separate supplied-report lineage and reproducible transformation",
+        "diagnostic request/specimen/test and result/review event definitions",
+        "active work, queue, turnaround and report/review distinctions",
+        "diagnostic type and population conditioning"
+      ],
+      "worker_oracle": "Only source-defined diagnostic interval fields are captured; no elapsed interval is relabelled as intrinsic work.",
+      "independent_readback_oracle": "Reviewer independently binds the exact primary source at dispatch, recomputes its source hash, locates the cited fields, reproduces definitions/denominators/units, and records pass/partial/contradiction/unresolved with reason; report lineage remains separate.",
+      "stop_conditions": [
+        "Stop if the future-bound primary source or required table/field is inaccessible; record the exact search and return unresolved_gap.",
+        "Stop if population, period, denominator, units, revision or licence cannot be established.",
+        "Stop if source content does not support the assigned family or conflicts with the supplied report lead.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. At future dispatch the coordinator must bind exact primary URL/DOI, edition/revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and independent reviewer; no empirical use until readback is accepted."
+    },
+    {
+      "packet_id": "p1-cleaning-duration",
+      "phase_task": "P1.2",
+      "family": "durations",
+      "parameter_ids": [
+        "ed.durations.cleaning"
+      ],
+      "source_report_lead": {
+        "report_id": "R3",
+        "locator": "physical/effective capacity and cleaning input discussion, lines 93-106 and 331-351; R12 duration-fitting limits, lines 19-65"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Cleaning duration evidence is not verified; a supplied synthetic example is not an empirical estimate.",
+      "search_scope": "At dispatch, bind one primary operational/observational source for a defined cleaning episode and record the start/stop events and resource context; do not use synthetic example values as evidence.",
+      "output_path": "model-inputs/ed/des/evidence/p1-cleaning-duration.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field/row locator",
+        "population/site, cohort and observation period",
+        "source-defined event/measure, denominator and units",
+        "precision, missingness/censoring and limitations",
+        "licence/access and retrieval date",
+        "separate supplied-report lineage and reproducible transformation",
+        "cleaning episode start/stop and completion rule",
+        "space/equipment/resource type and context",
+        "episode denominator and exclusions"
+      ],
+      "worker_oracle": "Cleaning is kept distinct from clinical work, turnaround and opening-calendar delay; unsupported episode fields remain unresolved.",
+      "independent_readback_oracle": "Reviewer independently binds the exact primary source at dispatch, recomputes its source hash, locates the cited fields, reproduces definitions/denominators/units, and records pass/partial/contradiction/unresolved with reason; report lineage remains separate.",
+      "stop_conditions": [
+        "Stop if the future-bound primary source or required table/field is inaccessible; record the exact search and return unresolved_gap.",
+        "Stop if population, period, denominator, units, revision or licence cannot be established.",
+        "Stop if source content does not support the assigned family or conflicts with the supplied report lead.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. At future dispatch the coordinator must bind exact primary URL/DOI, edition/revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and independent reviewer; no empirical use until readback is accepted."
+    },
+    {
+      "packet_id": "p1-boarding-duration-boundary",
+      "phase_task": "P1.2",
+      "family": "durations",
+      "parameter_ids": [
+        "ed.durations.boarding"
+      ],
+      "source_report_lead": {
+        "report_id": "R29",
+        "locator": "boarding and finite vacancy semantics, lines 21-68 and 88-101; report 29 table 01"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Boarding is a distinct transfer-ready/admission-to-physical-departure outcome; no source-verified generic duration distribution is established.",
+      "search_scope": "At dispatch, bind one primary source for the defined boarding outcome and extract only its event boundary, cohort and censoring; preserve boarding as observed elapsed outcome and do not sample it as a primitive delay.",
+      "output_path": "model-inputs/ed/des/evidence/p1-boarding-duration-boundary.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field/row locator",
+        "population/site, cohort and observation period",
+        "source-defined event/measure, denominator and units",
+        "precision, missingness/censoring and limitations",
+        "licence/access and retrieval date",
+        "separate supplied-report lineage and reproducible transformation",
+        "admission/transfer-ready and physical-departure event definitions",
+        "cohort, destination/specialty and period",
+        "censoring, competing events and resource-retention semantics"
+      ],
+      "worker_oracle": "The packet records outcome/measurement evidence only; it does not propose a primitive boarding distribution or default.",
+      "independent_readback_oracle": "Reviewer independently binds the exact primary source at dispatch, recomputes its source hash, locates the cited fields, reproduces definitions/denominators/units, and records pass/partial/contradiction/unresolved with reason; report lineage remains separate.",
+      "stop_conditions": [
+        "Stop if the future-bound primary source or required table/field is inaccessible; record the exact search and return unresolved_gap.",
+        "Stop if population, period, denominator, units, revision or licence cannot be established.",
+        "Stop if source content does not support the assigned family or conflicts with the supplied report lead.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. At future dispatch the coordinator must bind exact primary URL/DOI, edition/revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and independent reviewer; no empirical use until readback is accepted."
+    },
+    {
+      "packet_id": "p1-patient-patience",
+      "phase_task": "P1.2",
+      "family": "patient_behavior",
+      "parameter_ids": [
+        "ed.patientbehavior.patience",
+        "ed.patientbehavior.abandonment"
+      ],
+      "source_report_lead": {
+        "report_id": "R3",
+        "locator": "patient leaving-before-assessment competing-time-to-event discussion, lines 150-158; R5 EHR limits, lines 80-100"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "No supplied source establishes generic patience or abandonment distributions, or their conditioning on acuity, case mix, elapsed wait and time.",
+      "search_scope": "At dispatch, bind one primary source with observed waiting and departure/abandonment events; record eligible waiting population, censoring and observed conditioning only. Do not equate left-without-being-seen marginals with a patience distribution.",
+      "output_path": "model-inputs/ed/des/evidence/p1-patient-patience.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field/row locator",
+        "population/site, cohort and observation period",
+        "source-defined event/measure, denominator and units",
+        "precision, missingness/censoring and limitations",
+        "licence/access and retrieval date",
+        "separate supplied-report lineage and reproducible transformation",
+        "waiting-state entry and departure event definitions",
+        "eligible population, censoring and competing care events",
+        "source-observed conditioning variables and time basis"
+      ],
+      "worker_oracle": "If source data identify only an aggregate abandonment proportion or cannot distinguish waiting exposure, retain the named gap and do not fit a hazard/distribution.",
+      "independent_readback_oracle": "Reviewer independently binds the exact primary source at dispatch, recomputes its source hash, locates the cited fields, reproduces definitions/denominators/units, and records pass/partial/contradiction/unresolved with reason; report lineage remains separate.",
+      "stop_conditions": [
+        "Stop if the future-bound primary source or required table/field is inaccessible; record the exact search and return unresolved_gap.",
+        "Stop if population, period, denominator, units, revision or licence cannot be established.",
+        "Stop if source content does not support the assigned family or conflicts with the supplied report lead.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. At future dispatch the coordinator must bind exact primary URL/DOI, edition/revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and independent reviewer; no empirical use until readback is accepted."
+    },
+    {
+      "packet_id": "p1-staff-rosters",
+      "phase_task": "P1.2",
+      "family": "resources",
+      "parameter_ids": [
+        "ed.resources.rosters"
+      ],
+      "source_report_lead": {
+        "report_id": "R4",
+        "locator": "local workforce/roster data requests, lines 76-83 and 229-231; R3 staffing/calendar inventory, lines 93-106"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "No source-verified ED roster observations establish staff role/count by time interval, location, skill or site; public aggregate utilization cannot define an as-operated roster.",
+      "search_scope": "At dispatch, bind one primary ED roster source and extract only the roster fields and operational period directly present; do not derive a roster from total staffing, utilization or assumed shift patterns.",
+      "output_path": "model-inputs/ed/des/evidence/p1-staff-rosters.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field and roster record locator",
+        "site, role/skill, location and observation period",
+        "scheduled versus actually present status and interval semantics",
+        "time zone, interval precision and units",
+        "population, exclusions, licence/access and retrieval date",
+        "separate supplied-report lineage and reproducible transformation"
+      ],
+      "worker_oracle": "Capture source-defined roster/availability fields and their scope, or return unresolved_gap; do not create shifts or counts from aggregate staffing totals.",
+      "independent_readback_oracle": "Reviewer independently retrieves the exact pinned primary source, recomputes SHA-256, locates the cited table/field, reproduces the extraction and denominator/units, and records pass/partial/contradiction/unresolved with reason; report lineage stays separate.",
+      "stop_conditions": [
+        "Stop if the pinned primary source or required table cannot be accessed; return unresolved_gap with searches and owner.",
+        "Stop if source population, period, units, denominator, revision or licence cannot be established.",
+        "Stop if the report lead conflicts with the primary source or the assigned parameter family is not identifiable.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Dispatch only after coordinator binds exact primary URL/DOI, revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and reviewer; no empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p1-staff-breaks",
+      "phase_task": "P1.2",
+      "family": "resources",
+      "parameter_ids": [
+        "ed.resources.breaks"
+      ],
+      "source_report_lead": {
+        "report_id": "R4",
+        "locator": "local workforce/break data requests and calendar limitations, lines 76-83 and 229-231; R3 workforce capacity inventory, lines 93-106"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "No source-verified evidence establishes ED break timing, duration, staffing coverage or capacity effect by role, location and time; roster membership alone does not establish break behavior.",
+      "search_scope": "At dispatch, bind one primary ED source that directly records break episodes or formal break schedules; separate planned from observed breaks and capture coverage effects only when the source defines them.",
+      "output_path": "model-inputs/ed/des/evidence/p1-staff-breaks.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field or event locator",
+        "site, role/skill, location and population",
+        "planned versus observed break and start/end definitions",
+        "coverage/replacement semantics and interval precision",
+        "denominator, period, exclusions, licence/access and retrieval date",
+        "separate supplied-report lineage and reproducible transformation"
+      ],
+      "worker_oracle": "Record only directly source-defined break schedule/episode fields and coverage semantics; leave timing, duration and capacity effects unknown where absent.",
+      "independent_readback_oracle": "Reviewer independently retrieves the exact pinned primary source, recomputes SHA-256, locates the cited table/field, reproduces the extraction and denominator/units, and records pass/partial/contradiction/unresolved with reason; report lineage stays separate.",
+      "stop_conditions": [
+        "Stop if the pinned primary source or required table cannot be accessed; return unresolved_gap with searches and owner.",
+        "Stop if source population, period, units, denominator, revision or licence cannot be established.",
+        "Stop if the report lead conflicts with the primary source or the assigned parameter family is not identifiable.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Dispatch only after coordinator binds exact primary URL/DOI, revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and reviewer; no empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p1-conditioned-bed-offer-availability",
+      "phase_task": "P1.2",
+      "family": "hospital_interfaces",
+      "parameter_ids": [
+        "ed.hospitalinterfaces.inpatientbedavailability"
+      ],
+      "source_report_lead": {
+        "report_id": "R29",
+        "locator": "ED-eligible finite bed-offer and availability semantics, lines 21-68 and 88-101; report 29 table 01"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "The existing boundary packet covers offer semantics, but no source-verified offer arrival/availability inputs are established conditional on destination specialty, time of day, weekday/season or operational calendar.",
+      "search_scope": "At dispatch, bind one primary source with directly observed ED-eligible offer records or availability intervals; capture source-defined specialty compatibility and time/calendar conditioning. Do not infer offers from raw discharge counts, occupancy snapshots or boarding times.",
+      "output_path": "model-inputs/ed/des/evidence/p1-conditioned-bed-offer-availability.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field or offer-event locator",
+        "offer eligibility and destination specialty/compatibility",
+        "offer occurrence/availability timestamps, expiry and withdrawal",
+        "time-of-day, weekday/season and calendar fields as observed",
+        "population/site/period, denominator, units and censoring",
+        "licence/access, retrieval date and separate R29 lineage"
+      ],
+      "worker_oracle": "Only source-observed offer/availability records and conditioning fields are captured; if the source reports semantics but no conditioned offer process, return the rate/availability input as unresolved_gap.",
       "independent_readback_oracle": "Reviewer independently retrieves the exact pinned primary source, recomputes SHA-256, locates the cited table/field, reproduces the extraction and denominator/units, and records pass/partial/contradiction/unresolved with reason; report lineage stays separate.",
       "stop_conditions": [
         "Stop if the pinned primary source or required table cannot be accessed; return unresolved_gap with searches and owner.",

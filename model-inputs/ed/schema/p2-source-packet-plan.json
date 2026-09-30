@@ -2,7 +2,7 @@
   "schema_version": 1,
   "status": "preparation_only",
   "track": "P2",
-  "packet_count": 9,
+  "packet_count": 15,
   "packets": [
     {
       "packet_id": "p2-task-choice",
@@ -239,8 +239,8 @@
         "locator": "R5 prioritised evidence acquisition: “Equipment/supply retrieval” and R5 findings on work-system failures/self-interruptions (R5 80–115)"
       },
       "source_status": "unverified_lead",
-      "named_gap": "No supplied primary evidence establishes a portable ED equipment/supply origin-destination trip matrix, item search duration or availability process.",
-      "search_scope": "At dispatch, select exactly one R5-named primary ED source for a directly observed equipment/supply retrieval episode and its origin/destination and trigger fields. If no single source can be identified, return the named gap. Do not infer trips from generic failure categories.",
+      "named_gap": "No supplied primary evidence establishes a portable ED equipment/supply origin-destination trip matrix, trip-purpose taxonomy, item search duration or availability process.",
+      "search_scope": "At dispatch, select exactly one R5-named primary ED source for directly observed retrieval episodes. Extract purpose, equipment/supply class, origin, destination and trigger only where the same bounded source reports them; otherwise preserve each field as unknown. Do not infer trips from generic failure categories.",
       "output_path": "model-inputs/ed/abm/evidence/p2-supply-trips.json",
       "extraction_fields": [
         "Exact primary URL/DOI or immutable repository revision and edition/commit",
@@ -253,9 +253,12 @@
         "Trigger and item definitions",
         "Origin/destination nodes and how recorded",
         "Search/travel/work components kept distinct",
-        "Availability, denominator and observation period if reported"
+        "Availability, denominator and observation period if reported",
+        "Movement purpose (for example supply/equipment retrieval) as source-defined",
+        "Origin and destination IDs or source-defined location categories",
+        "Whether origin/destination refers to observed trips, intended trips, or a derived route"
       ],
-      "worker_oracle": "Output directly observed episode fields or unresolved gap. Do not infer a trip matrix, trip rate, search duration or universal supply-availability rule.",
+      "worker_oracle": "Output source-defined movement purpose and O/D fields or unresolved gaps, each with the observed denominator and scope. Do not supply generic trip matrices, rates, duration or availability.",
       "independent_readback_oracle": "Independently retrieve the exact primary source/revision bound at dispatch, save or snapshot the same source bytes and recompute SHA-256; locate the cited page/table/field or pinned code commit/path/line span; reproduce the reported method and any extraction, units, population, period and denominator; record pass/partial/contradiction/unresolved with a specific reason. Compare the readback with this packet output and keep R5 report lineage separate. No result is accepted for empirical use without this independent readback.",
       "stop_conditions": [
         "Stop if the exact primary source/revision cannot be bound or retrieved; return unresolved_gap with owner, impact, searches performed and next action.",
@@ -340,6 +343,242 @@
         "Stop before selecting a value, distribution, universal heuristic, empirical default, fit or calibration target; preserve unknowns and escalate for coordinator review."
       ],
       "dependency_gate": "Preparation only. Dispatch only after the coordinator binds one exact primary URL/DOI or immutable repository revision, source-byte SHA-256, R5 report SHA-256 and exact section/line span, single-family extraction scope, output path, commands/oracle and independent reviewer. No empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p2-task-priority",
+      "phase_task": "P2.1",
+      "family": "abm_staff_behavior",
+      "parameter_ids": [
+        "ed.abmstaffbehavior.urgencyfifo"
+      ],
+      "source_report_lead": {
+        "report_id": "R5",
+        "locator": "R5 discussion of task priority and task-choice context; supplied R5 section “Task choice, continuity and interruptions” (R5 37–58)"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "The accepted urgency/FIFO input is a deterministic ordinal policy, but the supplied R5 lead does not establish a portable ED task-priority assignment or complete time-specific eligible action set.",
+      "search_scope": "At dispatch, bind exactly one R5-named primary ED source, if one is identifiable, for the source-defined priority assignment and tie-break fields. Otherwise return this named gap; do not infer a priority scale or thresholds.",
+      "output_path": "model-inputs/ed/abm/evidence/p2-task-priority.json",
+      "extraction_fields": [
+        "Exact primary URL/DOI or immutable repository revision and edition/commit",
+        "Exact page/table/field or repository path and line span",
+        "Source-byte SHA-256 and independent recomputation method",
+        "Population/site, period, units, precision and denominator where reported",
+        "Licence/access terms, retrieval date and transformation",
+        "Separate R5 report SHA-256, section and line-span lineage",
+        "Evidence class and explicit unavailable/unknown fields",
+        "Source-defined task priority, ordinal scale and tie-break",
+        "Decision-time eligible action set and input fields, if observed"
+      ],
+      "worker_oracle": "Record the source-defined ordinal rule and assignment evidence, or unresolved gap. Do not promote queue order into priority-assignment evidence or choose thresholds.",
+      "independent_readback_oracle": "Independently retrieve the exact primary source/revision bound at dispatch, save or snapshot the same source bytes and recompute SHA-256; locate the cited page/table/field or pinned code commit/path/line span; reproduce the reported method and any extraction, units, population, period and denominator; record pass/partial/contradiction/unresolved with a specific reason. Compare the readback with this packet output and keep R5 report lineage separate. No result is accepted for empirical use without this independent readback.",
+      "stop_conditions": [
+        "Stop if the exact primary source/revision cannot be bound or retrieved; return unresolved_gap with owner, impact, searches performed and next action.",
+        "Stop if the cited passage/code, population, period, units, denominator, licence/access terms or method cannot be established or reproduced.",
+        "Stop if the source conflicts with R5, the report locator does not support the assigned narrow family, or a required field is not identifiable.",
+        "Stop before selecting a value, distribution, universal heuristic, empirical default, fit or calibration target; preserve unknowns and escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. Dispatch only after the coordinator binds one exact primary URL/DOI or immutable repository revision, source-byte SHA-256, R5 report SHA-256 and exact section/line span, single-family extraction scope, output path, commands/oracle and independent reviewer. No empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p2-zone-skill-eligibility",
+      "phase_task": "P2.1",
+      "family": "abm_staff_behavior",
+      "parameter_ids": [
+        "ed.abmstaffbehavior.zoneskilleligibility"
+      ],
+      "source_report_lead": {
+        "report_id": "R5",
+        "locator": "R5 descriptions of staff/task/location context and persistent nurse room-cluster assignment; R5 “Spatial movement and task trips” (R5 21–36, 101–115)"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "The accepted model requires exact role/task/zone and optional location eligibility bindings; supplied site examples do not establish a transferable generic relation or time-specific full choice set.",
+      "search_scope": "At dispatch, inspect exactly one R5-named primary ED source for observed or specified role/task/zone/location eligibility fields. Do not pool unrelated sources or infer edges from completed assignments.",
+      "output_path": "model-inputs/ed/abm/evidence/p2-zone-skill-eligibility.json",
+      "extraction_fields": [
+        "Exact primary URL/DOI or immutable repository revision and edition/commit",
+        "Exact page/table/field or repository path and line span",
+        "Source-byte SHA-256 and independent recomputation method",
+        "Population/site, period, units, precision and denominator where reported",
+        "Licence/access terms, retrieval date and transformation",
+        "Separate R5 report SHA-256, section and line-span lineage",
+        "Evidence class and explicit unavailable/unknown fields",
+        "Role, task, zone and optional location identifiers and relation",
+        "Whether the full eligible set is observed at each decision time",
+        "Applicability and transfer limits"
+      ],
+      "worker_oracle": "Output the source-defined eligibility relation and observed choice-set coverage, or unresolved gap. Assignment outcomes alone do not establish ineligible alternatives.",
+      "independent_readback_oracle": "Independently retrieve the exact primary source/revision bound at dispatch, save or snapshot the same source bytes and recompute SHA-256; locate the cited page/table/field or pinned code commit/path/line span; reproduce the reported method and any extraction, units, population, period and denominator; record pass/partial/contradiction/unresolved with a specific reason. Compare the readback with this packet output and keep R5 report lineage separate. No result is accepted for empirical use without this independent readback.",
+      "stop_conditions": [
+        "Stop if the exact primary source/revision cannot be bound or retrieved; return unresolved_gap with owner, impact, searches performed and next action.",
+        "Stop if the cited passage/code, population, period, units, denominator, licence/access terms or method cannot be established or reproduced.",
+        "Stop if the source conflicts with R5, the report locator does not support the assigned narrow family, or a required field is not identifiable.",
+        "Stop before selecting a value, distribution, universal heuristic, empirical default, fit or calibration target; preserve unknowns and escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. Dispatch only after the coordinator binds one exact primary URL/DOI or immutable repository revision, source-byte SHA-256, R5 report SHA-256 and exact section/line span, single-family extraction scope, output path, commands/oracle and independent reviewer. No empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p2-shift-break-context-gap",
+      "phase_task": "P2.1",
+      "family": "abm_staff_behavior",
+      "parameter_ids": [
+        "ed.abmstaffbehavior.agentattributes"
+      ],
+      "source_report_lead": {
+        "report_id": "R5",
+        "locator": "R5 staff availability/agent context discussion and P2.1 staffing-behavior scope; no ABM-specific shift/break source is asserted"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Future cross-family gap: staff shift and break availability is owned by accepted resource inputs ed.resources.rosters and ed.resources.breaks (P1), while ABM attributes may condition behavior only when declared. No R5 evidence here establishes a generic shift/break behavior rule.",
+      "search_scope": "Preparation only: do not launch a second source search here. P1 must bind separate one-source resource packets for roster and break records; P3 later joins those availability inputs with ABM decision context. Preserve in-flight work and break semantics as unresolved unless the source directly defines them.",
+      "output_path": "model-inputs/ed/abm/evidence/p2-shift-break-context-gap.json",
+      "extraction_fields": [
+        "Exact primary URL/DOI or immutable repository revision and edition/commit, if later bound",
+        "Exact page/table/field or repository path and line span",
+        "Source-byte SHA-256 and independent recomputation method",
+        "Population/site, period, units, precision and denominator where reported",
+        "Licence/access terms, retrieval date and transformation",
+        "Separate report SHA-256, section and line-span lineage",
+        "Evidence class and explicit unavailable/unknown fields",
+        "Which staff attributes are fixed or time-varying and their declared scope",
+        "Cross-reference to separate resource roster/break evidence; no duplicate ownership"
+      ],
+      "worker_oracle": "Keep staff attributes scoped to declared ABM behavior. Return the named future P1 roster/break gap without assigning a shift rule, break duration, or capacity effect.",
+      "independent_readback_oracle": "Independently retrieve the exact primary source/revision bound at dispatch, save or snapshot the same source bytes and recompute SHA-256; locate the cited page/table/field or pinned code commit/path/line span; reproduce the reported method and any extraction, units, population, period and denominator; record pass/partial/contradiction/unresolved with a specific reason. Compare the readback with this packet output and keep R5 report lineage separate. No result is accepted for empirical use without this independent readback.",
+      "stop_conditions": [
+        "Stop if the exact primary source/revision cannot be bound or retrieved; return unresolved_gap with owner, impact, searches performed and next action.",
+        "Stop if the cited passage/code, population, period, units, denominator, licence/access terms or method cannot be established or reproduced.",
+        "Stop if the source conflicts with R5, the report locator does not support the assigned narrow family, or a required field is not identifiable.",
+        "Stop before selecting a value, distribution, universal heuristic, empirical default, fit or calibration target; preserve unknowns and escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. The related roster/break IDs are cross-family references, not packet-owned parameters. Dispatch this ABM packet only after its source is bound; P1 owns roster/break extraction, and P3 owns the later joined behavior model.",
+      "related_matrix_ids": [
+        "ed.resources.rosters",
+        "ed.resources.breaks"
+      ]
+    },
+    {
+      "packet_id": "p2-agent-task-context-variation",
+      "phase_task": "P2.1",
+      "family": "abm_staff_behavior",
+      "parameter_ids": [
+        "ed.abmstaffbehavior.agentattributes"
+      ],
+      "source_report_lead": {
+        "report_id": "R5",
+        "locator": "R5 discussion of task choice, location, actor/task state and history; R5 “Task choice, continuity and interruptions” (R5 37–58)"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Per-agent, per-task and contextual variation may be represented only through declared attributes and conditioning. The supplied lead does not establish a transferable covariate set, sampling level, dependence structure, or numeric effect.",
+      "search_scope": "At dispatch, bind exactly one R5-named primary ED source for observed staff/task/context attributes and their measurement level. Record absent fields explicitly; do not seek or invent demographic attributes beyond behavior relevance.",
+      "output_path": "model-inputs/ed/abm/evidence/p2-agent-task-context-variation.json",
+      "extraction_fields": [
+        "Exact primary URL/DOI or immutable repository revision and edition/commit",
+        "Exact page/table/field or repository path and line span",
+        "Source-byte SHA-256 and independent recomputation method",
+        "Population/site, period, units, precision and denominator where reported",
+        "Licence/access terms, retrieval date and transformation",
+        "Separate R5 report SHA-256, section and line-span lineage",
+        "Evidence class and explicit unavailable/unknown fields",
+        "Agent, task and context variables directly recorded",
+        "Within-run versus between-run measurement level, only if source-defined",
+        "Missingness and applicability/transfer limitations"
+      ],
+      "worker_oracle": "Report which agent/task/context variables are directly supported and at what measurement level, or unresolved gap. Do not fit variation or dependence here; those are later P2.3/P3 decisions.",
+      "independent_readback_oracle": "Independently retrieve the exact primary source/revision bound at dispatch, save or snapshot the same source bytes and recompute SHA-256; locate the cited page/table/field or pinned code commit/path/line span; reproduce the reported method and any extraction, units, population, period and denominator; record pass/partial/contradiction/unresolved with a specific reason. Compare the readback with this packet output and keep R5 report lineage separate. No result is accepted for empirical use without this independent readback.",
+      "stop_conditions": [
+        "Stop if the exact primary source/revision cannot be bound or retrieved; return unresolved_gap with owner, impact, searches performed and next action.",
+        "Stop if the cited passage/code, population, period, units, denominator, licence/access terms or method cannot be established or reproduced.",
+        "Stop if the source conflicts with R5, the report locator does not support the assigned narrow family, or a required field is not identifiable.",
+        "Stop before selecting a value, distribution, universal heuristic, empirical default, fit or calibration target; preserve unknowns and escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. Dispatch only after the coordinator binds one exact primary URL/DOI or immutable repository revision, source-byte SHA-256, R5 report SHA-256 and exact section/line span, single-family extraction scope, output path, commands/oracle and independent reviewer. No empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p2-routing-rules",
+      "phase_task": "P2.2",
+      "family": "spatial_abm",
+      "parameter_ids": [
+        "ed.spatialabm.routesconnectivity"
+      ],
+      "source_report_lead": {
+        "report_id": "R5",
+        "locator": "R5 movement-mode, graph access and routing discussion; R5 “Spatial movement and task trips” (R5 21–36, 101–115)"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "The accepted route/connectivity contract requires a versioned graph and access rules when Micro movement is enabled. Supplied software/layout leads do not establish operationally valid ED access restrictions or a generic route policy.",
+      "search_scope": "At dispatch, inspect exactly one R5-named primary ED source or explicitly named graph-method lead for route/access definitions. Separate route connectivity from route choice; if no operational ED source is identifiable, return the named gap.",
+      "output_path": "model-inputs/ed/abm/evidence/p2-routing-rules.json",
+      "extraction_fields": [
+        "Exact primary URL/DOI or immutable repository revision and edition/commit",
+        "Exact page/table/field or repository path and line span",
+        "Source-byte SHA-256 and independent recomputation method",
+        "Population/site, period, units, precision and denominator where reported",
+        "Licence/access terms, retrieval date and transformation",
+        "Separate R5 report SHA-256, section and line-span lineage",
+        "Evidence class and explicit unavailable/unknown fields",
+        "Graph revision, edge/access class and movement-mode restrictions",
+        "Reachability and origin/destination definitions",
+        "Whether source describes observed routes, configured access, or a proposed method"
+      ],
+      "worker_oracle": "Output only source-defined connectivity/access rules with scope, or unresolved gap. No route preference, congestion, universal ED access rule, or fabricated graph is accepted.",
+      "independent_readback_oracle": "Independently retrieve the exact primary source/revision bound at dispatch, save or snapshot the same source bytes and recompute SHA-256; locate the cited page/table/field or pinned code commit/path/line span; reproduce the reported method and any extraction, units, population, period and denominator; record pass/partial/contradiction/unresolved with a specific reason. Compare the readback with this packet output and keep R5 report lineage separate. No result is accepted for empirical use without this independent readback.",
+      "stop_conditions": [
+        "Stop if the exact primary source/revision cannot be bound or retrieved; return unresolved_gap with owner, impact, searches performed and next action.",
+        "Stop if the cited passage/code, population, period, units, denominator, licence/access terms or method cannot be established or reproduced.",
+        "Stop if the source conflicts with R5, the report locator does not support the assigned narrow family, or a required field is not identifiable.",
+        "Stop before selecting a value, distribution, universal heuristic, empirical default, fit or calibration target; preserve unknowns and escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. Dispatch only after the coordinator binds one exact primary URL/DOI or immutable repository revision, source-byte SHA-256, R5 report SHA-256 and exact section/line span, single-family extraction scope, output path, commands/oracle and independent reviewer. No empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p2-route-choice",
+      "phase_task": "P2.2",
+      "family": "spatial_abm",
+      "parameter_ids": [
+        "ed.spatialabm.routechoice"
+      ],
+      "source_report_lead": {
+        "report_id": "R5",
+        "locator": "R5 movement-mode and task-trip discussion, including eligible alternatives and route-choice evidence gaps; R5 “Spatial movement and task trips” (R5 21–36, 101–115)"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "The accepted route-choice input is conditional on graph revision, movement mode, origin/destination and reachable eligible alternatives. No supplied source establishes a transferable ED route-preference distribution.",
+      "search_scope": "At dispatch, bind exactly one R5-named primary ED movement source for route decisions and available alternatives. If it reports paths without decision-time alternatives, record that limit and return the route-choice gap.",
+      "output_path": "model-inputs/ed/abm/evidence/p2-route-choice.json",
+      "extraction_fields": [
+        "Exact primary URL/DOI or immutable repository revision and edition/commit",
+        "Exact page/table/field or repository path and line span",
+        "Source-byte SHA-256 and independent recomputation method",
+        "Population/site, period, units, precision and denominator where reported",
+        "Licence/access terms, retrieval date and transformation",
+        "Separate R5 report SHA-256, section and line-span lineage",
+        "Evidence class and explicit unavailable/unknown fields",
+        "Movement mode and origin/destination purpose",
+        "Graph revision and reachable alternatives at decision time",
+        "Observed route/path method and sampling unit",
+        "Route interruptions and exclusions, if directly recorded"
+      ],
+      "worker_oracle": "Separate observed paths from choice evidence. Record the complete reachable choice set or unresolved gap; do not infer route preference from travel times.",
+      "independent_readback_oracle": "Independently retrieve the exact primary source/revision bound at dispatch, save or snapshot the same source bytes and recompute SHA-256; locate the cited page/table/field or pinned code commit/path/line span; reproduce the reported method and any extraction, units, population, period and denominator; record pass/partial/contradiction/unresolved with a specific reason. Compare the readback with this packet output and keep R5 report lineage separate. No result is accepted for empirical use without this independent readback.",
+      "stop_conditions": [
+        "Stop if the exact primary source/revision cannot be bound or retrieved; return unresolved_gap with owner, impact, searches performed and next action.",
+        "Stop if the cited passage/code, population, period, units, denominator, licence/access terms or method cannot be established or reproduced.",
+        "Stop if the source conflicts with R5, the report locator does not support the assigned narrow family, or a required field is not identifiable.",
+        "Stop before selecting a value, distribution, universal heuristic, empirical default, fit or calibration target; preserve unknowns and escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. Dispatch only after the coordinator binds one exact primary URL/DOI or immutable repository revision, source-byte SHA-256, R5 report SHA-256 and exact section/line span, single-family extraction scope, output path, commands/oracle and independent reviewer. No empirical use until independent readback is accepted."
     }
-  ]
+  ],
+  "p2_3_join_boundary": {
+    "status": "later_task_not_completed",
+    "scope": [
+      "record population and sampling frame",
+      "distribution-family selection and support/tail checks",
+      "dependence and conditional sampling",
+      "identification/confounding gaps",
+      "small hand-worked behavior and graph examples"
+    ],
+    "statement": "P2.3 owns these later ABM record and assumption joins. The preparation packets above do not claim observed population distributions, fitted families, dependencies, accepted assumptions, or successful hand-worked checks. Preserve unknowns until P2.3/P3 and independent review."
+  }
 }

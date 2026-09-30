@@ -31,6 +31,25 @@ class SourceVerificationSchemaTests(unittest.TestCase):
         record["primary_source"]["report_line"] = 12
         self.assertTrue(list(VALIDATOR.iter_errors(record)))
 
+    def test_pass_readback_is_bound_to_hash_locator_and_transform_evidence(self):
+        record = copy.deepcopy(next(c["record"] for c in FIXTURES["cases"] if c["name"] == "primary_source_shape_only"))
+        readback = record["independent_readback"]
+        self.assertEqual(readback["source_hash_recomputation"]["retrieved_bytes_sha256"], record["primary_source"]["source_sha256"])
+        self.assertTrue(readback["source_hash_recomputation"]["matches_recorded_hash"])
+        self.assertTrue(readback["locator_evidence"]["located"])
+        self.assertTrue(readback["transformation_evidence"]["reproduced"])
+        self.assertEqual(list(VALIDATOR.iter_errors(record)), [])
+
+    def test_nonpass_readback_remains_structured_and_is_not_acceptance(self):
+        record = copy.deepcopy(next(c["record"] for c in FIXTURES["cases"] if c["name"] == "primary_source_shape_only"))
+        record["independent_readback"]["outcome"] = "partial"
+        record["independent_readback"]["reason"] = "Denominator could not be independently recovered."
+        record["independent_readback"]["source_hash_recomputation"]["matches_recorded_hash"] = False
+        record["independent_readback"]["locator_evidence"]["located"] = False
+        record["independent_readback"]["transformation_evidence"]["reproduced"] = False
+        self.assertEqual(list(VALIDATOR.iter_errors(record)), [])
+        self.assertNotEqual(record["independent_readback"]["outcome"], "pass")
+
 
 if __name__ == "__main__":
     unittest.main()
