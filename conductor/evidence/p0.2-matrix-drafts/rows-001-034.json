@@ -1,0 +1,582 @@
+{
+  "schema_version": 1,
+  "status": "draft_for_coordinator_review",
+  "first_row": 1,
+  "last_row": 34,
+  "entries": [
+    {
+      "row": 1,
+      "parameter_id": "ed.demandcasemix.arrivals",
+      "family": "demand_case_mix",
+      "decision": "accept",
+      "config_key": "demand.arrivals",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI scenario configuration",
+      "unit_class": "rate_or_schedule",
+      "unit_contract": "patients/hour or timestamped arrival schedule; select one representation per profile",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Generate seeded arrivals from exactly one selected representation: a rate process or explicit relative schedule; preserve the schedule origin and source timestamp metadata.",
+      "value_role": "generative",
+      "resolution": "Generate seeded arrivals from one selected representation (rate process or explicit schedule); preserve exposure, cohort and timestamp origin/zone/precision for calibration, and assert no rate or distribution value.",
+      "open_gate": [
+        "E0 arrival fixture must choose exactly one rate or occurrence-schedule representation and replay identical arrivals from the same run seed."
+      ]
+    },
+    {
+      "row": 2,
+      "parameter_id": "ed.demandcasemix.calendarprofile",
+      "family": "demand_case_mix",
+      "decision": "revise",
+      "config_key": "demand.calendarprofile",
+      "consumer": "CareOps ED configuration adapter",
+      "unit_class": "schedule_or_interval",
+      "unit_contract": "interval bounds use ED-clock seconds; absolute instants retain original precision and explicit offset/zone and are normalized against the dataset UTC origin. Relative MVP schedules start at zero; checked conversion follows ADR-0004, and naive local timestamps or recurrence are rejected until a tested IANA zone adapter defines fold/gap handling.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "generated calendar modifier for time-varying arrivals, not an observed target.",
+      "value_role": "generative",
+      "resolution": "Use only as an optional calendar modifier for time-varying arrivals; intervals use ED-clock seconds and instants retain explicit zone/offset and UTC origin. Disable naive local recurrence until IANA fold/gap handling is tested.",
+      "open_gate": [
+        "Reject local recurrence without a declared IANA zone and fold/gap policy; allow relative schedules in the generic fixture."
+      ]
+    },
+    {
+      "row": 3,
+      "parameter_id": "ed.demandcasemix.surgeprofile",
+      "family": "demand_case_mix",
+      "decision": "revise",
+      "config_key": "demand.surgeprofile",
+      "consumer": "CareOps ED configuration adapter, with typed case attributes passed to Kairos Track 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "structured categorical/time-varying profile; every numeric leaf declares units, categories, conditioning and denominator.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "generate a declared surge intensity or occurrence schedule; do not imply a surge distribution or infer dependence from marginal counts.",
+      "value_role": "generative",
+      "resolution": "Use only when a profile explicitly selects a surge schedule or intensity; interval counts need exposure and baseline, and marginal data do not establish a surge distribution or burst dependence.",
+      "open_gate": [
+        "A surge fixture must declare which demand modifiers change and keep each numeric leaf unit-bearing."
+      ]
+    },
+    {
+      "row": 4,
+      "parameter_id": "ed.demandcasemix.arrivalmode",
+      "family": "demand_case_mix",
+      "decision": "accept",
+      "config_key": "demand.arrivalmode",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Generate a typed arrival-mode attribute only when the selected pathway branches on mode; preserve category coding and unknown arrivals.",
+      "value_role": "generative",
+      "resolution": "Generate a typed arrival-mode attribute only where a modeled route branches on mode; declare categories and unknowns, and do not imply universal categories or a duration target.",
+      "open_gate": [
+        "When arrival-mode branching is enabled, reject an undeclared category or missing unknown-category rule."
+      ]
+    },
+    {
+      "row": 5,
+      "parameter_id": "ed.demandcasemix.agemix",
+      "family": "demand_case_mix",
+      "decision": "revise",
+      "config_key": "demand.agemix",
+      "consumer": "CareOps ED configuration adapter, with generated age-band case attributes passed to Kairos Track 03 Flow",
+      "unit_class": "probability_or_conditional_table",
+      "unit_contract": "dimensionless proportions in [0,1] or explicitly declared patient counts; record age-band coding, denominator, conditioning and unknown category. Require mutually exclusive/exhaustive bands only when that representation claims complete coverage.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "generate arrival case composition; observed age proportions are calibration targets only when cohort and denominator match, and marginal data do not define joint mix.",
+      "value_role": "generative",
+      "resolution": "Generate age composition with declared bands, denominator and unknown handling; observed proportions target only a matching arrival cohort, and marginals do not establish joint dependence.",
+      "open_gate": [
+        "When age mix is enabled, validate age bands, denominator, conditioning and unknown handling."
+      ]
+    },
+    {
+      "row": 6,
+      "parameter_id": "ed.demandcasemix.casetypemix",
+      "family": "demand_case_mix",
+      "decision": "revise",
+      "config_key": "demand.casetypemix",
+      "consumer": "CareOps ED configuration adapter, with generated case-type attributes passed to Kairos Track 03 Flow",
+      "unit_class": "probability_or_conditional_table",
+      "unit_contract": "dimensionless proportions in [0,1] or explicitly declared patient counts; declare category labels, denominator, conditioning and unknown handling.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "generate a case-type/pathway selector; do not infer its relationship to age or acuity, or a joint distribution, from marginal observations.",
+      "value_role": "generative",
+      "resolution": "Generate a profile-defined case-type selector with declared categories and eligible-arrival denominator; no taxonomy or age/acuity relationship is implied, and later outcomes cannot be arrival attributes.",
+      "open_gate": [
+        "When case-type mix is enabled, validate declared categories, denominator and unknown handling."
+      ]
+    },
+    {
+      "row": 7,
+      "parameter_id": "ed.demandcasemix.acuitymix",
+      "family": "demand_case_mix",
+      "decision": "accept",
+      "config_key": "demand.acuitymix",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "probability_or_conditional_table",
+      "unit_contract": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Generate the initial triage acuity attribute using declared categories and denominator; treat later reassessments as separate events.",
+      "value_role": "generative",
+      "resolution": "Generate initial acuity using declared triage coding and arrival cohort; reassessment is a separate later state, and observed targets require matching scale/version and timing.",
+      "open_gate": [
+        "The E2 patient fixture must assign scale-versioned initial acuity to every arrival and preserve reassessment as a separate event."
+      ]
+    },
+    {
+      "row": 8,
+      "parameter_id": "ed.demandcasemix.jointcasemix",
+      "family": "demand_case_mix",
+      "decision": "defer",
+      "config_key": "demand.jointcasemix",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "probability_or_conditional_table",
+      "unit_contract": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "profile_stage": "deferred_or_post_v1",
+      "profile_use": "Exclude from E2 until a named profile specifies joint dimensions, conditioning, denominator and linkage to supplied marginals for patient-level calibration.",
+      "value_role": "deferred",
+      "resolution": "Defer from E2 until a named profile defines joint dimensions, conditioning, denominator and linkage to supplied marginals; patient-level linked attributes are required for calibration.",
+      "open_gate": []
+    },
+    {
+      "row": 9,
+      "parameter_id": "ed.demandcasemix.referrals",
+      "family": "demand_case_mix",
+      "decision": "revise",
+      "config_key": "demand.referrals",
+      "consumer": "CareOps ED configuration adapter, with incoming case attributes passed to Kairos Track 03 Flow",
+      "unit_class": "categorical_or_probability_table",
+      "unit_contract": "declared referral category proportions with an arriving-patient denominator, or patient counts with an explicit count unit; include source and unknown category.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "generate referral arrivals or a referral attribute as explicitly selected by the profile; never treat outgoing referral/disposition as this input.",
+      "value_role": "generative",
+      "resolution": "Represent incoming referral arrivals or an arrival attribute only when enabled; declare source and arriving-patient denominator, and keep outgoing referral/disposition in pathway outcomes.",
+      "open_gate": [
+        "A referral-enabled fixture must distinguish incoming referral arrivals from outgoing referral outcomes."
+      ]
+    },
+    {
+      "row": 10,
+      "parameter_id": "ed.demandcasemix.transfers",
+      "family": "demand_case_mix",
+      "decision": "revise",
+      "config_key": "demand.transfers",
+      "consumer": "CareOps ED configuration adapter, with incoming transfer case attributes passed to Kairos Track 03 Flow",
+      "unit_class": "categorical_or_probability_table",
+      "unit_contract": "declared transfer category proportions with an arriving-patient denominator, or patient counts with explicit count unit; include source boundary and unknown category.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "represent arrivals entering the ED from an external transfer boundary; outgoing transfer disposition belongs to pathways.transfer.",
+      "value_role": "generative",
+      "resolution": "Represent incoming transfer arrivals at the external ED boundary with source and denominator; outgoing transfer disposition belongs to pathways.transfer.",
+      "open_gate": [
+        "A transfer-arrival fixture must distinguish incoming transfer from outgoing disposition transfer."
+      ]
+    },
+    {
+      "row": 11,
+      "parameter_id": "ed.demandcasemix.repeatpresentations",
+      "family": "demand_case_mix",
+      "decision": "defer",
+      "config_key": "demand.repeatpresentations",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_probability_table",
+      "unit_contract": "category labels and conditional proportions with explicit denominator; count-valued input declares patient count",
+      "profile_stage": "deferred_or_post_v1",
+      "profile_use": "Exclude from MVP until linkage key, lookback window, eligible denominator and new-arrival versus prior-history semantics are specified.",
+      "value_role": "deferred",
+      "resolution": "Defer until linkage key, lookback window, eligible denominator and new-arrival versus prior-history semantics are defined; this is distinct from within-episode repeat loops.",
+      "open_gate": []
+    },
+    {
+      "row": 12,
+      "parameter_id": "ed.despathways.registration",
+      "family": "des_pathways",
+      "decision": "accept",
+      "config_key": "pathways.registration",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Configure registration as a distinct pathway state when the scenario models it; keep occurrence timing separate from chart-entry time.",
+      "value_role": "generative",
+      "resolution": "Configure registration as a distinct optional pathway state without imposing clinical content; map occurrence timestamps separately from chart-entry time and arrival-to-registration queueing.",
+      "open_gate": [
+        "A registration-enabled fixture must emit distinct arrival and registration occurrence events."
+      ]
+    },
+    {
+      "row": 13,
+      "parameter_id": "ed.despathways.triage",
+      "family": "des_pathways",
+      "decision": "accept",
+      "config_key": "pathways.triage",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Configure triage and routing transitions with explicit category semantics; keep queue wait separate from active triage work.",
+      "value_role": "generative",
+      "resolution": "Configure triage and routing with explicit category semantics; keep waiting time separate from active triage work, and map observed events to the correct occurrence and triage scale.",
+      "open_gate": [
+        "The triage fixture must separate queue entry, active triage work and triage completion events."
+      ]
+    },
+    {
+      "row": 14,
+      "parameter_id": "ed.despathways.assessment",
+      "family": "des_pathways",
+      "decision": "accept",
+      "config_key": "pathways.assessment",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Configure the assessment sequence and branches; bind observed targets to the correct assessment occurrence.",
+      "value_role": "generative",
+      "resolution": "Configure the assessment sequence and branches; bind observations to the correct task occurrence and do not treat arrival-to-assessment elapsed time as active work.",
+      "open_gate": [
+        "The assessment fixture must separate active clinician work from queue and local movement."
+      ]
+    },
+    {
+      "row": 15,
+      "parameter_id": "ed.despathways.diagnostics",
+      "family": "des_pathways",
+      "decision": "accept",
+      "config_key": "pathways.diagnostics",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Configure diagnostic ordering and dependencies; represent order, procedure, result availability and review as separate modeled events when enabled.",
+      "value_role": "generative",
+      "resolution": "Configure diagnostic ordering and dependencies; distinguish order, procedure start, result availability and review events, including censoring and missing results.",
+      "open_gate": [
+        "The diagnostic fixture must distinguish order, procedure, result availability and review events."
+      ]
+    },
+    {
+      "row": 16,
+      "parameter_id": "ed.despathways.treatment",
+      "family": "des_pathways",
+      "decision": "accept",
+      "config_key": "pathways.treatment",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Configure treatment pathway choices from modeled case state; keep treatment occurrence and active work distinct from elapsed time to treatment.",
+      "value_role": "generative",
+      "resolution": "Configure treatment choices from modeled case state; use treatment-specific occurrence anchors and keep queue, assessment and transit out of active treatment work.",
+      "open_gate": [
+        "The treatment fixture must bind the declared task/resource class without inventing a regimen."
+      ]
+    },
+    {
+      "row": 17,
+      "parameter_id": "ed.despathways.observation",
+      "family": "des_pathways",
+      "decision": "revise",
+      "config_key": "pathways.observation",
+      "consumer": "CareOps ED configuration adapter maps this pathway into Kairos Track 03 Flow transitions",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "typed pathway states/transitions, with any durations in seconds and probabilities dimensionless with explicit conditioning and denominator.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "define observation entry, reassessment if applicable, and ED exit/return transitions; model inpatient boarding separately and keep observed events separate from generated pathway rules.",
+      "value_role": "generative",
+      "resolution": "Enable observation only in selected profiles; separate ED observation from inpatient boarding and map physical bed occupancy/release rather than assignment alone.",
+      "open_gate": [
+        "An observation-enabled fixture must preserve ED observation occupancy separately from inpatient boarding."
+      ]
+    },
+    {
+      "row": 18,
+      "parameter_id": "ed.despathways.reassessment",
+      "family": "des_pathways",
+      "decision": "revise",
+      "config_key": "pathways.reassessment",
+      "consumer": "CareOps ED configuration adapter maps reassessment transitions into Kairos Track 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "typed trigger/transition data; numeric timing leaves use seconds and probability leaves declare conditioning and denominator.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "specify the trigger, repeated-task occurrence semantics and bounded loop/termination behavior; observed reassessment events are separate targets with occurrence indices and eligible context.",
+      "value_role": "generative",
+      "resolution": "Enable reassessment only with a defined trigger and bounded repeat semantics; index repeated occurrences and keep observed events separate from generated rules.",
+      "open_gate": [
+        "A reassessment loop fixture must enforce a trigger and bounded termination or occurrence limit."
+      ]
+    },
+    {
+      "row": 19,
+      "parameter_id": "ed.despathways.consult",
+      "family": "des_pathways",
+      "decision": "revise",
+      "config_key": "pathways.consult",
+      "consumer": "CareOps ED configuration adapter maps consult transitions into Kairos Track 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "typed pathway states/transitions; any durations use seconds and any probabilities declare conditioning and denominator.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "state the trigger, destination, return or terminal transition and resource claim; do not imply a universal consult route or treat observed consult events as generated rules.",
+      "value_role": "generative",
+      "resolution": "Enable consult only where applicable; define trigger, destination and return/terminal transition, and distinguish request, acceptance, arrival and completion from active consult work.",
+      "open_gate": [
+        "A consult-enabled fixture must declare trigger, destination, resource claim and return or terminal route."
+      ]
+    },
+    {
+      "row": 20,
+      "parameter_id": "ed.despathways.discharge",
+      "family": "des_pathways",
+      "decision": "accept",
+      "config_key": "pathways.discharge",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Configure discharge as a terminal route; distinguish decision, departure-ready and actual departure events.",
+      "value_role": "generative",
+      "resolution": "Configure discharge as a terminal route; distinguish decision, departure-ready and actual departure, with boarding/transport and unfinished censored cases kept separate.",
+      "open_gate": [
+        "The discharge fixture must keep decision, departure-ready and physical departure as distinct events."
+      ]
+    },
+    {
+      "row": 21,
+      "parameter_id": "ed.despathways.admission",
+      "family": "des_pathways",
+      "decision": "revise",
+      "config_key": "pathways.admission",
+      "consumer": "CareOps ED configuration adapter maps admission behavior into Kairos Track 03 Flow and the declared finite bed-offer boundary",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "typed decision and transition data, with duration leaves in seconds and probabilities carrying explicit conditioning/denominator.",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "keep admission decision, offer/acceptance, boarding occupancy, transport and realized admission/physical ED departure as distinct states or events; an admission decision does not release the ED resource.",
+      "value_role": "generative",
+      "resolution": "Keep admission decision, offer/acceptance, boarding, transport and physical ED departure distinct; admission decision does not release the occupied ED resource.",
+      "open_gate": [
+        "The admission fixture must keep decision, finite bed offer, acceptance, boarding occupancy and physical ED departure distinct; bed offer alone cannot release the ED resource."
+      ]
+    },
+    {
+      "row": 22,
+      "parameter_id": "ed.despathways.transfer",
+      "family": "des_pathways",
+      "decision": "revise",
+      "config_key": "pathways.transfer",
+      "consumer": "CareOps ED configuration adapter maps outgoing transfer disposition into Kairos Track 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "typed destination/eligibility/transition data; numeric durations use seconds and probabilities declare conditioning and denominator.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "define destination eligibility and the modeled completion boundary for an outgoing transfer; keep incoming transfer arrivals under demand.transfers and do not imply a full fleet or receiving-ward model.",
+      "value_role": "generative",
+      "resolution": "Model outgoing transfer only when enabled, with destination eligibility and completion boundary; incoming transfers use demand.transfers, and no fleet or receiving-ward model is implied.",
+      "open_gate": [
+        "An outgoing-transfer fixture must declare destination eligibility and terminal boundary separately from incoming transfers."
+      ]
+    },
+    {
+      "row": 23,
+      "parameter_id": "ed.despathways.abandonment",
+      "family": "des_pathways",
+      "decision": "accept",
+      "config_key": "pathways.abandonment",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "probability_or_conditional_table",
+      "unit_contract": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Enable abandonment only in selected profiles; distinguish its eligible risk set and departure reason from discharge and censoring.",
+      "value_role": "generative",
+      "resolution": "Enable abandonment only in selected profiles; define eligible risk set and time at risk, and distinguish it from discharge and right censoring.",
+      "open_gate": [
+        "An abandonment-enabled fixture must define the eligible risk set and terminal reason separately from discharge and right censoring."
+      ]
+    },
+    {
+      "row": 24,
+      "parameter_id": "ed.despathways.routingprobability",
+      "family": "des_pathways",
+      "decision": "revise",
+      "config_key": "pathways.routingprobability",
+      "consumer": "CareOps ED configuration adapter supplies conditional routing tables to Kairos Track 03 Flow",
+      "unit_class": "probability_or_conditional_table",
+      "unit_contract": "dimensionless probabilities in [0,1], with a named decision point, conditioning state, eligible alternatives, denominator, allowed outcomes and normalization rule; identify deterministic versus sampled selection.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "generate a branch choice conditional on state; calibration against observed choices requires the same eligible alternative set and decision-time state.",
+      "value_role": "generative",
+      "resolution": "Generate routing choices conditional on named state and eligible alternatives with explicit denominator/normalization; calibrate only against matching decision-time choices.",
+      "open_gate": [
+        "A routing table fixture must declare decision state, eligible alternatives, denominator and normalization rule."
+      ]
+    },
+    {
+      "row": 25,
+      "parameter_id": "ed.despathways.repeatloops",
+      "family": "des_pathways",
+      "decision": "revise",
+      "config_key": "pathways.repeatloops",
+      "consumer": "CareOps ED configuration adapter maps enabled repeat edges into Kairos Track 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "typed loop edge and trigger, with numeric timing in seconds and any probabilities explicitly conditioned.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "declare the loop edge, trigger, termination condition or maximum iterations and event accounting; observed loop counts are separate targets requiring occurrence indices and episode boundaries.",
+      "value_role": "generative",
+      "resolution": "Enable repeat edges only with a trigger and termination or iteration bound; retain occurrence indices, episode boundaries and unfinished/censored loops.",
+      "open_gate": [
+        "A repeat-loop fixture must enforce a trigger and a finite iteration or termination rule."
+      ]
+    },
+    {
+      "row": 26,
+      "parameter_id": "ed.despathways.priorities",
+      "family": "des_pathways",
+      "decision": "accept",
+      "config_key": "pathways.priorities",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Configure queue selection priorities only when the profile uses multiple queue classes; bind ordering and tie breaks to the reviewed queue contract.",
+      "value_role": "generative",
+      "resolution": "Use queue priorities only with multiple queue classes and the reviewed ordering/tie-break contract; realized service order alone does not identify a priority rule.",
+      "open_gate": [
+        "For multiple queue classes, verify priority ordering and deterministic tie breaks against the reviewed queue contract."
+      ]
+    },
+    {
+      "row": 27,
+      "parameter_id": "ed.despathways.deadlines",
+      "family": "des_pathways",
+      "decision": "revise",
+      "config_key": "pathways.deadlines",
+      "consumer": "CareOps ED configuration adapter supplies deadline constraints to Kairos Track 03 Flow",
+      "unit_class": "time",
+      "unit_contract": "relative limits in decimal seconds; absolute deadlines are explicit-offset instants tied to the dataset UTC origin and retain source precision. Apply ADR-0004 checked conversion to one-nanosecond u128 ticks; reject unsupported precision, negative/overflow values and naive local instants.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "generated pathway threshold/constraint, distinct from an observed elapsed-time target.",
+      "value_role": "generative",
+      "resolution": "Use as a generated threshold, with relative seconds or explicit-offset absolute instant tied to UTC origin; define missed-deadline behavior and do not treat it as an elapsed-time distribution.",
+      "open_gate": [
+        "Reject negative, overprecision, overflow and naive civil-time deadlines under ADR-0004."
+      ]
+    },
+    {
+      "row": 28,
+      "parameter_id": "ed.despathways.preemption",
+      "family": "des_pathways",
+      "decision": "accept",
+      "config_key": "pathways.preemption",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Configure only reviewed task-preemption behavior; keep staff-task interruption separate from patient or resource eviction.",
+      "value_role": "generative",
+      "resolution": "Represent reviewed task-preemption policy only; keep task interruption/suspend/resume distinct from patient or resource eviction and require queue-contract evidence.",
+      "open_gate": [
+        "The preemption fixture must keep staff task interruption ancestry separate from patient/resource eviction and verify the reviewed Q lifecycle."
+      ]
+    },
+    {
+      "row": 29,
+      "parameter_id": "ed.durations.intrinsicwork",
+      "family": "durations",
+      "decision": "revise",
+      "config_key": "durations.intrinsicwork",
+      "consumer": "CareOps ED configuration adapter supplies active-work durations to Kairos Track 03 Flow",
+      "unit_class": "time",
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with exact fixed-value checks or the declared sampled-duration ceiling rule and precision/rounding metadata.",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "generative active task time; fit only from occurrence-mapped endpoints that isolate active work from setup, queue, transit and interruption/resumption, preserving source precision.",
+      "value_role": "generative",
+      "resolution": "Generate active task work only; fit from occurrence endpoints isolating setup, queue, transit and interruption/resumption, then apply ADR-0004 checked tick conversion.",
+      "open_gate": [
+        "The intrinsic-work fixture must exclude queue, transit and boarding intervals and apply checked duration conversion."
+      ]
+    },
+    {
+      "row": 30,
+      "parameter_id": "ed.durations.setup",
+      "family": "durations",
+      "decision": "revise",
+      "config_key": "durations.setup",
+      "consumer": "CareOps ED configuration adapter supplies setup intervals to Kairos Track 03 Flow and the named task/resource occupancy model",
+      "unit_class": "time",
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "identify the owning task/resource, setup start/end and whether capacity is occupied or setup precedes active work; fit only from setup-specific occurrence endpoints distinct from service, queue and transit.",
+      "value_role": "generative",
+      "resolution": "Enable setup only for a named task/resource and separate start/end; declare capacity occupancy and ordering relative to active work to prevent overlap or double counting.",
+      "open_gate": [
+        "A setup fixture must name the task/resource and declare occupancy and setup start/end events."
+      ]
+    },
+    {
+      "row": 31,
+      "parameter_id": "ed.durations.turnaround",
+      "family": "durations",
+      "decision": "revise",
+      "config_key": "durations.turnaround",
+      "consumer": "CareOps ED configuration adapter supplies process/device turnaround to Kairos Track 03 Flow",
+      "unit_class": "time",
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "define the event pair and included external/ED components; keep report availability and clinician review separate and do not silently include ED queue or transit. Fit only to matching occurrence endpoints.",
+      "value_role": "generative",
+      "resolution": "Enable turnaround only with a defined event pair and included components; separate external/ED delay from queue/transit and keep report availability and clinician review distinct.",
+      "open_gate": [
+        "A turnaround fixture must name included components and distinguish report availability from clinician review."
+      ]
+    },
+    {
+      "row": 32,
+      "parameter_id": "ed.durations.reportreviewdelay",
+      "family": "durations",
+      "decision": "revise",
+      "config_key": "durations.reportreviewdelay",
+      "consumer": "CareOps ED configuration adapter supplies report/review delay to Kairos Track 03 Flow",
+      "unit_class": "time",
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding; retain source event precision.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "generate elapsed delay after the relevant diagnostic process; map observed targets to report-availability and review-occurrence endpoints, keeping order time and recorded/message time separate.",
+      "value_role": "generative",
+      "resolution": "Generate delay after the diagnostic process; map targets to report availability and review occurrence, keeping order, message and recorded timestamps separate.",
+      "open_gate": [
+        "A report-review fixture must anchor result availability and review occurrence separately from recorded/message times."
+      ]
+    },
+    {
+      "row": 33,
+      "parameter_id": "ed.durations.cleaning",
+      "family": "durations",
+      "decision": "revise",
+      "config_key": "durations.cleaning",
+      "consumer": "CareOps ED configuration adapter supplies cleaning work to the reusable resource/location availability model consumed by Kairos Track 03 Flow",
+      "unit_class": "time",
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding.",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "name the resource and map cleaning occurrence start/completion separately from patient departure, bed assignment and resource release; declare concurrency and avoid counting the same interval in task work and availability. Fit only from cleaning-specific endpoints.",
+      "value_role": "generative",
+      "resolution": "Tie cleaning to a named reusable resource and cleaning start/completion; separate patient departure, bed assignment and resource release, and declare concurrency to avoid double counting.",
+      "open_gate": [
+        "A cleaning fixture must name the resource, cleaning start/completion and bed-ready event separately from patient departure."
+      ]
+    },
+    {
+      "row": 34,
+      "parameter_id": "ed.durations.handover",
+      "family": "durations",
+      "decision": "revise",
+      "config_key": "durations.handover",
+      "consumer": "CareOps ED configuration adapter supplies a named handover task to Kairos Track 03 Flow",
+      "unit_class": "time",
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding.",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "specify participants, occurrence start/end and overlap/concurrency treatment; keep ambulance arrival, offload and crew release as separate measures where modeled, and fit only from handover-specific anchors.",
+      "value_role": "generative",
+      "resolution": "Enable only as a named handover task with participants, occurrence start/end and overlap rule; keep ambulance arrival, offload and crew release as separate measures.",
+      "open_gate": [
+        "A handover fixture must name participants, occurrence endpoints and overlap; distinguish ambulance arrival, offload and crew release."
+      ]
+    }
+  ]
+}

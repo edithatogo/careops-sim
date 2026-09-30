@@ -1,0 +1,588 @@
+{
+  "schema_version": 1,
+  "status": "draft_for_coordinator_review",
+  "first_row": 35,
+  "last_row": 68,
+  "entries": [
+    {
+      "row": 35,
+      "parameter_id": "ed.durations.disposition",
+      "family": "durations",
+      "decision": "revise",
+      "config_key": "durations.disposition",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "time",
+      "unit_contract": "decimal seconds externally; fixed values parsed exactly into checked integral nanosecond u128 ticks; sampled finite nonnegative values round upward per ADR-0004",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Use only when the selected pathway has an explicit active disposition task; omit the field from profiles without that task.",
+      "value_role": "generative",
+      "resolution": "This is optional generated active work after the disposition decision. E0 deferred a generic disposition duration; enable the field only for a route with an identified task owner and decision-ready/work-complete events. Boarding, bed search, transport, and physical departure are separate.",
+      "open_gate": [
+        "E0 route fixture must identify the active disposition task owner and decision-ready/work-complete events; omit the key where that task is absent."
+      ],
+      "review_note": "E0 disposition was defer; coordinator reconciliation records revise solely for optional route-specific active work, not a generic sampled duration."
+    },
+    {
+      "row": 36,
+      "parameter_id": "ed.durations.boarding",
+      "family": "durations",
+      "decision": "revise",
+      "config_key": "durations.boarding",
+      "consumer": "C0 trace/metric mapping, and the CareOps ED adapter only if a separately identified residual boundary delay is modeled",
+      "unit_class": "time",
+      "unit_contract": "elapsed decimal seconds with source precision; fixed values parse exactly to integral nanosecond u128 ticks; sampled finite nonnegative values round upward per ADR-0004",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "For admission-enabled profiles, map the observed provisional-boarding-to-terminal-departure outcome. Configure a residual only after its components are separated.",
+      "value_role": "observed_target",
+      "resolution": "Boarding is an observed elapsed boundary from provisional admission/boarding to actual departure or another declared terminal event. Do not model the full observed interval as service or release an ED resource at bed offer; generate only a separately decomposed residual.",
+      "open_gate": [
+        "E0 admission fixture must anchor provisional boarding and actual terminal departure; prove no double counting with service, bed offer, acceptance, transport, or recurrent care."
+      ]
+    },
+    {
+      "row": 37,
+      "parameter_id": "ed.durations.transit",
+      "family": "durations",
+      "decision": "revise",
+      "config_key": "durations.transit",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow",
+      "unit_class": "time",
+      "unit_contract": "nonnegative decimal seconds; fixed values parse exactly to integral nanosecond u128 ticks and sampled durations round upward per ADR-0004",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Macro may configure aggregate local movement time. Micro derives local time from graph distance and speed and omits this field; external transport is separate.",
+      "value_role": "generative",
+      "resolution": "Macro may represent aggregate local transit when it is not already part of service work. Micro derives movement from graph distance and speed and excludes this scalar; external transfer/transport has its own boundary input and event anchors.",
+      "open_gate": [
+        "E0 must select Macro aggregate transit or Micro graph-derived movement per profile and keep external transport on its separate boundary input."
+      ]
+    },
+    {
+      "row": 38,
+      "parameter_id": "ed.resources.staffroles",
+      "family": "resources",
+      "decision": "accept",
+      "config_key": "resources.staffroles",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Declare the staff role and skill categories used by the E2 task and eligibility rules. Numeric leaves carry their own units; no role counts or identities are inferred.",
+      "value_role": "generative",
+      "resolution": "Role and skill categories are configuration for E2 task and eligibility rules. Numeric leaves declare units. Observed staff categories remain evidence, not generated configuration or asserted defaults.",
+      "open_gate": [
+        "E2 profile validator must require every referenced staff_role_id and skill category to be declared, and reject numeric leaves without units; confirm observations are mapped separately from generated role configuration."
+      ]
+    },
+    {
+      "row": 39,
+      "parameter_id": "ed.resources.staffcounts",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.staffcounts",
+      "consumer": "CareOps ED configuration validator and ED adapter, which maps role capacity to Kairos Track 03 Flow; synthetic role/zone/location bindings follow the minimum-bindings proposal",
+      "unit_class": "count_or_capacity",
+      "unit_contract": "nonnegative integer staff persons per declared `staff_role_id` and time basis",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Supply role-specific counts on an explicitly named employed, rostered, present, or task-eligible basis. Bind roles and eligibility; unknown capacity is not zero.",
+      "value_role": "generative",
+      "resolution": "Staff counts are generated capacity inputs by role and explicitly named time basis. Employed, rostered, present, and task-eligible counts are distinct; availability schedules modify effective capacity and observed assignments do not imply counts.",
+      "open_gate": [
+        "E2 fixtures must distinguish employed, rostered, present, and task-eligible counts by explicit basis and interval; reject unknown role references and ensure availability schedules, rather than observed assignment totals, determine effective capacity."
+      ]
+    },
+    {
+      "row": 40,
+      "parameter_id": "ed.resources.rosters",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.rosters",
+      "consumer": "CareOps ED configuration validator and ED adapter to Kairos Track 03 Flow availability",
+      "unit_class": "schedule_or_interval",
+      "unit_contract": "half-open ED-clock intervals in decimal seconds/ticks; generic schedules are relative to origin zero; timestamped instants require declared UTC origin and explicit offset/zone per ADR-0004",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Supply relative-to-zero availability schedules for declared roles/resources. Absolute instants need an origin and explicit offset/zone; local recurrence is disabled.",
+      "value_role": "generative",
+      "resolution": "Roster availability is configured for declared roles/resources using half-open intervals on the ED clock. Observed rosters and clock events are separate evidence; relative schedules start at zero and local recurrence awaits a tested IANA adapter.",
+      "open_gate": [
+        "Validate role/resource roster bindings, half-open intervals, relative-zero schedules, and timestamp origin/offset handling; reject naive local times and recurring local schedules until the IANA adapter is tested."
+      ]
+    },
+    {
+      "row": 41,
+      "parameter_id": "ed.resources.breaks",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.breaks",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow staff availability",
+      "unit_class": "schedule_or_interval",
+      "unit_contract": "half-open ED-clock availability intervals in decimal seconds/ticks; relative schedules use origin zero and checked ADR-0004 conversion",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Configure breaks only for pathways using break-driven capacity changes; state how in-flight work behaves at each boundary. Keep observed break events separate.",
+      "value_role": "generative",
+      "resolution": "Breaks change configured staff availability over half-open ED-clock intervals. Define in-flight-work behavior; observed break events are separate and must not be subtracted again from observed busy intervals.",
+      "open_gate": [
+        "Validate break intervals against declared staff capacity and exercise break start/end with in-flight work; confirm observed break events are not subtracted again from observed busy intervals."
+      ]
+    },
+    {
+      "row": 42,
+      "parameter_id": "ed.resources.absenceovertime",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.absenceovertime",
+      "consumer": "CareOps ED configuration validator and ED adapter to Kairos Track 03 Flow capacity availability",
+      "unit_class": "schedule_or_capacity_delta",
+      "unit_contract": "signed integer staff-person capacity delta over half-open ED-clock intervals in decimal seconds/ticks; relative schedules use origin zero; timestamped instants follow ADR-0004",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Configure planned role capacity deltas only for profiles that model absence or overtime. State shift-end and in-flight-work behavior; resulting capacity must stay nonnegative.",
+      "value_role": "generative",
+      "resolution": "Absence/overtime is a planned signed capacity delta by role over half-open ED-clock intervals. Validate nonnegative resulting capacity and specify shift-end/in-flight-work behavior; observed presence is separate evidence.",
+      "open_gate": [
+        "Test signed role capacity deltas over half-open intervals, nonnegative resulting capacity, and shift-end/in-flight-work behavior; reject unsupported local recurrence and separate observed presence from planned deltas."
+      ]
+    },
+    {
+      "row": 43,
+      "parameter_id": "ed.resources.supervision",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.supervision",
+      "consumer": "CareOps ED validator and adapter to Kairos Track 03 Flow as a separately available synthetic staff role/resource",
+      "unit_class": "count_or_capacity",
+      "unit_contract": "nonnegative integer supervisor persons or explicitly named supervisor-capacity slots per declared zone/location and interval; a supervisor-to-eligible-staff ratio, if proposed later, is a different typed rule with an explicit denominator",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Supply supervisor capacity only where a pathway declares supervisory eligibility and demand. Bind its role, location/zone, and effective interval.",
+      "value_role": "generative",
+      "resolution": "Supervision is separately available staff/resource capacity scoped by role, zone/location, and interval. It applies only when a pathway declares eligibility and demand; it does not imply atomic supervisor-plus-worker acquisition.",
+      "open_gate": [
+        "Require declared supervisory role/resource, zone/location, interval, eligibility, and pathway demand; verify unavailable supervisor capacity blocks only tasks that require it and does not imply atomic worker-plus-supervisor acquisition."
+      ]
+    },
+    {
+      "row": 44,
+      "parameter_id": "ed.resources.taskconcurrency",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.taskconcurrency",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow only as a named resource's simultaneous-slot capacity",
+      "unit_class": "count_or_capacity",
+      "unit_contract": "nonnegative integer concurrent slots per `resource_id`",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Use only for simultaneous slots of a named resource pool. This does not configure one staff agent to perform concurrent tasks.",
+      "value_role": "generative",
+      "resolution": "This field limits simultaneous slots for a named resource only. Per-agent task concurrency remains outside the contract unless a separate reviewed behavior defines it; observed overlaps are telemetry.",
+      "open_gate": [
+        "Bind slot capacity to a named resource_id and test concurrent allocation limits; confirm this field cannot be used as per-agent task concurrency and that observed overlaps do not set capacity."
+      ]
+    },
+    {
+      "row": 45,
+      "parameter_id": "ed.resources.beds",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.beds",
+      "consumer": "CareOps ED validator and adapter to Kairos Track 03 Flow resource capacity, bound by stable `resource_id`, `zone_id`, and `location_id` as specified by the minimum-bindings proposal",
+      "unit_class": "count_or_capacity",
+      "unit_contract": "integer physical bed count per explicitly identified pool; open, staffed, usable, capability-compatible capacity and occupancy are separate typed states/intervals",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Declare physical bed inventory by identified pool and bind each pool to stable resource, zone, and location IDs. State effective availability separately from inventory.",
+      "value_role": "generative",
+      "resolution": "Beds are physical inventory by identified pool; staffed, usable, compatible, open capacity and occupancy are separate states. An inpatient offer is a boundary event, not an ED bed or automatic ED release.",
+      "open_gate": [
+        "Validate each bed pool\u2019s resource_id, zone_id, location_id, physical count, effective availability, compatibility, and occupancy against the same pool; verify an inpatient offer does not release an ED resource."
+      ]
+    },
+    {
+      "row": 46,
+      "parameter_id": "ed.resources.rooms",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.rooms",
+      "consumer": "CareOps ED validator and adapter to Kairos Track 03 Flow resource capacity, using distinct stable pool/location/zone IDs and explicit room function/pathway eligibility",
+      "unit_class": "count_or_capacity",
+      "unit_contract": "integer physical rooms per identified pool; treatment-space capacity and time-effective availability are separately declared",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Declare physical room pools with function and pathway eligibility. Model room availability separately; do not infer rooms from beds or beds from rooms.",
+      "value_role": "generative",
+      "resolution": "Rooms are physical pools with explicit function/pathway eligibility. Treatment capacity and time-varying availability are separate from inventory; room and bed lifecycles are independent.",
+      "open_gate": [
+        "Validate room pool IDs, function, pathway eligibility, location/zone bindings, and effective availability independently of bed pools; test concurrent room use and reject inferred room/bed equivalence."
+      ]
+    },
+    {
+      "row": 47,
+      "parameter_id": "ed.resources.equipment",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.equipment",
+      "consumer": "CareOps ED validator and adapter to Kairos Track 03 Flow resource pools, each with stable resource/item identity and zone/location binding",
+      "unit_class": "count_or_capacity",
+      "unit_contract": "integer physical item count by declared equipment class/capability; working, available, pathway-compatible capacity and allocation intervals are distinct fields",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Declare equipment inventory by class/capability and stable identity/location. Allocate only known, available compatible capacity; trips remain separate.",
+      "value_role": "generative",
+      "resolution": "Equipment inventory is by declared class/capability and stable item/pool binding. Working, available, compatible capacity and allocation are distinct; do not imply atomic bundles.",
+      "open_gate": [
+        "Validate equipment item/pool identity, class/capability, zone/location binding, working/available/compatible capacity, and allocation; confirm trip events cannot create or alter inventory and unsupported bundles are rejected."
+      ]
+    },
+    {
+      "row": 48,
+      "parameter_id": "ed.resources.opencalendars",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.opencalendars",
+      "consumer": "CareOps ED validator and adapter to Kairos Track 03 Flow availability for an explicitly named resource, location, or pathway",
+      "unit_class": "schedule_or_interval",
+      "unit_contract": "half-open ED-clock intervals in decimal seconds/ticks for effective capacity state; relative schedules use origin zero and checked ADR-0004 conversion",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Configure open intervals and capacity state for a named resource, location, or pathway. Keep observed openings/closures separate; local recurrence is disabled.",
+      "value_role": "generative",
+      "resolution": "Opening calendars configure effective intervals and capacity for named targets, not observed utilization. Observed changes remain events; relative schedules start at zero and local recurrence is disabled pending tested zone behavior.",
+      "open_gate": [
+        "Validate each open-calendar target and capacity state over half-open intervals; test relative-zero/explicit-offset conversion and reject naive local or recurring schedules pending the tested IANA adapter."
+      ]
+    },
+    {
+      "row": 49,
+      "parameter_id": "ed.resources.outages",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.outages",
+      "consumer": "CareOps ED validator and adapter to Kairos Track 03 Flow as a capacity/status change on a declared `resource_id` or pool",
+      "unit_class": "schedule_or_interval",
+      "unit_contract": "outage state/capacity delta over half-open ED-clock intervals in decimal seconds/ticks; relative schedules use origin zero and checked ADR-0004 conversion",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Configure outages as capacity/status changes for named resources or pools. Define in-flight allocation behavior and keep observed failure times separate.",
+      "value_role": "generative",
+      "resolution": "Outages change configured capacity/status for a named resource or pool. Define active-allocation behavior, reject negative capacity, and do not encode the same outage again as sampled service delay.",
+      "open_gate": [
+        "Validate outage target and capacity delta/state, reject negative capacity, and test the declared handling of active allocations; ensure the same outage is not also applied as a sampled service delay."
+      ]
+    },
+    {
+      "row": 50,
+      "parameter_id": "ed.resources.reservations",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.reservations",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow resource lifecycle for a named owner/task and `resource_id`",
+      "unit_class": "schedule_or_interval",
+      "unit_contract": "reservation effective interval in decimal seconds/ticks; relative schedules use origin zero and checked ADR-0004 conversion; expiry/release rule is explicit",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Use explicit owner/task and resource IDs with reservation, expiry, and release semantics. Keep reservation distinct from assignment and physical occupancy.",
+      "value_role": "generative",
+      "resolution": "A reservation is a claim by a named owner/task on a resource for an effective interval, with explicit expiry/release. It is distinct from assignment, occupancy, and cleaning/ready lifecycle.",
+      "open_gate": [
+        "Require reservation owner/task and resource_id plus explicit expiry/release behavior; test reservation versus assignment/occupancy/cleaning states and retain separate occurrence/recorded lineage for observed events."
+      ]
+    },
+    {
+      "row": 51,
+      "parameter_id": "ed.resources.cleaningcapacity",
+      "family": "resources",
+      "decision": "revise",
+      "config_key": "resources.cleaningcapacity",
+      "consumer": "CareOps ED validator and adapter to Kairos Track 03 Flow as named cleaner staff/equipment resources or simultaneous cleaning slots",
+      "unit_class": "count_or_capacity",
+      "unit_contract": "nonnegative integer cleaning capacity per resource/binding; any separate cleaning duration is decimal seconds converted under ADR-0004",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Declare cleaning staff/equipment or cleaning slots as capacity. Model clean duration separately and keep the bed/room unavailable until ready completion.",
+      "value_role": "generative",
+      "resolution": "Cleaning capacity is named cleaner staff/equipment or simultaneous slots. Cleaning duration is a separate seconds input; hold the resource unavailable until the declared ready event.",
+      "open_gate": [
+        "A cleaning-enabled E2 fixture must bind cleaner capacity and cleaning duration separately, and retain resource unavailability until ready completion."
+      ]
+    },
+    {
+      "row": 52,
+      "parameter_id": "ed.abmstaffbehavior.agentattributes",
+      "family": "abm_staff_behavior",
+      "decision": "revise",
+      "config_key": "staff_behavior.agentattributes",
+      "consumer": "CareOps ED schema and ED adapter to Kairos Track 03 Flow agent/task context",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "versioned categorical coding; every numeric leaf declares its own unit and entity scope",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Include only staff attributes used by declared eligibility or task behavior. Mark scope and provenance; numeric attributes require entity scope and units.",
+      "value_role": "generative",
+      "resolution": "Staff attributes are generated only when required by declared eligibility or task behavior, with fixed/time-varying scope and provenance. Calibration requires staff-level evidence and identifiability; no unsupported demographic or clinical detail is implied.",
+      "open_gate": [
+        "When agent attributes affect eligibility, reject missing scope, unit or provenance and prevent unused attributes becoming implicit policy."
+      ]
+    },
+    {
+      "row": 53,
+      "parameter_id": "ed.abmstaffbehavior.assignment",
+      "family": "abm_staff_behavior",
+      "decision": "revise",
+      "config_key": "staff_behavior.assignment",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow dispatch inputs, constrained by declared role, task, zone, location, availability, and skill eligibility",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "typed categorical assignment policy/state; numeric leaves declare units",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Use an explicit supported dispatch rule over declared role, task, location, availability, and skill eligibility. Record observed assignments as separate events.",
+      "value_role": "generative",
+      "resolution": "Assignment policy generates staff-to-task choices subject to declared role, task, zone/location, availability, and skill eligibility. Observed assignments are separate events; aggregate duration/throughput cannot identify the policy.",
+      "open_gate": [
+        "The E2 dispatch fixture must select only currently available eligible role/task/location combinations and log assignments separately from configuration."
+      ]
+    },
+    {
+      "row": 54,
+      "parameter_id": "ed.abmstaffbehavior.zoneskilleligibility",
+      "family": "abm_staff_behavior",
+      "decision": "revise",
+      "config_key": "staff_behavior.zoneskilleligibility",
+      "consumer": "CareOps ED validator and adapter to Kairos Track 03 Flow dispatch eligibility",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "versioned relation among stable `staff_role_id`, `task_class_id`, `zone_id`, and optional `location_id` (no physical unit); all references must resolve exactly, and a location must belong to its declared zone",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Provide exact role/task/zone and optional location eligibility bindings wherever work is spatially assigned, including Macro placement. Every reference must resolve.",
+      "value_role": "generative",
+      "resolution": "Eligibility is a configured relation among declared role, task class, zone, and optional location. Validate exact references and zone membership; observed-choice evidence needs a time-specific full choice set.",
+      "open_gate": [
+        "The Macro E2 fixture must reject an unknown role, task, zone or location reference and an undeclared eligibility edge."
+      ]
+    },
+    {
+      "row": 55,
+      "parameter_id": "ed.abmstaffbehavior.taskchoice",
+      "family": "abm_staff_behavior",
+      "decision": "revise",
+      "config_key": "staff_behavior.taskchoice",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow for selecting among supported eligible task actions",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "versioned deterministic/structured policy with category coding; any numeric leaf declares its unit",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Select a supported task-choice policy for declared task classes and eligibility/priority inputs. Treat it as an assumption without full decision-set evidence.",
+      "value_role": "generative",
+      "resolution": "Task choice selects among supported eligible actions. Observed task starts alone omit the available alternatives; empirical fitting requires decision times, actor/task states, and the complete eligible-action set.",
+      "open_gate": [
+        "A task-choice fixture must record its eligible action set and declared priority rule; no unobserved decision heuristic becomes an empirical default."
+      ]
+    },
+    {
+      "row": 56,
+      "parameter_id": "ed.abmstaffbehavior.reassessment",
+      "family": "abm_staff_behavior",
+      "decision": "revise",
+      "config_key": "staff_behavior.reassessment",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow as a pathway-enabled reassessment trigger/cadence rule",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "typed trigger/threshold; any interval is decimal seconds converted to checked nanosecond ticks under ADR-0004",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Configure a reassessment trigger/cadence only for pathways that enable it. Map observed occurrence, observation window, recording time, and censoring separately.",
+      "value_role": "generative",
+      "resolution": "Reassessment is a pathway-enabled trigger or cadence rule, not a scalar observed target. Preserve occurrence, recording time, at-risk window, and censoring in observations.",
+      "open_gate": [
+        "A reassessment-enabled fixture must distinguish configured cadence from occurrence and recording time, including censoring at the observation boundary."
+      ]
+    },
+    {
+      "row": 57,
+      "parameter_id": "ed.abmstaffbehavior.urgencyfifo",
+      "family": "abm_staff_behavior",
+      "decision": "revise",
+      "config_key": "staff_behavior.urgencyfifo",
+      "consumer": "CareOps ED adapter supplies priority attributes and stable tie-break inputs to Kairos Track 03 Flow's reviewed queue ordering",
+      "unit_class": "ordinal_policy",
+      "unit_contract": "versioned ordinal policy with no physical unit",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Use the declared ordinal urgency order and stable FIFO tie-break. Keep priority assignment explicit and do not add unsupported thresholds.",
+      "value_role": "control",
+      "resolution": "Urgency/FIFO is a deterministic ordinal ordering policy with a stable tie-break. ED-side priority assignment is explicit; queue order and waits are outcomes, not standalone calibration targets.",
+      "open_gate": [
+        "A two-task fixture must prove ordinal urgency ordering and deterministic FIFO tie breaks under the Q contract."
+      ]
+    },
+    {
+      "row": 58,
+      "parameter_id": "ed.abmstaffbehavior.communicationhandover",
+      "family": "abm_staff_behavior",
+      "decision": "revise",
+      "config_key": "staff_behavior.communicationhandover",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow for explicitly modeled handover interaction/task events",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "categorical interaction/policy; any active-work duration is decimal seconds with source precision and explicit anchors, converted under ADR-0004",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Enable only for pathways with explicit handover interactions. Define ownership and any active-work anchors; do not assume simultaneous attention or infer work from gaps.",
+      "value_role": "generative",
+      "resolution": "Handover is an explicit interaction/task event with declared ownership and any active-work anchors. Preserve occurrence versus recording/message time; an elapsed gap is not handover work.",
+      "open_gate": [
+        "A handover-enabled fixture must name ownership transfer and active-work occurrence anchors; no elapsed gap is auto-counted as handover work."
+      ]
+    },
+    {
+      "row": 59,
+      "parameter_id": "ed.abmstaffbehavior.interruptionresumption",
+      "family": "abm_staff_behavior",
+      "decision": "revise",
+      "config_key": "staff_behavior.interruptionresumption",
+      "consumer": "CareOps ED adapter selects a supported Suspend/Abort/Restart policy for Kairos Track 03 Flow task lifecycle",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "versioned categorical lifecycle policy; any timed leaf is decimal seconds with source precision and ADR-0004 conversion",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Select only a task lifecycle policy supported by the reviewed Q contract. Preserve interrupted task identity, ancestry, cause, and occurrence/recorded timestamps.",
+      "value_role": "control",
+      "resolution": "Interruption/resumption selects a lifecycle policy supported by the Q contract. Retain task identity/ancestry, cause, prompt, next task, resumption, and timestamp lineage; an incoming prompt or elapsed gap alone is not a switch/work interval.",
+      "open_gate": [
+        "A preemption fixture must preserve task ancestry, cause and elapsed/remaining work through suspend, abort or restart under the Q lifecycle."
+      ]
+    },
+    {
+      "row": 60,
+      "parameter_id": "ed.abmstaffbehavior.switchingoverhead",
+      "family": "abm_staff_behavior",
+      "decision": "revise",
+      "config_key": "staff_behavior.switchingoverhead",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow as explicit active context-switch work, if enabled by the pathway",
+      "unit_class": "time",
+      "unit_contract": "nonnegative decimal seconds with source precision; fixed input parses exactly and sampled duration rounds upward to checked nanosecond ticks under ADR-0004",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Configure context-switch active work only where enabled, with explicit start/end semantics. Keep queueing, suspension, handover, and resumption separate.",
+      "value_role": "generative",
+      "resolution": "Switching overhead is optional active context-switch work with generated start/end semantics. Exclude queueing, suspension, handover, and resumption unless separately modeled; no value or distribution is asserted.",
+      "open_gate": [
+        "A switching-overhead fixture must isolate active switch work from queueing, suspension, handover and resumption intervals."
+      ]
+    },
+    {
+      "row": 61,
+      "parameter_id": "ed.spatialabm.graphtopology",
+      "family": "spatial_abm",
+      "decision": "accept",
+      "config_key": "spatial.graphtopology",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Use a versioned synthetic graph only when a profile enables Micro movement. Macro uses named categorical locations without route geometry.",
+      "value_role": "generative",
+      "resolution": "Graph topology is a generated, versioned set of candidate walkable connections used only by Micro movement. Keep named identities separate from observed paths; geometry import and visualization are outside this input.",
+      "open_gate": [
+        "A Micro fixture must validate the versioned graph and reachable endpoints; the Macro fixture must run with no route graph."
+      ]
+    },
+    {
+      "row": 62,
+      "parameter_id": "ed.spatialabm.scaledistance",
+      "family": "spatial_abm",
+      "decision": "revise",
+      "config_key": "spatial.graph_edge_length_m",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "distance",
+      "unit_contract": "metres per versioned graph edge; never drawing scale or coordinate transform",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Use as metres for each versioned graph edge only in Micro movement profiles. Keep drawing scale, coordinate transforms, and imported geometry outside this field.",
+      "value_role": "generative",
+      "resolution": "The stable inventory ID now denotes versioned graph-edge length in metres under spatial.graph_edge_length_m. Drawing scale, coordinate transforms and imported geometry require separate contracts; no distance is inferred from a CAD drawing.",
+      "open_gate": [
+        "A Micro movement fixture must apply checked distance/speed-to-time conversion for a versioned graph edge and reject unknown or invalid edge length."
+      ],
+      "review_note": "Provisional CSV says accept; independent review changed the disposition to revise. The resolved config key now explicitly means graph-edge length in metres."
+    },
+    {
+      "row": 63,
+      "parameter_id": "ed.spatialabm.locations",
+      "family": "spatial_abm",
+      "decision": "revise",
+      "config_key": "spatial.locations",
+      "consumer": "CareOps ED validator and adapter to Kairos Track 03 Flow for stable named location/zone references and resource/staff bindings",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "stable IDs and coded location type/zone have no physical unit; optional coordinates declare frame, scale, metres, and provenance",
+      "profile_stage": "MVP_minimum",
+      "profile_use": "Require stable nonempty zone/location IDs and consistent resource/staff bindings in every E2 profile, including Macro. Coordinates and geometry are optional Micro inputs.",
+      "value_role": "generative",
+      "resolution": "Named locations/zones and resource/staff bindings are required categorical configuration even in Macro. Micro may add coordinates/geometry with declared frame, scale, units, and provenance; display names are not identifiers.",
+      "open_gate": [
+        "E2 profile/schema must require nonempty stable zone_id and location_id values and validate resource/staff bindings in Macro; add no geometry requirement."
+      ]
+    },
+    {
+      "row": 64,
+      "parameter_id": "ed.spatialabm.routesconnectivity",
+      "family": "spatial_abm",
+      "decision": "revise",
+      "config_key": "spatial.routesconnectivity",
+      "consumer": "CareOps ED validator and ED adapter to Kairos Track 03 Flow only when a profile explicitly enables Micro movement",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "versioned graph/edge IDs and access categories; edge distance in metres, speed in metres/second, and travel duration in decimal seconds/ticks under ADR-0004",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Provide graph edges and access rules only when Micro movement is enabled. Macro uses named location bindings and adds no local travel cost.",
+      "value_role": "generative",
+      "resolution": "Connectivity is generated graph/access configuration for Micro only. Keep observed or sensor-smoothed paths separate, and do not add fabricated Macro transit cost or unreviewed congestion.",
+      "open_gate": [
+        "A Micro route fixture must reject unreachable endpoints and invalid access edges against the declared graph revision."
+      ]
+    },
+    {
+      "row": 65,
+      "parameter_id": "ed.spatialabm.walkingspeedvariation",
+      "family": "spatial_abm",
+      "decision": "accept",
+      "config_key": "spatial.walkingspeedvariation",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "unit_class": "speed",
+      "unit_contract": "m/s",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Configure metres-per-second movement speed only for Micro movement. Macro does not consume walking speed.",
+      "value_role": "generative",
+      "resolution": "Walking speed is a generated Micro movement input in metres/second, separate from edge distance. Observed movement speeds remain evidence and require suitable provenance before calibration.",
+      "open_gate": [
+        "A Micro movement fixture must reject missing, zero or invalid speed and avoid applying speed to Macro placement."
+      ]
+    },
+    {
+      "row": 66,
+      "parameter_id": "ed.spatialabm.equipmentsupplytrips",
+      "family": "spatial_abm",
+      "decision": "revise",
+      "config_key": "spatial.equipmentsupplytrips",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow as optional Micro movement/retrieval events or a generating rule, not as resource capacity. Unit class: structured event/rule; declare trip purpose, equipment/supply class, origin and destination IDs, movement mode, event count over a defined exposure window, and any time fields in seconds/ticks under ADR-0004. Stage/use: enable only in an explicit Micro profile; equipment inventory and availability remain in `resources.equipment`, and Macro must not add local travel. Observed trip events retain occurrence/recorded precision and are separate from generated trips; do not infer inventory from frequency.",
+      "unit_class": "count_or_capacity",
+      "unit_contract": "structured event/rule; timing fields use decimal seconds and checked ADR-0004 tick conversion; event counts declare an exposure window",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Enable trip events or a trip-generating rule only in Micro. Define purpose, class, endpoints, mode, and exposure; keep inventory in resources.equipment.",
+      "value_role": "generative",
+      "resolution": "Trips are optional Micro movement/retrieval events or a generating rule, not resource capacity. Declare purpose, class, endpoints, mode, exposure, and timing; observed trips are separate from generated trips and do not identify inventory.",
+      "open_gate": [
+        "A supply-trip fixture must name purpose, equipment class, origin, destination and timing; equipment inventory remains a separate resource."
+      ]
+    },
+    {
+      "row": 67,
+      "parameter_id": "ed.spatialabm.routechoice",
+      "family": "spatial_abm",
+      "decision": "revise",
+      "config_key": "spatial.routechoice",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow for optional Micro path selection over a versioned graph",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "categorical/deterministic policy unless a reviewed probability model is supplied with declared normalization and conditioning",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Apply route choice only in Micro over a versioned graph and the reachable eligible alternatives at decision time. A declared deterministic route suffices when choice is disabled.",
+      "value_role": "generative",
+      "resolution": "Route choice is conditional on a versioned graph, movement mode, origin/destination, and reachable eligible alternatives. Keep observed paths separate; aggregate travel time does not identify route preference.",
+      "open_gate": [
+        "A route-choice fixture must enumerate reachable alternatives; a deterministic route must work without an inferred choice distribution."
+      ]
+    },
+    {
+      "row": 68,
+      "parameter_id": "ed.spatialabm.travelinterruptions",
+      "family": "spatial_abm",
+      "decision": "revise",
+      "config_key": "spatial.travelinterruptions",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow only for Micro movement lifecycle",
+      "unit_class": "categorical_or_structured",
+      "unit_contract": "typed trigger/cause and progress rule; distance in metres, speed in metres/second, and pause/work durations in decimal seconds converted under ADR-0004",
+      "profile_stage": "MVP_conditional",
+      "profile_use": "Enable only as an optional Micro movement rule with typed cause, progress, pause, and resumption. Macro adds no movement time.",
+      "value_role": "generative",
+      "resolution": "Travel interruptions are optional Micro lifecycle rules with typed cause, route progress, pause, and resumption. Route-derived time excludes separately generated pause time; observed interruption records retain event lineage and censoring.",
+      "open_gate": [
+        "Micro lifecycle fixture must type cause, progress, pause, and resumption and demonstrate route time excludes separately generated pause time."
+      ]
+    }
+  ]
+}

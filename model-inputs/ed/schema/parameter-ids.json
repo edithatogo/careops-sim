@@ -569,11 +569,11 @@
     {
       "parameter_id": "ed.spatialabm.scaledistance",
       "family": "spatial_abm",
-      "semantic_name": "Spatial scale and distance",
+      "semantic_name": "Versioned graph-edge length",
       "owner": "CareOps ED domain",
       "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
       "scope_status": "active_candidate",
-      "notes": "Units and interpretation must be supplied with a future profile."
+      "notes": "Stable inventory ID retained for compatibility. The resolved Micro config key spatial.graph_edge_length_m is metres per versioned graph edge; drawing scale, coordinate transforms and imported geometry are separate contracts."
     },
     {
       "parameter_id": "ed.spatialabm.locations",
@@ -812,20 +812,20 @@
     {
       "parameter_id": "ed.experimentcontrols.seedstreams",
       "family": "experiment_controls",
-      "semantic_name": "Seed purposes and streams",
+      "semantic_name": "MVP run seed and future named streams",
       "owner": "Kairos Track 01 core seed/order owner",
       "consumer": "Proposed Kairos 01 seed/order contract; Kairos 22 CLI experiment orchestration",
       "scope_status": "active_candidate",
-      "notes": "Seed purpose and sampling level must remain explicit; no RNG/API contract is frozen."
+      "notes": "The E2 key experiment.run_seed is one unsigned u64 matching the pinned Kairos CLI base_seed contract; named purpose-stream derivation remains Kairos Track 01 work."
     },
     {
       "parameter_id": "ed.experimentcontrols.timeunits",
       "family": "experiment_controls",
-      "semantic_name": "Model time units",
+      "semantic_name": "Per-field source time units",
       "owner": "CareOps ED domain",
       "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI",
       "scope_status": "active_candidate",
-      "notes": "Unit identity only; no resolution or runtime type is defined."
+      "notes": "No global runtime time-unit switch. The E2 schema rule time_fields.source_unit makes each time-valued field unit-bearing before ADR-0004 conversion."
     },
     {
       "parameter_id": "ed.experimentcontrols.modeoverrides",

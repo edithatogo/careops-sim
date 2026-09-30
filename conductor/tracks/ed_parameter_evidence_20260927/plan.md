@@ -29,7 +29,7 @@ validity limit. Acceptance requires this track's actual outputs and tests.
   and genuinely absent content. Reuse the completed embedded-content index.
   Historical headline counts are not acceptance targets. F3's incomplete historical
   crosswalk does not block a new scope-complete catalogue from supplied evidence.
-- [ ] P0.2 Define stable parameter IDs, catalogue/evidence/profile schemas, units,
+- [x] P0.2 Define stable parameter IDs, catalogue/evidence/profile schemas, units,
   separate range classes and consumer mappings. Write invalid/unknown/provenance
   fixtures before the schema validator; agree interfaces with E0/C0 owners.
   Define bed/treatment-space counts, room/zone IDs, staff/equipment capacity and optional route distances as ordinary model inputs. Keep units and stable IDs extensible; detailed geometry/import/visual schemas wait for E5. A tiny named-location fixture is sufficient.
@@ -41,7 +41,15 @@ validity limit. Acceptance requires this track's actual outputs and tests.
 Exit: P-R1 scope and schema contract accepted. Manual check: trace a patient and
 staff task from arrival to disposition; every consumed input has a proposed ID.
 
-### P0.2 review artifact (proposal)
+### P0.2 accepted design interface
+
+The [P0.2 acceptance record](../../evidence/p0.2-interface-design-acceptance-20260930.md)
+and [resolved 101-row matrix](../../../model-inputs/ed/schema/parameter-usage-matrix.json)
+supersede the proposed mapping for design-interface use. This accepts no
+empirical values, Rust runtime, E2 profile execution or full MVP behavior;
+each applicable `open_gate` remains an implementation requirement.
+
+### P0.2 review artifact (historical proposal)
 
 The coordinator prepared a 101-ID consumer/unit/profile mapping proposal at
 [`parameter-usage-matrix-proposal.json`](../../../model-inputs/ed/schema/parameter-usage-matrix-proposal.json).
