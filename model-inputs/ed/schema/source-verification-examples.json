@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "purpose": "Synthetic fixtures that demonstrate record shapes only. The primary-source locator is a reserved example URL and makes no empirical claim.",
+  "cases": [
+    {
+      "name": "primary_source_shape_only",
+      "expected_valid": true,
+      "record": {
+        "schema_version": 1,
+        "record_id": "fixture-primary-shape",
+        "evidence_type": "primary_source_claim",
+        "parameter_ids": ["ed.durations.fixture"],
+        "claim": "Fixture only: demonstrates required primary provenance fields; it asserts no real source fact.",
+        "primary_source": {
+          "source_kind": "publication",
+          "url": "https://example.org/fixture-only",
+          "revision": "fixture metadata only",
+          "location": { "kind": "publication", "page": "fixture", "section": "Fixture section" },
+          "source_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "population": "fixture population; no empirical claim",
+          "period": "fixture period; no empirical claim",
+          "units": "minutes (illustrative label only)",
+          "licence_access": "fixture; access terms not asserted",
+          "accessed_at": "2026-09-30",
+          "transformation": { "description": "identity (fixture example)", "input_units": "minutes", "output_units": "minutes" },
+          "verification": "unverified"
+        },
+        "report_lineage": { "report_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "section": "fixture only", "line_start": 1, "line_count": 1 },
+        "review": { "reviewer": "fixture reviewer", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "Shape fixture only; no source verification performed." }
+      }
+    },
+    {
+      "name": "repository_code_source_shape_only",
+      "expected_valid": true,
+      "record": {
+        "schema_version": 1,
+        "record_id": "fixture-code-shape",
+        "evidence_type": "primary_source_claim",
+        "parameter_ids": ["ed.durations.fixture"],
+        "claim": "Fixture only: demonstrates repository provenance fields; it asserts no real code behavior.",
+        "primary_source": {
+          "source_kind": "repository_code",
+          "url": "https://example.org/fixture-repository",
+          "location": { "kind": "repository_code", "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "path": "src/example.rs", "line_start": 1, "line_count": 2 },
+          "source_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "population": "not applicable to code fixture",
+          "period": "not applicable to code fixture",
+          "units": "not applicable to code fixture",
+          "licence_access": "fixture; access terms not asserted",
+          "accessed_at": "2026-09-30",
+          "transformation": { "description": "none (fixture example)", "input_units": "not applicable", "output_units": "not applicable" },
+          "verification": "unverified"
+        },
+        "report_lineage": { "report_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "section": "fixture only", "line_start": 1, "line_count": 1 },
+        "review": { "reviewer": "fixture reviewer", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "Shape fixture only; no source verification performed." }
+      }
+    },
+    {
+      "name": "explicit_synthetic_assumption",
+      "expected_valid": true,
+      "record": {
+        "schema_version": 1,
+        "record_id": "fixture-assumption",
+        "evidence_type": "synthetic_assumption",
+        "parameter_ids": ["ed.resources.fixture"],
+        "assumption": { "description": "Fixture value used only to exercise the schema.", "value": 1, "units": "staff member (illustrative)", "rationale": "Synthetic test input, not an empirical estimate.", "sensitivity_needed": true },
+        "report_lineage": null,
+        "review": { "reviewer": "fixture reviewer", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "Fixture only." }
+      }
+    },
+    {
+      "name": "named_unresolved_gap",
+      "expected_valid": true,
+      "record": {
+        "schema_version": 1,
+        "record_id": "fixture-gap",
+        "evidence_type": "unresolved_gap",
+        "parameter_ids": ["ed.abmstaffbehavior.fixture"],
+        "gap": { "missing_evidence": "Fixture gap description.", "owner": "P1/P2 evidence owner", "impact": "Behavior remains unspecified until reviewed evidence is available.", "searches_performed": [], "next_action": "Identify a suitable primary source." },
+        "report_lineage": null,
+        "review": { "reviewer": "fixture reviewer", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "Fixture only." }
+      }
+    },
+    {
+      "name": "primary_missing_provenance",
+      "expected_valid": false,
+      "record": { "schema_version": 1, "record_id": "bad-missing-source", "evidence_type": "primary_source_claim", "parameter_ids": ["ed.durations.fixture"], "claim": "Invalid fixture", "report_lineage": null, "review": { "reviewer": "x", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "x" } }
+    },
+    {
+      "name": "mixed_primary_and_assumption",
+      "expected_valid": false,
+      "record": { "schema_version": 1, "record_id": "bad-mixed", "evidence_type": "synthetic_assumption", "parameter_ids": ["ed.durations.fixture"], "assumption": { "description": "x", "value": 1, "units": "minutes", "rationale": "x", "sensitivity_needed": true }, "primary_source": { "url": "https://example.org/fixture-only" }, "report_lineage": null, "review": { "reviewer": "x", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "x" } }
+    },
+    {
+      "name": "empty_transform_units",
+      "expected_valid": false,
+      "record": {
+        "schema_version": 1, "record_id": "bad-units", "evidence_type": "primary_source_claim", "parameter_ids": ["ed.durations.fixture"], "claim": "Invalid fixture",
+        "primary_source": { "source_kind": "publication", "url": "https://example.org/fixture-only", "revision": "fixture", "location": { "kind": "publication", "page": "1", "table": "1", "field": "duration" }, "source_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "population": "fixture", "period": "fixture", "units": "minutes", "licence_access": "fixture", "accessed_at": "2026-09-30", "transformation": { "description": "x", "input_units": "", "output_units": "minutes" }, "verification": "unverified" },
+        "report_lineage": null, "review": { "reviewer": "x", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "x" }
+      }
+    },
+    {
+      "name": "publication_table_without_field",
+      "expected_valid": false,
+      "record": {
+        "schema_version": 1, "record_id": "bad-publication-location", "evidence_type": "primary_source_claim", "parameter_ids": ["ed.durations.fixture"], "claim": "Invalid fixture",
+        "primary_source": { "source_kind": "publication", "url": "https://example.org/fixture-only", "revision": "fixture", "location": { "kind": "publication", "section": "Results", "table": "Table 1" }, "source_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "population": "fixture", "period": "fixture", "units": "minutes", "licence_access": "fixture", "accessed_at": "2026-09-30", "transformation": { "description": "x", "input_units": "minutes", "output_units": "minutes" }, "verification": "unverified" },
+        "report_lineage": null, "review": { "reviewer": "x", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "x" }
+      }
+    },
+    {
+      "name": "code_without_commit_line_or_valid_hash",
+      "expected_valid": false,
+      "record": {
+        "schema_version": 1, "record_id": "bad-code-location", "evidence_type": "primary_source_claim", "parameter_ids": ["ed.durations.fixture"], "claim": "Invalid fixture",
+        "primary_source": { "source_kind": "repository_code", "url": "https://example.org/fixture-repository", "location": { "kind": "repository_code", "commit": "not-a-commit", "path": "src/example.rs", "line_start": 1, "line_count": 1 }, "source_sha256": "bad-hash", "population": "fixture", "period": "fixture", "units": "minutes", "licence_access": "fixture", "accessed_at": "2026-09-30", "transformation": { "description": "x", "input_units": "minutes", "output_units": "minutes" }, "verification": "unverified" },
+        "report_lineage": null, "review": { "reviewer": "x", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "x" }
+      }
+    },
+    {
+      "name": "zero_report_line_count",
+      "expected_valid": false,
+      "record": {
+        "schema_version": 1, "record_id": "bad-report-count", "evidence_type": "primary_source_claim", "parameter_ids": ["ed.durations.fixture"], "claim": "Invalid fixture",
+        "primary_source": { "source_kind": "publication", "url": "https://example.org/fixture-only", "revision": "fixture", "location": { "kind": "publication", "page": "1", "section": "Methods" }, "source_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "population": "fixture", "period": "fixture", "units": "minutes", "licence_access": "fixture", "accessed_at": "2026-09-30", "transformation": { "description": "x", "input_units": "minutes", "output_units": "minutes" }, "verification": "unverified" },
+        "report_lineage": { "report_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "section": "fixture", "line_start": 1, "line_count": 0 },
+        "review": { "reviewer": "x", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "x" }
+      }
+    },
+    {
+      "name": "code_zero_line_count",
+      "expected_valid": false,
+      "record": {
+        "schema_version": 1, "record_id": "bad-code-count", "evidence_type": "primary_source_claim", "parameter_ids": ["ed.durations.fixture"], "claim": "Invalid fixture",
+        "primary_source": { "source_kind": "repository_code", "url": "https://example.org/fixture-repository", "location": { "kind": "repository_code", "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "path": "src/example.rs", "line_start": 1, "line_count": 0 }, "source_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "population": "fixture", "period": "fixture", "units": "minutes", "licence_access": "fixture", "accessed_at": "2026-09-30", "transformation": { "description": "x", "input_units": "minutes", "output_units": "minutes" }, "verification": "unverified" },
+        "report_lineage": null, "review": { "reviewer": "x", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "x" }
+      }
+    },
+    {
+      "name": "publication_vague_locator_only",
+      "expected_valid": false,
+      "record": {
+        "schema_version": 1, "record_id": "bad-vague-publication-location", "evidence_type": "primary_source_claim", "parameter_ids": ["ed.durations.fixture"], "claim": "Invalid fixture",
+        "primary_source": { "source_kind": "publication", "url": "https://example.org/fixture-only", "revision": "fixture", "location": { "kind": "publication", "section": "Results", "locator": "near the middle" }, "source_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "population": "fixture", "period": "fixture", "units": "minutes", "licence_access": "fixture", "accessed_at": "2026-09-30", "transformation": { "description": "x", "input_units": "minutes", "output_units": "minutes" }, "verification": "unverified" },
+        "report_lineage": null, "review": { "reviewer": "x", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "x" }
+      }
+    },
+    {
+      "name": "code_revision_must_be_commit",
+      "expected_valid": false,
+      "record": {
+        "schema_version": 1, "record_id": "bad-code-revision", "evidence_type": "primary_source_claim", "parameter_ids": ["ed.durations.fixture"], "claim": "Invalid fixture",
+        "primary_source": { "source_kind": "repository_code", "url": "https://example.org/fixture-repository", "revision": "branch-name", "location": { "kind": "repository_code", "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "path": "src/example.rs", "line_start": 1, "line_count": 2 }, "source_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "population": "fixture", "period": "fixture", "units": "minutes", "licence_access": "fixture", "accessed_at": "2026-09-30", "transformation": { "description": "x", "input_units": "minutes", "output_units": "minutes" }, "verification": "unverified" },
+        "report_lineage": null, "review": { "reviewer": "x", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "x" }
+      }
+    },
+    {
+      "name": "null_assumption_value",
+      "expected_valid": false,
+      "record": { "schema_version": 1, "record_id": "bad-null-assumption", "evidence_type": "synthetic_assumption", "parameter_ids": ["ed.resources.fixture"], "assumption": { "description": "x", "value": null, "units": "fixture", "rationale": "x", "sensitivity_needed": true }, "report_lineage": null, "review": { "reviewer": "x", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "x" } }
+    },
+    {
+      "name": "gap_missing_next_action",
+      "expected_valid": false,
+      "record": { "schema_version": 1, "record_id": "bad-gap-action", "evidence_type": "unresolved_gap", "parameter_ids": ["ed.resources.fixture"], "gap": { "missing_evidence": "x", "owner": "x", "impact": "x", "searches_performed": [] }, "report_lineage": null, "review": { "reviewer": "x", "reviewed_at": "2026-09-30", "outcome": "needs_review", "notes": "x" } }
+    }
+  ]
+}
