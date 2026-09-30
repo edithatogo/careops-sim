@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "track": "P1",
+  "status": "preparation_only",
+  "packet_count": 7,
+  "packets": [
+    {
+      "packet_id": "p1-aihw-aggregates",
+      "phase_task": "P1.1",
+      "family": "demand_case_mix",
+      "parameter_ids": [
+        "ed.demandcasemix.arrivals"
+      ],
+      "source_report_lead": {
+        "report_id": "R4",
+        "locator": "AIHW ED reporting and 2024-25 appendixes; report 4 lines 114-116, 156-160, 196-198; aggregate demand and reporting definitions"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Reproduce the selected AIHW aggregate demand measure from its official table and establish exact cohort, reporting period, units and definition; supplied aggregate summaries do not identify arrival process or hourly pattern.",
+      "search_scope": "Retrieve only the cited official AIHW ED reporting/appendix table and its metadata/specification needed to resolve that measure; do not expand into unrelated measures or infer a time series.",
+      "output_path": "model-inputs/ed/des/evidence/p1-aihw-aggregates.json",
+      "extraction_fields": [
+        "primary URL and edition/revision",
+        "source table/field and exact page/row",
+        "population/cohort and period",
+        "measure definition, units, precision and denominator",
+        "reported aggregate as transcribed with source precision",
+        "licence/access terms and retrieval date",
+        "transformation and separate R4 lineage locator"
+      ],
+      "worker_oracle": "A single AIHW aggregate is transcribed exactly with its population/period/denominator; no rate process or hourly distribution is inferred.",
+      "independent_readback_oracle": "Reviewer independently retrieves the exact pinned primary source, recomputes SHA-256, locates the cited table/field, reproduces the extraction and denominator/units, and records pass/partial/contradiction/unresolved with reason; report lineage stays separate.",
+      "stop_conditions": [
+        "Stop if the pinned primary source or required table cannot be accessed; return unresolved_gap with searches and owner.",
+        "Stop if source population, period, units, denominator, revision or licence cannot be established.",
+        "Stop if the report lead conflicts with the primary source or the assigned parameter family is not identifiable.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Dispatch only after coordinator binds exact primary URL/DOI, revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and reviewer; no empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p1-triage-active-work",
+      "phase_task": "P1.2",
+      "family": "durations",
+      "parameter_ids": [
+        "ed.durations.intrinsicwork"
+      ],
+      "source_report_lead": {
+        "report_id": "R6",
+        "locator": "Australian active-work anchors; Gerdtz and Bucknall ATS-conditioned triage study, DOI 10.1046/j.1365-2648.2001.01871.x; lines 33-38"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Recover and verify the ATS-conditioned triage decision-time table for the reported adult metropolitan ED study; numeric table was not reliably recovered in supplied research, and administrative arrival-to-care waits cannot substitute for active triage work.",
+      "search_scope": "Retrieve only the named primary paper and the table/definition for triage decision duration by ATS category; preserve unreported categories and do not search for substitute estimates.",
+      "output_path": "model-inputs/ed/des/evidence/p1-triage-active-work.json",
+      "extraction_fields": [
+        "DOI/primary URL and publication revision",
+        "exact table/page and ATS category fields",
+        "site/population/sample and observation period",
+        "active-time start/stop definition, units and precision",
+        "per-category counts and reported summary fields if present",
+        "licence/access terms, retrieval date and separate R6 lineage"
+      ],
+      "worker_oracle": "The cited table supports only the explicitly defined ATS-conditioned active triage measure; any unavailable numeric cells remain unresolved.",
+      "independent_readback_oracle": "Reviewer independently retrieves the exact pinned primary source, recomputes SHA-256, locates the cited table/field, reproduces the extraction and denominator/units, and records pass/partial/contradiction/unresolved with reason; report lineage stays separate.",
+      "stop_conditions": [
+        "Stop if the pinned primary source or required table cannot be accessed; return unresolved_gap with searches and owner.",
+        "Stop if source population, period, units, denominator, revision or licence cannot be established.",
+        "Stop if the report lead conflicts with the primary source or the assigned parameter family is not identifiable.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Dispatch only after coordinator binds exact primary URL/DOI, revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and reviewer; no empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p1-clinician-time",
+      "phase_task": "P1.2",
+      "family": "durations",
+      "parameter_ids": [
+        "ed.durations.intrinsicwork"
+      ],
+      "source_report_lead": {
+        "report_id": "R6",
+        "locator": "Candidate sources and explicit limitations; IHACPA Emergency Care Clinician Time Consensus Study Report; lines 51-59"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Determine whether the named consensus study contains traceable clinician-time estimates with operational definitions and sufficient population/units; source contents and extraction details remain unverified in the supplied research.",
+      "search_scope": "Retrieve only the named IHACPA report and the specific clinician-time field/table identified by the report; do not use public aggregate waiting or length-of-stay measures as active work.",
+      "output_path": "model-inputs/ed/des/evidence/p1-clinician-time.json",
+      "extraction_fields": [
+        "exact report edition/revision and primary URL",
+        "page/table/field and reported clinician-time concept",
+        "population/site/period and activity definition",
+        "units, precision, denominator/sample if stated",
+        "whether estimate is observed, consensus or modeled per source wording",
+        "licence/access, retrieval date and separate R6 lineage"
+      ],
+      "worker_oracle": "Each captured measure retains its source-defined evidence class and active-work semantics; absence of an identifiable measure is returned as unresolved_gap.",
+      "independent_readback_oracle": "Reviewer independently retrieves the exact pinned primary source, recomputes SHA-256, locates the cited table/field, reproduces the extraction and denominator/units, and records pass/partial/contradiction/unresolved with reason; report lineage stays separate.",
+      "stop_conditions": [
+        "Stop if the pinned primary source or required table cannot be accessed; return unresolved_gap with searches and owner.",
+        "Stop if source population, period, units, denominator, revision or licence cannot be established.",
+        "Stop if the report lead conflicts with the primary source or the assigned parameter family is not identifiable.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Dispatch only after coordinator binds exact primary URL/DOI, revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and reviewer; no empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p1-observational-task-means",
+      "phase_task": "P1.2",
+      "family": "durations",
+      "parameter_ids": [
+        "ed.durations.intrinsicwork"
+      ],
+      "source_report_lead": {
+        "report_id": "R6",
+        "locator": "Evidence for primitive inputs / Australian active-work anchors; Zhu et al. intern study and task-table discussion; lines 17-31"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Independently recover a narrowly selected task mean and episode count from the primary Zhu observational study and verify task definition, observer population, period and principal-activity-only limitation; supplied report means are leads, not accepted estimates.",
+      "search_scope": "Retrieve only the named primary Zhu study and one preselected task row from its task table; do not fit a duration distribution or aggregate concurrent tasks.",
+      "output_path": "model-inputs/ed/des/evidence/p1-observational-task-means.json",
+      "extraction_fields": [
+        "DOI/primary URL and publication revision",
+        "exact task-table row/page",
+        "task definition and observed interval",
+        "population/site/period and observer design",
+        "episode count and mean with source precision/units",
+        "simultaneity/principal-activity recording caveat",
+        "licence/access, retrieval date, transform and separate R6 lineage"
+      ],
+      "worker_oracle": "One primary-source task row and its denominator are reproduced; the output labels it as an observed mean anchor only and leaves shape/tails/variance unresolved unless separately reported.",
+      "independent_readback_oracle": "Reviewer independently retrieves the exact pinned primary source, recomputes SHA-256, locates the cited table/field, reproduces the extraction and denominator/units, and records pass/partial/contradiction/unresolved with reason; report lineage stays separate.",
+      "stop_conditions": [
+        "Stop if the pinned primary source or required table cannot be accessed; return unresolved_gap with searches and owner.",
+        "Stop if source population, period, units, denominator, revision or licence cannot be established.",
+        "Stop if the report lead conflicts with the primary source or the assigned parameter family is not identifiable.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Dispatch only after coordinator binds exact primary URL/DOI, revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and reviewer; no empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p1-admission-offer-boundary",
+      "phase_task": "P1.1",
+      "family": "hospital_interfaces",
+      "parameter_ids": [
+        "ed.hospitalinterfaces.inpatientbedavailability"
+      ],
+      "source_report_lead": {
+        "report_id": "R29",
+        "locator": "ED boundary/offload and finite vacancy semantics; report 29 lines 21-68, 88-101"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Verify whether the cited primary source defines specialty-conditioned ED-eligible bed offers, finite offer persistence/withdrawal and the transition boundary; local offer and competing-demand observations remain absent.",
+      "search_scope": "Retrieve only the primary source behind the R29 bed-offer/finite-vacancy claim and the fields needed to establish offer semantics; do not model ward discharge, elective demand or whole-hospital flow.",
+      "output_path": "model-inputs/ed/des/evidence/p1-admission-offer-boundary.json",
+      "extraction_fields": [
+        "primary source URL/DOI and exact edition/revision",
+        "page/table/field supporting offer and withdrawal semantics",
+        "population/site/period and specialty/compatibility scope",
+        "definition of offered versus nominal/available bed",
+        "persistence, expiry/withdrawal and units if stated",
+        "licence/access, retrieval date and separate R29 lineage"
+      ],
+      "worker_oracle": "The source is used only for its stated boundary semantics; absent local or external competing-demand evidence remains an explicit gap and no universal offer rate is asserted.",
+      "independent_readback_oracle": "Reviewer independently retrieves the exact pinned primary source, recomputes SHA-256, locates the cited table/field, reproduces the extraction and denominator/units, and records pass/partial/contradiction/unresolved with reason; report lineage stays separate.",
+      "stop_conditions": [
+        "Stop if the pinned primary source or required table cannot be accessed; return unresolved_gap with searches and owner.",
+        "Stop if source population, period, units, denominator, revision or licence cannot be established.",
+        "Stop if the report lead conflicts with the primary source or the assigned parameter family is not identifiable.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Dispatch only after coordinator binds exact primary URL/DOI, revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and reviewer; no empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p1-effective-capacity",
+      "phase_task": "P1.2",
+      "family": "resources",
+      "parameter_ids": [
+        "ed.resources.beds"
+      ],
+      "source_report_lead": {
+        "report_id": "R4",
+        "locator": "Physical/effective capacity and ED treatment-space rows; report 4 lines 133-139, 220-231"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Find whether any cited public primary source establishes operational effective treatment-space capacity; supplied research says public aggregates are unsuitable and Cairns as-operated capacity is not supplied.",
+      "search_scope": "Check only the referenced official AIHW/NHDC source documentation for a directly reported usable-capacity field; if absent, return unresolved_gap rather than infer from presentation counts or bed symbols.",
+      "output_path": "model-inputs/ed/des/evidence/p1-effective-capacity.json",
+      "extraction_fields": [
+        "primary URL and edition/revision",
+        "exact capacity field/table and its definition",
+        "whether nominal/open/staffed/equipped/compatible are distinguished",
+        "population/site/period and units",
+        "licence/access, retrieval date and separate R4 lineage"
+      ],
+      "worker_oracle": "Evidence distinguishes physical count from effective staffed/open/compatible capacity; if no public field supports that distinction, gap remains unknown.",
+      "independent_readback_oracle": "Reviewer independently retrieves the exact pinned primary source, recomputes SHA-256, locates the cited table/field, reproduces the extraction and denominator/units, and records pass/partial/contradiction/unresolved with reason; report lineage stays separate.",
+      "stop_conditions": [
+        "Stop if the pinned primary source or required table cannot be accessed; return unresolved_gap with searches and owner.",
+        "Stop if source population, period, units, denominator, revision or licence cannot be established.",
+        "Stop if the report lead conflicts with the primary source or the assigned parameter family is not identifiable.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Dispatch only after coordinator binds exact primary URL/DOI, revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and reviewer; no empirical use until independent readback is accepted."
+    },
+    {
+      "packet_id": "p1-resource-calendars",
+      "phase_task": "P1.2",
+      "family": "resources",
+      "parameter_ids": [
+        "ed.resources.opencalendars"
+      ],
+      "source_report_lead": {
+        "report_id": "R4",
+        "locator": "Physical/effective capacity and workforce calendar data requests; report 4 lines 76-83, 133-139, 229-231"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Establish whether a supplied public primary source supports time-varying resource/location opening calendars; public-backed operational availability and Cairns rosters/calendars are not established.",
+      "search_scope": "Inspect only the named official source/specification references for an explicit time-varying open/closed calendar field; do not derive rosters, outages or calendars from aggregate utilization.",
+      "output_path": "model-inputs/ed/des/evidence/p1-resource-calendars.json",
+      "extraction_fields": [
+        "primary URL and edition/revision",
+        "exact calendar/operational-status field and table",
+        "resource/location scope and state semantics",
+        "time zone, interval precision and period",
+        "population/site and units",
+        "licence/access, retrieval date and separate R4 lineage"
+      ],
+      "worker_oracle": "A calendar claim is supported only by an explicit source field and temporal semantics; otherwise preserve a named capacity/calendar evidence gap.",
+      "independent_readback_oracle": "Reviewer independently retrieves the exact pinned primary source, recomputes SHA-256, locates the cited table/field, reproduces the extraction and denominator/units, and records pass/partial/contradiction/unresolved with reason; report lineage stays separate.",
+      "stop_conditions": [
+        "Stop if the pinned primary source or required table cannot be accessed; return unresolved_gap with searches and owner.",
+        "Stop if source population, period, units, denominator, revision or licence cannot be established.",
+        "Stop if the report lead conflicts with the primary source or the assigned parameter family is not identifiable.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Dispatch only after coordinator binds exact primary URL/DOI, revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and reviewer; no empirical use until independent readback is accepted."
+    }
+  ]
+}
