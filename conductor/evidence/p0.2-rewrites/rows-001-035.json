@@ -1,0 +1,107 @@
+[
+  {
+    "row": 2,
+    "parameter_id": "ed.demandcasemix.calendarprofile",
+    "replacement": "Consumer: CareOps ED configuration adapter; key: demand.calendarprofile. Unit: interval bounds use ED-clock seconds; absolute instants retain original precision and explicit offset/zone and are normalized against the dataset UTC origin. Relative MVP schedules start at zero; checked conversion follows ADR-0004, and naive local timestamps or recurrence are rejected until a tested IANA zone adapter defines fold/gap handling. Stage: MVP_candidate, optional only for a profile with an explicit calendar interval/time-zone mapping; omit from the minimal deterministic profile. Use: generated calendar modifier for time-varying arrivals, not an observed target."
+  },
+  {
+    "row": 3,
+    "parameter_id": "ed.demandcasemix.surgeprofile",
+    "replacement": "Consumer: CareOps ED configuration adapter, with typed case attributes passed to Kairos Track 03 Flow; key: demand.surgeprofile. Unit: structured categorical/time-varying profile; every numeric leaf declares units, categories, conditioning and denominator. Stage: MVP_candidate, optional and absent from minimal and nominal profiles unless explicitly selected. Use: generate a declared surge intensity or occurrence schedule; do not imply a surge distribution or infer dependence from marginal counts."
+  },
+  {
+    "row": 5,
+    "parameter_id": "ed.demandcasemix.agemix",
+    "replacement": "Consumer: CareOps ED configuration adapter, with generated age-band case attributes passed to Kairos Track 03 Flow; key: demand.agemix. Unit: dimensionless proportions in [0,1] or explicitly declared patient counts; record age-band coding, denominator, conditioning and unknown category. Require mutually exclusive/exhaustive bands only when that representation claims complete coverage. Stage: MVP_candidate, optional and profile-defined. Use: generate arrival case composition; observed age proportions are calibration targets only when cohort and denominator match, and marginal data do not define joint mix."
+  },
+  {
+    "row": 6,
+    "parameter_id": "ed.demandcasemix.casetypemix",
+    "replacement": "Consumer: CareOps ED configuration adapter, with generated case-type attributes passed to Kairos Track 03 Flow; key: demand.casetypemix. Unit: dimensionless proportions in [0,1] or explicitly declared patient counts; declare category labels, denominator, conditioning and unknown handling. Stage: MVP_candidate, optional and defined by the selected profile; no taxonomy is implied by the ID. Use: generate a case-type/pathway selector; do not infer its relationship to age or acuity, or a joint distribution, from marginal observations."
+  },
+  {
+    "row": 9,
+    "parameter_id": "ed.demandcasemix.referrals",
+    "replacement": "Consumer: CareOps ED configuration adapter, with incoming case attributes passed to Kairos Track 03 Flow; key: demand.referrals. Unit: declared referral category proportions with an arriving-patient denominator, or patient counts with an explicit count unit; include source and unknown category. Stage: MVP_candidate, optional only when the scenario includes referral arrivals. Use: generate referral arrivals or a referral attribute as explicitly selected by the profile; never treat outgoing referral/disposition as this input."
+  },
+  {
+    "row": 10,
+    "parameter_id": "ed.demandcasemix.transfers",
+    "replacement": "Consumer: CareOps ED configuration adapter, with incoming transfer case attributes passed to Kairos Track 03 Flow; key: demand.transfers. Unit: declared transfer category proportions with an arriving-patient denominator, or patient counts with explicit count unit; include source boundary and unknown category. Stage: MVP_candidate, optional only when incoming transfers are in scope. Use: represent arrivals entering the ED from an external transfer boundary; outgoing transfer disposition belongs to pathways.transfer."
+  },
+  {
+    "row": 17,
+    "parameter_id": "ed.despathways.observation",
+    "replacement": "Consumer: CareOps ED configuration adapter maps this pathway into Kairos Track 03 Flow transitions; key: pathways.observation. Unit: typed pathway states/transitions, with any durations in seconds and probabilities dimensionless with explicit conditioning and denominator. Stage: MVP_candidate, optional only in profiles enabling observation. Use: define observation entry, reassessment if applicable, and ED exit/return transitions; model inpatient boarding separately and keep observed events separate from generated pathway rules."
+  },
+  {
+    "row": 18,
+    "parameter_id": "ed.despathways.reassessment",
+    "replacement": "Consumer: CareOps ED configuration adapter maps reassessment transitions into Kairos Track 03 Flow; key: pathways.reassessment. Unit: typed trigger/transition data; numeric timing leaves use seconds and probability leaves declare conditioning and denominator. Stage: MVP_candidate, optional only where the selected pathway enables reassessment. Use: specify the trigger, repeated-task occurrence semantics and bounded loop/termination behavior; observed reassessment events are separate targets with occurrence indices and eligible context."
+  },
+  {
+    "row": 19,
+    "parameter_id": "ed.despathways.consult",
+    "replacement": "Consumer: CareOps ED configuration adapter maps consult transitions into Kairos Track 03 Flow; key: pathways.consult. Unit: typed pathway states/transitions; any durations use seconds and any probabilities declare conditioning and denominator. Stage: MVP_candidate, optional only for profiles where a consult pathway applies. Use: state the trigger, destination, return or terminal transition and resource claim; do not imply a universal consult route or treat observed consult events as generated rules."
+  },
+  {
+    "row": 21,
+    "parameter_id": "ed.despathways.admission",
+    "replacement": "Consumer: CareOps ED configuration adapter maps admission behavior into Kairos Track 03 Flow and the declared finite bed-offer boundary; key: pathways.admission. Unit: typed decision and transition data, with duration leaves in seconds and probabilities carrying explicit conditioning/denominator. Stage: MVP_candidate for the admission pathway. Use: keep admission decision, offer/acceptance, boarding occupancy, transport and realized admission/physical ED departure as distinct states or events; an admission decision does not release the ED resource."
+  },
+  {
+    "row": 22,
+    "parameter_id": "ed.despathways.transfer",
+    "replacement": "Consumer: CareOps ED configuration adapter maps outgoing transfer disposition into Kairos Track 03 Flow; key: pathways.transfer. Unit: typed destination/eligibility/transition data; numeric durations use seconds and probabilities declare conditioning and denominator. Stage: MVP_candidate only when outgoing transfer is enabled. Use: define destination eligibility and the modeled completion boundary for an outgoing transfer; keep incoming transfer arrivals under demand.transfers and do not imply a full fleet or receiving-ward model."
+  },
+  {
+    "row": 24,
+    "parameter_id": "ed.despathways.routingprobability",
+    "replacement": "Consumer: CareOps ED configuration adapter supplies conditional routing tables to Kairos Track 03 Flow; key: pathways.routingprobability. Unit: dimensionless probabilities in [0,1], with a named decision point, conditioning state, eligible alternatives, denominator, allowed outcomes and normalization rule; identify deterministic versus sampled selection. Stage: MVP_candidate, optional when a profile uses probabilistic routing. Use: generate a branch choice conditional on state; calibration against observed choices requires the same eligible alternative set and decision-time state."
+  },
+  {
+    "row": 25,
+    "parameter_id": "ed.despathways.repeatloops",
+    "replacement": "Consumer: CareOps ED configuration adapter maps enabled repeat edges into Kairos Track 03 Flow; key: pathways.repeatloops. Unit: typed loop edge and trigger, with numeric timing in seconds and any probabilities explicitly conditioned. Stage: MVP_candidate only for profiles that explicitly enable a repeated pathway. Use: declare the loop edge, trigger, termination condition or maximum iterations and event accounting; observed loop counts are separate targets requiring occurrence indices and episode boundaries."
+  },
+  {
+    "row": 27,
+    "parameter_id": "ed.despathways.deadlines",
+    "replacement": "Consumer: CareOps ED configuration adapter supplies deadline constraints to Kairos Track 03 Flow; key: pathways.deadlines. Unit: relative limits in decimal seconds; absolute deadlines are explicit-offset instants tied to the dataset UTC origin and retain source precision. Apply ADR-0004 checked conversion to one-nanosecond u128 ticks; reject unsupported precision, negative/overflow values and naive local instants. Stage: MVP_candidate only for an enabled pathway with a declared deadline. Use: generated pathway threshold/constraint, distinct from an observed elapsed-time target."
+  },
+  {
+    "row": 29,
+    "parameter_id": "ed.durations.intrinsicwork",
+    "replacement": "Consumer: CareOps ED configuration adapter supplies active-work durations to Kairos Track 03 Flow; key: durations.intrinsicwork. Unit: decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with exact fixed-value checks or the declared sampled-duration ceiling rule and precision/rounding metadata. Stage: MVP_candidate for modeled task work. Use: generative active task time; fit only from occurrence-mapped endpoints that isolate active work from setup, queue, transit and interruption/resumption, preserving source precision."
+  },
+  {
+    "row": 30,
+    "parameter_id": "ed.durations.setup",
+    "replacement": "Consumer: CareOps ED configuration adapter supplies setup intervals to Kairos Track 03 Flow and the named task/resource occupancy model; key: durations.setup. Unit: decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding. Stage: MVP_candidate only when a task/resource has a separately modeled setup phase. Use: identify the owning task/resource, setup start/end and whether capacity is occupied or setup precedes active work; fit only from setup-specific occurrence endpoints distinct from service, queue and transit."
+  },
+  {
+    "row": 31,
+    "parameter_id": "ed.durations.turnaround",
+    "replacement": "Consumer: CareOps ED configuration adapter supplies process/device turnaround to Kairos Track 03 Flow; key: durations.turnaround. Unit: decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding. Stage: MVP_candidate only for a pathway with an explicit turnaround interval. Use: define the event pair and included external/ED components; keep report availability and clinician review separate and do not silently include ED queue or transit. Fit only to matching occurrence endpoints."
+  },
+  {
+    "row": 32,
+    "parameter_id": "ed.durations.reportreviewdelay",
+    "replacement": "Consumer: CareOps ED configuration adapter supplies report/review delay to Kairos Track 03 Flow; key: durations.reportreviewdelay. Unit: decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding; retain source event precision. Stage: MVP_candidate only for pathways modeling this delay. Use: generate elapsed delay after the relevant diagnostic process; map observed targets to report-availability and review-occurrence endpoints, keeping order time and recorded/message time separate."
+  },
+  {
+    "row": 33,
+    "parameter_id": "ed.durations.cleaning",
+    "replacement": "Consumer: CareOps ED configuration adapter supplies cleaning work to the reusable resource/location availability model consumed by Kairos Track 03 Flow; key: durations.cleaning. Unit: decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding. Stage: MVP_candidate for modeled reusable spaces/resources. Use: name the resource and map cleaning occurrence start/completion separately from patient departure, bed assignment and resource release; declare concurrency and avoid counting the same interval in task work and availability. Fit only from cleaning-specific endpoints."
+  },
+  {
+    "row": 34,
+    "parameter_id": "ed.durations.handover",
+    "replacement": "Consumer: CareOps ED configuration adapter supplies a named handover task to Kairos Track 03 Flow; key: durations.handover. Unit: decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding. Stage: MVP_candidate only when that handover is represented as a task. Use: specify participants, occurrence start/end and overlap/concurrency treatment; keep ambulance arrival, offload and crew release as separate measures where modeled, and fit only from handover-specific anchors."
+  },
+  {
+    "row": 35,
+    "parameter_id": "ed.durations.disposition",
+    "replacement": "Consumer: CareOps ED configuration adapter to Kairos Track 03 Flow; key: durations.disposition. Unit: decimal seconds converted by ADR-0004. Stage/use: optional MVP route-specific active disposition task, only when its owner and decision-ready/work-complete endpoints are declared. This duration excludes boarding, bed search, transport and departure delay; if the route already accounts for the same work, omit this key rather than sample it twice. Actual ED departure remains a separate event."
+  }
+]

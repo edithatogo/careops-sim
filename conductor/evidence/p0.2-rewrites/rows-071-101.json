@@ -1,0 +1,47 @@
+[
+  {
+    "row": 75,
+    "parameter_id": "ed.hospitalinterfaces.admissiondemand",
+    "replacement": "Consumer: CareOps ED adapter at the admission boundary; key: hospital_boundary.admissiondemand. Unit: finite timestamped external competing-demand schedule with declared count, time unit and provenance. Stage/use: MVP admission/boarding fixture may enable this external demand mode to compete for finite inpatient offers; ED-generated admission requests arise once from ED disposition and are distinct from the external schedule. Neither mode injects a second ED patient-arrival stream. Keep demand separate from bed offers and observed boarding targets."
+  },
+  {
+    "row": 76,
+    "parameter_id": "ed.hospitalinterfaces.inpatientbedavailability",
+    "replacement": "For MVP admission/boarding fixtures, the CareOps ED adapter consumes `hospital_boundary.inpatientbedavailability` as finite ED-eligible offer records, each with destination compatibility, availability start and expiry in declared time units, withdrawal state/time, and explicit competing-demand assumptions. Offers are exogenous boundary capacity, not ED demand or a proxy inferred from raw inpatient counts; accepting an offer does not release ED occupancy, which ends only at actual ED departure."
+  },
+  {
+    "row": 89,
+    "parameter_id": "ed.experimentcontrols.seedstreams",
+    "replacement": "Expose `experiment.seedstreams` at MVP stage to the CareOps ED configuration validator and Kairos 22 run orchestrator as one explicit run seed that makes repeated runs with identical inputs reproducible; represent it as an unsigned integer seed identity, with its supported width validated by the selected Kairos contract. Do not require named stream allocation in MVP; derive named streams and define their width only under Kairos Track 01."
+  },
+  {
+    "row": 90,
+    "parameter_id": "ed.experimentcontrols.timeunits",
+    "replacement": "Remove `experiment.timeunits` as a runtime global unit switch. At MVP, each time-valued field declares its source unit and the CareOps ED adapter normalizes fixed durations exactly to decimal seconds, then converts once using ADR-0004's one-nanosecond-per-`u128`-tick profile with checked conversion; sampled finite nonnegative durations round upward as specified there. ADR-0004 accepts this interface contract, while Rust adapter/runtime and calibration trace integration remain unverified."
+  },
+  {
+    "row": 91,
+    "parameter_id": "ed.experimentcontrols.modeoverrides",
+    "replacement": "The CareOps ED schema accepts only documented, enumerated `experiment.modeoverrides` for modes supported by the selected profile; record the resolved mode in run and metric provenance. Keep each mode fixed within a calibration comparison or declare it beforehand as a comparison stratum; stage as an MVP scenario control where applicable, never fit or optimize it as a calibration parameter. Structured numeric leaves retain explicit units."
+  },
+  {
+    "row": 92,
+    "parameter_id": "ed.experimentcontrols.observationcensoringwindows",
+    "replacement": "For hardened-v1 Kairos 21 calibration/validation and Kairos 22 experiment orchestration, represent each `experiment.observationcensoringwindows` window explicitly as either an elapsed duration in canonical seconds with a named run, episode, or study origin, or an absolute source-time interval retaining original timestamps, offset/timezone, DST resolution, and source precision. Convert only under ADR-0004's checked adapter rules; do not infer precision from ticks or use a window as a generated patient duration."
+  },
+  {
+    "row": 94,
+    "parameter_id": "ed.measurementmapping.observedelapsedinterval",
+    "replacement": "For hardened-v1 Kairos 04 trace mapping and Kairos 21 calibration, `observations.observedelapsedinterval` is an observed target in source units, not a generated service/work input. Retain raw source timestamps, declared event endpoints, timezone/offset, precision, provenance, and occurrence-versus-recording lineage; derive elapsed seconds only through a versioned mapping with explicit cohort and denominator, and keep the result separate from simulated durations and generated configuration."
+  },
+  {
+    "row": 95,
+    "parameter_id": "ed.measurementmapping.queuedelay",
+    "replacement": "For hardened-v1 Kairos 04 trace mapping and Kairos 21 calibration, `observations.queuedelay` is an observed validation target in canonical seconds, never a generative service-time input. Define queue-entry and grant/start endpoints, clock and source provenance, cohort, denominator, missingness, and censoring; retain observed and simulated queue delay as separate fields and do not add the observed target to simulated work."
+  },
+  {
+    "row": 99,
+    "parameter_id": "ed.measurementmapping.timestampprecisiondelay",
+    "replacement": "For hardened-v1 Kairos 04 trace mapping and Kairos 21 calibration, `observations.timestampprecisiondelay` contains observation metadata rather than process duration: preserve occurrence and source-recorded/message-created timestamps separately with source precision, offset/timezone where absolute, and provenance. Represent recording delay separately in declared source time units as evidence-backed or unknown; never infer it from timestamp resolution, fabricate precision, or add it to simulated work."
+  }
+]
