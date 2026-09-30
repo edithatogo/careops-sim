@@ -53,30 +53,32 @@ def _semantic_errors(record: Any) -> list[str]:
                 and opened > physical):
             errors.append("capacity.open_count must not exceed capacity.physical_count")
 
-    locations = record.get("locations")
-    location_ids: set[str] = set()
-    if isinstance(locations, list):
-        for index, location in enumerate(locations):
-            if not isinstance(location, dict):
-                continue
-            location_id = location.get("location_id")
-            if isinstance(location_id, str):
-                if location_id in location_ids:
-                    errors.append(f"locations[{index}].location_id duplicates {location_id!r}")
-                location_ids.add(location_id)
+    def unique_ids(collection: Any, field: str, label: str) -> set[str]:
+        found: set[str] = set()
+        if isinstance(collection, list):
+            for index, item in enumerate(collection):
+                if not isinstance(item, dict):
+                    continue
+                value = item.get(field)
+                if isinstance(value, str):
+                    if value in found:
+                        errors.append(f"{label}[{index}].{field} duplicates {value!r}")
+                    found.add(value)
+        return found
 
     zones = record.get("zones")
-    zone_ids: set[str] = set()
-    if isinstance(zones, list):
-        for index, zone in enumerate(zones):
-            if not isinstance(zone, dict):
-                continue
-            zone_id = zone.get("zone_id")
-            if isinstance(zone_id, str):
-                if zone_id in zone_ids:
-                    errors.append(f"zones[{index}].zone_id duplicates {zone_id!r}")
-                zone_ids.add(zone_id)
+    locations = record.get("locations")
+    resources = record.get("resource_buckets")
+    tasks = record.get("task_classes")
+    roles = record.get("staff_roles")
+    zone_ids = unique_ids(zones, "zone_id", "zones")
+    location_ids = unique_ids(locations, "location_id", "locations")
+    resource_ids = unique_ids(resources, "resource_id", "resource_buckets")
+    task_ids = unique_ids(tasks, "task_class_id", "task_classes")
+    role_ids = unique_ids(roles, "staff_role_id", "staff_roles")
 
+    location_by_id = ({item.get("location_id"): item for item in locations if isinstance(item, dict)}
+                      if isinstance(locations, list) else {})
     if isinstance(locations, list):
         for index, location in enumerate(locations):
             if not isinstance(location, dict):
@@ -84,6 +86,108 @@ def _semantic_errors(record: Any) -> list[str]:
             zone_id = location.get("zone_id")
             if isinstance(zone_id, str) and zone_id not in zone_ids:
                 errors.append(f"locations[{index}].zone_id references unknown zone {zone_id!r}")
+
+    # Resource IDs identify allocatable buckets. pool_group_id is only a label
+    # for related buckets and is intentionally never counted as another bucket.
+    if isinstance(resources, list):
+        for index, resource in enumerate(resources):
+            if not isinstance(resource, dict):
+                continue
+            location_id = resource.get("location_id")
+            zone_id = resource.get("zone_id")
+            location = location_by_id.get(location_id)
+            if isinstance(location_id, str) and location_id not in location_ids:
+                errors.append(f"resource_buckets[{index}].location_id references unknown location {location_id!r}")
+            if isinstance(zone_id, str) and zone_id not in zone_ids:
+                errors.append(f"resource_buckets[{index}].zone_id references unknown zone {zone_id!r}")
+            elif location and zone_id != location.get("zone_id"):
+                errors.append(f"resource_buckets[{index}].zone_id does not match its location zone")
+            physical = resource.get("physical_count")
+            opened = resource.get("open_count")
+            staffed = resource.get("staffed_count")
+            if (resource.get("availability_status") == "known"
+                    and isinstance(staffed, int) and not isinstance(staffed, bool)
+                    and isinstance(opened, int) and not isinstance(opened, bool) and staffed > opened):
+                errors.append(f"resource_buckets[{index}].staffed_count must not exceed open_count")
+            if (resource.get("physical_status") == "known"
+                    and isinstance(opened, int) and not isinstance(opened, bool)
+                    and isinstance(physical, int) and not isinstance(physical, bool) and opened > physical):
+                errors.append(f"resource_buckets[{index}].open_count must not exceed physical_count")
+
+    # The department object is a report constraint, not a pool. A declared
+    # complete set with known aggregate values must be fully enumerated/known.
+    capacity = record.get("capacity")
+    treatment = [r for r in resources if isinstance(r, dict) and r.get("resource_class") == "treatment_space"] if isinstance(resources, list) else []
+    if isinstance(capacity, dict) and capacity.get("bucket_completeness") == "complete":
+        for field, aggregate_status in (("physical_count", "physical_status"),
+                                        ("open_count", "availability_status"),
+                                        ("staffed_count", "availability_status")):
+            aggregate = capacity.get(field)
+            known_aggregate = (capacity.get(aggregate_status) == "known"
+                               and isinstance(aggregate, int) and not isinstance(aggregate, bool))
+            if not known_aggregate:
+                continue
+            if not treatment:
+                errors.append(f"capacity.{field} is known and complete but treatment_space buckets are absent")
+                continue
+            values = []
+            for index, bucket in enumerate(treatment):
+                status = bucket.get(aggregate_status)
+                value = bucket.get(field)
+                if status != "known" or not isinstance(value, int) or isinstance(value, bool):
+                    errors.append(f"treatment_space bucket {bucket.get('resource_id', index)!r} has unknown {field} in complete set")
+                else:
+                    values.append(value)
+            if len(values) == len(treatment) and sum(values) != aggregate:
+                errors.append(f"capacity.{field} must equal the complete treatment_space bucket sum")
+
+    task_by_id = {item.get("task_class_id"): item for item in tasks if isinstance(item, dict)} if isinstance(tasks, list) else {}
+    role_by_id = {item.get("staff_role_id"): item for item in roles if isinstance(item, dict)} if isinstance(roles, list) else {}
+    class_names = {r.get("resource_class") for r in resources if isinstance(r, dict)} if isinstance(resources, list) else set()
+    eligibility = record.get("eligibility")
+    if isinstance(eligibility, list):
+        for index, row in enumerate(eligibility):
+            if not isinstance(row, dict):
+                continue
+            role_id, task_id, zone_id = row.get("staff_role_id"), row.get("task_class_id"), row.get("zone_id")
+            if isinstance(role_id, str) and role_id not in role_ids:
+                errors.append(f"eligibility[{index}].staff_role_id references unknown role {role_id!r}")
+            if isinstance(task_id, str) and task_id not in task_ids:
+                errors.append(f"eligibility[{index}].task_class_id references unknown task {task_id!r}")
+            if isinstance(zone_id, str) and zone_id not in zone_ids:
+                errors.append(f"eligibility[{index}].zone_id references unknown zone {zone_id!r}")
+            location_id = row.get("location_id")
+            if location_id is not None:
+                if isinstance(location_id, str) and location_id not in location_ids:
+                    errors.append(f"eligibility[{index}].location_id references unknown location {location_id!r}")
+                elif isinstance(location_id, str) and location_by_id.get(location_id, {}).get("zone_id") != zone_id:
+                    errors.append(f"eligibility[{index}].location_id is outside its zone")
+
+    for task_id, task in task_by_id.items():
+        required = task.get("required_resource_classes", [])
+        task_rows = [row for row in eligibility if isinstance(row, dict)
+                     and row.get("task_class_id") == task_id] if isinstance(eligibility, list) else []
+        if required and not task_rows:
+            errors.append(f"task {task_id!r} requires resources but has no eligibility scope")
+        for resource_class in required:
+            if resource_class not in class_names:
+                errors.append(f"task_classes.{task_id} requires unknown resource class {resource_class!r}")
+            for row in task_rows:
+                zone_id = row.get("zone_id")
+                location_id = row.get("location_id")
+                matches = [r for r in resources if isinstance(r, dict) and r.get("resource_class") == resource_class
+                           and (r.get("location_id") == location_id if location_id is not None
+                                else r.get("zone_id") == zone_id)] if isinstance(resources, list) else []
+                scope = f"location {location_id!r}" if location_id is not None else f"zone {zone_id!r}"
+                if not matches or not any(r.get("availability_status") == "known" and isinstance(r.get("staffed_count"), int)
+                                          and not isinstance(r.get("staffed_count"), bool) and r.get("staffed_count") > 0
+                                          for r in matches):
+                    errors.append(f"task {task_id!r} has no known staffed {resource_class!r} capacity at {scope}")
+        for row in task_rows:
+            scope = (f"location {row.get('location_id')!r}" if row.get("location_id") is not None
+                     else f"zone {row.get('zone_id')!r}")
+            if not _has_known_effective_staff(role_by_id.get(row.get("staff_role_id"))):
+                errors.append(f"task {task_id!r} has no known present or task_eligible staff at {scope}")
 
     routes = record.get("routes")
     if isinstance(routes, list):
@@ -96,6 +200,16 @@ def _semantic_errors(record: Any) -> list[str]:
                     errors.append(f"routes[{index}].{field} references unknown location {endpoint!r}")
 
     return errors
+
+
+def _has_known_effective_staff(role: Any) -> bool:
+    """Whether a role declares known effective present/task-eligible capacity."""
+    if not isinstance(role, dict):
+        return False
+    return any(isinstance(count, dict) and count.get("basis") in {"present", "task_eligible"}
+               and count.get("status") == "known" and isinstance(count.get("count"), int)
+               and not isinstance(count.get("count"), bool) and count["count"] > 0
+               for count in role.get("counts", []))
 
 
 def validate_record(record: Any, validator: Draft202012Validator) -> list[str]:
