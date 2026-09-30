@@ -33,7 +33,7 @@ validity limit. Acceptance requires this track's actual outputs and tests.
   separate range classes and consumer mappings. Write invalid/unknown/provenance
   fixtures before the schema validator; agree interfaces with E0/C0 owners.
   Define bed/treatment-space counts, room/zone IDs, staff/equipment capacity and optional route distances as ordinary model inputs. Keep units and stable IDs extensible; detailed geometry/import/visual schemas wait for E5. A tiny named-location fixture is sufficient.
-- [ ] P0.3 Define source-verification/extraction protocol and split DES/ABM work
+- [x] P0.3 Define source-verification/extraction protocol and split DES/ABM work
   into bounded packets. Each starts with supplied content, traces claims to primary
   sources, and searches only a recorded gap; specify outputs and review rules.
 - [ ] P0.4 Conductor — review and verify phase (workflow.md).
