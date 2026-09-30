@@ -36,7 +36,7 @@ validity limit. Acceptance requires this track's actual outputs and tests.
 - [x] P0.3 Define source-verification/extraction protocol and split DES/ABM work
   into bounded packets. Each starts with supplied content, traces claims to primary
   sources, and searches only a recorded gap; specify outputs and review rules.
-- [ ] P0.4 Conductor — review and verify phase (workflow.md).
+- [x] P0.4 Conductor — review and verify phase (workflow.md).
 
 Exit: P-R1 scope and schema contract accepted. Manual check: trace a patient and
 staff task from arrival to disposition; every consumed input has a proposed ID.
