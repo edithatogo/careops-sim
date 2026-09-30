@@ -22,7 +22,9 @@ precision and rounded-draw count. Floating values never order events.
 The generic MVP uses relative schedules with logical origin zero. A
 timestamped dataset declares one UTC origin; explicit-offset instants are
 normalized before checked subtraction. The original timestamp, offset/zone,
-precision and occurrence versus recorded/message lineage are retained. Naive
+precision and occurrence versus recorded/message lineage are retained by the
+surrounding versioned trace event record; the single-instant converter does
+not encode an event role. Naive
 local timestamps and local recurring schedules are disabled until a separate
 IANA-zone adapter defines and tests fold/gap behavior and any gap-shift policy.
 No finer observed precision is inferred from nanosecond ticks.
@@ -36,6 +38,8 @@ No finer observed precision is inferred from nanosecond ticks.
 - [Reference fixture](../../tools/ed_clock_reference.py) and its tests cover
   fixed exactness/rejection, sampled ceiling/version/error, UTC origin,
   explicit offsets, source precision and rejection of naive local timestamps.
+  Multi-field occurrence/recorded/message lineage awaits a separate C0 trace
+  record and adapter test.
   `python3 -m unittest discover -s tests -p test_ed_clock_reference.py -v`
   passed 8 tests locally on 2026-09-30. This is a Python contract fixture, not
   proof of Rust adapter or Kairos runtime behavior.
