@@ -9,7 +9,7 @@
   "primary_source": {
     "source_kind": "publication",
     "url": "https://www.aihw.gov.au/hospitals/overview/hospitals-at-a-glance",
-    "revision": "AIHW Hospitals at a glance, footer version v144.0, last updated 2026-09-08; local HTML snapshot retrieved 2026-10-01",
+    "revision": "AIHW Hospitals at a glance, footer v144.0, last updated 2026-09-08; exact unmodified Table 2 HTML byte fragment derived from 2026-10-01 page response",
     "location": {
       "kind": "publication",
       "section": "Hospital activity > Emergency department care activity > How urgent was the care?",
@@ -17,14 +17,14 @@
       "table": "Table 2: Emergency department presentations by triage category, 2024–25",
       "field": "Presentations row, Total column (9,094,312); denominator cross-reference: Proportion of all presentation (%) row, Total column (100%)"
     },
-    "source_sha256": "345408734c93fbba79070e4b737be1f2f4f3d78390ffae1da0d65d1c8aa84728",
+    "source_sha256": "af58434a6d26225ae52cc5923e086d361c8daf29ae0658417c553ed75b9c6b2b",
     "population": "Presentation events to emergency departments at Australian public hospitals represented in the AIHW National Non-Admitted Patient Emergency Department Care Database; not unique persons. The page states there are 293 public hospitals with purpose-built emergency departments staffed 24 hours a day.",
     "period": "2024–25",
     "units": "presentations (count of events; integer as displayed)",
     "licence_access": "Publicly accessible AIHW webpage, no authentication required. AIHW copyright page states website material that can be copied or downloaded is CC BY 4.0, subject to listed exclusions and any item-specific terms; attribution required. AIHW attribution for modified material: ‘Based on Australian Institute of Health and Welfare material.’ Copyright terms checked at https://www.aihw.gov.au/copyright on 2026-10-01.",
     "accessed_at": "2026-10-01",
     "transformation": {
-      "description": "Direct transcription of the Table 2 Presentations row, Total column; no rounding, scaling, category summation, rate conversion or other transformation. The displayed total is retained even though the five displayed triage category counts sum to 9,091,132; independent readback must investigate the 3,180 difference.",
+      "description": "Direct transcription of Table 2 Presentations row, Total column. Source snapshot is the unmodified raw HTML byte slice from the last <table before the exact caption through the next </table>, inclusive (1,257 bytes; SHA-256 af58434a6d26225ae52cc5923e086d361c8daf29ae0658417c553ed75b9c6b2b). Independently fetched whole pages had different SHA-256 digests, but this exact table fragment was byte-identical in both; fresh independent fragment readback remains pending. No rate conversion or category summation. Five displayed triage counts sum to 9,091,132, 3,180 below the displayed total; the discrepancy remains unexplained.",
       "input_units": "presentations (count)",
       "output_units": "presentations (count)"
     },
@@ -40,27 +40,27 @@
     "reviewer": "worker (gpt-6.1-sol)",
     "reviewed_at": "2026-10-01",
     "outcome": "needs_review",
-    "notes": "Candidate transcription only. Bound local HTML snapshot SHA-256 and Table 2 locator were checked by the worker. Independent primary-source readback and coordinator row-level acceptance remain pending; this record is not accepted for empirical profile use."
+    "notes": "Candidate transcription only. Bound original and independently fetched whole pages yielded byte-identical raw Table 2 fragments, but no post-rebinding independent fragment readback has been accepted. The 3,180 category subtotal difference remains unexplained. This count is not an arrival process or generic ED default."
   },
   "independent_readback": {
     "reviewer": "pending independent reviewer",
     "reviewed_at": "2026-10-01",
     "outcome": "unresolved",
-    "reason": "Independent reviewer has not yet retrieved the pinned source bytes or reproduced the table extraction. Worker inspection of the bound local snapshot is not independent readback. The reviewer must also resolve or explicitly disposition the 3,180 difference between the total and the five displayed triage counts.",
+    "reason": "Earlier whole-page readback was partial because page hashes differed. Source pin has been narrowed to the exact raw Table 2 fragment; an independent reviewer must freshly retrieve, extract and hash that fragment and disposition the total/subtotal discrepancy before this record can pass.",
     "readback_reference": "pending coordinator-assigned independent readback receipt",
     "source_hash_recomputation": {
       "retrieved_bytes_sha256": "345408734c93fbba79070e4b737be1f2f4f3d78390ffae1da0d65d1c8aa84728",
-      "matches_recorded_hash": true
+      "matches_recorded_hash": false
     },
     "locator_evidence": {
       "located": false,
-      "locator_checked": "Pending independent retrieval and check of Table 2 Presentations row, Total column",
-      "evidence_reference": "pending independent readback receipt"
+      "locator_checked": "Pending fresh independent extraction of exact Table 2 raw HTML byte fragment",
+      "evidence_reference": "pending post-rebinding readback receipt"
     },
     "transformation_evidence": {
       "reproduced": false,
-      "method": "Pending independent direct transcription and review of the total-versus-category subtotal difference",
-      "comparison": "Not yet performed by an independent reviewer."
+      "method": "Pending independent raw table-fragment extraction and total-cell transcription",
+      "comparison": "Not yet performed against the narrowed source snapshot."
     }
   }
 }
