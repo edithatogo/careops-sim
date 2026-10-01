@@ -1,0 +1,552 @@
+{
+  "schema_version": 1,
+  "status": "proposed",
+  "family": "patient_behavior",
+  "records": [
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.patientbehavior.patience",
+      "semantic_name": "Patient patience behavior",
+      "definition": "Candidate patience input remains unparameterized until a current cohort defines waiting-state entry and an exact or censored departure endpoint. Record clinical care, transfer/admission, boarding, and cutoff censoring separately; unknown departure is never zero, and cross-sectional LWBS proportions do not establish a hazard or duration.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "patient_behavior.patience",
+      "applicability": "Optional only when the selected E2 profile enables queue abandonment.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "s",
+      "granularity": "Per patient_behavior.patience at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+      "rationale": "No individual waiting/departure cohort or validated current event mapping is available. Keep all value/range fields unknown; the competing-risk family is only an unselected P3 candidate and must not be fit from LWBS marginals or three-call recognition time.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-patient-patience.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.patientbehavior.patience.evidence_refs; patient_behavior.patience",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "4bca51cd494e12c3d85fce0a9b2b3f2bf0a4c03bc20f928f6734c03a1cf7ccb2",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "patient_behavior"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.patientbehavior.abandonment",
+      "semantic_name": "Patient abandonment behavior",
+      "definition": "Candidate generative abandonment applies only to the enabled leaving-without-being-seen pathway after its waiting-state origin, event endpoint, eligible denominator, competing care, and censoring rules are defined. Cross-sectional LWBS proportions are not a time hazard or individual patience distribution.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "patient_behavior.abandonment",
+      "applicability": "Conditional generative abandonment policy only when the selected profile enables that pathway.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "probability_or_conditional_table",
+      "unit": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "granularity": "Per patient_behavior.abandonment at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+      "rationale": "The accepted source is an unresolved evidence gap: exact exits are usually unknown and the current cohort, event mapping, denominator, and competing outcomes are unavailable. No probability or hazard is inferred; any conditional categorical or survival family remains unselected.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-patient-patience.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.patientbehavior.abandonment.evidence_refs; patient_behavior.abandonment",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "4bca51cd494e12c3d85fce0a9b2b3f2bf0a4c03bc20f928f6734c03a1cf7ccb2",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "patient_behavior"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.patientbehavior.mobilityassistance",
+      "semantic_name": "Mobility and assistance needs",
+      "definition": "Defer assistance attributes until a named profile defines movement constraints, categories, affected rules and route/location applicability.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "patient_behavior.mobilityassistance",
+      "applicability": "Excluded from MVP unless a named profile enables movement constraints and defines categories and affected rules.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "patient attribute/rule; age, count, probability or time leaves carry explicit units",
+      "granularity": "Per patient_behavior.mobilityassistance at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review."
+      },
+      "physical_limits": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+      "rationale": "Defer assistance attributes until a named profile defines movement constraints, categories, affected rules and route/location applicability.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.patientbehavior.mobilityassistance",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.patientbehavior.mobilityassistance.evidence_refs; patient_behavior.mobilityassistance",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "patient_behavior"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "deferred",
+        "rationale": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.patientbehavior.routingcompliance",
+      "semantic_name": "Routing compliance behavior",
+      "definition": "Defer route compliance until a named profile defines eligible alternatives, intended route, compliance state and observable outcome.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "patient_behavior.routingcompliance",
+      "applicability": "Excluded from MVP unless a named profile enables route choice and defines alternatives and outcomes.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "probability_or_conditional_table",
+      "unit": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "granularity": "Per patient_behavior.routingcompliance at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review."
+      },
+      "physical_limits": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+      "rationale": "Defer route compliance until a named profile defines eligible alternatives, intended route, compliance state and observable outcome.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.patientbehavior.routingcompliance",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.patientbehavior.routingcompliance.evidence_refs; patient_behavior.routingcompliance",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "patient_behavior"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "deferred",
+        "rationale": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.patientbehavior.companions",
+      "semantic_name": "Patient companion behavior",
+      "definition": "Defer companion entities until a scoped profile defines interactions, resource effects and supporting evidence or explicit assumptions.",
+      "owner": "CareOps ED domain",
+      "consumer": "Future patient-behavior owner; consumer not applicable until relevance is established",
+      "subsystem": "DES",
+      "entity_task_pathway": "patient_behavior.companions",
+      "applicability": "Excluded from current MVP profiles; requires a separately scoped companion entity extension.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "patient attribute/rule; age, count, probability or time leaves carry explicit units",
+      "granularity": "Per patient_behavior.companions at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review."
+      },
+      "physical_limits": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+      "rationale": "Defer companion entities until a scoped profile defines interactions, resource effects and supporting evidence or explicit assumptions.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.patientbehavior.companions",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.patientbehavior.companions.evidence_refs; patient_behavior.companions",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "patient_behavior"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "deferred",
+        "rationale": "Deferred by accepted usage matrix; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    }
+  ],
+  "annotations": {
+    "ed.patientbehavior.patience": {
+      "unit_contract": "s canonical input; convert from explicit source/config unit to ED clock ticks",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-patient-patience.json",
+          "sha256": "4bca51cd494e12c3d85fce0a9b2b3f2bf0a4c03bc20f928f6734c03a1cf7ccb2"
+        }
+      ],
+      "acquisition_plan": "Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "competing-risk survival with interval/right censoring"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "Validate optional threshold/hazard shape and time units; test that observed abandonment/censoring fields are not consumed as generated patience."
+      ]
+    },
+    "ed.patientbehavior.abandonment": {
+      "unit_contract": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-patient-patience.json",
+          "sha256": "4bca51cd494e12c3d85fce0a9b2b3f2bf0a4c03bc20f928f6734c03a1cf7ccb2"
+        }
+      ],
+      "acquisition_plan": "Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "conditional categorical table"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "Validate supported categories, conditioning and eligible-patient denominator for the enabled pathway; preserve observed events/censoring separately."
+      ]
+    },
+    "ed.patientbehavior.mobilityassistance": {
+      "unit_contract": "patient attribute/rule; age, count, probability or time leaves carry explicit units",
+      "value_role": "deferred",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": []
+    },
+    "ed.patientbehavior.routingcompliance": {
+      "unit_contract": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "value_role": "deferred",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": []
+    },
+    "ed.patientbehavior.companions": {
+      "unit_contract": "patient attribute/rule; age, count, probability or time leaves carry explicit units",
+      "value_role": "deferred",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": []
+    }
+  }
+}

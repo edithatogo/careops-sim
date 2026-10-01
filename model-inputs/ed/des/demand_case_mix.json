@@ -1,0 +1,1201 @@
+{
+  "schema_version": 1,
+  "status": "proposed",
+  "family": "demand_case_mix",
+  "records": [
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.demandcasemix.arrivals",
+      "semantic_name": "Time-varying arrival demand",
+      "definition": "Generate seeded arrivals from one selected representation (rate process or explicit schedule); preserve exposure, cohort and timestamp origin/zone/precision for calibration, and assert no rate or distribution value.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 22 CLI scenario configuration",
+      "subsystem": "DES",
+      "entity_task_pathway": "demand.arrivals",
+      "applicability": "Generate seeded arrivals from exactly one selected representation: a rate process or explicit relative schedule; preserve the schedule origin and source timestamp metadata.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "rate_or_schedule",
+      "unit": "patients/hour or timestamped arrival schedule; select one representation per profile",
+      "granularity": "Per demand.arrivals at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "published",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+      "rationale": "Generate seeded arrivals from one selected representation (rate process or explicit schedule); preserve exposure, cohort and timestamp origin/zone/precision for calibration, and assert no rate or distribution value.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-aihw-aggregates.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.demandcasemix.arrivals.evidence_refs; demand.arrivals",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "70f2c38f979a630049bfced04a4c4dfb1ce07cae23585301a4147f833b148b54",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "demand_case_mix"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.demandcasemix.calendarprofile",
+      "semantic_name": "Calendar and seasonal demand profile",
+      "definition": "Use only as an optional calendar modifier for time-varying arrivals; intervals use ED-clock seconds and instants retain explicit zone/offset and UTC origin. Disable naive local recurrence until IANA fold/gap handling is tested.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter",
+      "subsystem": "DES",
+      "entity_task_pathway": "demand.calendarprofile",
+      "applicability": "generated calendar modifier for time-varying arrivals, not an observed target.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "schedule_or_interval",
+      "unit": "interval bounds use ED-clock seconds; absolute instants retain original precision and explicit offset/zone and are normalized against the dataset UTC origin. Relative MVP schedules start at zero; checked conversion follows ADR-0004, and naive local timestamps or recurrence are rejected until a tested IANA zone adapter defines fold/gap handling.",
+      "granularity": "Per demand.calendarprofile at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+      "rationale": "Use only as an optional calendar modifier for time-varying arrivals; intervals use ED-clock seconds and instants retain explicit zone/offset and UTC origin. Disable naive local recurrence until IANA fold/gap handling is tested.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.demandcasemix.calendarprofile",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.demandcasemix.calendarprofile.evidence_refs; demand.calendarprofile",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "demand_case_mix"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.demandcasemix.surgeprofile",
+      "semantic_name": "Surge demand profile",
+      "definition": "Use only when a profile explicitly selects a surge schedule or intensity; interval counts need exposure and baseline, and marginal data do not establish a surge distribution or burst dependence.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter, with typed case attributes passed to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "demand.surgeprofile",
+      "applicability": "generate a declared surge intensity or occurrence schedule; do not imply a surge distribution or infer dependence from marginal counts.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "structured categorical/time-varying profile; every numeric leaf declares units, categories, conditioning and denominator.",
+      "granularity": "Per demand.surgeprofile at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+      "rationale": "Use only when a profile explicitly selects a surge schedule or intensity; interval counts need exposure and baseline, and marginal data do not establish a surge distribution or burst dependence.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.demandcasemix.surgeprofile",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.demandcasemix.surgeprofile.evidence_refs; demand.surgeprofile",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "demand_case_mix"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.demandcasemix.arrivalmode",
+      "semantic_name": "Arrival mode",
+      "definition": "Generate a typed arrival-mode attribute only where a modeled route branches on mode; declare categories and unknowns, and do not imply universal categories or a duration target.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "demand.arrivalmode",
+      "applicability": "Generate a typed arrival-mode attribute only when the selected pathway branches on mode; preserve category coding and unknown arrivals.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "granularity": "Per demand.arrivalmode at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+      "rationale": "Generate a typed arrival-mode attribute only where a modeled route branches on mode; declare categories and unknowns, and do not imply universal categories or a duration target.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.demandcasemix.arrivalmode",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.demandcasemix.arrivalmode.evidence_refs; demand.arrivalmode",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "demand_case_mix"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.demandcasemix.agemix",
+      "semantic_name": "Age mix",
+      "definition": "Generate age composition with declared bands, denominator and unknown handling; observed proportions target only a matching arrival cohort, and marginals do not establish joint dependence.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter, with generated age-band case attributes passed to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "demand.agemix",
+      "applicability": "generate arrival case composition; observed age proportions are calibration targets only when cohort and denominator match, and marginal data do not define joint mix.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "probability_or_conditional_table",
+      "unit": "dimensionless proportions in [0,1] or explicitly declared patient counts; record age-band coding, denominator, conditioning and unknown category. Require mutually exclusive/exhaustive bands only when that representation claims complete coverage.",
+      "granularity": "Per demand.agemix at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+      "rationale": "Generate age composition with declared bands, denominator and unknown handling; observed proportions target only a matching arrival cohort, and marginals do not establish joint dependence.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.demandcasemix.agemix",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.demandcasemix.agemix.evidence_refs; demand.agemix",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "demand_case_mix"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.demandcasemix.casetypemix",
+      "semantic_name": "Case-type mix",
+      "definition": "Generate a profile-defined case-type selector with declared categories and eligible-arrival denominator; no taxonomy or age/acuity relationship is implied, and later outcomes cannot be arrival attributes.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter, with generated case-type attributes passed to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "demand.casetypemix",
+      "applicability": "generate a case-type/pathway selector; do not infer its relationship to age or acuity, or a joint distribution, from marginal observations.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "probability_or_conditional_table",
+      "unit": "dimensionless proportions in [0,1] or explicitly declared patient counts; declare category labels, denominator, conditioning and unknown handling.",
+      "granularity": "Per demand.casetypemix at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+      "rationale": "Generate a profile-defined case-type selector with declared categories and eligible-arrival denominator; no taxonomy or age/acuity relationship is implied, and later outcomes cannot be arrival attributes.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.demandcasemix.casetypemix",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.demandcasemix.casetypemix.evidence_refs; demand.casetypemix",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "demand_case_mix"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.demandcasemix.acuitymix",
+      "semantic_name": "Acuity mix",
+      "definition": "Generate initial acuity using declared triage coding and arrival cohort; reassessment is a separate later state, and observed targets require matching scale/version and timing.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "demand.acuitymix",
+      "applicability": "Generate the initial triage acuity attribute using declared categories and denominator; treat later reassessments as separate events.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "probability_or_conditional_table",
+      "unit": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "granularity": "Per demand.acuitymix at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+      "rationale": "Generate initial acuity using declared triage coding and arrival cohort; reassessment is a separate later state, and observed targets require matching scale/version and timing.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-case-mix-denominators.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.demandcasemix.acuitymix.evidence_refs; demand.acuitymix",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "6a9a98969a7b6c34c1a03145cdd05548520645a5bb2eeb194dde40d8603f4014",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "demand_case_mix"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.demandcasemix.jointcasemix",
+      "semantic_name": "Joint case-mix dependence",
+      "definition": "Defer from E2 until a named profile defines joint dimensions, conditioning, denominator and linkage to supplied marginals; patient-level linked attributes are required for calibration.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "demand.jointcasemix",
+      "applicability": "Exclude from E2 until a named profile specifies joint dimensions, conditioning, denominator and linkage to supplied marginals for patient-level calibration.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "probability_or_conditional_table",
+      "unit": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "granularity": "Per demand.jointcasemix at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law."
+      },
+      "physical_limits": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+      "rationale": "Defer from E2 until a named profile defines joint dimensions, conditioning, denominator and linkage to supplied marginals; patient-level linked attributes are required for calibration.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.demandcasemix.jointcasemix",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.demandcasemix.jointcasemix.evidence_refs; demand.jointcasemix",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "demand_case_mix"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "deferred",
+        "rationale": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.demandcasemix.referrals",
+      "semantic_name": "Referral arrivals",
+      "definition": "Represent incoming referral arrivals or an arrival attribute only when enabled; declare source and arriving-patient denominator, and keep outgoing referral/disposition in pathway outcomes.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter, with incoming case attributes passed to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "demand.referrals",
+      "applicability": "generate referral arrivals or a referral attribute as explicitly selected by the profile; never treat outgoing referral/disposition as this input.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_probability_table",
+      "unit": "declared referral category proportions with an arriving-patient denominator, or patient counts with an explicit count unit; include source and unknown category.",
+      "granularity": "Per demand.referrals at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+      "rationale": "Represent incoming referral arrivals or an arrival attribute only when enabled; declare source and arriving-patient denominator, and keep outgoing referral/disposition in pathway outcomes.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.demandcasemix.referrals",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.demandcasemix.referrals.evidence_refs; demand.referrals",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "demand_case_mix"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.demandcasemix.transfers",
+      "semantic_name": "Transfer arrivals",
+      "definition": "Represent incoming transfer arrivals at the external ED boundary with source and denominator; outgoing transfer disposition belongs to pathways.transfer.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter, with incoming transfer case attributes passed to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "demand.transfers",
+      "applicability": "represent arrivals entering the ED from an external transfer boundary; outgoing transfer disposition belongs to pathways.transfer.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_probability_table",
+      "unit": "declared transfer category proportions with an arriving-patient denominator, or patient counts with explicit count unit; include source boundary and unknown category.",
+      "granularity": "Per demand.transfers at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+      "rationale": "Represent incoming transfer arrivals at the external ED boundary with source and denominator; outgoing transfer disposition belongs to pathways.transfer.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.demandcasemix.transfers",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.demandcasemix.transfers.evidence_refs; demand.transfers",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "demand_case_mix"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.demandcasemix.repeatpresentations",
+      "semantic_name": "Repeat presentations",
+      "definition": "Defer until linkage key, lookback window, eligible denominator and new-arrival versus prior-history semantics are defined; this is distinct from within-episode repeat loops.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "demand.repeatpresentations",
+      "applicability": "Exclude from MVP until linkage key, lookback window, eligible denominator and new-arrival versus prior-history semantics are specified.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_probability_table",
+      "unit": "category labels and conditional proportions with explicit denominator; count-valued input declares patient count",
+      "granularity": "Per demand.repeatpresentations at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law."
+      },
+      "physical_limits": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+      "rationale": "Defer until linkage key, lookback window, eligible denominator and new-arrival versus prior-history semantics are defined; this is distinct from within-episode repeat loops.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.demandcasemix.repeatpresentations",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.demandcasemix.repeatpresentations.evidence_refs; demand.repeatpresentations",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "demand_case_mix"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "deferred",
+        "rationale": "Deferred by accepted usage matrix; Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    }
+  ],
+  "annotations": {
+    "ed.demandcasemix.arrivals": {
+      "unit_contract": "patients/hour or timestamped arrival schedule; select one representation per profile",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-aihw-aggregates.json",
+          "sha256": "70f2c38f979a630049bfced04a4c4dfb1ce07cae23585301a4147f833b148b54"
+        }
+      ],
+      "acquisition_plan": "Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "time-varying Poisson",
+        "overdispersed/renewal process"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "E0 arrival fixture must choose exactly one rate or occurrence-schedule representation and replay identical arrivals from the same run seed."
+      ]
+    },
+    "ed.demandcasemix.calendarprofile": {
+      "unit_contract": "interval bounds use ED-clock seconds; absolute instants retain original precision and explicit offset/zone and are normalized against the dataset UTC origin. Relative MVP schedules start at zero; checked conversion follows ADR-0004, and naive local timestamps or recurrence are rejected until a tested IANA zone adapter defines fold/gap handling.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "Reject local recurrence without a declared IANA zone and fold/gap policy; allow relative schedules in the generic fixture."
+      ]
+    },
+    "ed.demandcasemix.surgeprofile": {
+      "unit_contract": "structured categorical/time-varying profile; every numeric leaf declares units, categories, conditioning and denominator.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A surge fixture must declare which demand modifiers change and keep each numeric leaf unit-bearing."
+      ]
+    },
+    "ed.demandcasemix.arrivalmode": {
+      "unit_contract": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "When arrival-mode branching is enabled, reject an undeclared category or missing unknown-category rule."
+      ]
+    },
+    "ed.demandcasemix.agemix": {
+      "unit_contract": "dimensionless proportions in [0,1] or explicitly declared patient counts; record age-band coding, denominator, conditioning and unknown category. Require mutually exclusive/exhaustive bands only when that representation claims complete coverage.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "conditional categorical table"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "When age mix is enabled, validate age bands, denominator, conditioning and unknown handling."
+      ]
+    },
+    "ed.demandcasemix.casetypemix": {
+      "unit_contract": "dimensionless proportions in [0,1] or explicitly declared patient counts; declare category labels, denominator, conditioning and unknown handling.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "conditional categorical table"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "When case-type mix is enabled, validate declared categories, denominator and unknown handling."
+      ]
+    },
+    "ed.demandcasemix.acuitymix": {
+      "unit_contract": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-case-mix-denominators.json",
+          "sha256": "6a9a98969a7b6c34c1a03145cdd05548520645a5bb2eeb194dde40d8603f4014"
+        }
+      ],
+      "acquisition_plan": "Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "conditional categorical table"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "The E2 patient fixture must assign scale-versioned initial acuity to every arrival and preserve reassessment as a separate event."
+      ]
+    },
+    "ed.demandcasemix.jointcasemix": {
+      "unit_contract": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "value_role": "deferred",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": []
+    },
+    "ed.demandcasemix.referrals": {
+      "unit_contract": "declared referral category proportions with an arriving-patient denominator, or patient counts with an explicit count unit; include source and unknown category.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A referral-enabled fixture must distinguish incoming referral arrivals from outgoing referral outcomes."
+      ]
+    },
+    "ed.demandcasemix.transfers": {
+      "unit_contract": "declared transfer category proportions with an arriving-patient denominator, or patient counts with explicit count unit; include source boundary and unknown category.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A transfer-arrival fixture must distinguish incoming transfer from outgoing disposition transfer."
+      ]
+    },
+    "ed.demandcasemix.repeatpresentations": {
+      "unit_contract": "category labels and conditional proportions with explicit denominator; count-valued input declares patient count",
+      "value_role": "deferred",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire exposure-resolved occurrence times and joint case attributes by calendar/site/cohort; preserve referral/repeat definitions, exclusions and denominator. Annual marginals cannot identify a time process or joint law. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": []
+    }
+  }
+}

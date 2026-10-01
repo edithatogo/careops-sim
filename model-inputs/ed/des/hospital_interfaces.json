@@ -1,0 +1,557 @@
+{
+  "schema_version": 1,
+  "status": "proposed",
+  "family": "hospital_interfaces",
+  "records": [
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.hospitalinterfaces.admissiondemand",
+      "semantic_name": "External admission demand",
+      "definition": "Represent only finite external competing admission-demand records at the hospital boundary, separate from ED arrivals, ED-generated admission requests, bed offers and observed boarding. Ward discharges, inpatient LOS and simulated ward demand do not define ED-facing demand counts or timing.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED adapter at the admission boundary",
+      "subsystem": "shared",
+      "entity_task_pathway": "hospital_boundary.admissiondemand",
+      "applicability": "Optional external competing admission demand in an MVP admission/boarding fixture; separate from ED generated admission requests, ED arrivals, bed offers and boarding targets.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "count_schedule_or_policy",
+      "unit": "Finite timestamped external competing-demand schedule with declared count, time unit and provenance; distinct from ED generated admission requests, ED arrivals, bed offers and observed boarding targets.",
+      "granularity": "Per hospital_boundary.admissiondemand at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals. No linked ED-admission denominator or external competing-demand event stream is accepted; do not derive demand from raw discharge totals or ward-simulation outputs.",
+      "rationale": "Represent only finite external competing admission-demand records at the hospital boundary, separate from ED arrivals, ED-generated admission requests, bed offers and observed boarding. Ward discharges, inpatient LOS and simulated ward demand do not define ED-facing demand counts or timing.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.hospitalinterfaces.admissiondemand",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.hospitalinterfaces.admissiondemand.evidence_refs; hospital_boundary.admissiondemand",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "hospital_interfaces"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.hospitalinterfaces.inpatientbedavailability",
+      "semantic_name": "Inpatient bed availability and release",
+      "definition": "Consume finite ED-eligible offer events with compatible destination/unit, offer start, persistence/validity interval, expiry or withdrawal, and competing-demand context. This event-stream shape is a proposed boundary only; no offer rate or availability process is accepted. Offer acceptance does not end ED occupancy; boarding remains a separate observed outcome, not a sampled substitute.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED adapter at the admission/boarding boundary",
+      "subsystem": "shared",
+      "entity_task_pathway": "hospital_boundary.inpatientbedavailability",
+      "applicability": "Finite exogenous ED eligible inpatient offers only in an MVP admission/boarding fixture; does not itself end ED occupancy.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "Finite ED eligible offer records with destination compatibility, availability start/expiry, withdrawal state/time and explicit competing-demand assumptions; every numeric leaf declares units.",
+      "granularity": "Per hospital_boundary.inpatientbedavailability at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals. Linked Hassanzadeh evidence is an accepted unresolved-gap source only: ward discharges, capacities and simulated ward flow do not establish observed ED-facing offers, compatibility, offer denominators, persistence or withdrawal. R29's finite compatible offer is a proposed model boundary, not a measured parameter.",
+      "rationale": "Consume finite ED-eligible offer events with compatible destination/unit, offer start, persistence/validity interval, expiry or withdrawal, and competing-demand context. This event-stream shape is a proposed boundary only; no offer rate or availability process is accepted. Offer acceptance does not end ED occupancy; boarding remains a separate observed outcome, not a sampled substitute.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-admission-offer-boundary.json; model-inputs/ed/des/evidence/p1-conditioned-bed-offer-availability.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.hospitalinterfaces.inpatientbedavailability.evidence_refs; hospital_boundary.inpatientbedavailability",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "4a9bbabd9c0461f312f316784e0938ce1ee16f6d98a13b533537583c3a9a1134",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "hospital_interfaces"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.hospitalinterfaces.transfertransport",
+      "semantic_name": "Transfer and transport availability",
+      "definition": "Represent a physical transfer/transport interval only when its start and physical ED departure/arrival endpoint are explicitly observed for an enabled pathway. Keep admission/ready-to-depart, bed allocation, boarding, physical transfer and ward LOS separate; do not use a sampled boarding delay or ward LOS as transport.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow boundary",
+      "subsystem": "shared",
+      "entity_task_pathway": "hospital_boundary.transfertransport",
+      "applicability": "Boundary input only for an enabled transfer pathway.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "granularity": "Per hospital_boundary.transfertransport at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals. The linked Hassanzadeh record is a gap for transfer duration: ready-to-depart-to-ED-exit and a single ward bed-allocation timestamp do not identify physical transfer start/end, destination-conditioned duration or censoring.",
+      "rationale": "Represent a physical transfer/transport interval only when its start and physical ED departure/arrival endpoint are explicitly observed for an enabled pathway. Keep admission/ready-to-depart, bed allocation, boarding, physical transfer and ward LOS separate; do not use a sampled boarding delay or ward LOS as transport.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-transfer-delay.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.hospitalinterfaces.transfertransport.evidence_refs; hospital_boundary.transfertransport",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "6172057893b09a2d728778a91c3f23c11d0434e4a95104d0690a238cf1297b3d",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "hospital_interfaces"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.hospitalinterfaces.diagnosticdependencies",
+      "semantic_name": "External diagnostic dependencies",
+      "definition": "Treat diagnostic dependencies as exogenous boundary inputs only when that dependency is explicitly modeled; keep numeric leaves unit-bearing.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow boundary",
+      "subsystem": "shared",
+      "entity_task_pathway": "hospital_boundary.diagnosticdependencies",
+      "applicability": "Boundary input only for explicitly modeled diagnostic dependencies.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "granularity": "Per hospital_boundary.diagnosticdependencies at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+      "rationale": "Treat diagnostic dependencies as exogenous boundary inputs only when that dependency is explicitly modeled; keep numeric leaves unit-bearing.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.hospitalinterfaces.diagnosticdependencies",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.hospitalinterfaces.diagnosticdependencies.evidence_refs; hospital_boundary.diagnosticdependencies",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "hospital_interfaces"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.hospitalinterfaces.wholehospitalmechanisms",
+      "semantic_name": "Whole-hospital bed and discharge mechanisms",
+      "definition": "Defer whole-hospital mechanisms until a reviewed extension defines additional state, scope, evidence and interface.",
+      "owner": "CareOps ED domain",
+      "consumer": "Future hospital-domain owner; consumer not applicable to generic ED MVP",
+      "subsystem": "shared",
+      "entity_task_pathway": "hospital_boundary.wholehospitalmechanisms",
+      "applicability": "Excluded from MVP; requires a separately reviewed whole hospital mechanism extension.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "granularity": "Per hospital_boundary.wholehospitalmechanisms at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals."
+      },
+      "physical_limits": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "deferred",
+        "reason": "Deferred by accepted usage matrix; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. Deferred by accepted usage matrix; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+      "rationale": "Defer whole-hospital mechanisms until a reviewed extension defines additional state, scope, evidence and interface.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.hospitalinterfaces.wholehospitalmechanisms",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.hospitalinterfaces.wholehospitalmechanisms.evidence_refs; hospital_boundary.wholehospitalmechanisms",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "hospital_interfaces"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "deferred",
+        "rationale": "Deferred by accepted usage matrix; Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    }
+  ],
+  "annotations": {
+    "ed.hospitalinterfaces.admissiondemand": {
+      "unit_contract": "Finite timestamped external competing-demand schedule with declared count, time unit and provenance; distinct from ED generated admission requests, ED arrivals, bed offers and observed boarding targets.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire linked, authorized admission demand and offer events with cohort, eligible denominator, destination compatibility, timestamp, competing-demand source, persistence/expiry and withdrawal. Do not infer ED-facing demand from raw discharge totals or ward simulation. Owner: CareOps ED domain. Bind version/licence/hash and independent readback before any empirical use.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "Validate finite timestamped schedule/count/provenance and verify external demand competes only for inpatient offers without creating ED arrivals or duplicate admission requests."
+      ]
+    },
+    "ed.hospitalinterfaces.inpatientbedavailability": {
+      "unit_contract": "Finite ED eligible offer records with destination compatibility, availability start/expiry, withdrawal state/time and explicit competing-demand assumptions; every numeric leaf declares units.",
+      "value_role": "control",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-admission-offer-boundary.json",
+          "sha256": "4a9bbabd9c0461f312f316784e0938ce1ee16f6d98a13b533537583c3a9a1134"
+        },
+        {
+          "path": "model-inputs/ed/des/evidence/p1-conditioned-bed-offer-availability.json",
+          "sha256": "0bca73e4cba6ef58db3e6cd751f8fb6f3f59675c3e33eeae0e7498f8b9792cfc"
+        }
+      ],
+      "acquisition_plan": "Acquire linked ED and bed-management records identifying offer eligibility for the patient, destination compatibility, offer start and persistence/expiry/withdrawal, time/calendar, cohort/site/period, eligible denominator and competing non-ED demand. Keep raw discharges and ward simulation distinct from ED-facing offers. Retain as unresolved until source/readback supports the event stream; no synthetic shape implies an empirical rate.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "Validate finite offer records with compatible destination, start, persistence/expiry, withdrawal and competing-demand context.",
+        "Verify acceptance/bed offer does not release ED occupancy before physical departure; boarding remains a separate observed output and is never substituted by a sampled delay."
+      ]
+    },
+    "ed.hospitalinterfaces.transfertransport": {
+      "unit_contract": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "value_role": "control",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-transfer-delay.json",
+          "sha256": "6172057893b09a2d728778a91c3f23c11d0434e4a95104d0690a238cf1297b3d"
+        }
+      ],
+      "acquisition_plan": "Acquire linked ED, admission and bed-management timestamps for transfer initiation and physical ED departure/ward arrival, with destination/unit, cohort/site/period, clock precision, censoring/missingness and denominator. Keep readiness/boarding, bed allocation, physical transfer and ward LOS distinct; no boarding sample or raw LOS proxy.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "Validate typed transfer/transport boundary records and unit-bearing numeric leaves for the enabled transfer fixture."
+      ]
+    },
+    "ed.hospitalinterfaces.diagnosticdependencies": {
+      "unit_contract": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "value_role": "control",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "Validate typed diagnostic-dependency records and unit-bearing numeric leaves for the explicitly modeled dependency fixture."
+      ]
+    },
+    "ed.hospitalinterfaces.wholehospitalmechanisms": {
+      "unit_contract": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "value_role": "deferred",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire finite compatible offer/demand/transport lifecycle observations with destination/specialty, validity/withdrawal, competing demand, readiness and departure clocks; preserve hospital boundary rather than inferring from discharge totals. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": []
+    }
+  }
+}

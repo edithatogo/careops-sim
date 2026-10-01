@@ -1,0 +1,1040 @@
+{
+  "schema_version": 1,
+  "status": "proposed",
+  "family": "durations",
+  "records": [
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.durations.intrinsicwork",
+      "semantic_name": "Intrinsic active work duration",
+      "definition": "Generate active task work only; fit from occurrence endpoints isolating setup, queue, transit and interruption/resumption, then apply ADR-0004 checked tick conversion.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter supplies active-work durations to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "durations.intrinsicwork",
+      "applicability": "generative active task time; fit only from occurrence-mapped endpoints that isolate active work from setup, queue, transit and interruption/resumption, preserving source precision.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "s",
+      "granularity": "Per durations.intrinsicwork at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "published",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. Linked evidence represents different non-pooled classes: clinician consensus and principal-activity-only intern task observations; the Gerdtz/Bucknall numeric table remains unavailable. Neither source set identifies a transferable generic active-work distribution, variance/tails, or concurrent resource occupancy.",
+      "rationale": "Generate active task work only; fit from occurrence endpoints isolating setup, queue, transit and interruption/resumption, then apply ADR-0004 checked tick conversion.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-clinician-time.json; model-inputs/ed/des/evidence/p1-observational-task-means.json; model-inputs/ed/des/evidence/p1-triage-active-work.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.durations.intrinsicwork.evidence_refs; durations.intrinsicwork",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "d21caf6c91648b162c81204379ecfdff7b3454da62a0e530cd190bec2cea4126",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "durations"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.durations.setup",
+      "semantic_name": "Setup duration",
+      "definition": "Enable setup only for a named task/resource and separate start/end; declare capacity occupancy and ordering relative to active work to prevent overlap or double counting.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter supplies setup intervals to Kairos Track 03 Flow and the named task/resource occupancy model",
+      "subsystem": "DES",
+      "entity_task_pathway": "durations.setup",
+      "applicability": "identify the owning task/resource, setup start/end and whether capacity is occupied or setup precedes active work; fit only from setup-specific occurrence endpoints distinct from service, queue and transit.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "s",
+      "granularity": "Per durations.setup at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+      "rationale": "Enable setup only for a named task/resource and separate start/end; declare capacity occupancy and ordering relative to active work to prevent overlap or double counting.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.durations.setup",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.durations.setup.evidence_refs; durations.setup",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "durations"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.durations.turnaround",
+      "semantic_name": "Turnaround duration",
+      "definition": "Macro may represent the whole elapsed diagnostic order-to-last-result interval as one boundary. Micro must replace that aggregate only with independently observed, non-overlapping components; never add whole turnaround to its queues, processing, transit or other constituent intervals. Result availability-to-clinician-review remains separate.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter supplies process/device turnaround to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "durations.turnaround",
+      "applicability": "define the event pair and included external/ED components; keep report availability and clinician review separate and do not silently include ED queue or transit. Fit only to matching occurrence endpoints.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "s",
+      "granularity": "Per durations.turnaround at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "published",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. The linked diagnostic source is an elapsed result-turnaround summary, not intrinsic staff work. Any future Macro fit concerns that whole elapsed interval; Micro decomposition needs separately observed endpoints and must avoid double-counting. Review delay is a separate unresolved interval.",
+      "rationale": "Macro may represent the whole elapsed diagnostic order-to-last-result interval as one boundary. Micro must replace that aggregate only with independently observed, non-overlapping components; never add whole turnaround to its queues, processing, transit or other constituent intervals. Result availability-to-clinician-review remains separate.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-diagnostic-durations.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.durations.turnaround.evidence_refs; durations.turnaround",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "6b6dd30097707144d603c7cbd24314d4031a8056635b35a0def41c8df3680801",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "durations"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.durations.reportreviewdelay",
+      "semantic_name": "Report and review delay",
+      "definition": "Generate delay after the diagnostic process; map targets to report availability and review occurrence, keeping order, message and recorded timestamps separate.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter supplies report/review delay to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "durations.reportreviewdelay",
+      "applicability": "generate elapsed delay after the relevant diagnostic process; map observed targets to report-availability and review-occurrence endpoints, keeping order time and recorded/message time separate.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "s",
+      "granularity": "Per durations.reportreviewdelay at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+      "rationale": "Generate delay after the diagnostic process; map targets to report availability and review occurrence, keeping order, message and recorded timestamps separate.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-report-review-delay.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.durations.reportreviewdelay.evidence_refs; durations.reportreviewdelay",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "8c96da80f09072b1440eb90bd4ba2d7c71a5addd1cffeeab57c298c3d20c3dd7",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "durations"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.durations.cleaning",
+      "semantic_name": "Cleaning duration",
+      "definition": "Tie cleaning to a named reusable resource and cleaning start/completion; separate patient departure, bed assignment and resource release, and declare concurrency to avoid double counting.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter supplies cleaning work to the reusable resource/location availability model consumed by Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "durations.cleaning",
+      "applicability": "name the resource and map cleaning occurrence start/completion separately from patient departure, bed assignment and resource release; declare concurrency and avoid counting the same interval in task work and availability. Fit only from cleaning-specific endpoints.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "s",
+      "granularity": "Per durations.cleaning at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. The linked source distinguishes cleaning work from broader bed turnaround/idle time, but the isolated cleaning component remains unavailable; do not substitute a composite turnaround summary or figure value.",
+      "rationale": "Tie cleaning to a named reusable resource and cleaning start/completion; separate patient departure, bed assignment and resource release, and declare concurrency to avoid double counting.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-cleaning-duration.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.durations.cleaning.evidence_refs; durations.cleaning",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "004b18e76932d7cd3b1f54deb2a51d5446578d112ec7110c6f29a91caa0de7e2",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "durations"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.durations.handover",
+      "semantic_name": "Handover duration",
+      "definition": "Enable only as a named handover task with participants, occurrence start/end and overlap rule; keep ambulance arrival, offload and crew release as separate measures.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter supplies a named handover task to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "durations.handover",
+      "applicability": "specify participants, occurrence start/end and overlap/concurrency treatment; keep ambulance arrival, offload and crew release as separate measures where modeled, and fit only from handover-specific anchors.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "s",
+      "granularity": "Per durations.handover at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. The linked Zhu source is principal-activity-only intern task observation; it does not establish all-role sender/receiver concurrency, transfer-point resource occupancy, or a handover distribution.",
+      "rationale": "Enable only as a named handover task with participants, occurrence start/end and overlap rule; keep ambulance arrival, offload and crew release as separate measures.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-handover-duration.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.durations.handover.evidence_refs; durations.handover",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "866d263d1dee8931bfc3aa3b28640ae58a64bddd7eb127adc8d7f75a26cf6fc2",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "durations"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.durations.disposition",
+      "semantic_name": "Disposition duration",
+      "definition": "This is optional generated active work after the disposition decision. E0 deferred a generic disposition duration; enable the field only for a route with an identified task owner and decision-ready/work-complete events. Boarding, bed search, transport, and physical departure are separate.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "durations.disposition",
+      "applicability": "Use only when the selected pathway has an explicit active disposition task; omit the field from profiles without that task.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "s",
+      "granularity": "Per durations.disposition at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+      "rationale": "This is optional generated active work after the disposition decision. E0 deferred a generic disposition duration; enable the field only for a route with an identified task owner and decision-ready/work-complete events. Boarding, bed search, transport, and physical departure are separate.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.durations.disposition",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.durations.disposition.evidence_refs; durations.disposition",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "durations"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.durations.boarding",
+      "semantic_name": "Boarding duration",
+      "definition": "Boarding is an observed elapsed outcome from an explicitly chosen admission/transfer-ready event to physical ED departure or another declared terminal event. This row is output-only and has no generative candidate distribution; it does not define or sample a service duration. Ongoing boarders at observation cutoff require right censoring. Retain ED occupancy until operational resource release, not bed offer; any separately modeled residual requires a non-overlapping decomposition.",
+      "owner": "CareOps ED domain",
+      "consumer": "C0 trace/metric mapping, and the CareOps ED adapter only if a separately identified residual boundary delay is modeled",
+      "subsystem": "DES",
+      "entity_task_pathway": "durations.boarding",
+      "applicability": "For admission-enabled profiles, map the observed provisional-boarding-to-terminal-departure outcome. Configure a residual only after its components are separated.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "s",
+      "granularity": "Per durations.boarding at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "output",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+      "rationale": "Boarding is an observed elapsed outcome from an explicitly chosen admission/transfer-ready event to physical ED departure or another declared terminal event. This row is output-only and has no generative candidate distribution; it does not define or sample a service duration. Ongoing boarders at observation cutoff require right censoring. Retain ED occupancy until operational resource release, not bed offer; any separately modeled residual requires a non-overlapping decomposition.",
+      "provenance": {
+        "source": "model-inputs/ed/des/evidence/p1-boarding-duration-boundary.json",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.durations.boarding.evidence_refs; durations.boarding",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "2f3756bcc9553bb5a0e7c87f5659792ae177ad6e5a1f8e07d0f34ebf79f0f793",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "durations"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.durations.transit",
+      "semantic_name": "Transit duration",
+      "definition": "Macro may represent aggregate local transit when it is not already part of service work. Micro derives movement from graph distance and speed and excludes this scalar; external transfer/transport has its own boundary input and event anchors.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "durations.transit",
+      "applicability": "Macro may configure aggregate local movement time. Micro derives local time from graph distance and speed and omits this field; external transport is separate.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "s",
+      "granularity": "Per durations.transit at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "empirical_sample",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+      "rationale": "Macro may represent aggregate local transit when it is not already part of service work. Micro derives movement from graph distance and speed and excludes this scalar; external transfer/transport has its own boundary input and event anchors.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.durations.transit",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.durations.transit.evidence_refs; durations.transit",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "durations"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    }
+  ],
+  "annotations": {
+    "ed.durations.intrinsicwork": {
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with exact fixed-value checks or the declared sampled-duration ceiling rule and precision/rounding metadata.",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-clinician-time.json",
+          "sha256": "d21caf6c91648b162c81204379ecfdff7b3454da62a0e530cd190bec2cea4126"
+        },
+        {
+          "path": "model-inputs/ed/des/evidence/p1-observational-task-means.json",
+          "sha256": "a85c9891a20e54aab5346cb27bb9b26a8f231e4be8c6aeb690889c5334c158a6"
+        },
+        {
+          "path": "model-inputs/ed/des/evidence/p1-triage-active-work.json",
+          "sha256": "a6dbe1c39629c5385554c2aa6be334f818a766f3a3ba36ab49d92b0637be9a62"
+        }
+      ],
+      "acquisition_plan": "Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "empirical ECDF",
+        "gamma",
+        "lognormal"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "The intrinsic-work fixture must exclude queue, transit and boarding intervals and apply checked duration conversion."
+      ]
+    },
+    "ed.durations.setup": {
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "empirical ECDF",
+        "gamma",
+        "lognormal"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A setup fixture must name the task/resource and declare occupancy and setup start/end events."
+      ]
+    },
+    "ed.durations.turnaround": {
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding.",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-diagnostic-durations.json",
+          "sha256": "6b6dd30097707144d603c7cbd24314d4031a8056635b35a0def41c8df3680801"
+        }
+      ],
+      "acquisition_plan": "Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "empirical ECDF",
+        "gamma",
+        "lognormal"
+      ],
+      "candidate_status": "Unselected Macro-only candidates for the whole elapsed interval; Micro requires a non-overlapping, independently evidenced decomposition. No fit, parameters, support or sampler version established.",
+      "downstream_gates": [
+        "Macro may evaluate the whole elapsed order-to-last-result interval only as an aggregate boundary.",
+        "Micro must use separately evidenced non-overlapping components and must not also sample aggregate turnaround.",
+        "Keep result availability-to-clinician review separate from turnaround."
+      ]
+    },
+    "ed.durations.reportreviewdelay": {
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding; retain source event precision.",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-report-review-delay.json",
+          "sha256": "8c96da80f09072b1440eb90bd4ba2d7c71a5addd1cffeeab57c298c3d20c3dd7"
+        }
+      ],
+      "acquisition_plan": "Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "empirical ECDF",
+        "gamma",
+        "lognormal"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A report-review fixture must anchor result availability and review occurrence separately from recorded/message times."
+      ]
+    },
+    "ed.durations.cleaning": {
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding.",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-cleaning-duration.json",
+          "sha256": "004b18e76932d7cd3b1f54deb2a51d5446578d112ec7110c6f29a91caa0de7e2"
+        }
+      ],
+      "acquisition_plan": "Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "empirical ECDF",
+        "gamma",
+        "lognormal"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A cleaning fixture must name the resource, cleaning start/completion and bed-ready event separately from patient departure."
+      ]
+    },
+    "ed.durations.handover": {
+      "unit_contract": "decimal seconds converted under ADR-0004 to one-nanosecond u128 ticks with checked exactness or declared sampled rounding.",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-handover-duration.json",
+          "sha256": "866d263d1dee8931bfc3aa3b28640ae58a64bddd7eb127adc8d7f75a26cf6fc2"
+        }
+      ],
+      "acquisition_plan": "Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "empirical ECDF",
+        "gamma",
+        "lognormal"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A handover fixture must name participants, occurrence endpoints and overlap; distinguish ambulance arrival, offload and crew release."
+      ]
+    },
+    "ed.durations.disposition": {
+      "unit_contract": "decimal seconds externally; fixed values parsed exactly into checked integral nanosecond u128 ticks; sampled finite nonnegative values round upward per ADR-0004",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "empirical ECDF",
+        "gamma",
+        "lognormal"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "E0 route fixture must identify the active disposition task owner and decision-ready/work-complete events; omit the key where that task is absent."
+      ]
+    },
+    "ed.durations.boarding": {
+      "unit_contract": "elapsed decimal seconds with source precision; fixed values parse exactly to integral nanosecond u128 ticks; sampled finite nonnegative values round upward per ADR-0004",
+      "value_role": "observed_target",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-boarding-duration-boundary.json",
+          "sha256": "2f3756bcc9553bb5a0e7c87f5659792ae177ad6e5a1f8e07d0f34ebf79f0f793"
+        }
+      ],
+      "acquisition_plan": "Acquire linked admission/transfer-ready and physical departure events plus an ongoing-boarder census at cutoff; verify terminal events, time precision, destination, censoring and operational resource release. Retain as an observed outcome; do not fit a generative boarding duration from definitions or completed episodes alone.",
+      "candidate_families": [],
+      "candidate_status": "Output-only observed target; no generative candidate family, fit, parameter, support or sampler.",
+      "downstream_gates": [
+        "E0 admission fixture must anchor provisional boarding and actual terminal departure; prove no double counting with service, bed offer, acceptance, transport, or recurrent care."
+      ]
+    },
+    "ed.durations.transit": {
+      "unit_contract": "nonnegative decimal seconds; fixed values parse exactly to integral nanosecond u128 ticks and sampled durations round upward per ADR-0004",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "E0 must select Macro aggregate transit or Micro graph-derived movement per profile and keep external transport on its separate boundary input."
+      ]
+    }
+  }
+}

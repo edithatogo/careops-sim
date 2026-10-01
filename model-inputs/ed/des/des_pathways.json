@@ -1,0 +1,1841 @@
+{
+  "schema_version": 1,
+  "status": "proposed",
+  "family": "des_pathways",
+  "records": [
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.registration",
+      "semantic_name": "Registration stage",
+      "definition": "Configure registration as a distinct optional pathway state without imposing clinical content; map occurrence timestamps separately from chart-entry time and arrival-to-registration queueing.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.registration",
+      "applicability": "Configure registration as a distinct pathway state when the scenario models it; keep occurrence timing separate from chart-entry time.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "granularity": "Per pathways.registration at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Configure registration as a distinct optional pathway state without imposing clinical content; map occurrence timestamps separately from chart-entry time and arrival-to-registration queueing.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.registration",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.registration.evidence_refs; pathways.registration",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.triage",
+      "semantic_name": "Triage stage and routing",
+      "definition": "Configure triage and routing with explicit category semantics; keep waiting time separate from active triage work, and map observed events to the correct occurrence and triage scale.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.triage",
+      "applicability": "Configure triage and routing transitions with explicit category semantics; keep queue wait separate from active triage work.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "granularity": "Per pathways.triage at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Configure triage and routing with explicit category semantics; keep waiting time separate from active triage work, and map observed events to the correct occurrence and triage scale.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.triage",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.triage.evidence_refs; pathways.triage",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.assessment",
+      "semantic_name": "Assessment stage",
+      "definition": "Configure the assessment sequence and branches; bind observations to the correct task occurrence and do not treat arrival-to-assessment elapsed time as active work.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.assessment",
+      "applicability": "Configure the assessment sequence and branches; bind observed targets to the correct assessment occurrence.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "granularity": "Per pathways.assessment at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Configure the assessment sequence and branches; bind observations to the correct task occurrence and do not treat arrival-to-assessment elapsed time as active work.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.assessment",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.assessment.evidence_refs; pathways.assessment",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.diagnostics",
+      "semantic_name": "Diagnostic stage",
+      "definition": "Configure diagnostic ordering and dependencies; distinguish order, procedure start, result availability and review events, including censoring and missing results.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.diagnostics",
+      "applicability": "Configure diagnostic ordering and dependencies; represent order, procedure, result availability and review as separate modeled events when enabled.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "granularity": "Per pathways.diagnostics at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Configure diagnostic ordering and dependencies; distinguish order, procedure start, result availability and review events, including censoring and missing results.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.diagnostics",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.diagnostics.evidence_refs; pathways.diagnostics",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.treatment",
+      "semantic_name": "Treatment stage",
+      "definition": "Configure treatment choices from modeled case state; use treatment-specific occurrence anchors and keep queue, assessment and transit out of active treatment work.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.treatment",
+      "applicability": "Configure treatment pathway choices from modeled case state; keep treatment occurrence and active work distinct from elapsed time to treatment.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "granularity": "Per pathways.treatment at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Configure treatment choices from modeled case state; use treatment-specific occurrence anchors and keep queue, assessment and transit out of active treatment work.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.treatment",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.treatment.evidence_refs; pathways.treatment",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.observation",
+      "semantic_name": "Observation stage",
+      "definition": "Enable observation only in selected profiles; separate ED observation from inpatient boarding and map physical bed occupancy/release rather than assignment alone.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter maps this pathway into Kairos Track 03 Flow transitions",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.observation",
+      "applicability": "define observation entry, reassessment if applicable, and ED exit/return transitions; model inpatient boarding separately and keep observed events separate from generated pathway rules.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "typed pathway states/transitions, with any durations in seconds and probabilities dimensionless with explicit conditioning and denominator.",
+      "granularity": "Per pathways.observation at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Enable observation only in selected profiles; separate ED observation from inpatient boarding and map physical bed occupancy/release rather than assignment alone.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.observation",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.observation.evidence_refs; pathways.observation",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.reassessment",
+      "semantic_name": "Reassessment stage",
+      "definition": "Enable reassessment only with a defined trigger and bounded repeat semantics; index repeated occurrences and keep observed events separate from generated rules.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter maps reassessment transitions into Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.reassessment",
+      "applicability": "specify the trigger, repeated-task occurrence semantics and bounded loop/termination behavior; observed reassessment events are separate targets with occurrence indices and eligible context.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "typed trigger/transition data; numeric timing leaves use seconds and probability leaves declare conditioning and denominator.",
+      "granularity": "Per pathways.reassessment at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Enable reassessment only with a defined trigger and bounded repeat semantics; index repeated occurrences and keep observed events separate from generated rules.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.reassessment",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.reassessment.evidence_refs; pathways.reassessment",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.consult",
+      "semantic_name": "Consult stage",
+      "definition": "Enable consult only where applicable; define trigger, destination and return/terminal transition, and distinguish request, acceptance, arrival and completion from active consult work.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter maps consult transitions into Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.consult",
+      "applicability": "state the trigger, destination, return or terminal transition and resource claim; do not imply a universal consult route or treat observed consult events as generated rules.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "typed pathway states/transitions; any durations use seconds and any probabilities declare conditioning and denominator.",
+      "granularity": "Per pathways.consult at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Enable consult only where applicable; define trigger, destination and return/terminal transition, and distinguish request, acceptance, arrival and completion from active consult work.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.consult",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.consult.evidence_refs; pathways.consult",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.discharge",
+      "semantic_name": "Discharge route",
+      "definition": "Configure discharge as a terminal route; distinguish decision, departure-ready and actual departure, with boarding/transport and unfinished censored cases kept separate.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.discharge",
+      "applicability": "Configure discharge as a terminal route; distinguish decision, departure-ready and actual departure events.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "granularity": "Per pathways.discharge at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Configure discharge as a terminal route; distinguish decision, departure-ready and actual departure, with boarding/transport and unfinished censored cases kept separate.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.discharge",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.discharge.evidence_refs; pathways.discharge",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.admission",
+      "semantic_name": "Admission route",
+      "definition": "Keep admission decision, offer/acceptance, boarding, transport and physical ED departure distinct; admission decision does not release the occupied ED resource.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter maps admission behavior into Kairos Track 03 Flow and the declared finite bed-offer boundary",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.admission",
+      "applicability": "keep admission decision, offer/acceptance, boarding occupancy, transport and realized admission/physical ED departure as distinct states or events; an admission decision does not release the ED resource.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "typed decision and transition data, with duration leaves in seconds and probabilities carrying explicit conditioning/denominator.",
+      "granularity": "Per pathways.admission at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Keep admission decision, offer/acceptance, boarding, transport and physical ED departure distinct; admission decision does not release the occupied ED resource.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.admission",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.admission.evidence_refs; pathways.admission",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.transfer",
+      "semantic_name": "Transfer route",
+      "definition": "Model outgoing transfer only when enabled, with destination eligibility and completion boundary; incoming transfers use demand.transfers, and no fleet or receiving-ward model is implied.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter maps outgoing transfer disposition into Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.transfer",
+      "applicability": "define destination eligibility and the modeled completion boundary for an outgoing transfer; keep incoming transfer arrivals under demand.transfers and do not imply a full fleet or receiving-ward model.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "typed destination/eligibility/transition data; numeric durations use seconds and probabilities declare conditioning and denominator.",
+      "granularity": "Per pathways.transfer at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Model outgoing transfer only when enabled, with destination eligibility and completion boundary; incoming transfers use demand.transfers, and no fleet or receiving-ward model is implied.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.transfer",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.transfer.evidence_refs; pathways.transfer",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.abandonment",
+      "semantic_name": "Leaving without being seen route",
+      "definition": "Enable abandonment only in selected profiles; define eligible risk set and time at risk, and distinguish it from discharge and right censoring.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.abandonment",
+      "applicability": "Enable abandonment only in selected profiles; distinguish its eligible risk set and departure reason from discharge and censoring.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "probability_or_conditional_table",
+      "unit": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "granularity": "Per pathways.abandonment at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Enable abandonment only in selected profiles; define eligible risk set and time at risk, and distinguish it from discharge and right censoring.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.abandonment",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.abandonment.evidence_refs; pathways.abandonment",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.routingprobability",
+      "semantic_name": "Pathway routing probabilities",
+      "definition": "Generate routing choices conditional on named state and eligible alternatives with explicit denominator/normalization; calibrate only against matching decision-time choices.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter supplies conditional routing tables to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.routingprobability",
+      "applicability": "generate a branch choice conditional on state; calibration against observed choices requires the same eligible alternative set and decision-time state.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "probability_or_conditional_table",
+      "unit": "dimensionless probabilities in [0,1], with a named decision point, conditioning state, eligible alternatives, denominator, allowed outcomes and normalization rule; identify deterministic versus sampled selection.",
+      "granularity": "Per pathways.routingprobability at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. The linked HSMA record is accepted only as a synthetic teaching-method example; the linked AIHW record is accepted only as an unresolved gap. Neither supplies decision-time alternatives, conditioning or an eligible denominator.",
+      "rationale": "Generate routing choices conditional on named state and eligible alternatives with explicit denominator/normalization; calibrate only against matching decision-time choices.",
+      "provenance": {
+        "source": "Method-only HSMA code example (structural illustration; no ED routing values) and an accepted AIHW episode-end gap record (not decision-time route choices).",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.routingprobability.evidence_refs; pathways.routingprobability",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": "2026-10-01",
+        "content_hash": "86636b632ed28599c2912d6544d7f34c538129714ef03e5a1b095700ef3ef302",
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.repeatloops",
+      "semantic_name": "Repeat pathway loops",
+      "definition": "Enable repeat edges only with a trigger and termination or iteration bound; retain occurrence indices, episode boundaries and unfinished/censored loops.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter maps enabled repeat edges into Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.repeatloops",
+      "applicability": "declare the loop edge, trigger, termination condition or maximum iterations and event accounting; observed loop counts are separate targets requiring occurrence indices and episode boundaries.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "typed loop edge and trigger, with numeric timing in seconds and any probabilities explicitly conditioned.",
+      "granularity": "Per pathways.repeatloops at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Enable repeat edges only with a trigger and termination or iteration bound; retain occurrence indices, episode boundaries and unfinished/censored loops.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.repeatloops",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.repeatloops.evidence_refs; pathways.repeatloops",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.priorities",
+      "semantic_name": "Pathway priorities",
+      "definition": "Use queue priorities only with multiple queue classes and the reviewed ordering/tie-break contract; realized service order alone does not identify a priority rule.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.priorities",
+      "applicability": "Configure queue selection priorities only when the profile uses multiple queue classes; bind ordering and tie breaks to the reviewed queue contract.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "granularity": "Per pathways.priorities at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Use queue priorities only with multiple queue classes and the reviewed ordering/tie-break contract; realized service order alone does not identify a priority rule.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.priorities",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.priorities.evidence_refs; pathways.priorities",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.deadlines",
+      "semantic_name": "Pathway deadlines",
+      "definition": "Use as a generated threshold, with relative seconds or explicit-offset absolute instant tied to UTC origin; define missed-deadline behavior and do not treat it as an elapsed-time distribution.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED configuration adapter supplies deadline constraints to Kairos Track 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.deadlines",
+      "applicability": "generated pathway threshold/constraint, distinct from an observed elapsed-time target.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "s",
+      "granularity": "Per pathways.deadlines at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Use as a generated threshold, with relative seconds or explicit-offset absolute instant tied to UTC origin; define missed-deadline behavior and do not treat it as an elapsed-time distribution.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.deadlines",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.deadlines.evidence_refs; pathways.deadlines",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.despathways.preemption",
+      "semantic_name": "Pathway preemption policy",
+      "definition": "Represent reviewed task-preemption policy only; keep task interruption/suspend/resume distinct from patient or resource eviction and require queue-contract evidence.",
+      "owner": "CareOps ED domain",
+      "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
+      "subsystem": "DES",
+      "entity_task_pathway": "pathways.preemption",
+      "applicability": "Configure only reviewed task-preemption behavior; keep staff-task interruption separate from patient or resource eviction.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "granularity": "Per pathways.preemption at declared scenario/event/decision scope; source precision retained",
+      "population": "Generic ED target; source populations are bounded by linked evidence and not pooled",
+      "period": "No generic observation period selected",
+      "site": "Generic/public ED; no Cairns observations imported",
+      "conditioning": "Unestimated; conditioning and eligible denominators must be explicit before sampling",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "reason": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "provenance": "Linked accepted evidence and usage-matrix decision; no numeric range established",
+        "rationale": "Each range has distinct semantics; summaries are not extrema, uncertainty or search bounds."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+      "rationale": "Represent reviewed task-preemption policy only; keep task interruption/suspend/resume distinct from patient or resource eviction and require queue-contract evidence.",
+      "provenance": {
+        "source": "No accepted primary evidence for ed.despathways.preemption",
+        "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
+        "location": "annotations.ed.despathways.preemption.evidence_refs; pathways.preemption",
+        "licence_access": "Underlying source access/licences preserved in linked records; raw primary bytes not redistributed",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numeric transformation, fit or transfer: retain primary source summaries in their evidence records; normalized unknown/deferred entry only",
+        "sample_size": null,
+        "exclusions_censoring": "Source-specific limits retained; no pooled patient-level sample or censoring observations acquired",
+        "fit_diagnostics": "No fit; candidates require P3 verified data and diagnostics",
+        "holdout_evidence": "No holdout; P3 train/holdout protocol required",
+        "transfer_limits": "No source population equated with generic or Cairns ED; consensus/principal-activity/elapsed clocks remain distinct"
+      },
+      "dependence": {
+        "groups": [
+          "des_pathways"
+        ],
+        "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
+        "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
+        "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
+        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+      },
+      "variability_epistemic": {
+        "within_run_variability": "Unknown; no selected sampler or distribution",
+        "epistemic_uncertainty": "Missing observations/fit and source-to-target transfer limitations",
+        "sampling_level": "Deferred until parameterization and dependence review",
+        "seed_purpose": "No RNG invoked for catalogue; future samplers follow existing Kairos stream contract"
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "No transferable parameter value/range accepted; Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors.",
+        "feasible_bounds_reference": "calibration_bounds remains unknown/deferred; P3 must review identifiable bounds",
+        "observational_targets": []
+      }
+    }
+  ],
+  "annotations": {
+    "ed.despathways.registration": {
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A registration-enabled fixture must emit distinct arrival and registration occurrence events."
+      ]
+    },
+    "ed.despathways.triage": {
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "The triage fixture must separate queue entry, active triage work and triage completion events."
+      ]
+    },
+    "ed.despathways.assessment": {
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "The assessment fixture must separate active clinician work from queue and local movement."
+      ]
+    },
+    "ed.despathways.diagnostics": {
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "The diagnostic fixture must distinguish order, procedure, result availability and review events."
+      ]
+    },
+    "ed.despathways.treatment": {
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "The treatment fixture must bind the declared task/resource class without inventing a regimen."
+      ]
+    },
+    "ed.despathways.observation": {
+      "unit_contract": "typed pathway states/transitions, with any durations in seconds and probabilities dimensionless with explicit conditioning and denominator.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "An observation-enabled fixture must preserve ED observation occupancy separately from inpatient boarding."
+      ]
+    },
+    "ed.despathways.reassessment": {
+      "unit_contract": "typed trigger/transition data; numeric timing leaves use seconds and probability leaves declare conditioning and denominator.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A reassessment loop fixture must enforce a trigger and bounded termination or occurrence limit."
+      ]
+    },
+    "ed.despathways.consult": {
+      "unit_contract": "typed pathway states/transitions; any durations use seconds and any probabilities declare conditioning and denominator.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A consult-enabled fixture must declare trigger, destination, resource claim and return or terminal route."
+      ]
+    },
+    "ed.despathways.discharge": {
+      "unit_contract": "pathway state/transition data; numeric durations/probabilities appear as typed leaves",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "The discharge fixture must keep decision, departure-ready and physical departure as distinct events."
+      ]
+    },
+    "ed.despathways.admission": {
+      "unit_contract": "typed decision and transition data, with duration leaves in seconds and probabilities carrying explicit conditioning/denominator.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "The admission fixture must keep decision, finite bed offer, acceptance, boarding occupancy and physical ED departure distinct; bed offer alone cannot release the ED resource."
+      ]
+    },
+    "ed.despathways.transfer": {
+      "unit_contract": "typed destination/eligibility/transition data; numeric durations use seconds and probabilities declare conditioning and denominator.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "An outgoing-transfer fixture must declare destination eligibility and terminal boundary separately from incoming transfers."
+      ]
+    },
+    "ed.despathways.abandonment": {
+      "unit_contract": "dimensionless values in [0,1], denominators/conditioning explicit",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "conditional categorical table"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "An abandonment-enabled fixture must define the eligible risk set and terminal reason separately from discharge and right censoring."
+      ]
+    },
+    "ed.despathways.routingprobability": {
+      "unit_contract": "dimensionless probabilities in [0,1], with a named decision point, conditioning state, eligible alternatives, denominator, allowed outcomes and normalization rule; identify deterministic versus sampled selection.",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/des/evidence/p1-open-model-example.json",
+          "sha256": "86636b632ed28599c2912d6544d7f34c538129714ef03e5a1b095700ef3ef302"
+        },
+        {
+          "path": "model-inputs/ed/des/evidence/p1-pathway-routing.json",
+          "sha256": "8895027ee8daf3a38ab43334c643de37d3e4f1ecd0232105384cae8ce83d1d43"
+        }
+      ],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [
+        "conditional categorical table"
+      ],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A routing table fixture must declare decision state, eligible alternatives, denominator and normalization rule."
+      ]
+    },
+    "ed.despathways.repeatloops": {
+      "unit_contract": "typed loop edge and trigger, with numeric timing in seconds and any probabilities explicitly conditioned.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "A repeat-loop fixture must enforce a trigger and a finite iteration or termination rule."
+      ]
+    },
+    "ed.despathways.priorities": {
+      "unit_contract": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "For multiple queue classes, verify priority ordering and deterministic tie breaks against the reviewed queue contract."
+      ]
+    },
+    "ed.despathways.deadlines": {
+      "unit_contract": "relative limits in decimal seconds; absolute deadlines are explicit-offset instants tied to the dataset UTC origin and retain source precision. Apply ADR-0004 checked conversion to one-nanosecond u128 ticks; reject unsupported precision, negative/overflow values and naive local instants.",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "Reject negative, overprecision, overflow and naive civil-time deadlines under ADR-0004."
+      ]
+    },
+    "ed.despathways.preemption": {
+      "unit_contract": "no single scalar unit; every numeric leaf declares its unit and category coding",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire decision-time eligible choices, pathway/event endpoints and operational policy with conditioning, priorities and repeat-loop denominators; exclude realized future disposition from predictors. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "candidate_families": [],
+      "candidate_status": "unselected; no fit, parameters, support or sampler version established",
+      "downstream_gates": [
+        "The preemption fixture must keep staff task interruption ancestry separate from patient/resource eviction and verify the reviewed Q lifecycle."
+      ]
+    }
+  }
+}
