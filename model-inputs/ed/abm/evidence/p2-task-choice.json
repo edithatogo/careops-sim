@@ -1,0 +1,64 @@
+{
+  "schema_version": 2,
+  "record_id": "p2-task-choice-walter-20261001-attempt2",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.abmstaffbehavior.taskchoice"
+  ],
+  "claim": "The PubMed abstract for an observational workflow time study reports doctors in the emergency department of one large Australian hospital observed for 121.7 hours across 58 sessions. It conceptualised interruptive events as prompts and coded doctors' responses as task-switching, multitasking, acknowledgement, deferral, and deflection. Prompt rates varied by work scenario; response strategy varied with task type, prompt type, and department location, and task-switching was the most frequent reported strategy. The abstract does not report a complete eligible-action choice set, event denominator, portable transition probability, or universal task-selection policy; these remain unknown.",
+  "primary_source": {
+    "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=27633242&retmode=xml",
+    "doi": "10.1016/j.apergo.2016.07.020",
+    "source_kind": "publication",
+    "revision": "PubMed PMID 27633242 bibliographic abstract record; captured XML, 7,098 bytes",
+    "location": {
+      "kind": "publication",
+      "anchor": "PMID 27633242 / AbstractText"
+    },
+    "source_sha256": "2e65f955db95912478de4c676718fae6360a7e073399d905a9007dd574d9711a",
+    "population": "Emergency department doctors at one large Australian hospital; 121.7 observed hours across 58 sessions",
+    "period": "Study observation dates are not reported in the bound abstract",
+    "units": "Observed hours and sessions; response categories and relative qualitative frequency; abstract reports no event denominator",
+    "licence_access": "Retrieved from official NCBI E-utilities as a bibliographic abstract record. An open licence for the article abstract is not established by this capture; no licence is inferred.",
+    "accessed_at": "2026-10-01",
+    "transformation": {
+      "description": "Parsed the bound XML AbstractText and bibliographic fields; retained an abstract-level descriptive claim only. No article full text or quantitative model parameter was extracted.",
+      "input_units": "PubMed XML abstract text and bibliographic metadata",
+      "output_units": "Source-bounded descriptive claim; no fitted value or probability"
+    },
+    "verification": "partially_verified"
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Task choice, continuity and interruptions",
+    "line_start": 39,
+    "line_count": 3
+  },
+  "review": {
+    "reviewer": "CareOps coordinator after independent readback",
+    "reviewed_at": "2026-10-01",
+    "outcome": "accepted",
+    "notes": "Accepted only as abstract-level descriptive evidence. Independent readback: conductor/evidence/p2.1-task-choice-independent-review-20261001.md. No generic rule, probability, priority scale, or eligible action set accepted."
+  },
+  "independent_readback": {
+    "reviewer": "Independent P2.1 task-choice reviewer",
+    "reviewed_at": "2026-10-01",
+    "outcome": "pass",
+    "reason": "The exact PubMed XML hash/PMID/DOI match, and each retained statement is present in AbstractText. Attempt-1 challenge HTML was not used. The claim remains limited to abstract-supported observations; no model policy is inferred.",
+    "readback_reference": "conductor/evidence/p2.1-task-choice-independent-review-20261001.md",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "2e65f955db95912478de4c676718fae6360a7e073399d905a9007dd574d9711a",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": true,
+      "locator_checked": "PubMed PMID 27633242, DOI 10.1016/j.apergo.2016.07.020, AbstractText in the bound NCBI E-utilities XML",
+      "evidence_reference": ".artifacts/p2-sources/walter-pubmed-efetch.xml"
+    },
+    "transformation_evidence": {
+      "reproduced": true,
+      "method": "Parsed XML bibliographic fields and AbstractText; no numerical transformation.",
+      "comparison": "All included observation/context/strategy statements match the abstract. Choice set, event denominator, dates and portable policy remain unreported/unknown at this captured source level."
+    }
+  }
+}
