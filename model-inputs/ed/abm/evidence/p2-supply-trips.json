@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "record_id": "p2-supply-trips-johnson-2019",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.spatialabm.equipmentsupplytrips"
+  ],
+  "claim": "Johnson, Gillespie and Vance report prospective observations of triage interruptions at two adult EDs in 2015. Eight triage nurses were followed for 118 triage-interview observations; 67 were classified as interrupted. Table 1 uses N=67 for interruption categories. Its separate Source > Self and Cause > Self rows each report 7 (10.5%); these are separate marginal dimensions, and their equal counts do not establish case-level overlap. The Results prose describes self-interruptions as remembering something previously intended or getting misplaced supplies, without separating those examples. The paper does not report a supply-specific retrieval count, equipment/supply class, distinct retrieval trigger, origin or destination, trip-purpose taxonomy, search/travel/work duration, item availability, or reusable origin-destination matrix. These trip-specific fields remain unknown; this source supports qualitative structural evidence only and supplies no generic parameter, rate, distribution, heuristic, or model default.",
+  "primary_source": {
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6037611/",
+    "doi": "10.1097/NCQ.0000000000000314",
+    "source_kind": "publication",
+    "revision": "Johnson KD, Gillespie GL, Vance K. Effects of Interruptions on Triage Process in Emergency Department: A Prospective, Observational Study. Journal of Nursing Care Quality. 2019;33(4):375-381. Text-mining BioC JSON snapshot for PMCID PMC6037611, retrieved from NCBI PMC BioC API; exact local source bytes bound by SHA-256.",
+    "location": {
+      "kind": "publication",
+      "page": "375-381",
+      "section": "Methods; Results; Table 1",
+      "paragraph": "BioC passage offsets 4492 (study design), 4841 (two ED settings), 5123 (nurse sample), 8676 (118 observations), 10237 (self-interruption examples), and Table T1 at offset 21361.",
+      "table": "Table 1 (BioC table id T1)",
+      "field": "N=67 (%); Source > Self = 7 (10.5); Cause > Self = 7 (10.5)"
+    },
+    "source_sha256": "e6510c2a5a5a3e58882d56282b8d810eeef51c4c8c5ac99ab32729e2eed35c0a",
+    "population": "Eight participating triage nurses at two adult emergency departments in one health system: an urban Level 1 trauma center with 55 ED beds and a suburban Level 3 trauma center with 28 ED beds. The study reports 118 observed triage interviews, of which 67 were interrupted; Table 1 interruption categories use N=67. Convenience sample; vulnerable-population triage encounters were excluded.",
+    "period": "Prospective observations over six months in 2015; observations were conducted between 7 am and 7 pm.",
+    "units": "Counts and percentages of the 67 interrupted triage-interview observations for Table 1 categories. The 10.5% value is the table's percentage for all self-classified interruptions, not supply-retrieval trips. No supply-trip units or durations are reported.",
+    "licence_access": "NCBI PMC BioC text-mining snapshot; manuscript metadata and notice state it is available for text mining and may be used consistently with fair use. No general open-republication licence is asserted.",
+    "accessed_at": "2026-10-02",
+    "transformation": {
+      "description": "Read the exact packet-bound BioC JSON snapshot. Extracted study design, setting/sample and observation counts from the Methods/Results passages, the combined self-interruption description from Results, and the two Self rows with denominator N=67 from Table T1. Kept the table's combined self-interruption category distinct from the prose examples of remembering a prior task and retrieving misplaced supplies. No supply-trip count, rate, purpose class, O/D data, duration, availability, distribution or model value was derived.",
+      "input_units": "BioC JSON text; triage-interview observation counts; Table 1 counts and percentages.",
+      "output_units": "Qualitative source claim with study scope and table denominator; no supply-trip measurement or simulation parameter."
+    },
+    "verification": "partially_verified"
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Task choice, continuity and interruptions; supply/equipment paragraph",
+    "line_start": 55,
+    "line_count": 1
+  },
+  "review": {
+    "reviewer": "coordinator after independent review by /root/p11_parent_review",
+    "reviewed_at": "2026-10-02",
+    "outcome": "accepted",
+    "notes": "Independent source readback passed. The two Table 1 Self values are separate margins and do not establish case-level overlap; neither is a supply-trip count. Accepted only as bounded qualitative evidence and an explicit trip-data gap; no empirical model use or transferable default."
+  },
+  "independent_readback": {
+    "reviewer": "/root/p11_parent_review (independent source reviewer)",
+    "reviewed_at": "2026-10-02",
+    "outcome": "pass",
+    "reason": "Independent direct retrieval matched the exact 52,268-byte BioC JSON snapshot hash. Methods, Results, Table 1 and R5 line 55 reproduce the sample, separate category margins, grouped self-interruption examples and lack of supply-specific trip measurement.",
+    "readback_reference": "conductor/evidence/p2.2-supply-trip-independent-review-20261002.md",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "e6510c2a5a5a3e58882d56282b8d810eeef51c4c8c5ac99ab32729e2eed35c0a",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": true,
+      "locator_checked": "Methods BioC offsets 4492, 4841 and 5123; Results 8676, 9444 and 10237; Table 1 T1 offset 21361; R5 line 55",
+      "evidence_reference": ".artifacts/mvp/source-snapshots/johnson-2019-pmc6037611-bioc.json"
+    },
+    "transformation_evidence": {
+      "reproduced": true,
+      "method": "Independently fetched the NCBI PMC BioC endpoint, recomputed SHA-256, located the stated Methods/Results passages and Table 1 rows, and compared the record and R5 lineage.",
+      "comparison": "Source confirms 118 observations and 67 interrupted observations; Table 1 separately reports Source Self 7 (10.5%) and Cause Self 7 (10.5%) under N=67. Results groups remembering prior intended work with getting misplaced supplies. It reports no supply-specific count or trip attributes. The equal marginal counts are not treated as overlapping cases or supply trips."
+    }
+  }
+}
