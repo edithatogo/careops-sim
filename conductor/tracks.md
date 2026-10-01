@@ -33,7 +33,7 @@ Metadata carries explicit local phase dependencies and cross-track milestone
 edges; `python3 tools/context.py check` checks targets/cycles. Start D0/D1 before
 formal Q0/C0 contracts; E0 unlocks D2 GitHub/CI, then Q1/C1 can proceed.
 
-- [ ] **ED parameters, example inputs, ranges and distributions** — `ed_parameter_evidence_20260927`
+- [~] **ED parameters, example inputs, ranges and distributions** — `ed_parameter_evidence_20260927`
   ([index](tracks/ed_parameter_evidence_20260927/index.md),
   [spec](tracks/ed_parameter_evidence_20260927/spec.md),
   [plan](tracks/ed_parameter_evidence_20260927/plan.md)). Proposed. P0 can start
