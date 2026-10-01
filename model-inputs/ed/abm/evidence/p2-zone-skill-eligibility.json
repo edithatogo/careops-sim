@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "record_id": "p2-zone-skill-eligibility-meng-working-paper-gap",
+  "evidence_type": "unresolved_gap",
+  "parameter_ids": [
+    "ed.abmstaffbehavior.zoneskilleligibility"
+  ],
+  "gap": {
+    "missing_evidence": "The bound 2018 author-hosted Meng working paper describes one ED's nurse-to-room assignment relation: printed p. 6 says patient-to-nurse assignment is based on the assigned treatment room; each room belongs to a fixed cluster of three or four adjacent rooms; nurses sign up first-come-first-served for a cluster at shift start; and nurses have primary responsibility for patients in those rooms. It does not report the complete role/task/zone or skill/location eligibility relation, which actions are eligible or ineligible for each staff member at a particular decision time, or time-specific choice-set snapshots. A realized assignment does not reveal all eligible alternatives. Preserve those fields and local rules as unknown.",
+    "owner": "P2 evidence coordinator with the local ED operational owner",
+    "impact": "Role/task/zone eligibility and decision-time alternatives cannot be represented as source-backed model inputs. The one-site room assignment description cannot establish skill-zone bindings, exclusions, time-varying availability, a complete choice set, or a generic policy; no eligibility edge, probability, rate, distribution, or default is supported.",
+    "searches_performed": [
+      "Inspected only the bound author-hosted 2018 working-paper bytes at .artifacts/p13-completion/p2-sources/meng-nursetrack-working-paper.pdf (SHA-256 a7266404ca41717ee9af43eaa2a69bedc548784a3c0e0378fd81cc61c2be0cfc), at printed p. 6, section 3, assignment paragraph. The source hash matched the packet binding.",
+      "Inspected bound R5 report lines 31-32 and 113 for the reported assignment interpretation, and line 99 for the distinction between observed task choice and a full eligible-action choice set. R5 SHA-256: b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e.",
+      "No second-source search was performed; this packet is limited to the bound source and report lineage."
+    ],
+    "next_action": "Keep the eligibility fields unknown until an authorized local source provides role/task/zone eligibility, applicable exclusions, time-specific alternatives and relevant ownership rules. Capture exact source/version and locator, then seek independent readback before using any relation in the model."
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Spatial movement and task trips",
+    "line_start": 31,
+    "line_count": 1
+  },
+  "review": {
+    "reviewer": "coordinator/root",
+    "reviewed_at": "2026-10-01",
+    "outcome": "accepted",
+    "notes": "Independently recomputed bound PDF and R5 SHA-256 values. Read printed page 6 of the working paper: it describes one site\u2019s realized room-cluster assignment, but not the full role/task/zone/skill eligibility relation or time-specific alternatives. Accepted only as a bounded gap; no eligibility edges or policy inferred."
+  }
+}

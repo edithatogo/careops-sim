@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "record_id": "p2-shift-break-context-gap-p1-cross-family-20261001-attempt1",
+  "evidence_type": "unresolved_gap",
+  "parameter_ids": [
+    "ed.abmstaffbehavior.agentattributes"
+  ],
+  "gap": {
+    "missing_evidence": "No bound evidence defines how time-varying roster or break state interacts with ABM staff behavior. Unknowns include whether planned versus actual presence changes role/skill eligibility, location assignment or available actions; how breaks affect task choice or interruption handling; and what happens when a shift or break boundary occurs during in-flight work, including continuation, suspension, handoff, or resumption. P1's accepted roster and break records remain unresolved operational-data gaps, and the DES resource contract leaves ed.resources.rosters and ed.resources.breaks null.",
+    "owner": "P2 ABM behavior owner for staff-state interactions, with the P1/P4 ED resource-profile coordinator retaining roster and break data ownership; P3 owns any later joined behavior model.",
+    "impact": "No generic shift/break behavior rule, duration, timing, availability change, capacity effect, action-set change, interruption policy, or in-flight-work policy is supported. P1 roster/break gaps are referenced rather than duplicated; normative agreement provisions are not treated as observed behavior. All listed interactions remain unknown pending source-defined operational inputs and a separately reviewed behavior contract.",
+    "searches_performed": [
+      "No new source search was performed, as required by this packet.",
+      "Cross-family readback only: accepted unresolved-gap record model-inputs/ed/des/evidence/p1-staff-rosters.json, record_id p1-staff-rosters-local-operational-gap, SHA-256 53e61fc63c827a8b6949a643df46510138c6de65e42d7dd3f1aac925411b68ab. It lacks site-specific ED roster and actual-presence details; accepted as a gap inventory only, not operational capacity or a shift rule.",
+      "Cross-family readback only: accepted unresolved-gap record model-inputs/ed/des/evidence/p1-staff-breaks.json, record_id p1-staff-breaks-local-operational-gap, SHA-256 bc53c2da3c679f1fcee390607518a8317e9e9cda6bd297f2c40bfb31edd76699. It lacks local planned/observed ED break events and coverage effects; accepted as a gap inventory only, not operational behavior or a break schedule.",
+      "Read model-inputs/ed/des/resources.json, SHA-256 38ca508f3f9d2908bbb2f90d6d07e534792aeb7ed55328c796fda7c529ed5bf7; both ed.resources.rosters and ed.resources.breaks are null in this contract snapshot.",
+      "R5 report lineage is retained separately: report-5.md.txt SHA-256 b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e, line 7 describes the bounded review scope and does not assert a generic shift/break behavior rule."
+    ],
+    "next_action": "Keep this cross-family gap open. When P1/P4 has authorized source-defined roster, actual-presence, and break inputs and P2 has a separately reviewed staff-state behavior contract, have P3 bind the explicit interaction and in-flight-work semantics. Until then, leave all interaction fields unknown and do not infer a default from policy text."
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Bounded evidence review scope",
+    "line_start": 7,
+    "line_count": 1
+  },
+  "review": {
+    "reviewer": "coordinator/root",
+    "reviewed_at": "2026-10-01",
+    "outcome": "accepted",
+    "notes": "Independently recomputed SHA-256 for both cited P1 gap records and the resources contract; exact hashes match. Record preserves shift/break behavior and in-flight-work interactions as unknown and does not duplicate P1 ownership or invent behavior."
+  }
+}
