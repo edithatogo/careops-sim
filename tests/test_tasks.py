@@ -74,7 +74,9 @@ class SchedulingTests(unittest.TestCase):
                          'conductor/tracks/development_readiness_20260925/plan.md'}
                         <= set(by_id['D0.3']['write_reservations']))
         accepted={t['id'] for t in catalog['tasks'] if t['accepted']}
-        self.assertIn('P1.4',[t['id'] for t in tasks.select(catalog,accepted,20)])
+        candidates={t['id'] for t in tasks.select(catalog,accepted,20)}
+        self.assertNotIn('P1.4',candidates)  # Accepted P1.4 is no longer a preparation candidate.
+        self.assertIn('P2.1',candidates)
         self.assertNotIn('Q1.1',[t['id'] for t in tasks.select(catalog,accepted,20)])
         invalid=copy.deepcopy(catalog)
         by_id_invalid={t['id']:t for t in invalid['tasks']}
