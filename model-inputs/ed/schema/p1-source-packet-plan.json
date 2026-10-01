@@ -2,7 +2,7 @@
   "schema_version": 1,
   "track": "P1",
   "status": "preparation_only",
-  "packet_count": 18,
+  "packet_count": 20,
   "packets": [
     {
       "packet_id": "p1-aihw-aggregates",
@@ -349,8 +349,7 @@
       "phase_task": "P1.2",
       "family": "durations",
       "parameter_ids": [
-        "ed.durations.turnaround",
-        "ed.durations.reportreviewdelay"
+        "ed.durations.turnaround"
       ],
       "source_report_lead": {
         "report_id": "R12",
@@ -667,6 +666,80 @@
         "Stop before selecting, copying or fitting any numeric value, probability, distribution or policy; escalate unresolved scope to the coordinator."
       ],
       "dependency_gate": "Preparation only. At dispatch the coordinator binds the exact commit/path, confirms all full-file, line-range and licence hashes, fixes the exact output path and names the independent reviewer. No empirical use, Kairos implementation claim or ED policy adoption until independent readback is accepted and a separate owner decision authorizes any such use."
+    },
+    {
+      "packet_id": "p1-handover-duration",
+      "phase_task": "P1.2",
+      "family": "durations",
+      "parameter_ids": [
+        "ed.durations.handover"
+      ],
+      "source_report_lead": {
+        "report_id": "R6",
+        "locator": "Australian intern task means and handover limitations, lines17-35; exact primary Zhu MJA DOI10.5694/j.1326-5377.2008.tb01765.x at future binding"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Published handover task mean does not establish an operational handover duration distribution, event endpoints, sender/receiver resource occupancy or Cairns applicability.",
+      "search_scope": "Inspect only the named primary MJA observational task table and methods for handover episode definition, principal-activity limits and exact reported quantity; no assumption that intern task allocation equals all-role handover work.",
+      "output_path": "model-inputs/ed/des/evidence/p1-handover-duration.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field/row locator",
+        "population/site, cohort and observation period",
+        "source-defined event/measure, denominator and units",
+        "precision, missingness/censoring and limitations",
+        "licence/access and retrieval date",
+        "separate supplied-report lineage and reproducible transformation",
+        "cleaning episode start/stop and completion rule",
+        "space/equipment/resource type and context",
+        "episode denominator and exclusions"
+      ],
+      "worker_oracle": "Preserve handover activity versus operational transfer-of-responsibility distinction; no mean-to-distribution or concurrent resource inference.",
+      "independent_readback_oracle": "Reviewer independently binds the exact primary source at dispatch, recomputes its source hash, locates the cited fields, reproduces definitions/denominators/units, and records pass/partial/contradiction/unresolved with reason; report lineage remains separate.",
+      "stop_conditions": [
+        "Stop if the future-bound primary source or required table/field is inaccessible; record the exact search and return unresolved_gap.",
+        "Stop if population, period, denominator, units, revision or licence cannot be established.",
+        "Stop if source content does not support the assigned family or conflicts with the supplied report lead.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. At future dispatch the coordinator must bind exact primary URL/DOI, edition/revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and independent reviewer; no empirical use until readback is accepted."
+    },
+    {
+      "packet_id": "p1-report-review-delay",
+      "phase_task": "P1.2",
+      "family": "durations",
+      "parameter_ids": [
+        "ed.durations.reportreviewdelay"
+      ],
+      "source_report_lead": {
+        "report_id": "R12",
+        "locator": "fitting/identifiability and duration field limitations, lines 19-65, 97-130 and 216-266; R6 primitive work cautions, lines 17-46"
+      },
+      "source_status": "unverified_lead",
+      "named_gap": "Diagnostic result availability does not establish result-to-clinician-review or action timestamps; separate this unobserved phase from turnaround.",
+      "search_scope": "Inspect the same bound diagnostic study for explicit acknowledgement/review/action start-stop events; preserve gap if absent.",
+      "output_path": "model-inputs/ed/des/evidence/p1-report-review-delay.json",
+      "extraction_fields": [
+        "primary URL/DOI and edition/revision",
+        "exact page/table/field/row locator",
+        "population/site, cohort and observation period",
+        "source-defined event/measure, denominator and units",
+        "precision, missingness/censoring and limitations",
+        "licence/access and retrieval date",
+        "separate supplied-report lineage and reproducible transformation",
+        "diagnostic request/specimen/test and result/review event definitions",
+        "active work, queue, turnaround and report/review distinctions",
+        "diagnostic type and population conditioning"
+      ],
+      "worker_oracle": "Do not treat order-to-result turnaround as result-to-clinician review delay; unknown review interval remains a named gap.",
+      "independent_readback_oracle": "Reviewer independently binds the exact primary source at dispatch, recomputes its source hash, locates the cited fields, reproduces definitions/denominators/units, and records pass/partial/contradiction/unresolved with reason; report lineage remains separate.",
+      "stop_conditions": [
+        "Stop if the future-bound primary source or required table/field is inaccessible; record the exact search and return unresolved_gap.",
+        "Stop if population, period, denominator, units, revision or licence cannot be established.",
+        "Stop if source content does not support the assigned family or conflicts with the supplied report lead.",
+        "Stop before selecting a value, distribution, empirical default or policy; escalate for coordinator review."
+      ],
+      "dependency_gate": "Preparation only. At future dispatch the coordinator must bind exact primary URL/DOI, edition/revision, source-byte hash, report-lineage hash/section, extraction scope, exact output path and independent reviewer; no empirical use until readback is accepted."
     }
   ]
 }
