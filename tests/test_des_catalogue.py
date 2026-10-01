@@ -99,6 +99,14 @@ class CatalogueCoverageTests(unittest.TestCase):
         self.assertTrue(any("ed.patientbehavior.mobilityassistance" in error for error in errors), errors)
 
 
+    def test_active_matrix_row_cannot_be_silently_deferred(self):
+        collections = baseline()
+        record = record_for(collections, "ed.durations.intrinsicwork")
+        record["value_status"] = {"status": "deferred", "reason": "silent scope drop"}
+        errors = catalogue_errors(collections, root=ROOT)
+        self.assertTrue(any("ed.durations.intrinsicwork" in e and "remain unknown" in e for e in errors), errors)
+
+
 class CatalogueEvidenceTests(unittest.TestCase):
     def test_stale_and_semantically_wrong_evidence_refs_fail(self):
         collections = baseline()

@@ -444,6 +444,8 @@ def catalogue_errors(collections: Any, root: Path = ROOT) -> list[str]:
                 errors.append(_error(parameter_id, "current catalogue value_status must be unknown or deferred"))
             elif deferred and value_status.get("status") != "deferred":
                 errors.append(_error(parameter_id, "matrix-deferred parameter must remain deferred"))
+            elif not deferred and value_status.get("status") != "unknown":
+                errors.append(_error(parameter_id, "non-deferred matrix parameter must remain unknown"))
             if "value" in record or "reference_default" in record or "distribution" in record:
                 errors.append(_error(parameter_id, "current catalogue cannot contain value, reference_default or distribution"))
             if record.get("evidence_class") == "fitted":
