@@ -16,25 +16,25 @@
     "interpretation_status": "R8 notes elsewhere that triage can be unreported, but that does not establish the cause of this Table 2 residual. No such explanation is adopted here."
   },
   "independent_readback": {
-    "reviewer": "P1.1.arrivals.aihw-independent-readback worker; receipt conductor/evidence/p1.1-aihw-independent-readback-20261001.md",
+    "reviewer": "p11_aihw_table_review independent worker",
     "reviewed_at": "2026-10-01",
     "outcome": "partial",
-    "reason": "Independent retrieval had a different whole-page SHA-256 from the bound snapshot (fresh 72b21715126916e68aa64a1ba2e25550d2d850754135de034f8e9ff47157af5e versus bound 345408734c93fbba79070e4b737be1f2f4f3d78390ffae1da0d65d1c8aa84728), while reporting that the Table 2 caption, headers and values matched and reproducing the subtotal and residual. Source-byte pin verification is partial; residual remains unexplained.",
-    "readback_reference": "conductor/evidence/p1.1-aihw-independent-readback-20261001.md",
-    "bound_source_hash_match": false,
-    "fresh_retrieval_sha256": "72b21715126916e68aa64a1ba2e25550d2d850754135de034f8e9ff47157af5e",
+    "reason": "Fresh exact Table 2 fragment matches and counts/arithmetic reproduce; overall partial because 3,180 residual is unexplained.",
+    "readback_reference": "conductor/evidence/p1.1-aihw-table-fragment-readback-20261001.md",
+    "bound_source_hash_match": true,
+    "fresh_retrieval_sha256": "af58434a6d26225ae52cc5923e086d361c8daf29ae0658417c553ed75b9c6b2b",
     "located_table": true,
     "reproduced_counts_and_arithmetic": true,
     "residual_explanation_established": false
   },
   "review": {
-    "reviewer": "worker",
+    "reviewer": "CareOps coordinator",
     "reviewed_at": "2026-10-01",
-    "outcome": "needs_review",
-    "notes": "Transcription and arithmetic candidate only. Independent readback is partial because retrieved page bytes do not match the bound whole-page hash. Denominator completeness and the 3,180 residual remain unresolved. Not an accepted empirical input, case-mix generator, default, or calibration target. Record is explicitly a transcription candidate, not a primary_source_claim schema record."
+    "outcome": "accepted",
+    "notes": "Accepted as transcription/denominator-gap inventory only, not empirical model input. Fresh exact-fragment readback reproduced displayed counts and arithmetic, but cohort completeness and the 3,180 residual remain unresolved. conductor/evidence/p1.1-aihw-table-fragment-readback-20261001.md"
   },
   "modeling_limits": {
-    "empirical_acceptance": "pending coordinator review; transcription candidate only, not accepted for empirical use",
+    "empirical_acceptance": "not accepted for empirical use; accepted only as transcription and unresolved-gap inventory",
     "generator_or_default": "none",
     "joint_distribution": "not provided or inferred; marginals do not establish patient-level dependence",
     "residual": "unexplained; do not label as triage not reported absent source evidence",
@@ -44,21 +44,21 @@
   "source_basis": {
     "source_kind": "publication",
     "url": "https://www.aihw.gov.au/hospitals/overview/hospitals-at-a-glance",
-    "revision": "AIHW Hospitals at a glance, footer version v144.0, last updated 2026-09-08; HTML snapshot retrieved 2026-10-01",
+    "revision": "AIHW Hospitals at a glance, footer version v144.0, last updated 2026-09-08; HTML snapshot retrieved 2026-10-01; narrowed to exact raw Table 2 fragment (1,257 bytes)",
     "location": {
       "kind": "publication",
       "section": "Hospital activity > Emergency department care activity > How urgent was the care?",
       "table": "Table 2: Emergency department presentations by triage category, 2024–25",
       "fields": "Presentations row, five ATS category columns and Total column; Proportion of all presentation (%) row, Total column"
     },
-    "source_sha256": "345408734c93fbba79070e4b737be1f2f4f3d78390ffae1da0d65d1c8aa84728",
+    "source_sha256": "af58434a6d26225ae52cc5923e086d361c8daf29ae0658417c553ed75b9c6b2b",
     "population": "Presentation events in the AIHW National Non-Admitted Patient Emergency Department Care Database at Australian public-hospital emergency departments represented by the table; events are not unique persons.",
     "period": "2024–25",
     "units": "presentations (event counts; integer values as displayed)",
     "licence_access": "Publicly accessible AIHW webpage; copyright and access terms recorded in companion aggregate evidence model-inputs/ed/des/evidence/p1-aihw-aggregates.json.",
     "accessed_at": "2026-10-01",
     "extraction": {
-      "method": "Direct transcription of the Table 2 Presentations row from the bound HTML snapshot; subtotal calculated by integer addition of five displayed category counts; residual calculated as displayed total minus subtotal.",
+      "method": "Direct transcription of the Table 2 Presentations row from the exact raw HTML fragment; subtotal calculated by integer addition of five displayed category counts; residual calculated as displayed total minus subtotal. Fresh independent fragment readback reproduced all counts and arithmetic; denominator completeness remains unresolved.",
       "categories": [
         {
           "ats": 1,

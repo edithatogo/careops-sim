@@ -5,7 +5,7 @@
   "parameter_ids": [
     "ed.demandcasemix.arrivals"
   ],
-  "claim": "AIHW Hospitals at a glance Table 2 reports 9,094,312 emergency department presentations (total row, 2024–25). This is a count of presentation events at Australian public-hospital emergency departments, not a count of unique people and not an arrival rate or temporal process. Table 2 labels its accompanying denominator as all presentations. The five triage-category counts sum to 9,091,132, which is 3,180 below the displayed total; this discrepancy is preserved for independent review and no replacement total or reconciliation is inferred.",
+  "claim": "AIHW Hospitals at a glance Table 2 reports 9,094,312 emergency department presentation events for 2024–25 at the Australian public-hospital emergency departments represented in the named database. This is the displayed annual aggregate total, not unique people, an arrival rate, a temporal process or a generic/Cairns ED default. The accompanying total denominator is all presentations.",
   "primary_source": {
     "source_kind": "publication",
     "url": "https://www.aihw.gov.au/hospitals/overview/hospitals-at-a-glance",
@@ -24,11 +24,11 @@
     "licence_access": "Publicly accessible AIHW webpage, no authentication required. AIHW copyright page states website material that can be copied or downloaded is CC BY 4.0, subject to listed exclusions and any item-specific terms; attribution required. AIHW attribution for modified material: ‘Based on Australian Institute of Health and Welfare material.’ Copyright terms checked at https://www.aihw.gov.au/copyright on 2026-10-01.",
     "accessed_at": "2026-10-01",
     "transformation": {
-      "description": "Direct transcription of Table 2 Presentations row, Total column. Source snapshot is the unmodified raw HTML byte slice from the last <table before the exact caption through the next </table>, inclusive (1,257 bytes; SHA-256 af58434a6d26225ae52cc5923e086d361c8daf29ae0658417c553ed75b9c6b2b). Independently fetched whole pages had different SHA-256 digests, but this exact table fragment was byte-identical in both; fresh independent fragment readback remains pending. No rate conversion or category summation. Five displayed triage counts sum to 9,091,132, 3,180 below the displayed total; the discrepancy remains unexplained.",
+      "description": "Direct transcription of Table 2 Presentations row, Total column. Exact unmodified raw HTML fragment from the last <table before the caption through the next </table>, inclusive: 1,257 bytes. Independent fresh retrieval reproduced the recorded fragment SHA-256 and total cell. No rate conversion or category summation is applied to this claim.",
       "input_units": "presentations (count)",
       "output_units": "presentations (count)"
     },
-    "verification": "partially_verified"
+    "verification": "verified"
   },
   "report_lineage": {
     "report_sha256": "213e5086baaf0a5319331f575794887e25919b29a0da6d25be8d1bc8aa76b1fd",
@@ -37,30 +37,30 @@
     "line_count": 1
   },
   "review": {
-    "reviewer": "worker (gpt-6.1-sol)",
+    "reviewer": "CareOps coordinator",
     "reviewed_at": "2026-10-01",
-    "outcome": "needs_review",
-    "notes": "Candidate transcription only. Bound original and independently fetched whole pages yielded byte-identical raw Table 2 fragments, but no post-rebinding independent fragment readback has been accepted. The 3,180 category subtotal difference remains unexplained. This count is not an arrival process or generic ED default."
+    "outcome": "accepted",
+    "notes": "Accepted solely as national annual aggregate benchmark transcription. The independent receipt overall remains partial for triage reconciliation: counts sum to 9,091,132, 3,180 below total. See companion acuity candidate; do not infer missing category, rate, arrival process or local default."
   },
   "independent_readback": {
-    "reviewer": "pending independent reviewer",
+    "reviewer": "p11_aihw_table_review independent worker",
     "reviewed_at": "2026-10-01",
-    "outcome": "unresolved",
-    "reason": "Earlier whole-page readback was partial because page hashes differed. Source pin has been narrowed to the exact raw Table 2 fragment; an independent reviewer must freshly retrieve, extract and hash that fragment and disposition the total/subtotal discrepancy before this record can pass.",
-    "readback_reference": "pending coordinator-assigned independent readback receipt",
+    "outcome": "pass",
+    "reason": "Scoped pass for annual aggregate total only: independent readback explicitly corroborates the exact fragment, total cell, cohort, period and denominator. Overall table reconciliation remains partial; the separate acuity candidate retains the unexplained 3,180 residual.",
+    "readback_reference": "conductor/evidence/p1.1-aihw-table-fragment-readback-20261001.md",
     "source_hash_recomputation": {
-      "retrieved_bytes_sha256": "345408734c93fbba79070e4b737be1f2f4f3d78390ffae1da0d65d1c8aa84728",
-      "matches_recorded_hash": false
+      "retrieved_bytes_sha256": "af58434a6d26225ae52cc5923e086d361c8daf29ae0658417c553ed75b9c6b2b",
+      "matches_recorded_hash": true
     },
     "locator_evidence": {
-      "located": false,
-      "locator_checked": "Pending fresh independent extraction of exact Table 2 raw HTML byte fragment",
-      "evidence_reference": "pending post-rebinding readback receipt"
+      "located": true,
+      "locator_checked": "Presentations row, Total column (9,094,312); denominator cross-reference: Proportion of all presentation (%) row, Total column (100%)",
+      "evidence_reference": "conductor/evidence/p1.1-aihw-table-fragment-readback-20261001.md"
     },
     "transformation_evidence": {
-      "reproduced": false,
-      "method": "Pending independent raw table-fragment extraction and total-cell transcription",
-      "comparison": "Not yet performed against the narrowed source snapshot."
+      "reproduced": true,
+      "method": "Fresh official-page retrieval and exact raw Table 2 byte extraction; independent total-cell transcription",
+      "comparison": "Fragment digest matches; displayed total 9,094,312 and total denominator 100% match. No acuity distribution accepted."
     }
   }
 }

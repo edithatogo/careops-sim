@@ -63,7 +63,7 @@ response template are in [the E0/C0 review brief](../../evidence/p0.2-e0-c0-owne
 
 Entry: P0. May run alongside P2 and engine development.
 
-- [ ] P1.1 Transcribe and verify supplied public arrival/case-mix, pathway and hospital-boundary
+- [x] P1.1 Transcribe and verify supplied public arrival/case-mix, pathway and hospital-boundary
   inputs, source definitions/licences and open model examples; search only
   missing or conflicting evidence. Save
   citations, extraction locations and reproducible transforms, not just links.
