@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "record_id": "p1-diagnostic-turnaround-van-der-velde-2022",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.durations.turnaround"
+  ],
+  "claim": "The retrospective cohort's Table 1 reports diagnostic turnaround time (TAT) of 51.1 minutes (median; IQR 41.1–65.0) for 23,718 analyzed ED visits. Methods define TAT as elapsed time from ED order of the standardized laboratory panel to the last result of all panel tests reported in the EHR. It therefore spans order-to-laboratory arrival and laboratory processing/reporting, and does not isolate active work from queue, transport, or processing time. The cohort comprised adult visits at University Medical Center Utrecht, Netherlands, with the standard 14-test internal-medicine laboratory panel ordered, from January 2017 through January 2020. Repeated visits were separate events and the first qualifying panel order per visit was used. Of 24,727 eligible visits, 290 with incomplete performed tests, 6 with ambiguous daylight-saving transition times, and 713 outlier-trimmed visits (2.9%) were excluded, leaving 23,718. This is an elapsed diagnostic TAT summary, not an intrinsic active-work distribution, report-review interval, or generic default.",
+  "primary_source": {
+    "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9768765/fullTextXML",
+    "doi": "10.1186/s12873-022-00763-w",
+    "source_kind": "publication",
+    "revision": "PMC9768765.2; BMC Emergency Medicine22 (2022), article207, DOI10.1186/s12873-022-00763-w, published2022-12-21; exact EuropePMC full-text XML retrieved2026-10-01. Primary XML supersedes preparation README metadata.",
+    "location": {
+      "kind": "publication",
+      "section": "Methods: Patient selection and Measures and outcomes; Results",
+      "paragraph": "Methods defines the TAT order and endpoint; Results reports cohort exclusions and analyzed sample.",
+      "table": "Table 1 - Baseline characteristics",
+      "field": "Total number of ED visits; TAT (in minutes; median + IQR)"
+    },
+    "source_sha256": "b23547b1d90b4045cccf9caac4bea8d02abfc6cce65390b9052c4d835f78d0b9",
+    "population": "Adult ED visits at University Medical Center Utrecht with the standard 14-test internal-medicine laboratory panel ordered. Repeated qualifying visits were analyzed as separate events; first qualifying panel order was used per visit.",
+    "period": "January 2017 to January 2020.",
+    "units": "Elapsed minutes; Table 1 reports median and interquartile range across analyzed visits (n=23,718).",
+    "licence_access": "Public full-text XML in PMC/Europe PMC; article states Creative Commons Attribution 4.0 International (CC BY 4.0). Underlying anonymized UPOD data are not included and are available from the corresponding author on reasonable request.",
+    "accessed_at": "2026-10-01",
+    "transformation": {
+      "description": "Directly transcribed the reported Table 1 median, IQR, and analyzed cohort count; no unit conversion, fitting, decomposition, or inference. Event boundaries are transcribed from Methods.",
+      "input_units": "Minutes elapsed; cohort count in ED visits.",
+      "output_units": "Minutes elapsed; cohort count in ED visits."
+    },
+    "verification": "verified"
+  },
+  "report_lineage": {
+    "report_sha256": "1a4def94c97f137b9d6283b26629cb38157dbb7f4ffc9f1cceceef2384d8a9a6",
+    "section": "R12 minimum evidence requirements: direct primitive timestamps and provenance boundary",
+    "line_start": 226,
+    "line_count": 2
+  },
+  "review": {
+    "reviewer": "CareOps coordinator",
+    "reviewed_at": "2026-10-01",
+    "outcome": "accepted",
+    "notes": "Source summary only; no generic service-time distribution or result-review interval. conductor/evidence/p1.2-support-source-readback-20261001.md"
+  },
+  "independent_readback": {
+    "reviewer": "CareOps coordinator independent source reviewer",
+    "reviewed_at": "2026-10-01",
+    "outcome": "pass",
+    "reason": "Fresh source-byte digest, XML metadata, Table1 TAT cell and methods/cohort definitions reproduce exactly; scope is reported elapsed-TAT summary only.",
+    "readback_reference": "conductor/evidence/p1.2-support-source-readback-20261001.md",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "b23547b1d90b4045cccf9caac4bea8d02abfc6cce65390b9052c4d835f78d0b9",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": true,
+      "locator_checked": "XML Table1 Baseline characteristics: TAT median/IQR and n; Methods Patient selection and Measures/outcomes; Results exclusions",
+      "evidence_reference": "conductor/evidence/p1.2-support-source-readback-20261001.md"
+    },
+    "transformation_evidence": {
+      "reproduced": true,
+      "method": "Direct independent cell transcription; cohort integer subtraction; no fit/decomposition",
+      "comparison": "51.1 minutes, IQR41.1–65.0 and n23,718 match; 24,727−290−6−713=23,718."
+    }
+  }
+}
