@@ -87,7 +87,7 @@ source-derived record from its original table and transformation steps.
 
 Entry: P0; independent of P1 until the P3 join.
 
-- [ ] P2.1 Reconcile supplied staff/agent attributes, task priorities, zone/skill eligibility,
+- [x] P2.1 Reconcile supplied staff/agent attributes, task priorities, zone/skill eligibility,
   interruption/switching/handover and shift/break behavior; identify public evidence
   or simple explicit rules, and where direct observation/elicitation is required.
   Specify eligible-action snapshots, persistent assignments, interruption ancestry,

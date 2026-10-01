@@ -76,7 +76,8 @@ class SchedulingTests(unittest.TestCase):
         accepted={t['id'] for t in catalog['tasks'] if t['accepted']}
         candidates={t['id'] for t in tasks.select(catalog,accepted,20)}
         self.assertNotIn('P1.4',candidates)  # Accepted P1.4 is no longer a preparation candidate.
-        self.assertIn('P2.1',candidates)
+        self.assertNotIn('P2.1',candidates)  # P2.1 leaves accepted; P2.2 is next.
+        self.assertIn('P2.2',candidates)
         self.assertNotIn('Q1.1',[t['id'] for t in tasks.select(catalog,accepted,20)])
         invalid=copy.deepcopy(catalog)
         by_id_invalid={t['id']:t for t in invalid['tasks']}
