@@ -509,12 +509,11 @@
           "sha256": "0bca73e4cba6ef58db3e6cd751f8fb6f3f59675c3e33eeae0e7498f8b9792cfc"
         }
       ],
-      "acquisition_plan": "Acquire linked ED and bed-management records identifying offer eligibility for the patient, destination compatibility, offer start and persistence/expiry/withdrawal, time/calendar, cohort/site/period, eligible denominator and competing non-ED demand. Keep raw discharges and ward simulation distinct from ED-facing offers. Retain as unresolved until source/readback supports the event stream; no synthetic shape implies an empirical rate.",
+      "acquisition_plan": "Acquire linked ED and bed-management records identifying offer eligibility for the patient, destination compatibility, offer start and persistence/expiry/withdrawal, time/calendar, cohort/site/period, eligible denominator and competing non-ED demand. Keep raw discharges and ward simulation distinct from ED-facing offers. Retain as unresolved until source/readback supports the event stream; no synthetic shape implies an empirical rate. Additional runtime review needs: Validate finite offer records with compatible destination, start, persistence/expiry, withdrawal and competing-demand context. Verify acceptance/bed offer does not release ED occupancy before physical departure; boarding remains a separate observed output and is never substituted by a sampled delay.",
       "candidate_families": [],
       "candidate_status": "unselected; no fit, parameters, support or sampler version established",
       "downstream_gates": [
-        "Validate finite offer records with compatible destination, start, persistence/expiry, withdrawal and competing-demand context.",
-        "Verify acceptance/bed offer does not release ED occupancy before physical departure; boarding remains a separate observed output and is never substituted by a sampled delay."
+        "Validate offer destination, availability/expiry and withdrawal; verify offer acceptance does not release ED occupancy before actual departure."
       ]
     },
     "ed.hospitalinterfaces.transfertransport": {

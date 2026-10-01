@@ -921,17 +921,15 @@
           "sha256": "6b6dd30097707144d603c7cbd24314d4031a8056635b35a0def41c8df3680801"
         }
       ],
-      "acquisition_plan": "Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "acquisition_plan": "Acquire primitive work start/stop events or separately defined elapsed intervals with role/task/site/cohort, concurrency, interruption, censoring and source precision. Never infer a fit or bounds from summaries. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required. Additional runtime review needs: Macro may evaluate the whole elapsed order-to-last-result interval only as an aggregate boundary. Micro must use separately evidenced non-overlapping components and must not also sample aggregate turnaround. Keep result availability-to-clinician review separate from turnaround.",
       "candidate_families": [
         "empirical ECDF",
         "gamma",
         "lognormal"
       ],
-      "candidate_status": "Unselected Macro-only candidates for the whole elapsed interval; Micro requires a non-overlapping, independently evidenced decomposition. No fit, parameters, support or sampler version established.",
+      "candidate_status": "unselected; Unselected Macro-only candidates for the whole elapsed interval; Micro requires a non-overlapping, independently evidenced decomposition. No fit, parameters, support or sampler version established.",
       "downstream_gates": [
-        "Macro may evaluate the whole elapsed order-to-last-result interval only as an aggregate boundary.",
-        "Micro must use separately evidenced non-overlapping components and must not also sample aggregate turnaround.",
-        "Keep result availability-to-clinician review separate from turnaround."
+        "A turnaround fixture must name included components and distinguish report availability from clinician review."
       ]
     },
     "ed.durations.reportreviewdelay": {
@@ -1020,7 +1018,7 @@
       ],
       "acquisition_plan": "Acquire linked admission/transfer-ready and physical departure events plus an ongoing-boarder census at cutoff; verify terminal events, time precision, destination, censoring and operational resource release. Retain as an observed outcome; do not fit a generative boarding duration from definitions or completed episodes alone.",
       "candidate_families": [],
-      "candidate_status": "Output-only observed target; no generative candidate family, fit, parameter, support or sampler.",
+      "candidate_status": "unselected; Output-only observed target; no generative candidate family, fit, parameter, support or sampler.",
       "downstream_gates": [
         "E0 admission fixture must anchor provisional boarding and actual terminal departure; prove no double counting with service, bed offer, acceptance, transport, or recurrent care."
       ]

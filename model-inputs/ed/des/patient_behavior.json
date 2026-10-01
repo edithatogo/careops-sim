@@ -104,7 +104,7 @@
       "status": "proposed",
       "parameter_id": "ed.patientbehavior.abandonment",
       "semantic_name": "Patient abandonment behavior",
-      "definition": "Candidate generative abandonment applies only to the enabled leaving-without-being-seen pathway after its waiting-state origin, event endpoint, eligible denominator, competing care, and censoring rules are defined. Cross-sectional LWBS proportions are not a time hazard or individual patience distribution.",
+      "definition": "Patient-behaviour policy input for a single abandonment event in the eligible waiting risk set, linked to patience and competing care; the pathway abandonment edge consumes its event without another draw.",
       "owner": "CareOps ED domain",
       "consumer": "Proposed CareOps ED model/config; Kairos 03 Flow",
       "subsystem": "DES",
@@ -158,7 +158,7 @@
       },
       "evidence_class": "not_yet_assessed",
       "confidence_limitations": "Source verification is not transferable parameter or empirical model acceptance. No transferable parameter value/range accepted; Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review.",
-      "rationale": "The accepted source is an unresolved evidence gap: exact exits are usually unknown and the current cohort, event mapping, denominator, and competing outcomes are unavailable. No probability or hazard is inferred; any conditional categorical or survival family remains unselected.",
+      "rationale": "The accepted source is an unresolved evidence gap: exact exits are usually unknown and the current cohort, event mapping, denominator, and competing outcomes are unavailable. No probability or hazard is inferred; any conditional categorical or survival family remains unselected. Pair with ed.despathways.abandonment as terminal event consumer, not an independent generative exit mechanism; no duplicate draw or separate hazard is selected.",
       "provenance": {
         "source": "model-inputs/ed/des/evidence/p1-patient-patience.json",
         "version": "P1 evidence catalogue 2026-10-01; source revisions preserved in linked records",
@@ -175,12 +175,13 @@
       },
       "dependence": {
         "groups": [
-          "patient_behavior"
+          "patient_behavior",
+          "patient_exit_single_event"
         ],
         "latent_factors_correlations": "Unestimated; preserve acuity, case type, role, pathway, calendar and destination conditioning as applicable",
         "temporal_persistence": "Unestimated; offers, calendars and assignment lifecycles cannot be independent instantaneous draws",
         "conditional_sampling_order": "Deferred to P3/E0 reviewed domain contract; no future disposition leakage",
-        "independence_assumption": "No independence asserted; joint data or explicit reviewed synthetic assumption required"
+        "independence_assumption": "One shared abandonment/patience competing-event policy; no independent second pathway-exit draw."
       },
       "variability_epistemic": {
         "within_run_variability": "Unknown; no selected sampler or distribution",
@@ -512,7 +513,7 @@
           "sha256": "4bca51cd494e12c3d85fce0a9b2b3f2bf0a4c03bc20f928f6734c03a1cf7ccb2"
         }
       ],
-      "acquisition_plan": "Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required.",
+      "acquisition_plan": "Acquire eligible waiting-state entry, exact or interval-censored departures, competing care and cutoff census with conditioning and timestamp uncertainty. Deferred mobility/compliance details need separate observation and scope review. Owner: CareOps ED domain. Bind source/version/licence/hash and independent readback; P3 fit/holdout and P4 synthetic review remain required. Bind the single policy-event producer and terminal-edge consumer with ed.despathways.abandonment; P3/E0 must test no duplicate exits and compatible censoring/risk-set definitions.",
       "candidate_families": [
         "conditional categorical table"
       ],
