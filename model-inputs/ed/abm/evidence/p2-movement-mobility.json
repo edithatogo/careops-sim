@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "record_id": "p2-movement-mobility-huguet-2025-attempt1",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.spatialabm.walkingspeedvariation"
+  ],
+  "claim": "This bound version-of-record XML describes consenting healthcare professionals wearing anonymized UWB tags at Le Corbusier Hospital ED, Firminy, France, during 7 March–21 April 2022. Methods says 27 tags and lists eight staff subcategories; Results says 28 tags and reports 16,413,096 timestamped coordinates in 315 sequences. Preserve this 27-versus-28 discrepancy as reported; it is unresolved here. Locations were recorded at 5 Hz as coordinates with timestamps, then aggregated into 10-second windows to reduce noise. The movement measure is hourly walking distance in metres: Euclidean straight-line displacement between coordinates from the same tag, aggregated per hour. This is distance, not elapsed movement time or speed; the described method does not provide speed observations, locomotion-mode-stratified speed evidence, or a route graph/obstacle-constrained path. Staff job subcategories are not patient or locomotion modes. The source does not establish patient mobility or assistance needs, walk/wait/work from location alone, a universal speed, transferability to Cairns, or a per-mode distribution.",
+  "primary_source": {
+    "url": "https://doi.org/10.1038/s43856-025-00793-y",
+    "doi": "10.1038/s43856-025-00793-y",
+    "source_kind": "publication",
+    "revision": "2025 version of record; bound Europe PMC fullTextXML snapshot, SHA-256 identifies exact captured bytes",
+    "location": {
+      "kind": "publication",
+      "section": "Methods; Results",
+      "paragraph": "UWB tracking population and period; data smoothing; hourly walking-distance calculation; Results coordinate/tag count",
+      "anchor": "Europe PMC XML <p> elements containing \"An IPS based on UWB using multiple anchors and 27 tags\", \"10-second time windows\", \"hourly walking distance\", and \"recorded by the 28 tags\""
+    },
+    "source_sha256": "740484986a5febe4bb847e2080d89a58e58987c75c81e4d934a9cf2c7a418e5b",
+    "population": "Consenting healthcare professionals (assistant nurses, triage nurses, ICU nurses, waiting-room nurses, short-stay-unit nurses, managers, doctors and on-duty doctors) wearing anonymized tags at Le Corbusier Hospital emergency department, Firminy, France; Methods reports 27 tags while Results reports 28 tags. Patients were not the tracked population.",
+    "period": "7 March to 21 April 2022 (46-day study period).",
+    "units": "Location coordinates and timestamps recorded 5 times per second; smoothing windows of 10 seconds; hourly Euclidean displacement aggregated as distance in metres per hour. No elapsed movement-time measure or speed unit/value is reported by this method.",
+    "licence_access": "Europe PMC fullTextXML snapshot of the open-access article; XML states Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0). Source text is described only; no adapted source material is redistributed.",
+    "accessed_at": "2026-10-01",
+    "transformation": {
+      "description": "Read the locally bound Europe PMC XML and extracted source-defined population, sampling cadence, smoothing window and hourly straight-line distance method into a descriptive evidence claim. Kept the Methods/Results tag-count discrepancy explicit. No coordinates were transformed and no numeric speed, mode distribution, fit or default was calculated.",
+      "input_units": "Publication XML text; timestamped planar coordinates; 5 Hz sampling; 10-second aggregation windows; metres and hours as stated for the distance measure.",
+      "output_units": "Qualitative method/provenance statement distinguishing sampling cadence, smoothing duration, hourly distance, elapsed time and speed; no model speed value."
+    },
+    "verification": "partially_verified"
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Spatial movement and task trips",
+    "line_start": 21,
+    "line_count": 7
+  },
+  "review": {
+    "reviewer": "coordinator/root",
+    "reviewed_at": "2026-10-01",
+    "outcome": "needs_review",
+    "notes": "Worker extraction only. Coordinator review and independent primary-source readback are pending; this record is not accepted for empirical use."
+  },
+  "independent_readback": {
+    "reviewer": "coordinator/root (pending)",
+    "reviewed_at": "2026-10-01",
+    "outcome": "unresolved",
+    "reason": "No independent retrieval/readback has been performed. The worker inspected the bound local snapshot only; coordinator must retrieve the exact version of record, recompute the byte hash, and reproduce the cited methods and discrepancy.",
+    "readback_reference": "pending coordinator readback",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "740484986a5febe4bb847e2080d89a58e58987c75c81e4d934a9cf2c7a418e5b",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": false,
+      "locator_checked": "Worker located the stated XML paragraphs in the bound local snapshot; independent locator check pending.",
+      "evidence_reference": "pending coordinator readback"
+    },
+    "transformation_evidence": {
+      "reproduced": false,
+      "method": "Worker transcribed the source-defined sampling, smoothing and displacement method; independent reproduction pending.",
+      "comparison": "No independent comparison has been completed."
+    }
+  }
+}
