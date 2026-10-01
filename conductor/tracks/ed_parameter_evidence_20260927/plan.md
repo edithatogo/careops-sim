@@ -74,7 +74,7 @@ Entry: P0. May run alongside P2 and engine development.
   Retrieve the Gerdtz/Bucknall triage table and IHACPA clinician-time report; distinguish
   mean-only evidence, incomplete fits, synthetic defaults and principal-activity sampling.
   Separate physical bay count from staffed/open capacity and monitoring/equipment capability, closures and surge calendars. Keep a dated as-operated register; drawing symbols cannot establish usable beds.
-- [ ] P1.3 Populate DES records with evidenced ranges, candidate distributions,
+- [x] P1.3 Populate DES records with evidenced ranges, candidate distributions,
   dependencies and explicit assumptions/gaps. Test units, provenance, probability
   sums and impossible combinations; independently review each source extraction.
   For each empirical claim, record primary URL/DOI, edition/revision, page/table/field, population/period, units, licence, access date and transformation; link the report excerpt separately. Citation tokens alone are unresolved. Record verification outcome and reviewer.
