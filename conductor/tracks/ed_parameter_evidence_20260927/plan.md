@@ -78,7 +78,7 @@ Entry: P0. May run alongside P2 and engine development.
   dependencies and explicit assumptions/gaps. Test units, provenance, probability
   sums and impossible combinations; independently review each source extraction.
   For each empirical claim, record primary URL/DOI, edition/revision, page/table/field, population/period, units, licence, access date and transformation; link the report excerpt separately. Citation tokens alone are unresolved. Record verification outcome and reviewer.
-- [ ] P1.4 Conductor — review and verify phase (workflow.md).
+- [x] P1.4 Conductor — review and verify phase (workflow.md).
 
 Exit: P-R2 DES evidence pack, with unknowns explicit. Manual check: reproduce a
 source-derived record from its original table and transformation steps.
