@@ -1,0 +1,65 @@
+{
+  "schema_version": 2,
+  "record_id": "p2-layout-geometry-amr-hub-4f3f6c3-attempt2",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.spatialabm.graphtopology"
+  ],
+  "claim": "The bound AMR-Hub code example at commit 4f3f6c32872c4b0a1486b47f82c8272c34f70db5 documents a configurable DXF-to-room-geometry method. The extractor reads a DXF-derived GeoDataFrame with a Layer column, polygonises configured room-boundary linework, filters point room labels by configured label layer/floor prefix, applies configured polygon corrections, optionally normalises shared wall faces to a midline, and projects configured door-layer linework grouped by EntityHandle onto room boundaries. The example configuration names ROOM_BOUNDARIES and ROOM_LABELS as polygon and label layers and Internal doors as a door layer; these are example configuration values, not universal layer names. The resulting room polygons are serialised to YAML with zero-thickness wall and door line segments; CAD door swing/leaf geometry is not retained in that YAML. The code assumes indoor local Cartesian coordinates and no CRS, and performs topological operations. It does not identify the source coordinate units, metric scale, georeferencing or a transform. These planar source coordinates are not asserted to be metric coordinates or RFC 7946 GeoJSON coordinates; no GeoJSON conversion is documented in the bounded paths. This is software-method evidence only. No real ED CAD/layout, as-operated capacity, verified connectivity or traversability, accessible route, manual annotation, operational or clinical review, or usable route graph is established. The root LICENSE snapshot identifies the MIT License and UCL-ARC copyright; its exact bytes are separately hash-bound below.",
+  "primary_source": {
+    "url": "https://github.com/UCL-ARC/amr-hub/tree/4f3f6c32872c4b0a1486b47f82c8272c34f70db5",
+    "source_kind": "repository_code",
+    "location": {
+      "kind": "repository_code",
+      "commit": "4f3f6c32872c4b0a1486b47f82c8272c34f70db5",
+      "path": "python-code/src/floorplan_extractor/dxf_polygon_extraction.py",
+      "line_start": 1,
+      "line_count": 2150
+    },
+    "source_sha256": "2b5605a5aa22d2518d2adb7dfc5d89d8af145b0d5255684ddee858d63195204d",
+    "population": "Not applicable: software implementation example; no ED population or site data.",
+    "period": "Not applicable: code snapshot; no observation period.",
+    "units": "Unknown in the bounded source. Coordinates are handled in a local Cartesian plane without a stated unit, metric scale, georeference or transform.",
+    "licence_access": "Root LICENSE independently retrieved from the pinned commit: MIT License, Copyright (c) 2025 UCL-ARC; SHA-256 f22467234c8797cbc2ea4b5729d51b0db11c301c5723ee1abc114fc0b53bb40b. Pinned extractor README and guide hashes are recorded in the coordinator review; source is described, no code redistributed.",
+    "accessed_at": "2026-10-02",
+    "transformation": {
+      "description": "Inspected only the packet-bound AMR-Hub source snapshot and transcribed the documented DXF layers, geometry operations, coordinate assumptions, YAML output, limitations and license. Source bytes were hashed locally. No geometry was extracted or transformed, and no dimensions, units, graph, or default were produced.",
+      "input_units": "Source code and documentation bytes; floorplan coordinate units not stated.",
+      "output_units": "Qualitative method and provenance description only; no geometry values or model units."
+    },
+    "verification": "verified"
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Provisional C2 and P2 gap assessment; route-graph/calibration track",
+    "line_start": 101,
+    "line_count": 15
+  },
+  "review": {
+    "reviewer": "coordinator/root",
+    "reviewed_at": "2026-10-02",
+    "outcome": "accepted",
+    "notes": "Accepted as a bounded software-method and provenance record only. Independent retrieval verified the pinned commit, source hashes, license, extraction behavior, local Cartesian/no-CRS assumption and YAML geometry semantics. Does not supply real ED layout, scale/units, as-operated capacity, accessible routes, clinical validation or a usable graph."
+  },
+  "independent_readback": {
+    "reviewer": "coordinator/root",
+    "reviewed_at": "2026-10-02",
+    "outcome": "pass",
+    "reason": "Independent retrieval of the exact GitHub commit and named raw source files matched the bound snapshots. Code and guide locators reproduce the record method description. Acceptance is limited to software implementation evidence; real-layout and metric assumptions remain unknown.",
+    "readback_reference": "https://github.com/UCL-ARC/amr-hub/commit/4f3f6c32872c4b0a1486b47f82c8272c34f70db5; https://raw.githubusercontent.com/UCL-ARC/amr-hub/4f3f6c32872c4b0a1486b47f82c8272c34f70db5/python-code/src/floorplan_extractor/dxf_polygon_extraction.py; https://raw.githubusercontent.com/UCL-ARC/amr-hub/4f3f6c32872c4b0a1486b47f82c8272c34f70db5/python-code/docs/floorplan_extraction.md",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "2b5605a5aa22d2518d2adb7dfc5d89d8af145b0d5255684ddee858d63195204d",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": true,
+      "locator_checked": "dxf_polygon_extraction.py lines 1565-1602 polygonises configured Layer linework; lines 1805-1866 filters room labels; lines 1868-1910 selects the configured door layer and EntityHandle; lines 2043-2148 composes polygon, correction, shared-wall, open-boundary and door stages. README lines 1-15 describes modules and centreline representation. Guide lines 1-24 states local Cartesian/no CRS and line geometry; lines 50-100 documents example layers and review flags. yaml_construction.py lines 13-20 records the planar/no-CRS assumption and lines 159-225 serialize rooms/walls/doors.",
+      "evidence_reference": "Pinned AMR-Hub raw source paths at commit 4f3f6c32872c4b0a1486b47f82c8272c34f70db5."
+    },
+    "transformation_evidence": {
+      "reproduced": true,
+      "method": "Independently retrieved the GitHub commit object and named raw files, recomputed SHA-256, and compared source statements with pinned code and documentation locators. No DXF extraction or geometry conversion was performed.",
+      "comparison": "Independent byte retrieval matched snapshots for LICENSE f22467234c8797cbc2ea4b5729d51b0db11c301c5723ee1abc114fc0b53bb40b; extractor README 6e7aa6f3efd174eaf0530858e410e1e1a2130b8c3d918d9fb71f77c674028d3a; dxf_polygon_extraction.py 2b5605a5aa22d2518d2adb7dfc5d89d8af145b0d5255684ddee858d63195204d; yaml_construction.py 8e17c361021704e9ff2586f017a0cde30dc0a9df64d2629a03b65dd605277e66; guide 67465579f5e2366c13be347e4be3783cd793a3800adc22964c8ee3c927ebb4c3; example a9cadae8d1b1c7eea9fe4ee671d8b97de1a367056ae85ca32b63f3502946a69a. The method and limitations match the record. Coordinates are local planar/no-CRS with no unit/metric scale; no GeoJSON conversion is established."
+    }
+  }
+}
