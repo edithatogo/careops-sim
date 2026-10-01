@@ -92,7 +92,7 @@ Entry: P0; independent of P1 until the P3 join.
   or simple explicit rules, and where direct observation/elicitation is required.
   Specify eligible-action snapshots, persistent assignments, interruption ancestry,
   first subsequent task and eventual resumption; separate incoming prompts from switches.
-- [ ] P2.2 Verify supplied spatial examples and fill gaps in graphs/layouts, scale/connectivity, trips, speeds,
+- [x] P2.2 Verify supplied spatial examples and fill gaps in graphs/layouts, scale/connectivity, trips, speeds,
   mobility/assistance and routing rules. Record per-agent/task variability and
   contextual effects; classify fatigue/congestion complexity as deferred or justified.
   Include movement modes, O/D purposes, graph revision/access restrictions, sensor
@@ -180,3 +180,6 @@ are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
 commands and reviewer acceptance before dispatch. Parent tasks close only after
 all leaf instances and the original phase acceptance pass. Post-MVP tasks are
 outside this workpack. No Luna execution or qualification is implied by coverage.
+## P2.2 evidence closeout
+
+See [the P2.2 coordinator acceptance](../../evidence/p2.2-coordinator-acceptance-20261002.md) and linked family records. P2.2 is accepted for supplied-source verification and explicit gap inventory only; event-level staff trip intervals, operational access rules and route choice remain unidentified.

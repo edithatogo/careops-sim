@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "record_id": "p2-route-choice-huguet-2025-attempt1",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.spatialabm.routechoice"
+  ],
+  "claim": "Huguet et al. 2025 provide source-specific indoor staff-location and movement-measurement context, not a route-choice calibration dataset. The study records timestamped UWB tag coordinates in one ED and describes hourly walking distance as Euclidean (straight-line) distances between locations of the same tag, aggregated per hour in metres. Its reported location-sequence and hex-grid analyses use time spent in floor-plan cells to classify staff type; expert-defined areas describe activity semantics and include a mixed-use corridor. In the route-relevant methods and results examined (paragraphs 12, 16\u201320, 23 and 40), the source does not specify individual route decisions, decision-time reachable alternatives, a complete choice set, selected path samples, movement purpose per path, graph revision/access constraints, or route interruptions. Hourly Euclidean displacement is not an obstacle-constrained route, route length, or route preference. Therefore route connectivity/access and reachable alternatives remain unknown; no route-preference coefficient, distribution, heuristic or generic default is supported. The reported measurements must not be interpreted as ED-generic policy.",
+  "primary_source": {
+    "url": "https://doi.org/10.1038/s43856-025-00793-y",
+    "doi": "10.1038/s43856-025-00793-y",
+    "source_kind": "publication",
+    "revision": "2025 version of record; Europe PMC fullTextXML snapshot PMC11897186.1, exact captured bytes bound by SHA-256",
+    "location": {
+      "kind": "publication",
+      "section": "Methods; Results; Discussion",
+      "paragraph": "Europe PMC XML anchors Par12, Par16\u2013Par20, Par23 and Par40",
+      "anchor": "Par12 (timestamped staff-tag coordinates and site/period); Par16 (location sequences and hex-grid classification); Par17\u2013Par18 (expert-defined activity regions); Par20 (hourly same-tag Euclidean displacement); Par23 (recorded coordinate/sequence results and classifier); Par40 (activity ambiguity and single-site limitation)"
+    },
+    "source_sha256": "740484986a5febe4bb847e2080d89a58e58987c75c81e4d934a9cf2c7a418e5b",
+    "population": "Consenting healthcare professionals wearing anonymized UWB tags at Le Corbusier Hospital emergency department, Firminy, France. This is a staff-location study; the route-choice record does not treat its participants as patients.",
+    "period": "7 March to 21 April 2022; one emergency department.",
+    "units": "Timestamped positions were collected five times per second. The separately reported distance metric is hourly aggregated same-tag Euclidean displacement in metres. No route length or route-choice unit is reported.",
+    "licence_access": "Bound Europe PMC fullTextXML version-of-record snapshot; article metadata states Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0). This record summarizes the method and does not redistribute adapted source material.",
+    "accessed_at": "2026-10-02",
+    "transformation": {
+      "description": "Read the exact packet-bound Europe PMC XML, checked the route-relevant method/results/discussion anchors and searched the snapshot for route/path/choice terminology. Recorded the source's hourly same-tag Euclidean displacement and cell-based activity/classification methods separately from route-choice. No route events, reachable choice set, graph, path, preference, distribution or default were derived.",
+      "input_units": "Publication XML bytes; timestamped UWB tag coordinates; source-reported hourly displacement in metres.",
+      "output_units": "Qualitative source-method and gap description only; no route-choice model value."
+    },
+    "verification": "partially_verified"
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Spatial movement and task trips",
+    "line_start": 23,
+    "line_count": 5
+  },
+  "review": {
+    "reviewer": "coordinator after independent review by /root/p22_huguet_locations",
+    "reviewed_at": "2026-10-02",
+    "outcome": "accepted",
+    "notes": "Independent retrieval/readback passed. The source reports no route-decision samples or complete decision-time reachable choice sets in the cited movement methods/results. No preference or default is established. Accepted only as source-bound evidence/gap, not an ED operational input or calibration target."
+  },
+  "independent_readback": {
+    "reviewer": "/root/p22_huguet_locations",
+    "reviewed_at": "2026-10-02",
+    "outcome": "pass",
+    "reason": "Independent HTTP retrieval of Europe PMC fullTextXML returned 126,704 bytes and SHA-256 740484986a5febe4bb847e2080d89a58e58987c75c81e4d934a9cf2c7a418e5b matching the packet-bound snapshot. Source and report locators were reproduced; record claims are bounded to the retrieved article text.",
+    "readback_reference": "conductor/evidence/p2.2-routing-rules-route-choice-independent-review-20261002.md",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "740484986a5febe4bb847e2080d89a58e58987c75c81e4d934a9cf2c7a418e5b",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": true,
+      "locator_checked": "Europe PMC XML Par12, Par20, Par40; R5 lines 23\u201329. Route-rule absence is scoped to retrieved fullTextXML, not unreviewed supplements or separately available data.",
+      "evidence_reference": ".artifacts/mvp/source-snapshots/huguet-2025-europepmc-fulltext.xml"
+    },
+    "transformation_evidence": {
+      "reproduced": true,
+      "method": "Independently fetched the Europe PMC fullTextXML endpoint, recomputed the source hash, inspected the stated paragraphs, and compared the candidate and R5 lineage.",
+      "comparison": "Independent retrieval/readback passed. The source reports no route-decision samples or complete decision-time reachable choice sets in the cited movement methods/results. No preference or default is established. R5 lines 23\u201327 describe Huguet separately from Meng at line 29."
+    }
+  }
+}
