@@ -5,7 +5,7 @@
   "parameter_ids": [
     "ed.spatialabm.walkingspeedvariation"
   ],
-  "claim": "This bound version-of-record XML describes consenting healthcare professionals wearing anonymized UWB tags at Le Corbusier Hospital ED, Firminy, France, during 7 March–21 April 2022. Methods says 27 tags and lists eight staff subcategories; Results says 28 tags and reports 16,413,096 timestamped coordinates in 315 sequences. Preserve this 27-versus-28 discrepancy as reported; it is unresolved here. Locations were recorded at 5 Hz as coordinates with timestamps, then aggregated into 10-second windows to reduce noise. The movement measure is hourly walking distance in metres: Euclidean straight-line displacement between coordinates from the same tag, aggregated per hour. This is distance, not elapsed movement time or speed; the described method does not provide speed observations, locomotion-mode-stratified speed evidence, or a route graph/obstacle-constrained path. Staff job subcategories are not patient or locomotion modes. The source does not establish patient mobility or assistance needs, walk/wait/work from location alone, a universal speed, transferability to Cairns, or a per-mode distribution.",
+  "claim": "This bound version-of-record XML describes consenting healthcare professionals wearing anonymized UWB tags at Le Corbusier Hospital ED, Firminy, France, during 7 March\u201321 April 2022. Methods says 27 tags and lists eight staff subcategories; Results says 28 tags and reports 16,413,096 timestamped coordinates in 315 sequences. Preserve this 27-versus-28 discrepancy as reported; it is unresolved here. Locations were recorded at 5 Hz as coordinates with timestamps, then aggregated into 10-second windows to reduce noise. The movement measure is hourly walking distance in metres: Euclidean straight-line displacement between coordinates from the same tag, aggregated per hour. This is distance, not elapsed movement time or speed; the described method does not provide speed observations, locomotion-mode-stratified speed evidence, or a route graph/obstacle-constrained path. Staff job subcategories are not patient or locomotion modes. The source does not establish patient mobility or assistance needs, walk/wait/work from location alone, a universal speed, transferability to Cairns, or a per-mode distribution.",
   "primary_source": {
     "url": "https://doi.org/10.1038/s43856-025-00793-y",
     "doi": "10.1038/s43856-025-00793-y",
@@ -38,29 +38,29 @@
   },
   "review": {
     "reviewer": "coordinator/root",
-    "reviewed_at": "2026-10-01",
-    "outcome": "needs_review",
-    "notes": "Worker extraction only. Coordinator review and independent primary-source readback are pending; this record is not accepted for empirical use."
+    "reviewed_at": "2026-10-02",
+    "outcome": "accepted",
+    "notes": "Accepted for bounded descriptive provenance only after independent retrieval of the Nature version-of-record page and Europe PMC fullTextXML. Methods confirms 27 tags, eight staff subcategories, 5 Hz timestamped coordinates, 10-second smoothing, consented staff population, and hourly Euclidean displacement; Results separately reports 28 tags and 16,413,096 coordinates in 315 sequences. The reported tag-count discrepancy remains unresolved. Not accepted as walking-speed data, movement-mode distribution, patient mobility evidence, route geometry, local calibration, or a numerical model default."
   },
   "independent_readback": {
-    "reviewer": "coordinator/root (pending)",
-    "reviewed_at": "2026-10-01",
-    "outcome": "unresolved",
-    "reason": "No independent retrieval/readback has been performed. The worker inspected the bound local snapshot only; coordinator must retrieve the exact version of record, recompute the byte hash, and reproduce the cited methods and discrepancy.",
-    "readback_reference": "pending coordinator readback",
+    "reviewer": "coordinator/root",
+    "reviewed_at": "2026-10-02",
+    "outcome": "pass",
+    "reason": "Independent retrieval matched the exact captured XML bytes and confirmed each material descriptive statement and the Methods/Results tag-count discrepancy against the version-of-record page.",
+    "readback_reference": "https://www.nature.com/articles/s43856-025-00793-y; https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11897186/fullTextXML",
     "source_hash_recomputation": {
       "retrieved_bytes_sha256": "740484986a5febe4bb847e2080d89a58e58987c75c81e4d934a9cf2c7a418e5b",
       "matches_recorded_hash": true
     },
     "locator_evidence": {
-      "located": false,
-      "locator_checked": "Worker located the stated XML paragraphs in the bound local snapshot; independent locator check pending.",
-      "evidence_reference": "pending coordinator readback"
+      "located": true,
+      "locator_checked": "Nature version-of-record Methods paragraphs on data collection and walking-distance analysis; Results paragraph on coordinate/tag count. Methods reports 27 tags, 5 Hz records, 10-second aggregation and hourly same-tag Euclidean displacement. Results reports 28 tags, 16,413,096 coordinates and 315 sequences.",
+      "evidence_reference": "https://www.nature.com/articles/s43856-025-00793-y"
     },
     "transformation_evidence": {
-      "reproduced": false,
-      "method": "Worker transcribed the source-defined sampling, smoothing and displacement method; independent reproduction pending.",
-      "comparison": "No independent comparison has been completed."
+      "reproduced": true,
+      "method": "Independently fetched Europe PMC fullTextXML, recomputed SHA-256, and located the population, sampling cadence, smoothing interval, distance method and tag counts in the XML. Compared each claim to the Nature version-of-record Methods and Results.",
+      "comparison": "The captured and independently retrieved XML are both 126704 bytes with SHA-256 740484986a5febe4bb847e2080d89a58e58987c75c81e4d934a9cf2c7a418e5b. The claimed cadence, smoothing, population, distance definition, and 27/28 discrepancy match. No speed value or per-mode distribution is reported by this method."
     }
   }
 }
