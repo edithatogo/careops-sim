@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "record_id": "p2-locations-distance-connectivity-huguet-2025-attempt1",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.spatialabm.locations"
+  ],
+  "claim": "Huguet et al. 2025 report a single-site UWB indoor-positioning study at Le Corbusier Hospital ED, Firminy, France (7 March\u201321 April 2022). The paper associates anonymized staff tags with eight staff-type labels: assistant nurses, triage nurses, intensive care unit (ICU) nurses, waiting room nurses, short-stay unit (SSU) nurses, managers, doctors, and on-duty doctors. These are staff labels, not activity-region names or patient/locomotion categories. Separately, a medical-expert panel divided this ED floor plan into subareas and associated activities: care coordination, informatics, transit, care preparation, management, stock, care, cleaning and stock, and other. Source-described examples are the triage nurse office, welcome desk and shift-change meeting room (care coordination); three computer-equipped rooms (informatics); storage rooms with a sink (cleaning/stock); and the critical care unit, treatment rooms and medical imaging unit (care). A large short-stay hospitalization-unit corridor is explicitly mixed Transit/Informatics/Care, where minor care and mobile-computer administration may occur. The source warns that transit-area position alone does not identify activity, and that single-site generalizability may be limited. For staff-label classification, successive same-tag observations separated by less than 30 minutes were grouped into sequences; a hexagonal grid covered the entire site floor plan, with tested hexagon diameters from 1 m to 3.5 m. Per-sequence time proportions in hexagons were features for a random-forest staff-type classifier; its reported best specification used 1.75 m hexagons and 51 selected features. This is a site-specific classification method, not a generic ED location catalogue or an accessible route graph. The separate hourly distance measure computes Euclidean (straight-line, as-the-crow-flies) displacements between coordinates from the same tag and aggregates the resulting distances per hour in metres. It is a source-specific measurement; it does not establish O/D trips, obstacle-constrained routes, route connectivity/choice, patient movement, or a coordinate transform. No source-reported geometry revision, map-matching rule, or transferability result to another ED is established in the bound text; these remain unknown.",
+  "primary_source": {
+    "url": "https://doi.org/10.1038/s43856-025-00793-y",
+    "doi": "10.1038/s43856-025-00793-y",
+    "source_kind": "publication",
+    "revision": "2025 version of record; Europe PMC fullTextXML snapshot PMC11897186.1, exact captured bytes bound by SHA-256",
+    "location": {
+      "kind": "publication",
+      "section": "Methods; Results; Discussion",
+      "paragraph": "Europe PMC XML paragraph anchors Par12, Par16\u2013Par18, Par20, Par23 and Par40",
+      "anchor": "Par12 (site, period and staff labels); Par16 (hex-grid classification method and tested range); Par17\u2013Par18 (expert-defined activity subareas and mixed corridor); Par20 (hourly same-tag Euclidean distance); Par23 (1.75 m best classifier specification); Par40 (transit ambiguity and single-site generalizability limitation)"
+    },
+    "source_sha256": "740484986a5febe4bb847e2080d89a58e58987c75c81e4d934a9cf2c7a418e5b",
+    "population": "Consenting healthcare professionals wearing anonymized UWB tags at Le Corbusier Hospital emergency department, Firminy, France. The source associates tags with eight staff-type labels: assistant nurses, triage nurses, ICU nurses, waiting room nurses, SSU nurses, managers, doctors and on-duty doctors. This location/activity record does not concern tracked patients.",
+    "period": "7 March to 21 April 2022; the activity-region, hex-grid and distance methods refer to this single ED study.",
+    "units": "Hexagon diameter tested from 1 m to 3.5 m; best staff-label classifier specification used 1.75 m hexagons. The separate distance metric is hourly aggregated same-tag Euclidean displacement in metres. No O/D trip distance or route length is reported by this method.",
+    "licence_access": "Bound Europe PMC fullTextXML version-of-record snapshot; article metadata states Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0). This record summarizes the method and does not redistribute adapted source material.",
+    "accessed_at": "2026-10-02",
+    "transformation": {
+      "description": "Read the packet-bound XML paragraphs and extracted the distinct staff-label, expert-defined activity-region, hex-grid classification, and hourly distance semantics. Kept site-specific named areas and the mixed corridor distinct from staff labels and grid cells. Recorded only published ranges/specification and measurement definitions; no coordinates were transformed and no locations, O/D distances, routes, connectivity, map-matching rules, or defaults were inferred.",
+      "input_units": "Publication XML text; site-specific ED floor-plan subareas; hexagon diameters in metres; timestamped tag coordinates; hourly displacement in metres.",
+      "output_units": "Qualitative source-provenance description; reported grid diameter range/specification and hourly distance unit only. No generic model location or route value."
+    },
+    "verification": "partially_verified"
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Spatial movement and task trips",
+    "line_start": 23,
+    "line_count": 3
+  },
+  "review": {
+    "reviewer": "coordinator/root",
+    "reviewed_at": "2026-10-02",
+    "outcome": "accepted",
+    "notes": "Accepted as source-specific location/activity and measurement-method evidence only. Independent full-text retrieval and locator readback confirmed the staff labels, expert-defined subareas, mixed corridor, hex-grid classification, and hourly same-tag Euclidean distance method. The single-site map and categories are not a generic ED location catalogue, route graph, or transferable patient movement model. A second read-only panel reviewer independently fetched the XML and R5 lineage and found no concrete inconsistency; the measured-distance phrase remains limited to same-tag Euclidean displacement aggregated per hour."
+  },
+  "independent_readback": {
+    "reviewer": "coordinator/root",
+    "reviewed_at": "2026-10-02",
+    "outcome": "pass",
+    "reason": "Independent retrieval of Europe PMC fullTextXML matched the bound version-of-record bytes and exact hash. Methods, activity-region definitions, best grid specification and limitations were located and compared against the record. No generic graph or transferable parameter is claimed. A second reviewer independently reproduced the source and report hashes and confirmed the same bounded interpretation.",
+    "readback_reference": "https://www.nature.com/articles/s43856-025-00793-y; https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11897186/fullTextXML",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "740484986a5febe4bb847e2080d89a58e58987c75c81e4d934a9cf2c7a418e5b",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": true,
+      "locator_checked": "Nature version-of-record Methods: staff population/site (paragraph 12), classification sequence and 1\u20133.5 m hexagon range (paragraph 16), expert-defined subareas and mixed corridor (paragraphs 17\u201318), hourly Euclidean distance (paragraph 20), best 1.75 m classifier configuration (paragraph 23); Discussion limitation paragraph 40.",
+      "evidence_reference": "https://www.nature.com/articles/s43856-025-00793-y"
+    },
+    "transformation_evidence": {
+      "reproduced": true,
+      "method": "Independently fetched the Europe PMC XML, recomputed SHA-256, parsed the cited paragraph anchors, and compared the source-defined staff labels, activity areas, classifier grid and distance semantics with this record.",
+      "comparison": "Retrieved XML is 126704 bytes and SHA-256 740484986a5febe4bb847e2080d89a58e58987c75c81e4d934a9cf2c7a418e5b, matching the packet snapshot. Source text confirms staff labels are distinct from activity regions; the mixed corridor can host multiple activities; 1\u20133.5 m hexagons were classifier features with 1.75 m selected in the best specification; hourly distance uses same-tag Euclidean displacements. No generic location set, O/D route, connectivity, patient movement or map-matching transform is supplied."
+    }
+  }
+}
