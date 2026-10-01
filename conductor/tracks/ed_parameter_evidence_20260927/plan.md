@@ -68,7 +68,7 @@ Entry: P0. May run alongside P2 and engine development.
   missing or conflicting evidence. Save
   citations, extraction locations and reproducible transforms, not just links.
   Catalogue specialty/time/calendar-conditioned ED-eligible bed-offer inputs and transfer delays separately from raw hospital discharge counts or sampled boarding times. Record offer persistence/withdrawal and hidden competing-demand assumptions; no universal default follows from report 29.
-- [ ] P1.2 Verify supplied capacities/calendars, triage/clinical-work/diagnostic/cleaning/
+- [x] P1.2 Verify supplied capacities/calendars, triage/clinical-work/diagnostic/cleaning/
   boarding durations, route probabilities and patience evidence. Separate active
   work from elapsed waits/transit; record population and observation limitations.
   Retrieve the Gerdtz/Bucknall triage table and IHACPA clinician-time report; distinguish

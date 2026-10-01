@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "record_id": "p1-boarding-duration-boundary",
+  "evidence_type": "unresolved_gap",
+  "parameter_ids": [
+    "ed.durations.boarding"
+  ],
+  "gap": {
+    "missing_evidence": "A cohort-linked transfer-ready/admission timestamp and physical ED departure timestamp, plus observation-cutoff status for ongoing boarders, are not present in the acquired public METEOR definitions. METEOR 799756 defines physical departure after an ED stay and states that a patient admitted to a ward or bed within the ED has not physically departed until leaving the ED. It does not define the transfer-ready/admission event, establish an empirical generic boarding-duration distribution, or provide patient-level elapsed times or censoring observations. The supplied R29 report recommends boarding as an observed outcome from transfer-ready/admission to physical departure, retaining ED occupancy until physical departure; no primitive duration or default is supported.",
+    "owner": "ED evidence coordinator; obtain approved linked patient-level EDC, admission/transfer-ready and current-census or bed-management data, with operational owners confirming event meanings and physical resource release.",
+    "impact": "Boarding may be represented as an elapsed outcome only when both event boundaries and cohort are observed. No generic boarding duration, distribution, hazard, or default can be calibrated from these definitions. Admission or transfer-ready status must remain distinct from physical ED departure; a boarder continues to occupy ED capacity until the operational location/resource release is recorded. Ongoing episodes at the observation cutoff must be right-censored rather than assigned zero duration or treated as completed. METEOR's departure definition alone does not establish the operational release timestamp or readiness event.",
+    "searches_performed": [
+      "Inspected supplied report 29 SHA-256 f6764b6e89715404bc494c78aa6a3ea582d3e57f978ca68edf7c4ccbc5aa7db6, lines 21-68 (R29 lineage): admission/transfer-ready versus physical departure, boarding as outcome, ED occupancy, and explicit absence of a generic public-data distribution.",
+      "Inspected acquired METEOR 799756 capture at .artifacts/sources/p12-exit/meteor-799756.html, SHA-256 4afadc3e0a1df179e986749c18bab5f05248d7b18cfe2422d608a723f1ef897a; https://meteor.aihw.gov.au/content/799756, Health standard 12/12/2024. Locator: METEOR item 799756, Definition and Guide for use, HTML source lines 269-270. It defines the physical departure date and says a patient admitted to a ward or bed within the ED has not physically departed until leaving the ED; it supplies no transfer-ready timestamp or duration cohort.",
+      "Inspected acquired METEOR 799758 capture at .artifacts/sources/p12-exit/meteor-799758.html, SHA-256 513b916f40ad7ee44a56153e163b1b8c59086408a0f4b6572a232beab377ddc4; https://meteor.aihw.gov.au/content/799758, Health standard 12/12/2024. Locator: METEOR item 799758, definition and collection attributes in the captured HTML. This is a physical departure time field (hhmm), not a transfer-ready/admission event or observed duration dataset.",
+      "Inspected acquired METEOR 796802 capture at .artifacts/sources/p12-exit/meteor-796802.html, SHA-256 cfab3d281f68c663ad8d5fdaaf8364f48759f068e037c2562b503b0f19d861b0; https://meteor.aihw.gov.au/content/796802. Locator: code set rows and Guide for use, captured HTML lines 273-287. Episode-end status distinguishes outcomes including physical transfer and other exits but does not supply transfer-ready time, ongoing-episode census, or generic boarding durations.",
+      "Inspected the packet-bound source acquisition notes .artifacts/sources/p12-exit/README.md: no patient-level records were acquired; EDC alone does not establish transfer-ready/bed-offer timestamps or current-census censoring observations; local operational conformance and timestamp accuracy remain unverified. No online search or access request was performed for this packet."
+    ],
+    "next_action": "Acquire an approved, linked cohort with admission/transfer-ready and physical ED departure timestamps, destination and episode status, plus a census extract at a defined observation cutoff. Confirm timestamp precision/time zone and the resource-release event with the operational owner. Then independently verify source bytes, locators, denominator, censoring, and transformations before any empirical use; retain this gap if those data cannot be obtained."
+  },
+  "report_lineage": {
+    "report_sha256": "f6764b6e89715404bc494c78aa6a3ea582d3e57f978ca68edf7c4ccbc5aa7db6",
+    "section": "Recommended minimum boundary; boarding duration and ED location during boarding",
+    "line_start": 21,
+    "line_count": 48
+  },
+  "review": {
+    "reviewer": "CareOps coordinator/root",
+    "reviewed_at": "2026-10-01",
+    "outcome": "accepted",
+    "notes": "Accepted unresolved-gap inventory only; no empirical duration, hazard, fit, generic/Cairns default or runtime/profile acceptance. Independent source readback: conductor/evidence/p1.2-exit-source-readback-20261001.md."
+  }
+}
