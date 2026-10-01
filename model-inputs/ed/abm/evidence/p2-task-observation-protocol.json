@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "evidence_type": "assumption",
+  "assumption": {
+    "statement": "This is a prospective observation/data-acquisition protocol, not a claim that the specified fields exist in current public sources or local systems and not a simulation behavior rule. Collect decision opportunities and observed outcomes separately, with enough temporal and identity linkage to describe assignment, task choice, incoming prompts, switching, interruptions, and eventual resumption without reconstructing unobserved alternatives.",
+    "scope": "P2.1 evidence completeness and future authorized direct observation or governed event-log extraction for generic ED behavior validation; no patient-identifiable data required in this repository.",
+    "required_observation_fields": {
+      "observation_window": [
+        "site/profile identifier or de-identified site class",
+        "source/system and version",
+        "observation start/end with timezone and clock-quality note",
+        "observer or extraction method",
+        "coverage gaps and exclusions"
+      ],
+      "staff_and_assignment_state": [
+        "pseudonymous staff identifier stable within the authorized dataset",
+        "role/skill credentials relevant to the observed tasks and their effective time interval",
+        "shift/actual-presence state and location/zone at decision time",
+        "persistent patient/room/zone assignment with start/end and whether observed or source-defined"
+      ],
+      "decision_opportunity": [
+        "decision/opportunity identifier and timestamp",
+        "staff identifier",
+        "trigger type: scheduled reassessment, new arrival/request, alarm/page/consult, task completion, movement/supply need, or other source-defined trigger",
+        "active task and state immediately before trigger",
+        "eligible actions at that timestamp, including explicit unknown/uncaptured alternatives",
+        "basis/source for each eligibility or exclusion edge",
+        "priority/tie-break fields actually visible to the staff member, when observable"
+      ],
+      "task_and_prompt_events": [
+        "stable task identifier and task type",
+        "parent task or interrupting-task identifier where applicable",
+        "task start, pause/suspend, resume, completion, abort/cancel timestamps and source confidence",
+        "incoming prompt identifier and source, distinct from staff-initiated task switching",
+        "response category observed: switch, multitask, acknowledge, defer, deflect, or other source-defined category",
+        "first subsequent task after interruptor completion, including none observed and right-censoring"
+      ],
+      "interruption_and_resumption": [
+        "interrupted task identifier and ancestry chain",
+        "interrupting task identifier and ancestry chain",
+        "elapsed active work before interruption if directly measured",
+        "eventual resumption of the same task, no resumption, or unknown; distinguish observation end/censoring",
+        "resumption timestamp and remaining work only when directly observed or measurable",
+        "handover/transfer of responsibility, if explicit; do not infer from signatures"
+      ],
+      "movement_and_supply": [
+        "origin/destination identifiers and graph/layout revision when observed",
+        "trip purpose and whether supply/equipment retrieval",
+        "depart/arrive timestamps and movement mode if directly observed",
+        "separate wait, active work, and transit labels with method/confidence; allow unknown"
+      ],
+      "concurrency_and_context": [
+        "other simultaneous tasks/resources/staff only when explicit events support them",
+        "prompt/task type/location/scenario context and provenance",
+        "break/shift boundary and in-flight task state only when observed",
+        "missingness, censoring, observer disagreement, and data-quality flags"
+      ]
+    },
+    "analysis_rules": [
+      "Use opportunity denominators: count observed actions against captured decision opportunities, and report uncaptured choice-set coverage separately.",
+      "Do not infer ineligible alternatives from non-selection, completed assignment, physical proximity, or absence of an EHR milestone.",
+      "Keep incoming prompt arrivals distinct from staff task switches and response categories.",
+      "Link interruption ancestry explicitly; identify the first subsequent task and eventual same-task resumption separately. Right-censor at observation end.",
+      "Do not derive active work, transit, switching overhead, eventual resumption, or simultaneous resource occupancy from coarse elapsed timestamps without direct supporting events.",
+      "Stratify and report role/site/time coverage and missingness; do not transfer sample rates as generic defaults.",
+      "Record original source bytes or governed extraction query/version and hash in the restricted evidence environment; store only non-sensitive manifests and derived aggregate evidence in this repository."
+    ],
+    "limitations": "The available P2.1 sources do not jointly supply this full observation structure. The task-choice study abstract lacks a complete choice set and task lineage; the interruption abstract lacks eventual resumption and latency; the working-paper assignment lead does not provide a complete eligibility relation. This protocol identifies acquisition needs only.",
+    "owner": "P2 evidence coordinator with local ED operational, observation, and data-governance owners",
+    "validity": "Prospective schema/checklist; revise only through reviewed, source-backed protocol changes. It defines no clinical policy, action probability, frequency, duration, or default."
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "ABM evidence limits and observation requirements",
+    "line_start": 89,
+    "line_count": 9
+  },
+  "review": {
+    "reviewer": "coordinator/root",
+    "reviewed_at": "2026-10-01",
+    "outcome": "accepted",
+    "notes": "Coordinator-authored prospective observation checklist reconciled against P2.1 plan requirements. It is explicitly not a source-derived behavior model or empirical evidence record and does not fill local evidence gaps."
+  },
+  "parameter_ids": [
+    "ed.abmstaffbehavior.agentattributes"
+  ],
+  "record_id": "p2-task-observation-protocol-20261001"
+}
