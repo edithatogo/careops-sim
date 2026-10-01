@@ -1,0 +1,65 @@
+{
+  "schema_version": 2,
+  "record_id": "p2-interruption-resumption-fong-ratwani-abstract-20261001",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.abmstaffbehavior.interruptionresumption"
+  ],
+  "claim": "The captured PubMed abstract for Fong and Ratwani reports that their three-phase framework was applied to 457 interruption episodes captured during 36 hours of observation. It reports immediate suspension of the interrupted task in 348/457 episodes (76.1%), new self-initiated tasks during the interrupting task in 164/457 (35.9%), and no direct resumption of the interrupted task in 284/457 (62.1%). These are descriptive observations for the reported episodes, not generic rates or transition probabilities. The abstract does not state physician count, site count, calendar observation period, episode inclusion details, or coding definitions for suspension and nested work. It provides no eligible-task/choice-set snapshots, first-subsequent-task result, eventual-resumption outcome, or resumption latency; those fields remain unknown. No policy, model default, distribution, or fitted parameter is assigned.",
+  "primary_source": {
+    "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29888519&rettype=abstract&retmode=xml",
+    "doi": "10.1111/acem.13496",
+    "source_kind": "publication",
+    "revision": "Captured PubMed XML abstract response for PMID 29888519; PubMed DateRevised 2022-04-09; NLM PubMed DTD pubmed_250101; abstract representation, not full text",
+    "location": {
+      "kind": "publication",
+      "section": "Abstract\u2014Methods and Results",
+      "paragraph": "Methods paragraph describing the three-phase framework and 457 episodes; Results paragraph reporting 36 observation hours and interruption counts"
+    },
+    "source_sha256": "2f6390e222c7f30dc925b7c7659dc9b6e87d9d3cc99a973034b6afd7de085e46",
+    "population": "Emergency-medicine physician interruption behavior per article title and abstract context; physician count and sites are not stated in the captured abstract.",
+    "period": "36 aggregate observation hours; calendar dates and observation period are not stated in the captured abstract.",
+    "units": "Interruption episodes and aggregate observation hours; counts and percentages copied as reported, with 457 total episodes as the stated episode denominator.",
+    "licence_access": "PubMed abstract XML was retrievable. Captured XML records copyright \u00a9 2018 by the Society for Academic Emergency Medicine; full-text access and licence are not established by this abstract response.",
+    "accessed_at": "2026-10-01",
+    "transformation": {
+      "description": "Transcribed abstract-level methods and results into a bounded narrative; counts and percentages copied as reported without recalculation or inferential transformation.",
+      "input_units": "PubMed XML abstract text",
+      "output_units": "Narrative counts in interruption episodes, aggregate observation hours, and percentages as reported"
+    },
+    "verification": "partially_verified"
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Resumption and switching overhead; opening Fong and Ratwani evidence paragraph",
+    "line_start": 49,
+    "line_count": 5
+  },
+  "review": {
+    "reviewer": "coordinator/root after independent source readback",
+    "reviewed_at": "2026-10-01",
+    "outcome": "accepted",
+    "notes": "PubMed EFetch XML independently fetched and parsed; all retained counts and limits match the abstract. No eventual resumption, choice-set snapshot, or latency claim. See conductor/evidence/p2.1-source-readback-review-20261001.md. Accepted only within the source scope; no transferable default, policy, probability, distribution, or parameter is accepted."
+  },
+  "independent_readback": {
+    "reviewer": "coordinator/root (separate from packet worker)",
+    "reviewed_at": "2026-10-01",
+    "outcome": "pass",
+    "reason": "PubMed EFetch XML independently fetched and parsed; all retained counts and limits match the abstract. No eventual resumption, choice-set snapshot, or latency claim.",
+    "readback_reference": "conductor/evidence/p2.1-source-readback-review-20261001.md",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "2f6390e222c7f30dc925b7c7659dc9b6e87d9d3cc99a973034b6afd7de085e46",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": true,
+      "locator_checked": "Abstract\u2014Methods and Results",
+      "evidence_reference": ".artifacts/p2-readbacks/fong-ratwani.xml"
+    },
+    "transformation_evidence": {
+      "reproduced": true,
+      "method": "Independently fetched the exact URL, recomputed SHA-256, parsed the captured XML abstract, and compared each included claim to the located source passage.",
+      "comparison": "PubMed EFetch XML independently fetched and parsed; all retained counts and limits match the abstract. No eventual resumption, choice-set snapshot, or latency claim."
+    }
+  }
+}

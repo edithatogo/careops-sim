@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "record_id": "p2-assignment-continuity-meng-final-source-gap",
+  "evidence_type": "unresolved_gap",
+  "parameter_ids": [
+    "ed.abmstaffbehavior.assignment"
+  ],
+  "gap": {
+    "missing_evidence": "The packet requires the final Meng et al. article or its supplement to verify the assignment formation and persistence fields. The locally captured assignment-bearing file is the authors' 2018 working-paper PDF, not the final edition, and cannot substitute for that required source. It is a partial lead only: printed p. 6, section 3, paragraph beginning 'The patient experience follows a process typical', states that each room belongs to a fixed cluster of three or four adjacent rooms, nurses sign up first-come-first-served for a cluster at shift start, and have primary responsibility for patients in those rooms. This draft describes one large urban academic ED (33 main rooms and 7 hallway beds); printed p. 7 reports five months in 2013, 29,430 patients overall, and 15,595 main-room patients after exclusions. Captured draft SHA-256 is a7266404ca41717ee9af43eaa2a69bedc548784a3c0e0378fd81cc61c2be0cfc. These working-paper facts do not establish the required final-edition wording, version, access/licence, or final-source byte hash. The publisher abstract does not state the cluster assignment rule; publisher final PDF and supplement bytes were not captured (HTTP 403 / fetch timeout).",
+    "owner": "P2 evidence coordinator",
+    "impact": "No final-edition source claim can be accepted for the assignment parameter. Assignment unit, start/change/end rules and persistence remain unverified against the required final primary source; no empirical model use, generic policy, cluster size, probability, coefficient, or default is supported by this record.",
+    "searches_performed": [
+      "Inspected the author-hosted Wharton working-paper PDF at https://faculty.wharton.upenn.edu/wp-content/uploads/2018/07/NurseTrack_NB.pdf; confirmed its printed p. 6 assignment paragraph and printed p. 7 study-period/sample paragraph, and recomputed the captured-byte SHA-256 with shasum and Python hashlib.",
+      "Inspected the INFORMS record for DOI 10.1287/msom.2020.0953 and its abstract; the abstract identifies the study data sources and broad finding but does not state the cluster assignment mechanism.",
+      "Attempted local retrieval of the INFORMS final PDF and supplemental PDF; both returned HTTP 403, and the web fetch for the supplement timed out. No final-edition bytes were captured."
+    ],
+    "next_action": "Obtain an authorized final-edition article or supplement copy from INFORMS or the authors, preserve its exact bytes and SHA-256, and verify the assignment passage, locator, population/period, access terms, and any assignment denominator before creating a primary-source claim. Then request independent readback of that exact final source; leave this record unresolved until that succeeds."
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Spatial movement and task trips",
+    "line_start": 29,
+    "line_count": 3
+  },
+  "review": {
+    "reviewer": "worker/p2.1-assignment-attempt1",
+    "reviewed_at": "2026-10-01",
+    "outcome": "needs_review",
+    "notes": "Source-version mismatch preserved as an unresolved gap. R5 report lineage is recorded separately from primary-source provenance. Independent readback remains unresolved and is required before empirical use."
+  }
+}

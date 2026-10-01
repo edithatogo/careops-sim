@@ -1,0 +1,64 @@
+{
+  "schema_version": 2,
+  "record_id": "p2-supply-retrieval-tucker-spear-20261001-attempt1",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.abmstaffbehavior.agentattributes"
+  ],
+  "claim": "Tucker and Spear's abstract-level report of a cross-sectional study across six U.S. hospitals identifies medications, orders, supplies, staffing, and equipment among the most frequent categories of hospital nursing work-system failures. This is structural evidence that supply and equipment failures occur in hospital nursing work. The source is not ED-specific and does not establish an ED supply-retrieval episode rate, origin/destination, search or travel duration, item availability process, retrieval success, or a reusable trip matrix. Those fields remain unknown; no frequency, distribution, policy, or model default is inferred.",
+  "primary_source": {
+    "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pmc&id=1713207",
+    "doi": "10.1111/j.1475-6773.2006.00502.x",
+    "source_kind": "publication",
+    "revision": "PMID 16686887 / PMCID PMC1713207; captured NCBI EFetch XML response containing bibliographic metadata and structured abstract (6,883 bytes); full article text not present in the captured response",
+    "location": {
+      "kind": "publication",
+      "anchor": "PMCID PMC1713207 / Abstract / Principal Findings"
+    },
+    "source_sha256": "2c092524f015f9e4401333d1e662ac611d69e42e5cc21efbf39832800eea042d",
+    "population": "General hospital nursing; six U.S. hospitals, minute-by-minute activity observations of 11 nurses, interviews with six nurses, and surveys in 48 nursing units. The source does not identify the sample as ED nursing.",
+    "period": "Cross-sectional study; observation dates are not stated in the captured structured abstract.",
+    "units": "Categorical work-system failure types. The abstract reports a per-eight-hour-shift failure frequency, but no numeric frequency is used in this record.",
+    "licence_access": "Captured through official NCBI E-utilities as bibliographic metadata and structured abstract. Licence terms for reuse are not established by this capture; no licence is inferred.",
+    "accessed_at": "2026-10-01",
+    "transformation": {
+      "description": "Recomputed SHA-256 of the bound XML and inspected its article metadata and structured Abstract > Principal Findings. Retained only the categorical supply/equipment failure evidence and study-scope limits; omitted all frequencies and made no parameter transformation.",
+      "input_units": "NCBI EFetch XML metadata and structured abstract",
+      "output_units": "Descriptive structural evidence; no numeric parameter"
+    },
+    "verification": "partially_verified"
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Resumption and switching overhead; Tucker and Spear supply/equipment failure sentence",
+    "line_start": 54,
+    "line_count": 4
+  },
+  "review": {
+    "reviewer": "coordinator/root after independent source readback",
+    "reviewed_at": "2026-10-01",
+    "outcome": "accepted",
+    "notes": "PMC EFetch XML independently fetched and parsed; categorical supply/equipment failure evidence and non-ED scope match the abstract. See conductor/evidence/p2.1-source-readback-review-20261001.md. Accepted only within the source scope; no transferable default, policy, probability, distribution, or parameter is accepted."
+  },
+  "independent_readback": {
+    "reviewer": "coordinator/root (separate from packet worker)",
+    "reviewed_at": "2026-10-01",
+    "outcome": "pass",
+    "reason": "PMC EFetch XML independently fetched and parsed; categorical supply/equipment failure evidence and non-ED scope match the abstract.",
+    "readback_reference": "conductor/evidence/p2.1-source-readback-review-20261001.md",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "2c092524f015f9e4401333d1e662ac611d69e42e5cc21efbf39832800eea042d",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": true,
+      "locator_checked": "PMCID PMC1713207 / Abstract / Principal Findings",
+      "evidence_reference": ".artifacts/p2-readbacks/tucker-spear.xml"
+    },
+    "transformation_evidence": {
+      "reproduced": true,
+      "method": "Independently fetched the exact URL, recomputed SHA-256, parsed the captured XML abstract, and compared each included claim to the located source passage.",
+      "comparison": "PMC EFetch XML independently fetched and parsed; categorical supply/equipment failure evidence and non-ED scope match the abstract."
+    }
+  }
+}

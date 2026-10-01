@@ -1,0 +1,64 @@
+{
+  "schema_version": 2,
+  "record_id": "p2-agent-task-context-variation-walter-20261001-attempt1",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.abmstaffbehavior.agentattributes"
+  ],
+  "claim": "The PubMed abstract for a multi-setting observational study reports 1,002.3 hours of observations derived from three earlier studies at a teaching hospital in Sydney, Australia: emergency department doctors (n=40), ward doctors (n=57), and ward nurses (n=104). The study compared task-switching with multitasking and used random-intercepts logistic regression to examine associated factors and variation between clinicians. Strategy use was associated with the nature and complexity of work and the person the clinician was working with; in some settings, time of day, day of week, or the previously chosen strategy also mattered. After the included factors, the abstract reports significant between-clinician variation for ED doctors (p=0.04) and ward staff (p=0.03). These findings are bounded to the reported groups and settings. The abstract does not establish transferable covariates, demographic effects, a variation distribution, effect sizes, or numeric calibration parameters.",
+  "primary_source": {
+    "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=24135815&retmode=xml",
+    "doi": "10.1136/bmjqs-2013-002097",
+    "source_kind": "publication",
+    "revision": "PubMed PMID 24135815 bibliographic abstract record; captured XML",
+    "location": {
+      "kind": "publication",
+      "anchor": "PMID 24135815 / AbstractText (DESIGN, RESULTS, CONCLUSIONS)"
+    },
+    "source_sha256": "870d72b8f2cbeff7f1306668846fa5b89ccbe5b9df25faf45b8ebb1e9006f02a",
+    "population": "Three prior studies at a teaching hospital in Sydney, Australia: ED doctors (n=40), ward doctors (n=57), and ward nurses (n=104); 1,002.3 observation hours in total",
+    "period": "Abstract identifies the source as three previous studies and PubMed records publication in 2014; observation dates are not reported in the bound abstract.",
+    "units": "Observation hours and clinician counts by group; strategy comparisons and statistical associations; event denominator and factor effect sizes are not reported in the abstract.",
+    "licence_access": "Retrieved from official NCBI E-utilities as a bibliographic abstract record. An open licence for the article abstract is not established by this capture; no licence is inferred.",
+    "accessed_at": "2026-10-01",
+    "transformation": {
+      "description": "Parsed the bound PubMed XML bibliographic fields and AbstractText; retained an abstract-level descriptive claim only. No effect size, distribution, or calibration parameter was extracted.",
+      "input_units": "PubMed XML abstract text and bibliographic metadata",
+      "output_units": "Source-bounded descriptive claim; no fitted value or numeric model parameter"
+    },
+    "verification": "partially_verified"
+  },
+  "report_lineage": {
+    "report_sha256": "b9585fc06b4eb007b6d2d6e7b5ac046e39beb1c005fd85dd519907ddb33a442e",
+    "section": "Task choice, continuity and interruptions",
+    "line_start": 39,
+    "line_count": 7
+  },
+  "review": {
+    "reviewer": "coordinator/root after independent source readback",
+    "reviewed_at": "2026-10-01",
+    "outcome": "accepted",
+    "notes": "PubMed EFetch XML independently fetched and parsed; groups, conditioning factors, and residual variation are retained only at the abstract level, without generic effect or distribution. See conductor/evidence/p2.1-source-readback-review-20261001.md. Accepted only within the source scope; no transferable default, policy, probability, distribution, or parameter is accepted."
+  },
+  "independent_readback": {
+    "reviewer": "coordinator/root (separate from packet worker)",
+    "reviewed_at": "2026-10-01",
+    "outcome": "pass",
+    "reason": "PubMed EFetch XML independently fetched and parsed; groups, conditioning factors, and residual variation are retained only at the abstract level, without generic effect or distribution.",
+    "readback_reference": "conductor/evidence/p2.1-source-readback-review-20261001.md",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "870d72b8f2cbeff7f1306668846fa5b89ccbe5b9df25faf45b8ebb1e9006f02a",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": true,
+      "locator_checked": "PMID 24135815 / AbstractText (DESIGN, RESULTS, CONCLUSIONS)",
+      "evidence_reference": ".artifacts/p2-readbacks/walter-multisetting.xml"
+    },
+    "transformation_evidence": {
+      "reproduced": true,
+      "method": "Independently fetched the exact URL, recomputed SHA-256, parsed the captured XML abstract, and compared each included claim to the located source passage.",
+      "comparison": "PubMed EFetch XML independently fetched and parsed; groups, conditioning factors, and residual variation are retained only at the abstract level, without generic effect or distribution."
+    }
+  }
+}
