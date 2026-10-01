@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "record_id": "p1-zhu-consult-senior-ed-staff-observed-mean",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.durations.intrinsicwork"
+  ],
+  "claim": "Zhu et al. report a mean duration of 1.8 minutes for ED-intern task episodes labelled Consulting more senior ED medical staff, across 878 observed episodes (Box 2). The study observed 42 interns from three Melbourne city public teaching-hospital EDs over 390.8 hours between 1 August and 31 December 2006. This is an observed mean for intern task episodes, not a duration distribution, senior clinician active-work duration, or generic/Cairns default. The study calculated task means as total activity time divided by activity frequency. A single researcher observed activities with a stopwatch; where activities were simultaneous, only the principal activity was recorded, so the measure does not identify concurrent resource occupancy.",
+  "primary_source": {
+    "url": "https://www.mja.com.au/system/files/issues/188_09_050508/zhu11159_fm.pdf",
+    "doi": "10.5694/j.1326-5377.2008.tb01765.x",
+    "source_kind": "publication",
+    "revision": "Medical Journal of Australia 2008;188(9):514-519; published 5 May 2008",
+    "location": {
+      "kind": "publication",
+      "page": 516,
+      "table": "Box 2, Time spent on direct patient-related activities, and the predicted frequency of episodes of activity by ED interns over eight 38-hour working weeks",
+      "field": "Consulting more senior ED medical staff: 878 observed episodes; mean duration 1.8 min"
+    },
+    "source_sha256": "ef4338f3e397f42fdaf18f5dc9b13b4a5659d274b7e4cb118de66b28478b5498",
+    "population": "ED interns at three Melbourne city public teaching hospitals: St Vincent's Hospital Melbourne, Royal Melbourne Hospital, and Austin Hospital; row count is observed task episodes, not patients",
+    "period": "Prospective observation 1 August to 31 December 2006; 390.8 total observation-hours; publication 5 May 2008",
+    "units": "Mean minutes per observed intern task episode; n=878 episodes",
+    "licence_access": "MJA © 2008. Official article PDF publicly accessible and retained locally for source review; reuse or redistribution terms were not established by this extraction.",
+    "accessed_at": "2026-10-01",
+    "transformation": {
+      "description": "Transcribed the mean and episode count directly from Box 2; article methods state task mean duration equals total activity time divided by activity frequency. No re-fitting, scaling, or distribution transformation performed.",
+      "input_units": "Observed activity time and activity episode count; source table reports mean duration in minutes",
+      "output_units": "Reported observed mean 1.8 minutes per task episode; 878 episodes"
+    },
+    "verification": "unverified"
+  },
+  "report_lineage": {
+    "report_sha256": "255858dec6c96078a854fc79d704e5fdae262b6ccb5be28ede02fe580d1eddb4",
+    "section": "Australian active-work anchors; Zhu et al. mean and observation limitations",
+    "line_start": 17,
+    "line_count": 5
+  },
+  "review": {
+    "reviewer": "p12_exit_sources",
+    "reviewed_at": "2026-10-01",
+    "outcome": "needs_review",
+    "notes": "Source extraction only. The primary PDF snapshot hash matches the bound acquisition artifact and Box 2 page 516 was inspected. An independent source readback and coordinator acceptance are still required before empirical use. Mean only; no fitted distribution, generic default, or Cairns inference. Principal-activity-only sampling does not capture concurrent occupation."
+  },
+  "independent_readback": {
+    "reviewer": "coordinator/root (pending)",
+    "reviewed_at": "2026-10-01",
+    "outcome": "unresolved",
+    "reason": "Independent readback has not yet been performed. The extraction worker's inspection and local acquisition hash are not an independent acceptance.",
+    "readback_reference": "Pending coordinator independent readback; no independent readback receipt exists yet.",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "ef4338f3e397f42fdaf18f5dc9b13b4a5659d274b7e4cb118de66b28478b5498",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": true,
+      "locator_checked": "PDF journal page 516 (physical PDF page 3), Box 2, row Consulting more senior ED medical staff",
+      "evidence_reference": ".artifacts/sources/p12-work/zhu-et-al-2008-mja.pdf; extraction by pypdf 6.16.1"
+    },
+    "transformation_evidence": {
+      "reproduced": true,
+      "method": "Direct transcription of Box 2; checked methods section on journal page 515 for mean=total activity time/activity frequency.",
+      "comparison": "Table row reports 878 episodes and 1.8 minutes; no new arithmetic or model transformation applied. This is extraction-worker evidence pending independent confirmation."
+    }
+  }
+}

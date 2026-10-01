@@ -1,0 +1,64 @@
+{
+  "schema_version": 2,
+  "record_id": "p1-clinician-time-ihacpa-triage-complex-illness",
+  "evidence_type": "primary_source_claim",
+  "parameter_ids": [
+    "ed.durations.intrinsicwork"
+  ],
+  "claim": "In Table 14 (Standard workflow – nursing), the Triage row and Complex case - illness column reports a clinician-consensus median time of 5 minutes, IQR 4–7 minutes, n=62 respondents. The cell has no adjustment asterisk. The report says adjusted entries are marked and that the other two triage categories remained unchanged after the nursing expert-panel adjustment; therefore this complex-illness cell is the unchanged Delphi consensus estimate. It is a consensus estimate, not observed ED service-time data, and does not establish a generic default or duration distribution.",
+  "primary_source": {
+    "url": "https://www.ihacpa.gov.au/sites/default/files/2022-08/emergency_care_clinician_time_consensus_study_report.docx",
+    "source_kind": "publication",
+    "revision": "Emergency care clinician time consensus study report of final results; cited in document as Health Policy Analysis 2016 / Independent Hospital Pricing Authority, Sydney; DOCX internal revision 20, modified 2017-08-25; official IHACPA resource page published 2022-08-13 and last updated 2023-12-18.",
+    "location": {
+      "kind": "publication",
+      "table": "Table 14 - Standard workflow - nursing",
+      "field": "Triage row; Complex case - illness column"
+    },
+    "source_sha256": "edf01c6360c2458547419eb671a87c0c62d227d834048bb852f4c77532758ee6",
+    "population": "Nursing standard-workflow Delphi consensus respondents; Table 14 reports n=62 for this cell. This is clinician elicitation, not observed patient episodes.",
+    "period": "Consensus elicitation period is not specified in this table/cell; source is the final-results report.",
+    "units": "Consensus median minutes; IQR in minutes; n is the number of respondents as labelled by the report.",
+    "licence_access": "Official IHACPA page publicly provides the DOCX in an accessible format. The page and DOCX do not state a reuse licence; reuse terms remain to be checked. The primary source was retrieved as a 2,585,716-byte DOCX.",
+    "accessed_at": "2026-10-01",
+    "transformation": {
+      "description": "Directly transcribed the single Table 14 Triage / Complex case - illness cell, preserving its median, IQR and respondent count; no conversion or pooling. The report's adjustment footnote and following narrative show this cell is unadjusted/unchanged from the Delphi consensus estimate.",
+      "input_units": "Minutes for consensus estimate and IQR; respondent count n.",
+      "output_units": "Minutes for consensus estimate and IQR; respondent count n."
+    },
+    "verification": "unverified"
+  },
+  "report_lineage": {
+    "report_sha256": "255858dec6c96078a854fc79d704e5fdae262b6ccb5be28ede02fe580d1eddb4",
+    "section": "R6 highest-priority acquisition sequence: IHACPA clinician-time consensus report as candidate source",
+    "line_start": 125,
+    "line_count": 1
+  },
+  "review": {
+    "reviewer": "P1.2.work.clinician worker",
+    "reviewed_at": "2026-10-01",
+    "outcome": "needs_review",
+    "notes": "Source-bounded transcription only. Source verification remains unverified until an independent reviewer recomputes the hash and independently confirms the exact Table 14 cell, consensus statistic, adjustment status and lineage. Not accepted for generic profile use."
+  },
+  "independent_readback": {
+    "reviewer": "pending coordinator independent reviewer",
+    "reviewed_at": "2026-10-01",
+    "outcome": "unresolved",
+    "reason": "Independent readback is pending. The worker's extraction and byte-hash check are not independent source acceptance.",
+    "readback_reference": "Pending coordinator review; the worker result receipt records local extraction commands and hash.",
+    "source_hash_recomputation": {
+      "retrieved_bytes_sha256": "edf01c6360c2458547419eb671a87c0c62d227d834048bb852f4c77532758ee6",
+      "matches_recorded_hash": true
+    },
+    "locator_evidence": {
+      "located": false,
+      "locator_checked": "Independent check pending: Table 14 - Standard workflow - nursing; Triage row; Complex case - illness column.",
+      "evidence_reference": "Pending independent readback. Worker extraction located the cell in the saved DOCX; see result receipt."
+    },
+    "transformation_evidence": {
+      "reproduced": false,
+      "method": "Independent reproduction pending; worker directly transcribed the single cell without conversion.",
+      "comparison": "Pending reviewer confirmation of median, IQR, n, and unadjusted status against source bytes."
+    }
+  }
+}
