@@ -87,15 +87,17 @@ class SchedulingTests(unittest.TestCase):
             self.assertNotIn('P3.4',candidates)
             self.assertIn('E0.4',by_id['P4.1']['dependencies'])
             def first_ready_p4(accepted_ids):
-                for milestone in ('P4.1','P4.2','P4.3'):
+                for milestone in ('P4.1','P4.2','P4.3','P4.4'):
                     task=by_id[milestone]
                     if milestone not in accepted_ids and set(task['dependencies']) <= accepted_ids:
                         return milestone
                 return None
             if by_id['E0.4']['accepted']:
                 next_p4=first_ready_p4(accepted)
-                self.assertIsNotNone(next_p4)
-                self.assertIn(next_p4,candidates)
+                if next_p4 is None:
+                    self.assertTrue(all(by_id[m]['accepted'] for m in ('P4.1','P4.2','P4.3','P4.4')))
+                else:
+                    self.assertIn(next_p4,candidates)
                 before_e0_closeout=accepted-{'E0.4'}
                 before_e0_candidates={t['id'] for t in tasks.select(catalog,before_e0_closeout,20)}
                 self.assertNotIn('P4.1',before_e0_candidates)
@@ -104,8 +106,10 @@ class SchedulingTests(unittest.TestCase):
                 after_e0_closeout=accepted|{'E0.2','E0.3','E0.4'}
                 after_e0_candidates={t['id'] for t in tasks.select(catalog,after_e0_closeout,20)}
                 next_p4=first_ready_p4(after_e0_closeout)
-                self.assertIsNotNone(next_p4)
-                self.assertIn(next_p4,after_e0_candidates)
+                if next_p4 is None:
+                    self.assertTrue(all(by_id[m]['accepted'] for m in ('P4.1','P4.2','P4.3','P4.4')))
+                else:
+                    self.assertIn(next_p4,after_e0_candidates)
         else:
             self.assertIn('P3.4',candidates)
         self.assertNotIn('Q1.1',[t['id'] for t in tasks.select(catalog,accepted,20)])

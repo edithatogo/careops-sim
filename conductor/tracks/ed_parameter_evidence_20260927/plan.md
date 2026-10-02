@@ -146,11 +146,13 @@ Entry: P3 and generic ED E0.4 closeout. This phase produces configuration data, 
   define a separate future Cairns mapping and required local evidence/elicitation.
   Hand off the frozen generic pack to E1 and calibration fixtures to C5.
   Use report 30 temporal crosswalk as a candidate mapping with unknown local availability; require Cairns location boundary, source profiles, correction rules and ETL lineage before treating timestamps as observed.
-- [ ] P4.4 Conductor — review and verify phase (workflow.md).
+- [x] P4.4 Conductor — review and verify phase (workflow.md).
 
 Exit: P-R3/6 and complete synthetic/public-backed input shapes; schema checks pass.
 Manual check: a reader can distinguish observed values, assumptions, ranges and
 uncertainty without inspecting implementation code. Actual loading is tested at P5.
+
+P4 phase review and acceptance: [P4.4 closeout](../../evidence/p4.4-phase-acceptance-20261003.md).
 
 P4.3 is accepted for documentation, future Cairns acquisition mapping, and the
 bounded E1/C5 handoff. See [parent acceptance](../../evidence/p4.3-parent-join-acceptance-20261003.md),
