@@ -38,7 +38,7 @@ jobs:
           fi
           if [ -z "$base" ] || [ "$base" = 0000000000000000000000000000000000000000 ]; then
             echo 'changed=true' >> "$GITHUB_OUTPUT"
-          elif git diff --quiet "$base" HEAD -- Cargo.toml Cargo.lock deny.toml .gitleaksignore requirements-schema-validation.txt crates tests model-inputs tools conductor .gitmodules .github/workflows libs/kairos; then
+          elif git diff --quiet "$base" HEAD -- Cargo.toml Cargo.lock deny.toml .gitleaksignore requirements-schema-validation.txt crates tests model-inputs tools conductor .gitmodules .github/workflows libs/kairos extensions/conductor; then
             echo 'changed=false' >> "$GITHUB_OUTPUT"
           else
             echo 'changed=true' >> "$GITHUB_OUTPUT"
@@ -107,6 +107,7 @@ jobs:
       - name: Unit and integration tests
         run: |
           mkdir -p .artifacts/ci/native
+          set -o pipefail
           cargo +1.98.1 test --workspace --all-features --lib --bins --tests --locked 2>&1 | tee .artifacts/ci/native/tests.log
       - name: Retain bounded failed native log
         if: failure()
@@ -142,6 +143,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          fetch-depth: 0
           persist-credentials: false
           submodules: recursive
       - name: Check Conductor context and exact Kairos contract
@@ -209,7 +211,11 @@ jobs:
             echo "scope detection failed: $SCOPE_RESULT"
             exit 1
           fi
-          if [ "$SCOPE_CHANGED" != true ]; then
+          if [ "$SCOPE_CHANGED" != true ] && [ "$SCOPE_CHANGED" != false ]; then
+            echo "invalid scope output: $SCOPE_CHANGED"
+            exit 1
+          fi
+          if [ "$SCOPE_CHANGED" = false ]; then
             for lane in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT" "$POLICY_RESULT"; do
               if [ "$lane" != skipped ]; then
                 echo "unchanged scope expected skipped lanes; observed $lane"

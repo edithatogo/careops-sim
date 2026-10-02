@@ -139,6 +139,19 @@ def untrusted_contract_errors(workflow):
 
 
 class CiWorkflowTests(unittest.TestCase):
+    def test_scope_requires_explicit_boolean_output(self):
+        for value in ("", "typo", "null"):
+            with self.subTest(value=value):
+                result = run_aggregate(value, ["skipped"] * len(LANES))
+                self.assertNotEqual(result.returncode, 0)
+        self.assertIn("extensions/conductor", scope_script())
+
+    def test_native_failure_cannot_be_masked_by_log_capture(self):
+        native = WORKFLOW.read_text().split("  test:\n", 1)[1].split("  doctest:\n", 1)[0]
+        self.assertIn("set -o pipefail", native)
+        result = subprocess.run(["bash", "-c", "set -o pipefail; false | tee /dev/null"], capture_output=True)
+        self.assertNotEqual(result.returncode, 0)
+
     def test_platform_and_policy_lanes_are_required(self):
         workflow = WORKFLOW.read_text()
         self.assertIn("os: [ubuntu-24.04, macos-15]", workflow)

@@ -6,6 +6,7 @@ import struct
 import unittest
 from pathlib import Path
 from statistics import NormalDist
+from test_p32_candidate_comparison import canonical_durations
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -97,7 +98,7 @@ def build_output():
     global CANDIDATE_RECEIPT
     fixture = json.loads(FIXTURE.read_text())
     CANDIDATE_RECEIPT = json.loads(CANDIDATES.read_text())
-    durations = generated_durations(fixture)
+    durations = canonical_durations(fixture)
     split = frozen_split(len(durations))
     train = [durations[i] for i in split["train"]]
     selection = [durations[i] for i in split["selection"]]
@@ -158,7 +159,7 @@ class SyntheticHoldoutValidationTests(unittest.TestCase):
         cls.fixture = json.loads(FIXTURE.read_text())
         cls.candidates = json.loads(CANDIDATES.read_text())
         cls.output = json.loads(OUTPUT.read_text())
-        cls.durations = generated_durations(cls.fixture)
+        cls.durations = canonical_durations(cls.fixture)
         cls.split = frozen_split(len(cls.durations))
         global CANDIDATE_RECEIPT
         CANDIDATE_RECEIPT = cls.candidates
