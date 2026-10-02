@@ -5,7 +5,7 @@
   "description": "Version 1 data-only fixture envelope. It is not an E0 executable scenario or a runtime API.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["profile_pack_schema_version", "profile_id", "seed", "horizon", "provenance", "arrival_table", "resource_calendars", "staffing_calendars", "capacity_location", "route_graph", "distributions", "initial_state"],
+  "required": ["profile_pack_schema_version", "profile_id", "seed", "horizon", "provenance", "arrival_table", "acuity_scales", "case_mix_table", "resource_calendars", "staffing_calendars", "capacity_location", "route_graph", "distributions", "initial_state"],
   "properties": {
     "profile_pack_schema_version": { "const": 1 },
     "profile_id": { "$ref": "#/$defs/id" },
@@ -17,6 +17,8 @@
       "properties": { "class": { "const": "synthetic" }, "notes": { "type": "string", "minLength": 1, "pattern": "\\S" } }
     },
     "arrival_table": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/arrivalInterval" } },
+    "acuity_scales": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/acuityScale" } },
+    "case_mix_table": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/caseMixInterval" } },
     "resource_calendars": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/resourceCalendar" } },
     "staffing_calendars": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/staffingCalendar" } },
     "capacity_location": { "$ref": "https://careops-sim.invalid/schemas/capacity-location.schema.json" },
@@ -45,6 +47,25 @@
         "counts_by_mode": { "type": "object", "minProperties": 1, "additionalProperties": { "type": "integer", "minimum": 0 } }
       }
     },
+    "acuityScale": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scale_id", "categories", "provenance_class"],
+      "properties": {
+        "scale_id": { "$ref": "#/$defs/id" },
+        "categories": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/id" } },
+        "provenance_class": { "const": "synthetic" }
+      }
+    },
+    "caseMixInterval": {
+      "type": "object", "additionalProperties": false,
+      "required": ["interval", "arrival_mode", "acuity_scale_id", "counts_by_category"],
+      "properties": {
+        "interval": { "$ref": "#/$defs/interval" },
+        "arrival_mode": { "$ref": "#/$defs/id" },
+        "acuity_scale_id": { "$ref": "#/$defs/id" },
+        "counts_by_category": { "type": "object", "minProperties": 1, "additionalProperties": { "type": "integer", "minimum": 0 } }
+      }
+    },
     "resourceCalendar": {
       "type": "object", "additionalProperties": false, "required": ["resource_id", "interval", "open_count", "staffed_count"],
       "properties": { "resource_id": { "$ref": "#/$defs/id" }, "interval": { "$ref": "#/$defs/interval" }, "open_count": { "type": "integer", "minimum": 0 }, "staffed_count": { "type": "integer", "minimum": 0 } }
@@ -57,7 +78,7 @@
       "type": "object", "additionalProperties": false, "required": ["nodes", "edges"],
       "properties": {
         "nodes": { "type": "array", "minItems": 1, "items": { "type": "object", "additionalProperties": false, "required": ["node_id", "location_id"], "properties": { "node_id": { "$ref": "#/$defs/id" }, "location_id": { "$ref": "#/$defs/id" } } } },
-        "edges": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["from_node_id", "to_node_id", "distance"], "properties": { "from_node_id": { "$ref": "#/$defs/id" }, "to_node_id": { "$ref": "#/$defs/id" }, "distance": { "type": "object", "additionalProperties": false, "required": ["value", "unit"], "properties": { "value": { "type": "number", "minimum": 0 }, "unit": { "const": "m" } } } } } }
+        "edges": { "type": "array", "minItems": 1, "items": { "type": "object", "additionalProperties": false, "required": ["from_node_id", "to_node_id", "distance"], "properties": { "from_node_id": { "$ref": "#/$defs/id" }, "to_node_id": { "$ref": "#/$defs/id" }, "distance": { "type": "object", "additionalProperties": false, "required": ["value", "unit"], "properties": { "value": { "type": "number", "minimum": 0 }, "unit": { "const": "m" } } } } } }
       }
     },
     "distribution": {

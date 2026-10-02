@@ -24,6 +24,16 @@ def valid_pack() -> dict:
             "interval": {"start": {"value": "0", "source_unit": "s"}, "end": {"value": "60", "source_unit": "s"}},
             "counts_by_mode": {"walk_in": 1, "ambulance": 0},
         }],
+        "acuity_scales": [{
+            "scale_id": "triage.synthetic.v1",
+            "categories": ["ATS1", "ATS2", "ATS3", "ATS4", "ATS5"],
+            "provenance_class": "synthetic",
+        }],
+        "case_mix_table": [{
+            "interval": {"start": {"value": "0", "source_unit": "s"}, "end": {"value": "60", "source_unit": "s"}},
+            "arrival_mode": "walk_in", "acuity_scale_id": "triage.synthetic.v1",
+            "counts_by_category": {"ATS1": 0, "ATS2": 0, "ATS3": 0, "ATS4": 1, "ATS5": 0},
+        }],
         "resource_calendars": [{
             "resource_id": "resource.synthetic-pool",
             "interval": {"start": {"value": "0", "source_unit": "s"}, "end": {"value": "3600", "source_unit": "s"}},
@@ -60,6 +70,13 @@ class ProfilePackSchemaTests(unittest.TestCase):
         record["runtime_command"] = "careops-ed run"
         self.assertTrue(schema_errors(record, self.validator))
 
+    def test_acuity_scale_and_case_mix_are_required(self):
+        for field in ("acuity_scales", "case_mix_table"):
+            with self.subTest(field=field):
+                record = valid_pack()
+                del record[field]
+                self.assertTrue(schema_errors(record, self.validator))
+
     def test_time_requires_decimal_seconds(self):
         record = valid_pack()
         record["arrival_table"][0]["interval"]["start"]["source_unit"] = "tick"
@@ -75,6 +92,11 @@ class ProfilePackSchemaTests(unittest.TestCase):
     def test_invalid_nested_capacity_location_is_rejected(self):
         record = valid_pack()
         record["capacity_location"]["unexpected"] = True
+        self.assertTrue(schema_errors(record, self.validator))
+
+    def test_route_graph_requires_an_edge(self):
+        record = valid_pack()
+        record["route_graph"]["edges"] = []
         self.assertTrue(schema_errors(record, self.validator))
 
     def test_duplicate_json_keys_are_rejected(self):

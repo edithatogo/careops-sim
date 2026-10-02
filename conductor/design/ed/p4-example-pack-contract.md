@@ -33,6 +33,11 @@ supports only supplied work items and static capacity. It is not a runtime API.
 - `arrival_table` is a time-ordered set of half-open intervals with explicit
   counts by named arrival mode. Counts are prescribed fixture inputs, not fitted
   rates or a generated point process.
+- `acuity_scales` name the category set used by the fixture (for the Australian
+  examples, synthetic ATS categories). `case_mix_table` partitions each arrival
+  interval and mode into category counts. P4.2 checks category references and
+  reconciles these counts with `arrival_table`; no observed prevalence or
+  clinical default is implied.
 - `resource_calendars` give time-varying open and staffed counts separately for
   each declared resource bucket; physical counts remain in the P0.2 binding.
 - `staffing_calendars` give role-specific present counts over relative intervals.
@@ -56,4 +61,3 @@ diagnostics for probability sums, ordering, capacity feasibility, schedule
 coverage, initialization and provenance, and negative examples. P4.3 documents
 the profiles and maps future Cairns acquisition separately. P5 alone validates
 profile loading and consumption by the full model/calibration runner.
-
