@@ -113,7 +113,7 @@ Entry: D1 and E0's buildable skeleton/fixture. Follow
 - [x] D2.1 Write local CI smoke/negative fixtures: failing test must fail required
   gate, unchanged path is explicit, untrusted PR lacks secrets, missing artifact
   cannot pass. Prepare fmt/clippy/unit/doctest/context lanes before creation.
-- [ ] D2.2 Resolve owner/name/visibility; check for existing repo; create or link
+- [x] D2.2 Resolve owner/name/visibility; check for existing repo; create or link
   once at the value gate. Push reviewed source, configure one-maintainer branch
   rules and verify actual required-check behavior on a small PR.
 - [ ] D2.3 Pin action commit SHAs and tool versions; run actionlint/zizmor, secret
