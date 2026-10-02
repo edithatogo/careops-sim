@@ -38,7 +38,7 @@ jobs:
           fi
           if [ -z "$base" ] || [ "$base" = 0000000000000000000000000000000000000000 ]; then
             echo 'changed=true' >> "$GITHUB_OUTPUT"
-          elif git diff --quiet "$base" HEAD -- Cargo.toml Cargo.lock crates tests model-inputs tools conductor .gitmodules .github/workflows libs/kairos; then
+          elif git diff --quiet "$base" HEAD -- Cargo.toml Cargo.lock deny.toml .gitleaksignore requirements-schema-validation.txt crates tests model-inputs tools conductor .gitmodules .github/workflows libs/kairos; then
             echo 'changed=false' >> "$GITHUB_OUTPUT"
           else
             echo 'changed=true' >> "$GITHUB_OUTPUT"
@@ -144,8 +144,18 @@ jobs:
         with:
           persist-credentials: false
           submodules: recursive
-      - name: Check Conductor context
-        run: python3 tools/context.py check
+      - name: Check Conductor context and exact Kairos contract
+        run: |
+          python3 tools/context.py check
+          python3 tools/check_kairos_pin.py
+          python3 tools/tasks.py check
+          python3 tools/mvp.py check
+      - name: Install locked harness dependencies
+        run: |
+          python3 -m venv .artifacts/ci/harness-venv
+          .artifacts/ci/harness-venv/bin/pip install -r requirements-schema-validation.txt
+      - name: Run harness and incompatible-pin regressions
+        run: .artifacts/ci/harness-venv/bin/python -m unittest discover -s tests -v
 
   policy:
     name: policy
