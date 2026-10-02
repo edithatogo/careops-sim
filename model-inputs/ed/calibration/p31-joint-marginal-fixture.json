@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "fixture_id": "P3.1.jointmarginal.synthetic-paired-joint-mismatch.v1",
+  "provenance": {
+    "class": "synthetic_only",
+    "purpose": "show that equal coordinate marginals can coexist with unequal paired joint distributions",
+    "empirical_data_used": false,
+    "promoted_to_ed_parameter_or_default": false,
+    "fitting_performed": false,
+    "clinical_inference": false
+  },
+  "source_lineage": [
+    {
+      "path": "conductor/research/supplied/20260927/report-12.md.txt",
+      "lines": "157-159",
+      "locator": "FX-007: paired samples (0,0),(1,1) and (0,1),(1,0) have identical coordinate marginals but reversed dependence"
+    },
+    {
+      "path": "conductor/research/ed-research-incorporation-9-12-20260927.md",
+      "line": 132,
+      "locator": "P3 fixture matrix: marginal distances zero while joint mismatch is nonzero"
+    }
+  ],
+  "comparison": {
+    "value_status": "synthetic",
+    "reference_pairs": [[0, 0], [1, 1]],
+    "comparison_pairs": [[0, 1], [1, 0]],
+    "oracle": "Both coordinate marginal count distributions are exactly equal; paired joint-pair count distributions differ.",
+    "scope_limit": "Separate marginal fit checks cannot establish joint or pathway agreement. This hand-computable synthetic test oracle makes no empirical dependence or clinical claim."
+  },
+  "limitations": [
+    "All rows and values are synthetic and do not estimate or recommend ED parameters.",
+    "No dependence model is fitted and no energy-distance calculation is performed.",
+    "This fixture does not estimate dependence prevalence or establish real-world pathway agreement."
+  ]
+}

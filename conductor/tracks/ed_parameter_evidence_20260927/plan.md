@@ -112,7 +112,7 @@ trip/interrupted task without silently introducing an unobserved behavioral rule
 
 Entry: P1 and P2; statistics/method decisions require coordinator review.
 
-- [ ] P3.1 Write synthetic known-distribution/dependence, censored, sparse-stratum
+- [x] P3.1 Write synthetic known-distribution/dependence, censored, sparse-stratum
   and confounded-data fixtures. Specify parameterization/support/tail checks,
   training/hold-out partitions and expected validation failures before fitting.
   Include explicit censor/event ambiguity, time-of-knowledge, observation
