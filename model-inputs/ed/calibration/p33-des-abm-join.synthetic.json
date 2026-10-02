@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "contract_id": "P3.3.des-abm-exclusive-time.synthetic.v1",
+  "status": "synthetic_contract_only",
+  "provenance": {
+    "empirical_ed_data_used": false,
+    "empirical_duration_claim_asserted": false,
+    "clinical_policy_approved": false,
+    "fixture_values_are_defaults": false
+  },
+  "upstream": {
+    "p23_abm_accounting": "Accepted synthetic accounting and explicit catalogue gaps only.",
+    "p31_censoring_identifiability": "Censoring, event-time and identifiability limitations remain explicit.",
+    "p33_sampling": "Cohort eligibility, decision-time observability and measurement missingness remain separate from clinical state.",
+    "p33_uncertainty": "Within-run, parameter, data and structural uncertainty remain distinct; empirical ED ranges remain unknown."
+  },
+  "time_accounting_contract": {
+    "unit_of_accounting": "one named entity's one event timeline with explicit start/end boundary and source event IDs",
+    "exclusive_components": ["active_work", "setup", "transit", "queue_or_wait", "interruption", "handover"],
+    "macro_elapsed_rule": "For a complete uncensored timeline, macro elapsed equals the sum of nonoverlapping micro components in that same entity/event timeline. Do not add another actor's concurrent intervals to it.",
+    "intrinsic_work_rule": "Intrinsic active work includes active_work only. Setup, transit, queue_or_wait, interruption and handover retain their own types and cannot be silently added to active work.",
+    "service_fit_rule": "Fit each declared estimand from its named component(s); a total task/service estimand must state whether setup is included. Never fit one undifferentiated elapsed interval as both intrinsic service and transit/wait.",
+    "concurrent_actor_rule": "A staff movement interval may overlap a patient's wait on a separate actor timeline; it is linked by task/event ID but is not summed again into the patient macro elapsed or intrinsic-work total.",
+    "censoring_rule": "An incomplete/censored interval has no fabricated end or completed duration; retain status, last-known time, censor reason and source lineage.",
+    "missingness_rule": "A missing interval is not a zero-duration component. Unknown type/end stays unknown and cannot be imputed from a different component without an explicit reviewed method."
+  },
+  "invented_accounting_fixture": {
+    "purpose": "Exercise component accounting and actor separation only; all numeric values are invented sentinels.",
+    "patient_timeline": {
+      "entity_id": "synthetic-patient-a",
+      "event_id": "synthetic-visit-a",
+      "timeline_id": "synthetic-patient-visit-a-timeline",
+      "start": 0,
+      "end": 10,
+      "segments": [
+        {"kind": "active_work", "start": 0, "end": 3, "source_event_id": "synthetic-task-a"},
+        {"kind": "setup", "start": 3, "end": 4, "source_event_id": "synthetic-task-a"},
+        {"kind": "transit", "start": 4, "end": 6, "source_event_id": "synthetic-move-a"},
+        {"kind": "queue_or_wait", "start": 6, "end": 10, "source_event_id": "synthetic-queue-a"}
+      ],
+      "expected_macro_elapsed": 10,
+      "expected_intrinsic_active_work": 3,
+      "expected_task_elapsed_including_setup": 4
+    },
+    "concurrent_staff_timeline": {
+      "entity_id": "synthetic-staff-a",
+      "linked_patient_event_id": "synthetic-visit-a",
+      "timeline_id": "synthetic-staff-movement-a-timeline",
+      "start": 6,
+      "end": 8,
+      "segments": [{"kind": "transit", "start": 6, "end": 8, "source_event_id": "synthetic-staff-move-a"}],
+      "rule": "This staff movement occurs during patient waiting and is not added to the patient timeline's macro or active-work total."
+    },
+    "censored_timeline": {
+      "entity_id": "synthetic-patient-b",
+      "event_id": "synthetic-visit-censored",
+      "last_known_time": 5,
+      "status": "right_censored",
+      "censor_reason": "synthetic observation window end",
+      "completed_duration": null
+    }
+  },
+  "retained_sampling_and_cohort_gates": [
+    "Arrival mode is generated for an eligible arrival before mode-conditioned choices; unknown/missing mode has no conditional draw until explicitly resolved.",
+    "Observed ATS-like numerators, emergency-arrival denominator, valid-record denominator, unknown code and missing records are cohort-keyed and reconciled separately.",
+    "Measurement event_time, available_at and recorded_at do not replace latent/known/recorded/realized state separation or license future information in an earlier decision."
+  ],
+  "sampling_gate_evidence": "Arrival-mode conditioning, ATS-like denominator reconciliation and missingness-versus-priority behavioural tests are accepted in P3.3.sampling; this join leaf retains those boundaries but does not duplicate or claim that test coverage.",
+  "nonclaims": [
+    "No ED active-work, setup, transit, wait, interruption or handover duration is estimated or selected.",
+    "This is an accounting contract fixture, not a DES/ABM runtime implementation, calibration result, operational pathway, or validated site profile.",
+    "Macro/micro accounting cannot resolve source-data identifiability, censoring, transfer, population or local operational evidence gaps."
+  ]
+}
