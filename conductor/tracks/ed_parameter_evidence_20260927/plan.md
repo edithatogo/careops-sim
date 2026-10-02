@@ -120,7 +120,7 @@ Entry: P1 and P2; statistics/method decisions require coordinator review.
 - [x] P3.2 Compare empirical/parametric/conditional candidates with reproducible
   fitting diagnostics and held-out checks; record chosen/rejected families,
   sample limitations and uncertainty. Use explicit assumptions where data cannot fit.
-- [ ] P3.3 Reconcile DES/ABM boundaries; define conditional sampling order, shared
+- [x] P3.3 Reconcile DES/ABM boundaries; define conditional sampling order, shared
   factors and seed purposes. Separate variability from uncertain parameters;
   define hard limits, scenario ranges and search bounds with their own rationales.
   Test arrival-mode generation, future-diagnosis/disposition leakage, cohort-specific
