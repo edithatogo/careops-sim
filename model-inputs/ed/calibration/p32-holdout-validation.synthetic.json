@@ -1,0 +1,91 @@
+{
+  "fixture_id": "P3.2.synthetic-lognormal-heldout-validation.v1",
+  "lineage": {
+    "accepted_candidate_fixture": "P3.2.synthetic-lognormal-vs-empirical-resampling.v1",
+    "accepted_fixture": "P3.1.synthetic-known-distribution.lognormal.v1",
+    "candidate_artifact_sha256": "5370b794ed7e212576bc5b25e8dae3459ef475471a67f84bdc7bc0cf68500542",
+    "generator_seed": 20261002,
+    "report_12_method_lineage": {
+      "packet_design_boundary": "The random split, quantile score, and test-block bootstrap specified here are this packet's synthetic design choices; report-12 motivates stage separation and uncertainty distinction but does not prescribe these exact methods.",
+      "source": "conductor/research/supplied/20260927/report-12.md.txt:20-30",
+      "stages": {
+        "data_audit": "Classify fields by role and record units, provenance, censor/event state, missingness, and temporal availability.",
+        "locked_test": "Freeze model and comparison choices, open the test block once, and report without retuning.",
+        "primitive_fitting": "Fit primitive distributions from directly observed intervals; compare prespecified parametric and empirical options when supported.",
+        "validation_selection": "Use a later block to select prespecified candidates by unclamped behavior, with adequacy depending on targets, tolerances, and data."
+      },
+      "uncertainty_distinction": "Report-12 distinguishes repeated-run simulation stochasticity from input-model/parameter uncertainty assessed by resampling/refitting input data and rerunning."
+    },
+    "split_seed": 20261003
+  },
+  "locked_test": {
+    "candidate_scores_sum_absolute_quantile_errors_descriptive_only": {
+      "empirical_resampling_baseline": 4.160249158871142,
+      "parametric_lognormal_mle": 3.1868157612071357
+    },
+    "index_membership_sha256_json_ascii": "beb7b5d63610122de6c8a229aeb208bbe4ab7da510d8de07645fd50585b856c8",
+    "opened_once_after_selection": true,
+    "rows": 512,
+    "selected_candidate": "empirical_resampling_baseline",
+    "selected_score": 4.160249158871142,
+    "selection_changed_after_test": false,
+    "uncertainty": {
+      "confidence_level": 0.95,
+      "lower": 2.3255321097879347,
+      "method": "percentile bootstrap of locked-test rows; selected candidate predictions held fixed",
+      "replicates": 1000,
+      "scope": "conditional sampling uncertainty for this synthetic test block only; excludes parameter, data, and ED uncertainty",
+      "seed": 20261005,
+      "upper": 19.87196476700381
+    }
+  },
+  "provenance": {
+    "candidate_promotion": false,
+    "class": "synthetic_only",
+    "ed_parameter_or_default": false,
+    "empirical_data_used": false,
+    "limitations": [
+      "No empirical ED data were used.",
+      "The selection score and split are synthetic design choices, not universal criteria.",
+      "No result is transferable to an operating ED or a real parameter choice."
+    ]
+  },
+  "schema_version": 1,
+  "selection": {
+    "candidate_scores_sum_absolute_quantile_errors": {
+      "empirical_resampling_baseline": 6.422713034521507,
+      "parametric_lognormal_mle": 7.262894760640439
+    },
+    "design_choice": "Predeclared synthetic selection rule; not prescribed by report-12 and not an ED family-selection criterion.",
+    "quantile_method": "linear interpolation",
+    "quantile_probabilities": [
+      0.5,
+      0.9,
+      0.95,
+      0.99
+    ],
+    "rows": 512,
+    "selected_candidate": "empirical_resampling_baseline",
+    "selection_rule": "minimum sum absolute difference from observed selection p50,p90,p95,p99; tie order: parametric_lognormal_mle then empirical_resampling_baseline"
+  },
+  "split": {
+    "locked_test": {
+      "index_membership_sha256_json_ascii": "beb7b5d63610122de6c8a229aeb208bbe4ab7da510d8de07645fd50585b856c8",
+      "size": 512
+    },
+    "selection": {
+      "index_membership_sha256_json_ascii": "c84bc16b926ab3280de47f15621726a15fc58ee7fb05d7d4fd166c284f75eb6c",
+      "size": 512
+    },
+    "train": {
+      "index_membership_sha256_json_ascii": "8afb00a4ea6783d77dbf6c3e9ec45635707d8fe410a37dfe9d1f061cd3e39374",
+      "size": 3072
+    }
+  },
+  "training": {
+    "duration_digest_sha256_big_endian_binary64": "1b1369ca4c0d58dfccd280c16f53b6108bc6fa578871e039510df4160cf77d29",
+    "index_membership_sha256_json_ascii": "8afb00a4ea6783d77dbf6c3e9ec45635707d8fe410a37dfe9d1f061cd3e39374",
+    "rows_used_for_candidate_fits": 3072
+  },
+  "units": "unchanged synthetic fixture duration units; no ED unit mapping asserted"
+}
