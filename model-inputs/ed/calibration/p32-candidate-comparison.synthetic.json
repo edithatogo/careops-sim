@@ -1,0 +1,117 @@
+{
+  "candidates": {
+    "empirical_resampling_baseline": {
+      "bootstrap_median_interval_percentiles": {
+        "p2_5": 12.19430042971814,
+        "p97_5": 12.756032226842734
+      },
+      "bootstrap_replicates": 1000,
+      "method": "sample with replacement from the exact training empirical distribution",
+      "one_resample_tail_count_above_known_truth_z_cutoff": 22,
+      "resample_quantiles": {
+        "p50": 12.625413792864267,
+        "p90": 26.304552884906286,
+        "p95": 32.96444038276351,
+        "p99": 45.29298332290516
+      },
+      "resample_sample_size": 3072,
+      "resample_seed": 20261004,
+      "scope": "synthetic resampling diagnostics; not a fitted continuous likelihood",
+      "support": {
+        "discrete_atoms": 3072,
+        "lower_observed": 0.9771249182143358,
+        "upper_observed": 84.16461722940197
+      },
+      "training_tail_count_above_known_truth_z_cutoff": 30
+    },
+    "input_duration_digest_sha256_big_endian_binary64": "1b1369ca4c0d58dfccd280c16f53b6108bc6fa578871e039510df4160cf77d29",
+    "input_index_digest_sha256_json_ascii": "8afb00a4ea6783d77dbf6c3e9ec45635707d8fe410a37dfe9d1f061cd3e39374",
+    "parametric_lognormal_mle": {
+      "fit_method": "mu=mean(log(x)); sigma=sqrt(sum((log(x)-mu)^2)/n), population divisor n",
+      "known_truth_diagnostic": {
+        "absolute_mu_error": 0.013304518919015962,
+        "absolute_sigma_error": 0.003425813714815318,
+        "scope": "synthetic generator truth; diagnostic only, no held-out data",
+        "truth_mu_log_duration": 2.5,
+        "truth_sigma_log_duration": 0.6
+      },
+      "log_likelihood_training_only": -10493.003907816976,
+      "mu_log_duration": 2.513304518919016,
+      "sample_size": 3072,
+      "sigma_log_duration": 0.5965741862851847,
+      "support": {
+        "lower": 0,
+        "lower_inclusive": false,
+        "upper": null,
+        "upper_unbounded": true
+      },
+      "training_quantiles": {
+        "p50": 12.447480679683885,
+        "p90": 26.250848709015695,
+        "p95": 33.143375589770265,
+        "p99": 48.648217371122406
+      },
+      "training_tail_count_above_known_truth_z_cutoff": 30
+    },
+    "sample_size": 3072,
+    "units": "fixture duration units (unchanged; not an ED unit claim)"
+  },
+  "fixture_id": "P3.2.synthetic-lognormal-vs-empirical-resampling.v1",
+  "lineage": {
+    "accepted_input_fixture": "P3.1.synthetic-known-distribution.lognormal.v1",
+    "duration_transform": "duration = exp(log_duration)",
+    "generator_contract": "Box-Muller; consume u1,u2 pairs; cosine output then sine output",
+    "generator_seed": 20261002,
+    "input_fixture_sha256": "d177802f7d2b08c3627db6fb9d78b21cefe882cedf9d1a5718dcd32a1cf7d011",
+    "integration_note": "conductor/research/ed-research-incorporation-9-12-20260927.md keeps these as synthetic fixtures and requires empirical applicability to remain open.",
+    "report_12": "conductor/research/supplied/20260927/report-12.md.txt; primitive fitting distinguishes parametric and empirical options and requires training/selection/locked-test separation; this output is a synthetic method check only."
+  },
+  "metric_comparability": {
+    "comparison_rule": "Empirical-distribution diagnostics are not comparable likelihood scores to the continuous parametric density; do not declare a preferred candidate from these synthetic diagnostics.",
+    "empirical_resampling": "discrete empirical distribution diagnostics; no continuous log likelihood reported",
+    "parametric_log_likelihood": "continuous lognormal density evaluated on training rows only; unit-dependent and in-sample"
+  },
+  "provenance": {
+    "candidate_promotion": false,
+    "class": "synthetic_only",
+    "ed_parameter_or_default": false,
+    "empirical_data_used": false,
+    "family_selection_or_winner_claim": false,
+    "limitations": [
+      "The generated lognormal truth is known by construction; successful recovery cannot validate an empirical ED family or parameters.",
+      "Empirical-distribution support and quantile/bootstrap diagnostics are not comparable likelihood scores to a continuous parametric density.",
+      "The parametric training log likelihood is in-sample and is not a validation score.",
+      "A finite empirical resample cannot represent the lognormal candidate's unbounded upper support; conversely the parametric family imposes smooth lognormal tail shape.",
+      "Censoring, clustering, dependence, nonstationarity, ED unit mapping, and operational applicability are not assessed here."
+    ]
+  },
+  "rejected_or_limited_alternative": {
+    "alternative": "Fit either candidate or choose family using selection/test rows in this leaf",
+    "disposition": "deferred",
+    "evidence_class": "packet contract and predeclared synthetic design boundary",
+    "rationale": "This packet's candidate leaf is train-only; selection and locked-test members are reserved for the separately bound P3.2 holdout work."
+  },
+  "schema_version": 1,
+  "split_contract": {
+    "algorithm": "indices=list(range(4096)); random.Random(20261003).shuffle(indices); first 3072 train, next 512 selection, final 512 locked_test",
+    "candidate_calculation_access": "training row values only; selection/test row values are not projected into any candidate calculation",
+    "design_class": "predeclared synthetic design choice; report-12 motivates separation but does not prescribe this random split",
+    "partitions": {
+      "locked_test": {
+        "index_membership_sha256_json_ascii": "beb7b5d63610122de6c8a229aeb208bbe4ab7da510d8de07645fd50585b856c8",
+        "size": 512
+      },
+      "selection": {
+        "index_membership_sha256_json_ascii": "c84bc16b926ab3280de47f15621726a15fc58ee7fb05d7d4fd166c284f75eb6c",
+        "size": 512
+      },
+      "train": {
+        "index_membership_sha256_json_ascii": "8afb00a4ea6783d77dbf6c3e9ec45635707d8fe410a37dfe9d1f061cd3e39374",
+        "size": 3072
+      }
+    },
+    "reuse_for_p32_holdout": "Reuse this exact index permutation and memberships; freeze any later selection/test access plan before opening those rows.",
+    "seed": 20261003
+  },
+  "units": "fixture duration units; same unchanged units for both candidates; no ED mapping asserted"
+}
