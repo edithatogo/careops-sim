@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "contract_id": "P3.3.uncertainty-typed-boundaries.synthetic.v1",
+  "status": "synthetic_contract_only",
+  "provenance": {
+    "empirical_ed_data_used": false,
+    "empirical_family_selected": false,
+    "empirical_numeric_bounds_asserted": false,
+    "fixture_values_are_defaults": false,
+    "clinical_policy_approved": false
+  },
+  "upstream_status": {
+    "p32": "UNKNOWN: empirical ED duration families, conditional applicability, numerical ranges and defaults remain unknown under ADR-0004.",
+    "sampling_contract": "P3.3.sampling accepted for synthetic conditional order only; it supplies no ED estimates."
+  },
+  "uncertainty_types": [
+    {
+      "type": "within_run_process_variability",
+      "unit_of_replication": "event/entity/task within one simulation replication",
+      "held_fixed": ["declared parameter/profile state", "replication-level uncertain parameter draw"],
+      "varies": "event-level process and agent/movement outcomes under the declared model",
+      "synthetic_oracle": "same fixed parameter state, distinct event random keys may produce distinct invented outcomes",
+      "range_status": "UNKNOWN for ED; illustrative finite sentinels below are not ranges"
+    },
+    {
+      "type": "parameter_uncertainty",
+      "unit_of_replication": "study/outer replication",
+      "held_fixed": ["one declared parameter state throughout each inner run"],
+      "varies": "only across outer replications when a declared uncertainty analysis requests a draw",
+      "synthetic_oracle": "parameter draw is indexed to outer replication, never independently redrawn per patient",
+      "range_status": "UNKNOWN for empirical ED parameters; no prior or numeric bounds supplied"
+    },
+    {
+      "type": "data_uncertainty",
+      "unit_of_replication": "source sample, extraction, censoring and missingness process",
+      "held_fixed": ["the resampled source snapshot within one bootstrap replicate"],
+      "varies": "only under an explicitly named resampling or measurement-error procedure",
+      "synthetic_oracle": "bootstrap variation describes the finite synthetic test block only, not patient/process variability",
+      "range_status": "source- and estimand-specific; empirical ED uncertainty not established here"
+    },
+    {
+      "type": "structural_model_uncertainty",
+      "unit_of_replication": "alternative model structures or assumptions",
+      "held_fixed": ["one selected structure per reported run set"],
+      "varies": "between explicitly named candidate structures or sensitivity scenarios",
+      "synthetic_oracle": "dependency/missingness alternatives stay separate from parameter draws",
+      "range_status": "UNKNOWN for ED; candidate set is not a probability distribution and ED structure remains unresolved"
+    }
+  ],
+  "range_classes": [
+    {
+      "type": "hard_domain_limit",
+      "meaning": "Mathematically or physically impossible values for a named parameter and unit.",
+      "required_provenance": ["parameter_id", "unit", "domain rationale", "source or derivation", "reviewer"],
+      "default_status_for_ed": "UNKNOWN unless justified per parameter; no bounds assigned in this contract"
+    },
+    {
+      "type": "observed_sample_range",
+      "meaning": "Minimum/maximum observed in a stated finite cohort; not a support or future operating limit.",
+      "required_provenance": ["cohort", "period", "inclusion/censor rules", "sample size", "source snapshot", "transformation"],
+      "default_status_for_ed": "No empirical cohort range introduced"
+    },
+    {
+      "type": "scenario_range",
+      "meaning": "Deliberately selected values for a named stress/sensitivity scenario; not an estimate or plausible interval.",
+      "required_provenance": ["scenario purpose", "parameter_id", "unit", "selection rationale", "reviewer"],
+      "default_status_for_ed": "No ED scenario values introduced"
+    },
+    {
+      "type": "uncertainty_interval",
+      "meaning": "An interval tied to a specified estimand, data-generating/sampling procedure, confidence or credibility interpretation and coverage limitations.",
+      "required_provenance": ["estimand", "data/cohort", "method", "coverage interpretation", "limitations"],
+      "default_status_for_ed": "No empirical ED interval introduced"
+    },
+    {
+      "type": "calibration_search_bound",
+      "meaning": "Algorithmic region searched by an optimizer; it constrains computation and is not a hard domain limit, observed range, scenario range, or plausible/empirical interval.",
+      "required_provenance": ["algorithm", "objective", "parameterization", "search rationale", "sensitivity to bounds"],
+      "default_status_for_ed": "No ED search bounds introduced"
+    }
+  ],
+  "synthetic_oracles": {
+    "invented_inner_outcomes_by_fixed_parameter": {
+      "parameter_state": "invented-state-alpha",
+      "replication_1_event_keys": ["event-a", "event-b"],
+      "replication_1_outcomes": [3, 7],
+      "note": "Small invented outcome sentinels only; not a distribution or range."
+    },
+    "invented_outer_parameter_states": [
+      {"outer_replication": "outer-a", "parameter_state": "invented-state-alpha"},
+      {"outer_replication": "outer-b", "parameter_state": "invented-state-beta"}
+    ],
+    "finite_data_bootstrap": {
+      "source_fixture": "P3.2 synthetic locked-test block only",
+      "interpretation": "conditional descriptive uncertainty for that fixture; not within-run variability or ED evidence"
+    },
+    "invented_search_bound": {
+      "parameter_id": "synthetic-search-only",
+      "lower": 2,
+      "upper": 5,
+      "unit": "invented unit",
+      "purpose": "optimizer traversal fixture only",
+      "not_a": ["hard_domain_limit", "observed_sample_range", "scenario_range", "uncertainty_interval", "empirical ED bound"]
+    }
+  },
+  "nonclaims": [
+    "The invented values 2, 3, 5 and 7 exercise type and replication rules only; they are not ED observations, limits, estimates, priors, scenarios, defaults or recommended search bounds.",
+    "No empirical ED duration family, conditional family, dependency, range, interval, hard limit, parameter prior or default is selected.",
+    "Search bounds cannot be reported as plausible operating ranges; observed minima/maxima cannot be treated as support; uncertainty intervals cannot mix within-run, parameter and finite-data uncertainty without explicit propagation semantics.",
+    "Uncertainty analysis cannot repair identifiability or missing source evidence; ADR-0004 UNKNOWN remains until named source cohorts and parameter-specific provenance are accepted."
+  ]
+}
