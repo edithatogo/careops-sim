@@ -1,0 +1,1079 @@
+{
+  "profile_pack_schema_version": 1,
+  "profile_id": "p4.constrained-surge.data-only.v1",
+  "seed": 23,
+  "horizon": {
+    "value": "43200",
+    "source_unit": "s"
+  },
+  "provenance": {
+    "class": "synthetic",
+    "notes": "Every value in this fixture is invented solely for a schema and interface demonstration. None is empirical, a clinical policy or default, fitted, a representative generic baseline, or Cairns data. This data-only toy scenario is separate from the E0 projection and contains no private data or external empirical claims."
+  },
+  "arrival_table": [
+    {
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "10800",
+          "source_unit": "s"
+        }
+      },
+      "counts_by_mode": {
+        "walk_in": 6,
+        "ambulance": 2
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "10800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "21600",
+          "source_unit": "s"
+        }
+      },
+      "counts_by_mode": {
+        "walk_in": 12,
+        "ambulance": 4
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "21600",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "32400",
+          "source_unit": "s"
+        }
+      },
+      "counts_by_mode": {
+        "walk_in": 16,
+        "ambulance": 6
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "32400",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "43200",
+          "source_unit": "s"
+        }
+      },
+      "counts_by_mode": {
+        "walk_in": 8,
+        "ambulance": 3
+      }
+    }
+  ],
+  "acuity_scales": [
+    {
+      "scale_id": "triage.synthetic.v1",
+      "categories": [
+        "ATS1",
+        "ATS2",
+        "ATS3",
+        "ATS4",
+        "ATS5"
+      ],
+      "provenance_class": "synthetic"
+    }
+  ],
+  "case_mix_table": [
+    {
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "10800",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "walk_in",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 0,
+        "ATS2": 1,
+        "ATS3": 2,
+        "ATS4": 2,
+        "ATS5": 1
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "10800",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "ambulance",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 1,
+        "ATS2": 1,
+        "ATS3": 0,
+        "ATS4": 0,
+        "ATS5": 0
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "10800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "21600",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "walk_in",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 1,
+        "ATS2": 2,
+        "ATS3": 4,
+        "ATS4": 4,
+        "ATS5": 1
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "10800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "21600",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "ambulance",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 2,
+        "ATS2": 1,
+        "ATS3": 1,
+        "ATS4": 0,
+        "ATS5": 0
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "21600",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "32400",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "walk_in",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 2,
+        "ATS2": 3,
+        "ATS3": 5,
+        "ATS4": 4,
+        "ATS5": 2
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "21600",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "32400",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "ambulance",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 3,
+        "ATS2": 2,
+        "ATS3": 1,
+        "ATS4": 0,
+        "ATS5": 0
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "32400",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "43200",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "walk_in",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 0,
+        "ATS2": 1,
+        "ATS3": 2,
+        "ATS4": 3,
+        "ATS5": 2
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "32400",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "43200",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "ambulance",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 1,
+        "ATS2": 1,
+        "ATS3": 1,
+        "ATS4": 0,
+        "ATS5": 0
+      }
+    }
+  ],
+  "resource_calendars": [
+    {
+      "resource_id": "resource.triage-desk",
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "10800",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 1,
+      "staffed_count": 1
+    },
+    {
+      "resource_id": "resource.triage-desk",
+      "interval": {
+        "start": {
+          "value": "10800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "21600",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 1,
+      "staffed_count": 1
+    },
+    {
+      "resource_id": "resource.triage-desk",
+      "interval": {
+        "start": {
+          "value": "21600",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "32400",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 1,
+      "staffed_count": 1
+    },
+    {
+      "resource_id": "resource.triage-desk",
+      "interval": {
+        "start": {
+          "value": "32400",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "43200",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 1,
+      "staffed_count": 1
+    },
+    {
+      "resource_id": "resource.treatment-core",
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "10800",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 2,
+      "staffed_count": 2
+    },
+    {
+      "resource_id": "resource.treatment-core",
+      "interval": {
+        "start": {
+          "value": "10800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "21600",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 2,
+      "staffed_count": 2
+    },
+    {
+      "resource_id": "resource.treatment-core",
+      "interval": {
+        "start": {
+          "value": "21600",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "32400",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 2,
+      "staffed_count": 1
+    },
+    {
+      "resource_id": "resource.treatment-core",
+      "interval": {
+        "start": {
+          "value": "32400",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "43200",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 2,
+      "staffed_count": 1
+    },
+    {
+      "resource_id": "resource.treatment-surge",
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "10800",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 0,
+      "staffed_count": 0
+    },
+    {
+      "resource_id": "resource.treatment-surge",
+      "interval": {
+        "start": {
+          "value": "10800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "21600",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 2,
+      "staffed_count": 1
+    },
+    {
+      "resource_id": "resource.treatment-surge",
+      "interval": {
+        "start": {
+          "value": "21600",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "32400",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 1,
+      "staffed_count": 1
+    },
+    {
+      "resource_id": "resource.treatment-surge",
+      "interval": {
+        "start": {
+          "value": "32400",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "43200",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 0,
+      "staffed_count": 0
+    },
+    {
+      "resource_id": "resource.diagnostic-device",
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "10800",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 1,
+      "staffed_count": 1
+    },
+    {
+      "resource_id": "resource.diagnostic-device",
+      "interval": {
+        "start": {
+          "value": "10800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "21600",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 1,
+      "staffed_count": 1
+    },
+    {
+      "resource_id": "resource.diagnostic-device",
+      "interval": {
+        "start": {
+          "value": "21600",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "32400",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 1,
+      "staffed_count": 0
+    },
+    {
+      "resource_id": "resource.diagnostic-device",
+      "interval": {
+        "start": {
+          "value": "32400",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "43200",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 1,
+      "staffed_count": 0
+    }
+  ],
+  "staffing_calendars": [
+    {
+      "staff_role_id": "staff.nurses",
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "10800",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 2
+    },
+    {
+      "staff_role_id": "staff.nurses",
+      "interval": {
+        "start": {
+          "value": "10800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "21600",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 3
+    },
+    {
+      "staff_role_id": "staff.nurses",
+      "interval": {
+        "start": {
+          "value": "21600",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "32400",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 2
+    },
+    {
+      "staff_role_id": "staff.nurses",
+      "interval": {
+        "start": {
+          "value": "32400",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "43200",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 1
+    },
+    {
+      "staff_role_id": "staff.clinicians",
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "10800",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 2
+    },
+    {
+      "staff_role_id": "staff.clinicians",
+      "interval": {
+        "start": {
+          "value": "10800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "21600",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 3
+    },
+    {
+      "staff_role_id": "staff.clinicians",
+      "interval": {
+        "start": {
+          "value": "21600",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "32400",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 2
+    },
+    {
+      "staff_role_id": "staff.clinicians",
+      "interval": {
+        "start": {
+          "value": "32400",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "43200",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 1
+    },
+    {
+      "staff_role_id": "staff.diagnostics",
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "10800",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 1
+    },
+    {
+      "staff_role_id": "staff.diagnostics",
+      "interval": {
+        "start": {
+          "value": "10800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "21600",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 1
+    },
+    {
+      "staff_role_id": "staff.diagnostics",
+      "interval": {
+        "start": {
+          "value": "21600",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "32400",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 0
+    },
+    {
+      "staff_role_id": "staff.diagnostics",
+      "interval": {
+        "start": {
+          "value": "32400",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "43200",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 0
+    }
+  ],
+  "capacity_location": {
+    "schema_version": 3,
+    "status": "proposed",
+    "capacity": {
+      "unit": "treatment_space",
+      "bucket_completeness": "complete",
+      "physical_status": "known",
+      "physical_count": 4,
+      "availability_status": "known",
+      "open_count": 2,
+      "staffed_count": 2,
+      "equipment": []
+    },
+    "zones": [
+      {
+        "zone_id": "zone.entry",
+        "name": "Entry and exit"
+      },
+      {
+        "zone_id": "zone.care",
+        "name": "Care"
+      },
+      {
+        "zone_id": "zone.diagnostics",
+        "name": "Diagnostics"
+      }
+    ],
+    "locations": [
+      {
+        "location_id": "location.arrival",
+        "name": "Arrival",
+        "zone_id": "zone.entry"
+      },
+      {
+        "location_id": "location.triage",
+        "name": "Triage",
+        "zone_id": "zone.care"
+      },
+      {
+        "location_id": "location.treatment",
+        "name": "Treatment",
+        "zone_id": "zone.care"
+      },
+      {
+        "location_id": "location.diagnostics",
+        "name": "Diagnostics",
+        "zone_id": "zone.diagnostics"
+      },
+      {
+        "location_id": "location.exit",
+        "name": "Exit",
+        "zone_id": "zone.entry"
+      }
+    ],
+    "resource_buckets": [
+      {
+        "resource_id": "resource.triage-desk",
+        "resource_class": "triage_desk",
+        "location_id": "location.triage",
+        "zone_id": "zone.care",
+        "physical_status": "known",
+        "physical_count": 1,
+        "availability_status": "known",
+        "open_count": 1,
+        "staffed_count": 1,
+        "capabilities": []
+      },
+      {
+        "resource_id": "resource.treatment-core",
+        "resource_class": "treatment_bay",
+        "location_id": "location.treatment",
+        "zone_id": "zone.care",
+        "physical_status": "known",
+        "physical_count": 2,
+        "availability_status": "known",
+        "open_count": 2,
+        "staffed_count": 2,
+        "capabilities": []
+      },
+      {
+        "resource_id": "resource.treatment-surge",
+        "resource_class": "treatment_bay",
+        "location_id": "location.treatment",
+        "zone_id": "zone.care",
+        "physical_status": "known",
+        "physical_count": 2,
+        "availability_status": "known",
+        "open_count": 0,
+        "staffed_count": 0,
+        "capabilities": []
+      },
+      {
+        "resource_id": "resource.diagnostic-device",
+        "resource_class": "diagnostic_device",
+        "location_id": "location.diagnostics",
+        "zone_id": "zone.diagnostics",
+        "physical_status": "known",
+        "physical_count": 1,
+        "availability_status": "known",
+        "open_count": 1,
+        "staffed_count": 1,
+        "capabilities": []
+      }
+    ],
+    "task_classes": [
+      {
+        "task_class_id": "task.triage",
+        "name": "Triage",
+        "required_resource_classes": [
+          "triage_desk"
+        ]
+      },
+      {
+        "task_class_id": "task.assessment",
+        "name": "Assessment",
+        "required_resource_classes": [
+          "treatment_bay"
+        ]
+      },
+      {
+        "task_class_id": "task.diagnostics",
+        "name": "Diagnostics",
+        "required_resource_classes": [
+          "diagnostic_device"
+        ]
+      }
+    ],
+    "staff_roles": [
+      {
+        "staff_role_id": "staff.nurses",
+        "name": "Nurses",
+        "counts": [
+          {
+            "basis": "present",
+            "status": "known",
+            "count": 2,
+            "reference": "synthetic staffing calendar; time-varying values in staffing_calendars"
+          }
+        ]
+      },
+      {
+        "staff_role_id": "staff.clinicians",
+        "name": "Clinicians",
+        "counts": [
+          {
+            "basis": "present",
+            "status": "known",
+            "count": 2,
+            "reference": "synthetic staffing calendar; time-varying values in staffing_calendars"
+          }
+        ]
+      },
+      {
+        "staff_role_id": "staff.diagnostics",
+        "name": "Diagnostics staff",
+        "counts": [
+          {
+            "basis": "present",
+            "status": "known",
+            "count": 1,
+            "reference": "synthetic staffing calendar; time-varying values in staffing_calendars"
+          }
+        ]
+      }
+    ],
+    "eligibility": [
+      {
+        "staff_role_id": "staff.nurses",
+        "task_class_id": "task.triage",
+        "zone_id": "zone.care",
+        "location_id": "location.triage"
+      },
+      {
+        "staff_role_id": "staff.nurses",
+        "task_class_id": "task.assessment",
+        "zone_id": "zone.care",
+        "location_id": "location.treatment"
+      },
+      {
+        "staff_role_id": "staff.clinicians",
+        "task_class_id": "task.assessment",
+        "zone_id": "zone.care",
+        "location_id": "location.treatment"
+      },
+      {
+        "staff_role_id": "staff.diagnostics",
+        "task_class_id": "task.diagnostics",
+        "zone_id": "zone.diagnostics",
+        "location_id": "location.diagnostics"
+      }
+    ],
+    "routes": [
+      {
+        "from_location_id": "location.arrival",
+        "to_location_id": "location.triage",
+        "distance": {
+          "value": 5,
+          "unit": "m"
+        }
+      },
+      {
+        "from_location_id": "location.triage",
+        "to_location_id": "location.treatment",
+        "distance": {
+          "value": 8,
+          "unit": "m"
+        }
+      },
+      {
+        "from_location_id": "location.treatment",
+        "to_location_id": "location.diagnostics",
+        "distance": {
+          "value": 12,
+          "unit": "m"
+        }
+      },
+      {
+        "from_location_id": "location.diagnostics",
+        "to_location_id": "location.treatment",
+        "distance": {
+          "value": 12,
+          "unit": "m"
+        }
+      },
+      {
+        "from_location_id": "location.treatment",
+        "to_location_id": "location.exit",
+        "distance": {
+          "value": 4,
+          "unit": "m"
+        }
+      }
+    ]
+  },
+  "route_graph": {
+    "nodes": [
+      {
+        "node_id": "arrival",
+        "location_id": "location.arrival"
+      },
+      {
+        "node_id": "triage",
+        "location_id": "location.triage"
+      },
+      {
+        "node_id": "treatment",
+        "location_id": "location.treatment"
+      },
+      {
+        "node_id": "diagnostics",
+        "location_id": "location.diagnostics"
+      },
+      {
+        "node_id": "exit",
+        "location_id": "location.exit"
+      }
+    ],
+    "edges": [
+      {
+        "from_node_id": "arrival",
+        "to_node_id": "triage",
+        "distance": {
+          "value": 5,
+          "unit": "m"
+        }
+      },
+      {
+        "from_node_id": "triage",
+        "to_node_id": "treatment",
+        "distance": {
+          "value": 8,
+          "unit": "m"
+        }
+      },
+      {
+        "from_node_id": "treatment",
+        "to_node_id": "diagnostics",
+        "distance": {
+          "value": 12,
+          "unit": "m"
+        }
+      },
+      {
+        "from_node_id": "diagnostics",
+        "to_node_id": "treatment",
+        "distance": {
+          "value": 12,
+          "unit": "m"
+        }
+      },
+      {
+        "from_node_id": "treatment",
+        "to_node_id": "exit",
+        "distance": {
+          "value": 4,
+          "unit": "m"
+        }
+      }
+    ]
+  },
+  "distributions": [
+    {
+      "distribution_id": "duration.triage.active_work",
+      "unit": "active_work_s",
+      "provenance_class": "synthetic",
+      "outcomes": [
+        {
+          "value": 180,
+          "probability": 0.2
+        },
+        {
+          "value": 360,
+          "probability": 0.5
+        },
+        {
+          "value": 600,
+          "probability": 0.3
+        }
+      ]
+    },
+    {
+      "distribution_id": "duration.assessment.active_work",
+      "unit": "active_work_s",
+      "provenance_class": "synthetic",
+      "outcomes": [
+        {
+          "value": 600,
+          "probability": 0.25
+        },
+        {
+          "value": 1200,
+          "probability": 0.5
+        },
+        {
+          "value": 2400,
+          "probability": 0.25
+        }
+      ]
+    },
+    {
+      "distribution_id": "duration.diagnostics.turnaround",
+      "unit": "elapsed_turnaround_s",
+      "provenance_class": "synthetic",
+      "outcomes": [
+        {
+          "value": 900,
+          "probability": 0.2
+        },
+        {
+          "value": 1800,
+          "probability": 0.5
+        },
+        {
+          "value": 3600,
+          "probability": 0.3
+        }
+      ]
+    },
+    {
+      "distribution_id": "duration.cleaning.active_work",
+      "unit": "active_work_s",
+      "provenance_class": "synthetic",
+      "outcomes": [
+        {
+          "value": 300,
+          "probability": 0.25
+        },
+        {
+          "value": 600,
+          "probability": 0.5
+        },
+        {
+          "value": 900,
+          "probability": 0.25
+        }
+      ]
+    },
+    {
+      "distribution_id": "outcome.disposition",
+      "unit": "category",
+      "provenance_class": "synthetic",
+      "outcomes": [
+        {
+          "value": "discharge",
+          "probability": 0.65
+        },
+        {
+          "value": "admission",
+          "probability": 0.3
+        },
+        {
+          "value": "transfer",
+          "probability": 0.05
+        }
+      ]
+    }
+  ],
+  "initial_state": {
+    "at": {
+      "value": "0",
+      "source_unit": "s"
+    },
+    "occupants": [],
+    "remaining_work": []
+  }
+}
