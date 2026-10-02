@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "packet_id": "P2.3.staff-catalogue",
+  "task_id": "P2.3",
+  "target_repo": ".",
+  "base_commit": "REQUIRED",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "objective": "Create exactly one proposed schema-v1 catalogue for abm_staff_behavior, covering every registered ID exactly once and following the frozen P2.3 contract. Do not create values, ranges, distributions, defaults, policies, graph data or empirical claims unsupported by accepted evidence. Return ready_for_review with concise record/evidence/gap summary.",
+  "context_paths": [
+    "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+    "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+    "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+    "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md",
+    "model-inputs/ed/abm/p23-contract.md",
+    "model-inputs/ed/schema/parameter-ids.json",
+    "model-inputs/ed/schema/parameter-usage-matrix.json",
+    "model-inputs/ed/schema/parameter-record.schema.json",
+    "model-inputs/ed/abm/evidence/p2-agent-task-context-variation.json",
+    "model-inputs/ed/abm/evidence/p2-assignment-continuity.json",
+    "model-inputs/ed/abm/evidence/p2-interruption-resumption.json",
+    "model-inputs/ed/abm/evidence/p2-shift-break-context-gap.json",
+    "model-inputs/ed/abm/evidence/p2-supervision-coworking.json",
+    "model-inputs/ed/abm/evidence/p2-supply-retrieval.json",
+    "model-inputs/ed/abm/evidence/p2-task-choice.json",
+    "model-inputs/ed/abm/evidence/p2-task-observation-protocol.json",
+    "model-inputs/ed/abm/evidence/p2-task-priority.json",
+    "model-inputs/ed/abm/evidence/p2-zone-skill-eligibility.json"
+  ],
+  "input_paths": [
+    "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
+    "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+    "conductor/tracks/ed_parameter_evidence_20260927/test-matrix.md",
+    "conductor/tracks/ed_parameter_evidence_20260927/agent-contract.md",
+    "model-inputs/ed/abm/p23-contract.md",
+    "model-inputs/ed/schema/parameter-ids.json",
+    "model-inputs/ed/schema/parameter-usage-matrix.json",
+    "model-inputs/ed/schema/parameter-record.schema.json",
+    "model-inputs/ed/abm/evidence/p2-agent-task-context-variation.json",
+    "model-inputs/ed/abm/evidence/p2-assignment-continuity.json",
+    "model-inputs/ed/abm/evidence/p2-interruption-resumption.json",
+    "model-inputs/ed/abm/evidence/p2-shift-break-context-gap.json",
+    "model-inputs/ed/abm/evidence/p2-supervision-coworking.json",
+    "model-inputs/ed/abm/evidence/p2-supply-retrieval.json",
+    "model-inputs/ed/abm/evidence/p2-task-choice.json",
+    "model-inputs/ed/abm/evidence/p2-task-observation-protocol.json",
+    "model-inputs/ed/abm/evidence/p2-task-priority.json",
+    "model-inputs/ed/abm/evidence/p2-zone-skill-eligibility.json"
+  ],
+  "input_hashes": {},
+  "write_paths": [
+    "model-inputs/ed/abm/staff_behavior.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json",
+    "model-inputs/ed/schema",
+    "conductor/tracks",
+    "libs/kairos"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "model-inputs/ed/abm/p23-contract.md",
+  "steps": [
+    "Read the contract and only supplied context.",
+    "Map every family ID to its registry and usage-matrix entries; use accepted evidence only when it explicitly covers that exact ID.",
+    "Write all records plus annotations with five range slots unknown or matrix-deferred, and unselected nonnumeric candidate families.",
+    "Run the bound schema/coverage/no-value check on the output.",
+    "Return changed path, record and gap summary, exact command results, unresolved issues and ready_for_review or blocked; do not change plan/task metadata."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-c",
+        "import json,pathlib,sys\np=pathlib.Path(sys.argv[1]); d=json.loads(p.read_text()); s=json.load(open(\"model-inputs/ed/schema/parameter-record.schema.json\")); from jsonschema import Draft202012Validator; v=Draft202012Validator(s); ids=[r[\"parameter_id\"] for r in d[\"records\"]]; reg=json.load(open(\"model-inputs/ed/schema/parameter-ids.json\")); expected=[e[\"parameter_id\"] for e in reg[\"entries\"] if e[\"family\"]==d[\"family\"]]; assert len(ids)==len(set(ids)) and set(ids)==set(expected), (ids,expected); assert set(d[\"annotations\"])==set(expected); assert all(not list(v.iter_errors(r)) for r in d[\"records\"]); assert all(not any(k in r for k in (\"value\",\"distribution\",\"reference_default\")) for r in d[\"records\"]); print(\"coverage, annotation keys, schema and no-unapproved-values checks passed\")",
+        "model-inputs/ed/abm/staff_behavior.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "The output JSON parses; exact registered family IDs and annotation keys are present once; every record conforms to the shared schema; unapproved values/distributions/defaults are absent."
+    }
+  ],
+  "acceptance": [
+    "Only the reserved output path changes.",
+    "Catalogue covers exact registry family IDs and uses matrix units, role, stage and gates.",
+    "All unsupported active ranges/values remain unknown; explicitly deferred IDs remain deferred.",
+    "Evidence refs use exact-ID accepted P2 records, repo-relative paths and current SHA-256; uncovered gaps have owner/acquisition route/impact.",
+    "No source summary becomes generic ED input; no chosen distribution, dependence or clinical policy is asserted."
+  ],
+  "result_path": "model-inputs/ed/abm/staff_behavior.json",
+  "stop_conditions": [
+    "Any required source does not directly support the exact parameter ID.",
+    "Schema or family-unit contract is unclear.",
+    "A value, range, default, distribution, route/assignment policy or dependence claim appears required to complete the record.",
+    "Input hash or base commit drift, or any out-of-reservation write."
+  ],
+  "status": "recipe"
+}
