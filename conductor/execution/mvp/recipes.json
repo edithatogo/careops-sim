@@ -2466,8 +2466,8 @@
           "target_repo": ".",
           "model": "gpt-6-luna",
           "role": "worker",
-          "output": "Minimal deterministic input profile",
-          "oracle": "All supported input shapes validate and have hand-computable route/resource outcome",
+          "output": "Minimal deterministic E0 scenario projection",
+          "oracle": "The E0 projection validates a hand-computable resource outcome; route references and metre units validate as metadata, with no travel outcome claimed",
           "dependencies": [
             "E0.4.closeout",
             "P3.4.closeout"
@@ -2486,7 +2486,7 @@
           "target_repo": ".",
           "model": "gpt-6-luna",
           "role": "worker",
-          "output": "Generic nominal input profile",
+          "output": "Generic nominal E0 scenario projection",
           "oracle": "Every value traces to a source or explicit synthetic assumption; no private data",
           "dependencies": [
             "P4.1.minimal"
@@ -2505,10 +2505,86 @@
           "target_repo": ".",
           "model": "gpt-6-luna",
           "role": "worker",
-          "output": "Overload/constrained-capacity input profile",
+          "output": "Overload/constrained-capacity E0 scenario projection",
           "oracle": "Changed capacity/demand intentionally stresses known bottleneck with valid units/provenance",
           "dependencies": [
             "P4.1.nominal"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
+          "id": "P4.1.pack-schema",
+          "target_repo": ".",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Strict data-only example profile schema and schema validator",
+          "oracle": "Schema covers arrival schedules, resource calendars, route graph, synthetic distributions and initial state; validates as JSON Schema and makes no E0 runtime claim",
+          "dependencies": [
+            "P4.1.surge"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 75,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
+          "id": "P4.1.pack-minimal",
+          "target_repo": ".",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Complete minimal deterministic data-only ED profile",
+          "oracle": "Profile validates against the strict pack schema and provides explicit synthetic arrivals, calendars, graph, point-mass distributions and initial state",
+          "dependencies": [
+            "P4.1.pack-schema"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
+          "id": "P4.1.pack-nominal",
+          "target_repo": ".",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Complete synthetic generic nominal data-only ED profile",
+          "oracle": "Profile validates against the strict pack schema; every numeric value is explicitly synthetic and the file contains no private or unsupported empirical claim",
+          "dependencies": [
+            "P4.1.pack-minimal"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
+          "id": "P4.1.pack-surge",
+          "target_repo": ".",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Complete synthetic surge data-only ED profile",
+          "oracle": "Profile validates against the strict pack schema and changes demand/calendar/capacity to stress an explicit bottleneck; all assumptions remain synthetic",
+          "dependencies": [
+            "P4.1.pack-nominal"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
@@ -2548,7 +2624,7 @@
           "output": "Malformed/missing/censored input corpus",
           "oracle": "Expected errors distinguish missing from zero and censor from completion",
           "dependencies": [
-            "P4.1.surge"
+            "P4.1.pack-surge"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",

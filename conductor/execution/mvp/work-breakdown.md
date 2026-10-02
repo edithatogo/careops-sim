@@ -322,9 +322,13 @@ Parent plan: [P4.1](../../tracks/ed_parameter_evidence_20260927/plan.md)
 
 | Leaf | Output | Oracle | Repository / role |
 | --- | --- | --- | --- |
-| P4.1.minimal | Minimal deterministic input profile | All supported input shapes validate and have hand-computable route/resource outcome | . / worker |
-| P4.1.nominal | Generic nominal input profile | Every value traces to a source or explicit synthetic assumption; no private data | . / worker |
-| P4.1.surge | Overload/constrained-capacity input profile | Changed capacity/demand intentionally stresses known bottleneck with valid units/provenance | . / worker |
+| P4.1.minimal | Minimal deterministic E0 scenario projection | The E0 projection validates a hand-computable resource outcome; route references and metre units validate as metadata, with no travel outcome claimed | . / worker |
+| P4.1.nominal | Generic nominal E0 scenario projection | Every value traces to a source or explicit synthetic assumption; no private data | . / worker |
+| P4.1.surge | Overload/constrained-capacity E0 scenario projection | Changed capacity/demand intentionally stresses known bottleneck with valid units/provenance | . / worker |
+| P4.1.pack-schema | Strict data-only example profile schema and schema validator | Schema covers arrival schedules, resource calendars, route graph, synthetic distributions and initial state; validates as JSON Schema and makes no E0 runtime claim | . / worker |
+| P4.1.pack-minimal | Complete minimal deterministic data-only ED profile | Profile validates against the strict pack schema and provides explicit synthetic arrivals, calendars, graph, point-mass distributions and initial state | . / worker |
+| P4.1.pack-nominal | Complete synthetic generic nominal data-only ED profile | Profile validates against the strict pack schema; every numeric value is explicitly synthetic and the file contains no private or unsupported empirical claim | . / worker |
+| P4.1.pack-surge | Complete synthetic surge data-only ED profile | Profile validates against the strict pack schema and changes demand/calendar/capacity to stress an explicit bottleneck; all assumptions remain synthetic | . / worker |
 
 ## P4.2
 
