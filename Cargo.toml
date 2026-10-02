@@ -1,0 +1,23 @@
+[workspace]
+resolver = "2"
+members = ["crates/careops-ed", "crates/careops-ed-cli"]
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.76"
+license = "Apache-2.0"
+repository = "https://github.com/edithatogo/careops-sim"
+
+[package]
+name = "careops-sim"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+publish = false
+
+[workspace.dependencies]
+kairo-ecs-core = { path = "libs/kairos/crates/kairo-ecs-core" }
+kairo-ecs-types = { path = "libs/kairos/crates/kairo-ecs-types" }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+sha2 = "0.10.9"

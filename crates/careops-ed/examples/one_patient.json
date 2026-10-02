@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "scenario_id": "e0-one-patient",
+  "seed": 7,
+  "time_unit": "tick",
+  "horizon_ticks": 10,
+  "provenance": {
+    "class": "synthetic",
+    "notes": "Invented E0 smoke fixture; not operational or clinical data."
+  },
+  "capacity_location": {
+    "schema_version": 3,
+    "status": "proposed",
+    "capacity": {
+      "unit": "treatment_space",
+      "bucket_completeness": "complete",
+      "physical_status": "known",
+        "physical_count": 1,
+        "availability_status": "known",
+        "open_count": 1,
+        "staffed_count": 1,
+        "equipment": []
+    },
+    "zones": [
+      {"zone_id": "zone.synthetic", "name": "synthetic zone"}
+    ],
+    "locations": [
+      {
+        "location_id": "location.synthetic",
+        "name": "synthetic location",
+        "zone_id": "zone.synthetic"
+      }
+    ],
+    "resource_buckets": [
+      {
+        "resource_id": "resource.synthetic",
+        "resource_class": "synthetic_slot",
+        "location_id": "location.synthetic",
+        "zone_id": "zone.synthetic",
+        "physical_status": "known",
+        "physical_count": 1,
+        "availability_status": "known",
+        "open_count": 1,
+        "staffed_count": 1,
+        "capabilities": []
+      }
+    ],
+    "task_classes": [
+      {
+        "task_class_id": "task.synthetic",
+        "name": "synthetic work",
+        "required_resource_classes": ["synthetic_slot"]
+      }
+    ],
+    "staff_roles": [
+      {
+        "staff_role_id": "staff.synthetic",
+        "name": "synthetic role",
+        "counts": [
+          {
+            "basis": "present",
+            "status": "known",
+            "count": 1,
+            "reference": "synthetic fixture"
+          }
+        ]
+      }
+    ],
+    "eligibility": [
+      {
+        "staff_role_id": "staff.synthetic",
+        "task_class_id": "task.synthetic",
+        "zone_id": "zone.synthetic",
+        "location_id": "location.synthetic"
+      }
+    ],
+    "routes": []
+  },
+  "patients": [
+    {
+      "patient_id": "synthetic-patient-1",
+      "arrival_tick": 1,
+      "work_ticks": 2,
+      "resource_id": "resource.synthetic",
+      "task_class_id": "task.synthetic"
+    }
+  ]
+}

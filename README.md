@@ -34,7 +34,7 @@ python3 -m unittest discover -s tests -v
 ```
 
 These checks verify local planning/harness integrity, not simulation acceptance.
-The native bootstrap/toolchain commands will be documented when D1/E0 deliver them.
+The first native E0 runner is available in `crates/careops-ed`: `cargo run --locked -p careops-ed-cli -- run crates/careops-ed/examples/one_patient.json`. It runs a synthetic one-patient fixture only; see the crate README and E0 assumptions contract for scope and limits.
 
 Next preparation candidates: D0.2 capability/owner/gate reconciliation and P0.1
 supplied-evidence reconciliation. Read [AGENTS.md](AGENTS.md); use bounded packets
