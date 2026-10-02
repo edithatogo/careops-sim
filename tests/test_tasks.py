@@ -83,7 +83,11 @@ class SchedulingTests(unittest.TestCase):
         self.assertNotIn('P3.1',candidates)  # P3.1 is accepted at fixture-only scope.
         self.assertNotIn('P3.2',candidates)  # P3.2 is accepted at bounded method/gap-inventory scope.
         self.assertNotIn('P3.3',candidates)  # P3.3 evidence contracts are accepted; P3.4 phase review remains.
-        self.assertIn('P3.4',candidates)
+        if by_id['P3.4']['accepted']:
+            self.assertNotIn('P3.4',candidates)
+            self.assertIn('P4.1',candidates)
+        else:
+            self.assertIn('P3.4',candidates)
         self.assertNotIn('Q1.1',[t['id'] for t in tasks.select(catalog,accepted,20)])
         invalid=copy.deepcopy(catalog)
         by_id_invalid={t['id']:t for t in invalid['tasks']}
