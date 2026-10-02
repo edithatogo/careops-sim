@@ -120,7 +120,7 @@ Entry: D1 and E0's buildable skeleton/fixture. Follow
   scan and full dependency policy. Set narrow permissions, budgets, concurrency,
   cache keys and native Linux/macOS ARM lanes appropriate to the support promise.
   Audit full cargo-deny advisories/bans/licenses/sources, immutable action SHAs including rejection of mutable version tags, recursive submodule identity and cache trust separation. Report 28 upstream workflow findings require source readback; upstream R0–R4 labels do not replace D phases.
-- [ ] D2.4 Add exact-parent-pin Kairos integration plus upstream owner CI; verify
+- [x] D2.4 Add exact-parent-pin Kairos integration plus upstream owner CI; verify
   the parent fails against an incompatible pin even if upstream tests passed.
 - [ ] D2.5 Conductor — review and verify phase (workflow.md).
 
