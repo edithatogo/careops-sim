@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "fixture_id": "P3.1.synthetic-known-distribution.lognormal.v1",
+  "provenance": {
+    "class": "synthetic_only",
+    "purpose": "deterministic fixture contract and reference calculation checks",
+    "empirical_data_used": false,
+    "promoted_to_ed_parameter_or_default": false,
+    "distribution_selection_claim": false
+  },
+  "case": {
+    "family": "lognormal",
+    "sample_size": 4096,
+    "truth": {
+      "parameterization": "natural_log_duration ~ Normal(mu, sigma); duration = exp(log_duration)",
+      "mu_log_duration": 2.5,
+      "sigma_log_duration": 0.6
+    },
+    "generator": {
+      "runtime": "CPython 3.14.7",
+      "random_stream": "random.Random MT19937 random()",
+      "seed": 20261002,
+      "normal_transform": "Box-Muller; consume u1,u2 pairs; cosine output then sine output",
+      "precision": "binary64",
+      "log_values_sha256_big_endian_binary64": "9b577c671a2d54f3eed07583e636e29c32ed5a2817592d38e6008feb2d7d20ba",
+      "portability": "Repeatability is required within the same runtime. Python random stream compatibility does not guarantee cross-platform libm bitwise identity for log, sqrt, sin, or cos; the recorded digest is the observed CPython 3.14.7 reference, not a cross-platform promise."
+    },
+    "support": {
+      "duration_lower_bound": 0,
+      "lower_bound_inclusive": false,
+      "duration_upper_bound": null,
+      "upper_bound_unbounded": true,
+      "truncation": "none",
+      "clipping": "none",
+      "boundary_cases": [
+        {"duration": -1, "expected": "outside_support"},
+        {"duration": 0, "expected": "outside_support"},
+        {"duration": 0.000000000001, "expected": "inside_support"},
+        {"duration": 1000000, "expected": "inside_support"}
+      ]
+    },
+    "reference_oracle": {
+      "status": "synthetic_fixture_only_not_empirical_fit",
+      "mu_hat": "mean(log(duration))",
+      "sigma_hat": "sqrt(sum((log(duration)-mu_hat)^2)/n)",
+      "absolute_error_limits": {
+        "mu": 0.028125,
+        "sigma": 0.019882
+      },
+      "limit_basis": "Deterministic fixture acceptance limits fixed before generating or estimating this sample. The mu limit equals 3*sigma/sqrt(n); the sigma absolute-error limit 0.019882 is deliberately slightly stricter than the approximate 3*sigma/sqrt(2*n)=0.019887378220871645 under IID uncensored Normal log values. These are not empirical confidence guarantees, clinical thresholds, or real-data fit criteria."
+    },
+    "tail_oracle": {
+      "z_definition": "(log(duration)-mu)/sigma",
+      "strict_cutoff": 2.326347874,
+      "expected_count_min_inclusive": 21,
+      "expected_count_max_inclusive": 61,
+      "count_range_basis": "Fixture guard chosen before generating this sample from a Binomial(n=4096, p=0.01) tail-count model; the inclusive 21..61 band has approximately 99.855% coverage under the stated synthetic generator. This is not an inferential acceptance interval for empirical ED data."
+    }
+  },
+  "sparse_support_states": [
+    {"sample_size": 0, "classification": "insufficient_data_no_fit"},
+    {"sample_size": 1, "classification": "insufficient_data_no_fit"},
+    {"sample_size": 29, "classification": "insufficient_data_no_fit"},
+    {"sample_size": 30, "classification": "fixture_eligible_only"}
+  ],
+  "limits": [
+    "Synthetic data do not validate real ED data or operating ranges.",
+    "This fixture does not select a distribution, create an operational default, or perform empirical candidate fitting; empirical candidate comparison and diagnostics remain in P3.2.",
+    "Censoring, clustering, leakage, dependence, and identifiability are outside this fixture and remain with their separately bound P3.1 leaves.",
+    "The sample-size 30 state is fixture-only and is not a universal threshold."
+  ]
+}
