@@ -1,5 +1,19 @@
 # Generic ED example profiles
 
+## P4 data-only profile packs
+
+The P4 v1 JSON packs (`p4-minimal-pack.json`, `p4-nominal-pack.json`, and
+`p4-surge-pack.json`) are distinct from the E0 executable scenario fixtures
+described below. They include synthetic arrival/case-mix tables, calendars,
+capacity/location bindings, route metadata, finite outcome tables, and explicit
+initial state. Every value is an invented interface example, not an ED estimate,
+default, recommendation, empirical range, or Cairns value. Read
+[`P4_PROFILE_GUIDE.md`](P4_PROFILE_GUIDE.md) for field meanings and units,
+fixture values, schema versus empirical bounds, semantic validation, uncertainty
+and provenance limits, safe separate overrides, redistribution limits, and the
+P5 loading boundary. Structural/semantic validation does not execute these
+packs; actual full-model loading remains a P5 gate after E2 and C5.
+
 Profiles in this directory are versioned configuration fixtures. Their own
 provenance fields distinguish explicit synthetic assumptions from evidence;
 none of the synthetic counts, times, or distances are ED estimates, defaults,
