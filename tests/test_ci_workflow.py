@@ -139,6 +139,10 @@ def untrusted_contract_errors(workflow):
 
 
 class CiWorkflowTests(unittest.TestCase):
+    def test_context_check_fetches_pinned_submodule_documents(self):
+        context = WORKFLOW.read_text().split("  context:\n", 1)[1].split("  required:\n", 1)[0]
+        self.assertIn("          submodules: recursive\n", context)
+
     def test_untrusted_pull_request_has_no_privileged_trigger_or_credentials(self):
         workflow = WORKFLOW.read_text()
         trigger_block = workflow.split("\non:", 1)[1].split("\npermissions:", 1)[0]
@@ -336,7 +340,7 @@ class CiWorkflowTests(unittest.TestCase):
     def test_cargo_lanes_initialize_path_dependency_and_pin_evidenced_toolchain(self):
         workflow = WORKFLOW.read_text()
         cargo_jobs = workflow.split("  required:", 1)[0]
-        self.assertEqual(cargo_jobs.count("submodules: true"), 4)
+        self.assertEqual(cargo_jobs.count("submodules: recursive"), 5)
         self.assertEqual(cargo_jobs.count("rustup toolchain install 1.98.1"), 4)
         for command in ("cargo +1.98.1 fmt", "cargo +1.98.1 clippy", "cargo +1.98.1 test --workspace", "cargo +1.98.1 test --doc"):
             with self.subTest(command=command):
