@@ -110,7 +110,7 @@ runtime Python dependency. Manual verification: reproduce from a clean checkout.
 Entry: D1 and E0's buildable skeleton/fixture. Follow
 [the creation gate](../../ci-security-release.md); no placeholder remote earlier.
 
-- [ ] D2.1 Write local CI smoke/negative fixtures: failing test must fail required
+- [x] D2.1 Write local CI smoke/negative fixtures: failing test must fail required
   gate, unchanged path is explicit, untrusted PR lacks secrets, missing artifact
   cannot pass. Prepare fmt/clippy/unit/doctest/context lanes before creation.
 - [ ] D2.2 Resolve owner/name/visibility; check for existing repo; create or link

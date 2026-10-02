@@ -356,6 +356,31 @@ class CiWorkflowTests(unittest.TestCase):
         result = run_aggregate("true", ["success", "skipped", "success", "success", "success"])
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
 
+    def test_changed_scope_fails_when_required_lane_result_is_absent(self):
+        missing = "CONTEXT_RESULT"
+        env = {
+            key: value
+            for key, value in os.environ.items()
+            if key not in LANES and key not in {"SCOPE_RESULT", "SCOPE_CHANGED"}
+        }
+        env.update(
+            {
+                "SCOPE_RESULT": "success",
+                "SCOPE_CHANGED": "true",
+                **{lane: "success" for lane in LANES if lane != missing},
+            }
+        )
+        self.assertNotIn(missing, env)
+
+        result = subprocess.run(
+            ["bash", "-c", aggregate_script()],
+            env=env,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()
