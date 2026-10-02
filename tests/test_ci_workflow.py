@@ -378,7 +378,7 @@ class CiWorkflowTests(unittest.TestCase):
                 self.assertIn(command, cargo_jobs)
 
     def test_required_lane_failure_fails_aggregate(self):
-        result = run_aggregate("true", ["success", "failure", "success", "success", "success"])
+        result = run_aggregate("true", ["success", "failure"] + ["success"] * (len(LANES) - 2))
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
         self.assertIn("required lane failed or did not run", result.stdout)
 
@@ -388,7 +388,7 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertIn("scope unchanged: all required lanes skipped successfully", result.stdout)
 
     def test_changed_scope_cannot_hide_a_skipped_lane(self):
-        result = run_aggregate("true", ["success", "skipped", "success", "success", "success"])
+        result = run_aggregate("true", ["success", "skipped"] + ["success"] * (len(LANES) - 2))
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
 
     def test_changed_scope_fails_when_required_lane_result_is_absent(self):
