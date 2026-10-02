@@ -125,7 +125,7 @@ Entry: P1 and P2; statistics/method decisions require coordinator review.
   define hard limits, scenario ranges and search bounds with their own rationales.
   Test arrival-mode generation, future-diagnosis/disposition leakage, cohort-specific
   ATS denominators and observation missingness separately from clinical priority.
-- [ ] P3.4 Conductor — review and verify phase (workflow.md).
+- [x] P3.4 Conductor — review and verify phase (workflow.md).
 
 Exit: P-R3/4 reviewed sampling contract for C2 and model configuration. Manual
 check: reproduce one fit and one conditional draw; demonstrate that transit and

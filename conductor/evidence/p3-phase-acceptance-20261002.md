@@ -1,9 +1,13 @@
 # P3 phase acceptance — 2026-10-02
 
-**Disposition proposed for independent closeout:** accept P3 at bounded synthetic
-sampling/uncertainty/interval-accounting scope, with empirical ED parameters still
-UNKNOWN. This closes the phase method contract, not the evidence acquisition or
-runtime profile gates in P4/P5.
+**Disposition: ACCEPTED** at bounded synthetic sampling/uncertainty/interval-
+accounting scope, with empirical ED parameters still UNKNOWN. This closes the P3
+method-contract phase only; evidence acquisition and runtime profile gates in P4/P5
+remain open.
+
+Independent phase reviewer: read-only P3.3 uncertainty reviewer agent — PASS. The
+review confirmed the conditional categorical draw, source/hash alignment, all
+executed gates, and the UNKNOWN/P4/P5 boundaries.
 
 ## Evidence reviewed
 
