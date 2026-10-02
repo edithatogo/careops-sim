@@ -139,6 +139,26 @@ def untrusted_contract_errors(workflow):
 
 
 class CiWorkflowTests(unittest.TestCase):
+    def test_ci_budgets_and_cache_trust_boundary(self):
+        workflow = WORKFLOW.read_text()
+        jobs = workflow.split("jobs:\n", 1)[1]
+        blocks = re.split(r"^  [a-z_]+:\n", jobs, flags=re.MULTILINE)[1:]
+        self.assertTrue(blocks)
+        for block in blocks:
+            timeout = re.search(r"^    timeout-minutes: ([0-9]+)$", block, re.MULTILINE)
+            self.assertIsNotNone(timeout)
+            self.assertLessEqual(int(timeout.group(1)), 20)
+            self.assertGreater(int(timeout.group(1)), 0)
+        self.assertNotIn("actions/cache@", workflow)
+        self.assertNotIn("pull_request_target", workflow)
+        self.assertIn("cancel-in-progress: ${{ github.event_name == 'pull_request' }}", workflow)
+
+    def test_unit_lane_does_not_repeat_documentation_tests(self):
+        workflow = WORKFLOW.read_text()
+        native = workflow.split("  test:\n", 1)[1].split("  doctest:\n", 1)[0]
+        self.assertIn("--lib --bins --tests --locked", native)
+        self.assertIn("test --doc --workspace --all-features --locked", workflow)
+
     def test_context_check_fetches_pinned_submodule_documents(self):
         context = WORKFLOW.read_text().split("  context:\n", 1)[1].split("  required:\n", 1)[0]
         self.assertIn("          submodules: recursive\n", context)

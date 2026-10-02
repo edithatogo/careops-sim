@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   scope:
+    timeout-minutes: 5
     name: scope
     runs-on: ubuntu-latest
     outputs:
@@ -44,6 +45,7 @@ jobs:
           fi
 
   fmt:
+    timeout-minutes: 10
     name: fmt
     needs: scope
     if: needs.scope.outputs.changed == 'true'
@@ -59,6 +61,7 @@ jobs:
         run: cargo +1.98.1 fmt --all --check
 
   clippy:
+    timeout-minutes: 15
     name: clippy
     needs: scope
     if: needs.scope.outputs.changed == 'true'
@@ -71,9 +74,10 @@ jobs:
       - name: Install Rust 1.98.1
         run: rustup toolchain install 1.98.1 --profile minimal --component clippy
       - name: Clippy
-        run: cargo +1.98.1 clippy --workspace --all-targets --all-features -- -D warnings
+        run: cargo +1.98.1 clippy --locked --workspace --all-targets --all-features -- -D warnings
 
   test:
+    timeout-minutes: 20
     name: test
     needs: scope
     if: needs.scope.outputs.changed == 'true'
@@ -86,9 +90,10 @@ jobs:
       - name: Install Rust 1.98.1
         run: rustup toolchain install 1.98.1 --profile minimal
       - name: Unit and integration tests
-        run: cargo +1.98.1 test --workspace --all-features
+        run: cargo +1.98.1 test --workspace --all-features --lib --bins --tests --locked
 
   doctest:
+    timeout-minutes: 15
     name: doctest
     needs: scope
     if: needs.scope.outputs.changed == 'true'
@@ -101,9 +106,10 @@ jobs:
       - name: Install Rust 1.98.1
         run: rustup toolchain install 1.98.1 --profile minimal
       - name: Documentation tests
-        run: cargo +1.98.1 test --doc --workspace --all-features
+        run: cargo +1.98.1 test --doc --workspace --all-features --locked
 
   context:
+    timeout-minutes: 10
     name: context
     needs: scope
     if: needs.scope.outputs.changed == 'true'
@@ -117,6 +123,7 @@ jobs:
         run: python3 tools/context.py check
 
   required:
+    timeout-minutes: 5
     name: Required checks
     if: always()
     needs: [scope, fmt, clippy, test, doctest, context]
