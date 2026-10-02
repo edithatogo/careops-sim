@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   scope:
+    name: scope
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.detect.outputs.changed }}
@@ -43,6 +44,7 @@ jobs:
           fi
 
   fmt:
+    name: fmt
     needs: scope
     if: needs.scope.outputs.changed == 'true'
     runs-on: ubuntu-latest
@@ -57,6 +59,7 @@ jobs:
         run: cargo +1.98.1 fmt --all --check
 
   clippy:
+    name: clippy
     needs: scope
     if: needs.scope.outputs.changed == 'true'
     runs-on: ubuntu-latest
@@ -71,6 +74,7 @@ jobs:
         run: cargo +1.98.1 clippy --workspace --all-targets --all-features -- -D warnings
 
   test:
+    name: test
     needs: scope
     if: needs.scope.outputs.changed == 'true'
     runs-on: ubuntu-latest
@@ -85,6 +89,7 @@ jobs:
         run: cargo +1.98.1 test --workspace --all-features
 
   doctest:
+    name: doctest
     needs: scope
     if: needs.scope.outputs.changed == 'true'
     runs-on: ubuntu-latest
@@ -99,6 +104,7 @@ jobs:
         run: cargo +1.98.1 test --doc --workspace --all-features
 
   context:
+    name: context
     needs: scope
     if: needs.scope.outputs.changed == 'true'
     runs-on: ubuntu-latest
