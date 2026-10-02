@@ -27,7 +27,8 @@ class KairosPinTests(unittest.TestCase):
             git(root, 'config', 'user.email', 'fixture@example.invalid')
             git(root, 'config', 'user.name', 'Fixture')
         (self.child / 'source').write_text('reviewed engine source\n')
-        git(self.child, 'add', 'source')
+        (self.child / 'other_source').write_text('reviewed auxiliary source\n')
+        git(self.child, 'add', 'source', 'other_source')
         git(self.child, 'commit', '-m', 'reviewed')
         self.sha = git(self.child, 'rev-parse', 'HEAD')
         (self.root / 'conductor/evidence').mkdir(parents=True)
@@ -64,6 +65,10 @@ class KairosPinTests(unittest.TestCase):
         self.contract['owner_ci']['passed_hosts'] = ['x86_64-unknown-linux-gnu']
         self.save_contract()
         self.assertTrue(pin.check(self.root))
+
+    def test_unhashed_tracked_source_cannot_drift(self):
+        (self.child / 'other_source').write_text('unreviewed auxiliary source\n')
+        self.assertIn('Kairos has uncommitted tracked changes', pin.check(self.root))
 
     def test_changed_engine_bytes_fail(self):
         (self.child / 'source').write_text('changed source\n')

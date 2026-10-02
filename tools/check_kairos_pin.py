@@ -35,6 +35,8 @@ def check(root):
             errors.append('Kairos is not initialized as its own repository')
         if git(kairos, 'rev-parse', 'HEAD') != expected:
             errors.append('checked-out Kairos differs from reviewed compatibility commit')
+        if git(kairos, 'status', '--porcelain', '--untracked-files=no'):
+            errors.append('Kairos has uncommitted tracked changes')
         for path, digest in contract['source_sha256'].items():
             if hashlib.sha256((kairos / path).read_bytes()).hexdigest() != digest:
                 errors.append('reviewed source drift: ' + path)
