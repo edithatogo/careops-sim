@@ -2204,6 +2204,25 @@
           "max_context_bytes": 24000,
           "max_corrections": 2,
           "existing_recipe": null
+        },
+        {
+          "id": "P3.1.jointmarginal",
+          "target_repo": ".",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Paired joint-versus-marginal synthetic fixture",
+          "oracle": "Equal marginal distributions do not hide the paired joint mismatch; all values remain synthetic",
+          "dependencies": [
+            "P3.1.identifiability"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
         }
       ]
     },
@@ -2234,7 +2253,7 @@
           "output": "One family empirical/parametric comparison",
           "oracle": "Same frozen data/split/units; fit diagnostics and rejected alternatives retained",
           "dependencies": [
-            "P3.1.identifiability"
+            "P3.1.jointmarginal"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
