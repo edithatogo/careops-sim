@@ -103,7 +103,7 @@ Entry: P0; independent of P1 until the P3 join.
   dependence and identification gaps. Test graph/unit consistency and rules against
   small hand-worked examples; flag overlap with DES work/wait durations for P3.
   Use the same primary-source/provenance contract as P1.3; distinguish observed behavior, literature interpretation and chosen heuristic. Maintain a gap record with owner, acquisition route and impact; unsupported values cannot become empirical defaults.
-- [ ] P2.4 Conductor — review and verify phase (workflow.md).
+- [x] P2.4 Conductor — review and verify phase (workflow.md).
 
 Exit: P-R2 ABM evidence pack. Manual check: explain every interval of one staff
 trip/interrupted task without silently introducing an unobserved behavioral rule.
