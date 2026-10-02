@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://careops-sim.invalid/schemas/example-profile-pack.schema.json",
+  "title": "CareOps synthetic ED example profile pack",
+  "description": "Version 1 data-only fixture envelope. It is not an E0 executable scenario or a runtime API.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profile_pack_schema_version", "profile_id", "seed", "horizon", "provenance", "arrival_table", "resource_calendars", "staffing_calendars", "capacity_location", "route_graph", "distributions", "initial_state"],
+  "properties": {
+    "profile_pack_schema_version": { "const": 1 },
+    "profile_id": { "$ref": "#/$defs/id" },
+    "seed": { "type": "integer", "minimum": 0, "maximum": 18446744073709551615 },
+    "horizon": { "$ref": "#/$defs/positiveTime" },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["class", "notes"],
+      "properties": { "class": { "const": "synthetic" }, "notes": { "type": "string", "minLength": 1, "pattern": "\\S" } }
+    },
+    "arrival_table": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/arrivalInterval" } },
+    "resource_calendars": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/resourceCalendar" } },
+    "staffing_calendars": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/staffingCalendar" } },
+    "capacity_location": { "$ref": "https://careops-sim.invalid/schemas/capacity-location.schema.json" },
+    "route_graph": { "$ref": "#/$defs/routeGraph" },
+    "distributions": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/distribution" } },
+    "initial_state": { "$ref": "#/$defs/initialState" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "time": {
+      "type": "object", "additionalProperties": false, "required": ["value", "source_unit"],
+      "properties": { "value": { "type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$" }, "source_unit": { "const": "s" } }
+    },
+    "positiveTime": {
+      "type": "object", "additionalProperties": false, "required": ["value", "source_unit"],
+      "properties": { "value": { "type": "string", "pattern": "^(?=.*[1-9])(0|[1-9][0-9]*)(\\.[0-9]+)?$" }, "source_unit": { "const": "s" } }
+    },
+    "interval": {
+      "type": "object", "additionalProperties": false, "required": ["start", "end"],
+      "properties": { "start": { "$ref": "#/$defs/time" }, "end": { "$ref": "#/$defs/time" } }
+    },
+    "arrivalInterval": {
+      "type": "object", "additionalProperties": false, "required": ["interval", "counts_by_mode"],
+      "properties": {
+        "interval": { "$ref": "#/$defs/interval" },
+        "counts_by_mode": { "type": "object", "minProperties": 1, "additionalProperties": { "type": "integer", "minimum": 0 } }
+      }
+    },
+    "resourceCalendar": {
+      "type": "object", "additionalProperties": false, "required": ["resource_id", "interval", "open_count", "staffed_count"],
+      "properties": { "resource_id": { "$ref": "#/$defs/id" }, "interval": { "$ref": "#/$defs/interval" }, "open_count": { "type": "integer", "minimum": 0 }, "staffed_count": { "type": "integer", "minimum": 0 } }
+    },
+    "staffingCalendar": {
+      "type": "object", "additionalProperties": false, "required": ["staff_role_id", "interval", "present_count"],
+      "properties": { "staff_role_id": { "$ref": "#/$defs/id" }, "interval": { "$ref": "#/$defs/interval" }, "present_count": { "type": "integer", "minimum": 0 } }
+    },
+    "routeGraph": {
+      "type": "object", "additionalProperties": false, "required": ["nodes", "edges"],
+      "properties": {
+        "nodes": { "type": "array", "minItems": 1, "items": { "type": "object", "additionalProperties": false, "required": ["node_id", "location_id"], "properties": { "node_id": { "$ref": "#/$defs/id" }, "location_id": { "$ref": "#/$defs/id" } } } },
+        "edges": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["from_node_id", "to_node_id", "distance"], "properties": { "from_node_id": { "$ref": "#/$defs/id" }, "to_node_id": { "$ref": "#/$defs/id" }, "distance": { "type": "object", "additionalProperties": false, "required": ["value", "unit"], "properties": { "value": { "type": "number", "minimum": 0 }, "unit": { "const": "m" } } } } } }
+      }
+    },
+    "distribution": {
+      "type": "object", "additionalProperties": false, "required": ["distribution_id", "unit", "outcomes", "provenance_class"],
+      "properties": {
+        "distribution_id": { "$ref": "#/$defs/id" }, "unit": { "$ref": "#/$defs/id" }, "provenance_class": { "const": "synthetic" },
+        "outcomes": { "type": "array", "minItems": 1, "items": { "type": "object", "additionalProperties": false, "required": ["value", "probability"], "properties": { "value": { "type": ["number", "string"] }, "probability": { "type": "number", "minimum": 0, "maximum": 1 } } } }
+      }
+    },
+    "initialState": {
+      "type": "object", "additionalProperties": false, "required": ["at", "occupants", "remaining_work"],
+      "properties": {
+        "at": { "$ref": "#/$defs/time" },
+        "occupants": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["occupant_id", "location_id"], "properties": { "occupant_id": { "$ref": "#/$defs/id" }, "location_id": { "$ref": "#/$defs/id" } } } },
+        "remaining_work": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["occupant_id", "task_class_id", "remaining_duration"], "properties": { "occupant_id": { "$ref": "#/$defs/id" }, "task_class_id": { "$ref": "#/$defs/id" }, "remaining_duration": { "$ref": "#/$defs/time" } } } }
+      }
+    }
+  }
+}
