@@ -1,0 +1,320 @@
+{
+  "profile_pack_schema_version": 1,
+  "profile_id": "p4.minimal-deterministic.data-only",
+  "seed": 11,
+  "horizon": {
+    "value": "3600",
+    "source_unit": "s"
+  },
+  "provenance": {
+    "class": "synthetic",
+    "notes": "Invented small deterministic fixture values for schema-valid data-only examples; not observations, clinical parameters, fitted distributions, operational defaults, or a site profile. This pack is separate from the E0 executable projection."
+  },
+  "arrival_table": [
+    {
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "1800",
+          "source_unit": "s"
+        }
+      },
+      "counts_by_mode": {
+        "walk_in": 1,
+        "ambulance": 1
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "1800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "3600",
+          "source_unit": "s"
+        }
+      },
+      "counts_by_mode": {
+        "walk_in": 1,
+        "ambulance": 0
+      }
+    }
+  ],
+  "acuity_scales": [
+    {
+      "scale_id": "triage.synthetic.v1",
+      "categories": [
+        "ATS1",
+        "ATS2",
+        "ATS3",
+        "ATS4",
+        "ATS5"
+      ],
+      "provenance_class": "synthetic"
+    }
+  ],
+  "case_mix_table": [
+    {
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "1800",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "walk_in",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 0,
+        "ATS2": 0,
+        "ATS3": 0,
+        "ATS4": 1,
+        "ATS5": 0
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "1800",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "ambulance",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 0,
+        "ATS2": 1,
+        "ATS3": 0,
+        "ATS4": 0,
+        "ATS5": 0
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "1800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "3600",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "walk_in",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 0,
+        "ATS2": 0,
+        "ATS3": 0,
+        "ATS4": 0,
+        "ATS5": 1
+      }
+    },
+    {
+      "interval": {
+        "start": {
+          "value": "1800",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "3600",
+          "source_unit": "s"
+        }
+      },
+      "arrival_mode": "ambulance",
+      "acuity_scale_id": "triage.synthetic.v1",
+      "counts_by_category": {
+        "ATS1": 0,
+        "ATS2": 0,
+        "ATS3": 0,
+        "ATS4": 0,
+        "ATS5": 0
+      }
+    }
+  ],
+  "resource_calendars": [
+    {
+      "resource_id": "resource.synthetic",
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "3600",
+          "source_unit": "s"
+        }
+      },
+      "open_count": 1,
+      "staffed_count": 1
+    }
+  ],
+  "staffing_calendars": [
+    {
+      "staff_role_id": "staff.synthetic",
+      "interval": {
+        "start": {
+          "value": "0",
+          "source_unit": "s"
+        },
+        "end": {
+          "value": "3600",
+          "source_unit": "s"
+        }
+      },
+      "present_count": 1
+    }
+  ],
+  "capacity_location": {
+    "schema_version": 3,
+    "status": "proposed",
+    "capacity": {
+      "unit": "treatment_space",
+      "bucket_completeness": "complete",
+      "physical_status": "known",
+      "physical_count": 1,
+      "availability_status": "known",
+      "open_count": 1,
+      "staffed_count": 1,
+      "equipment": []
+    },
+    "zones": [
+      {
+        "zone_id": "zone.synthetic",
+        "name": "Synthetic zone"
+      }
+    ],
+    "locations": [
+      {
+        "location_id": "location.arrival",
+        "name": "Synthetic arrival",
+        "zone_id": "zone.synthetic"
+      },
+      {
+        "location_id": "location.work",
+        "name": "Synthetic work location",
+        "zone_id": "zone.synthetic"
+      }
+    ],
+    "resource_buckets": [
+      {
+        "resource_id": "resource.synthetic",
+        "resource_class": "synthetic_slot",
+        "location_id": "location.work",
+        "zone_id": "zone.synthetic",
+        "physical_status": "known",
+        "physical_count": 1,
+        "availability_status": "known",
+        "open_count": 1,
+        "staffed_count": 1,
+        "capabilities": []
+      }
+    ],
+    "task_classes": [
+      {
+        "task_class_id": "task.synthetic",
+        "name": "Synthetic work",
+        "required_resource_classes": [
+          "synthetic_slot"
+        ]
+      }
+    ],
+    "staff_roles": [
+      {
+        "staff_role_id": "staff.synthetic",
+        "name": "Synthetic role",
+        "counts": [
+          {
+            "basis": "present",
+            "status": "known",
+            "count": 1,
+            "reference": "synthetic fixture"
+          }
+        ]
+      }
+    ],
+    "eligibility": [
+      {
+        "staff_role_id": "staff.synthetic",
+        "task_class_id": "task.synthetic",
+        "zone_id": "zone.synthetic",
+        "location_id": "location.work"
+      }
+    ],
+    "routes": [
+      {
+        "from_location_id": "location.arrival",
+        "to_location_id": "location.work",
+        "distance": {
+          "value": 10.0,
+          "unit": "m"
+        }
+      }
+    ]
+  },
+  "route_graph": {
+    "nodes": [
+      {
+        "node_id": "arrival",
+        "location_id": "location.arrival"
+      },
+      {
+        "node_id": "work",
+        "location_id": "location.work"
+      }
+    ],
+    "edges": [
+      {
+        "from_node_id": "arrival",
+        "to_node_id": "work",
+        "distance": {
+          "value": 10,
+          "unit": "m"
+        }
+      }
+    ]
+  },
+  "distributions": [
+    {
+      "distribution_id": "triage.duration",
+      "unit": "s",
+      "provenance_class": "synthetic",
+      "outcomes": [
+        {
+          "value": "60",
+          "probability": 1
+        }
+      ]
+    },
+    {
+      "distribution_id": "work.duration",
+      "unit": "s",
+      "provenance_class": "synthetic",
+      "outcomes": [
+        {
+          "value": "120",
+          "probability": 1
+        }
+      ]
+    }
+  ],
+  "initial_state": {
+    "at": {
+      "value": "0",
+      "source_unit": "s"
+    },
+    "occupants": [],
+    "remaining_work": []
+  }
+}
