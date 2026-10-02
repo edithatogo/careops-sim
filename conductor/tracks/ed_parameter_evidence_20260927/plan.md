@@ -117,7 +117,7 @@ Entry: P1 and P2; statistics/method decisions require coordinator review.
   training/hold-out partitions and expected validation failures before fitting.
   Include explicit censor/event ambiguity, time-of-knowledge, observation
   window boundaries, patient/day dependence and joint-versus-marginal fixtures.
-- [ ] P3.2 Compare empirical/parametric/conditional candidates with reproducible
+- [x] P3.2 Compare empirical/parametric/conditional candidates with reproducible
   fitting diagnostics and held-out checks; record chosen/rejected families,
   sample limitations and uncertainty. Use explicit assumptions where data cannot fit.
 - [ ] P3.3 Reconcile DES/ABM boundaries; define conditional sampling order, shared
