@@ -2,12 +2,13 @@
   "schema_version": 1,
   "contract_id": "P3.3.sampling.synthetic-causal-order.v1",
   "status": "synthetic_contract_only",
-  "provenance": {
+    "provenance": {
     "empirical_ed_data_used": false,
     "empirical_family_selected": false,
     "empirical_probability_or_range_asserted": false,
     "clinical_policy_approved": false,
     "fixture_values_are_defaults": false,
+    "synthetic_probabilities_used": true,
     "purpose": "Define a causal conditional-sampling and observation boundary with tiny invented fixtures."
   },
   "evidence_boundary": {
@@ -123,7 +124,24 @@
         "synthetic-mode-a": ["synthetic-route-a", "synthetic-route-shared"],
         "synthetic-mode-b": ["synthetic-route-b", "synthetic-route-shared"]
       },
-      "rule": "The dependency edges declare allowed conditioning/dependence only; they do not assert a clinical causal effect or empirical association. A downstream choice can depend on an already generated arrival mode and must be within that mode's declared choice set. Unknown or missing mode yields no conditional route draw until resolved by an explicitly declared policy. These names are not ED categories or policies."
+      "rule": "The dependency edges declare allowed conditioning/dependence only; they do not assert a clinical causal effect or empirical association. A downstream choice can depend on an already generated arrival mode and must be within that mode's declared choice set. Unknown or missing mode yields no conditional route draw until resolved by an explicitly declared policy. These names are not ED categories or policies.",
+      "invented_conditional_route_probabilities": {
+        "synthetic-mode-a": [
+          {"route": "synthetic-route-a", "probability": 0.25},
+          {"route": "synthetic-route-shared", "probability": 0.75}
+        ],
+        "synthetic-mode-b": [
+          {"route": "synthetic-route-b", "probability": 0.6},
+          {"route": "synthetic-route-shared", "probability": 0.4}
+        ]
+      },
+      "categorical_draw_rule": "For a synthetic uniform variate u in [0,1), return the first route whose cumulative invented probability exceeds u. The probabilities and u values are fixture sentinels, never ED estimates.",
+      "invented_conditional_draw_cases": [
+        {"mode": "synthetic-mode-a", "uniform_variate": 0.1, "expected_route": "synthetic-route-a"},
+        {"mode": "synthetic-mode-a", "uniform_variate": 0.25, "expected_route": "synthetic-route-shared"},
+        {"mode": "synthetic-mode-b", "uniform_variate": 0.59, "expected_route": "synthetic-route-b"},
+        {"mode": "synthetic-mode-b", "uniform_variate": 0.6, "expected_route": "synthetic-route-shared"}
+      ]
     },
     "cohort_denominators": [
       {

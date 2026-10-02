@@ -72,6 +72,25 @@ def select_synthetic_route(mode, choices, proposed=None):
     return route
 
 
+def draw_conditional_route(mode, uniform_variate, choices, conditional_probabilities):
+    if mode not in choices or mode not in conditional_probabilities:
+        return "deferred"
+    if not 0 <= uniform_variate < 1:
+        raise ValueError("uniform variate must be in [0, 1)")
+    rows = conditional_probabilities[mode]
+    if [row["route"] for row in rows] != choices[mode]:
+        raise ValueError("probability outcomes must match the mode choice set in order")
+    total = sum(row["probability"] for row in rows)
+    if any(row["probability"] < 0 for row in rows) or abs(total - 1.0) > 1e-12:
+        raise ValueError("conditional probability row must sum to one")
+    cumulative = 0.0
+    for row in rows:
+        cumulative += row["probability"] / total
+        if uniform_variate < cumulative:
+            return row["route"]
+    raise AssertionError("normalized categorical row did not select an outcome")
+
+
 def cohort_accounting(presentations, cohort_id):
     if cohort_id == "synthetic-emergency-arrivals":
         selected = [row for row in presentations if row["emergency_eligible"]]
@@ -156,6 +175,39 @@ class P33SamplingContractTests(unittest.TestCase):
             self.assertEqual(select_synthetic_route(unavailable_mode, choices), "deferred")
         with self.assertRaises(ValueError):
             topological_order(oracle["nodes"], oracle["edges"] + [["realized_disposition", "arrival_mode"]])
+
+    def test_synthetic_conditional_categorical_draw_reproduces_fixed_variates(self):
+        oracle = self.contract["synthetic_oracles"]["sampling_dag"]
+        probabilities = oracle["invented_conditional_route_probabilities"]
+        cases = oracle["invented_conditional_draw_cases"]
+        self.assertTrue(self.contract["provenance"]["synthetic_probabilities_used"])
+        self.assertFalse(self.contract["provenance"]["empirical_probability_or_range_asserted"])
+        for case in cases:
+            self.assertEqual(
+                draw_conditional_route(case["mode"], case["uniform_variate"],
+                                       oracle["invented_mode_dependent_choice_sets"], probabilities),
+                case["expected_route"],
+            )
+        self.assertEqual(draw_conditional_route("unknown-or-unrecorded", 0.5,
+                                               oracle["invented_mode_dependent_choice_sets"], probabilities),
+                         "deferred")
+        with self.assertRaises(ValueError):
+            draw_conditional_route("synthetic-mode-a", 1.0,
+                                   oracle["invented_mode_dependent_choice_sets"], probabilities)
+        broken = {**probabilities, "synthetic-mode-a": [
+            {"route": "synthetic-route-a", "probability": 0.2},
+            {"route": "synthetic-route-shared", "probability": 0.2},
+        ]}
+        with self.assertRaises(ValueError):
+            draw_conditional_route("synthetic-mode-a", 0.1,
+                                   oracle["invented_mode_dependent_choice_sets"], broken)
+        rounded = {**probabilities, "synthetic-mode-a": [
+            {"route": "synthetic-route-a", "probability": 0.25},
+            {"route": "synthetic-route-shared", "probability": 0.7499999999995},
+        ]}
+        self.assertEqual(draw_conditional_route("synthetic-mode-a", 0.9999999999999,
+                                               oracle["invented_mode_dependent_choice_sets"], rounded),
+                         "synthetic-route-shared")
 
     def test_future_diagnosis_and_disposition_are_unavailable_early(self):
         canaries = self.contract["synthetic_oracles"]["leakage_canaries"]
