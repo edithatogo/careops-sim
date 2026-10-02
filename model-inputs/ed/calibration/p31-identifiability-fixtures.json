@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "fixture_id": "P3.1.identifiability.synthetic-walk-work-grid.v1",
+  "provenance": {
+    "class": "synthetic_only",
+    "purpose": "enumerate finite walk/work decompositions under a total-only observation and an independent walk observation",
+    "empirical_data_used": false,
+    "promoted_to_ed_parameter_or_default": false,
+    "distribution_selection_claim": false,
+    "fitting_performed": false
+  },
+  "source_lineage": [
+    {
+      "path": "conductor/research/ed-research-incorporation-9-12-20260927.md",
+      "line": 131,
+      "locator": "P3 fixture matrix: total walk+work=5, three grid solutions, non-identifiable total-only result, and synthetic-grid resolution after observing walk=2"
+    },
+    {
+      "path": "conductor/research/supplied/20260927/report-12.md.txt",
+      "lines": "111-119",
+      "locator": "FX-005/FX-006 walk/task identifiability example; the equal-total ridge requires abstention, and an independent walking observation resolves only that example"
+    }
+  ],
+  "synthetic_grid": {
+    "value_status": "synthetic",
+    "total_walk_plus_work": 5,
+    "walk_values": [1, 2, 3],
+    "work_values": [2, 3, 4]
+  },
+  "observations": {
+    "total_only": {
+      "value_status": "synthetic",
+      "observed_total": 5,
+      "identification_status": "non_identifiable",
+      "selected_decomposition": null,
+      "scope_limit": "Only the sum is identified by this finite synthetic grid; no separate walk or work value is selected."
+    },
+    "total_plus_independent_walk": {
+      "value_status": "synthetic",
+      "observed_total": 5,
+      "observed_walk": 2,
+      "identification_status": "identified_on_finite_synthetic_grid",
+      "selected_decomposition": {
+        "walk": 2,
+        "work": 3
+      },
+      "scope_limit": "This independent synthetic measure identifies one point on this finite synthetic grid only; this is not an empirical or universal identifiability claim."
+    }
+  },
+  "limitations": [
+    "Synthetic fixture values do not estimate or recommend ED parameters.",
+    "No distribution fitting, rates, uncertainty estimates, or general identifiability result is produced.",
+    "The additional walk observation is independent by construction in this finite example; applicability to real observations is not established."
+  ]
+}
