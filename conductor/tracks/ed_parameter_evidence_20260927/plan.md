@@ -135,7 +135,7 @@ service are not both calibrated from the same undifferentiated elapsed interval.
 
 Entry: P3 and generic ED E0.4 closeout. This phase produces configuration data, not the E1 model implementation.
 
-- [ ] P4.1 Create schema-valid minimal deterministic, generic nominal and surge/
+- [x] P4.1 Create schema-valid minimal deterministic, generic nominal and surge/
   overload profiles with linked sources or clearly labelled synthetic assumptions;
   include arrival tables, calendars, graph, distributions and initial state.
 - [ ] P4.2 Add malformed/missing/censored examples and expected diagnostics; check
