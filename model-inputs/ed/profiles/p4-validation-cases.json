@@ -1,0 +1,40 @@
+{
+  "corpus_schema_version": 1,
+  "corpus_id": "p4.validation.negative-cases.synthetic.v1",
+  "profile_contract": "conductor/design/ed/p4-example-pack-contract.md",
+  "base_profile": "model-inputs/ed/profiles/p4-minimal-pack.json",
+  "provenance": {
+    "class": "synthetic",
+    "notes": "Validation-only examples derived from the synthetic minimal pack. They are not observations, operational defaults, clinical assumptions, or a site profile."
+  },
+  "structural_cases": [
+    {
+      "case_id": "missing-required-seed",
+      "mutation": { "operation": "remove", "path": ["seed"] },
+      "expected": { "valid": false, "diagnostic_path": "<root>", "constraint": "required", "missing_field": "seed" }
+    },
+    {
+      "case_id": "explicit-zero-arrival-count",
+      "mutation": { "operation": "set", "path": ["arrival_table", 1, "counts_by_mode", "ambulance"], "value": 0 },
+      "expected": { "valid": true, "path": "arrival_table[1].counts_by_mode.ambulance", "value": 0 }
+    },
+    {
+      "case_id": "invalid-clock-unit",
+      "mutation": { "operation": "set", "path": ["horizon", "source_unit"], "value": "minute" },
+      "expected": { "valid": false, "diagnostic_path": "horizon.source_unit", "constraint": "const" }
+    }
+  ],
+  "observation_semantics": {
+    "source_fixture": "model-inputs/ed/calibration/p31-censoring-dependence-fixtures.json",
+    "right_censor_case_id": "FX-001",
+    "right_censor_expected": {
+      "observed_event_count": 2,
+      "total_follow_up": 7,
+      "naive_completed_event_count": 3,
+      "naive_count_is_invalid": true
+    },
+    "ambiguous_status_case_id": "ambiguous_status",
+    "ambiguous_status_expected_classification": "unresolved_ambiguous_status",
+    "scope": "These references check observation accounting only; the P4 profile schema does not ingest EHR event traces."
+  }
+}
