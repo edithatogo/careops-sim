@@ -28,3 +28,10 @@ input and deterministically schedules supplied work items; it does not generate
 arrivals from a table, apply calendars, or simulate the declared route.
 Every value is an explicit synthetic assumption, and the scenario is not a
 public-data estimate or an operationally representative generic ED baseline.
+
+`p4-constrained-surge.json` keeps synthetic physical capacity at two spaces but
+sets both open and staffed capacity to one; three supplied cases arrive at
+tick 0 and each requires three invented work ticks. E0 schedules them FIFO on
+the known one-slot pool (starts at 0, 3, and 6; waits 0, 3, and 6 ticks), making
+the intentionally constrained resource visible. This is a deterministic
+overload interface example, not a surge policy, calendar, or ED estimate.
