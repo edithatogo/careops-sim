@@ -138,7 +138,7 @@ Entry: P3 and generic ED E0.4 closeout. This phase produces configuration data, 
 - [x] P4.1 Create schema-valid minimal deterministic, generic nominal and surge/
   overload profiles with linked sources or clearly labelled synthetic assumptions;
   include arrival tables, calendars, graph, distributions and initial state.
-- [ ] P4.2 Add malformed/missing/censored examples and expected diagnostics; check
+- [x] P4.2 Add malformed/missing/censored examples and expected diagnostics; check
   probability/conditional tables, clock units, support bounds, resource feasibility,
   initialization and provenance. Store manifests/hashes and licensing notes.
   Include synthetic physical-versus-open capacity, repurposed/closed bay and surge-calendar cases; unknown operational status cannot silently mean available.
