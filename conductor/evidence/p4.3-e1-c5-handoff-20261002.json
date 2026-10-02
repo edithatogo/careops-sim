@@ -1,0 +1,292 @@
+{
+  "handoff_id": "P4.3-E1-C5-20261002",
+  "status": "future_handoff_only",
+  "created_from_packet": "P4.3.handoff.frozen-generic-pack-and-calibration-fixtures",
+  "receiving_tracks": [
+    {
+      "track": "E1 generic patient pathway",
+      "intent": "Future consumer of P4 generic profile shape and validator contract.",
+      "entry_prerequisites": [
+        "D2",
+        "Q4",
+        "C1",
+        "C2"
+      ],
+      "consumption_status": "not_consumed; no E1 implementation/support or accepted handoff is evidenced here."
+    },
+    {
+      "track": "C5 reproducible fitting, CLI and local multicore runs",
+      "intent": "Future consumer of P3.1-P3.3 synthetic method/contract fixtures.",
+      "entry_prerequisites": [
+        "C3",
+        "C4"
+      ],
+      "consumption_status": "not_consumed; no C5 implementation/support or accepted handoff is evidenced here."
+    },
+    {
+      "track": "P5 model loading",
+      "intent": "Planned binding/loading of P4 packs through completed ED model and calibration runner.",
+      "entry_prerequisites": [
+        "E2",
+        "C5"
+      ],
+      "consumption_status": "gated; these artifacts have not been loaded by the runtime."
+    }
+  ],
+  "limits": [
+    "All P4 profile and validation values are invented synthetic data-only fixtures; not E0 scenario inputs and not executable by careops-ed run.",
+    "No empirical data, ED duration family, parameter/default, clinical validity, operational range, or Cairns applicability is established.",
+    "P3.1-P3.3 fixtures exercise synthetic methods/contracts only; accepted bounded synthetic scope does not establish empirical validity.",
+    "Cairns local values and applicability remain unknown; no private data or local Cairns inputs are included.",
+    "Structural and current semantic validation are bounded checks, not full clinical or runtime validation; validator coverage does not check all staffing/resource correspondences.",
+    "P4 manifest redistribution status is not_established and its hash scope is exact bytes for only the five listed artifacts; no broader license is inferred."
+  ],
+  "artifacts": [
+    {
+      "path": "model-inputs/ed/profiles/p4-minimal-pack.json",
+      "sha256": "0328293baad13404d89bf82b6718c0ef9904a580d32cb424989cb5ebd57406f6",
+      "provenance": "synthetic / data-only",
+      "purpose": "Invented minimal deterministic data-only profile example; not an observation, clinical parameter, operational default or site profile.",
+      "schema": "model-inputs/ed/schema/example-profile-pack.schema.json",
+      "schema_version": 1
+    },
+    {
+      "path": "model-inputs/ed/profiles/p4-nominal-pack.json",
+      "sha256": "5fa81d41cf885d390b0155281d8945f776f7595ecde85480600ba19b1078f7a9",
+      "provenance": "synthetic / data-only",
+      "purpose": "Invented generic nominal-shaped data-only profile example; \u201cnominal\u201d is a fixture label, not a typical ED baseline.",
+      "schema": "model-inputs/ed/schema/example-profile-pack.schema.json",
+      "schema_version": 1
+    },
+    {
+      "path": "model-inputs/ed/profiles/p4-surge-pack.json",
+      "sha256": "dba34ccb8765964ad9a78780c269ccf53c42b9aefe8f161f4c245ff7315eea2a",
+      "provenance": "synthetic / data-only",
+      "purpose": "Invented overloaded/surge-shaped data-only profile example; not an observed or recommended surge plan.",
+      "schema": "model-inputs/ed/schema/example-profile-pack.schema.json",
+      "schema_version": 1
+    },
+    {
+      "path": "model-inputs/ed/profiles/p4-validation-cases.json",
+      "sha256": "e54d894674968965380ad3a366bcdaebef5ff6f3fefea155414abce33e73d8d6",
+      "provenance": "synthetic / data-only",
+      "purpose": "Synthetic validation corpus derived from the minimal example; validation behavior only.",
+      "schema": "synthetic validation corpus format",
+      "schema_version": 1
+    },
+    {
+      "path": "model-inputs/ed/profiles/p4-capacity-status-cases.json",
+      "sha256": "d2e585b866c5bae56875da4f4e800fe3f374085e78d79e8e2a67e3768f7d6df1",
+      "provenance": "synthetic / data-only",
+      "purpose": "Synthetic capacity status cases for schema/validator behavior; not operational capacity.",
+      "schema": "synthetic validation corpus format",
+      "schema_version": 1
+    },
+    {
+      "path": "model-inputs/ed/profiles/p4-pack-manifest.json",
+      "sha256": "df1312cc48e9421823681e1ae5a7301b27e0cd2ba80eb6cf71f7ed482e6cfea8",
+      "provenance": "synthetic / data-only",
+      "purpose": "Exact-byte SHA-256 manifest. It covers only its five listed artifacts; external redistribution status is not_established.",
+      "schema": "manifest_version",
+      "schema_version": 1,
+      "external_redistribution_status": "not_established",
+      "manifest_scope": "five listed artifacts only"
+    },
+    {
+      "path": "model-inputs/ed/schema/example-profile-pack.schema.json",
+      "sha256": "20a77d540eea2ee5f8de21fd45f7d2d5d155b2b360c85a0e3acf49c69057bb05",
+      "provenance": "repository artifact; fixture/check contract only",
+      "purpose": "Structural JSON Schema contract for profile pack shape.",
+      "schema": "schema_version",
+      "schema_version": 1
+    },
+    {
+      "path": "model-inputs/ed/schema/capacity-location.schema.json",
+      "sha256": "3cac69cd6bfeba06a2c544fdb3e0815f5658c3addfe96bf345d78cfd8ea4fe9b",
+      "provenance": "repository artifact; fixture/check contract only",
+      "purpose": "Structural JSON Schema contract for capacity/location shape.",
+      "schema": "schema_version",
+      "schema_version": 1
+    },
+    {
+      "path": "tools/validate_ed_profile_pack.py",
+      "sha256": "398936a129b7bd18e302a6c28163c332350d95c0192a2e8f9f4d9598dcf1722f",
+      "provenance": "repository artifact; fixture/check contract only",
+      "purpose": "Structural profile-pack validation implementation; does not establish clinical or runtime validity."
+    },
+    {
+      "path": "tools/validate_ed_profile_pack_semantics.py",
+      "sha256": "3a59d74499daaee100b6a9b5dfebb3c214c74cb6c83de9c1077f39f06d9d5412",
+      "provenance": "repository artifact; fixture/check contract only",
+      "purpose": "Implemented semantic checks for selected interval/conditional tables, support/probability mass, calendars, initial state, provenance and malformed values; not full clinical/runtime validation, and does not enforce all staffing/resource correspondences."
+    },
+    {
+      "path": "tools/validate_ed_profile_manifest.py",
+      "sha256": "b259f4d74b49cf0a06aca11aa40f4b51e3313a733389ed77318d3d41f9b5540a",
+      "provenance": "repository artifact; fixture/check contract only",
+      "purpose": "Verifies manifest exact-byte hashes for its listed artifacts only."
+    },
+    {
+      "path": "model-inputs/ed/profiles/P4_PROFILE_GUIDE.md",
+      "sha256": "7b63506b8d7932137de6df3847d2492e8c152a673c4913f21964ae1bfe9a69ec",
+      "provenance": "synthetic / data-only",
+      "purpose": "P4 guide describing fields, units, synthetic fixture status, validator scope, limitations and P5 loading boundary."
+    },
+    {
+      "path": "model-inputs/ed/profiles/README.md",
+      "sha256": "5383e7d7dced0e5e2ec819e06a4af5d0d7560e16966278f1afff4e3f4bf070fc",
+      "provenance": "repository documentation; interface guide only",
+      "purpose": "Directory entry point distinguishing data-only P4 packs from E0 executable fixtures and linking the P4 profile guide."
+    },
+    {
+      "path": "model-inputs/ed/calibration/p31-known-distribution-fixtures.json",
+      "sha256": "d177802f7d2b08c3627db6fb9d78b21cefe882cedf9d1a5718dcd32a1cf7d011",
+      "provenance": "synthetic only",
+      "purpose": "P3.1 deterministic known-distribution synthetic recovery, tail, support and sparse-state checks.",
+      "coordinator_acceptance_evidence": "conductor/evidence/p3.1-coordinator-acceptance-20261002.md"
+    },
+    {
+      "path": "model-inputs/ed/calibration/p31-censoring-dependence-fixtures.json",
+      "sha256": "c19b2124a2a63654426207698b0312d6e984fd3cb24a221e38b5008c380c7bff",
+      "provenance": "synthetic only",
+      "purpose": "P3.1 synthetic censor/event observation contract, boundary and grouping/dependence cases.",
+      "coordinator_acceptance_evidence": "conductor/evidence/p3.1-coordinator-acceptance-20261002.md"
+    },
+    {
+      "path": "model-inputs/ed/calibration/p31-identifiability-fixtures.json",
+      "sha256": "58980359160c376689ff009e2ff2d4358fd1e1b5f21da29b5c33a580cfaf7ed0",
+      "provenance": "synthetic only",
+      "purpose": "P3.1 synthetic total-only walk/work ridge and identifiability example.",
+      "coordinator_acceptance_evidence": "conductor/evidence/p3.1-coordinator-acceptance-20261002.md"
+    },
+    {
+      "path": "model-inputs/ed/calibration/p31-joint-marginal-fixture.json",
+      "sha256": "d6d933b8288aef4c428402b3e720c69d2e432b187de6e1f43eb9fc3b9160ba2e",
+      "provenance": "synthetic only",
+      "purpose": "P3.1 synthetic equal-marginal/different-paired-joint comparison.",
+      "coordinator_acceptance_evidence": "conductor/evidence/p3.1-coordinator-acceptance-20261002.md"
+    },
+    {
+      "path": "model-inputs/ed/calibration/p32-candidate-comparison.synthetic.json",
+      "sha256": "5370b794ed7e212576bc5b25e8dae3459ef475471a67f84bdc7bc0cf68500542",
+      "provenance": "synthetic only",
+      "purpose": "P3.2 synthetic train-only lognormal MLE versus empirical-resampling candidate comparison; no winner promoted.",
+      "coordinator_acceptance_evidence": "conductor/evidence/p3.2-coordinator-acceptance-20261002.md"
+    },
+    {
+      "path": "model-inputs/ed/calibration/p32-holdout-validation.synthetic.json",
+      "sha256": "d39b4aed458540362ebe26325fc24a97a5b81e347c8f8499d244d2aa3598a72b",
+      "provenance": "synthetic only",
+      "purpose": "P3.2 synthetic selection/locked-test holdout method and conditional bootstrap checks; no ED inference.",
+      "coordinator_acceptance_evidence": "conductor/evidence/p3.2-coordinator-acceptance-20261002.md"
+    },
+    {
+      "path": "model-inputs/ed/calibration/p33-sampling-contract.synthetic.json",
+      "sha256": "0738ffd0bd19bed711626bf2d60837f7822e4cb9ed47c1e9cce906a0d2a84808",
+      "provenance": "synthetic only",
+      "purpose": "P3.3 synthetic sampling contract: cohort/rates, mode-conditioned categorical draw, route selection and invariance cases.",
+      "coordinator_acceptance_evidence": "conductor/evidence/p3.3-coordinator-acceptance-20261002.md"
+    },
+    {
+      "path": "model-inputs/ed/calibration/p33-uncertainty-contract.synthetic.json",
+      "sha256": "1e6a6846ba78bbe6e5f20e20c2aaa01a771eeefe623da567b62ce16ec7769eed",
+      "provenance": "synthetic only",
+      "purpose": "P3.3 synthetic uncertainty typing and range classification contract.",
+      "coordinator_acceptance_evidence": "conductor/evidence/p3.3-coordinator-acceptance-20261002.md"
+    },
+    {
+      "path": "model-inputs/ed/calibration/p33-des-abm-join.synthetic.json",
+      "sha256": "c74ea8a9895c0a4087e65d6b60bab75ad873fc58bd929d2393f0ac3541686f73",
+      "provenance": "synthetic only",
+      "purpose": "P3.3 synthetic DES/ABM interval accounting and overlap/censoring contract.",
+      "coordinator_acceptance_evidence": "conductor/evidence/p3.3-coordinator-acceptance-20261002.md"
+    },
+    {
+      "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+      "sha256": "6741ef98812dc90a150848a5f20bbc0a7564ce9bfa1816382d4f8b36e1554cfc",
+      "kind": "plan or acceptance evidence",
+      "purpose": "Traceable plan prerequisites, bounded phase acceptance, guide limits, and explicit Cairns unknown mapping boundary."
+    },
+    {
+      "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+      "sha256": "651f073e7ef8a4524ab0606f17dd7c6f8c69aa6ce273c5c2aef952ac727b2f87",
+      "kind": "plan or acceptance evidence",
+      "purpose": "Traceable plan prerequisites, bounded phase acceptance, guide limits, and explicit Cairns unknown mapping boundary."
+    },
+    {
+      "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+      "sha256": "b6a8d89f65265c6bf0d66e13451ec0532ade7fc9f5f0d4a564a10f44363351fc",
+      "kind": "plan or acceptance evidence",
+      "purpose": "Traceable plan prerequisites, bounded phase acceptance, guide limits, and explicit Cairns unknown mapping boundary."
+    },
+    {
+      "path": "conductor/evidence/p3-phase-acceptance-20261002.md",
+      "sha256": "2a316df34038ec85456cadd275453bb3e3c10ae52a210980c4b2d8e9bcd3f459",
+      "kind": "plan or acceptance evidence",
+      "purpose": "Traceable plan prerequisites, bounded phase acceptance, guide limits, and explicit Cairns unknown mapping boundary."
+    },
+    {
+      "path": "conductor/evidence/p4.2-parent-join-acceptance-20261002.md",
+      "sha256": "d9a43ad43f8b3983f758b0849a6f9c996777712471550fa27aaf924787326710",
+      "kind": "plan or acceptance evidence",
+      "purpose": "Traceable plan prerequisites, bounded phase acceptance, guide limits, and explicit Cairns unknown mapping boundary."
+    },
+    {
+      "path": "conductor/evidence/p4.3-guide-leaf-acceptance-20261002.md",
+      "sha256": "503339f9fa74b40861e1571c39b5a08ed166d352f125d9655e53a699a2033242",
+      "kind": "plan or acceptance evidence",
+      "purpose": "Traceable plan prerequisites, bounded phase acceptance, guide limits, and explicit Cairns unknown mapping boundary."
+    },
+    {
+      "path": "conductor/evidence/p4.3-cairns-leaf-acceptance-20261002.md",
+      "sha256": "c22b1e94d98a532990bc973f2828a1f1a0d63b810fb925ad9f45f328f008cc77",
+      "kind": "plan or acceptance evidence",
+      "purpose": "Traceable plan prerequisites, bounded phase acceptance, guide limits, and explicit Cairns unknown mapping boundary."
+    }
+  ],
+  "evidence_references": [
+    "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+    "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+    "conductor/tracks/empirical_calibration_20260925/plan.md",
+    "conductor/evidence/p3-phase-acceptance-20261002.md",
+    "conductor/evidence/p4.2-parent-join-acceptance-20261002.md",
+    "conductor/evidence/p4.3-guide-leaf-acceptance-20261002.md",
+    "conductor/evidence/p4.3-cairns-leaf-acceptance-20261002.md",
+    "conductor/evidence/p3.1-coordinator-acceptance-20261002.md",
+    "conductor/evidence/p3.2-coordinator-acceptance-20261002.md",
+    "conductor/evidence/p3.3-coordinator-acceptance-20261002.md"
+  ],
+  "input_paths": [
+    "model-inputs/ed/profiles/p4-minimal-pack.json",
+    "model-inputs/ed/profiles/p4-nominal-pack.json",
+    "model-inputs/ed/profiles/p4-surge-pack.json",
+    "model-inputs/ed/profiles/p4-validation-cases.json",
+    "model-inputs/ed/profiles/p4-capacity-status-cases.json",
+    "model-inputs/ed/profiles/p4-pack-manifest.json",
+    "model-inputs/ed/schema/example-profile-pack.schema.json",
+    "model-inputs/ed/schema/capacity-location.schema.json",
+    "tools/validate_ed_profile_pack.py",
+    "tools/validate_ed_profile_pack_semantics.py",
+    "tools/validate_ed_profile_manifest.py",
+    "model-inputs/ed/profiles/P4_PROFILE_GUIDE.md",
+    "model-inputs/ed/calibration/p31-known-distribution-fixtures.json",
+    "model-inputs/ed/calibration/p31-censoring-dependence-fixtures.json",
+    "model-inputs/ed/calibration/p31-identifiability-fixtures.json",
+    "model-inputs/ed/calibration/p31-joint-marginal-fixture.json",
+    "model-inputs/ed/calibration/p32-candidate-comparison.synthetic.json",
+    "model-inputs/ed/calibration/p32-holdout-validation.synthetic.json",
+    "model-inputs/ed/calibration/p33-sampling-contract.synthetic.json",
+    "model-inputs/ed/calibration/p33-uncertainty-contract.synthetic.json",
+    "model-inputs/ed/calibration/p33-des-abm-join.synthetic.json",
+    "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+    "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
+    "conductor/tracks/empirical_calibration_20260925/plan.md",
+    "conductor/evidence/p3-phase-acceptance-20261002.md",
+    "conductor/evidence/p4.2-parent-join-acceptance-20261002.md",
+    "conductor/evidence/p4.3-guide-leaf-acceptance-20261002.md",
+    "conductor/evidence/p4.3-cairns-leaf-acceptance-20261002.md",
+    "conductor/evidence/p3.1-coordinator-acceptance-20261002.md",
+    "conductor/evidence/p3.2-coordinator-acceptance-20261002.md",
+    "conductor/evidence/p3.3-coordinator-acceptance-20261002.md"
+  ]
+}

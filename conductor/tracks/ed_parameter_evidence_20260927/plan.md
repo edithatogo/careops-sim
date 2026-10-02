@@ -142,7 +142,7 @@ Entry: P3 and generic ED E0.4 closeout. This phase produces configuration data, 
   probability/conditional tables, clock units, support bounds, resource feasibility,
   initialization and provenance. Store manifests/hashes and licensing notes.
   Include synthetic physical-versus-open capacity, repurposed/closed bay and surge-calendar cases; unknown operational status cannot silently mean available.
-- [ ] P4.3 Document parameter meanings, example loading, limitations and overrides;
+- [x] P4.3 Document parameter meanings, example loading, limitations and overrides;
   define a separate future Cairns mapping and required local evidence/elicitation.
   Hand off the frozen generic pack to E1 and calibration fixtures to C5.
   Use report 30 temporal crosswalk as a candidate mapping with unknown local availability; require Cairns location boundary, source profiles, correction rules and ETL lineage before treating timestamps as observed.
@@ -151,6 +151,14 @@ Entry: P3 and generic ED E0.4 closeout. This phase produces configuration data, 
 Exit: P-R3/6 and complete synthetic/public-backed input shapes; schema checks pass.
 Manual check: a reader can distinguish observed values, assumptions, ranges and
 uncertainty without inspecting implementation code. Actual loading is tested at P5.
+
+P4.3 is accepted for documentation, future Cairns acquisition mapping, and the
+bounded E1/C5 handoff. See [parent acceptance](../../evidence/p4.3-parent-join-acceptance-20261003.md),
+[profile guide](../../../model-inputs/ed/profiles/P4_PROFILE_GUIDE.md),
+[Cairns mapping gaps](../../../model-inputs/ed/profiles/CAIRNS_MAPPING_GAPS.md),
+and [E1/C5 handoff inventory](../../evidence/p4.3-e1-c5-handoff-20261002.md).
+These outputs establish no empirical ED values or Cairns applicability; runtime
+profile loading remains a P5 gate after E2 and C5.
 
 ## P5 — Verify catalogue coverage against the actual hybrid ED model
 
