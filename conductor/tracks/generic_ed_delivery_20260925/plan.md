@@ -44,7 +44,7 @@ Entry: D1 tool/compatibility decisions; can review domain details alongside Q0/C
   generic layout. Define metric formulas, horizon/warm-up and release support.
   Freeze the report 29 boundary: finite destination-compatible ED-eligible bed offers, explicit offer lifetime/withdrawal and competing-demand assumptions, distinct ambulance arrival/triage/handover/offload/crew-release clocks. No full ward or fleet model is implied.
   Reuse report 29 acceptance summaries and existing research tables; trace adopted domain claims through the shared P catalogue, document scenario assumptions, and source only demonstrated gaps.
-- [ ] E0.4 Conductor — review and verify phase (workflow.md).
+- [x] E0.4 Conductor — review and verify phase (workflow.md).
 
 Exit: buildable skeleton and synthetic fixture unlock GitHub D2; not a full ED.
 Manual check: fresh checkout produces the declared one-patient outcome.
