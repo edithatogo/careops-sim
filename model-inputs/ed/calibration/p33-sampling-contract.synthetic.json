@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "contract_id": "P3.3.sampling.synthetic-causal-order.v1",
+  "status": "synthetic_contract_only",
+  "provenance": {
+    "empirical_ed_data_used": false,
+    "empirical_family_selected": false,
+    "empirical_probability_or_range_asserted": false,
+    "clinical_policy_approved": false,
+    "fixture_values_are_defaults": false,
+    "purpose": "Define a causal conditional-sampling and observation boundary with tiny invented fixtures."
+  },
+  "evidence_boundary": {
+    "p31_reuse": [
+      "censoring-dependence fixture: event_time, available_at, recorded_at, censoring, and grouped dependence",
+      "joint-marginal fixture: equal marginals do not establish equal dependence"
+    ],
+    "p32_status": "Synthetic method and gap inventory only. Empirical duration families, conditional applicability, numerical ranges and defaults remain UNKNOWN under ADR-0004."
+  },
+  "sampling_order": [
+    {
+      "step": "study_parameter_state",
+      "level": "study_or_replication",
+      "depends_on": [],
+      "decision_time": "before the replication begins",
+      "purpose": "Hold one declared parameter/profile state fixed for every event in that replication. A stochastic draw is permitted only when the experiment explicitly requests one; this contract asserts no distribution."
+    },
+    {
+      "step": "calendar_and_shared_factors",
+      "level": "declared_cluster_or_time_window",
+      "depends_on": ["study_parameter_state"],
+      "decision_time": "before dependent events",
+      "purpose": "Represent only explicitly declared shared temporal/patient/staff factors. Unknown dependence is not independence; do not duplicate one dependency in both a joint table and a latent factor."
+    },
+    {
+      "step": "arrival_times",
+      "level": "replication_event",
+      "depends_on": ["study_parameter_state", "calendar_and_shared_factors"],
+      "decision_time": "arrival generation",
+      "purpose": "Use exactly one declared arrival representation per profile: a process or an explicit schedule. Preserve source exposure and schedule origin when observed inputs are later adopted."
+    },
+    {
+      "step": "arrival_mode_and_marks",
+      "level": "arriving_entity",
+      "depends_on": ["arrival_times", "calendar_and_shared_factors"],
+      "decision_time": "at or before arrival-state initialization",
+      "purpose": "Generate arrival mode and other arrival-time marks only for an arrival that exists, from declared alternatives and a named eligible-arrival cohort. Unknown/missing marks remain visible."
+    },
+    {
+      "step": "initial_latent_state",
+      "level": "arriving_entity",
+      "depends_on": ["arrival_mode_and_marks", "calendar_and_shared_factors"],
+      "decision_time": "presentation/initial-state time",
+      "purpose": "Generate latent initial attributes only from information available by that time and from a declared cohort denominator. Do not substitute a later recorded or realized state."
+    },
+    {
+      "step": "triage_and_decision_time_observations",
+      "level": "decision_event",
+      "depends_on": ["initial_latent_state"],
+      "decision_time": "the declared triage or decision event time",
+      "purpose": "Keep latent acuity, agent-known state, and recorded triage as separate variables. A missing/unknown record is a measurement state, not an acuity class or priority."
+    },
+    {
+      "step": "pathway_and_task_choices",
+      "level": "decision_event",
+      "depends_on": ["triage_and_decision_time_observations", "arrival_mode_and_marks"],
+      "decision_time": "each decision event, using its then-eligible choice set",
+      "purpose": "Condition only on state available by the decision cutoff and alternatives eligible at that decision. Preserve explicit denominator and missingness."
+    },
+    {
+      "step": "active_work_and_abm_movement",
+      "level": "task_or_movement_event",
+      "depends_on": ["pathway_and_task_choices", "calendar_and_shared_factors"],
+      "decision_time": "when each task or movement begins",
+      "purpose": "Keep intrinsic active work, setup, explicit transit, queue/wait, interruption and handover as distinct intervals. Never fit the same undifferentiated elapsed interval as both intrinsic service and transit."
+    },
+    {
+      "step": "later_diagnosis_and_realized_disposition",
+      "level": "state_transition_when_reached",
+      "depends_on": ["active_work_and_abm_movement"],
+      "decision_time": "only when the corresponding later state is reached or learned",
+      "purpose": "Generate or observe diagnosis, provisional intent and realized disposition at their own event times. They cannot condition earlier arrival, initial-state, triage or routing decisions."
+    },
+    {
+      "step": "observation_and_recording",
+      "level": "measurement_event",
+      "depends_on": ["arrival_times", "arrival_mode_and_marks", "initial_latent_state", "pathway_and_task_choices", "active_work_and_abm_movement", "later_diagnosis_and_realized_disposition"],
+      "decision_time": "the declared observation/recording process",
+      "purpose": "This is a batch measurement/export view over event-time observations, not a causal stage that waits for all clinical outcomes. It represents inclusion, missingness, event_time, available_at and recorded_at separately from the generating clinical state. Observation outcomes never feed backward into earlier decisions or priority inputs."
+    }
+  ],
+  "decision_time_rule": {
+    "required_times": ["event_time", "available_at", "recorded_at"],
+    "usable_as_predictor": "A feature is usable for a decision at cutoff only when its value is available_at <= decision_time and the decision contract declares it observable. event_time alone does not prove availability; recorded_at is lineage, not a substitute for available_at.",
+    "forbidden_early_features": ["future diagnosis", "realized final disposition", "later outcome", "future resource use", "post-decision recorded triage value"],
+    "state_separation": ["latent clinical state", "agent-known state", "recorded measurement", "provisional disposition/intent", "realized outcome"]
+  },
+  "logical_seed_purposes": [
+    "study_parameter_uncertainty",
+    "shared_calendar_or_cluster_factor",
+    "arrival_process",
+    "arrival_marks_and_mode",
+    "initial_entity_attributes",
+    "pathway_and_task_choice",
+    "intrinsic_work_and_setup_variability",
+    "abm_movement_and_interruptions",
+    "observation_and_missingness",
+    "calibration_search_or_partition"
+  ],
+  "seed_boundary": {
+    "root_seed": "A required experiment/run identity, distinct from fitted parameters and observations.",
+    "purpose_names_are": "Logical replay and audit labels only; they do not specify a derivation algorithm or assert that the current Kairos API implements isolated named streams.",
+    "desired_future_invariant": "A reviewed stream contract should key draws by stable purpose and declared study/replication/entity/event identity so adding a draw in one purpose does not perturb unrelated purposes.",
+    "owner": "Exact seed width, stream derivation, stable key encoding and sampler version require Kairos 01 and a later integrated contract."
+  },
+  "synthetic_oracles": {
+    "sampling_dag": {
+      "nodes": ["arrival_times", "arrival_mode", "initial_state", "pathway_choice", "realized_disposition", "observation"],
+      "edges": [["arrival_times", "arrival_mode"], ["arrival_mode", "initial_state"], ["initial_state", "pathway_choice"], ["pathway_choice", "realized_disposition"], ["realized_disposition", "observation"]],
+      "order": ["arrival_times", "arrival_mode", "initial_state", "pathway_choice", "realized_disposition", "observation"],
+      "invented_arrival_mode_alternatives": ["synthetic-mode-a", "synthetic-mode-b", "unknown-or-unrecorded"],
+      "invented_mode_dependent_choice_sets": {
+        "synthetic-mode-a": ["synthetic-route-a", "synthetic-route-shared"],
+        "synthetic-mode-b": ["synthetic-route-b", "synthetic-route-shared"]
+      },
+      "rule": "The dependency edges declare allowed conditioning/dependence only; they do not assert a clinical causal effect or empirical association. A downstream choice can depend on an already generated arrival mode and must be within that mode's declared choice set. Unknown or missing mode yields no conditional route draw until resolved by an explicitly declared policy. These names are not ED categories or policies."
+    },
+    "cohort_denominators": [
+      {
+        "cohort_id": "synthetic-emergency-arrivals",
+        "eligibility": "four invented emergency arrivals in the fixture window",
+        "eligible_denominator": 4,
+        "initial_recorded_triage_counts": {"synthetic-category-a": 1, "synthetic-category-b": 1},
+        "unknown_code_count": 1,
+        "missing_record_count": 1,
+        "valid_recorded_denominator": 2,
+        "reconciliation": "1 + 1 + 1 + 1 = 4 eligible arrivals; 1 + 1 = 2 valid recorded triage values."
+      },
+      {
+        "cohort_id": "synthetic-all-presentations",
+        "eligibility": "five invented total presentations, including one non-emergency presentation excluded from the ATS-like cohort",
+        "eligible_denominator": 5,
+        "initial_recorded_triage_counts": {"synthetic-category-a": 1, "synthetic-category-b": 1},
+        "unknown_code_count": 1,
+        "missing_record_count": 2,
+        "valid_recorded_denominator": 2,
+        "reconciliation": "1 + 1 + 1 + 2 = 5 all presentations; the extra non-emergency record is excluded from the emergency-arrival cohort.",
+        "role": "different cohort; never substitute this denominator for the emergency-arrival triage cohort"
+      }
+    ],
+    "leakage_canaries": [
+      {"feature": "final diagnosis", "event_time": 9, "available_at": 9, "decision_cutoff": 2, "expected": "unusable for earlier decision"},
+      {"feature": "realized final disposition", "event_time": 12, "available_at": 12, "decision_cutoff": 2, "expected": "unusable for earlier decision"},
+      {"feature": "delayed diagnosis recorded after decision", "event_time": 1, "available_at": 5, "recorded_at": 6, "decision_cutoff": 2, "expected": "unusable despite earlier event_time"}
+    ],
+    "missingness_canary": {
+      "latent_state": "synthetic-acuity-a",
+      "agent_known_state": "synthetic-acuity-a",
+      "recorded_triage": "missing",
+      "expected": "priority input and latent/agent-known state are unchanged; measurement missingness remains separately counted"
+    }
+  },
+  "nonclaims_and_deferred_evidence": [
+    "No arrival rate, mode proportion, triage distribution, acuity rule, pathway probability, diagnosis model, service distribution, priority rule, dependence strength, range or search bound for an ED is selected.",
+    "The AIHW 2024-25 national displayed triage counts leave a documented 3,180-event discrepancy. This fixture does not assign that residual to missing triage or use it as a denominator.",
+    "A real data contract must name site, period, population, inclusion rule, event/censor status, conditioning fields available at each decision time, valid-record denominator, unknown/missing counts, source version/licence and transformation.",
+    "This contract is not a runtime sampler, a Kairos RNG implementation, a clinical pathway, or a validated ED profile."
+  ]
+}
