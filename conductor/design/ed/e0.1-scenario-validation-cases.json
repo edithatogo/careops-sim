@@ -1,0 +1,80 @@
+{
+  "catalogue_id": "e0.1.scenario_validation",
+  "scope": "Behavior-first contract fixtures for E0.1; no application schema or validator is implemented here.",
+  "runtime_rejection_claimed": false,
+  "cases": [
+    {
+      "id": "invalid-resource-count",
+      "category": "invalid_resource_count",
+      "synthetic_test_only": true,
+      "provenance": "Synthetic sentinel authored only to exercise the E0.1 contract; not an observed or recommended ED capacity.",
+      "parameter_id": "ed.resources.beds",
+      "schema_path": null,
+      "schema_path_status": "bind_in_E0.2",
+      "input": {
+        "concept_id": "ed.resources.beds",
+        "value": -1
+      },
+      "invariant": "A resource count cannot be negative.",
+      "expected_diagnostic": {
+        "code": "ED_RESOURCE_COUNT_INVALID",
+        "message": "Resource count must be a non-negative integer."
+      }
+    },
+    {
+      "id": "invalid-unit-sentinel",
+      "category": "invalid_unit",
+      "synthetic_test_only": true,
+      "provenance": "Synthetic unsupported-unit sentinel authored only to exercise the E0.1 contract; not a unit assertion for a clinical parameter.",
+      "parameter_id": "ed.experimentcontrols.timeunits",
+      "config_key": "time_fields.source_unit",
+      "schema_path": null,
+      "schema_path_status": "bind_in_E0.2",
+      "input": {
+        "config_key": "time_fields.source_unit",
+        "value": "__unsupported_unit_sentinel__"
+      },
+      "invariant": "A time-valued field must declare a supported source unit.",
+      "expected_diagnostic": {
+        "code": "ED_TIME_UNIT_UNSUPPORTED",
+        "message": "Time field source unit is unsupported."
+      }
+    },
+    {
+      "id": "unsupported-schema-version-sentinel",
+      "category": "unsupported_schema_version",
+      "synthetic_test_only": true,
+      "provenance": "Synthetic version sentinel authored only to exercise the E0.1 contract; it does not identify an existing schema version.",
+      "parameter_id": null,
+      "schema_path": null,
+      "schema_path_status": "bind_in_E0.2",
+      "input": {
+        "schema_version": "__unsupported_version_sentinel__"
+      },
+      "invariant": "A scenario declares a schema version supported by the reader.",
+      "expected_diagnostic": {
+        "code": "ED_SCHEMA_VERSION_UNSUPPORTED",
+        "message": "Scenario schema version is unsupported."
+      }
+    },
+    {
+      "id": "missing-required-run-seed",
+      "category": "missing_required_input",
+      "synthetic_test_only": true,
+      "provenance": "Synthetic omission authored only to exercise the E0.1 contract; no simulation was run.",
+      "parameter_id": "ed.experimentcontrols.seedstreams",
+      "config_key": "experiment.run_seed",
+      "schema_path": null,
+      "schema_path_status": "bind_in_E0.2",
+      "input": {
+        "config_key": "experiment.run_seed",
+        "present": false
+      },
+      "invariant": "An MVP run has one explicit unsigned 64-bit run seed.",
+      "expected_diagnostic": {
+        "code": "ED_RUN_SEED_REQUIRED",
+        "message": "Required run seed is missing."
+      }
+    }
+  ]
+}

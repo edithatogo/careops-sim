@@ -32,7 +32,7 @@ validity limit. Acceptance requires this track's actual outputs and tests.
 
 Entry: D1 tool/compatibility decisions; can review domain details alongside Q0/C0.
 
-- [ ] E0.1 Write tests for scenario/schema validation, module boundary violations
+- [x] E0.1 Write tests for scenario/schema validation, module boundary violations
   and a single deterministic patient fixture before implementing the skeleton.
 - [ ] E0.2 Create a minimal Rust workspace with ED library/CLI boundary, Kairos path
   dependency and locked builds; define public API/errors, time units and profile

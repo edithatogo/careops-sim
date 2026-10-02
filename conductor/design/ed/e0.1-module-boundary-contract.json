@@ -1,0 +1,167 @@
+{
+  "contract_id": "e0.1.module_boundary",
+  "contract_version": 1,
+  "scope": "Logical module boundary for generic ED delivery; contract data only.",
+  "claim_limits": {
+    "cargo_graph_checked": false,
+    "runtime_api_frozen": false,
+    "crate_existence_asserted": false,
+    "binding_milestone": "E0.2"
+  },
+  "owner_labels": {
+    "careops_parent": "CareOps parent repository owns ED domain, site policy, runner, presentation, and its export artifacts.",
+    "kairos_upstream": "Kairos upstream owns reusable simulation engine crates and public engine interfaces."
+  },
+  "modules": [
+    {
+      "id": "careops.ed_domain",
+      "owner": "careops_parent",
+      "role": "ED domain behavior and orchestration-facing model",
+      "realization": "planned"
+    },
+    {
+      "id": "careops.site_policy",
+      "owner": "careops_parent",
+      "role": "Site-specific policy and profile configuration",
+      "realization": "planned"
+    },
+    {
+      "id": "careops.runner",
+      "owner": "careops_parent",
+      "role": "Headless application and run adapter",
+      "realization": "planned"
+    },
+    {
+      "id": "careops.presentation",
+      "owner": "careops_parent",
+      "role": "Separate presentation layer; deferred interactive UI",
+      "realization": "deferred"
+    },
+    {
+      "id": "careops.export_artifacts",
+      "owner": "careops_parent",
+      "role": "Parent-owned exported run artifacts consumed by presentation",
+      "realization": "planned"
+    },
+    {
+      "id": "kairos.public_api",
+      "owner": "kairos_upstream",
+      "role": "Public Kairos interfaces exposed to downstream consumers",
+      "realization": "interface_boundary"
+    },
+    {
+      "id": "kairos.reusable_engine",
+      "owner": "kairos_upstream",
+      "role": "Reusable DES, ABM, state, time, and simulation core crates",
+      "realization": "existing_upstream_modules"
+    }
+  ],
+  "permitted_edges": [
+    {
+      "source": "careops.ed_domain",
+      "target": "kairos.public_api",
+      "label": "public_api",
+      "source_owner": "careops_parent",
+      "target_owner": "kairos_upstream",
+      "reason": "ED domain code may use reusable simulation capabilities through the public interface."
+    },
+    {
+      "source": "careops.site_policy",
+      "target": "kairos.public_api",
+      "label": "public_api",
+      "source_owner": "careops_parent",
+      "target_owner": "kairos_upstream",
+      "reason": "Site policy may configure or call simulation through the public interface."
+    },
+    {
+      "source": "careops.runner",
+      "target": "careops.ed_domain",
+      "label": "parent_application",
+      "source_owner": "careops_parent",
+      "target_owner": "careops_parent",
+      "reason": "The parent runner composes the ED domain layer."
+    },
+    {
+      "source": "careops.runner",
+      "target": "careops.site_policy",
+      "label": "parent_application",
+      "source_owner": "careops_parent",
+      "target_owner": "careops_parent",
+      "reason": "The parent runner supplies the selected site policy/profile."
+    },
+    {
+      "source": "careops.runner",
+      "target": "kairos.public_api",
+      "label": "public_api",
+      "source_owner": "careops_parent",
+      "target_owner": "kairos_upstream",
+      "reason": "The runner adapter may invoke simulation through the public interface."
+    },
+    {
+      "source": "careops.presentation",
+      "target": "kairos.public_api",
+      "label": "public_api",
+      "source_owner": "careops_parent",
+      "target_owner": "kairos_upstream",
+      "reason": "Presentation may consume only the public interface when live interaction is implemented."
+    },
+    {
+      "source": "careops.presentation",
+      "target": "careops.export_artifacts",
+      "label": "export_artifact",
+      "source_owner": "careops_parent",
+      "target_owner": "careops_parent",
+      "reason": "Presentation may consume exported run artifacts."
+    }
+  ],
+  "forbidden_edges": [
+    {
+      "source": "kairos.reusable_engine",
+      "target": "careops.ed_domain",
+      "label": "ed_policy_dependency",
+      "source_owner": "kairos_upstream",
+      "target_owner": "careops_parent",
+      "reason": "Reusable engine crates cannot depend on parent ED domain policy."
+    },
+    {
+      "source": "kairos.reusable_engine",
+      "target": "careops.site_policy",
+      "label": "site_policy_dependency",
+      "source_owner": "kairos_upstream",
+      "target_owner": "careops_parent",
+      "reason": "Reusable engine crates cannot depend on site-specific policy or profiles."
+    },
+    {
+      "source": "kairos.reusable_engine",
+      "target": "careops.runner",
+      "label": "application_dependency",
+      "source_owner": "kairos_upstream",
+      "target_owner": "careops_parent",
+      "reason": "Reusable engine crates cannot depend on the parent application runner."
+    },
+    {
+      "source": "kairos.reusable_engine",
+      "target": "careops.presentation",
+      "label": "presentation_dependency",
+      "source_owner": "kairos_upstream",
+      "target_owner": "careops_parent",
+      "reason": "Reusable engine crates cannot depend on presentation or UI code."
+    },
+    {
+      "source": "careops.presentation",
+      "target": "kairos.reusable_engine",
+      "label": "internal_core_dependency",
+      "source_owner": "careops_parent",
+      "target_owner": "kairos_upstream",
+      "reason": "Presentation must use public interfaces or exported artifacts, not internal simulation-core crates."
+    }
+  ],
+  "e0_2_handoff": {
+    "required": true,
+    "bind_contract_to_actual_cargo_packages": true,
+    "verify_actual_dependency_edges": true,
+    "check_forbidden_edges_against_manifests": true,
+    "freeze_actual_public_api_and_runner_paths": true,
+    "acceptance_statement": "E0.2 must map these logical module IDs to actual Cargo packages or documented non-package boundaries, then inspect and test the implemented Cargo graph. E0.1 tests only this contract data and does not establish that the native graph conforms."
+  }
+}

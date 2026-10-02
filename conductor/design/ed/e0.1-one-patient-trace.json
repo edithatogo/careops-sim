@@ -1,0 +1,62 @@
+{
+  "fixture_id": "e0.1.synthetic.one_patient_trace.v1",
+  "provenance": {
+    "classification": "synthetic_test_only",
+    "notice": "All values are invented solely for a hand-computable contract fixture. They are not observed ED data, recommendations, or default parameters.",
+    "runtime_claim": false
+  },
+  "experiment": {
+    "run_seed": 20261002,
+    "seed_note": "Recorded as a fixed run identity; this fixture asserts no random draw, stream, or distribution."
+  },
+  "time_unit": "second",
+  "interval_semantics": "half_open_[start,end)",
+  "inputs": {
+    "arrival_schedule_seconds": [0],
+    "service_duration_seconds": {
+      "triage": 2,
+      "assessment": 3,
+      "treatment": 4
+    },
+    "resource_capacity": {
+      "triage": 1,
+      "assessment": 1,
+      "treatment": 1
+    }
+  },
+  "patient": {
+    "case_id": "synthetic-case-001",
+    "events": [
+      {"sequence": 1, "event": "arrival", "time_seconds": 0},
+      {"sequence": 2, "event": "triage_start", "time_seconds": 0},
+      {"sequence": 3, "event": "triage_end", "time_seconds": 2},
+      {"sequence": 4, "event": "assessment_start", "time_seconds": 2},
+      {"sequence": 5, "event": "assessment_end", "time_seconds": 5},
+      {"sequence": 6, "event": "treatment_start", "time_seconds": 5},
+      {"sequence": 7, "event": "treatment_end", "time_seconds": 9},
+      {"sequence": 8, "event": "discharge", "time_seconds": 9}
+    ],
+    "stages": [
+      {"name": "triage", "start_seconds": 0, "end_seconds": 2, "work_seconds": 2, "resource": "triage"},
+      {"name": "assessment", "start_seconds": 2, "end_seconds": 5, "work_seconds": 3, "resource": "assessment"},
+      {"name": "treatment", "start_seconds": 5, "end_seconds": 9, "work_seconds": 4, "resource": "treatment"}
+    ],
+    "queue_wait_seconds": 0,
+    "total_work_seconds": 9,
+    "length_of_stay_seconds": 9,
+    "terminal_status": "discharged"
+  },
+  "checks": {
+    "patient_counts": {"arrived": 1, "in_system": 0, "terminal": 1},
+    "terminal_counts": {"discharged": 1, "admitted": 0, "transferred": 0, "left_without_completion": 0},
+    "patient_conservation": "arrived = in_system + terminal = 0 + 1",
+    "terminal_conservation": "terminal = discharged + admitted + transferred + left_without_completion = 1 + 0 + 0 + 0",
+    "resource_active_intervals_seconds": {
+      "triage": [[0, 2]],
+      "assessment": [[2, 5]],
+      "treatment": [[5, 9]]
+    },
+    "resource_capacity_max_concurrent": {"triage": 1, "assessment": 1, "treatment": 1},
+    "resource_capacity_satisfied": true
+  }
+}
