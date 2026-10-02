@@ -1,0 +1,276 @@
+{
+  "schema_version": 1,
+  "fixture_id": "P3.1.censoring-dependence.synthetic-observation-contract.v1",
+  "provenance": {
+    "class": "synthetic_only",
+    "purpose": "deterministic observation-window, censoring, knowledge-time, and grouped-resampling contract checks",
+    "empirical_data_used": false,
+    "promoted_to_ed_parameter_or_default": false,
+    "distribution_selection_claim": false,
+    "fitting_performed": false
+  },
+  "time_contract": {
+    "observation_window": "[start,end)",
+    "event_at_start": "included if observed and available by the applicable cutoff",
+    "event_at_end": "excluded from the window and administratively right-censored at end",
+    "time_fields": {
+      "event_time": "when the underlying event occurred; may be unavailable to a historical training view",
+      "available_at": "when the value became available to the model or analyst",
+      "recorded_at": "when the source recorded the value; recording can be delayed"
+    },
+    "training_feature_rule": "A feature is usable at cutoff only if available_at <= cutoff; event_time alone does not establish historical availability."
+  },
+  "cases": {
+    "FX-001": {
+      "purpose": "observed event count and follow-up retain right censoring",
+      "intervals": [
+        {
+          "elapsed_time": 1,
+          "event_indicator": 1,
+          "status": "observed_event"
+        },
+        {
+          "elapsed_time": 2,
+          "event_indicator": 1,
+          "status": "observed_event"
+        },
+        {
+          "elapsed_time": 4,
+          "event_indicator": 0,
+          "status": "right_censored",
+          "censor_reason": "administrative_end"
+        }
+      ],
+      "expected": {
+        "observed_event_count": 2,
+        "total_follow_up": 7,
+        "naive_completed_event_count": 3,
+        "naive_count_is_invalid": true
+      },
+      "limits": "Fixture accounting only; no distribution or estimator is selected and no fit is performed."
+    },
+    "FX-014": {
+      "purpose": "training cutoff censors later completion and blocks future-known features",
+      "risk_start": 3,
+      "training_cutoff": 4,
+      "true_completion_time": 6,
+      "expected_training_view": {
+        "follow_up": 1,
+        "event_indicator": 0,
+        "status": "right_censored",
+        "censor_time": 4,
+        "completion_visible": false
+      },
+      "features": [
+        {
+          "name": "triage_category",
+          "value": "synthetic-high",
+          "event_time": 3,
+          "available_at": 3,
+          "recorded_at": 3,
+          "usable_at_training_cutoff": true
+        },
+        {
+          "name": "final_disposition",
+          "value": "synthetic-discharge",
+          "event_time": 6,
+          "available_at": 6,
+          "recorded_at": 7,
+          "usable_at_training_cutoff": false
+        },
+        {
+          "name": "delayed_diagnosis",
+          "value": "synthetic-late",
+          "event_time": 3.5,
+          "available_at": 5,
+          "recorded_at": 5,
+          "usable_at_training_cutoff": false
+        }
+      ]
+    },
+    "window_boundaries": {
+      "purpose": "freeze half-open edge semantics",
+      "window": {
+        "start": 3,
+        "end": 4
+      },
+      "events": [
+        {
+          "event_time": 3,
+          "available_at": 3,
+          "expected": "included_observed_event"
+        },
+        {
+          "event_time": 4,
+          "available_at": 4,
+          "expected": "excluded_administratively_censored"
+        }
+      ]
+    },
+    "FX-003": {
+      "purpose": "day cluster resampling preserves shared-day uncertainty",
+      "days": [
+        {
+          "day_id": "synthetic-day-a",
+          "values": [
+            0,
+            0
+          ]
+        },
+        {
+          "day_id": "synthetic-day-b",
+          "values": [
+            10,
+            10
+          ]
+        }
+      ],
+      "expected": {
+        "day_bootstrap_possible_means": [
+          0,
+          5,
+          10
+        ],
+        "day_bootstrap_probabilities": [
+          0.25,
+          0.5,
+          0.25
+        ],
+        "day_bootstrap_mean_variance": 12.5,
+        "iid_row_bootstrap_mean_variance": 6.25
+      },
+      "split_policies": {
+        "day_block": "Keep each chronological day wholly in one partition; primary split/resampling unit for this fixture.",
+        "patient_group": "When patient IDs repeat and do not cross the requested partition boundary, keep each patient wholly in one partition as a separate explicit policy.",
+        "crossed_groups": "If patient IDs cross chronological days, simultaneous patient and day exclusivity can constrain or prevent a requested split; report the crossed groups and require a declared policy instead of silently demanding both."
+      },
+      "split_examples": {
+        "day_block": {
+          "train_days": [
+            "synthetic-day-a"
+          ],
+          "holdout_days": [
+            "synthetic-day-b"
+          ],
+          "rowwise_leakage_counterexample": {
+            "train_rows": [
+              "synthetic-day-a-row-1"
+            ],
+            "holdout_rows": [
+              "synthetic-day-a-row-2"
+            ],
+            "leaks_day_id": "synthetic-day-a"
+          },
+          "train_patient_ids": [
+            "synthetic-patient-a"
+          ],
+          "holdout_patient_ids": [
+            "synthetic-patient-b"
+          ]
+        },
+        "patient_group": {
+          "patient_ids": [
+            "synthetic-patient-a",
+            "synthetic-patient-b"
+          ],
+          "train_patients": [
+            "synthetic-patient-a"
+          ],
+          "holdout_patients": [
+            "synthetic-patient-b"
+          ],
+          "train_day_ids": [
+            "synthetic-day-a"
+          ],
+          "holdout_day_ids": [
+            "synthetic-day-b"
+          ]
+        },
+        "crossed_group_case": {
+          "rows": [
+            {
+              "row_id": "cross-1",
+              "patient_id": "synthetic-patient-x",
+              "day_id": "synthetic-day-a"
+            },
+            {
+              "row_id": "cross-2",
+              "patient_id": "synthetic-patient-x",
+              "day_id": "synthetic-day-b"
+            },
+            {
+              "row_id": "cross-3",
+              "patient_id": "synthetic-patient-y",
+              "day_id": "synthetic-day-b"
+            }
+          ],
+          "constraint": "Keeping each day intact forces cross-1 with cross-2; keeping each patient intact also binds cross-3 through day-b, so the requested split cannot separate these groups.",
+          "expected": "crossed_group_constraint_requires_explicit_split_policy"
+        }
+      }
+    },
+    "ambiguous_status": {
+      "purpose": "preserve ambiguous event-versus-censor state without coercion",
+      "interval": {
+        "risk_start": 3,
+        "last_observed_time": 4,
+        "event_indicator": null,
+        "status": "ambiguous",
+        "realised_event_type": null,
+        "censor_reason": null
+      },
+      "expected_classification": "unresolved_ambiguous_status"
+    }
+  },
+  "limits": [
+    "All values and identifiers are synthetic; no real ED values or patient data are present.",
+    "This fixture specifies observation and split semantics only; fitting, estimator selection, empirical thresholds, and candidate decisions remain for P3.2.",
+    "The day-block and patient-group rules are distinct policies. Crossed groups require an explicit policy and are not silently treated as nested.",
+    "The FX-003 variance values are hand-calculated fixture expectations, not empirical uncertainty estimates.",
+    "Source-linked examples are synthetic fixture extensions; lineage does not promote them to empirical ED evidence."
+  ],
+  "source_lineage": [
+    {
+      "source": "conductor/research/supplied/20260927/report-12.md.txt",
+      "lines": "62",
+      "case": "FX-014",
+      "relationship": "synthetic source case semantics"
+    },
+    {
+      "source": "conductor/research/supplied/20260927/report-12.md.txt",
+      "lines": "78-85",
+      "case": "FX-001",
+      "relationship": "synthetic source case semantics"
+    },
+    {
+      "source": "conductor/research/supplied/20260927/report-12.md.txt",
+      "lines": "89-95",
+      "case": "FX-003",
+      "relationship": "synthetic source case semantics"
+    },
+    {
+      "source": "conductor/research/ed-research-incorporation-9-12-20260927.md",
+      "lines": "130",
+      "case": "FX-001",
+      "relationship": "incorporation crosswalk"
+    },
+    {
+      "source": "conductor/research/ed-research-incorporation-9-12-20260927.md",
+      "lines": "134",
+      "case": "FX-003",
+      "relationship": "incorporation crosswalk"
+    },
+    {
+      "source": "conductor/research/ed-research-incorporation-9-12-20260927.md",
+      "lines": "136",
+      "case": "FX-014",
+      "relationship": "incorporation crosswalk"
+    }
+  ],
+  "synthetic_fixture_extensions": {
+    "half_open_classification": "The executable classifier below uses [start,end): start is included and end excluded.",
+    "cutoff_feature_filtering": "The executable feature selector includes only records with available_at <= cutoff.",
+    "group_split_membership": "The day-block and patient-group train/holdout membership lists are synthetic fixtures and are checked for disjointness.",
+    "ambiguous_status": "Ambiguous event/censor status remains unresolved; no event or censor flag is inferred."
+  }
+}
