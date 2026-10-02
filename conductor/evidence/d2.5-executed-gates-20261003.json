@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "reviewed_parent_commit": "8b2ceeba109603df7af4b1d67930d041e2138db6",
+  "kairos_commit": "a7a4400175a167413d333c1aa8dcf130fe26a78b",
+  "extension_commit": "7a5c560a4fdf5297be58594cc37527eb12790272",
+  "toolchain": "Rust/Cargo 1.98.1",
+  "local_host": "aarch64-apple-darwin",
+  "scenario_seed": 7,
+  "scenario_input_sha256": "ecc460f58de1958a0a3c2ce8cdb69f24fb95a22a6c4c6c4d793c0975afeb1f53",
+  "source_sha256": {
+    ".github/workflows/ci.yml": "8db7e89b6971763107c489511d0d9dcf4e8d6ffda7a6b348efa233187bebf872",
+    "tools/ci_policy.py": "14758f4419dbf6c0033bb1add33155cfca25b381e7aec67e3f4f3cb08b44c0fc",
+    "tools/install_ci_tools.py": "f27db2924ee76262bc2ef5fa747c3d83ee2ffd9aa7123589c343bce7f2c146ed",
+    "tools/ci-tools.json": "a73f564645dd870a287cb62a391114cd1bc875a44bf1b8d09a630e9207c9a948",
+    "tools/check_kairos_pin.py": "c0a1f5995a8cece62e51f17b614afa890197df2ad7305da007e743e8aa7f0379",
+    "tests/test_ci_workflow.py": "ca7c066d8afe2d1b426bad7cebf7d19b69250e7ab423774dc47edc3509ebe90b",
+    "tests/test_kairos_pin.py": "abf3e23b57a7de7dcd2b68da255451639c7a48f7e5c46f4177cfd21e8e3b129c",
+    "deny.toml": "9c9e28da9b0c670ce995b3603908d6d225a2fe39481d6e85ac8b73aa1766ce48",
+    ".gitleaksignore": "3d68114b4dfedf7c2afef23e548a110e8827236c1c849fd4acaadf7ae58c1121",
+    "Cargo.lock": "e7ed84c382561bedf9d26ac3ecc2a1649e8cfe8ab7c7af763f10ec047094d0a3",
+    "conductor/evidence/d2.4-kairos-contract.json": "bd8b995818ac737b4ec0c1076cd8fe7c3fae645af9032b2ef7df5d1d4bc42ce9",
+    "model-inputs/ed/calibration/p32-canonical-durations.synthetic.json": "225b06f6ea0dce6228cd1982454d6604e0e407a9838c3de1f8d985f201ceae31"
+  },
+  "retained_local_logs_sha256": {
+    ".artifacts/d2/final-harness.log": "3a4847d8b66a2c55964835f718fd37c9da180b90a31031fda2e8d2a5aeb35938",
+    ".artifacts/d2/final-policy.log": "695e50cef37503c33b540bfc4da880e4e046b492c2d67831157a9279199e7275",
+    ".artifacts/d2/gitlink-negative-hosted-run.json": "03673eb472160132d817b414826ac787c1a680c39eea9706aa2f83b162321dfe",
+    ".artifacts/d2/gitlink-negative-hosted.log": "7ac0573da850081d96673a83f98fd1f4b083782414d8921190a982c80cb58454",
+    ".artifacts/d2/gitlink-restored-hosted-run.json": "21c6464d3b515c54545c9748ee414d71627c54035f5660cb1e24323591111950",
+    ".artifacts/d2/upstream-owner-pipefail-run.json": "e003cde0dbc48112cb95ca50ba0119281099c83f7d790134fc4a290327516280",
+    ".artifacts/d2/main-protection.json": "c21cf57f1a2ee5b1497542c67ebc0c8745b57220b9b85588fcfe145aaaaaa170"
+  },
+  "executed": [
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "cwd": "/private/tmp/careops-sim-p33",
+      "exit": 0,
+      "tests": 349,
+      "log": ".artifacts/d2/final-harness.log"
+    },
+    {
+      "command": "python3 tools/ci_policy.py",
+      "cwd": "/private/tmp/careops-sim-p33",
+      "exit": 0,
+      "log": ".artifacts/d2/final-policy.log"
+    },
+    {
+      "command": "python3 tools/context.py check; python3 tools/tasks.py check; python3 tools/mvp.py check",
+      "cwd": "/private/tmp/careops-sim-p33",
+      "exit": 0,
+      "scope": "593 links;143 tasks;248 bounded leaves"
+    },
+    {
+      "command": "cargo run --locked -p careops-ed-cli -- run crates/careops-ed/examples/one_patient.json",
+      "cwd": "/private/tmp/careops-d2-remote-reproduction-20261003",
+      "exit": 0,
+      "parent_commit": "049cab221d7a0b4a5c861ebf81093651ecc651c6",
+      "output_sha256": "bd01bb5e23c96d60ebd9a646f5e704b7987213f0eb3eaa38d5ec6301f58678a5",
+      "seed": 7,
+      "completion_tick": 3
+    }
+  ],
+  "hosted": [
+    {
+      "repo": "kairos",
+      "commit": "a7a4400175a167413d333c1aa8dcf130fe26a78b",
+      "run": 37078977740,
+      "conclusion": "success"
+    },
+    {
+      "repo": "careops-sim",
+      "commit": "997bfd844b8a5f53985a5ba893e4a3208e3738f7",
+      "run": 37079302017,
+      "conclusion": "success"
+    },
+    {
+      "repo": "careops-sim",
+      "commit": "00e910de5426ef811fd310ffd053693a6923e1af",
+      "run": 37079493459,
+      "conclusion": "failure",
+      "deliberate": true,
+      "native_hosts": "both passed; exact-pin and Required checks failed"
+    },
+    {
+      "repo": "careops-sim",
+      "commit": "049cab221d7a0b4a5c861ebf81093651ecc651c6",
+      "run": 37079690302,
+      "conclusion": "success"
+    }
+  ],
+  "local_advisory_db_commit": "f8dee89e1b2f2f1eaf548312df7655fe5202a302",
+  "acceptance_boundary": "D2 evidence reconciliation only; exact final PR/main hosted checks and protected merge are coordinator closeout gates. Native-v1 release, empirical/clinical validity, MSRV and broader upstream security/maturity remain independent."
+}
