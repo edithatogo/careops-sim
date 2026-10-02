@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "synthetic_test_only",
+  "purpose": "Exercise graph-unit and Macro/Micro accounting invariants; no value represents an ED observation or recommended default.",
+  "graph": {
+    "graph_id": "synthetic-one-way-v1",
+    "coordinate_frame": "local_cartesian_synthetic",
+    "distance_unit": "m",
+    "directed": true,
+    "nodes": ["A", "B", "C", "D"],
+    "edges": [
+      {"edge_id": "ab", "from": "A", "to": "B", "distance_m": 18.5, "accessible": true, "speed_m_per_s": 1.0},
+      {"edge_id": "bd-closed", "from": "B", "to": "D", "distance_m": 9.0, "accessible": false, "speed_m_per_s": 1.0}
+    ]
+  },
+  "micro_case": {
+    "route": {"from": "A", "to": "B", "edge_ids": ["ab"]},
+    "expected_travel_seconds": 18.5,
+    "unreachable_checks": [
+      {"from": "B", "to": "A"},
+      {"from": "A", "to": "D"}
+    ],
+    "intervals_seconds": {
+      "queue_wait": 4.0,
+      "active_work": 12.0,
+      "travel": 18.5,
+      "interruption_pause": 3.0
+    },
+    "expected_elapsed_seconds": 37.5
+  },
+  "macro_case": {
+    "graph": null,
+    "transit_policy": "not_modeled",
+    "elapsed_seconds": 37.5
+  },
+  "cross_mode_rule": "compare_same_elapsed_window; never_add_macro_elapsed_to_its_micro_decomposition"
+}

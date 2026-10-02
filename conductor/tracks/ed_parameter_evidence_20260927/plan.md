@@ -99,7 +99,7 @@ Entry: P0; independent of P1 until the P3 join.
   smoothing and walk/wait/work labels; keep unknown speeds and co-working needs explicit.
   Document geometry uncertainty, manual annotations and georeferencing separately from routing/clinical assumptions; ordinary indoor metre coordinates are not RFC 7946 GeoJSON.
   Prefer verified existing CAD over new capture when available; preserve source/revision and derived layer manifest, confirm units/transforms and known distances, and record operational review/unknowns. No real CAD is required for the generic MVP.
-- [ ] P2.3 Populate ABM records and assumptions with ranges/distribution candidates,
+- [x] P2.3 Populate ABM records and assumptions with ranges/distribution candidates,
   dependence and identification gaps. Test graph/unit consistency and rules against
   small hand-worked examples; flag overlap with DES work/wait durations for P3.
   Use the same primary-source/provenance contract as P1.3; distinguish observed behavior, literature interpretation and chosen heuristic. Maintain a gap record with owner, acquisition route and impact; unsupported values cannot become empirical defaults.
@@ -183,3 +183,7 @@ outside this workpack. No Luna execution or qualification is implied by coverage
 ## P2.2 evidence closeout
 
 See [the P2.2 coordinator acceptance](../../evidence/p2.2-coordinator-acceptance-20261002.md) and linked family records. P2.2 is accepted for supplied-source verification and explicit gap inventory only; event-level staff trip intervals, operational access rules and route choice remain unidentified.
+
+## P2.3 catalogue and synthetic-check closeout
+
+See [the P2.3 coordinator acceptance](../../evidence/p2.3-coordinator-acceptance-20261002.md) and [ABM catalogue README](../../../model-inputs/ed/abm/README.md). P2.3 is accepted for exact-ID schema-v1 catalogue coverage, provenance/gap tracking and synthetic representation checks only. Seventeen active inputs remain unknown; spatial congestion and four optional-complexity rows remain deferred. No empirical generic ED parameter, policy, dependence structure or calibration is accepted. P2.4 independent P2 phase review remains open.

@@ -1,0 +1,1102 @@
+{
+  "schema_version": 1,
+  "status": "proposed",
+  "family": "abm_staff_behavior",
+  "records": [
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.abmstaffbehavior.agentattributes",
+      "semantic_name": "Staff agent attributes",
+      "definition": "Staff attributes potentially needed by explicitly declared eligibility or task behavior. Attributes, scope, provenance, and fixed versus time-varying status are not yet specified.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED schema and ED adapter to Kairos Track 03 Flow agent/task context",
+      "subsystem": "ABM",
+      "entity_task_pathway": "ED staff agents and their explicitly modeled task/assignment state; exact pathway applicability remains profile-specific.",
+      "applicability": "MVP candidate only as enabled by a declared profile; no local or generic ED behavior is inferred.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "versioned categorical coding; every numeric leaf declares its own unit and entity scope",
+      "granularity": "Per staff agent, task, interaction, eligibility relation or decision event as applicable; event/entity scope must be declared by any future profile.",
+      "population": "Unknown for transferable generic ED inputs; linked source populations remain bounded in evidence records.",
+      "period": "Unknown for transferable generic ED inputs; source observation periods are not transferred.",
+      "site": "Generic ED target; no site-specific value established.",
+      "conditioning": "Condition on declared role, skill, task, location/zone, availability, pathway, trigger and observation context only when evidenced and explicitly configured.",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "evidence_class": "published",
+      "confidence_limitations": "Linked accepted P2 records are bounded to their stated source population, setting, period, method and exact parameter mapping. They do not supply a transferable numeric model input. No evidence is supplied where the exact ID is uncovered.",
+      "rationale": "Staff attributes are generated only when required by declared eligibility or task behavior, with fixed/time-varying scope and provenance. Calibration requires staff-level evidence and identifiability; no unsupported demographic or clinical detail is implied. No value, range, default, distribution, fitted coefficient, policy or independence assumption is asserted by this catalogue.",
+      "provenance": {
+        "source": "See exact-ID evidence references in the family annotation; no source value is promoted into this record.",
+        "version": "P2 accepted evidence record versions identified by repo-relative path and SHA-256.",
+        "location": "See linked evidence record primary_source.location or gap description.",
+        "licence_access": "See each linked record; no access or licence claim is transferred.",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numerical transformation or fit. Evidence records are linked only for bounded descriptive findings or explicitly recorded gaps.",
+        "sample_size": null,
+        "exclusions_censoring": "Not established for a transferable generic ED parameter; source-specific limitations remain in linked records.",
+        "fit_diagnostics": "Not performed; no fit or estimate is proposed.",
+        "holdout_evidence": "None; no calibration or holdout exercise is performed.",
+        "transfer_limits": "No cross-site transfer or generic ED value is established; see source-specific bounds and acquisition plan."
+      },
+      "dependence": {
+        "groups": "Not identified.",
+        "latent_factors_correlations": "Unknown; do not assume independence.",
+        "temporal_persistence": "Unknown; requires linked time-indexed observations.",
+        "conditional_sampling_order": "Unspecified; P3 owns fitting and conditional sampling design.",
+        "independence_assumption": "None asserted; dependence is unidentified pending joint observation and P3 review."
+      },
+      "variability_epistemic": {
+        "within_run_variability": "No within-run stochastic rule is assigned.",
+        "epistemic_uncertainty": "Substantial: definitions, complete choice sets, population/site transfer, and parameter identifiability remain unresolved as described per field.",
+        "sampling_level": "Unspecified; P3 must determine only after evidence and estimand review.",
+        "seed_purpose": "Not applicable until a reviewed stochastic input is defined."
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "Available evidence does not identify transferable numeric inputs or complete model policies for this parameter; no fit is attempted.",
+        "feasible_bounds_reference": "Unknown range slots in this record; bounds require exact-ID evidence and P3 review.",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.abmstaffbehavior.assignment",
+      "semantic_name": "Staff assignment behavior",
+      "definition": "Staff-to-task assignment policy/state constrained by explicit role, task, location, availability, and eligibility. Observed assignment events do not identify unobserved alternatives or a general policy.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow dispatch inputs, constrained by declared role, task, zone, location, availability, and skill eligibility",
+      "subsystem": "ABM",
+      "entity_task_pathway": "ED staff agents and their explicitly modeled task/assignment state; exact pathway applicability remains profile-specific.",
+      "applicability": "MVP candidate only as enabled by a declared profile; no local or generic ED behavior is inferred.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "typed categorical assignment policy/state; numeric leaves declare units",
+      "granularity": "Per staff agent, task, interaction, eligibility relation or decision event as applicable; event/entity scope must be declared by any future profile.",
+      "population": "Unknown for transferable generic ED inputs; linked source populations remain bounded in evidence records.",
+      "period": "Unknown for transferable generic ED inputs; source observation periods are not transferred.",
+      "site": "Generic ED target; no site-specific value established.",
+      "conditioning": "Condition on declared role, skill, task, location/zone, availability, pathway, trigger and observation context only when evidenced and explicitly configured.",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Linked accepted P2 records are bounded to their stated source population, setting, period, method and exact parameter mapping. They do not supply a transferable numeric model input. No evidence is supplied where the exact ID is uncovered.",
+      "rationale": "Assignment policy generates staff-to-task choices subject to declared role, task, zone/location, availability, and skill eligibility. Observed assignments are separate events; aggregate duration/throughput cannot identify the policy. No value, range, default, distribution, fitted coefficient, policy or independence assumption is asserted by this catalogue.",
+      "provenance": {
+        "source": "See exact-ID evidence references in the family annotation; no source value is promoted into this record.",
+        "version": "P2 accepted evidence record versions identified by repo-relative path and SHA-256.",
+        "location": "See linked evidence record primary_source.location or gap description.",
+        "licence_access": "See each linked record; no access or licence claim is transferred.",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numerical transformation or fit. Evidence records are linked only for bounded descriptive findings or explicitly recorded gaps.",
+        "sample_size": null,
+        "exclusions_censoring": "Not established for a transferable generic ED parameter; source-specific limitations remain in linked records.",
+        "fit_diagnostics": "Not performed; no fit or estimate is proposed.",
+        "holdout_evidence": "None; no calibration or holdout exercise is performed.",
+        "transfer_limits": "No cross-site transfer or generic ED value is established; see source-specific bounds and acquisition plan."
+      },
+      "dependence": {
+        "groups": "Not identified.",
+        "latent_factors_correlations": "Unknown; do not assume independence.",
+        "temporal_persistence": "Unknown; requires linked time-indexed observations.",
+        "conditional_sampling_order": "Unspecified; P3 owns fitting and conditional sampling design.",
+        "independence_assumption": "None asserted; dependence is unidentified pending joint observation and P3 review."
+      },
+      "variability_epistemic": {
+        "within_run_variability": "No within-run stochastic rule is assigned.",
+        "epistemic_uncertainty": "Substantial: definitions, complete choice sets, population/site transfer, and parameter identifiability remain unresolved as described per field.",
+        "sampling_level": "Unspecified; P3 must determine only after evidence and estimand review.",
+        "seed_purpose": "Not applicable until a reviewed stochastic input is defined."
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "Available evidence does not identify transferable numeric inputs or complete model policies for this parameter; no fit is attempted.",
+        "feasible_bounds_reference": "Unknown range slots in this record; bounds require exact-ID evidence and P3 review.",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.abmstaffbehavior.zoneskilleligibility",
+      "semantic_name": "Zone and skill eligibility",
+      "definition": "Versioned eligibility relation among staff role, task class, zone, and optional location. No complete eligibility edges or time-specific alternatives are established.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED validator and adapter to Kairos Track 03 Flow dispatch eligibility",
+      "subsystem": "ABM",
+      "entity_task_pathway": "ED staff agents and their explicitly modeled task/assignment state; exact pathway applicability remains profile-specific.",
+      "applicability": "MVP candidate only as enabled by a declared profile; no local or generic ED behavior is inferred.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "versioned relation among stable `staff_role_id`, `task_class_id`, `zone_id`, and optional `location_id` (no physical unit); all references must resolve exactly, and a location must belong to its declared zone",
+      "granularity": "Per staff agent, task, interaction, eligibility relation or decision event as applicable; event/entity scope must be declared by any future profile.",
+      "population": "Unknown for transferable generic ED inputs; linked source populations remain bounded in evidence records.",
+      "period": "Unknown for transferable generic ED inputs; source observation periods are not transferred.",
+      "site": "Generic ED target; no site-specific value established.",
+      "conditioning": "Condition on declared role, skill, task, location/zone, availability, pathway, trigger and observation context only when evidenced and explicitly configured.",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Linked accepted P2 records are bounded to their stated source population, setting, period, method and exact parameter mapping. They do not supply a transferable numeric model input. No evidence is supplied where the exact ID is uncovered.",
+      "rationale": "Eligibility is a configured relation among declared role, task class, zone, and optional location. Validate exact references and zone membership; observed-choice evidence needs a time-specific full choice set. No value, range, default, distribution, fitted coefficient, policy or independence assumption is asserted by this catalogue.",
+      "provenance": {
+        "source": "See exact-ID evidence references in the family annotation; no source value is promoted into this record.",
+        "version": "P2 accepted evidence record versions identified by repo-relative path and SHA-256.",
+        "location": "See linked evidence record primary_source.location or gap description.",
+        "licence_access": "See each linked record; no access or licence claim is transferred.",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numerical transformation or fit. Evidence records are linked only for bounded descriptive findings or explicitly recorded gaps.",
+        "sample_size": null,
+        "exclusions_censoring": "Not established for a transferable generic ED parameter; source-specific limitations remain in linked records.",
+        "fit_diagnostics": "Not performed; no fit or estimate is proposed.",
+        "holdout_evidence": "None; no calibration or holdout exercise is performed.",
+        "transfer_limits": "No cross-site transfer or generic ED value is established; see source-specific bounds and acquisition plan."
+      },
+      "dependence": {
+        "groups": "Not identified.",
+        "latent_factors_correlations": "Unknown; do not assume independence.",
+        "temporal_persistence": "Unknown; requires linked time-indexed observations.",
+        "conditional_sampling_order": "Unspecified; P3 owns fitting and conditional sampling design.",
+        "independence_assumption": "None asserted; dependence is unidentified pending joint observation and P3 review."
+      },
+      "variability_epistemic": {
+        "within_run_variability": "No within-run stochastic rule is assigned.",
+        "epistemic_uncertainty": "Substantial: definitions, complete choice sets, population/site transfer, and parameter identifiability remain unresolved as described per field.",
+        "sampling_level": "Unspecified; P3 must determine only after evidence and estimand review.",
+        "seed_purpose": "Not applicable until a reviewed stochastic input is defined."
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "Available evidence does not identify transferable numeric inputs or complete model policies for this parameter; no fit is attempted.",
+        "feasible_bounds_reference": "Unknown range slots in this record; bounds require exact-ID evidence and P3 review.",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.abmstaffbehavior.taskchoice",
+      "semantic_name": "Staff task choice policy",
+      "definition": "Policy for selecting among supported eligible staff task actions. Observed task starts do not reveal the complete available action set.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow for selecting among supported eligible task actions",
+      "subsystem": "ABM",
+      "entity_task_pathway": "ED staff agents and their explicitly modeled task/assignment state; exact pathway applicability remains profile-specific.",
+      "applicability": "MVP candidate only as enabled by a declared profile; no local or generic ED behavior is inferred.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "versioned deterministic/structured policy with category coding; any numeric leaf declares its unit",
+      "granularity": "Per staff agent, task, interaction, eligibility relation or decision event as applicable; event/entity scope must be declared by any future profile.",
+      "population": "Unknown for transferable generic ED inputs; linked source populations remain bounded in evidence records.",
+      "period": "Unknown for transferable generic ED inputs; source observation periods are not transferred.",
+      "site": "Generic ED target; no site-specific value established.",
+      "conditioning": "Condition on declared role, skill, task, location/zone, availability, pathway, trigger and observation context only when evidenced and explicitly configured.",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "evidence_class": "published",
+      "confidence_limitations": "Linked accepted P2 records are bounded to their stated source population, setting, period, method and exact parameter mapping. They do not supply a transferable numeric model input. No evidence is supplied where the exact ID is uncovered.",
+      "rationale": "Task choice selects among supported eligible actions. Observed task starts alone omit the available alternatives; empirical fitting requires decision times, actor/task states, and the complete eligible-action set. No value, range, default, distribution, fitted coefficient, policy or independence assumption is asserted by this catalogue.",
+      "provenance": {
+        "source": "See exact-ID evidence references in the family annotation; no source value is promoted into this record.",
+        "version": "P2 accepted evidence record versions identified by repo-relative path and SHA-256.",
+        "location": "See linked evidence record primary_source.location or gap description.",
+        "licence_access": "See each linked record; no access or licence claim is transferred.",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numerical transformation or fit. Evidence records are linked only for bounded descriptive findings or explicitly recorded gaps.",
+        "sample_size": null,
+        "exclusions_censoring": "Not established for a transferable generic ED parameter; source-specific limitations remain in linked records.",
+        "fit_diagnostics": "Not performed; no fit or estimate is proposed.",
+        "holdout_evidence": "None; no calibration or holdout exercise is performed.",
+        "transfer_limits": "No cross-site transfer or generic ED value is established; see source-specific bounds and acquisition plan."
+      },
+      "dependence": {
+        "groups": "Not identified.",
+        "latent_factors_correlations": "Unknown; do not assume independence.",
+        "temporal_persistence": "Unknown; requires linked time-indexed observations.",
+        "conditional_sampling_order": "Unspecified; P3 owns fitting and conditional sampling design.",
+        "independence_assumption": "None asserted; dependence is unidentified pending joint observation and P3 review."
+      },
+      "variability_epistemic": {
+        "within_run_variability": "No within-run stochastic rule is assigned.",
+        "epistemic_uncertainty": "Substantial: definitions, complete choice sets, population/site transfer, and parameter identifiability remain unresolved as described per field.",
+        "sampling_level": "Unspecified; P3 must determine only after evidence and estimand review.",
+        "seed_purpose": "Not applicable until a reviewed stochastic input is defined."
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "Available evidence does not identify transferable numeric inputs or complete model policies for this parameter; no fit is attempted.",
+        "feasible_bounds_reference": "Unknown range slots in this record; bounds require exact-ID evidence and P3 review.",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.abmstaffbehavior.reassessment",
+      "semantic_name": "Staff reassessment behavior",
+      "definition": "Pathway-enabled reassessment trigger or cadence rule. Occurrence, recording time, at-risk window, and censoring are distinct observations.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow as a pathway-enabled reassessment trigger/cadence rule",
+      "subsystem": "ABM",
+      "entity_task_pathway": "ED staff agents and their explicitly modeled task/assignment state; exact pathway applicability remains profile-specific.",
+      "applicability": "MVP candidate only as enabled by a declared profile; no local or generic ED behavior is inferred.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "typed trigger/threshold; any interval is decimal seconds converted to checked nanosecond ticks under ADR-0004",
+      "granularity": "Per staff agent, task, interaction, eligibility relation or decision event as applicable; event/entity scope must be declared by any future profile.",
+      "population": "Unknown for transferable generic ED inputs; linked source populations remain bounded in evidence records.",
+      "period": "Unknown for transferable generic ED inputs; source observation periods are not transferred.",
+      "site": "Generic ED target; no site-specific value established.",
+      "conditioning": "Condition on declared role, skill, task, location/zone, availability, pathway, trigger and observation context only when evidenced and explicitly configured.",
+      "value_kind": "categorical_rule",
+      "value_status": {
+        "status": "unknown",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Linked accepted P2 records are bounded to their stated source population, setting, period, method and exact parameter mapping. They do not supply a transferable numeric model input. No evidence is supplied where the exact ID is uncovered.",
+      "rationale": "Reassessment is a pathway-enabled trigger or cadence rule, not a scalar observed target. Preserve occurrence, recording time, at-risk window, and censoring in observations. No value, range, default, distribution, fitted coefficient, policy or independence assumption is asserted by this catalogue.",
+      "provenance": {
+        "source": "See exact-ID evidence references in the family annotation; no source value is promoted into this record.",
+        "version": "P2 accepted evidence record versions identified by repo-relative path and SHA-256.",
+        "location": "See linked evidence record primary_source.location or gap description.",
+        "licence_access": "See each linked record; no access or licence claim is transferred.",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numerical transformation or fit. Evidence records are linked only for bounded descriptive findings or explicitly recorded gaps.",
+        "sample_size": null,
+        "exclusions_censoring": "Not established for a transferable generic ED parameter; source-specific limitations remain in linked records.",
+        "fit_diagnostics": "Not performed; no fit or estimate is proposed.",
+        "holdout_evidence": "None; no calibration or holdout exercise is performed.",
+        "transfer_limits": "No cross-site transfer or generic ED value is established; see source-specific bounds and acquisition plan."
+      },
+      "dependence": {
+        "groups": "Not identified.",
+        "latent_factors_correlations": "Unknown; do not assume independence.",
+        "temporal_persistence": "Unknown; requires linked time-indexed observations.",
+        "conditional_sampling_order": "Unspecified; P3 owns fitting and conditional sampling design.",
+        "independence_assumption": "None asserted; dependence is unidentified pending joint observation and P3 review."
+      },
+      "variability_epistemic": {
+        "within_run_variability": "No within-run stochastic rule is assigned.",
+        "epistemic_uncertainty": "Substantial: definitions, complete choice sets, population/site transfer, and parameter identifiability remain unresolved as described per field.",
+        "sampling_level": "Unspecified; P3 must determine only after evidence and estimand review.",
+        "seed_purpose": "Not applicable until a reviewed stochastic input is defined."
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "Available evidence does not identify transferable numeric inputs or complete model policies for this parameter; no fit is attempted.",
+        "feasible_bounds_reference": "Unknown range slots in this record; bounds require exact-ID evidence and P3 review.",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.abmstaffbehavior.urgencyfifo",
+      "semantic_name": "Urgency and FIFO dispatch rules",
+      "definition": "Explicit ordinal urgency ordering with stable FIFO tie-break inputs. Source evidence is qualitative and does not set universal categories, thresholds, or policy.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED adapter supplies priority attributes and stable tie-break inputs to Kairos Track 03 Flow's reviewed queue ordering",
+      "subsystem": "ABM",
+      "entity_task_pathway": "ED staff agents and their explicitly modeled task/assignment state; exact pathway applicability remains profile-specific.",
+      "applicability": "MVP candidate only as enabled by a declared profile; no local or generic ED behavior is inferred.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "ordinal_policy",
+      "unit": "versioned ordinal policy with no physical unit",
+      "granularity": "Per staff agent, task, interaction, eligibility relation or decision event as applicable; event/entity scope must be declared by any future profile.",
+      "population": "Unknown for transferable generic ED inputs; linked source populations remain bounded in evidence records.",
+      "period": "Unknown for transferable generic ED inputs; source observation periods are not transferred.",
+      "site": "Generic ED target; no site-specific value established.",
+      "conditioning": "Condition on declared role, skill, task, location/zone, availability, pathway, trigger and observation context only when evidenced and explicitly configured.",
+      "value_kind": "categorical_rule",
+      "value_status": {
+        "status": "unknown",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "evidence_class": "published",
+      "confidence_limitations": "Linked accepted P2 records are bounded to their stated source population, setting, period, method and exact parameter mapping. They do not supply a transferable numeric model input. No evidence is supplied where the exact ID is uncovered.",
+      "rationale": "Urgency/FIFO is a deterministic ordinal ordering policy with a stable tie-break. ED-side priority assignment is explicit; queue order and waits are outcomes, not standalone calibration targets. No value, range, default, distribution, fitted coefficient, policy or independence assumption is asserted by this catalogue.",
+      "provenance": {
+        "source": "See exact-ID evidence references in the family annotation; no source value is promoted into this record.",
+        "version": "P2 accepted evidence record versions identified by repo-relative path and SHA-256.",
+        "location": "See linked evidence record primary_source.location or gap description.",
+        "licence_access": "See each linked record; no access or licence claim is transferred.",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numerical transformation or fit. Evidence records are linked only for bounded descriptive findings or explicitly recorded gaps.",
+        "sample_size": null,
+        "exclusions_censoring": "Not established for a transferable generic ED parameter; source-specific limitations remain in linked records.",
+        "fit_diagnostics": "Not performed; no fit or estimate is proposed.",
+        "holdout_evidence": "None; no calibration or holdout exercise is performed.",
+        "transfer_limits": "No cross-site transfer or generic ED value is established; see source-specific bounds and acquisition plan."
+      },
+      "dependence": {
+        "groups": "Not identified.",
+        "latent_factors_correlations": "Unknown; do not assume independence.",
+        "temporal_persistence": "Unknown; requires linked time-indexed observations.",
+        "conditional_sampling_order": "Unspecified; P3 owns fitting and conditional sampling design.",
+        "independence_assumption": "None asserted; dependence is unidentified pending joint observation and P3 review."
+      },
+      "variability_epistemic": {
+        "within_run_variability": "No within-run stochastic rule is assigned.",
+        "epistemic_uncertainty": "Substantial: definitions, complete choice sets, population/site transfer, and parameter identifiability remain unresolved as described per field.",
+        "sampling_level": "Unspecified; P3 must determine only after evidence and estimand review.",
+        "seed_purpose": "Not applicable until a reviewed stochastic input is defined."
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "Available evidence does not identify transferable numeric inputs or complete model policies for this parameter; no fit is attempted.",
+        "feasible_bounds_reference": "Unknown range slots in this record; bounds require exact-ID evidence and P3 review.",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.abmstaffbehavior.communicationhandover",
+      "semantic_name": "Communication and handover behavior",
+      "definition": "Explicitly modeled communication or handover interaction/task event with ownership and active-work anchors. No general event rate or duration is established.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow for explicitly modeled handover interaction/task events",
+      "subsystem": "ABM",
+      "entity_task_pathway": "ED staff agents and their explicitly modeled task/assignment state; exact pathway applicability remains profile-specific.",
+      "applicability": "MVP candidate only as enabled by a declared profile; no local or generic ED behavior is inferred.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "categorical interaction/policy; any active-work duration is decimal seconds with source precision and explicit anchors, converted under ADR-0004",
+      "granularity": "Per staff agent, task, interaction, eligibility relation or decision event as applicable; event/entity scope must be declared by any future profile.",
+      "population": "Unknown for transferable generic ED inputs; linked source populations remain bounded in evidence records.",
+      "period": "Unknown for transferable generic ED inputs; source observation periods are not transferred.",
+      "site": "Generic ED target; no site-specific value established.",
+      "conditioning": "Condition on declared role, skill, task, location/zone, availability, pathway, trigger and observation context only when evidenced and explicitly configured.",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Linked accepted P2 records are bounded to their stated source population, setting, period, method and exact parameter mapping. They do not supply a transferable numeric model input. No evidence is supplied where the exact ID is uncovered.",
+      "rationale": "Handover is an explicit interaction/task event with declared ownership and any active-work anchors. Preserve occurrence versus recording/message time; an elapsed gap is not handover work. No value, range, default, distribution, fitted coefficient, policy or independence assumption is asserted by this catalogue.",
+      "provenance": {
+        "source": "See exact-ID evidence references in the family annotation; no source value is promoted into this record.",
+        "version": "P2 accepted evidence record versions identified by repo-relative path and SHA-256.",
+        "location": "See linked evidence record primary_source.location or gap description.",
+        "licence_access": "See each linked record; no access or licence claim is transferred.",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numerical transformation or fit. Evidence records are linked only for bounded descriptive findings or explicitly recorded gaps.",
+        "sample_size": null,
+        "exclusions_censoring": "Not established for a transferable generic ED parameter; source-specific limitations remain in linked records.",
+        "fit_diagnostics": "Not performed; no fit or estimate is proposed.",
+        "holdout_evidence": "None; no calibration or holdout exercise is performed.",
+        "transfer_limits": "No cross-site transfer or generic ED value is established; see source-specific bounds and acquisition plan."
+      },
+      "dependence": {
+        "groups": "Not identified.",
+        "latent_factors_correlations": "Unknown; do not assume independence.",
+        "temporal_persistence": "Unknown; requires linked time-indexed observations.",
+        "conditional_sampling_order": "Unspecified; P3 owns fitting and conditional sampling design.",
+        "independence_assumption": "None asserted; dependence is unidentified pending joint observation and P3 review."
+      },
+      "variability_epistemic": {
+        "within_run_variability": "No within-run stochastic rule is assigned.",
+        "epistemic_uncertainty": "Substantial: definitions, complete choice sets, population/site transfer, and parameter identifiability remain unresolved as described per field.",
+        "sampling_level": "Unspecified; P3 must determine only after evidence and estimand review.",
+        "seed_purpose": "Not applicable until a reviewed stochastic input is defined."
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "Available evidence does not identify transferable numeric inputs or complete model policies for this parameter; no fit is attempted.",
+        "feasible_bounds_reference": "Unknown range slots in this record; bounds require exact-ID evidence and P3 review.",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.abmstaffbehavior.interruptionresumption",
+      "semantic_name": "Interruption and resumption behavior",
+      "definition": "Supported lifecycle policy for an interrupted task, preserving task ancestry and event timing. Source episode summaries do not define a transferable policy.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED adapter selects a supported Suspend/Abort/Restart policy for Kairos Track 03 Flow task lifecycle",
+      "subsystem": "ABM",
+      "entity_task_pathway": "ED staff agents and their explicitly modeled task/assignment state; exact pathway applicability remains profile-specific.",
+      "applicability": "MVP candidate only as enabled by a declared profile; no local or generic ED behavior is inferred.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "categorical_or_structured",
+      "unit": "versioned categorical lifecycle policy; any timed leaf is decimal seconds with source precision and ADR-0004 conversion",
+      "granularity": "Per staff agent, task, interaction, eligibility relation or decision event as applicable; event/entity scope must be declared by any future profile.",
+      "population": "Unknown for transferable generic ED inputs; linked source populations remain bounded in evidence records.",
+      "period": "Unknown for transferable generic ED inputs; source observation periods are not transferred.",
+      "site": "Generic ED target; no site-specific value established.",
+      "conditioning": "Condition on declared role, skill, task, location/zone, availability, pathway, trigger and observation context only when evidenced and explicitly configured.",
+      "value_kind": "structured_policy",
+      "value_status": {
+        "status": "unknown",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "evidence_class": "published",
+      "confidence_limitations": "Linked accepted P2 records are bounded to their stated source population, setting, period, method and exact parameter mapping. They do not supply a transferable numeric model input. No evidence is supplied where the exact ID is uncovered.",
+      "rationale": "Interruption/resumption selects a lifecycle policy supported by the Q contract. Retain task identity/ancestry, cause, prompt, next task, resumption, and timestamp lineage; an incoming prompt or elapsed gap alone is not a switch/work interval. No value, range, default, distribution, fitted coefficient, policy or independence assumption is asserted by this catalogue.",
+      "provenance": {
+        "source": "See exact-ID evidence references in the family annotation; no source value is promoted into this record.",
+        "version": "P2 accepted evidence record versions identified by repo-relative path and SHA-256.",
+        "location": "See linked evidence record primary_source.location or gap description.",
+        "licence_access": "See each linked record; no access or licence claim is transferred.",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numerical transformation or fit. Evidence records are linked only for bounded descriptive findings or explicitly recorded gaps.",
+        "sample_size": null,
+        "exclusions_censoring": "Not established for a transferable generic ED parameter; source-specific limitations remain in linked records.",
+        "fit_diagnostics": "Not performed; no fit or estimate is proposed.",
+        "holdout_evidence": "None; no calibration or holdout exercise is performed.",
+        "transfer_limits": "No cross-site transfer or generic ED value is established; see source-specific bounds and acquisition plan."
+      },
+      "dependence": {
+        "groups": "Not identified.",
+        "latent_factors_correlations": "Unknown; do not assume independence.",
+        "temporal_persistence": "Unknown; requires linked time-indexed observations.",
+        "conditional_sampling_order": "Unspecified; P3 owns fitting and conditional sampling design.",
+        "independence_assumption": "None asserted; dependence is unidentified pending joint observation and P3 review."
+      },
+      "variability_epistemic": {
+        "within_run_variability": "No within-run stochastic rule is assigned.",
+        "epistemic_uncertainty": "Substantial: definitions, complete choice sets, population/site transfer, and parameter identifiability remain unresolved as described per field.",
+        "sampling_level": "Unspecified; P3 must determine only after evidence and estimand review.",
+        "seed_purpose": "Not applicable until a reviewed stochastic input is defined."
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "Available evidence does not identify transferable numeric inputs or complete model policies for this parameter; no fit is attempted.",
+        "feasible_bounds_reference": "Unknown range slots in this record; bounds require exact-ID evidence and P3 review.",
+        "observational_targets": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "status": "proposed",
+      "parameter_id": "ed.abmstaffbehavior.switchingoverhead",
+      "semantic_name": "Task switching overhead",
+      "definition": "Optional active context-switch work interval, distinct from queueing, suspension, handover, travel, and resumption. No duration evidence is established.",
+      "owner": "CareOps ED domain",
+      "consumer": "CareOps ED adapter to Kairos Track 03 Flow as explicit active context-switch work, if enabled by the pathway",
+      "subsystem": "ABM",
+      "entity_task_pathway": "ED staff agents and their explicitly modeled task/assignment state; exact pathway applicability remains profile-specific.",
+      "applicability": "MVP candidate only as enabled by a declared profile; no local or generic ED behavior is inferred.",
+      "mode": [
+        "Macro",
+        "Micro"
+      ],
+      "type": "time",
+      "unit": "nonnegative decimal seconds with source precision; fixed input parses exactly and sampled duration rounds upward to checked nanosecond ticks under ADR-0004",
+      "granularity": "Per staff agent, task, interaction, eligibility relation or decision event as applicable; event/entity scope must be declared by any future profile.",
+      "population": "Unknown for transferable generic ED inputs; linked source populations remain bounded in evidence records.",
+      "period": "Unknown for transferable generic ED inputs; source observation periods are not transferred.",
+      "site": "Generic ED target; no site-specific value established.",
+      "conditioning": "Condition on declared role, skill, task, location/zone, availability, pathway, trigger and observation context only when evidenced and explicitly configured.",
+      "value_kind": "fixed_constant",
+      "value_status": {
+        "status": "unknown",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "physical_limits": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "observed_sample_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "generic_scenario_range": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "uncertainty_interval": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "calibration_bounds": {
+        "status": "unknown",
+        "provenance": "No parameter value or range is promoted from the linked source records.",
+        "rationale": "P2.3 is an evidence catalogue, not parameter estimation.",
+        "reason": "Accepted source evidence is bounded and does not establish a transferable value, policy, range, distribution, or default; preserve this input as unknown pending the stated acquisition and review."
+      },
+      "evidence_class": "not_yet_assessed",
+      "confidence_limitations": "Linked accepted P2 records are bounded to their stated source population, setting, period, method and exact parameter mapping. They do not supply a transferable numeric model input. No evidence is supplied where the exact ID is uncovered.",
+      "rationale": "Switching overhead is optional active context-switch work with generated start/end semantics. Exclude queueing, suspension, handover, and resumption unless separately modeled; no value or distribution is asserted. No value, range, default, distribution, fitted coefficient, policy or independence assumption is asserted by this catalogue.",
+      "provenance": {
+        "source": "See exact-ID evidence references in the family annotation; no source value is promoted into this record.",
+        "version": "P2 accepted evidence record versions identified by repo-relative path and SHA-256.",
+        "location": "See linked evidence record primary_source.location or gap description.",
+        "licence_access": "See each linked record; no access or licence claim is transferred.",
+        "retrieved_at": null,
+        "content_hash": null,
+        "transformation": "No numerical transformation or fit. Evidence records are linked only for bounded descriptive findings or explicitly recorded gaps.",
+        "sample_size": null,
+        "exclusions_censoring": "Not established for a transferable generic ED parameter; source-specific limitations remain in linked records.",
+        "fit_diagnostics": "Not performed; no fit or estimate is proposed.",
+        "holdout_evidence": "None; no calibration or holdout exercise is performed.",
+        "transfer_limits": "No cross-site transfer or generic ED value is established; see source-specific bounds and acquisition plan."
+      },
+      "dependence": {
+        "groups": "Not identified.",
+        "latent_factors_correlations": "Unknown; do not assume independence.",
+        "temporal_persistence": "Unknown; requires linked time-indexed observations.",
+        "conditional_sampling_order": "Unspecified; P3 owns fitting and conditional sampling design.",
+        "independence_assumption": "None asserted; dependence is unidentified pending joint observation and P3 review."
+      },
+      "variability_epistemic": {
+        "within_run_variability": "No within-run stochastic rule is assigned.",
+        "epistemic_uncertainty": "Substantial: definitions, complete choice sets, population/site transfer, and parameter identifiability remain unresolved as described per field.",
+        "sampling_level": "Unspecified; P3 must determine only after evidence and estimand review.",
+        "seed_purpose": "Not applicable until a reviewed stochastic input is defined."
+      },
+      "calibration": {
+        "status": "unidentifiable",
+        "rationale": "Available evidence does not identify transferable numeric inputs or complete model policies for this parameter; no fit is attempted.",
+        "feasible_bounds_reference": "Unknown range slots in this record; bounds require exact-ID evidence and P3 review.",
+        "observational_targets": []
+      }
+    }
+  ],
+  "annotations": {
+    "ed.abmstaffbehavior.agentattributes": {
+      "unit_contract": "versioned categorical coding; every numeric leaf declares its own unit and entity scope",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/abm/evidence/p2-agent-task-context-variation.json",
+          "sha256": "a460231c3b9b3294dbc7a8b5c8b95c71543cf8be04ca9bd99aef0e7faf98f1e8"
+        },
+        {
+          "path": "model-inputs/ed/abm/evidence/p2-shift-break-context-gap.json",
+          "sha256": "449527411ae37e736be502718150bc20dd625c5f0f9bc09876b1ad5a47dc0f01"
+        },
+        {
+          "path": "model-inputs/ed/abm/evidence/p2-supply-retrieval.json",
+          "sha256": "1928059fe5960600db25a7bed5b83b70bd44dc661507dd0602d918bb4f79b56b"
+        }
+      ],
+      "acquisition_plan": "Acquire authorized role/skill, fixed versus time-varying staff attributes, actual-presence and break-state fields with staff/time coverage and missingness; route: prospective de-identified observation or governed roster/event extraction; owner: ED operations and data-governance leads; impact: eligibility and behavior context cannot be instantiated or calibrated; gate: independent source review and exact unit/scope mapping. P3 must resolve the estimand, joint dependence and identifiability, and DES/ABM interval overlap before fitting or enabling this input.",
+      "candidate_families": [
+        {
+          "family": "categorical_attributes",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "time_varying_covariates",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "hierarchical_effects",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        }
+      ],
+      "candidate_status": "unselected; research candidates only. No family, parameterization, dependence structure or default is selected.",
+      "downstream_gates": [
+        "When agent attributes affect eligibility, reject missing scope, unit or provenance and prevent unused attributes becoming implicit policy."
+      ]
+    },
+    "ed.abmstaffbehavior.assignment": {
+      "unit_contract": "typed categorical assignment policy/state; numeric leaves declare units",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/abm/evidence/p2-assignment-continuity.json",
+          "sha256": "80524948c72f3ab1eb33714e22446aa4adcf650f529286498d4da49d257f1f85"
+        }
+      ],
+      "acquisition_plan": "Acquire final-edition assignment source plus locally applicable time-stamped staff-to-task/zone assignments, eligibility alternatives and availability; include opportunity denominator, role/location, policy version and exclusions; route: publisher final article/supplement and authorized ED workflow source; owner: evidence coordinator and ED operations; impact: assignment policy remains unknown; gate: verify final source and independent readback, then validate complete choice sets. P3 must resolve the estimand, joint dependence and identifiability, and DES/ABM interval overlap before fitting or enabling this input.",
+      "candidate_families": [
+        {
+          "family": "deterministic_dispatch",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "priority_dispatch",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "assignment_state_machine",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        }
+      ],
+      "candidate_status": "unselected; research candidates only. No family, parameterization, dependence structure or default is selected.",
+      "downstream_gates": [
+        "The E2 dispatch fixture must select only currently available eligible role/task/location combinations and log assignments separately from configuration."
+      ]
+    },
+    "ed.abmstaffbehavior.zoneskilleligibility": {
+      "unit_contract": "versioned relation among stable `staff_role_id`, `task_class_id`, `zone_id`, and optional `location_id` (no physical unit); all references must resolve exactly, and a location must belong to its declared zone",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/abm/evidence/p2-zone-skill-eligibility.json",
+          "sha256": "1acf1f844cd2d0ed7c44b8ebca84692a1fe870695924396b393bbd5038430421"
+        }
+      ],
+      "acquisition_plan": "Acquire versioned role/task/zone and optional location eligibility relations, explicit exclusions, effective intervals, zone membership and decision-time alternatives; route: authorized credentialing/ED operational policy and prospective observation; owner: ED operational and credentialing leads; impact: no dispatch choice can be validated against supported eligible alternatives; gate: exact reference integrity and independent local review. P3 must resolve the estimand, joint dependence and identifiability, and DES/ABM interval overlap before fitting or enabling this input.",
+      "candidate_families": [
+        {
+          "family": "categorical_relation",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "versioned_eligibility_graph",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        }
+      ],
+      "candidate_status": "unselected; research candidates only. No family, parameterization, dependence structure or default is selected.",
+      "downstream_gates": [
+        "The Macro E2 fixture must reject an unknown role, task, zone or location reference and an undeclared eligibility edge."
+      ]
+    },
+    "ed.abmstaffbehavior.taskchoice": {
+      "unit_contract": "versioned deterministic/structured policy with category coding; any numeric leaf declares its unit",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/abm/evidence/p2-task-choice.json",
+          "sha256": "01ed09487d3855bebd1a2ac92cc4da048d52b57e63696b3f9418e2fcfc5e44b0"
+        }
+      ],
+      "acquisition_plan": "Acquire decision opportunities with actor/task state, prompt type, complete eligible action set, selected action, context and uncaptured alternatives; report opportunity and observation coverage by role/site/time; route: prospective structured observation or governed event logs; owner: ED observation and data-governance leads; impact: task-choice policy cannot be empirically identified; gate: independent coding review and choice-set completeness assessment. P3 must resolve the estimand, joint dependence and identifiability, and DES/ABM interval overlap before fitting or enabling this input.",
+      "candidate_families": [
+        {
+          "family": "deterministic_policy",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "priority_rule",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "categorical_action_policy",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        }
+      ],
+      "candidate_status": "unselected; research candidates only. No family, parameterization, dependence structure or default is selected.",
+      "downstream_gates": [
+        "A task-choice fixture must record its eligible action set and declared priority rule; no unobserved decision heuristic becomes an empirical default."
+      ]
+    },
+    "ed.abmstaffbehavior.reassessment": {
+      "unit_contract": "typed trigger/threshold; any interval is decimal seconds converted to checked nanosecond ticks under ADR-0004",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire pathway-defined reassessment triggers/cadence and event-level occurrence, observation/recording timestamps, at-risk windows, censoring and staff context; route: governed ED records plus prospective workflow observation; owner: clinical pathway and data-governance leads; impact: trigger/cadence cannot be parameterized or distinguished from recorded time; gate: validate definitions and censoring before fit. P3 must resolve the estimand, joint dependence and identifiability, and DES/ABM interval overlap before fitting or enabling this input.",
+      "candidate_families": [
+        {
+          "family": "event_trigger",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "scheduled_cadence",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "conditional_hazard",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        }
+      ],
+      "candidate_status": "unselected; research candidates only. No family, parameterization, dependence structure or default is selected.",
+      "downstream_gates": [
+        "A reassessment-enabled fixture must distinguish configured cadence from occurrence and recording time, including censoring at the observation boundary."
+      ]
+    },
+    "ed.abmstaffbehavior.urgencyfifo": {
+      "unit_contract": "versioned ordinal policy with no physical unit",
+      "value_role": "control",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/abm/evidence/p2-task-priority.json",
+          "sha256": "946b0314a467612dc0ae409e09bcacc5bd987d9b9b70144da5b26ed3c44535d0"
+        }
+      ],
+      "acquisition_plan": "Acquire locally approved explicit urgency categories, task priority mapping, stable tie-break semantics and time-specific queue inputs; report decision opportunities and observed order separately; route: reviewed queue contract and authorized ED policy/event data; owner: ED operations and queue-contract owner; impact: no local urgency assignment or FIFO policy can be asserted; gate: deterministic fixture plus clinical/operational review. P3 must resolve the estimand, joint dependence and identifiability, and DES/ABM interval overlap before fitting or enabling this input.",
+      "candidate_families": [
+        {
+          "family": "ordinal_priority",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "stable_fifo_tiebreak",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        }
+      ],
+      "candidate_status": "unselected; research candidates only. No family, parameterization, dependence structure or default is selected.",
+      "downstream_gates": [
+        "A two-task fixture must prove ordinal urgency ordering and deterministic FIFO tie breaks under the Q contract."
+      ]
+    },
+    "ed.abmstaffbehavior.communicationhandover": {
+      "unit_contract": "categorical interaction/policy; any active-work duration is decimal seconds with source precision and explicit anchors, converted under ADR-0004",
+      "value_role": "generative",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/abm/evidence/p2-supervision-coworking.json",
+          "sha256": "1f86c52416a1c8ffd2987097d390d10d85ccf5227736cd10360255fb7652c6e0"
+        }
+      ],
+      "acquisition_plan": "Acquire explicit handover/supervision event definition, trigger, participants, task ownership transfer, occurrence/opportunity denominator, active-work anchors, timestamps and concurrency evidence; route: prospective observation or governed event source; owner: ED operations and data-governance leads; impact: handover behavior and duration remain unidentifiable; gate: independent event-coding review and DES/ABM interval reconciliation. P3 must resolve the estimand, joint dependence and identifiability, and DES/ABM interval overlap before fitting or enabling this input.",
+      "candidate_families": [
+        {
+          "family": "event_state_machine",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "categorical_interaction",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        }
+      ],
+      "candidate_status": "unselected; research candidates only. No family, parameterization, dependence structure or default is selected.",
+      "downstream_gates": [
+        "A handover-enabled fixture must name ownership transfer and active-work occurrence anchors; no elapsed gap is auto-counted as handover work."
+      ]
+    },
+    "ed.abmstaffbehavior.interruptionresumption": {
+      "unit_contract": "versioned categorical lifecycle policy; any timed leaf is decimal seconds with source precision and ADR-0004 conversion",
+      "value_role": "control",
+      "evidence_refs": [
+        {
+          "path": "model-inputs/ed/abm/evidence/p2-interruption-resumption.json",
+          "sha256": "ddbaffbc5487a9bf81290ca623b72337303123c6f98d63b171dd733177c84c9f"
+        }
+      ],
+      "acquisition_plan": "Acquire interruption event ancestry, incoming prompt, active task, eligible actions, suspend/abort/restart outcome, first subsequent task, eventual same-task resumption, latency and censoring; report episode and observation denominators by context; route: prospective linked observation or governed event logs; owner: ED observation and data-governance leads; impact: source-specific counts cannot establish generic transition probabilities or lifecycle policy; gate: independent coding review and task-lineage checks. P3 must resolve the estimand, joint dependence and identifiability, and DES/ABM interval overlap before fitting or enabling this input.",
+      "candidate_families": [
+        {
+          "family": "lifecycle_policy",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "event_state_machine",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "conditional_transition",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        }
+      ],
+      "candidate_status": "unselected; research candidates only. No family, parameterization, dependence structure or default is selected.",
+      "downstream_gates": [
+        "A preemption fixture must preserve task ancestry, cause and elapsed/remaining work through suspend, abort or restart under the Q lifecycle."
+      ]
+    },
+    "ed.abmstaffbehavior.switchingoverhead": {
+      "unit_contract": "nonnegative decimal seconds with source precision; fixed input parses exactly and sampled duration rounds upward to checked nanosecond ticks under ADR-0004",
+      "value_role": "generative",
+      "evidence_refs": [],
+      "acquisition_plan": "Acquire directly anchored active context-switch start/end intervals, event definition, task lineage, opportunity denominator and separation from queue, travel, handover, suspension and resumption; route: prospective observation or governed event logs; owner: ED observation and data-governance leads; impact: no duration or distribution can be assigned; gate: interval accounting and P3 identifiability review. P3 must resolve the estimand, joint dependence and identifiability, and DES/ABM interval overlap before fitting or enabling this input.",
+      "candidate_families": [
+        {
+          "family": "fixed_duration",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "empirical_duration",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        },
+        {
+          "family": "conditional_duration",
+          "status": "unselected; research candidate only; not a fitted or recommended choice"
+        }
+      ],
+      "candidate_status": "unselected; research candidates only. No family, parameterization, dependence structure or default is selected.",
+      "downstream_gates": [
+        "A switching-overhead fixture must isolate active switch work from queueing, suspension, handover and resumption intervals."
+      ]
+    }
+  }
+}
