@@ -148,8 +148,8 @@ jobs:
           submodules: recursive
       - name: Check Conductor context and exact Kairos contract
         run: |
-          python3 tools/context.py check
           python3 tools/check_kairos_pin.py
+          python3 tools/context.py check
           python3 tools/tasks.py check
           python3 tools/mvp.py check
       - name: Install locked harness dependencies
