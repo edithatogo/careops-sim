@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "class": "synthetic",
+    "notes": "Synthetic status cases for schema and validator behavior only; these values are not empirical, operational, or Cairns data. Profiles are derived in tests from the separate accepted P4 surge example."
+  },
+  "known_capacity_cases": [
+    {
+      "case_id": "physical-versus-open-staffed",
+      "description": "Two physical treatment bays exist; one is open and staffed.",
+      "resource_id": "resource.treatment-core",
+      "physical_status": "known",
+      "physical_count": 2,
+      "availability_status": "known",
+      "open_count": 2,
+      "staffed_count": 1,
+      "calendar_open_count": 2,
+      "calendar_staffed_count": 1
+    },
+    {
+      "case_id": "known-closed-bay",
+      "description": "Two physical treatment bays exist; one known closed bay remains in physical capacity but not open or staffed capacity.",
+      "resource_id": "resource.treatment-core",
+      "physical_status": "known",
+      "physical_count": 2,
+      "availability_status": "known",
+      "open_count": 1,
+      "staffed_count": 1,
+      "calendar_open_count": 1,
+      "calendar_staffed_count": 1
+    }
+  ],
+  "surge_calendar_case": {
+    "case_id": "surge-calendar-capacity-changes",
+    "description": "The accepted synthetic surge example keeps two physical surge bays while the calendar changes open and staffed capacity over the horizon.",
+    "resource_id": "resource.treatment-surge",
+    "expected_intervals": [
+      { "start_s": 0, "end_s": 10800, "open_count": 0, "staffed_count": 0 },
+      { "start_s": 10800, "end_s": 21600, "open_count": 2, "staffed_count": 1 },
+      { "start_s": 21600, "end_s": 32400, "open_count": 1, "staffed_count": 1 },
+      { "start_s": 32400, "end_s": 43200, "open_count": 0, "staffed_count": 0 }
+    ]
+  },
+  "unknown_status_case": {
+    "case_id": "unknown-availability-remains-null",
+    "description": "Unknown operational availability remains null with a reason and cannot enter a runnable profile or be promoted to numeric/open availability.",
+    "resource_id": "resource.diagnostic-device",
+    "physical_status": "known",
+    "physical_count": 1,
+    "availability_status": "unknown",
+    "open_count": null,
+    "staffed_count": null,
+    "availability_reason": "roster_status_not_confirmed"
+  }
+}
