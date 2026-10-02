@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "scenario_id": "p4-generic-nominal-synthetic",
+  "seed": 17,
+  "time_unit": "tick",
+  "horizon_ticks": 12,
+  "provenance": {
+    "class": "synthetic",
+    "notes": "Illustrative nominal-shape fixture only. All arrivals, work durations, capacities and route distances are invented for interface demonstration; no public source or operational ED is represented."
+  },
+  "capacity_location": {
+    "schema_version": 3,
+    "status": "proposed",
+    "capacity": {
+      "unit": "treatment_space",
+      "bucket_completeness": "complete",
+      "physical_status": "known",
+      "physical_count": 2,
+      "availability_status": "known",
+      "open_count": 2,
+      "staffed_count": 2,
+      "equipment": []
+    },
+    "zones": [
+      {"zone_id": "zone.synthetic", "name": "Synthetic zone"}
+    ],
+    "locations": [
+      {"location_id": "location.arrival", "name": "Synthetic arrival", "zone_id": "zone.synthetic"},
+      {"location_id": "location.work", "name": "Synthetic work area", "zone_id": "zone.synthetic"}
+    ],
+    "resource_buckets": [
+      {
+        "resource_id": "resource.synthetic-pool",
+        "resource_class": "synthetic_slot",
+        "location_id": "location.work",
+        "zone_id": "zone.synthetic",
+        "physical_status": "known",
+        "physical_count": 2,
+        "availability_status": "known",
+        "open_count": 2,
+        "staffed_count": 2,
+        "capabilities": []
+      }
+    ],
+    "task_classes": [
+      {"task_class_id": "task.synthetic-work", "name": "Synthetic work", "required_resource_classes": ["synthetic_slot"]}
+    ],
+    "staff_roles": [
+      {"staff_role_id": "staff.synthetic", "name": "Synthetic role", "counts": [{"basis": "present", "status": "known", "count": 2, "reference": "synthetic fixture"}]}
+    ],
+    "eligibility": [
+      {"staff_role_id": "staff.synthetic", "task_class_id": "task.synthetic-work", "zone_id": "zone.synthetic", "location_id": "location.work"}
+    ],
+    "routes": [
+      {"from_location_id": "location.arrival", "to_location_id": "location.work", "distance": {"value": 14.0, "unit": "m"}}
+    ]
+  },
+  "patients": [
+    {"patient_id": "synthetic-nominal-a", "arrival_tick": 0, "work_ticks": 3, "resource_id": "resource.synthetic-pool", "task_class_id": "task.synthetic-work"},
+    {"patient_id": "synthetic-nominal-b", "arrival_tick": 1, "work_ticks": 2, "resource_id": "resource.synthetic-pool", "task_class_id": "task.synthetic-work"},
+    {"patient_id": "synthetic-nominal-c", "arrival_tick": 4, "work_ticks": 2, "resource_id": "resource.synthetic-pool", "task_class_id": "task.synthetic-work"}
+  ]
+}

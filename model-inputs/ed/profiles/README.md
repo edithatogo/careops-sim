@@ -20,3 +20,11 @@ stochastic distribution, pathway, or initial-state model. Those P4 pack shapes
 must be represented as separately validated data artifacts if required; loading
 them through the full model/calibration runner is P5. No empirical ED evidence,
 generic validity, or Cairns applicability is claimed.
+
+`p4-generic-nominal.json` is a second explicitly synthetic E0 scenario shape.
+Its two invented slots, three supplied arrivals, work durations, and 14 m route
+edge demonstrate a small uncongested deterministic run. The E0 CLI checks the
+input and deterministically schedules supplied work items; it does not generate
+arrivals from a table, apply calendars, or simulate the declared route.
+Every value is an explicit synthetic assumption, and the scenario is not a
+public-data estimate or an operationally representative generic ED baseline.
