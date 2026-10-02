@@ -85,7 +85,11 @@ class SchedulingTests(unittest.TestCase):
         self.assertNotIn('P3.3',candidates)  # P3.3 evidence contracts are accepted; P3.4 phase review remains.
         if by_id['P3.4']['accepted']:
             self.assertNotIn('P3.4',candidates)
-            self.assertIn('P4.1',candidates)
+            self.assertIn('E0.4',by_id['P4.1']['dependencies'])
+            self.assertNotIn('P4.1',candidates)  # P4 profiles wait for the E0 runtime/schema closeout.
+            after_e0_closeout=accepted|{'E0.2','E0.3','E0.4'}
+            after_e0_candidates={t['id'] for t in tasks.select(catalog,after_e0_closeout,20)}
+            self.assertIn('P4.1',after_e0_candidates)
         else:
             self.assertIn('P3.4',candidates)
         self.assertNotIn('Q1.1',[t['id'] for t in tasks.select(catalog,accepted,20)])

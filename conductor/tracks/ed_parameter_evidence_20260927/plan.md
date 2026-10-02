@@ -133,7 +133,7 @@ service are not both calibrated from the same undifferentiated elapsed interval.
 
 ## P4 — Build and validate the generic example input pack
 
-Entry: P3. This phase produces configuration data, not the E1 model implementation.
+Entry: P3 and generic ED E0.4 closeout. This phase produces configuration data, not the E1 model implementation.
 
 - [ ] P4.1 Create schema-valid minimal deterministic, generic nominal and surge/
   overload profiles with linked sources or clearly labelled synthetic assumptions;

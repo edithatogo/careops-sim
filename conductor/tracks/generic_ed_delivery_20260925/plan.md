@@ -34,12 +34,12 @@ Entry: D1 tool/compatibility decisions; can review domain details alongside Q0/C
 
 - [x] E0.1 Write tests for scenario/schema validation, module boundary violations
   and a single deterministic patient fixture before implementing the skeleton.
-- [ ] E0.2 Create a minimal Rust workspace with ED library/CLI boundary, Kairos path
+- [x] E0.2 Create a minimal Rust workspace with ED library/CLI boundary, Kairos path
   dependency and locked builds; define public API/errors, time units and profile
   schema. Keep domain/site/presentation distinct. One-patient example must run.
   Define minimal location/zone IDs, capacity/resource bindings and optional route distances with P0. Defer geometry import, visual-asset schemas and UI protocols to E5; do not build a spatial platform for the skeleton.
   Freeze actual MVP runner/config/output paths and commands with a minimal serial executable example; make units, defaults and errors discoverable. The initial example must not depend on full calibration fitting or UI infrastructure.
-- [ ] E0.3 Inventory public sources/open examples, exact revisions/licences and
+- [x] E0.3 Inventory public sources/open examples, exact revisions/licences and
   fields; specify assumptions for arrivals/acuity/work/diagnostics/boarding and
   generic layout. Define metric formulas, horizon/warm-up and release support.
   Freeze the report 29 boundary: finite destination-compatible ED-eligible bed offers, explicit offer lifetime/withdrawal and competing-demand assumptions, distinct ambulance arrival/triage/handover/offload/crew-release clocks. No full ward or fleet model is implied.
