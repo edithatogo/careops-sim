@@ -1,0 +1,149 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  scope:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.detect.outputs.changed }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: detect
+        name: Detect Rust, tool, or Conductor changes
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BASE_SHA: ${{ github.event.before }}
+        run: |
+          if [ "$EVENT_NAME" = pull_request ]; then
+            base="$PR_BASE_SHA"
+          else
+            base="$PUSH_BASE_SHA"
+          fi
+          if [ -z "$base" ] || [ "$base" = 0000000000000000000000000000000000000000 ]; then
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          elif git diff --quiet "$base" HEAD -- Cargo.toml Cargo.lock crates tests model-inputs tools conductor .gitmodules .github/workflows libs/kairos; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+
+  fmt:
+    needs: scope
+    if: needs.scope.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          submodules: true
+      - name: Install Rust 1.98.1
+        run: rustup toolchain install 1.98.1 --profile minimal --component rustfmt
+      - name: Format
+        run: cargo +1.98.1 fmt --all --check
+
+  clippy:
+    needs: scope
+    if: needs.scope.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          submodules: true
+      - name: Install Rust 1.98.1
+        run: rustup toolchain install 1.98.1 --profile minimal --component clippy
+      - name: Clippy
+        run: cargo +1.98.1 clippy --workspace --all-targets --all-features -- -D warnings
+
+  test:
+    needs: scope
+    if: needs.scope.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          submodules: true
+      - name: Install Rust 1.98.1
+        run: rustup toolchain install 1.98.1 --profile minimal
+      - name: Unit and integration tests
+        run: cargo +1.98.1 test --workspace --all-features
+
+  doctest:
+    needs: scope
+    if: needs.scope.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          submodules: true
+      - name: Install Rust 1.98.1
+        run: rustup toolchain install 1.98.1 --profile minimal
+      - name: Documentation tests
+        run: cargo +1.98.1 test --doc --workspace --all-features
+
+  context:
+    needs: scope
+    if: needs.scope.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Check Conductor context
+        run: python3 tools/context.py check
+
+  required:
+    name: Required checks
+    if: always()
+    needs: [scope, fmt, clippy, test, doctest, context]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce required lanes and report unchanged scope
+        env:
+          SCOPE_RESULT: ${{ needs.scope.result }}
+          SCOPE_CHANGED: ${{ needs.scope.outputs.changed }}
+          FMT_RESULT: ${{ needs.fmt.result }}
+          CLIPPY_RESULT: ${{ needs.clippy.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+          DOCTEST_RESULT: ${{ needs.doctest.result }}
+          CONTEXT_RESULT: ${{ needs.context.result }}
+        run: |
+          set -eu
+          if [ "$SCOPE_RESULT" != success ]; then
+            echo "scope detection failed: $SCOPE_RESULT"
+            exit 1
+          fi
+          if [ "$SCOPE_CHANGED" != true ]; then
+            for lane in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT"; do
+              if [ "$lane" != skipped ]; then
+                echo "unchanged scope expected skipped lanes; observed $lane"
+                exit 1
+              fi
+            done
+            echo "scope unchanged: all required lanes skipped successfully"
+            exit 0
+          fi
+          for result in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT"; do
+            if [ "$result" != success ]; then
+              echo "required lane failed or did not run: $result"
+              exit 1
+            fi
+          done
+          echo "all required lanes passed"

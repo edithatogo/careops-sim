@@ -581,7 +581,7 @@ fn validate_known_count(
     match (status, open_count, staffed_count) {
         (KnowledgeStatus::Known, Some(_), Some(_)) if reason.is_none() => Ok(()),
         (KnowledgeStatus::Unknown, None, None)
-            if reason.map_or(false, |value| !value.trim().is_empty()) =>
+            if reason.is_some_and(|value| !value.trim().is_empty()) =>
         {
             Ok(())
         }
