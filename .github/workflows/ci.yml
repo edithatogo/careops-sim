@@ -78,10 +78,14 @@ jobs:
 
   test:
     timeout-minutes: 20
-    name: test
+    name: test (${{ matrix.os }})
     needs: scope
     if: needs.scope.outputs.changed == 'true'
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -89,8 +93,29 @@ jobs:
           submodules: recursive
       - name: Install Rust 1.98.1
         run: rustup toolchain install 1.98.1 --profile minimal
+      - name: Verify native host
+        env:
+          EXPECTED_OS: ${{ matrix.os }}
+        run: |
+          uname -a
+          rustc +1.98.1 -vV
+          if [ "$EXPECTED_OS" = macos-15 ]; then
+            test "$(uname -m)" = arm64
+          else
+            test "$(uname -m)" = x86_64
+          fi
       - name: Unit and integration tests
-        run: cargo +1.98.1 test --workspace --all-features --lib --bins --tests --locked
+        run: |
+          mkdir -p .artifacts/ci/native
+          cargo +1.98.1 test --workspace --all-features --lib --bins --tests --locked 2>&1 | tee .artifacts/ci/native/tests.log
+      - name: Retain bounded failed native log
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-failure-${{ matrix.os }}
+          path: .artifacts/ci/native/*.log
+          retention-days: 7
+          if-no-files-found: error
 
   doctest:
     timeout-minutes: 15
@@ -122,11 +147,40 @@ jobs:
       - name: Check Conductor context
         run: python3 tools/context.py check
 
+  policy:
+    name: policy
+    timeout-minutes: 15
+    needs: scope
+    if: needs.scope.outputs.changed == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          submodules: recursive
+      - name: Install reviewed checksum-bound policy binaries
+        run: python3 tools/install_ci_tools.py
+      - name: Install Rust 1.98.1
+        run: rustup toolchain install 1.98.1 --profile minimal
+      - name: Check all dependency, secret and workflow policies
+        run: |
+          export RUSTUP_TOOLCHAIN=1.98.1
+          python3 tools/ci_policy.py
+      - name: Retain bounded failed policy logs
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: policy-failure
+          path: .artifacts/ci/policy/
+          retention-days: 7
+          if-no-files-found: error
+
   required:
     timeout-minutes: 5
     name: Required checks
     if: always()
-    needs: [scope, fmt, clippy, test, doctest, context]
+    needs: [scope, fmt, clippy, test, doctest, context, policy]
     runs-on: ubuntu-latest
     steps:
       - name: Enforce required lanes and report unchanged scope
@@ -138,6 +192,7 @@ jobs:
           TEST_RESULT: ${{ needs.test.result }}
           DOCTEST_RESULT: ${{ needs.doctest.result }}
           CONTEXT_RESULT: ${{ needs.context.result }}
+          POLICY_RESULT: ${{ needs.policy.result }}
         run: |
           set -eu
           if [ "$SCOPE_RESULT" != success ]; then
@@ -145,7 +200,7 @@ jobs:
             exit 1
           fi
           if [ "$SCOPE_CHANGED" != true ]; then
-            for lane in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT"; do
+            for lane in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT" "$POLICY_RESULT"; do
               if [ "$lane" != skipped ]; then
                 echo "unchanged scope expected skipped lanes; observed $lane"
                 exit 1
@@ -154,7 +209,7 @@ jobs:
             echo "scope unchanged: all required lanes skipped successfully"
             exit 0
           fi
-          for result in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT"; do
+          for result in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT" "$POLICY_RESULT"; do
             if [ "$result" != success ]; then
               echo "required lane failed or did not run: $result"
               exit 1

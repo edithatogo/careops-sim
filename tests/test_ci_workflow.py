@@ -7,7 +7,7 @@ import unittest
 
 
 WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "ci.yml"
-LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT")
+LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT", "POLICY_RESULT")
 
 
 def aggregate_script():
@@ -139,6 +139,17 @@ def untrusted_contract_errors(workflow):
 
 
 class CiWorkflowTests(unittest.TestCase):
+    def test_platform_and_policy_lanes_are_required(self):
+        workflow = WORKFLOW.read_text()
+        self.assertIn("os: [ubuntu-24.04, macos-15]", workflow)
+        self.assertIn('test "$(uname -m)" = arm64', workflow)
+        self.assertIn("fail-fast: false", workflow)
+        self.assertIn("POLICY_RESULT", aggregate_script())
+        self.assertEqual(run_aggregate("true", ["success"] * len(LANES)).returncode, 0)
+        results = ["success"] * len(LANES)
+        results[-1] = "failure"
+        self.assertEqual(run_aggregate("true", results).returncode, 1)
+
     def test_ci_budgets_and_cache_trust_boundary(self):
         workflow = WORKFLOW.read_text()
         jobs = workflow.split("jobs:\n", 1)[1]
@@ -360,9 +371,9 @@ class CiWorkflowTests(unittest.TestCase):
     def test_cargo_lanes_initialize_path_dependency_and_pin_evidenced_toolchain(self):
         workflow = WORKFLOW.read_text()
         cargo_jobs = workflow.split("  required:", 1)[0]
-        self.assertEqual(cargo_jobs.count("submodules: recursive"), 5)
-        self.assertEqual(cargo_jobs.count("rustup toolchain install 1.98.1"), 4)
-        for command in ("cargo +1.98.1 fmt", "cargo +1.98.1 clippy", "cargo +1.98.1 test --workspace", "cargo +1.98.1 test --doc"):
+        self.assertEqual(cargo_jobs.count("submodules: recursive"), 6)
+        self.assertEqual(cargo_jobs.count("rustup toolchain install 1.98.1"), 5)
+        for command in ("cargo +1.98.1 fmt", "cargo +1.98.1 clippy --locked", "cargo +1.98.1 test --workspace", "cargo +1.98.1 test --doc"):
             with self.subTest(command=command):
                 self.assertIn(command, cargo_jobs)
 
