@@ -10,6 +10,13 @@ WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "ci.yml"
 LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT", "POLICY_RESULT", "FUZZ_RESULT", "MIRI_RESULT")
 
 
+def workflow_job(workflow, name):
+    match = re.search(rf"(?ms)^  {re.escape(name)}:\n.*?(?=^  [A-Za-z0-9_-]+:\n|\Z)", workflow)
+    if not match:
+        raise AssertionError(f"missing workflow job {name}")
+    return match.group(0)
+
+
 def aggregate_script():
     lines = WORKFLOW.read_text().splitlines()
     marker = "        run: |"
@@ -22,10 +29,18 @@ def aggregate_script():
     return "\n".join(block) + "\n"
 
 
-def run_aggregate(changed, results):
+def run_aggregate(changed, results, selectors=None):
+    selectors = selectors or {
+        "native": changed,
+        "context": changed,
+        "policy": changed,
+    }
     env = {
         "SCOPE_RESULT": "success",
         "SCOPE_CHANGED": changed,
+        "SCOPE_NATIVE": selectors["native"],
+        "SCOPE_CONTEXT": selectors["context"],
+        "SCOPE_POLICY": selectors["policy"],
         **dict(zip(LANES, results)),
     }
     return subprocess.run(
@@ -35,18 +50,6 @@ def run_aggregate(changed, results):
         text=True,
         check=False,
     )
-
-
-def scope_script():
-    lines = WORKFLOW.read_text().splitlines()
-    step = next(i for i, line in enumerate(lines) if line.strip() == "- id: detect")
-    marker = next(i for i in range(step, len(lines)) if lines[i].strip() == "run: |")
-    block = []
-    for line in lines[marker + 1 :]:
-        if line and not line.startswith("          "):
-            break
-        block.append(line[10:] if line.startswith("          ") else "")
-    return "\n".join(block) + "\n"
 
 
 def git(repo, *args):
@@ -139,12 +142,23 @@ def untrusted_contract_errors(workflow):
 
 
 class CiWorkflowTests(unittest.TestCase):
-    def test_scope_requires_explicit_boolean_output(self):
-        for value in ("", "typo", "null"):
-            with self.subTest(value=value):
-                result = run_aggregate(value, ["skipped"] * len(LANES))
-                self.assertNotEqual(result.returncode, 0)
-        self.assertIn("extensions/conductor", scope_script())
+    def test_scope_requires_explicit_boolean_outputs_and_consistency(self):
+        for field, value in (("changed", ""), ("native", "typo"), ("context", "null")):
+            selectors = {"native": "false", "context": "false", "policy": "false"}
+            changed = "false"
+            if field == "changed":
+                changed = value
+            else:
+                selectors[field] = value
+            with self.subTest(field=field, value=value):
+                result = run_aggregate(changed, ["skipped"] * len(LANES), selectors)
+                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+        inconsistent = run_aggregate(
+            "false",
+            ["skipped"] * len(LANES),
+            {"native": "true", "context": "false", "policy": "false"},
+        )
+        self.assertNotEqual(inconsistent.returncode, 0)
 
     def test_native_failure_cannot_be_masked_by_log_capture(self):
         native = WORKFLOW.read_text().split("  test:\n", 1)[1].split("  doctest:\n", 1)[0]
@@ -292,16 +306,31 @@ class CiWorkflowTests(unittest.TestCase):
         ).replace("persist-credentials: false", "persist-credentials: true", 1)
         self.assertTrue(untrusted_contract_errors(folded_checkout))
 
-    def test_scope_includes_rust_inputs_fixtures_workflows_and_submodule_pin(self):
+    def test_scope_outputs_and_lane_selectors_are_explicit(self):
         workflow = WORKFLOW.read_text()
-        scope_step = workflow.split("name: Detect Rust, tool, or Conductor changes", 1)[1].split("  fmt:", 1)[0]
-        for path in ("tests", "model-inputs", ".gitmodules", ".github/workflows", "libs/kairos"):
-            with self.subTest(path=path):
-                self.assertIn(path, scope_step)
+        scope_job = workflow.split("  scope:\n", 1)[1].split("\n  fmt:", 1)[0]
+        for selector in ("changed", "native", "context", "policy"):
+            with self.subTest(selector=selector):
+                self.assertIn(f"{selector}: ${{{{ steps.detect.outputs.{selector} }}}}", scope_job)
+        self.assertIn("python3 tools/ci_scope.py --base", scope_job)
+        for job in ("fmt", "clippy", "test", "fuzz", "miri", "doctest"):
+            with self.subTest(job=job):
+                section = workflow_job(workflow, job)
+                self.assertIn("if: needs.scope.outputs.native == 'true'", section)
+        for job in ("context", "policy"):
+            section = workflow_job(workflow, job)
+            self.assertIn(f"if: needs.scope.outputs.{job} == 'true'", section)
+
+    def test_planning_only_scope_runs_context_and_policy_without_native_lanes(self):
+        selectors = {"native": "false", "context": "true", "policy": "true"}
+        results = ["skipped", "skipped", "skipped", "skipped", "success", "success", "skipped", "skipped"]
+        self.assertEqual(run_aggregate("true", results, selectors).returncode, 0)
+        results[LANES.index("POLICY_RESULT")] = "skipped"
+        self.assertNotEqual(run_aggregate("true", results, selectors).returncode, 0)
 
     def test_fuzz_changes_are_in_scope_and_fuzz_is_required_fail_closed(self):
         workflow = WORKFLOW.read_text()
-        self.assertIn(" fuzz;", scope_script())
+        self.assertIn("if: needs.scope.outputs.native == 'true'", workflow.split("  fuzz:\n", 1)[1].split("  miri:\n", 1)[0])
         fuzz_job = workflow.split("  fuzz:\n", 1)[1].split("  doctest:\n", 1)[0]
         self.assertIn("nightly-2026-10-02", fuzz_job)
         self.assertIn("cargo-fuzz", fuzz_job)
@@ -400,7 +429,7 @@ class CiWorkflowTests(unittest.TestCase):
         miri_job = workflow.split("  miri:\n", 1)[1].split("  doctest:\n", 1)[0]
         self.assertIn("timeout-minutes: 20", miri_job)
         self.assertIn("needs: scope", miri_job)
-        self.assertIn("if: needs.scope.outputs.changed == 'true'", miri_job)
+        self.assertIn("if: needs.scope.outputs.native == 'true'", miri_job)
         self.assertIn("runs-on: ubuntu-24.04", miri_job)
         self.assertIn("nightly-2026-10-02", miri_job)
         self.assertIn("--component miri --component rust-src", miri_job)
@@ -467,49 +496,36 @@ class CiWorkflowTests(unittest.TestCase):
                 target.write_text("before\n")
             git(repo, "add", ".")
             git(repo, "update-index", "--add", "--cacheinfo", f"160000,{first_pin},libs/kairos")
+            git(repo, "update-index", "--add", "--cacheinfo", f"160000,{first_pin},extensions/conductor")
             git(repo, "commit", "-qm", "baseline")
             base = git(repo, "rev-parse", "HEAD")
             for path in paths:
                 (repo / path).write_text("after\n")
             git(repo, "add", ".")
             git(repo, "update-index", "--add", "--cacheinfo", f"160000,{second_pin},libs/kairos")
+            git(repo, "update-index", "--add", "--cacheinfo", f"160000,{second_pin},extensions/conductor")
             git(repo, "commit", "-qm", "scoped changes")
+            head = git(repo, "rev-parse", "HEAD")
 
             output = root / "github-output"
-            result = subprocess.run(
-                ["bash", "-c", scope_script()],
-                cwd=repo,
-                env={
-                    **os.environ,
-                    "EVENT_NAME": "push",
-                    "PUSH_BASE_SHA": base,
-                    "PR_BASE_SHA": "",
-                    "GITHUB_OUTPUT": str(output),
-                },
-                capture_output=True,
-                text=True,
-                check=False,
-            )
+            command = [
+                "python3", str(WORKFLOW.parents[2] / "tools" / "ci_scope.py"),
+                "--base", base, "--head", head, "--output", str(output),
+            ]
+            result = subprocess.run(command, cwd=repo, capture_output=True, text=True, check=False)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            self.assertEqual(output.read_text().strip(), "changed=true")
+            self.assertEqual(output.read_text(), "changed=true\nnative=true\ncontext=true\npolicy=true\n")
 
             output.write_text("")
             unchanged = subprocess.run(
-                ["bash", "-c", scope_script()],
+                ["python3", command[1], "--base", head, "--head", head, "--output", str(output)],
                 cwd=repo,
-                env={
-                    **os.environ,
-                    "EVENT_NAME": "push",
-                    "PUSH_BASE_SHA": git(repo, "rev-parse", "HEAD"),
-                    "PR_BASE_SHA": "",
-                    "GITHUB_OUTPUT": str(output),
-                },
                 capture_output=True,
                 text=True,
                 check=False,
             )
             self.assertEqual(unchanged.returncode, 0, unchanged.stdout + unchanged.stderr)
-            self.assertEqual(output.read_text().strip(), "changed=false")
+            self.assertEqual(output.read_text(), "changed=false\nnative=false\ncontext=false\npolicy=false\n")
 
     def test_cargo_lanes_initialize_path_dependency_and_pin_evidenced_toolchain(self):
         workflow = WORKFLOW.read_text()
@@ -523,12 +539,12 @@ class CiWorkflowTests(unittest.TestCase):
     def test_required_lane_failure_fails_aggregate(self):
         result = run_aggregate("true", ["success", "failure"] + ["success"] * (len(LANES) - 2))
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
-        self.assertIn("required lane failed or did not run", result.stdout)
+        self.assertIn("selected required lane", result.stdout)
 
     def test_unchanged_scope_is_an_explicit_successful_skip(self):
         result = run_aggregate("false", ["skipped"] * len(LANES))
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertIn("scope unchanged: all required lanes skipped successfully", result.stdout)
+        self.assertIn("all selected required lanes passed; changed=false", result.stdout)
 
     def test_changed_scope_cannot_hide_a_skipped_lane(self):
         result = run_aggregate("true", ["success", "skipped"] + ["success"] * (len(LANES) - 2))
@@ -539,12 +555,15 @@ class CiWorkflowTests(unittest.TestCase):
         env = {
             key: value
             for key, value in os.environ.items()
-            if key not in LANES and key not in {"SCOPE_RESULT", "SCOPE_CHANGED"}
+            if key not in LANES and key not in {"SCOPE_RESULT", "SCOPE_CHANGED", "SCOPE_NATIVE", "SCOPE_CONTEXT", "SCOPE_POLICY"}
         }
         env.update(
             {
                 "SCOPE_RESULT": "success",
                 "SCOPE_CHANGED": "true",
+                "SCOPE_NATIVE": "true",
+                "SCOPE_CONTEXT": "true",
+                "SCOPE_POLICY": "true",
                 **{lane: "success" for lane in LANES if lane != missing},
             }
         )
