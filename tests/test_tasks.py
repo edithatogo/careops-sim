@@ -112,7 +112,14 @@ class SchedulingTests(unittest.TestCase):
                     self.assertIn(next_p4,after_e0_candidates)
         else:
             self.assertIn('P3.4',candidates)
-        self.assertNotIn('Q1.1',[t['id'] for t in tasks.select(catalog,accepted,20)])
+        q1_dependencies=set(by_id['Q1.1']['dependencies'])
+        self.assertIn('D2.5',q1_dependencies)
+        ready_for_q1=(accepted|q1_dependencies)-{'Q1.1'}
+        for prerequisite in q1_dependencies:
+            with self.subTest(missing=prerequisite):
+                blocked=ready_for_q1-{prerequisite}
+                self.assertNotIn('Q1.1',[t['id'] for t in tasks.select(catalog,blocked,20)])
+        self.assertIn('Q1.1',[t['id'] for t in tasks.select(catalog,ready_for_q1,20)])
         invalid=copy.deepcopy(catalog)
         by_id_invalid={t['id']:t for t in invalid['tasks']}
         by_id_invalid['Q0.1']['accepted']=True
