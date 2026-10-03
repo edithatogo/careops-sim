@@ -122,7 +122,7 @@ Entry: D1 and E0's buildable skeleton/fixture. Follow
   Audit full cargo-deny advisories/bans/licenses/sources, immutable action SHAs including rejection of mutable version tags, recursive submodule identity and cache trust separation. Report 28 upstream workflow findings require source readback; upstream R0–R4 labels do not replace D phases.
 - [x] D2.4 Add exact-parent-pin Kairos integration plus upstream owner CI; verify
   the parent fails against an incompatible pin even if upstream tests passed.
-- [ ] D2.5 Conductor — review and verify phase (workflow.md).
+- [x] D2.5 Conductor — review and verify phase (workflow.md).
 
 Exit: actual hosted CI/settings evidence and a deliberately failing-check proof,
 not workflow presence alone. Manual verification: clone remotely and run the fixture.
