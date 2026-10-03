@@ -4262,7 +4262,7 @@
           "model": "gpt-6-luna",
           "role": "worker",
           "output": "Lifecycle record producer",
-          "oracle": "No double-counted release/completion; key is run/event/transition ordinal",
+          "oracle": "Capture measurements at each committed transition; no double-counted release/completion; key is run/event/transition ordinal",
           "dependencies": [
             "Q4.2.limits"
           ],
@@ -4299,8 +4299,8 @@
           "target_repo": "libs/kairos",
           "model": "gpt-6-luna",
           "role": "worker",
-          "output": "Queue/context/scheduler snapshot integration",
-          "oracle": "Sequences/revisions/leases/commands/notifications/RNG restored exactly",
+          "output": "Same-runtime event-boundary state inspection",
+          "oracle": "Inspect work, requests, leases and queue at an event boundary in the same runtime; portable checkpoint restoration is deferred to Track 22",
           "dependencies": [
             "Q4.3.encode"
           ],
@@ -4318,8 +4318,8 @@
           "target_repo": "libs/kairos",
           "model": "gpt-6-luna",
           "role": "worker",
-          "output": "Interrupted checkpoint parity fixture",
-          "oracle": "Uninterrupted and resumed canonical resource outcomes match",
+          "output": "Same-runtime pause and continuation parity fixture",
+          "oracle": "Pause and continue the same runtime; terminal state and canonical lifecycle records match uninterrupted execution; portable checkpoint/restore requires separate Track 22 evidence",
           "dependencies": [
             "Q4.3.snapshot"
           ],
