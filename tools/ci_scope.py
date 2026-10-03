@@ -31,6 +31,8 @@ def _git(args: list[str]) -> bytes:
 
 
 def _parse_name_status(data: bytes) -> list[Change]:
+    if data and not data.endswith(b"\0"):
+        raise ValueError("nonempty Git name-status output is missing its terminal NUL")
     fields = data.split(b"\0")
     if fields and fields[-1] == b"":
         fields.pop()

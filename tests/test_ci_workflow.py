@@ -459,14 +459,73 @@ class CiWorkflowTests(unittest.TestCase):
                 self.assertNotEqual(failed.returncode, 0, failed.stdout + failed.stderr)
 
     def test_scope_detector_observes_tracked_inputs_and_gitlink_changes(self):
-        workflow = WORKFLOW.read_text()
-        scope_job = workflow.split("  scope:\n", 1)[1].split("\n  fmt:", 1)[0]
-        self.assertIn("python3 tools/ci_scope.py --base", scope_job)
-        self.assertIn("--head", scope_job)
-        self.assertIn("--output", scope_job)
-        classifier = (WORKFLOW.parents[2] / "tools" / "ci_scope.py").read_text()
-        self.assertIn("--find-copies-harder", classifier)
-        self.assertIn("_tree_modes", classifier)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            dependency = root / "dependency"
+            dependency.mkdir()
+            git(dependency, "init", "-q")
+            git(dependency, "config", "user.email", "ci@example.invalid")
+            git(dependency, "config", "user.name", "CI fixture")
+            (dependency / "revision").write_text("one\n")
+            git(dependency, "add", "revision")
+            git(dependency, "commit", "-qm", "first")
+            first_pin = git(dependency, "rev-parse", "HEAD")
+            (dependency / "revision").write_text("two\n")
+            git(dependency, "commit", "-qam", "second")
+            second_pin = git(dependency, "rev-parse", "HEAD")
+
+            repo = root / "repo"
+            repo.mkdir()
+            git(repo, "init", "-q")
+            git(repo, "config", "user.email", "ci@example.invalid")
+            git(repo, "config", "user.name", "CI fixture")
+            paths = (
+                "Cargo.toml",
+                "Cargo.lock",
+                "crates/example/src/lib.rs",
+                "tests/test_example.py",
+                "model-inputs/example.json",
+                "tools/check.py",
+                "conductor/plan.md",
+                ".gitmodules",
+                ".github/workflows/other.yml",
+            )
+            for path in paths:
+                target = repo / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text("before\n")
+            git(repo, "add", ".")
+            git(repo, "update-index", "--add", "--cacheinfo", f"160000,{first_pin},libs/kairos")
+            git(repo, "update-index", "--add", "--cacheinfo", f"160000,{first_pin},extensions/conductor")
+            git(repo, "commit", "-qm", "baseline")
+            base = git(repo, "rev-parse", "HEAD")
+            for path in paths:
+                (repo / path).write_text("after\n")
+            git(repo, "add", ".")
+            git(repo, "update-index", "--add", "--cacheinfo", f"160000,{second_pin},libs/kairos")
+            git(repo, "update-index", "--add", "--cacheinfo", f"160000,{second_pin},extensions/conductor")
+            git(repo, "commit", "-qm", "scoped changes")
+            head = git(repo, "rev-parse", "HEAD")
+
+            output = root / "github-output"
+            command = [
+                "python3", str(WORKFLOW.parents[2] / "tools" / "ci_scope.py"),
+                "--base", base, "--head", head, "--output", str(output),
+            ]
+            result = subprocess.run(command, cwd=repo, capture_output=True, text=True, check=False)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(output.read_text(), "changed=true\nnative=true\ncontext=true\npolicy=true\n")
+
+            output.write_text("")
+            unchanged = subprocess.run(
+                ["python3", command[1], "--base", head, "--head", head, "--output", str(output)],
+                cwd=repo,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(unchanged.returncode, 0, unchanged.stdout + unchanged.stderr)
+            self.assertEqual(output.read_text(), "changed=false\nnative=false\ncontext=false\npolicy=false\n")
 
     def test_cargo_lanes_initialize_path_dependency_and_pin_evidenced_toolchain(self):
         workflow = WORKFLOW.read_text()
