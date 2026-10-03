@@ -60,12 +60,12 @@ Entry: Q0. Owners 03, shared contracts reviewed by 01.
 
 - [x] Q1.1 Write failing component/invariant tests for live/recycled entities,
   capacity=0, overflow, duplicate release, resource removal and capacity shrink.
-- [ ] Q1.2 Add ResourceCapacity, ResourceRequest, ClaimQueue<PriorityKey>,
+- [x] Q1.2 Add ResourceCapacity, ResourceRequest, ClaimQueue<PriorityKey>,
   ActiveAllocations, work/context handles and checked command admission to the
   new runtime. Reuse ComponentRegistry; enforce liveness and despawn cleanup.
-- [ ] Q1.3 Implement resource/manual lease lifecycle and canonical inspection;
+- [x] Q1.3 Implement resource/manual lease lifecycle and canonical inspection;
   reject past commands and invalid partial builder state transactionally.
-- [ ] Q1.4 Conductor — review and verify phase (workflow.md).
+- [x] Q1.4 Conductor — review and verify phase (workflow.md).
 
 Exit: Q-01 and basic Q-02 unit/property tests; no leaked claims after failed
 commands. Manual check: inspect components across spawn/acquire/release/despawn
