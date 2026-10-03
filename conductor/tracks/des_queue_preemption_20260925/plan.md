@@ -6,7 +6,7 @@ catalog preserves every prerequisite and phase closeout. Prepare and validate
 bounded worker packets before dispatch; gpt-6-luna is a candidate worker, not an
 assumed authority for unresolved contracts or acceptance decisions.
 
-**Status:** proposed; every checkbox below is future implementation work.
+**Status:** in progress; checked Q0–Q3 tasks record evidence-backed experimental development acceptance. Q4/Q5 remain open; the programme and release are not complete. Parent integration is governed by exact-head hosted checks and native merge readback.
 **Specification:** [spec.md](spec.md) · **Workflow:** [workflow.md](../../workflow.md)
 **Owners:** upstream 03, with 01/04/12/25 as recorded per milestone.
 
@@ -101,10 +101,10 @@ Entry: Q2. Owner 03 with 01 interruption-state/RNG review.
 - [x] Q3.2 Implement eviction selection and atomic lease replacement, elapsed/
   remaining/cumulative effort, suspended context, attempt revisions, cancel-token
   invalidation and explicit cancellation while suspended.
-- [ ] Q3.3 Implement resume/restart handlers and exactly-once transition emission.
+- [x] Q3.3 Implement resume/restart handlers and exactly-once transition emission.
   Add fault/stale-event injection tests; assert restart reuses the initial draw
   and aborted tasks never resume. Property-test repeated preempt/resume cycles.
-- [ ] Q3.4 Conductor — review and verify phase (workflow.md).
+- [x] Q3.4 Conductor — review and verify phase (workflow.md).
 
 Exit: Q-03 completion ticks are 12/15/absent; urgent completion=5 for all three;
 zero duplicate grants/releases/completions. Manual check: audit every busy and
