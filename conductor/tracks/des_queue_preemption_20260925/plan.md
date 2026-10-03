@@ -58,7 +58,7 @@ example on paper; all reviewers derive the same results. No new core ordering.
 
 Entry: Q0. Owners 03, shared contracts reviewed by 01.
 
-- [ ] Q1.1 Write failing component/invariant tests for live/recycled entities,
+- [x] Q1.1 Write failing component/invariant tests for live/recycled entities,
   capacity=0, overflow, duplicate release, resource removal and capacity shrink.
 - [ ] Q1.2 Add ResourceCapacity, ResourceRequest, ClaimQueue<PriorityKey>,
   ActiveAllocations, work/context handles and checked command admission to the

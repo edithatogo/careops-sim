@@ -39,10 +39,10 @@ validity limit. Acceptance requires this track's actual outputs and tests.
 Entry: specification review and refresh of existing Kairos plans; queue Q0 API
 contract available for cross-track review. No queue implementation needed yet.
 
-- [ ] C0.1 Record the smallest-change ADR for a reusable Rust calibration crate,
+- [x] C0.1 Record the smallest-change ADR for a reusable Rust calibration crate,
   Arrow feature placement, runner/configuration extensions and stable model-
   adapter hooks. Resolve the missing Track 22 VVUQ contract reference with 21.
-- [ ] C0.2 Freeze trace/residual/metric schemas, event mapping, timestamp origin,
+- [x] C0.2 Freeze trace/residual/metric schemas, event mapping, timestamp origin,
   missing/censoring policy, fidelity precedence and observed-versus-predicted
   ledger separation. Specify seed-purpose derivation through 01. Preserve raw task
   events, provisional/realized disposition, knowledge availability and versioned
@@ -50,14 +50,14 @@ contract available for cross-track review. No queue implementation needed yet.
   Define risk-start/last-observed/event/cause/censor-reason semantics and
   exogenous/primitive/clamp-only/target roles with time-of-knowledge and cluster IDs.
   Preserve event occurrence versus nullable source-recorded/message-created times, location intervals, ED episode end versus physical departure, and observed/derived/defaulted lineage. Reconcile report 30 provisional IDs with this schema; freeze exact source standards editions without assuming local availability.
-- [ ] C0.3 Assess [public data/open examples](../../generic-ed-evidence.md),
+- [x] C0.3 Assess [public data/open examples](../../generic-ed-evidence.md),
   recording population, field coverage, licence, revision and assumptions.
   Define synthetic datasets, identifiable/confounded parameter fixtures,
   prespecified objective weights/scales, split strategy, numeric tolerances and
   inference validity rules. Record current Arrow dependency/MSRV compatibility
   options; resolve exact versions with 25/30 before adding dependencies.
   Reuse reports 12/30 and prior embedded evidence; verify primary methods/standards and document exact mappings and gaps. Author local schemas/fixtures from supplied content rather than waiting for named download files.
-- [ ] C0.4 Conductor — review and verify phase (workflow.md).
+- [x] C0.4 Conductor — review and verify phase (workflow.md).
 
 Exit: reviewed schemas/ADR/test oracles and library/CLI responsibility map.
 Manual check: follow one case through arrival, triage, transit, bed and discharge;
