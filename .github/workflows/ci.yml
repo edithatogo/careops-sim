@@ -160,7 +160,14 @@ jobs:
           rustc -vV | grep -Fx 'host: x86_64-unknown-linux-gnu'
           mkdir -p .artifacts/ci/fuzz/corpus
           cp crates/careops-ed/examples/one_patient.json .artifacts/ci/fuzz/corpus/synthetic-one-patient.json
-          cargo fuzz run parse_scenario_json .artifacts/ci/fuzz/corpus -- -seed=20261003 -runs=100000 -max_total_time=120 -max_len=32768 -timeout=5 -rss_limit_mb=1024 2>&1 | tee .artifacts/ci/fuzz/fuzz.log
+          cargo fuzz build --sanitizer address parse_scenario_json 2>&1 | tee .artifacts/ci/fuzz/build.log
+          fuzz_binary="fuzz/target/x86_64-unknown-linux-gnu/release/parse_scenario_json"
+          test -x "$fuzz_binary"
+          nm --defined-only "$fuzz_binary" > .artifacts/ci/fuzz/symbols.txt
+          grep -E '[[:space:]]__asan_init$' .artifacts/ci/fuzz/symbols.txt | tee .artifacts/ci/fuzz/sanitizer-symbols.log
+          sha256sum "$fuzz_binary" | tee .artifacts/ci/fuzz/binary-sha256.txt
+          cargo fuzz run --sanitizer address parse_scenario_json .artifacts/ci/fuzz/corpus -- -seed=20261003 -runs=100000 -max_total_time=120 -max_len=32768 -timeout=5 -rss_limit_mb=1024 2>&1 | tee .artifacts/ci/fuzz/fuzz.log
+          sha256sum --check .artifacts/ci/fuzz/binary-sha256.txt
           test -s .artifacts/ci/fuzz/fuzz.log
           git diff --quiet -- fuzz/Cargo.lock
       - name: Retain bounded fuzz log on failure
@@ -173,6 +180,19 @@ jobs:
             fuzz/artifacts/parse_scenario_json/
           retention-days: 7
           if-no-files-found: ignore
+      - name: Retain sanitizer instrumentation evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: parser-fuzz-instrumentation
+          path: |
+            .artifacts/ci/fuzz/install.log
+            .artifacts/ci/fuzz/build.log
+            .artifacts/ci/fuzz/sanitizer-symbols.log
+            .artifacts/ci/fuzz/binary-sha256.txt
+            .artifacts/ci/fuzz/fuzz.log
+          retention-days: 7
+          if-no-files-found: error
 
   miri:
     timeout-minutes: 20
