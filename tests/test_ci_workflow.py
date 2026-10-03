@@ -7,7 +7,7 @@ import unittest
 
 
 WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "ci.yml"
-LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT", "POLICY_RESULT", "FUZZ_RESULT", "MIRI_RESULT")
+LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "MSRV_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT", "POLICY_RESULT", "FUZZ_RESULT", "MIRI_RESULT")
 
 
 def workflow_job(workflow, name):
@@ -194,7 +194,7 @@ class CiWorkflowTests(unittest.TestCase):
     def test_unit_lane_does_not_repeat_documentation_tests(self):
         workflow = WORKFLOW.read_text()
         native = workflow.split("  test:\n", 1)[1].split("  doctest:\n", 1)[0]
-        self.assertIn("--lib --bins --tests --locked", native)
+        self.assertIn("python3 tools/nextest_ci.py --toolchain 1.98.1", native)
         self.assertIn("test --doc --workspace --all-features --locked", workflow)
 
     def test_context_check_fetches_pinned_submodule_documents(self):
@@ -313,7 +313,7 @@ class CiWorkflowTests(unittest.TestCase):
             with self.subTest(selector=selector):
                 self.assertIn(f"{selector}: ${{{{ steps.detect.outputs.{selector} }}}}", scope_job)
         self.assertIn("python3 tools/ci_scope.py --base", scope_job)
-        for job in ("fmt", "clippy", "test", "fuzz", "miri", "doctest"):
+        for job in ("fmt", "clippy", "test", "msrv", "fuzz", "miri", "doctest"):
             with self.subTest(job=job):
                 section = workflow_job(workflow, job)
                 self.assertIn("if: needs.scope.outputs.native == 'true'", section)
@@ -323,7 +323,9 @@ class CiWorkflowTests(unittest.TestCase):
 
     def test_planning_only_scope_runs_context_and_policy_without_native_lanes(self):
         selectors = {"native": "false", "context": "true", "policy": "true"}
-        results = ["skipped", "skipped", "skipped", "skipped", "success", "success", "skipped", "skipped"]
+        results = ["skipped"] * len(LANES)
+        results[LANES.index("CONTEXT_RESULT")] = "success"
+        results[LANES.index("POLICY_RESULT")] = "success"
         self.assertEqual(run_aggregate("true", results, selectors).returncode, 0)
         results[LANES.index("POLICY_RESULT")] = "skipped"
         self.assertNotEqual(run_aggregate("true", results, selectors).returncode, 0)
@@ -530,11 +532,28 @@ class CiWorkflowTests(unittest.TestCase):
     def test_cargo_lanes_initialize_path_dependency_and_pin_evidenced_toolchain(self):
         workflow = WORKFLOW.read_text()
         cargo_jobs = workflow.split("  required:", 1)[0]
-        self.assertEqual(cargo_jobs.count("submodules: recursive"), 8)
+        self.assertEqual(cargo_jobs.count("submodules: recursive"), 9)
         self.assertEqual(cargo_jobs.count("rustup toolchain install 1.98.1"), 5)
-        for command in ("cargo +1.98.1 fmt", "cargo +1.98.1 clippy --locked", "cargo +1.98.1 test --workspace", "cargo +1.98.1 test --doc"):
+        for command in ("cargo +1.98.1 fmt", "cargo +1.98.1 clippy --locked", "python3 tools/nextest_ci.py --toolchain 1.98.1", "cargo +1.98.1 test --doc"):
             with self.subTest(command=command):
                 self.assertIn(command, cargo_jobs)
+        msrv = workflow_job(workflow, "msrv")
+        self.assertIn("rustup toolchain install 1.76.0", msrv)
+        self.assertIn("cargo test --workspace --lib --bins --tests --locked", msrv)
+        self.assertNotIn("--all-features", msrv)
+
+    def test_msrv_result_fails_when_selected_and_must_skip_when_unselected(self):
+        self.assertIn("MSRV_RESULT", aggregate_script())
+        results = ["success"] * len(LANES)
+        results[LANES.index("MSRV_RESULT")] = "failure"
+        failed = run_aggregate("true", results)
+        self.assertNotEqual(failed.returncode, 0, failed.stdout + failed.stderr)
+        results[LANES.index("MSRV_RESULT")] = "skipped"
+        self.assertNotEqual(run_aggregate("true", results).returncode, 0)
+        self.assertEqual(
+            run_aggregate("false", ["skipped"] * len(LANES)).returncode,
+            0,
+        )
 
     def test_required_lane_failure_fails_aggregate(self):
         result = run_aggregate("true", ["success", "failure"] + ["success"] * (len(LANES) - 2))

@@ -90,29 +90,120 @@ jobs:
           persist-credentials: false
           submodules: recursive
       - name: Install Rust 1.98.1
-        run: rustup toolchain install 1.98.1 --profile minimal
-      - name: Verify native host
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/ci/nextest
+          rustup toolchain install 1.98.1 --profile minimal 2>&1 | tee .artifacts/ci/nextest/toolchain-install.log
+      - name: Verify native host and export actual Rust tools
         env:
           EXPECTED_OS: ${{ matrix.os }}
         run: |
-          uname -a
-          rustc +1.98.1 -vV
+          set -euo pipefail
+          rustc_path="$(rustup which rustc --toolchain 1.98.1)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.98.1)"
+          cargo_path="$(rustup which cargo --toolchain 1.98.1)"
+          toolchain_bin="$(dirname "$rustc_path")"
+          test -x "$rustc_path"
+          test -x "$rustdoc_path"
+          test -x "$cargo_path"
+          export PATH="$toolchain_bin:$PATH"
+          export RUSTUP_TOOLCHAIN=1.98.1 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          uname -a | tee .artifacts/ci/nextest/host.log
+          rustc -vV | tee -a .artifacts/ci/nextest/host.log
+          rustdoc --version | tee -a .artifacts/ci/nextest/host.log
+          cargo -vV | tee -a .artifacts/ci/nextest/host.log
+          test "$(command -v rustc)" = "$rustc_path"
+          test "$(command -v cargo)" = "$cargo_path"
           if [ "$EXPECTED_OS" = macos-15 ]; then
             test "$(uname -m)" = arm64
+            grep -Fx 'host: aarch64-apple-darwin' .artifacts/ci/nextest/host.log
           else
             test "$(uname -m)" = x86_64
+            grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/nextest/host.log
           fi
-      - name: Unit and integration tests
+          {
+            echo "RUSTUP_TOOLCHAIN=1.98.1"
+            echo "RUSTC=$rustc_path"
+            echo "RUSTDOC=$rustdoc_path"
+          } >> "$GITHUB_ENV"
+          echo "$toolchain_bin" >> "$GITHUB_PATH"
+      - name: Verify nextest discovery, failure handling and test suite
         run: |
-          mkdir -p .artifacts/ci/native
-          set -o pipefail
-          cargo +1.98.1 test --workspace --all-features --lib --bins --tests --locked 2>&1 | tee .artifacts/ci/native/tests.log
+          set -euo pipefail
+          python3 tools/nextest_ci.py --toolchain 1.98.1
       - name: Retain bounded failed native log
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: native-failure-${{ matrix.os }}
-          path: .artifacts/ci/native/*.log
+          path: |
+            .artifacts/ci/nextest/toolchain-install.log
+            .artifacts/ci/nextest/host.log
+            .artifacts/ci/nextest/environment.log
+            .artifacts/ci/nextest/cargo-all-list.log
+            .artifacts/ci/nextest/cargo-ignored-list.log
+            .artifacts/ci/nextest/nextest-list.json
+            .artifacts/ci/nextest/red-control.log
+            .artifacts/ci/nextest/tests.log
+          retention-days: 7
+          if-no-files-found: error
+
+  msrv:
+    timeout-minutes: 20
+    name: msrv (Rust 1.76.0, default features)
+    needs: scope
+    if: needs.scope.outputs.native == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - name: Install Rust 1.76.0
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/ci/msrv
+          rustup toolchain install 1.76.0 --profile minimal 2>&1 | tee .artifacts/ci/msrv/toolchain-install.log
+      - name: Resolve and verify explicit Rust 1.76.0 Linux tools
+        run: |
+          set -euo pipefail
+          rustc_path="$(rustup which rustc --toolchain 1.76.0)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.76.0)"
+          cargo_path="$(rustup which cargo --toolchain 1.76.0)"
+          toolchain_bin="$(dirname "$rustc_path")"
+          test -x "$rustc_path"
+          test -x "$rustdoc_path"
+          test -x "$cargo_path"
+          export PATH="$toolchain_bin:$PATH"
+          export RUSTUP_TOOLCHAIN=1.76.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          test "$(uname -s)" = Linux
+          test "$(uname -m)" = x86_64
+          test "$(command -v rustc)" = "$rustc_path"
+          test "$(command -v cargo)" = "$cargo_path"
+          rustc -vV | tee .artifacts/ci/msrv/environment.log
+          grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/msrv/environment.log
+          rustdoc --version | tee -a .artifacts/ci/msrv/environment.log
+          cargo -vV | tee -a .artifacts/ci/msrv/environment.log
+          {
+            echo "RUSTUP_TOOLCHAIN=1.76.0"
+            echo "RUSTC=$rustc_path"
+            echo "RUSTDOC=$rustdoc_path"
+          } >> "$GITHUB_ENV"
+          echo "$toolchain_bin" >> "$GITHUB_PATH"
+      - name: Run parent default-feature workspace tests at MSRV
+        run: |
+          set -euo pipefail
+          export CARGO_TARGET_DIR=.artifacts/ci/msrv/target
+          cargo test --workspace --lib --bins --tests --locked 2>&1 | tee .artifacts/ci/msrv/tests.log
+      - name: Retain bounded failed MSRV logs
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: msrv-failure-linux-x86_64
+          path: |
+            .artifacts/ci/msrv/toolchain-install.log
+            .artifacts/ci/msrv/environment.log
+            .artifacts/ci/msrv/tests.log
           retention-days: 7
           if-no-files-found: error
 
@@ -334,7 +425,7 @@ jobs:
     timeout-minutes: 5
     name: Required checks
     if: always()
-    needs: [scope, fmt, clippy, test, fuzz, miri, doctest, context, policy]
+    needs: [scope, fmt, clippy, test, msrv, fuzz, miri, doctest, context, policy]
     runs-on: ubuntu-latest
     steps:
       - name: Enforce required lanes and report unchanged scope
@@ -347,6 +438,7 @@ jobs:
           FMT_RESULT: ${{ needs.fmt.result }}
           CLIPPY_RESULT: ${{ needs.clippy.result }}
           TEST_RESULT: ${{ needs.test.result }}
+          MSRV_RESULT: ${{ needs.msrv.result }}
           FUZZ_RESULT: ${{ needs.fuzz.result }}
           MIRI_RESULT: ${{ needs.miri.result }}
           DOCTEST_RESULT: ${{ needs.doctest.result }}
@@ -388,6 +480,7 @@ jobs:
           expect_lane fmt "$SCOPE_NATIVE" "$FMT_RESULT"
           expect_lane clippy "$SCOPE_NATIVE" "$CLIPPY_RESULT"
           expect_lane test "$SCOPE_NATIVE" "$TEST_RESULT"
+          expect_lane msrv "$SCOPE_NATIVE" "$MSRV_RESULT"
           expect_lane fuzz "$SCOPE_NATIVE" "$FUZZ_RESULT"
           expect_lane miri "$SCOPE_NATIVE" "$MIRI_RESULT"
           expect_lane doctest "$SCOPE_NATIVE" "$DOCTEST_RESULT"
