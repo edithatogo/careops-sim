@@ -404,7 +404,10 @@ jobs:
           persist-credentials: false
           submodules: recursive
       - name: Install reviewed checksum-bound policy binaries
-        run: python3 tools/install_ci_tools.py
+        run: |
+          mkdir -p .artifacts/ci/policy
+          set -o pipefail
+          python3 tools/install_ci_tools.py 2>&1 | tee .artifacts/ci/policy/install.log
       - name: Install Rust 1.98.1
         run: rustup toolchain install 1.98.1 --profile minimal
       - name: Check all dependency, secret and workflow policies
