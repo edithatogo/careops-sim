@@ -131,7 +131,7 @@ not workflow presence alone. Manual verification: clone remotely and run the fix
 
 - [x] D3.1 Add failing malformed-input, state-machine, resume and seed-change
   cases as implementations land; promote minimized property/fuzz failures to fixtures.
-- [ ] D3.2 Add a tested dated nightly fuzz/sanitizer lane, selective Miri/unsafe
+- [x] D3.2 Add a tested dated nightly fuzz/sanitizer lane, selective Miri/unsafe
   checks and Rust CodeQL extraction where available. Keep unsupported analysis
   explicit; preserve advisories/licence/bans/source gates.
 - [ ] D3.3 Add nextest/doctest, feature/MSRV/semver/schema and mutation/coverage
