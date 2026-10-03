@@ -1,0 +1,112 @@
+{
+  "contract_id": "careops.ed.metrics-observation.e1-proposal.v1",
+  "status": "proposal for E1 review; not accepted E0 behavior or a runtime schema",
+  "time": {
+    "unit": "profile-declared simulation time unit; every output includes the unit",
+    "run_horizon": "explicit half-open interval [start, end); no default duration",
+    "warm_up": "explicit cutoff within the run horizon; no default duration or fraction",
+    "observation_window": "[warm_up_cutoff, horizon_end); report its duration and excluded warm-up interval",
+    "cohort_vs_event_rule": "cohort metrics follow eligible starts in the observation window; event counts follow event times in the observation window; label which rule applies"
+  },
+  "metrics": [
+    {
+      "id": "queue_wait",
+      "definition": "service_start_time - queue_entry_time for one queue episode",
+      "unit": "simulation time unit",
+      "numerator": "sum of completed eligible episode waits",
+      "denominator": "count of completed eligible queue episodes in the declared cohort",
+      "censoring": "episodes without observed service start by horizon end are right-censored and counted separately; never substitute zero or drop without reporting count",
+      "aggregation": "report episode count, mean, and distribution summary; patient-level aggregation must be separately declared"
+    },
+    {
+      "id": "time_to_care",
+      "definition": "first_care_contact_time - profile_declared_eligible_start_time",
+      "unit": "simulation time unit",
+      "numerator": "sum of completed eligible patient intervals",
+      "denominator": "count of completed eligible patients in the declared cohort",
+      "censoring": "patients without observed first care contact by horizon end are right-censored and counted separately",
+      "aggregation": "profile declares the eligible start and first-care event; do not infer them from arrival or queue events"
+    },
+    {
+      "id": "length_of_stay",
+      "definition": "terminal_physical_departure_time - ED_arrival_time for one patient",
+      "unit": "simulation time unit",
+      "numerator": "sum of completed eligible patient stays",
+      "denominator": "count of completed eligible patients in the declared arrival cohort",
+      "censoring": "patients still in ED at horizon end are right-censored and counted separately; admission/boarding is not terminal departure",
+      "aggregation": "report terminal reason counts separately; each patient contributes at most one terminal stay"
+    },
+    {
+      "id": "throughput",
+      "definition": "count of terminal patient outcomes whose terminal event time lies in the observation window",
+      "unit": "patients per declared observation-window duration, plus raw event count",
+      "numerator": "unique patients reaching a terminal outcome in the observation window",
+      "denominator": "observation-window duration; report raw count and duration",
+      "censoring": "report unfinished patients at horizon end separately; do not count them as terminal throughput",
+      "aggregation": "report terminal outcomes by reason; a patient is counted once"
+    },
+    {
+      "id": "boarding_time",
+      "definition": "physical_departure_time - profile_declared_boarding_start_time",
+      "unit": "simulation time unit",
+      "numerator": "sum of completed eligible boarding intervals",
+      "denominator": "count of completed eligible boarding intervals in the declared cohort",
+      "censoring": "boarders remaining at horizon end are right-censored and counted separately",
+      "aggregation": "profile must identify boarding-start event; retain ED occupancy until physical departure"
+    },
+    {
+      "id": "resource_utilization",
+      "definition": "resource_busy_time_intersection_observation_window / declared_available_staffed_capacity_time",
+      "unit": "fraction of available staffed capacity-time",
+      "numerator": "union duration of busy intervals intersected with observation window; no interval counted more than once per resource unit",
+      "denominator": "available staffed capacity-time for the same resources and observation window, as declared by the profile",
+      "censoring": "open busy intervals at horizon end are clipped at horizon end and reported as unfinished; unknown availability is not treated as zero",
+      "aggregation": "report busy-time numerator and capacity-time denominator with the fraction; resource set and availability policy are explicit"
+    }
+  ],
+  "uncertainty": {
+    "unit_of_replication": "complete simulation replication with a recorded seed and input manifest",
+    "reporting": "report replication count, per-replication metric summaries, and the interval/summary method declared before comparison",
+    "default_interval_method": null,
+    "prohibitions": [
+      "do not treat patients or queue episodes from one replication as independent replications",
+      "do not compare scenarios with incompatible endpoint, cohort, horizon, or denominator definitions"
+    ]
+  },
+  "support_inventory": {
+    "runner_currently_demonstrates": [
+      "deterministic supplied multi-work-item FIFO smoke with wait/work/elapsed tick summaries and unfinished counts"
+    ],
+    "not_demonstrated_by_current_runner": [
+      "clinical queue episode semantics",
+      "time to care",
+      "clinical length of stay cohort",
+      "boarding",
+      "resource utilization",
+      "clinical throughput rates",
+      "stochastic uncertainty"
+    ],
+    "evidence_gaps": [
+      "time-resolved arrival exposure",
+      "boarding and patience timestamps",
+      "censoring and competing risks",
+      "staffed/open capacity calendars",
+      "handover endpoints"
+    ],
+    "empirical_values_added": false,
+    "numeric_horizon_or_warm_up_defaults_added": false
+  },
+  "provenance": {
+    "recovered_commit": "0bfe013157d462663a6d2c612630629c71c79fe2",
+    "source_path": "conductor/design/ed/e0.3-metrics-contract.json",
+    "source_sha256": "9a6d6ee2987ce698fa11a9c5fc7582f454f8d147d95028bbfb542ee202018eb1",
+    "reconciled_parent_baseline": "5b8851c7f04be46bbe5d10385806e7ba82e3b617",
+    "authority": "Historical design recovered during authorized worktree closeout; consuming task must review before adoption.",
+    "immutable_source_artifact": "conductor/design/ed/proposals/sources/e0.3-metrics-contract-0bfe013.json"
+  },
+  "compatibility": {
+    "frozen_e0": "Supplied multi-work-item independent FIFO pools; arrivals before horizon; completions at horizon included; no warm-up exclusion. Tick times are synthetic work-item intervals, not clinical endpoints.",
+    "proposed_e1": "Half-open observation windows and optional declared warm-up require explicit versioned adoption and boundary regression tests before reporting these metrics.",
+    "migration": "Do not change E0 endpoint rules, scenario schema, acceptance records or task status as a side effect of this proposal."
+  }
+}
