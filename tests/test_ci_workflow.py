@@ -7,7 +7,7 @@ import unittest
 
 
 WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "ci.yml"
-LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT", "POLICY_RESULT", "FUZZ_RESULT")
+LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT", "POLICY_RESULT", "FUZZ_RESULT", "MIRI_RESULT")
 
 
 def aggregate_script():
@@ -370,6 +370,40 @@ class CiWorkflowTests(unittest.TestCase):
             with self.subTest(root_policy=root_policy):
                 self.assertIn(root_policy, fuzz_policy)
 
+    def test_miri_is_a_dated_linux_ffi_target_with_explicit_toolchain_and_logs(self):
+        workflow = WORKFLOW.read_text()
+        miri_job = workflow.split("  miri:\n", 1)[1].split("  doctest:\n", 1)[0]
+        self.assertIn("timeout-minutes: 20", miri_job)
+        self.assertIn("needs: scope", miri_job)
+        self.assertIn("if: needs.scope.outputs.changed == 'true'", miri_job)
+        self.assertIn("runs-on: ubuntu-24.04", miri_job)
+        self.assertIn("nightly-2026-10-02", miri_job)
+        self.assertIn("--component miri --component rust-src", miri_job)
+        self.assertIn('test "$(uname -s)" = Linux', miri_job)
+        self.assertIn('test "$(uname -m)" = x86_64', miri_job)
+        self.assertIn("host: x86_64-unknown-linux-gnu", miri_job)
+        self.assertIn('export PATH="$nightly_bin:$PATH"', miri_job)
+        self.assertIn('export RUSTUP_TOOLCHAIN=nightly-2026-10-02', miri_job)
+        self.assertIn('export MIRI="$nightly_bin/miri"', miri_job)
+        self.assertIn('test "$(command -v rustc)" = "$nightly_rustc"', miri_job)
+        self.assertIn('test "$(command -v cargo)" = "$nightly_cargo"', miri_job)
+        self.assertIn('cargo miri setup', miri_job)
+        self.assertIn("cargo miri test --manifest-path libs/kairos/Cargo.toml -p kairo-ecs-ffi --test ffi_integration --locked", miri_job)
+        self.assertIn(".artifacts/ci/miri/setup.log", miri_job)
+        self.assertIn(".artifacts/ci/miri/test.log", miri_job)
+        self.assertIn("retention-days: 7", miri_job)
+        self.assertIn("MIRI_RESULT", workflow.split("  required:\n", 1)[1])
+
+    def test_miri_result_is_fail_closed_in_changed_scope_aggregate(self):
+        self.assertIn("MIRI_RESULT", aggregate_script())
+        self.assertEqual(run_aggregate("true", ["success"] * len(LANES)).returncode, 0)
+        for result in ("failure", "skipped", "cancelled"):
+            results = ["success"] * len(LANES)
+            results[LANES.index("MIRI_RESULT")] = result
+            with self.subTest(miri_result=result):
+                failed = run_aggregate("true", results)
+                self.assertNotEqual(failed.returncode, 0, failed.stdout + failed.stderr)
+
     def test_scope_detector_observes_tracked_inputs_and_gitlink_changes(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -455,7 +489,7 @@ class CiWorkflowTests(unittest.TestCase):
     def test_cargo_lanes_initialize_path_dependency_and_pin_evidenced_toolchain(self):
         workflow = WORKFLOW.read_text()
         cargo_jobs = workflow.split("  required:", 1)[0]
-        self.assertEqual(cargo_jobs.count("submodules: recursive"), 7)
+        self.assertEqual(cargo_jobs.count("submodules: recursive"), 8)
         self.assertEqual(cargo_jobs.count("rustup toolchain install 1.98.1"), 5)
         for command in ("cargo +1.98.1 fmt", "cargo +1.98.1 clippy --locked", "cargo +1.98.1 test --workspace", "cargo +1.98.1 test --doc"):
             with self.subTest(command=command):
@@ -476,7 +510,7 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
 
     def test_changed_scope_fails_when_required_lane_result_is_absent(self):
-        missing = "CONTEXT_RESULT"
+        missing = "MIRI_RESULT"
         env = {
             key: value
             for key, value in os.environ.items()
