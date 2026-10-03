@@ -267,3 +267,42 @@ Reopen before changing scheduler ordering, modifying the existing `Resource` or
 `DESContext` contract, unifying existing ABM storage in place, adding a serialized
 checkpoint guarantee, changing RNG streams, exposing the API to bindings,
 sharing a resource across PDES LPs, or claiming stable/beta compatibility.
+
+
+## Q3 concrete implementation disposition — 2026-10-03
+
+This implementation addendum preserves the architecture decision and historical
+review above. It applies to the protected experimental Rust root
+`crates/kairo-ecs-des` at qualified development commit
+`1455f76226db61a3dc930aced57849d2a66cbdb1`.
+
+**Compatibility classification: experimental-breaking. Development acceptance
+only; release hold retained.** The parent coordinator independently reviewed the
+actual Q3 symbols in the Track 25 review role and accepted this bounded
+classification. The original additive architecture direction does not imply
+that all later changes to public Rust types are source-compatible.
+
+`RequestState` adds `Suspended`, `Completed` and `Aborted`, which can break
+downstream exhaustive matches. `ResourceRequest` adds `timed`, `can_preempt`
+and `preemptible`; `LifecycleRecord` adds `transition`. Downstream public
+struct literals and DTO adapters may require source changes. The exact symbols,
+migration actions and independent Track 01 interruption/state/RNG disposition
+are recorded in the [Q3 review and migration note](../../evidence/q3-owner01-track25-review-migration-20261003.md).
+
+The timed behavior is explicitly selected with `AcquireBuilder::timed_work`.
+Existing `for_work`/`submit_work` remain untimed context association. Legacy
+`DESContext`, FIFO `Resource` and existing ABM entry points retain their
+behavior. The frozen [Q3 contract](../../../libs/kairos/conductor/tracks/03-flow-des-trajectory-abm-behavior/q3-experimental-api-contract.md)
+remains the behavior authority; this addendum changes no contract or policy.
+
+The review is a qualified coordinator disposition, not an external maintainer
+signature, Track 25 programme completion or release reviewer signoff. No alpha,
+beta, RC or 1.0 publication is authorized. Before beta/RC/1.0, the owning Kairos
+release must incorporate the accepted exact-root migration and compatibility
+notes, obtain required API/release decisions and pass its existing compatibility
+release gate. The experimental protected-root classification and compatibility
+promises are unchanged.
+
+Full parent Q3 phase acceptance remains a separate Conductor disposition.
+No plan checkbox, active phase, package root, FFI/binding, Arrow schema, engine
+RNG or shared core/state surface is changed by these governance documents.
