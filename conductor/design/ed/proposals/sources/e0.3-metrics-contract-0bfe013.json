@@ -1,6 +1,6 @@
 {
-  "contract_id": "careops.ed.metrics-observation.e1-proposal.v1",
-  "status": "proposal for E1 review; not accepted E0 behavior or a runtime schema",
+  "contract_id": "careops.ed.metrics-observation.v1",
+  "status": "design contract; not a runtime schema or validated metric implementation",
   "time": {
     "unit": "profile-declared simulation time unit; every output includes the unit",
     "run_horizon": "explicit half-open interval [start, end); no default duration",
@@ -74,39 +74,10 @@
     ]
   },
   "support_inventory": {
-    "runner_currently_demonstrates": [
-      "deterministic supplied multi-work-item FIFO smoke with wait/work/elapsed tick summaries and unfinished counts"
-    ],
-    "not_demonstrated_by_current_runner": [
-      "clinical queue episode semantics",
-      "time to care",
-      "clinical length of stay cohort",
-      "boarding",
-      "resource utilization",
-      "clinical throughput rates",
-      "stochastic uncertainty"
-    ],
-    "evidence_gaps": [
-      "time-resolved arrival exposure",
-      "boarding and patience timestamps",
-      "censoring and competing risks",
-      "staffed/open capacity calendars",
-      "handover endpoints"
-    ],
+    "runner_currently_demonstrates": ["deterministic one-arrival Macro canary and terminal summary only"],
+    "not_demonstrated_by_current_runner": ["queue wait", "time to care", "length of stay cohort", "boarding", "resource utilization", "multi-patient throughput", "stochastic uncertainty"],
+    "evidence_gaps": ["time-resolved arrival exposure", "boarding and patience timestamps", "censoring and competing risks", "staffed/open capacity calendars", "handover endpoints"],
     "empirical_values_added": false,
     "numeric_horizon_or_warm_up_defaults_added": false
-  },
-  "provenance": {
-    "recovered_commit": "0bfe013157d462663a6d2c612630629c71c79fe2",
-    "source_path": "conductor/design/ed/e0.3-metrics-contract.json",
-    "source_sha256": "9a6d6ee2987ce698fa11a9c5fc7582f454f8d147d95028bbfb542ee202018eb1",
-    "reconciled_parent_baseline": "5b8851c7f04be46bbe5d10385806e7ba82e3b617",
-    "authority": "Historical design recovered during authorized worktree closeout; consuming task must review before adoption.",
-    "immutable_source_artifact": "conductor/design/ed/proposals/sources/e0.3-metrics-contract-0bfe013.json"
-  },
-  "compatibility": {
-    "frozen_e0": "Supplied multi-work-item independent FIFO pools; arrivals before horizon; completions at horizon included; no warm-up exclusion. Tick times are synthetic work-item intervals, not clinical endpoints.",
-    "proposed_e1": "Half-open observation windows and optional declared warm-up require explicit versioned adoption and boundary regression tests before reporting these metrics.",
-    "migration": "Do not change E0 endpoint rules, scenario schema, acceptance records or task status as a side effect of this proposal."
   }
 }

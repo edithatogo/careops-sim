@@ -7,3 +7,5 @@ The historical support inventory described a one-arrival runner and is replaced 
 The proposal uses half-open observation windows, whereas accepted E0 includes completions at the horizon and has no warm-up exclusion. E1 must select/version its endpoint and cohort contract and verify events exactly at the cutoff/horizon before adoption. Clinical endpoint events, capacity calendars, censoring, units, and replication assumptions still need their existing implementation/evidence gates. No empirical values or numeric defaults are added.
 
 Verification is document/context integrity only. Command receipts and outputs are retained locally in `/tmp/metric-proposal-checks.json` and `/tmp/metric-proposal-check-*.log`; hosted checks are evaluated on the PR head before merge. This recovery does not accept E1 or any metric implementation.
+
+The exact historical bytes are now versioned at `conductor/design/ed/proposals/sources/e0.3-metrics-contract-0bfe013.json`, SHA-256 as above. A fresh checkout can verify the hash without the unpublished historical commit. The artifact is source material with obsolete runner claims, not current authority or acceptance.
