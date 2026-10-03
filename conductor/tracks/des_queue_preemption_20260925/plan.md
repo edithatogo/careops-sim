@@ -75,16 +75,16 @@ and recycle the owner entity; old handles cannot release a new lease.
 
 Entry: Q1. Owner 03; conformance review 12.
 
-- [ ] Q2.1 Write failing queue/tie fixtures covering FIFO within priority,
+- [x] Q2.1 Write failing queue/tie fixtures covering FIFO within priority,
   reprioritization retaining admission sequence, cancellation, deadlines and
   growth/drain. Permute component insertion/removal and event insertion orders.
-- [ ] Q2.2 Implement ordered queue index, checked admission sequence, deadline
+- [x] Q2.2 Implement ordered queue index, checked admission sequence, deadline
   events and resource arbitration. Separate resource priority from scheduler
   priority; preserve core order and local boundary semantics.
-- [ ] Q2.3 Add state-machine property tests asserting capacity conservation and
+- [x] Q2.3 Add state-machine property tests asserting capacity conservation and
   mutually exclusive queue/active membership after every generated operation.
   Verify timeout-at-T forbids granting at T in both event insertion orders.
-- [ ] Q2.4 Conductor — review and verify phase (workflow.md).
+- [x] Q2.4 Conductor — review and verify phase (workflow.md).
 
 Exit: Q-01/Q-02/Q-04 for non-preemptive resources; legacy FIFO fixture unchanged.
 Manual check: use a small capacity-two example to inspect queue rekeying and all
