@@ -45,3 +45,7 @@ when that gate is reached; determine owner/name/visibility before creation.
 Secrets and private patient data stay out of Git and public CI artifacts.
 Do not install third-party skills from mutable URLs or enable broad unattended
 agents. Sourcing/installation follows the evaluated, pinned workflow in the plan.
+
+## Agent session coordination
+
+For authorized writer work, use the [single-maintainer harness](conductor/harness/single-maintainer.md): clean isolated worktree, repository-wide advisory path claim, bounded hashed context, and precommit scope check. Reconcile already-active sessions before adopting the lease store. Lease expiry alone does not permit takeover; context or a claim does not authorize a task or certify completion.

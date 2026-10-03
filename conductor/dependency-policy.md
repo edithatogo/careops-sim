@@ -7,7 +7,17 @@ URLs, fetch time, release date and declared MSRV. Refresh with
 The snapshot is a candidate inventory, not a tested lockfile or promise that all
 packages should be adopted. Unknown MSRV means unknown, not compatible.
 
-## Live current candidates, refreshed 2026-09-28
+## Latest registry observations — 2026-10-03
+
+The complete 33-entry snapshot was refreshed successfully from the public registry
+endpoints recorded in the JSON. Four candidates changed since the prior snapshot:
+Rust 1.99.0, insta 1.49.0, Renovate 44.132.2, and Codex CLI rust-v0.160.0.
+All remain `candidate_unvalidated`; no toolchain, manifest, lockfile, workflow pin,
+installed tool, compatibility decision, or desktop app version was changed.
+The reviewed baseline below remains historical decision context. Rust 1.98.1
+remains the approved integration pin; assess 1.99.0 separately before adoption.
+
+## Reviewed candidate baseline, recorded 2026-09-28
 
 | Area | Registry candidate | Adoption decision |
 | --- | --- | --- |

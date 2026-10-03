@@ -174,6 +174,73 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
+  miri:
+    timeout-minutes: 20
+    name: miri (nightly 2026-10-02, kairo-ecs-ffi integration)
+    needs: scope
+    if: needs.scope.outputs.changed == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - name: Install dated nightly Miri and capture host/toolchain/sysroot
+        run: |
+          set -o pipefail
+          mkdir -p .artifacts/ci/miri
+          rustup toolchain install nightly-2026-10-02 --profile minimal --component miri --component rust-src 2>&1 | tee .artifacts/ci/miri/setup.log
+          nightly_rustc="$(rustup which rustc --toolchain nightly-2026-10-02)"
+          nightly_bin="$(dirname "$nightly_rustc")"
+          nightly_cargo="$nightly_bin/cargo"
+          test -x "$nightly_rustc"
+          test -x "$nightly_cargo"
+          test -x "$nightly_bin/rustdoc"
+          test -x "$nightly_bin/miri"
+          test -x "$nightly_bin/cargo-miri"
+          export PATH="$nightly_bin:$PATH"
+          export RUSTUP_TOOLCHAIN=nightly-2026-10-02
+          export RUSTDOC="$nightly_bin/rustdoc"
+          export MIRI="$nightly_bin/miri"
+          test "$(uname -s)" = Linux
+          test "$(uname -m)" = x86_64
+          test "$(command -v rustc)" = "$nightly_rustc"
+          test "$(command -v cargo)" = "$nightly_cargo"
+          rustc -vV | tee -a .artifacts/ci/miri/setup.log
+          grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/miri/setup.log
+          rustdoc --version | tee -a .artifacts/ci/miri/setup.log
+          cargo -vV | tee -a .artifacts/ci/miri/setup.log
+          miri --version | tee -a .artifacts/ci/miri/setup.log
+          rustup component list --toolchain nightly-2026-10-02 --installed | tee -a .artifacts/ci/miri/setup.log
+          grep -Fx 'miri-x86_64-unknown-linux-gnu' .artifacts/ci/miri/setup.log
+          grep -Fx 'rust-src' .artifacts/ci/miri/setup.log
+          cargo miri setup 2>&1 | tee -a .artifacts/ci/miri/setup.log
+      - name: Run exact Kairos FFI integration target under Miri
+        env:
+          RUSTUP_TOOLCHAIN: nightly-2026-10-02
+        run: |
+          set -o pipefail
+          nightly_rustc="$(rustup which rustc --toolchain nightly-2026-10-02)"
+          nightly_bin="$(dirname "$nightly_rustc")"
+          nightly_cargo="$nightly_bin/cargo"
+          export PATH="$nightly_bin:$PATH"
+          export RUSTDOC="$nightly_bin/rustdoc"
+          export MIRI="$nightly_bin/miri"
+          test "$(uname -s)" = Linux
+          test "$(uname -m)" = x86_64
+          test "$(command -v rustc)" = "$nightly_rustc"
+          test "$(command -v cargo)" = "$nightly_cargo"
+          cargo miri test --manifest-path libs/kairos/Cargo.toml -p kairo-ecs-ffi --test ffi_integration --locked 2>&1 | tee .artifacts/ci/miri/test.log
+          test -s .artifacts/ci/miri/test.log
+      - name: Retain bounded Miri setup and test logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: selective-miri-logs
+          path: .artifacts/ci/miri/*.log
+          retention-days: 7
+          if-no-files-found: ignore
+
   doctest:
     timeout-minutes: 15
     name: doctest
@@ -249,7 +316,7 @@ jobs:
     timeout-minutes: 5
     name: Required checks
     if: always()
-    needs: [scope, fmt, clippy, test, fuzz, doctest, context, policy]
+    needs: [scope, fmt, clippy, test, fuzz, miri, doctest, context, policy]
     runs-on: ubuntu-latest
     steps:
       - name: Enforce required lanes and report unchanged scope
@@ -260,6 +327,7 @@ jobs:
           CLIPPY_RESULT: ${{ needs.clippy.result }}
           TEST_RESULT: ${{ needs.test.result }}
           FUZZ_RESULT: ${{ needs.fuzz.result }}
+          MIRI_RESULT: ${{ needs.miri.result }}
           DOCTEST_RESULT: ${{ needs.doctest.result }}
           CONTEXT_RESULT: ${{ needs.context.result }}
           POLICY_RESULT: ${{ needs.policy.result }}
@@ -274,7 +342,7 @@ jobs:
             exit 1
           fi
           if [ "$SCOPE_CHANGED" = false ]; then
-            for lane in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$FUZZ_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT" "$POLICY_RESULT"; do
+            for lane in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$FUZZ_RESULT" "$MIRI_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT" "$POLICY_RESULT"; do
               if [ "$lane" != skipped ]; then
                 echo "unchanged scope expected skipped lanes; observed $lane"
                 exit 1
@@ -283,7 +351,7 @@ jobs:
             echo "scope unchanged: all required lanes skipped successfully"
             exit 0
           fi
-          for result in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$FUZZ_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT" "$POLICY_RESULT"; do
+          for result in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$FUZZ_RESULT" "$MIRI_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT" "$POLICY_RESULT"; do
             if [ "$result" != success ]; then
               echo "required lane failed or did not run: $result"
               exit 1
