@@ -7,7 +7,7 @@ import unittest
 
 
 WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "ci.yml"
-LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT", "POLICY_RESULT")
+LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT", "POLICY_RESULT", "FUZZ_RESULT")
 
 
 def aggregate_script():
@@ -160,7 +160,7 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertIn("POLICY_RESULT", aggregate_script())
         self.assertEqual(run_aggregate("true", ["success"] * len(LANES)).returncode, 0)
         results = ["success"] * len(LANES)
-        results[-1] = "failure"
+        results[LANES.index("POLICY_RESULT")] = "failure"
         self.assertEqual(run_aggregate("true", results).returncode, 1)
 
     def test_ci_budgets_and_cache_trust_boundary(self):
@@ -299,6 +299,77 @@ class CiWorkflowTests(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertIn(path, scope_step)
 
+    def test_fuzz_changes_are_in_scope_and_fuzz_is_required_fail_closed(self):
+        workflow = WORKFLOW.read_text()
+        self.assertIn(" fuzz;", scope_script())
+        fuzz_job = workflow.split("  fuzz:\n", 1)[1].split("  doctest:\n", 1)[0]
+        self.assertIn("nightly-2026-10-02", fuzz_job)
+        self.assertIn("cargo-fuzz", fuzz_job)
+        self.assertIn("cargo install cargo-fuzz --version 0.13.2 --locked", fuzz_job)
+        self.assertNotIn("cargo +nightly-2026-10-02", fuzz_job)
+        self.assertIn("tee .artifacts/ci/fuzz/install.log", fuzz_job)
+        self.assertIn("tee -a .artifacts/ci/fuzz/install.log", fuzz_job)
+        self.assertIn("grep -Fx 'host: x86_64-unknown-linux-gnu'", fuzz_job)
+        self.assertIn('test "$(uname -m)" = x86_64', fuzz_job)
+        self.assertIn("--locked", fuzz_job)
+        self.assertIn("git diff --quiet -- fuzz/Cargo.lock", fuzz_job)
+        self.assertIn("RUSTUP_TOOLCHAIN: nightly-2026-10-02", fuzz_job)
+        self.assertIn('export RUSTC="$nightly_rustc"', fuzz_job)
+        self.assertIn('export RUSTDOC="$nightly_bin/rustdoc"', fuzz_job)
+        self.assertIn('export PATH="$nightly_bin:$PATH"', fuzz_job)
+        self.assertIn('export PATH="$nightly_bin:$GITHUB_WORKSPACE/.artifacts/ci/fuzz-tools/bin:$PATH"', fuzz_job)
+        self.assertIn("cargo fuzz run parse_scenario_json", fuzz_job)
+        self.assertNotIn("cargo +nightly-2026-10-02 fuzz", fuzz_job)
+        self.assertIn("test -s .artifacts/ci/fuzz/fuzz.log", fuzz_job)
+        self.assertIn("fuzz/artifacts/parse_scenario_json/", fuzz_job)
+        self.assertIn("if-no-files-found: ignore", fuzz_job)
+        for flag in (
+            "-seed=20261003",
+            "-runs=100000",
+            "-max_total_time=120",
+            "-max_len=32768",
+            "-timeout=5",
+            "-rss_limit_mb=1024",
+        ):
+            with self.subTest(flag=flag):
+                self.assertIn(flag, fuzz_job)
+        self.assertNotIn("continue-on-error", fuzz_job)
+        self.assertIn("cargo deny --manifest-path fuzz/Cargo.toml", workflow)
+        self.assertIn("FUZZ_RESULT", aggregate_script())
+        self.assertIn("fuzz", workflow.split("  required:\n", 1)[1].split("    runs-on:", 1)[0])
+        self.assertEqual(run_aggregate("true", ["success"] * len(LANES)).returncode, 0)
+        for index in range(len(LANES)):
+            results = ["success"] * len(LANES)
+            results[index] = "failure"
+            with self.subTest(failed_lane=LANES[index]):
+                self.assertNotEqual(run_aggregate("true", results).returncode, 0)
+
+    def test_fuzz_manifest_isolated_and_license_exception_is_version_scoped(self):
+        fuzz_manifest = (WORKFLOW.parents[2] / "fuzz" / "Cargo.toml").read_text()
+        fuzz_policy = (WORKFLOW.parents[2] / "fuzz" / "deny.toml").read_text()
+        self.assertIn("publish = false", fuzz_manifest)
+        self.assertIn('license = "Apache-2.0"', fuzz_manifest)
+        self.assertIn("[workspace]", fuzz_manifest)
+        self.assertIn('libfuzzer-sys = "=0.4.13"', fuzz_manifest)
+        self.assertIn('careops-ed = { path = "../crates/careops-ed", version = "=0.1.0" }', fuzz_manifest)
+        self.assertIn('serde_json = "=1.0.151"', fuzz_manifest)
+        fuzz_lock = (WORKFLOW.parents[2] / "fuzz" / "Cargo.lock").read_text()
+        self.assertIn('name = "libfuzzer-sys"\nversion = "0.4.13"\nsource = "registry+https://github.com/rust-lang/crates.io-index"\nchecksum = ', fuzz_lock)
+        workflow = WORKFLOW.read_text()
+        self.assertIn("cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check", workflow)
+        self.assertIn('version = "=0.4.13"', fuzz_policy)
+        self.assertIn('name = "libfuzzer-sys"', fuzz_policy)
+        self.assertIn('allow = ["NCSA"]', fuzz_policy)
+        for root_policy in (
+            'yanked = "deny"',
+            'multiple-versions = "deny"',
+            'allow = ["MIT", "Apache-2.0", "BSD-3-Clause", "Unicode-3.0"]',
+            'unknown-registry = "deny"',
+            'unknown-git = "deny"',
+        ):
+            with self.subTest(root_policy=root_policy):
+                self.assertIn(root_policy, fuzz_policy)
+
     def test_scope_detector_observes_tracked_inputs_and_gitlink_changes(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -384,7 +455,7 @@ class CiWorkflowTests(unittest.TestCase):
     def test_cargo_lanes_initialize_path_dependency_and_pin_evidenced_toolchain(self):
         workflow = WORKFLOW.read_text()
         cargo_jobs = workflow.split("  required:", 1)[0]
-        self.assertEqual(cargo_jobs.count("submodules: recursive"), 6)
+        self.assertEqual(cargo_jobs.count("submodules: recursive"), 7)
         self.assertEqual(cargo_jobs.count("rustup toolchain install 1.98.1"), 5)
         for command in ("cargo +1.98.1 fmt", "cargo +1.98.1 clippy --locked", "cargo +1.98.1 test --workspace", "cargo +1.98.1 test --doc"):
             with self.subTest(command=command):

@@ -38,7 +38,7 @@ jobs:
           fi
           if [ -z "$base" ] || [ "$base" = 0000000000000000000000000000000000000000 ]; then
             echo 'changed=true' >> "$GITHUB_OUTPUT"
-          elif git diff --quiet "$base" HEAD -- Cargo.toml Cargo.lock deny.toml .gitleaksignore requirements-schema-validation.txt crates tests model-inputs tools conductor .gitmodules .github/workflows libs/kairos extensions/conductor; then
+          elif git diff --quiet "$base" HEAD -- Cargo.toml Cargo.lock deny.toml .gitleaksignore requirements-schema-validation.txt crates tests model-inputs tools conductor .gitmodules .github/workflows libs/kairos extensions/conductor fuzz; then
             echo 'changed=false' >> "$GITHUB_OUTPUT"
           else
             echo 'changed=true' >> "$GITHUB_OUTPUT"
@@ -118,6 +118,62 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
+  fuzz:
+    timeout-minutes: 20
+    name: fuzz (nightly 2026-10-02)
+    needs: scope
+    if: needs.scope.outputs.changed == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - name: Install dated nightly and pinned cargo-fuzz with retained setup log
+        run: |
+          mkdir -p .artifacts/ci/fuzz
+          set -o pipefail
+          rustup toolchain install nightly-2026-10-02 --profile minimal 2>&1 | tee .artifacts/ci/fuzz/install.log
+          nightly_rustc="$(rustup which rustc --toolchain nightly-2026-10-02)"
+          nightly_bin="$(dirname "$nightly_rustc")"
+          export RUSTC="$nightly_rustc"
+          export RUSTDOC="$nightly_bin/rustdoc"
+          export PATH="$nightly_bin:$PATH"
+          test "$(uname -s)" = Linux
+          test "$(uname -m)" = x86_64
+          rustc -vV | tee -a .artifacts/ci/fuzz/install.log
+          grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/fuzz/install.log
+          rustdoc --version | tee -a .artifacts/ci/fuzz/install.log
+          cargo -vV | tee -a .artifacts/ci/fuzz/install.log
+          cargo install cargo-fuzz --version 0.13.2 --locked --root .artifacts/ci/fuzz-tools 2>&1 | tee -a .artifacts/ci/fuzz/install.log
+          echo "$GITHUB_WORKSPACE/.artifacts/ci/fuzz-tools/bin" >> "$GITHUB_PATH"
+      - name: Run bounded synthetic ED parser fuzzing
+        env:
+          RUSTUP_TOOLCHAIN: nightly-2026-10-02
+        run: |
+          set -o pipefail
+          nightly_rustc="$(rustup which rustc --toolchain nightly-2026-10-02)"
+          nightly_bin="$(dirname "$nightly_rustc")"
+          export RUSTC="$nightly_rustc"
+          export RUSTDOC="$nightly_bin/rustdoc"
+          export PATH="$nightly_bin:$GITHUB_WORKSPACE/.artifacts/ci/fuzz-tools/bin:$PATH"
+          rustc -vV | grep -Fx 'host: x86_64-unknown-linux-gnu'
+          mkdir -p .artifacts/ci/fuzz/corpus
+          cp crates/careops-ed/examples/one_patient.json .artifacts/ci/fuzz/corpus/synthetic-one-patient.json
+          cargo fuzz run parse_scenario_json .artifacts/ci/fuzz/corpus -- -seed=20261003 -runs=100000 -max_total_time=120 -max_len=32768 -timeout=5 -rss_limit_mb=1024 2>&1 | tee .artifacts/ci/fuzz/fuzz.log
+          test -s .artifacts/ci/fuzz/fuzz.log
+          git diff --quiet -- fuzz/Cargo.lock
+      - name: Retain bounded fuzz log on failure
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: parser-fuzz-failure
+          path: |
+            .artifacts/ci/fuzz/
+            fuzz/artifacts/parse_scenario_json/
+          retention-days: 7
+          if-no-files-found: ignore
+
   doctest:
     timeout-minutes: 15
     name: doctest
@@ -179,6 +235,7 @@ jobs:
         run: |
           export RUSTUP_TOOLCHAIN=1.98.1
           python3 tools/ci_policy.py
+          cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check
       - name: Retain bounded failed policy logs
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -192,7 +249,7 @@ jobs:
     timeout-minutes: 5
     name: Required checks
     if: always()
-    needs: [scope, fmt, clippy, test, doctest, context, policy]
+    needs: [scope, fmt, clippy, test, fuzz, doctest, context, policy]
     runs-on: ubuntu-latest
     steps:
       - name: Enforce required lanes and report unchanged scope
@@ -202,6 +259,7 @@ jobs:
           FMT_RESULT: ${{ needs.fmt.result }}
           CLIPPY_RESULT: ${{ needs.clippy.result }}
           TEST_RESULT: ${{ needs.test.result }}
+          FUZZ_RESULT: ${{ needs.fuzz.result }}
           DOCTEST_RESULT: ${{ needs.doctest.result }}
           CONTEXT_RESULT: ${{ needs.context.result }}
           POLICY_RESULT: ${{ needs.policy.result }}
@@ -216,7 +274,7 @@ jobs:
             exit 1
           fi
           if [ "$SCOPE_CHANGED" = false ]; then
-            for lane in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT" "$POLICY_RESULT"; do
+            for lane in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$FUZZ_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT" "$POLICY_RESULT"; do
               if [ "$lane" != skipped ]; then
                 echo "unchanged scope expected skipped lanes; observed $lane"
                 exit 1
@@ -225,7 +283,7 @@ jobs:
             echo "scope unchanged: all required lanes skipped successfully"
             exit 0
           fi
-          for result in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT" "$POLICY_RESULT"; do
+          for result in "$FMT_RESULT" "$CLIPPY_RESULT" "$TEST_RESULT" "$FUZZ_RESULT" "$DOCTEST_RESULT" "$CONTEXT_RESULT" "$POLICY_RESULT"; do
             if [ "$result" != success ]; then
               echo "required lane failed or did not run: $result"
               exit 1
