@@ -121,9 +121,11 @@ jobs:
             test "$(uname -m)" = x86_64
             grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/nextest/host.log
           fi
-          echo "RUSTUP_TOOLCHAIN=1.98.1" >> "$GITHUB_ENV"
-          echo "RUSTC=$rustc_path" >> "$GITHUB_ENV"
-          echo "RUSTDOC=$rustdoc_path" >> "$GITHUB_ENV"
+          {
+            echo "RUSTUP_TOOLCHAIN=1.98.1"
+            echo "RUSTC=$rustc_path"
+            echo "RUSTDOC=$rustdoc_path"
+          } >> "$GITHUB_ENV"
           echo "$toolchain_bin" >> "$GITHUB_PATH"
       - name: Verify nextest discovery, failure handling and test suite
         run: |
@@ -182,9 +184,11 @@ jobs:
           grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/msrv/environment.log
           rustdoc --version | tee -a .artifacts/ci/msrv/environment.log
           cargo -vV | tee -a .artifacts/ci/msrv/environment.log
-          echo "RUSTUP_TOOLCHAIN=1.76.0" >> "$GITHUB_ENV"
-          echo "RUSTC=$rustc_path" >> "$GITHUB_ENV"
-          echo "RUSTDOC=$rustdoc_path" >> "$GITHUB_ENV"
+          {
+            echo "RUSTUP_TOOLCHAIN=1.76.0"
+            echo "RUSTC=$rustc_path"
+            echo "RUSTDOC=$rustdoc_path"
+          } >> "$GITHUB_ENV"
           echo "$toolchain_bin" >> "$GITHUB_PATH"
       - name: Run parent default-feature workspace tests at MSRV
         run: |
