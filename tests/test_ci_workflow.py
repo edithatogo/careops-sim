@@ -318,7 +318,7 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertIn('export RUSTDOC="$nightly_bin/rustdoc"', fuzz_job)
         self.assertIn('export PATH="$nightly_bin:$PATH"', fuzz_job)
         self.assertIn('export PATH="$nightly_bin:$GITHUB_WORKSPACE/.artifacts/ci/fuzz-tools/bin:$PATH"', fuzz_job)
-        self.assertIn("cargo fuzz run parse_scenario_json", fuzz_job)
+        self.assertIn("cargo fuzz run --sanitizer address parse_scenario_json", fuzz_job)
         self.assertNotIn("cargo +nightly-2026-10-02 fuzz", fuzz_job)
         self.assertIn("test -s .artifacts/ci/fuzz/fuzz.log", fuzz_job)
         self.assertIn("fuzz/artifacts/parse_scenario_json/", fuzz_job)
@@ -343,6 +343,31 @@ class CiWorkflowTests(unittest.TestCase):
             results[index] = "failure"
             with self.subTest(failed_lane=LANES[index]):
                 self.assertNotEqual(run_aggregate("true", results).returncode, 0)
+
+    def test_fuzz_records_actual_address_sanitizer_binary_and_retains_proof(self):
+        workflow = WORKFLOW.read_text()
+        fuzz_job = workflow.split("  fuzz:\n", 1)[1].split("  miri:\n", 1)[0]
+        for evidence in (
+            "cargo fuzz build --sanitizer address parse_scenario_json",
+            "cargo fuzz run --sanitizer address parse_scenario_json",
+            'test -x "$fuzz_binary"',
+            'nm --defined-only "$fuzz_binary"',
+            "__asan_init$",
+            'sha256sum "$fuzz_binary"',
+            "sha256sum --check .artifacts/ci/fuzz/binary-sha256.txt",
+            "name: parser-fuzz-instrumentation",
+            "if: always()",
+            "sanitizer-symbols.log",
+            "binary-sha256.txt",
+            "build.log",
+        ):
+            with self.subTest(evidence=evidence):
+                self.assertIn(evidence, fuzz_job)
+        proof = fuzz_job.split("name: parser-fuzz-instrumentation", 1)[1]
+        self.assertIn("if-no-files-found: error", proof)
+        self.assertNotIn("private-claim", proof)
+        self.assertLess(fuzz_job.index("nm --defined-only"), fuzz_job.index("cargo fuzz run"))
+        self.assertLess(fuzz_job.index("cargo fuzz run"), fuzz_job.index("sha256sum --check"))
 
     def test_fuzz_manifest_isolated_and_license_exception_is_version_scoped(self):
         fuzz_manifest = (WORKFLOW.parents[2] / "fuzz" / "Cargo.toml").read_text()
