@@ -94,11 +94,11 @@ terminal reasons. Snapshot records match committed state after each event.
 
 Entry: Q2. Owner 03 with 01 interruption-state/RNG review.
 
-- [ ] Q3.1 Write failing three-strategy fixtures with low work(10) at 0 and urgent
+- [x] Q3.1 Write failing three-strategy fixtures with low work(10) at 0 and urgent
   work(2) at 3; cover nested interruptions, multiple victims, equal priorities,
   non-preemptible holders and zero-remaining completion at the interruption tick.
   Add report 27 independent oracle: low work(10) at 0, urgent work(3) at 4; urgent ends 7, low ends 13 Suspend / 17 Restart / aborts 4. Original completion at 10 must be a stale no-op.
-- [ ] Q3.2 Implement eviction selection and atomic lease replacement, elapsed/
+- [x] Q3.2 Implement eviction selection and atomic lease replacement, elapsed/
   remaining/cumulative effort, suspended context, attempt revisions, cancel-token
   invalidation and explicit cancellation while suspended.
 - [ ] Q3.3 Implement resume/restart handlers and exactly-once transition emission.
