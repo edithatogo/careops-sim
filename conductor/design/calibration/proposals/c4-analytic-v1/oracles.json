@@ -1,0 +1,214 @@
+{
+  "status": "synthetic preparation; no runtime output",
+  "distance_values": "exact rational strings",
+  "cases": [
+    {
+      "id": "shift",
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        1,
+        3
+      ],
+      "expected_w1": "1",
+      "expected_d": "1/2"
+    },
+    {
+      "id": "identical",
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected_w1": "0",
+      "expected_d": "0"
+    },
+    {
+      "id": "ties",
+      "a": [
+        0,
+        0
+      ],
+      "b": [
+        1,
+        1
+      ],
+      "expected_w1": "1",
+      "expected_d": "1"
+    },
+    {
+      "id": "unequal",
+      "a": [
+        0
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected_w1": "1",
+      "expected_d": "1/2"
+    },
+    {
+      "id": "scaled",
+      "a": [
+        0,
+        120
+      ],
+      "b": [
+        60,
+        180
+      ],
+      "expected_w1": "60",
+      "expected_d": "1/2"
+    },
+    {
+      "id": "tail",
+      "a": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "b": [
+        0,
+        0,
+        0,
+        0,
+        900
+      ],
+      "expected_w1": "180",
+      "expected_d": "1/5"
+    },
+    {
+      "id": "weighted",
+      "a": [
+        0,
+        2
+      ],
+      "a_weights": [
+        3,
+        1
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "b_weights": [
+        1,
+        3
+      ],
+      "expected_w1": "1",
+      "expected_d": "1/2"
+    }
+  ],
+  "paired_dependence": {
+    "a": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "b": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "each_marginal": {
+      "w1": "0",
+      "d": "0"
+    },
+    "conditional_y_by_x": {
+      "x=0_w1": "1",
+      "x=1_w1": "1"
+    }
+  },
+  "validity_cases": [
+    {
+      "id": "empty",
+      "input": {
+        "a": [],
+        "b": [
+          1
+        ]
+      },
+      "expected_status": "insufficient_data"
+    },
+    {
+      "id": "negative-weight",
+      "input": {
+        "a": [
+          0
+        ],
+        "weights": [
+          -1
+        ]
+      },
+      "expected_status": "invalid"
+    },
+    {
+      "id": "zero-total-weight",
+      "input": {
+        "a": [
+          0
+        ],
+        "weights": [
+          0
+        ]
+      },
+      "expected_status": "invalid"
+    },
+    {
+      "id": "nonfinite",
+      "input": {
+        "value_token": "NaN/Infinity; resolve native representation at dispatch"
+      },
+      "expected_status": "invalid"
+    },
+    {
+      "id": "large-common-origin",
+      "input": {
+        "origin": "9007199254740992",
+        "a_ticks": [
+          "9007199254740992",
+          "9007199254740994"
+        ],
+        "b_ticks": [
+          "9007199254740993",
+          "9007199254740995"
+        ],
+        "expected_offsets_a": [
+          0,
+          2
+        ],
+        "expected_offsets_b": [
+          1,
+          3
+        ]
+      },
+      "expected_status": "exact_conversion_required"
+    }
+  ],
+  "coverage_case": {
+    "eligible": 10,
+    "observed": 6,
+    "right_censored": 3,
+    "missing": 1,
+    "observed_distance": "0",
+    "expected": "report counts and coverage 6/10 with warning; zero observed distance cannot be labelled full-cohort agreement"
+  }
+}
