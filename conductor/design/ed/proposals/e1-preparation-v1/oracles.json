@@ -1,0 +1,441 @@
+{
+  "metadata": {
+    "status": "synthetic design oracle; not engine output or executable scenario input",
+    "time_unit": "tick",
+    "seed": 0,
+    "random_draws": false,
+    "observation_policy": "proposed inclusive departure horizon; arrival < horizon; W explicitly declared per fixture (normally 0; invalid zero-window case deliberately W=H)",
+    "patient_order": "explicit trace order only; consuming tests must bind accepted Q same-tick ordering"
+  },
+  "cases": [
+    {
+      "id": "empty",
+      "leaf_family": "endpoints",
+      "horizon_ticks": 10,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "patients": []
+      },
+      "expected": {
+        "arrived": 0,
+        "terminal": 0,
+        "unfinished": 0,
+        "mean_los": null,
+        "mean_queue_wait": null,
+        "reason": "empty denominator; no invented zero average"
+      }
+    },
+    {
+      "id": "one-ordered-pathway",
+      "leaf_family": "endpoints",
+      "horizon_ticks": 20,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "arrival_tick": 0,
+        "stage_work_ticks": {
+          "triage": 1,
+          "assessment": 2,
+          "diagnostics": 3,
+          "treatment": 4,
+          "disposition": 1,
+          "departure_delay": 1
+        },
+        "resources": "one eligible unit for each work stage; no contention"
+      },
+      "expected": {
+        "trace": [
+          {
+            "event": "arrival",
+            "tick": 0
+          },
+          {
+            "event": "triage_start",
+            "tick": 0
+          },
+          {
+            "event": "triage_end",
+            "tick": 1
+          },
+          {
+            "event": "assessment_start",
+            "tick": 1
+          },
+          {
+            "event": "assessment_end",
+            "tick": 3
+          },
+          {
+            "event": "diagnostics_start",
+            "tick": 3
+          },
+          {
+            "event": "diagnostics_end",
+            "tick": 6
+          },
+          {
+            "event": "treatment_start",
+            "tick": 6
+          },
+          {
+            "event": "treatment_end",
+            "tick": 10
+          },
+          {
+            "event": "disposition_start",
+            "tick": 10
+          },
+          {
+            "event": "discharge_decision",
+            "tick": 11
+          },
+          {
+            "event": "physical_departure",
+            "tick": 12
+          }
+        ],
+        "arrived": 1,
+        "terminal": 1,
+        "unfinished": 0,
+        "time_to_care_ticks": 1,
+        "los_ticks": 12,
+        "terminal_reason": "discharged"
+      }
+    },
+    {
+      "id": "saturated-fifo",
+      "leaf_family": "extremes",
+      "horizon_ticks": 6,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "patients": [
+          {
+            "patient_id": "p1",
+            "arrival_tick": 0,
+            "assessment_work_ticks": 2
+          },
+          {
+            "patient_id": "p2",
+            "arrival_tick": 0,
+            "assessment_work_ticks": 2
+          },
+          {
+            "patient_id": "p3",
+            "arrival_tick": 1,
+            "assessment_work_ticks": 2
+          }
+        ],
+        "assessment_capacity": 1,
+        "other_stages": "disabled; terminal departure occurs at assessment completion; declared p1 before p2 admission sequence"
+      },
+      "expected": {
+        "patients": [
+          {
+            "patient_id": "p1",
+            "start_tick": 0,
+            "completion_tick": 2,
+            "wait_ticks": 0,
+            "los_ticks": 2
+          },
+          {
+            "patient_id": "p2",
+            "start_tick": 2,
+            "completion_tick": 4,
+            "wait_ticks": 2,
+            "los_ticks": 4
+          },
+          {
+            "patient_id": "p3",
+            "start_tick": 4,
+            "completion_tick": 6,
+            "wait_ticks": 3,
+            "los_ticks": 5
+          }
+        ],
+        "arrived": 3,
+        "terminal": 3,
+        "unfinished": 0,
+        "wait_sum_ticks": 5,
+        "completed_los_sum_ticks": 11,
+        "busy_capacity_time": 6,
+        "available_capacity_time": 6,
+        "utilization_fraction": 1,
+        "throughput_fraction": {
+          "numerator": 3,
+          "denominator": 6
+        }
+      }
+    },
+    {
+      "id": "horizon-clips-service",
+      "leaf_family": "extremes",
+      "horizon_ticks": 5,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "patients": [
+          {
+            "patient_id": "p1",
+            "arrival_tick": 0,
+            "assessment_work_ticks": 2
+          },
+          {
+            "patient_id": "p2",
+            "arrival_tick": 0,
+            "assessment_work_ticks": 2
+          },
+          {
+            "patient_id": "p3",
+            "arrival_tick": 1,
+            "assessment_work_ticks": 2
+          }
+        ],
+        "assessment_capacity": 1,
+        "other_stages": "same as saturated-fifo"
+      },
+      "expected": {
+        "arrived": 3,
+        "terminal": 2,
+        "unfinished": 1,
+        "unfinished_patient": "p3",
+        "unfinished_state": "assessment",
+        "p3_start_tick": 4,
+        "p3_completion_tick": null,
+        "p3_planned_completion_tick": 6,
+        "completed_los_sum_ticks": 6,
+        "completed_los_denominator": 2,
+        "right_censored_los_count": 1,
+        "busy_capacity_time": 5,
+        "available_capacity_time": 5,
+        "active_allocations_at_horizon": 1
+      }
+    },
+    {
+      "id": "zero-duration-acyclic",
+      "leaf_family": "extremes",
+      "horizon_ticks": 2,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "arrival_tick": 1,
+        "stage_work_ticks": {
+          "triage": 0,
+          "assessment": 0,
+          "treatment": 0
+        },
+        "all_optional_stages": "skipped",
+        "departure_delay": 0
+      },
+      "expected": {
+        "arrived": 1,
+        "terminal": 1,
+        "unfinished": 0,
+        "physical_departure_tick": 1,
+        "los_ticks": 0,
+        "busy_capacity_time": 0,
+        "requirement": "finite declared stage/event count; no zero-work loop"
+      }
+    },
+    {
+      "id": "boarding-retains-occupancy",
+      "leaf_family": "endpoints",
+      "horizon_ticks": 20,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "admission_decision_tick": 11,
+        "compatible_offer_tick": 13,
+        "offer_id": "o1",
+        "transfer_work_ticks": 2,
+        "arrival_tick": 0
+      },
+      "expected": {
+        "boarding_start_tick": 11,
+        "transfer_start_tick": 13,
+        "physical_departure_tick": 15,
+        "boarding_ticks": 4,
+        "los_ticks": 15,
+        "offer_consumption_count": 1,
+        "occupancy_release_tick": 15,
+        "terminal_reason": "admitted",
+        "rule": "duplicate offer notification produces no second transfer/departure"
+      }
+    },
+    {
+      "id": "boarding-at-horizon",
+      "leaf_family": "extremes",
+      "horizon_ticks": 14,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "same_as": "boarding-retains-occupancy"
+      },
+      "expected": {
+        "arrived": 1,
+        "terminal": 0,
+        "unfinished": 1,
+        "state": "awaiting_transfer_completion",
+        "physical_departure_tick": null,
+        "offer_consumption_count": 1,
+        "active_ed_occupancy_at_horizon": 1,
+        "boarding_right_censored_count": 1
+      }
+    },
+    {
+      "id": "unknown-resource",
+      "leaf_family": "invalid",
+      "horizon_ticks": 10,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "invalid_condition": "unresolved resource reference",
+        "fixture_values": {
+          "resource_id": "missing-resource"
+        }
+      },
+      "expected": {
+        "admission": "reject with explicit reason before execution; no partial allocations or fabricated terminal events"
+      }
+    },
+    {
+      "id": "zero-open-capacity-for-required-path",
+      "leaf_family": "invalid",
+      "horizon_ticks": 10,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "invalid_condition": "constant zero open capacity throughout the horizon for every eligible resource, with no alternate pathway/calendar or explicitly supported closure/wait policy",
+        "fixture_values": {
+          "constant_open_count": 0,
+          "calendar_changes": [],
+          "alternate_resources": [],
+          "closure_or_wait_policy": null
+        }
+      },
+      "expected": {
+        "admission": "proposed validation rejection for undeclared impossible pathway; zero temporary capacity or an explicitly modeled closure is not generically invalid"
+      }
+    },
+    {
+      "id": "negative-duration",
+      "leaf_family": "invalid",
+      "horizon_ticks": 10,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "invalid_condition": "invalid nonnegative active-work duration",
+        "fixture_values": {
+          "active_work_ticks": -1
+        }
+      },
+      "expected": {
+        "admission": "reject with explicit reason before execution; no partial allocations or fabricated terminal events"
+      }
+    },
+    {
+      "id": "arrival-at-horizon",
+      "leaf_family": "invalid",
+      "horizon_ticks": 10,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "invalid_condition": "arrival outside [0,H)",
+        "fixture_values": {
+          "arrival_tick": 10
+        }
+      },
+      "expected": {
+        "admission": "reject with explicit reason before execution; no partial allocations or fabricated terminal events"
+      }
+    },
+    {
+      "id": "zero-observation-window",
+      "leaf_family": "invalid",
+      "horizon_ticks": 10,
+      "warm_up_ticks": 10,
+      "inputs": {
+        "invalid_condition": "W equals H",
+        "fixture_values": {
+          "observation_cutoff_tick": 10
+        }
+      },
+      "expected": {
+        "admission": "reject with explicit reason before execution; no partial allocations or fabricated terminal events"
+      }
+    },
+    {
+      "id": "duplicate-patient-id",
+      "leaf_family": "invalid",
+      "horizon_ticks": 10,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "invalid_condition": "unstable patient identity",
+        "fixture_values": {
+          "patient_ids": [
+            "duplicate",
+            "duplicate"
+          ]
+        }
+      },
+      "expected": {
+        "admission": "reject with explicit reason before execution; no partial allocations or fabricated terminal events"
+      }
+    },
+    {
+      "id": "zero-work-cycle",
+      "leaf_family": "invalid",
+      "horizon_ticks": 10,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "invalid_condition": "unbounded same-tick cycle",
+        "fixture_values": {
+          "stage_edges": [
+            [
+              "assessment",
+              "assessment"
+            ]
+          ],
+          "active_work_ticks": 0
+        }
+      },
+      "expected": {
+        "admission": "reject with explicit reason before execution; no partial allocations or fabricated terminal events"
+      }
+    },
+    {
+      "id": "tick-conversion-overflow",
+      "leaf_family": "invalid",
+      "horizon_ticks": 10,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "invalid_condition": "out-of-range source time conversion",
+        "fixture_values": {
+          "source_seconds_decimal": "340282366920938463463374607431768211456",
+          "ticks_per_second": 1,
+          "target_tick_max_decimal": "340282366920938463463374607431768211455"
+        }
+      },
+      "expected": {
+        "admission": "reject with explicit reason before execution; no partial allocations or fabricated terminal events"
+      }
+    }
+  ],
+  "coverage_requirements": {
+    "acuity_pathway_cross_product": {
+      "categories": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "scale": "synthetic ATS-shaped identifiers; no observed mix/clinical duration implied",
+      "pathways": [
+        "assessment-only",
+        "diagnostics-treatment-discharge",
+        "admission-boarding-transfer"
+      ],
+      "expected": "one explicit terminal or unfinished patient per instance; do not assert category-driven delays without a supplied priority map"
+    },
+    "remaining_consuming_cases": [
+      "same-tick arrival/release/timeout/abandonment using Q ordering",
+      "expired/incompatible/withdrawn bed offer and repeated notification",
+      "warm-up left truncation with an arrival before W",
+      "zero known staffed capacity-time vs unknown availability",
+      "long work greater than horizon and maximum tick overflow",
+      "deterministic named-stream arrival/case-mix sampling against accepted C2 seed map"
+    ],
+    "acceptance": "coverage inventory only; not all leaf instances accepted"
+  }
+}
