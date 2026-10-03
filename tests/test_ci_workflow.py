@@ -7,7 +7,7 @@ import unittest
 
 
 WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "ci.yml"
-LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT")
+LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT", "POLICY_RESULT")
 
 
 def aggregate_script():
@@ -139,6 +139,54 @@ def untrusted_contract_errors(workflow):
 
 
 class CiWorkflowTests(unittest.TestCase):
+    def test_scope_requires_explicit_boolean_output(self):
+        for value in ("", "typo", "null"):
+            with self.subTest(value=value):
+                result = run_aggregate(value, ["skipped"] * len(LANES))
+                self.assertNotEqual(result.returncode, 0)
+        self.assertIn("extensions/conductor", scope_script())
+
+    def test_native_failure_cannot_be_masked_by_log_capture(self):
+        native = WORKFLOW.read_text().split("  test:\n", 1)[1].split("  doctest:\n", 1)[0]
+        self.assertIn("set -o pipefail", native)
+        result = subprocess.run(["bash", "-c", "set -o pipefail; false | tee /dev/null"], capture_output=True)
+        self.assertNotEqual(result.returncode, 0)
+
+    def test_platform_and_policy_lanes_are_required(self):
+        workflow = WORKFLOW.read_text()
+        self.assertIn("os: [ubuntu-24.04, macos-15]", workflow)
+        self.assertIn('test "$(uname -m)" = arm64', workflow)
+        self.assertIn("fail-fast: false", workflow)
+        self.assertIn("POLICY_RESULT", aggregate_script())
+        self.assertEqual(run_aggregate("true", ["success"] * len(LANES)).returncode, 0)
+        results = ["success"] * len(LANES)
+        results[-1] = "failure"
+        self.assertEqual(run_aggregate("true", results).returncode, 1)
+
+    def test_ci_budgets_and_cache_trust_boundary(self):
+        workflow = WORKFLOW.read_text()
+        jobs = workflow.split("jobs:\n", 1)[1]
+        blocks = re.split(r"^  [a-z_]+:\n", jobs, flags=re.MULTILINE)[1:]
+        self.assertTrue(blocks)
+        for block in blocks:
+            timeout = re.search(r"^    timeout-minutes: ([0-9]+)$", block, re.MULTILINE)
+            self.assertIsNotNone(timeout)
+            self.assertLessEqual(int(timeout.group(1)), 20)
+            self.assertGreater(int(timeout.group(1)), 0)
+        self.assertNotIn("actions/cache@", workflow)
+        self.assertNotIn("pull_request_target", workflow)
+        self.assertIn("cancel-in-progress: ${{ github.event_name == 'pull_request' }}", workflow)
+
+    def test_unit_lane_does_not_repeat_documentation_tests(self):
+        workflow = WORKFLOW.read_text()
+        native = workflow.split("  test:\n", 1)[1].split("  doctest:\n", 1)[0]
+        self.assertIn("--lib --bins --tests --locked", native)
+        self.assertIn("test --doc --workspace --all-features --locked", workflow)
+
+    def test_context_check_fetches_pinned_submodule_documents(self):
+        context = WORKFLOW.read_text().split("  context:\n", 1)[1].split("  required:\n", 1)[0]
+        self.assertIn("          submodules: recursive\n", context)
+
     def test_untrusted_pull_request_has_no_privileged_trigger_or_credentials(self):
         workflow = WORKFLOW.read_text()
         trigger_block = workflow.split("\non:", 1)[1].split("\npermissions:", 1)[0]
@@ -336,14 +384,14 @@ class CiWorkflowTests(unittest.TestCase):
     def test_cargo_lanes_initialize_path_dependency_and_pin_evidenced_toolchain(self):
         workflow = WORKFLOW.read_text()
         cargo_jobs = workflow.split("  required:", 1)[0]
-        self.assertEqual(cargo_jobs.count("submodules: true"), 4)
-        self.assertEqual(cargo_jobs.count("rustup toolchain install 1.98.1"), 4)
-        for command in ("cargo +1.98.1 fmt", "cargo +1.98.1 clippy", "cargo +1.98.1 test --workspace", "cargo +1.98.1 test --doc"):
+        self.assertEqual(cargo_jobs.count("submodules: recursive"), 6)
+        self.assertEqual(cargo_jobs.count("rustup toolchain install 1.98.1"), 5)
+        for command in ("cargo +1.98.1 fmt", "cargo +1.98.1 clippy --locked", "cargo +1.98.1 test --workspace", "cargo +1.98.1 test --doc"):
             with self.subTest(command=command):
                 self.assertIn(command, cargo_jobs)
 
     def test_required_lane_failure_fails_aggregate(self):
-        result = run_aggregate("true", ["success", "failure", "success", "success", "success"])
+        result = run_aggregate("true", ["success", "failure"] + ["success"] * (len(LANES) - 2))
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
         self.assertIn("required lane failed or did not run", result.stdout)
 
@@ -353,7 +401,7 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertIn("scope unchanged: all required lanes skipped successfully", result.stdout)
 
     def test_changed_scope_cannot_hide_a_skipped_lane(self):
-        result = run_aggregate("true", ["success", "skipped", "success", "success", "success"])
+        result = run_aggregate("true", ["success", "skipped"] + ["success"] * (len(LANES) - 2))
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
 
     def test_changed_scope_fails_when_required_lane_result_is_absent(self):

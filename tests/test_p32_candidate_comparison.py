@@ -6,12 +6,35 @@ import math
 import random
 import struct
 import unittest
+from unittest import mock
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PATH = ROOT / "model-inputs/ed/calibration/p31-known-distribution-fixtures.json"
 OUTPUT_PATH = ROOT / "model-inputs/ed/calibration/p32-candidate-comparison.synthetic.json"
+
+
+CANONICAL_PATH = ROOT / "model-inputs/ed/calibration/p32-canonical-durations.synthetic.json"
+CANONICAL_SHA256 = "225b06f6ea0dce6228cd1982454d6604e0e407a9838c3de1f8d985f201ceae31"
+
+
+def canonical_durations(source):
+    raw = CANONICAL_PATH.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != CANONICAL_SHA256:
+        raise ValueError("canonical duration fixture hash drift")
+    frozen = json.loads(raw)
+    if frozen["source_sha256"] != hashlib.sha256(SOURCE_PATH.read_bytes()).hexdigest() or frozen["source_fixture"] != source["fixture_id"] or frozen["generator"] != source["case"]["generator"]:
+        raise ValueError("canonical duration lineage drift")
+    durations = [float.fromhex(value) for value in frozen["duration_hex"]]
+    if len(durations) != source["case"]["sample_size"] or any(not math.isfinite(value) or value <= 0 for value in durations):
+        raise ValueError("invalid canonical durations")
+    if digest_durations(durations) != frozen["binary64_sha256_big_endian"]:
+        raise ValueError("canonical binary64 input drift")
+    train = [durations[i] for i in frozen_split(len(durations))["train"]]
+    if digest_durations(train) != frozen["training_binary64_sha256_big_endian"]:
+        raise ValueError("canonical training input drift")
+    return durations
 
 
 def generated_log_values(seed, n, mu, sigma):
@@ -136,11 +159,7 @@ def build_output():
     source = json.loads(SOURCE_PATH.read_text())
     case = source["case"]
     truth = case["truth"]
-    generated_logs = generated_log_values(
-        case["generator"]["seed"], case["sample_size"],
-        truth["mu_log_duration"], truth["sigma_log_duration"],
-    )
-    durations = [math.exp(value) for value in generated_logs]
+    durations = canonical_durations(source)
     split = frozen_split(len(durations))
     # Only this projection of row data enters candidate calculations. The
     # selection and locked-test members are represented by indices/digests only.
@@ -210,10 +229,17 @@ class SyntheticCandidateComparisonTests(unittest.TestCase):
         cls.output = json.loads(OUTPUT_PATH.read_text())
         case = cls.source["case"]
         truth = case["truth"]
-        logs = generated_log_values(case["generator"]["seed"], case["sample_size"],
-                                    truth["mu_log_duration"], truth["sigma_log_duration"])
-        cls.durations = [math.exp(value) for value in logs]
+        cls.durations = canonical_durations(cls.source)
         cls.split = frozen_split(len(cls.durations))
+
+    def test_canonical_duration_source_is_bound_to_accepted_receipts(self):
+        frozen = json.loads(CANONICAL_PATH.read_text())
+        train = [self.durations[i] for i in self.split["train"]]
+        self.assertEqual(frozen["training_binary64_sha256_big_endian"], self.output["candidates"]["input_duration_digest_sha256_big_endian_binary64"])
+        self.assertEqual(digest_durations(train), frozen["training_binary64_sha256_big_endian"])
+        with mock.patch.object(CANONICAL_PATH.__class__, "read_bytes", return_value=b"{}"):
+            with self.assertRaisesRegex(ValueError, "hash drift"):
+                canonical_durations(self.source)
 
     def test_split_is_frozen_disjoint_and_complete(self):
         split = self.split

@@ -113,16 +113,16 @@ Entry: D1 and E0's buildable skeleton/fixture. Follow
 - [x] D2.1 Write local CI smoke/negative fixtures: failing test must fail required
   gate, unchanged path is explicit, untrusted PR lacks secrets, missing artifact
   cannot pass. Prepare fmt/clippy/unit/doctest/context lanes before creation.
-- [ ] D2.2 Resolve owner/name/visibility; check for existing repo; create or link
+- [x] D2.2 Resolve owner/name/visibility; check for existing repo; create or link
   once at the value gate. Push reviewed source, configure one-maintainer branch
   rules and verify actual required-check behavior on a small PR.
-- [ ] D2.3 Pin action commit SHAs and tool versions; run actionlint/zizmor, secret
+- [x] D2.3 Pin action commit SHAs and tool versions; run actionlint/zizmor, secret
   scan and full dependency policy. Set narrow permissions, budgets, concurrency,
   cache keys and native Linux/macOS ARM lanes appropriate to the support promise.
   Audit full cargo-deny advisories/bans/licenses/sources, immutable action SHAs including rejection of mutable version tags, recursive submodule identity and cache trust separation. Report 28 upstream workflow findings require source readback; upstream R0–R4 labels do not replace D phases.
-- [ ] D2.4 Add exact-parent-pin Kairos integration plus upstream owner CI; verify
+- [x] D2.4 Add exact-parent-pin Kairos integration plus upstream owner CI; verify
   the parent fails against an incompatible pin even if upstream tests passed.
-- [ ] D2.5 Conductor — review and verify phase (workflow.md).
+- [x] D2.5 Conductor — review and verify phase (workflow.md).
 
 Exit: actual hosted CI/settings evidence and a deliberately failing-check proof,
 not workflow presence alone. Manual verification: clone remotely and run the fixture.
