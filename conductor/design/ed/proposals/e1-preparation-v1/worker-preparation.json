@@ -1,0 +1,87 @@
+{
+  "status": "preparation templates only; not bound/dispatchable",
+  "parent_task": "E1.1",
+  "parent_objective_sha256": "99603880371ab62219d50652bdfae04ade7d0536273b24fea9223c966933b5f3",
+  "required_gates": [
+    "C1.4",
+    "C2.4",
+    "D2.5",
+    "E0.4",
+    "P4.4",
+    "Q4.5"
+  ],
+  "prepared_at_parent_commit": "71c60c25d1e562cdf3fef7d7a0048f0bb6774d29",
+  "adoption_rule": "refresh source/API hashes and gate evidence at dispatch; do not freeze a future execution base here",
+  "limits": {
+    "context_bytes": 24000,
+    "timebox_minutes": 60,
+    "max_write_paths": 5,
+    "max_commands": 3,
+    "max_corrections": 2
+  },
+  "commands": null,
+  "bound_source_base": null,
+  "prerequisite_receipts": null,
+  "workers": [
+    {
+      "existing_leaf_id": "E1.1.endpoints",
+      "recipe_sha256": "cac320cd82e35b1f2ae09ec3e946a7a9e927e72420aefa0891b40da2b1baaeb6",
+      "model_route": "gpt-6-luna candidate; model qualification not inferred",
+      "instance_ids": [
+        "empty",
+        "one-ordered-pathway",
+        "boarding-retains-occupancy"
+      ],
+      "required_additional_instances": "See coverage_requirements; plural pathways/categories require separate case packets and join coverage.",
+      "write_paths": "resolve one actual Rust test file and bounded result/log directory after API review; no manifests/core code/acceptance files",
+      "input_paths": [
+        "conductor/design/ed/proposals/e1-preparation-v1/design.md",
+        "conductor/design/ed/proposals/e1-preparation-v1/oracles.json"
+      ],
+      "failure_policy": "stop on stale hashes, absent gate, missing API, unexpected failure cause or ambiguous clinical endpoint; no worker may change expected results to fit output",
+      "verification_to_resolve": "exact native targeted test argv, expected behavioral red failure and post-implementation green result; independent trace/count comparison; no hand-authored output as runtime proof"
+    },
+    {
+      "existing_leaf_id": "E1.1.extremes",
+      "recipe_sha256": "e75563ee62e07a32ab23a438e6599fac134c5b87af65e26f7190322d50cc6d3e",
+      "model_route": "gpt-6-luna candidate; model qualification not inferred",
+      "instance_ids": [
+        "saturated-fifo",
+        "horizon-clips-service",
+        "zero-duration-acyclic",
+        "boarding-at-horizon"
+      ],
+      "required_additional_instances": "See coverage_requirements; plural pathways/categories require separate case packets and join coverage.",
+      "write_paths": "resolve one actual Rust test file and bounded result/log directory after API review; no manifests/core code/acceptance files",
+      "input_paths": [
+        "conductor/design/ed/proposals/e1-preparation-v1/design.md",
+        "conductor/design/ed/proposals/e1-preparation-v1/oracles.json"
+      ],
+      "failure_policy": "stop on stale hashes, absent gate, missing API, unexpected failure cause or ambiguous clinical endpoint; no worker may change expected results to fit output",
+      "verification_to_resolve": "exact native targeted test argv, expected behavioral red failure and post-implementation green result; independent trace/count comparison; no hand-authored output as runtime proof"
+    },
+    {
+      "existing_leaf_id": "E1.1.invalid",
+      "recipe_sha256": "fe7a2d84639333869c2d66fffa60f8faf9077c18a132e3f073c1a173030a53cc",
+      "model_route": "gpt-6-luna candidate; model qualification not inferred",
+      "instance_ids": [
+        "unknown-resource",
+        "zero-open-capacity-for-required-path",
+        "negative-duration",
+        "arrival-at-horizon",
+        "zero-observation-window",
+        "duplicate-patient-id",
+        "zero-work-cycle",
+        "tick-conversion-overflow"
+      ],
+      "required_additional_instances": "See coverage_requirements; plural pathways/categories require separate case packets and join coverage.",
+      "write_paths": "resolve one actual Rust test file and bounded result/log directory after API review; no manifests/core code/acceptance files",
+      "input_paths": [
+        "conductor/design/ed/proposals/e1-preparation-v1/design.md",
+        "conductor/design/ed/proposals/e1-preparation-v1/oracles.json"
+      ],
+      "failure_policy": "stop on stale hashes, absent gate, missing API, unexpected failure cause or ambiguous clinical endpoint; no worker may change expected results to fit output",
+      "verification_to_resolve": "exact native targeted test argv, expected behavioral red failure and post-implementation green result; independent trace/count comparison; no hand-authored output as runtime proof"
+    }
+  ]
+}
