@@ -409,6 +409,40 @@
       "expected": {
         "admission": "reject with explicit reason before execution; no partial allocations or fabricated terminal events"
       }
+    },
+    {
+      "id": "disposition-information-boundary",
+      "leaf_family": "endpoints",
+      "horizon_ticks": 20,
+      "warm_up_ticks": 0,
+      "inputs": {
+        "decision_tick": 5,
+        "paired_runs": [
+          {
+            "id": "a",
+            "visible_history": [
+              "arrival@0",
+              "assessment_observation@4"
+            ],
+            "latent_future_outcome": "eventual_discharge"
+          },
+          {
+            "id": "b",
+            "visible_history": [
+              "arrival@0",
+              "assessment_observation@4"
+            ],
+            "latent_future_outcome": "eventual_admission"
+          }
+        ],
+        "policy": "same declared policy and logical RNG state at decision tick"
+      },
+      "expected": {
+        "decision_equal_across_runs": true,
+        "decision_inputs_contain_future_outcomes": false,
+        "provisional_disposition_is_terminal": false,
+        "note": "Relational oracle only; consuming tests must bind actual policy/knowledge APIs and record decision input views."
+      }
     }
   ],
   "coverage_requirements": {
