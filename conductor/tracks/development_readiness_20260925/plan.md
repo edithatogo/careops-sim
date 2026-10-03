@@ -129,7 +129,7 @@ not workflow presence alone. Manual verification: clone remotely and run the fix
 
 ## D3 — Risk-focused quality and security depth
 
-- [ ] D3.1 Add failing malformed-input, state-machine, resume and seed-change
+- [x] D3.1 Add failing malformed-input, state-machine, resume and seed-change
   cases as implementations land; promote minimized property/fuzz failures to fixtures.
 - [ ] D3.2 Add a tested dated nightly fuzz/sanitizer lane, selective Miri/unsafe
   checks and Rust CodeQL extraction where available. Keep unsupported analysis
