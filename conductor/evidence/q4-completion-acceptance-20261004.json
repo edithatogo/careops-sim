@@ -399,6 +399,129 @@
     "exit": 0,
     "log_sha256": "98ea2099c8ca6f2f148c388d37bb6d539244c07cb339518580842724563c9f46",
     "log_path": ".artifacts/rust199/parent-full-tests.log",
-    "qualification": "precommit integration tree; final commit pin check and hosted parent checks remain publication gates"
-  }
+    "qualification": "Precommit integration-tree test result. Subsequent committed pin/context/tasks/MVP/bootstrap checks and hosted source-antecedent CI are recorded below; any metadata successor still requires fresh exact-head checks before merge."
+  },
+  "parent_source_antecedent_qualification": {
+    "commit": "4e602c36574eeffaa5077a333ee732d7320e4fff",
+    "ci": {
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/edithatogo/careops-sim/actions/runs/37193225322"
+    },
+    "jobs": [
+      {
+        "name": "scope",
+        "conclusion": "success"
+      },
+      {
+        "name": "fuzz (nightly 2026-10-02)",
+        "conclusion": "success"
+      },
+      {
+        "name": "fmt",
+        "conclusion": "success"
+      },
+      {
+        "name": "miri (nightly 2026-10-02, kairo-ecs-ffi integration)",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (macos-15)",
+        "conclusion": "success"
+      },
+      {
+        "name": "clippy",
+        "conclusion": "success"
+      },
+      {
+        "name": "doctest",
+        "conclusion": "success"
+      },
+      {
+        "name": "policy",
+        "conclusion": "success"
+      },
+      {
+        "name": "context",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (ubuntu-24.04)",
+        "conclusion": "success"
+      },
+      {
+        "name": "msrv (Rust 1.76.0, default features)",
+        "conclusion": "success"
+      },
+      {
+        "name": "Required checks",
+        "conclusion": "success"
+      }
+    ],
+    "committed_local_checks": [
+      {
+        "name": "pin",
+        "argv": [
+          "python3",
+          "tools/check_kairos_pin.py"
+        ],
+        "cwd": "/private/tmp/careops-q4-completion",
+        "source_sha": "4e602c36574eeffaa5077a333ee732d7320e4fff",
+        "exit_code": 0,
+        "log_sha256": "339acc3b09add3c3d0e689adf17878a1bd264d3a3f00fccce7db538630e20066"
+      },
+      {
+        "name": "context",
+        "argv": [
+          "python3",
+          "tools/context.py",
+          "check"
+        ],
+        "cwd": "/private/tmp/careops-q4-completion",
+        "source_sha": "4e602c36574eeffaa5077a333ee732d7320e4fff",
+        "exit_code": 0,
+        "log_sha256": "2ccb62bdd38faf8a98fe6864c0bad4faec10867c64d4e31b7e53fd63136ba0c8"
+      },
+      {
+        "name": "tasks",
+        "argv": [
+          "python3",
+          "tools/tasks.py",
+          "check"
+        ],
+        "cwd": "/private/tmp/careops-q4-completion",
+        "source_sha": "4e602c36574eeffaa5077a333ee732d7320e4fff",
+        "exit_code": 0,
+        "log_sha256": "ac10bc7df9f1e00e058d4a74b630bd3e824b58447e6ec8f53e322314796f11f1"
+      },
+      {
+        "name": "mvp",
+        "argv": [
+          "python3",
+          "tools/mvp.py",
+          "check"
+        ],
+        "cwd": "/private/tmp/careops-q4-completion",
+        "source_sha": "4e602c36574eeffaa5077a333ee732d7320e4fff",
+        "exit_code": 0,
+        "log_sha256": "beaa82584df49f8a7832d7e59ff0980f5ac612aa1854d27df5e517a6f5469d60"
+      },
+      {
+        "name": "bootstrap",
+        "argv": [
+          "python3",
+          "tools/bootstrap.py",
+          "--check"
+        ],
+        "cwd": "/private/tmp/careops-q4-completion",
+        "source_sha": "4e602c36574eeffaa5077a333ee732d7320e4fff",
+        "exit_code": 0,
+        "log_sha256": "5703bb0640a1d0aa959e27a6c0c91e32c54b2c7f05cd2e53faf3cdfb3d048a8c"
+      }
+    ],
+    "raw_ci_receipt_sha256": "6e4f34613d2b7efbd36907239110fdd44e2f978900226c36659c421808d24368",
+    "raw_ci_log_sha256": "c116193fdb758e3a55c95ac89bbba967a8622845bf8c12758e75e5c0e735f262",
+    "publication": "parent merge pending; metadata successor requires fresh exact-head checks"
+  },
+  "luna_final_review_sha256": "62d11a69c0b95a224e30b0ef79a02a8e732ea174a84f575fced43541485ae317"
 }

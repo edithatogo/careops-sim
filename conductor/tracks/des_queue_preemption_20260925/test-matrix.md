@@ -1,6 +1,8 @@
 # Automated test matrix — queues and preemption
 
-Q0–Q4 have bounded implementation evidence; final Q4.5 integration is pending.
+Q0–Q4 have accepted bounded development evidence, including Q4.5. Parent
+publication is verified separately through exact-head hosted checks and merge
+readback.
 The table names are acceptance identifiers, not necessarily Cargo target names.
 Q5 conformance, worker invariance, compatibility and benchmark joins remain
 planned. Actual commands, source hashes and results belong in the phase receipts;
