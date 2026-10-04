@@ -1,0 +1,787 @@
+{
+  "schema_version": 1,
+  "scope": "bounded shared ABM adapter and read-only registration prerequisite; no full Q4/C1 or release acceptance",
+  "source_commit": "c8f1558fba700a8c3cc506348d4f64e9113725a9",
+  "local_receipt": {
+    "path_at_collection": "/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/final-runtime-receipt.json",
+    "sha256": "c36821e6d508d43f3d5042d69af229ba14fc65b3636883a924d4b5fd2ce94edd",
+    "content": {
+      "utc": "2026-10-03T23:12:26.884961+00:00",
+      "head": "501758474c44a562c2077331308df915d1dd081c",
+      "cwd": "/private/tmp/kairos-q4-abm-registration-join-v1",
+      "candidate_hashes": {
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "60d6d6d3b8684842369e0500cde5313f4d4e349004723e307620a9a6e3fd4b95",
+        "crates/kairo-ecs-abm/src/lib.rs": "28cb36d070b3b7c96c446ce8ab30c2bb5f5f3c7509d79c1fa5cd51813d35dadb",
+        "crates/kairo-ecs-abm/tests/flow_adapter_v1.rs": "c1fe9db44339d8d1b5b451b1af119f8ff09e614688acd1c5d696e7a8f1937ea6"
+      },
+      "input_hashes_verified": {
+        "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+        "Cargo.lock": "7cc2f5cc4e4c4ebfee950ddbcc335016df024832c26fd57b5f10d7791d1d1660",
+        "crates/kairo-ecs-abm/Cargo.toml": "3593f927b084bbf0b45b66e4dc6a88dec91479a237feb6163926fd6db46957c7",
+        "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+        "crates/kairo-ecs-des/src/lib.rs": "85792d7f9c2b9c220930fa7a5a6c09cba66ae1bbc6935a29abcec017560fbba2",
+        "crates/kairo-ecs-rng/src/lib.rs": "68397e53959221c17a9705da1dd6e23a8221df9825e879222cdd9b154029a991",
+        "conductor/design/flow/q4-shared-abm-v1.md": "69a9c2d79963463a27f958d7251bac6fb0849a41b8ecdbd8ea4a072e55671099",
+        "crates/kairo-ecs-des/tests/flow_shared_domain_v1.rs": "97ede277ce678f4857788e016b22561789a1f806dc699936cfea614885d022dd",
+        "crates/kairo-ecs-des/tests/flow_registration_phase_v1.rs": "e5775f79dc5e2558d22f0cf893c26d39d1d5e1db3f4b7026965d63d647cb8147"
+      },
+      "packet_sha256": "e8adb7128504cd29e7ee37bf3ae1a6d3bcc6f06bb92f1a1468fbbd8b666de7fd",
+      "wrapper_sha256": "293a6dfe0acd5eb14e408d7c2d4c08ce16fbda2179f6683ca646a3659f94d1cb",
+      "diff_sha256": "be9618594c7820948bdd95af6d1157eba65597a46081b6ae89f4e29a5ace9c21",
+      "format_exit": 0,
+      "diff_check_exit": 0,
+      "toolchains": {
+        "1.88.0": {
+          "cargo": {
+            "path": "/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/cargo",
+            "sha256": "1e871156aaf10cf58364b6fd4c824859d5d178f227b963a81a58ade2442ac744",
+            "version": "cargo 1.88.0 (873a06493 2025-05-10)"
+          },
+          "rustc": {
+            "path": "/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/rustc",
+            "sha256": "6efc19b5cef1e23df77a75d94ce8b75ed9e8929f0dee0618154c88fd6d82c3e1",
+            "version": "rustc 1.88.0 (6b00bc388 2025-06-23)"
+          },
+          "rustdoc": {
+            "path": "/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/rustdoc",
+            "sha256": "bc6e8b6f383d02197c6cc8cc5b17699d4421baa40b4531b56d376f228cf3a9ce",
+            "version": "rustdoc 1.88.0 (6b00bc388 2025-06-23)"
+          }
+        },
+        "1.98.1": {
+          "cargo": {
+            "path": "/Users/doughnut/.rustup/toolchains/1.98.1-aarch64-apple-darwin/bin/cargo",
+            "sha256": "6e17e865f3a20dd55a1d212f849f58b77124179f0de7c52973096d84ba34118d",
+            "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)"
+          },
+          "rustc": {
+            "path": "/Users/doughnut/.rustup/toolchains/1.98.1-aarch64-apple-darwin/bin/rustc",
+            "sha256": "766eda9d8f53afd6fc7f27b3cd2e444dd22afacb5afa710a5625fc8e45b8c941",
+            "version": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          },
+          "rustdoc": {
+            "path": "/Users/doughnut/.rustup/toolchains/1.98.1-aarch64-apple-darwin/bin/rustdoc",
+            "sha256": "8ce1ae78157758d4d75eee1355ed333f27e903ab6b0904e09d326009b333c2ee",
+            "version": "rustdoc 1.98.1 (48a229cea 2026-09-01)"
+          }
+        }
+      },
+      "results": {
+        "1.88.0": {
+          "ABM_tests": 20,
+          "DES_tests": 160,
+          "total_tests": 180,
+          "result_counts": [
+            8,
+            2,
+            3,
+            7,
+            74,
+            4,
+            2,
+            6,
+            6,
+            5,
+            8,
+            1,
+            4,
+            8,
+            1,
+            1,
+            1,
+            8,
+            5,
+            9,
+            7,
+            4,
+            6,
+            0,
+            0
+          ],
+          "full": {
+            "argv": [
+              "/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-abm",
+              "-p",
+              "kairo-ecs-des",
+              "--message-format=json"
+            ],
+            "cwd": "/private/tmp/kairos-q4-abm-registration-join-v1",
+            "start_utc": "2026-10-03T23:02:26.502427+00:00",
+            "exit": 0,
+            "stdout_sha256": "bfa98a957e6f2865cf93d43199536987a45f5def7c33d4496d07bfb1c529445d",
+            "stderr_sha256": "c5fa1bb45c5588bc60cf1cf2b8d3bc752b2c0f1eb71d10f2d130ca31fed251af"
+          },
+          "lifetime_negatives": {
+            "escape-view": {
+              "argv": [
+                "/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/rustc",
+                "--edition",
+                "2021",
+                "/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/escape-view.rs",
+                "--out-dir",
+                "/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/1.88.0",
+                "--extern",
+                "kairo_ecs_abm=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.88.0/debug/deps/libkairo_ecs_abm-18940ac20f166dad.rlib",
+                "--extern",
+                "kairo_ecs_des=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.88.0/debug/deps/libkairo_ecs_des-c46ee616af5bf868.rlib",
+                "-L",
+                "dependency=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.88.0/debug/deps"
+              ],
+              "cwd": "/private/tmp/kairos-q4-abm-registration-join-v1",
+              "start_utc": "2026-10-03T23:07:56.741789+00:00",
+              "exit": 1,
+              "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_sha256": "8e7acec188dec8a5d5b4fc3cd125db4ea213f51db35eeac4a668796dbbe3c63c"
+            },
+            "escape-snapshot": {
+              "argv": [
+                "/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/rustc",
+                "--edition",
+                "2021",
+                "/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/escape-snapshot.rs",
+                "--out-dir",
+                "/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/1.88.0",
+                "--extern",
+                "kairo_ecs_abm=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.88.0/debug/deps/libkairo_ecs_abm-18940ac20f166dad.rlib",
+                "--extern",
+                "kairo_ecs_des=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.88.0/debug/deps/libkairo_ecs_des-c46ee616af5bf868.rlib",
+                "-L",
+                "dependency=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.88.0/debug/deps"
+              ],
+              "cwd": "/private/tmp/kairos-q4-abm-registration-join-v1",
+              "start_utc": "2026-10-03T23:08:12.556467+00:00",
+              "exit": 1,
+              "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_sha256": "17ef8da6a7d25dc036349de2182ff33b99af369c47c305010c9af8ff0e0f0954"
+            }
+          }
+        },
+        "1.98.1": {
+          "ABM_tests": 20,
+          "DES_tests": 160,
+          "total_tests": 180,
+          "result_counts": [
+            8,
+            2,
+            3,
+            7,
+            74,
+            4,
+            2,
+            6,
+            6,
+            5,
+            8,
+            1,
+            4,
+            8,
+            1,
+            1,
+            1,
+            8,
+            5,
+            9,
+            7,
+            4,
+            6,
+            0,
+            0
+          ],
+          "full": {
+            "argv": [
+              "/Users/doughnut/.rustup/toolchains/1.98.1-aarch64-apple-darwin/bin/cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-abm",
+              "-p",
+              "kairo-ecs-des",
+              "--message-format=json"
+            ],
+            "cwd": "/private/tmp/kairos-q4-abm-registration-join-v1",
+            "start_utc": "2026-10-03T23:08:56.093106+00:00",
+            "exit": 0,
+            "stdout_sha256": "3e463e9d4edfd51b30ac37e7ca394fe31be16b4a93fa326757458dc0de223977",
+            "stderr_sha256": "7b9240f7990b3387048e429e3c24d8be191632c5205a42fdac3beca56330d685"
+          },
+          "lifetime_negatives": {
+            "escape-view": {
+              "argv": [
+                "/Users/doughnut/.rustup/toolchains/1.98.1-aarch64-apple-darwin/bin/rustc",
+                "--edition",
+                "2021",
+                "/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/escape-view.rs",
+                "--out-dir",
+                "/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/1.98.1",
+                "--extern",
+                "kairo_ecs_abm=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.98.1/debug/deps/libkairo_ecs_abm-a3822072d8997d46.rlib",
+                "--extern",
+                "kairo_ecs_des=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.98.1/debug/deps/libkairo_ecs_des-f460e259a6e186a1.rlib",
+                "-L",
+                "dependency=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.98.1/debug/deps"
+              ],
+              "cwd": "/private/tmp/kairos-q4-abm-registration-join-v1",
+              "start_utc": "2026-10-03T23:09:36.661924+00:00",
+              "exit": 1,
+              "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_sha256": "8e7acec188dec8a5d5b4fc3cd125db4ea213f51db35eeac4a668796dbbe3c63c"
+            },
+            "escape-snapshot": {
+              "argv": [
+                "/Users/doughnut/.rustup/toolchains/1.98.1-aarch64-apple-darwin/bin/rustc",
+                "--edition",
+                "2021",
+                "/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/escape-snapshot.rs",
+                "--out-dir",
+                "/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/1.98.1",
+                "--extern",
+                "kairo_ecs_abm=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.98.1/debug/deps/libkairo_ecs_abm-a3822072d8997d46.rlib",
+                "--extern",
+                "kairo_ecs_des=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.98.1/debug/deps/libkairo_ecs_des-f460e259a6e186a1.rlib",
+                "-L",
+                "dependency=/private/tmp/kairos-q4-abm-registration-join-v1/.artifacts/q4-abm-registration-join-v1/target-1.98.1/debug/deps"
+              ],
+              "cwd": "/private/tmp/kairos-q4-abm-registration-join-v1",
+              "start_utc": "2026-10-03T23:09:57.037272+00:00",
+              "exit": 1,
+              "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_sha256": "17ef8da6a7d25dc036349de2182ff33b99af369c47c305010c9af8ff0e0f0954"
+            }
+          }
+        }
+      },
+      "logs": {
+        "1.88.0/escape-snapshot.stderr": "17ef8da6a7d25dc036349de2182ff33b99af369c47c305010c9af8ff0e0f0954",
+        "1.88.0/escape-view.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "1.88.0/qualification.json": "8e9a7c881759f5f3d3ccf8c061c3ac61b9611509e4ac6c07a710fba650be5ab9",
+        "1.88.0/full.stderr": "c5fa1bb45c5588bc60cf1cf2b8d3bc752b2c0f1eb71d10f2d130ca31fed251af",
+        "1.88.0/escape-snapshot.json": "e3fee36fe1ed0faba254da009dc7459a3283a929b62d2baabd0d7a3cb1f94d3e",
+        "1.88.0/full.stdout": "bfa98a957e6f2865cf93d43199536987a45f5def7c33d4496d07bfb1c529445d",
+        "1.88.0/escape-view.stderr": "8e7acec188dec8a5d5b4fc3cd125db4ea213f51db35eeac4a668796dbbe3c63c",
+        "1.88.0/escape-snapshot.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "1.88.0/full.json": "490bc3ea1a75644c4444645e5c6909a13a6d1c09920bffd0854965e19fe6629d",
+        "1.88.0/escape-view.json": "13389c82e70569b8d5fdf5afb77287dbff6d77443778bd4e191fec2f02a32aa0",
+        "1.98.1/escape-snapshot.stderr": "17ef8da6a7d25dc036349de2182ff33b99af369c47c305010c9af8ff0e0f0954",
+        "1.98.1/escape-view.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "1.98.1/qualification.json": "ee825c334ad869846913b124be5707ae1d6b62bd29fb4ca6158d41a3b199b749",
+        "1.98.1/full.stderr": "7b9240f7990b3387048e429e3c24d8be191632c5205a42fdac3beca56330d685",
+        "1.98.1/escape-snapshot.json": "80fa791b81018121314d5115635094abce978245f44a867e5b86144434b4f541",
+        "1.98.1/full.stdout": "3e463e9d4edfd51b30ac37e7ca394fe31be16b4a93fa326757458dc0de223977",
+        "1.98.1/escape-view.stderr": "8e7acec188dec8a5d5b4fc3cd125db4ea213f51db35eeac4a668796dbbe3c63c",
+        "1.98.1/escape-snapshot.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "1.98.1/full.json": "253b0a0e9c69225dc9c5289ad384ecba729292671c8e76e4af640e3ff0e81d54",
+        "1.98.1/escape-view.json": "6d9ca3e025db489fcf4b127dbc75a7abc0734923c9a09bdf5a8e3b0b35a93b6f"
+      },
+      "tracked_status": " M crates/kairo-ecs-abm/src/lib.rs\n?? .artifacts/\n?? crates/kairo-ecs-abm/src/flow_adapter.rs\n?? crates/kairo-ecs-abm/tests/flow_adapter_v1.rs\n",
+      "failure_lineage": "Original B attempt1 private-result compiler failure and attempt2 late-registration behavioral failure retained in old checkout; current join attempt1 successful suite followed by rlib-wrapper classification failure, corrected without repeating1.88 suite",
+      "private_gate": "Actual immutable typed row raw rng.clone().into_inner/state/behavior equality at preconsume denial and repeated fail-stop; no public inspection API/unsafe",
+      "status": "ready for root source/evidence review; local qualification only",
+      "remaining": [
+        "hosted qualification blocked by account billing",
+        "full Q4/telemetry/phase/release acceptance"
+      ],
+      "lease": "retained and renewed",
+      "commit_or_push": false
+    }
+  },
+  "hosted_receipt": {
+    "path_at_collection": "/private/tmp/kairos-q4-abm-hosted-receipt-v1/.artifacts/q4-abm-hosted-proof-37161242184/runtime-oracle-review.json",
+    "sha256": "f2d1364a402bc8d931714228f5d1ae2412897ff55018415fb519da1d53353c50",
+    "content": {
+      "utc": "2026-10-03T23:20:31.488001+00:00",
+      "run_id": 37161242184,
+      "head": "c8f1558fba700a8c3cc506348d4f64e9113725a9",
+      "branch": "codex/careops-q4-shared-abm-adapter",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 111314942442,
+          "name": "Native owner (ubuntu-24.04)",
+          "conclusion": "success"
+        },
+        {
+          "id": 111314942547,
+          "name": "Native owner (macos-15)",
+          "conclusion": "success"
+        },
+        {
+          "id": 111314942572,
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, both)",
+          "conclusion": "success"
+        },
+        {
+          "id": 111314942574,
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, none)",
+          "conclusion": "success"
+        },
+        {
+          "id": 111314942600,
+          "name": "Arrow IO Rust 1.88 (macos-15, none)",
+          "conclusion": "success"
+        },
+        {
+          "id": 111314942620,
+          "name": "Arrow IO Rust 1.88 (macos-15, ipc)",
+          "conclusion": "success"
+        },
+        {
+          "id": 111314942622,
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, ipc)",
+          "conclusion": "success"
+        },
+        {
+          "id": 111314942634,
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, parquet)",
+          "conclusion": "success"
+        },
+        {
+          "id": 111314942641,
+          "name": "Arrow IO Rust 1.88 (macos-15, both)",
+          "conclusion": "success"
+        },
+        {
+          "id": 111314942664,
+          "name": "Arrow IO Rust 1.88 (macos-15, parquet)",
+          "conclusion": "success"
+        },
+        {
+          "id": 111315239983,
+          "name": "Native and Arrow IO required",
+          "conclusion": "success"
+        }
+      ],
+      "verified_artifacts": [
+        {
+          "id": 11288160161,
+          "name": "arrow-io-rust-1.88.0-macos-15-ipc",
+          "api_digest": "sha256:de1ced02e2238cbf01dddb27730a85651d251ca81dd90aabfe62e33a4f8debfc",
+          "sha256": "de1ced02e2238cbf01dddb27730a85651d251ca81dd90aabfe62e33a4f8debfc",
+          "bytes": 1700,
+          "crc": "allmemberspassed",
+          "members": [
+            "test.log",
+            "toolchain.log"
+          ],
+          "path": "/private/tmp/kairos-q4-abm-hosted-receipt-v1/.artifacts/q4-abm-hosted-proof-37161242184/11288160161.zip"
+        },
+        {
+          "id": 11288015643,
+          "name": "arrow-io-rust-1.88.0-macos-15-both",
+          "api_digest": "sha256:eb2ca40c733febb9b755b58c6c2c6d6c5df4614a5d25530c948e942983fd2e80",
+          "sha256": "eb2ca40c733febb9b755b58c6c2c6d6c5df4614a5d25530c948e942983fd2e80",
+          "bytes": 6188,
+          "crc": "allmemberspassed",
+          "members": [
+            "fixtures.log",
+            "pyarrow-readback.log",
+            "python.log",
+            "rust-output/rust.ipc_file",
+            "rust-output/rust.ipc_stream",
+            "rust-output/rust.parquet",
+            "test.log",
+            "toolchain.log"
+          ],
+          "path": "/private/tmp/kairos-q4-abm-hosted-receipt-v1/.artifacts/q4-abm-hosted-proof-37161242184/11288015643.zip"
+        },
+        {
+          "id": 11287960584,
+          "name": "arrow-io-rust-1.88.0-ubuntu-24.04-both",
+          "api_digest": "sha256:556e8b6667cd6d1af932e59518b2781088b24c0e152821b8a6f1d9c3df73f56e",
+          "sha256": "556e8b6667cd6d1af932e59518b2781088b24c0e152821b8a6f1d9c3df73f56e",
+          "bytes": 6184,
+          "crc": "allmemberspassed",
+          "members": [
+            "fixtures.log",
+            "pyarrow-readback.log",
+            "python.log",
+            "rust-output/rust.ipc_file",
+            "rust-output/rust.ipc_stream",
+            "rust-output/rust.parquet",
+            "test.log",
+            "toolchain.log"
+          ],
+          "path": "/private/tmp/kairos-q4-abm-hosted-receipt-v1/.artifacts/q4-abm-hosted-proof-37161242184/11287960584.zip"
+        },
+        {
+          "id": 11287955785,
+          "name": "arrow-io-rust-1.98.1-ubuntu-24.04",
+          "api_digest": "sha256:221b386c4fdb1bbeb360724e39906ac6cde56cbfc381f29354346364dc75df50",
+          "sha256": "221b386c4fdb1bbeb360724e39906ac6cde56cbfc381f29354346364dc75df50",
+          "bytes": 6021,
+          "crc": "allmemberspassed",
+          "members": [
+            "fixtures.log",
+            "python.log",
+            "pyarrow-readback.log",
+            "rust-output/rust.ipc_file",
+            "rust-output/rust.ipc_stream",
+            "rust-output/rust.parquet",
+            "test.log",
+            "toolchain.log"
+          ],
+          "path": "/private/tmp/kairos-q4-abm-hosted-receipt-v1/.artifacts/q4-abm-hosted-proof-37161242184/11287955785.zip"
+        },
+        {
+          "id": 11287855932,
+          "name": "arrow-io-rust-1.88.0-ubuntu-24.04-none",
+          "api_digest": "sha256:322d2f360a1cbb411f4311a4c3e41ff75992783d518d7c3ebb8e5e8719921537",
+          "sha256": "322d2f360a1cbb411f4311a4c3e41ff75992783d518d7c3ebb8e5e8719921537",
+          "bytes": 1512,
+          "crc": "allmemberspassed",
+          "members": [
+            "test.log",
+            "toolchain.log"
+          ],
+          "path": "/private/tmp/kairos-q4-abm-hosted-receipt-v1/.artifacts/q4-abm-hosted-proof-37161242184/11287855932.zip"
+        },
+        {
+          "id": 11287716331,
+          "name": "arrow-io-rust-1.88.0-macos-15-parquet",
+          "api_digest": "sha256:e1502b5ec3722f238cd1ad2c2173e4ede6d04a02acecc63510957e1dbe576a4e",
+          "sha256": "e1502b5ec3722f238cd1ad2c2173e4ede6d04a02acecc63510957e1dbe576a4e",
+          "bytes": 1822,
+          "crc": "allmemberspassed",
+          "members": [
+            "test.log",
+            "toolchain.log"
+          ],
+          "path": "/private/tmp/kairos-q4-abm-hosted-receipt-v1/.artifacts/q4-abm-hosted-proof-37161242184/11287716331.zip"
+        },
+        {
+          "id": 11287449721,
+          "name": "arrow-io-rust-1.98.1-macos-15",
+          "api_digest": "sha256:47d7cbb7d0d080eb602e30b75b4b42001d674bdb6bf3b6dbbf8e203cdb2da640",
+          "sha256": "47d7cbb7d0d080eb602e30b75b4b42001d674bdb6bf3b6dbbf8e203cdb2da640",
+          "bytes": 6029,
+          "crc": "allmemberspassed",
+          "members": [
+            "pyarrow-readback.log",
+            "fixtures.log",
+            "python.log",
+            "rust-output/rust.ipc_file",
+            "rust-output/rust.ipc_stream",
+            "rust-output/rust.parquet",
+            "test.log",
+            "toolchain.log"
+          ],
+          "path": "/private/tmp/kairos-q4-abm-hosted-receipt-v1/.artifacts/q4-abm-hosted-proof-37161242184/11287449721.zip"
+        },
+        {
+          "id": 11287444601,
+          "name": "arrow-io-rust-1.88.0-ubuntu-24.04-ipc",
+          "api_digest": "sha256:73543e528c9dfad3c9dfc81948f1b608cbe3e337b5b6ca2f168a1aeb7bd1765e",
+          "sha256": "73543e528c9dfad3c9dfc81948f1b608cbe3e337b5b6ca2f168a1aeb7bd1765e",
+          "bytes": 1678,
+          "crc": "allmemberspassed",
+          "members": [
+            "test.log",
+            "toolchain.log"
+          ],
+          "path": "/private/tmp/kairos-q4-abm-hosted-receipt-v1/.artifacts/q4-abm-hosted-proof-37161242184/11287444601.zip"
+        },
+        {
+          "id": 11287334749,
+          "name": "arrow-io-rust-1.88.0-ubuntu-24.04-parquet",
+          "api_digest": "sha256:ad552cc900a7c14ecb56f118ef2b465dc9b062124d01cc1490000095b8bc4d50",
+          "sha256": "ad552cc900a7c14ecb56f118ef2b465dc9b062124d01cc1490000095b8bc4d50",
+          "bytes": 1798,
+          "crc": "allmemberspassed",
+          "members": [
+            "test.log",
+            "toolchain.log"
+          ],
+          "path": "/private/tmp/kairos-q4-abm-hosted-receipt-v1/.artifacts/q4-abm-hosted-proof-37161242184/11287334749.zip"
+        },
+        {
+          "id": 11287038573,
+          "name": "arrow-io-rust-1.88.0-macos-15-none",
+          "api_digest": "sha256:c60b8555d277fbf246a867799bc3b4df1c640886d14040fa9f8d28cd066a1bf8",
+          "sha256": "c60b8555d277fbf246a867799bc3b4df1c640886d14040fa9f8d28cd066a1bf8",
+          "bytes": 1510,
+          "crc": "allmemberspassed",
+          "members": [
+            "test.log",
+            "toolchain.log"
+          ],
+          "path": "/private/tmp/kairos-q4-abm-hosted-receipt-v1/.artifacts/q4-abm-hosted-proof-37161242184/11287038573.zip"
+        }
+      ],
+      "hosts": {
+        "ubuntu-24.04": {
+          "job_id": 111314942442,
+          "conclusion": "success",
+          "raw_log_sha256": "e5fd60f925d0ba895a7750f7907e6eac6a0df07bc0e8c63d73f7bf9cb00b2ba9",
+          "oracles": {
+            "shared_behavior_observes_authoritative_des_time_and_buffered_peer_lifetime": [
+              355
+            ],
+            "entity_stream_draw_positions_ignore_cross_actor_order_and_pause_boundaries": [
+              350
+            ],
+            "recycled_actor_generation_has_fresh_stream_and_old_handle_is_stale": [
+              353
+            ],
+            "registration_type_kind_and_unique_carrier_failures_are_atomic": [
+              352
+            ],
+            "rejected_callback_batches_keep_one_state_change_and_one_draw_without_replay": [
+              354
+            ],
+            "preconsume_budget_failure_preserves_behavior_draw_position_and_pending_head": [
+              351
+            ],
+            "behavior_commands_use_real_task_leases_and_never_acquire_the_carrier": [
+              349
+            ],
+            "flow_adapter::tests::preconsume_budget_preserves_actual_private_stream_state_and_behavior": [
+              321
+            ]
+          },
+          "owner_suite_counts": [
+            8,
+            2,
+            3,
+            7,
+            6,
+            4,
+            6,
+            1,
+            13,
+            5,
+            17,
+            4,
+            8,
+            7,
+            3,
+            74,
+            4,
+            2,
+            6,
+            6,
+            5,
+            8,
+            1,
+            4,
+            8,
+            1,
+            1,
+            1,
+            8,
+            5,
+            9,
+            7,
+            4,
+            6,
+            5,
+            0,
+            6,
+            8,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "native_owner_total": 273,
+          "actual_ABM_tests": 20,
+          "actual_DES_tests": 160,
+          "package_suite_counts": {
+            "ABM": [
+              8,
+              2,
+              3,
+              7,
+              0
+            ],
+            "DES": [
+              74,
+              4,
+              2,
+              6,
+              6,
+              5,
+              8,
+              1,
+              4,
+              8,
+              1,
+              1,
+              1,
+              8,
+              5,
+              9,
+              7,
+              4,
+              6,
+              0
+            ]
+          },
+          "source_readback_lines": [
+            98,
+            100,
+            104,
+            116,
+            178
+          ],
+          "compiler_readback_lines": [
+            184,
+            1034,
+            1072,
+            1074
+          ]
+        },
+        "macos-15": {
+          "job_id": 111314942547,
+          "conclusion": "success",
+          "raw_log_sha256": "476115bd482c19beb2f073278396412c4153bdb1b72d379c3269ee87e649ad8e",
+          "oracles": {
+            "shared_behavior_observes_authoritative_des_time_and_buffered_peer_lifetime": [
+              358
+            ],
+            "entity_stream_draw_positions_ignore_cross_actor_order_and_pause_boundaries": [
+              355
+            ],
+            "recycled_actor_generation_has_fresh_stream_and_old_handle_is_stale": [
+              353
+            ],
+            "registration_type_kind_and_unique_carrier_failures_are_atomic": [
+              356
+            ],
+            "rejected_callback_batches_keep_one_state_change_and_one_draw_without_replay": [
+              357
+            ],
+            "preconsume_budget_failure_preserves_behavior_draw_position_and_pending_head": [
+              352
+            ],
+            "behavior_commands_use_real_task_leases_and_never_acquire_the_carrier": [
+              354
+            ],
+            "flow_adapter::tests::preconsume_budget_preserves_actual_private_stream_state_and_behavior": [
+              328
+            ]
+          },
+          "owner_suite_counts": [
+            8,
+            2,
+            3,
+            7,
+            6,
+            4,
+            6,
+            1,
+            13,
+            5,
+            17,
+            4,
+            8,
+            7,
+            3,
+            74,
+            4,
+            2,
+            6,
+            6,
+            5,
+            8,
+            1,
+            4,
+            8,
+            1,
+            1,
+            1,
+            8,
+            5,
+            9,
+            7,
+            4,
+            6,
+            5,
+            0,
+            6,
+            8,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "native_owner_total": 273,
+          "actual_ABM_tests": 20,
+          "actual_DES_tests": 160,
+          "package_suite_counts": {
+            "ABM": [
+              8,
+              2,
+              3,
+              7,
+              0
+            ],
+            "DES": [
+              74,
+              4,
+              2,
+              6,
+              6,
+              5,
+              8,
+              1,
+              4,
+              8,
+              1,
+              1,
+              1,
+              8,
+              5,
+              9,
+              7,
+              4,
+              6,
+              0
+            ]
+          },
+          "source_readback_lines": [
+            99,
+            101,
+            105,
+            117,
+            181
+          ],
+          "compiler_readback_lines": [
+            187,
+            1051,
+            1088,
+            1090
+          ]
+        }
+      },
+      "all_jobs_log_sha256": "4534603207f4621a9c0ae3caa89c194b836e381b88fe02cb2adc29a68b04e422",
+      "metadata_hashes": {
+        "run.json": "30e85ff932218e2d151516a2f9c84411455eaa7ebeec1169ccfc9213acc3b2b3",
+        "jobs.json": "885977a0904984ff06ddf0072eeb05c728a5ff2d28430bde7c90d47a259f4bdd",
+        "artifacts.json": "04bb999c052dd74985c0ffbaadb0e1cad17ca3a84cd7b0d2bd87abc99e20fe16",
+        "verified-downloads.json": "40cdef46bed4c094abbf7dbb266427cea3ba888ad13e42916d67b047702d72f2"
+      },
+      "limits": [
+        "No hosted lifetime-negative execution",
+        "No hosted ABM/DES Rust1.88 floor claim",
+        "No full Q4/telemetry/release/parentpin acceptance",
+        "Parentbilling independent; actualthisKairosworkflow ran"
+      ],
+      "status": "hosted raw evidence collected; independentroot acceptance pending"
+    }
+  },
+  "qualification_correction": "Historical local receipt billing wording is superseded: parent billing confirmed blocked; Kairos exact owner run37161242184 actually succeeded. Availability is workflow-specific. Local1.88/1.98 lifetime negatives remain separate from hosted runtime proof.",
+  "retention": "Original raw logs/archives remain external local evidence; tracked receipts bind them by hash and do not imply durable storage or upload of raw context."
+}
