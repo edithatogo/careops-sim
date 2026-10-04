@@ -6,7 +6,7 @@ catalog preserves every prerequisite and phase closeout. Prepare and validate
 bounded worker packets before dispatch; gpt-6-luna is a candidate worker, not an
 assumed authority for unresolved contracts or acceptance decisions.
 
-**Status:** in progress; checked Q0–Q3 tasks record evidence-backed experimental development acceptance. Q4/Q5 remain open; the programme and release are not complete. Parent integration is governed by exact-head hosted checks and native merge readback.
+**Status:** Q0–Q4 and Q5.1–Q5.3 have bounded development acceptance at their recorded heads. Q5.4 phase review is in progress. The coordinator reports independent fixture/hash replay complete; exact-head hosted acceptance remains pending, and Q5 remains open until the coordinator records closeout. This is not programme, release, clinical or MVP acceptance. Parent integration and release remain governed by their separate gates.
 **Specification:** [spec.md](spec.md) · **Workflow:** [workflow.md](../../workflow.md)
 **Owners:** upstream 03, with 01/04/12/25 as recorded per milestone.
 
@@ -223,3 +223,10 @@ source reviews and both exact-head native host runs passed at
 `eae890b0a2a3524a543ec4ee4aca61346e273b52`; broader child PR #218 checks have no failure or pending result.
 Preserves accepted C1.4/Q5.2. The child development PR stays stacked/draft; Q5.4,
 Track 25/release/security and advanced backend/checkpoint/clinical holds remain.
+
+
+## Q5.4 current review — 2026-10-05
+
+Q5.1 conformance, Q5.2 benchmark qualification and Q5.3 compatibility are accepted for bounded development at their recorded source heads. The current source-bound evidence map and residual-risk disposition are in [the test matrix](test-matrix.md) and [risk register](risk-register.md). Q5.4 remains in progress: the coordinator reports independent replay of the documented example/fixtures and canonical hashes complete; exact-head hosted acceptance remains pending. The anticipated [Q5.4 evidence record](../../evidence/q5.4-completion-20261005/README.md) is not yet a receipt and must be created only after those checks are executed and reviewed. No Q5.4 completion is asserted here.
+
+Historical Q5.1–Q5.3 acceptance paragraphs above preserve their original point-in-time receipt narratives; current status is stated in this reconciliation section.

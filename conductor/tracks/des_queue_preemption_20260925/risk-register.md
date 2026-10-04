@@ -13,6 +13,8 @@
 | Latest dependency/toolchain breaks support | Unbuildable release | Pin resolved versions, preserve supported matrix or approved migration | 25/30 |
 | Passing toy benchmark misrepresents ED load | Performance regression | Queue/churn/interrupt/active-capacity matrix and existing acceptance gates | 12 |
 
+## Historical Q4 disposition — superseded for current phase status by Q5 evidence below
+
 Q4 local and hosted development evidence mitigates shared-world drift, lifecycle
 ordering and staged single-resource integration within the frozen contracts.
 Final parent integration remains pending. Portable checkpointing, starvation,
@@ -20,3 +22,30 @@ atomic multi-resource claims, cross-LP causality, public API compatibility and
 realistic scaling remain open or explicitly unsupported. The dependency audit
 records newer candidates without silently changing RNG/MSRV contracts. Closure
 requires the owning phase evidence, not a design statement.
+
+
+## Q5 current residual risks — 2026-10-05
+
+Q5.1–Q5.3 are bounded development qualifications, not release acceptance. The
+following remain explicit limits or gates for Q5.4 and later owners:
+
+- Strict priority has no aging/starvation guarantee; routine work can wait
+  indefinitely unless the model supplies an explicit policy.
+- Sequential multi-resource acquisition can deadlock; atomic/multi-resource
+  acquisition is unsupported.
+- Restart can repeat simulation-local side effects; the model must use the
+  attempt/context contract and audit effects.
+- Pause/continue evidence is same-runtime only. Portable checkpoint/restore is
+  owned by Track 22 and is not a queue-track acceptance pass.
+- Cross-LP shared queues remain unsupported pending Track 34/35 ownership,
+  message, causal-time and lookahead contracts; zero-lookahead cycles risk
+  deadlock.
+- Metal/device Flow queue execution is unsupported; Track 32 owns future device
+  parity.
+- Public experimental API/version/symbol compatibility remains subject to
+  Track 25 review. Security and formal release gates are open.
+- Clinical calibration and complete ED MVP acceptance remain separate and open.
+
+The coordinator reports the Q5.4 independent fixture/example and canonical-hash
+replay complete. Exact-head hosted acceptance remains pending; these residuals
+are not waived by Q5.1–Q5.3 receipts.

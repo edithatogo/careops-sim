@@ -1,3 +1,11 @@
+## Current Q5.4 review — 2026-10-05
+
+Q5.1 conformance, Q5.2 benchmark qualification and Q5.3 compatibility are
+accepted for bounded development at their recorded source heads. Q5.4 is in
+progress, not complete. The source/test/evidence map is in [the test matrix](test-matrix.md); remaining limits are in [the risk register](risk-register.md). The coordinator reports independent manual example/fixture and canonical-hash replay complete; exact-head hosted acceptance remains pending. The anticipated [Q5.4 completion record](../../evidence/q5.4-completion-20261005/README.md) is a planned location, not current evidence. No merge, release, clinical or MVP acceptance follows from these development qualifications.
+
+---
+
 # Q5.1 bounded conformance qualification
 
 Kairos `bcb11cd61bc38b4813815f574a6a051f3b9e8faf` is qualified by exact-head native owner CI
