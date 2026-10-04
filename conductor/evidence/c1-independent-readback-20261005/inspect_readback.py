@@ -165,35 +165,34 @@ def observation_counts(rows: list[dict[str, Any]]) -> dict[str, dict[str, int]]:
 
 
 def logical_observation_counts(rows: list[dict[str, Any]], declared: pa.Schema) -> dict[str, dict[str, int]]:
-    counts: dict[str, collections.Counter[str]] = collections.defaultdict(collections.Counter)
-    def walk(value: Any, field: pa.Field, path: str) -> None:
-        value_key = "source_fields" if field.name == "source_fields_json" else field.name
-        if value_key not in value:
+    # Null/empty observations use logical shapes. Physical UTC bytes and typed
+    # map-entry structs are encoding slots, not additional logical properties.
+    counts = collections.defaultdict(collections.Counter)
+    for path, counter in observation_counts(rows).items():
+        counts[path].update(counter)
+
+    def walk_missing(parent: dict[str, Any], field: pa.Field) -> None:
+        if field.name == "utc_i128_le":
+            return  # Shares the same logical .utc path with utc_text.
+        key = {"source_fields_json": "source_fields", "utc_text": "utc"}.get(field.name, field.name)
+        path = (field.metadata or {}).get(b"logical_path", key.encode()).decode()
+        if key not in parent:
             counts[path]["absent"] += 1
             return
-        child = value[value_key]
+        child = parent[key]
         if child is None:
-            counts[path]["null"] += 1
-        elif pa.types.is_struct(field.type):
+            return  # Do not inspect child slots beneath a null parent.
+        if pa.types.is_struct(field.type):
             for nested in field.type:
-                walk(child, nested, path + "." + nested.name)
-        elif pa.types.is_list(field.type):
-            if not child:
-                counts[path]["empty"] += 1
-            if pa.types.is_struct(field.type.value_type):
-                for entry in child:
-                    for nested in field.type.value_type:
-                        walk(entry, nested, path + "[]." + nested.name)
-            else:
-                for entry in child:
-                    if entry is None:
-                        counts[path + "[]"]["null"] += 1
-        elif child == "":
-            counts[path]["empty"] += 1
+                walk_missing(child, nested)
+        # Logical raw_time_values is a map, whose observed keys/null values
+        # were counted above. The physical key/value-entry list has no missing
+        # logical children to count. Other list values are primitive strings.
+
     for row in rows:
         for field in declared:
             if field.name != "presence_fields":
-                walk(row, field, (field.metadata or {}).get(b"logical_path", field.name.encode()).decode())
+                walk_missing(row, field)
     return {path: dict(sorted(counter.items())) for path, counter in sorted(counts.items())}
 
 
