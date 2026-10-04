@@ -144,7 +144,7 @@ execution. Portable checkpoint/restore requires separate Track 22 evidence.
 Entry: Q4; legacy compatibility baseline and benchmark environment recorded.
 Owners 03/12/25; coordinate 22/32/34/35 without rewriting backend plans.
 
-- [ ] Q5.1 Add deterministic conformance fixtures for all boundary/strategy cases.
+- [x] Q5.1 Add deterministic conformance fixtures for all boundary/strategy cases.
   Compare canonical output hashes on repeated serial runs and independent
   replications at 1/2/N local workers. Run property seeds in debug and release.
   Run a bounded pinned SimPy comparison for shared semantics; intentional differences use local expected traces. AllOf is not atomic acquisition; queued cancel, active lease release and scheduled-event cancellation have separate oracles.
