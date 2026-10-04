@@ -1,6 +1,6 @@
 # C1.3 ingestion development acceptance — 5 October 2026
 
-Accepted source: Kairos `ca111a2121ce2fe6faba2b111f1c5a2e9decfd64`,
+Accepted source: Kairos `18ee41e42efc4bd5d6def0e8199d9958a6d4f32c`,
 [PR #212](https://github.com/edithatogo/kairos/pull/212), stacked on C1.2 PR #211.
 
 - Immutable source mapping and checked timestamp normalization feed bounded
@@ -24,7 +24,7 @@ Executed command/cwd/source/tool/input/output hashes, actual synthetic archives,
 checksums and failed attempts are retained at the pinned child path
 `conductor/evidence/c1.3-ingestion-20261004/`. Its acceptance receipt distinguishes
 the exact qualified Rust source from the later fixture compression-only edit.
-Hosted native-owner run [37208535796](https://github.com/edithatogo/kairos/actions/runs/37208535796)
+Hosted native-owner run [37209096199](https://github.com/edithatogo/kairos/actions/runs/37209096199)
 passed all eleven jobs at this exact pin; API readback is retained in
 `hosted-native.json`.
 
