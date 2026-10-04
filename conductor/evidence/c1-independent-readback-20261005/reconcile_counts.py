@@ -387,11 +387,23 @@ def mapper_audit(snapshot_path: pathlib.Path, manifest_path: pathlib.Path) -> di
             raise ValueError(f"C-1.2 invalid request membership for {record_type}")
         members = collections.Counter(
             json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
-            for i in indices
             for row in source_records[record_type]
-            if row in requests[i]["result"].get("records", [])
-            or (record_type == "outcome_observation.v1" and row in requests[i]["result"].get("outcomes", []))
         )
+        remaining_by_request = {}
+        for i, row in zip(indices, expected_rows, strict=True):
+            if i not in remaining_by_request:
+                result = requests[i]["result"]
+                population = result.get("outcomes", []) if record_type == "outcome_observation.v1" else [
+                    item for item in result.get("records", []) if item.get("record_type") == record_type]
+                remaining_by_request[i] = collections.Counter(
+                    json.dumps(item, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+                    for item in population)
+            key = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+            if remaining_by_request[i][key] <= 0:
+                raise ValueError(f"C-1.2 row membership exceeds request {i} population")
+            remaining_by_request[i][key] -= 1
+        if any(any(counter.values()) for counter in remaining_by_request.values()):
+            raise ValueError(f"C-1.2 request membership omits {record_type} records")
         expected = collections.Counter(
             json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
             for row in expected_rows
@@ -444,7 +456,7 @@ def main(argv: list[str] | None = None) -> int:
     if contract_sha != CONTRACT_SHA256:
         raise ValueError("frozen count-readback contract SHA changed")
     c01_root = args.c01_root.resolve(strict=True)
-    repo = c01_root.parents[1]
+    repo = root / "libs/kairos"
     manifest_path = repo / "crates/kairo-ecs-arrow-io/tests/fixtures/calibration_physical_v2/manifest.json"
     report = {
         "schema_version": "c1.independent-count-readback.v1",
