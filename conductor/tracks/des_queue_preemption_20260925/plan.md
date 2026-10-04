@@ -116,7 +116,7 @@ Entry: Q3; reviewed 04 lifecycle-sidecar contract. Owner 03; 04 owns telemetry
 encoding. Portable checkpoint work is deferred to Track 22 and is not required
 to enter or exit this queue phase.
 
-- [ ] Q4.1 Write API-level integration tests for acquire/priority/can_preempt/
+- [x] Q4.1 Write API-level integration tests for acquire/priority/can_preempt/
   preemptible/deadline/work builders, non-reentrant notifications, behavior
   callbacks and a single shared DES/ABM time/world.
 - [ ] Q4.2 Implement builders, domain dispatch hooks for typed in-memory
