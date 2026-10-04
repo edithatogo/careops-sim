@@ -206,3 +206,13 @@ evidence-boundary checks pass. See [C1.4 completion](evidence/c1.4-completion-20
 Historical failed attempts remain retained. C2, public API review, clinical
 validation and release remain open. Earlier proposed/planning statements describe
 their original delivery, superseded for C0/C1 only by recorded acceptance.
+
+## Q5.3 compatibility qualification — 2026-10-05
+
+[Compatibility evidence](evidence/q5.3-completion-20261005/README.md) accepts
+legacy consumer/source checks and migration/backend ownership limits at
+`eae890b0a2a3524a543ec4ee4aca61346e273b52`, preserving C1.4/Q5.2. Canonical and
+retained MSRV gates, exact example output, two Luna source reviews and hosted
+Linux/macOS native owner plus broader child checks pass. Metal execution remains
+unsupported; no portable/cross-LP/distributed/clinical/release claim. Next Q5.4
+reviews the phase evidence and risk/release notes; full queue phase remains open.

@@ -152,7 +152,7 @@ Owners 03/12/25; coordinate 22/32/34/35 without rewriting backend plans.
   rates, and many resources at representative queue/active sizes. Record latency,
   throughput, memory and active-victim scan costs against the legacy baseline;
   retain upstream acceptance targets and review any regressions.
-- [ ] Q5.3 Run feature-minimal/legacy/API compatibility gates; document migration,
+- [x] Q5.3 Run feature-minimal/legacy/API compatibility gates; document migration,
   starvation, one-resource limits, the Track 22 checkpoint boundary and result
   provenance. Do not claim queue-owned portable checkpoint compatibility.
   Hand off single-LP ownership/zero-lookahead restrictions and queue fixtures to
@@ -211,3 +211,15 @@ with source-bound Luna packets and independent failure-atomicity review.
 ## Q5.2 acceptance — 2026-10-05
 
 [Development qualification](../../evidence/q5.2-completion-20261005/README.md): all 39 runtime cases/five repeats (195 processes) completed, including all 13 100k cases. Correctness and source-equivalence review passed. Both isolated Ubuntu native-owner runs passed 12/12 jobs and six canonical metrics under unchanged thresholds. Original local four-failure and later two-failure comparisons are preserved; source/binary-identical controls do not establish a speedup. Parent development pin advances to 8daa0978578b8a5b5b6427e84db1a3e6c54a1123 while retaining accepted C-01 and C1 readback. Q5.3 compatibility/API/migration and Q5.4 phase review remain open; broader child PR checks are not all green and child PR #214 remains draft/unmerged.
+
+## Q5.3 compatibility qualification — 2026-10-05
+
+[Accepted development evidence](../../evidence/q5.3-completion-20261005/README.md)
+records the three-case public consumer fixture, source-linked migration/backend
+handoff, 228 passing DES tests per equivalent default/no-default configuration
+(one benchmark ignored), 11 selected Rust 1.76 tests, exact FIFO/staff outputs,
+and unchanged production source across all 15 registered surfaces. Two Luna
+source reviews and both exact-head native host runs passed at
+`eae890b0a2a3524a543ec4ee4aca61346e273b52`; broader child PR #218 checks have no failure or pending result.
+Preserves accepted C1.4/Q5.2. The child development PR stays stacked/draft; Q5.4,
+Track 25/release/security and advanced backend/checkpoint/clinical holds remain.
