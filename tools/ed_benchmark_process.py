@@ -8,6 +8,7 @@ import select
 import signal
 import subprocess
 import time
+from pathlib import Path
 
 try:
     import resource
@@ -207,11 +208,10 @@ def _kill_group(pid: int, sig=signal.SIGTERM) -> None:
 
 
 
-def _run_to_full(argv: list[str]) -> dict:
+def _run_to_full(argv: list[str], *, sink_path: Path = Path("/dev/full")) -> dict:
     """Run a child with stdout genuinely redirected to /dev/full; bound stderr/wait4."""
     if resource is None or not hasattr(os, "wait4"):
         raise BenchmarkError("POSIX wait4 resource accounting is unavailable")
-    sink_path = Path("/dev/full")
     start = time.monotonic()
     errors = bytearray()
     overflow = False

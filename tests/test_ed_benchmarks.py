@@ -113,9 +113,10 @@ class BoundedProcessTests(unittest.TestCase):
 
     def test_timeout_escalates_while_child_continuously_writes_stderr(self):
         code = "import os,signal; signal.signal(signal.SIGTERM,signal.SIG_IGN); exec('while True: os.write(2,b\\\"x\\\"*8192)')"
-        result = bench.run_bounded([sys.executable, "-c", code], timeout=0.1)
+        # Allow interpreter startup under suite load; the production 10s budget is unchanged.
+        result = bench.run_bounded([sys.executable, "-c", code], timeout=0.5)
         self.assertTrue(result["timed_out"])
-        self.assertNotEqual(result["exit_code"], 0)
+        self.assertEqual(result["exit_code"], -signal.SIGKILL)
         self.assertEqual(len(result["stderr"]), bench.MAX_STDERR)
         self.assertLess(result["elapsed_seconds"], 2)
 
@@ -124,6 +125,21 @@ class BoundedProcessTests(unittest.TestCase):
         result = bench.run_bounded([sys.executable, "-c", code], timeout=0.2)
         self.assertTrue(result["timed_out"])
         self.assertLess(result["elapsed_seconds"], 2)
+
+    def test_storage_sink_wrapper_records_actual_child_exit_and_stderr(self):
+        # Exercise the sink wrapper on every POSIX host. This temporary regular
+        # file is not a disk-full qualification; Linux /dev/full remains required.
+        with tempfile.TemporaryDirectory() as temporary:
+            sink = Path(temporary) / "output"
+            result = bench._run_to_full(
+                [sys.executable, "-c",
+                 "import sys; print('written'); sys.stderr.write('expected error'); sys.exit(7)"],
+                sink_path=sink)
+            self.assertEqual(sink.read_text(), "written\n")
+        self.assertEqual(result["exit_code"], 7)
+        self.assertEqual(result["stderr"], b"expected error")
+        self.assertFalse(result["timed_out"])
+        self.assertGreater(result["peak_rss_bytes"], 0)
 
     def test_pipe_setup_failure_reaps_spawned_child(self):
         original_popen = subprocess.Popen

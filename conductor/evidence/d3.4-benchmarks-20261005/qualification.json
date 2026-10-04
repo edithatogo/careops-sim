@@ -4,8 +4,8 @@
   "source_head_before_candidate_commit": "050cf389f4b8d070a38f6faf3d29f9ddb48cd755",
   "source_hashes": {
     "tools/ed_benchmarks.py": "b59063db643e96c62bfec952570afe4e0e35bc5ee64cd3f51b1ac75c00011589",
-    "tools/ed_benchmark_process.py": "ece8d0562159db3acb40946a3bbe0a70c09801fdeadbf7f49896123b576aa4c3",
-    "tests/test_ed_benchmarks.py": "e63fff4815b600c5d66465ed48b45e934a45b48d40f4aed24a082ecfdb0138f6",
+    "tools/ed_benchmark_process.py": "65b6f94a1d15e65876fc8348265ad597f39814de17f9bc32349c36c8b435f90a",
+    "tests/test_ed_benchmarks.py": "10f1addbcb3b980f5cf678707e876b508096e0b6b407d596724c54efbfb3257a",
     "tests/test_ci_workflow.py": "0078db15312c4f3cfd4e66fdaf37c9d58a54ce96c1e0db24b5238731226402b6",
     "crates/careops-ed/src/lib.rs": "4f7917f3976d84b86a1b2b6837065c803d75b29d6b4f594abbbb7ceaedc57380",
     "crates/careops-ed-cli/src/main.rs": "b05d6fecf4f728796bc0ffe20883b41c8a8168e6cd09e40e19013c14989c12a9",
@@ -98,5 +98,55 @@
     "tools/ed_benchmarks.py": 18994,
     "tools/ed_benchmark_process.py": 11365
   },
-  "context_snapshots": "Private model-only and process+contract snapshots fit24k serialized budget; broader model+contract selection rejected, never truncated"
+  "context_snapshots": "Private model-only and process+contract snapshots fit24k serialized budget; broader model+contract selection rejected, never truncated",
+  "hosted_attempts": [
+    {
+      "head": "8b0cb44c658d6bcaf217b91f827655a357418c0e",
+      "run_id": 37244980138,
+      "result": "failure",
+      "reason": "Linux /dev/full helper missing Path import; required gate failed closed",
+      "log": "hosted-first-failure.log"
+    }
+  ],
+  "repair_review": {
+    "result": "no concrete findings",
+    "requested_model": "gpt-6-luna",
+    "scope": "missing Path import and injected sink wrapper regression test",
+    "focused_tests": 15,
+    "focused_exit": 0,
+    "benchmark_runs": 26,
+    "benchmark_exit": 0,
+    "test_startup_adjustment": "Continuous-stderr test only: 0.1s to 0.5s; requires SIGKILL and remains under2s. Production10s unchanged."
+  },
+  "repair_attempts": [
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "python": "3.11.6 (noncanonical shell default)",
+      "exit": 1,
+      "tests": 491,
+      "failure": "Existing P3.2 binary64 fixture difference",
+      "log": "repair-harness-python311.log"
+    },
+    {
+      "command": "/opt/homebrew/bin/python3 -m unittest discover -s tests -v",
+      "python": "3.14.8",
+      "exit": 1,
+      "tests": 491,
+      "failure": "100ms child startup deadline expired before continuous stderr writer started",
+      "log": "repair-harness-startup-failure.log"
+    }
+  ],
+  "repair_qualification": {
+    "python": "3.14.8",
+    "python_tests": 491,
+    "seconds": 59.814,
+    "exit": 0,
+    "command": "/opt/homebrew/bin/python3 -m unittest discover -s tests -v",
+    "focused_tests": 15,
+    "focused_exit": 0,
+    "benchmark_runs": 26,
+    "benchmark_exit": 0,
+    "independent_review": "no concrete findings at final test hash",
+    "reviewed_test_sha256": "10f1addbcb3b980f5cf678707e876b508096e0b6b407d596724c54efbfb3257a"
+  }
 }
