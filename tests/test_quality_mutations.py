@@ -107,10 +107,10 @@ def catalog_bytes(document):
     return json.dumps(records, sort_keys=True).encode("utf-8")
 
 
-def validate(document, source_bytes=SOURCE_BYTES, catalog=None, expected_catalog_sha256=None):
+def validate(document, source_bytes=SOURCE_BYTES, catalog=None, expected_catalog_sha256=None, expected_cargo="cargo"):
     catalog = catalog_bytes(document) if catalog is None else catalog
     expected = expected_catalog_sha256 or hashlib.sha256(catalog).hexdigest()
-    return check_outcomes(document, source_bytes, catalog, expected_catalog_sha256=expected)
+    return check_outcomes(document, source_bytes, catalog, expected_catalog_sha256=expected, expected_cargo=expected_cargo)
 
 
 class MutationGateTests(unittest.TestCase):
@@ -139,6 +139,25 @@ class MutationGateTests(unittest.TestCase):
             for item in row["phase_results"]:
                 item["argv"].append("--locked")
         self.assertEqual(validate(document)["total_mutants"], 115)
+
+    def test_exact_runtime_resolved_cargo_path_must_be_supplied(self):
+        resolved = "/home/runner/.rustup/toolchains/1.99.0-x86_64-unknown-linux-gnu/bin/cargo"
+        document = valid_outcomes()
+        for row in document["outcomes"]:
+            for item in row["phase_results"]:
+                item["argv"][0] = resolved
+                item["argv"].append("--locked")
+        with self.assertRaises(ValueError):
+            validate(document)
+        self.assertEqual(validate(document, expected_cargo=resolved)["total_mutants"], 115)
+        with self.assertRaises(ValueError):
+            validate(document, expected_cargo=resolved.replace("/home/runner", "/other"))
+
+    def test_invalid_or_noncanonical_cargo_identity_is_rejected(self):
+        for executable in ("false", "bin/cargo", "/opt/bin/cargo",
+                           "/home/runner/.rustup/toolchains/1.98.1-x86_64-unknown-linux-gnu/bin/cargo"):
+            with self.subTest(executable=executable), self.assertRaises(ValueError):
+                validate(valid_outcomes(), expected_cargo=executable)
 
     def test_rejects_changed_source(self):
         with self.assertRaises(ValueError):

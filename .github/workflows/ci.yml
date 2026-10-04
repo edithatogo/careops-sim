@@ -440,7 +440,8 @@ jobs:
             cat .artifacts/ci/d33/mutations.log
             exit "$status"
           fi
-          python3 tools/quality_mutations.py --outcomes .artifacts/ci/d33/mutations/mutants.out/outcomes.json --source crates/careops-ed/src/lib.rs
+          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          python3 tools/quality_mutations.py --outcomes .artifacts/ci/d33/mutations/mutants.out/outcomes.json --source crates/careops-ed/src/lib.rs --cargo "$cargo_path"
       - name: Retain bounded D3.3 quality evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

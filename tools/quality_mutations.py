@@ -90,7 +90,20 @@ def _process_status(value, label):
     raise ValueError(f"{label} process_status must be Success or a Failure exit code")
 
 
-def _phases(value, expected, label):
+def _cargo_identity(value):
+    if value == "cargo":
+        return value
+    if not isinstance(value, str):
+        raise ValueError("expected Cargo executable must be a string")
+    path = Path(value)
+    if (not path.is_absolute() or ".." in path.parts or len(path.parts) < 3
+            or path.parts[-2:] != ("bin", "cargo")
+            or path.parts[-3] not in {"1.99.0-x86_64-unknown-linux-gnu", "1.99.0-aarch64-apple-darwin"}):
+        raise ValueError("expected Cargo must be cargo or the exact resolved canonical Rust 1.99.0 executable")
+    return value
+
+
+def _phases(value, expected, label, expected_cargo):
     if not isinstance(value, list) or len(value) != len(expected):
         raise ValueError(f"{label} must contain exactly {len(expected)} phases")
     statuses = []
@@ -102,7 +115,7 @@ def _phases(value, expected, label):
         argv = phase_record["argv"]
         if not isinstance(argv, list) or not argv or any(not isinstance(item, str) or not item for item in argv):
             raise ValueError(f"{phase_label}.argv must be a nonempty string array")
-        expected_argv = ["cargo", "test"] + (["--no-run"] if phase_name == "Build" else []) + ["--verbose", "--package=careops-ed@0.1.0"]
+        expected_argv = [expected_cargo, "test"] + (["--no-run"] if phase_name == "Build" else []) + ["--verbose", "--package=careops-ed@0.1.0"]
         if argv.count("--locked") > 1 or [arg for arg in argv if arg != "--locked"] != expected_argv:
             raise ValueError(f"{phase_label}.argv must be the reviewed package-scoped Cargo {phase_name} command")
         duration = phase_record["duration"]
@@ -181,12 +194,13 @@ def _catalog_mutants(catalog_bytes, expected_sha256):
     return records, digest
 
 
-def check_outcomes(document, source_bytes, catalog_bytes, *, expected_catalog_sha256=CATALOG_SHA256):
+def check_outcomes(document, source_bytes, catalog_bytes, *, expected_catalog_sha256=CATALOG_SHA256, expected_cargo="cargo"):
     """Validate counters, outcomes and exact source-bound dispositions.
 
     This returns native row counts and accepted equivalent-mutation identities;
     it deliberately computes no combined mutation score.
     """
+    expected_cargo = _cargo_identity(expected_cargo)
     if not isinstance(source_bytes, bytes):
         raise ValueError("source must be supplied as bytes")
     source_sha256 = hashlib.sha256(source_bytes).hexdigest()
@@ -231,7 +245,7 @@ def check_outcomes(document, source_bytes, catalog_bytes, *, expected_catalog_sh
                 raise ValueError("the one Baseline must have Success and no diff_path")
             if row["log_path"] != "log/baseline.log":
                 raise ValueError("Baseline log_path must be log/baseline.log")
-            _phases(row["phase_results"], [("Build", "Success"), ("Test", "Success")], f"{label}.phase_results")
+            _phases(row["phase_results"], [("Build", "Success"), ("Test", "Success")], f"{label}.phase_results", expected_cargo)
             continue
 
         mutant, start, end = _mutant(row, label)
@@ -250,10 +264,10 @@ def check_outcomes(document, source_bytes, catalog_bytes, *, expected_catalog_sh
         summary = row["summary"]
         if summary == "CaughtMutant":
             counts[summary] += 1
-            _phases(row["phase_results"], [("Build", "Success"), ("Test", "Failure")], f"{label}.phase_results")
+            _phases(row["phase_results"], [("Build", "Success"), ("Test", "Failure")], f"{label}.phase_results", expected_cargo)
         elif summary == "MissedMutant":
             counts[summary] += 1
-            _phases(row["phase_results"], [("Build", "Success"), ("Test", "Success")], f"{label}.phase_results")
+            _phases(row["phase_results"], [("Build", "Success"), ("Test", "Success")], f"{label}.phase_results", expected_cargo)
             identity = (start[0], start[1])
             if (identity not in EQUIVALENT_MISSES or mutant["genre"] != "BinaryOperator"
                     or mutant["replacement"] != "&&"
@@ -268,7 +282,7 @@ def check_outcomes(document, source_bytes, catalog_bytes, *, expected_catalog_sh
             if name not in ORIGINAL_UNVIABLES:
                 raise ValueError(f"unviable mutant is not part of the original baseline: {name}")
             unviable_names.add(name)
-            _phases(row["phase_results"], [("Build", "Failure")], f"{label}.phase_results")
+            _phases(row["phase_results"], [("Build", "Failure")], f"{label}.phase_results", expected_cargo)
         else:
             raise ValueError(f"unexpected or unfinished mutant summary: {summary!r}")
 
@@ -305,6 +319,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--outcomes", required=True, help="cargo-mutants outcomes.json")
     parser.add_argument("--source", required=True, help="scoped production source file")
+    parser.add_argument("--cargo", default="cargo", help="exact runtime-resolved canonical Cargo path; defaults to historical bare command")
     args = parser.parse_args(argv)
     try:
         with open(args.outcomes, encoding="utf-8") as stream:
@@ -314,7 +329,7 @@ def main(argv=None):
         with open(args.source, "rb") as stream:
             source_bytes = stream.read()
         result = check_outcomes(document, source_bytes, catalog_bytes,
-                                expected_catalog_sha256=CATALOG_SHA256)
+                                expected_catalog_sha256=CATALOG_SHA256, expected_cargo=args.cargo)
     except (OSError, json.JSONDecodeError, ValueError) as error:
         print(f"mutation validation failed: {error}", file=sys.stderr)
         return 1

@@ -84,3 +84,19 @@ The D3.3 development quality scope can close after its own checks and exact-head
 hosted CI pass; this does not close D3 or D4. Next is D3.4 representative ED/load,
 memory/cancellation/soak budgets, then D3.5 independent phase review. Q/C/E feature
 work and release/security/clinical qualifications retain their own gates.
+
+## Hosted Cargo identity correction
+
+First hosted run37237100498 measured the same 487/564 coverage and complete
+115/110/2/3/0 mutation results, then correctly failed the old command validator:
+Cargo subcommand dispatch records its absolute Rustup executable whereas the
+local direct cargo-mutants invocation recorded bare `cargo`. The validator now
+accepts an explicitly supplied, exact canonical1.99 Cargo identity; CI resolves
+it independently with rustup. Missing/mismatched paths, other versions and
+arbitrary commands still fail. Source/catalog, counters and equivalence rules
+are unchanged. An independent reviewer rechecked actual retained hosted bytes.
+The updated targeted suite passed18 tests and full harness passed474 tests in
+60.918s; earlier472-test proof remains accurately retained. See
+[the correction receipt](hosted-command-correction.json). This failed attempt
+is preserved, and a new source commit must pass hosted CI before merge; no retry
+or bypass is used to label the failed source successful.
