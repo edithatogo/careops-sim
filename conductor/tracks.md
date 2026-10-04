@@ -4,10 +4,10 @@
   ([index](tracks/des_queue_preemption_20260925/index.md),
   [spec](tracks/des_queue_preemption_20260925/spec.md),
   [plan](tracks/des_queue_preemption_20260925/plan.md)). Q0–Q5 accepted for experimental queue development; upstream owner 03. Independent Q5.4 replay, evidence/risk disposition, release notes and governance review passed with exact-head native and child hosted gates. Preserves C1.4/Q5.2; child PR219 stays stacked/draft and formal release/security, stable API, advanced backend, checkpoint and clinical/MVP gates remain separate. Parent local gates passed. At source preparation, the committed-pin check, hosted parent CI and merge readback await publication; this registry does not assert a completed parent merge.
-- [ ] **Empirical calibration and validation** — `empirical_calibration_20260925`
+- [~] **Empirical calibration and validation** — `empirical_calibration_20260925`
   ([index](tracks/empirical_calibration_20260925/index.md),
   [spec](tracks/empirical_calibration_20260925/spec.md),
-  [plan](tracks/empirical_calibration_20260925/plan.md)). Proposed; upstream owner 21,
+  [plan](tracks/empirical_calibration_20260925/plan.md)). In progress: C0 accepted; C1.1 fixture qualification active. Upstream owner 21,
   with 03/04/22 integration.
 
 Calibration schema/ingestion/metrics can proceed independently after contract
