@@ -90,6 +90,8 @@ C-01 passes the declared synthetic matrix: [invariance qualification](../../evid
 Manual check: inspect IPC/Parquet with a second implementation, verify units and
 nullable fields, and reconcile input/accepted/excluded/censored counts. Source
 identities stay out of public fixture/report artifacts.
+Manual readback passes: [independent physical and count evidence](../../evidence/c1-independent-readback-20261005/README.md);
+666 files verified, counts conserved, and C1.4 remains open.
 
 ## C2 — Macro/Micro execution and minimal spatial behavior
 
