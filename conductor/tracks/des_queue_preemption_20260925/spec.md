@@ -1,6 +1,6 @@
 # Specification: first-class DES queues and preemption
 
-**ID:** `des_queue_preemption_20260925` · **Status:** Q0–Q4 and Q5.1–Q5.3 accepted for bounded development; Q5.4 review in progress
+**ID:** `des_queue_preemption_20260925` · **Status:** Q0–Q5 accepted for experimental development; release and ED MVP acceptance separate
 **Upstream owner:** 03 (Flow), with 01/04/12/25 review.
 **Baseline:** Kairos `fae901558f07b7b717a676adbafbe2cdc78dea1c`.
 

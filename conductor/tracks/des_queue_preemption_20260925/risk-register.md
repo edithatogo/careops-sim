@@ -27,7 +27,7 @@ requires the owning phase evidence, not a design statement.
 ## Q5 current residual risks — 2026-10-05
 
 Q5.1–Q5.3 are bounded development qualifications, not release acceptance. The
-following remain explicit limits or gates for Q5.4 and later owners:
+following remain explicit limits or gates handed to later owners:
 
 - Strict priority has no aging/starvation guarantee; routine work can wait
   indefinitely unless the model supplies an explicit policy.
@@ -49,3 +49,7 @@ following remain explicit limits or gates for Q5.4 and later owners:
 The coordinator reports the Q5.4 independent fixture/example and canonical-hash
 replay complete. Exact-head hosted acceptance remains pending; these residuals
 are not waived by Q5.1–Q5.3 receipts.
+
+## Q5.4 disposition
+
+Queue development risks covered by Q-01–Q-07 are accepted within the frozen contracts and source-bound receipts. Residual limits above are documented owner gates, not silently passing features. Independent review and exact-head development qualification passed; no formal release or clinical acceptance follows.

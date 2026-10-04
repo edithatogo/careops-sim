@@ -1,8 +1,6 @@
-## Current Q5.4 review — 2026-10-05
+## Current Q5.4 accepted development handoff — 2026-10-05
 
-Q5.1 conformance, Q5.2 benchmark qualification and Q5.3 compatibility are
-accepted for bounded development at their recorded source heads. Q5.4 is in
-progress, not complete. The source/test/evidence map is in [the test matrix](test-matrix.md); remaining limits are in [the risk register](risk-register.md). The coordinator reports independent manual example/fixture and canonical-hash replay complete; exact-head hosted acceptance remains pending. The anticipated [Q5.4 completion record](../../evidence/q5.4-completion-20261005/README.md) is a planned location, not current evidence. No merge, release, clinical or MVP acceptance follows from these development qualifications.
+Q0–Q5 are accepted for the frozen experimental queue development scope at governance pin `8cd03c8f791ae58b33e5cc61b244071937a839ac`. Runtime source remains `eae890b0a2a3524a543ec4ee4aca61346e273b52`; C1.4 and Q5.2 qualification are preserved. [Completion evidence](../../evidence/q5.4-completion-20261005/README.md) contains actual independent replay, review corrections, local gates and exact-head native Linux/macOS plus child hosted checks. The [test matrix](test-matrix.md) and [risk register](risk-register.md) record the accepted invariants and residual owner gates. Child PR #219 remains stacked/draft; parent merge/readback is separately recorded. Release/security, portable checkpoint, advanced backends and clinical/ED MVP acceptance remain open.
 
 ---
 

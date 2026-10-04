@@ -6,7 +6,7 @@ catalog preserves every prerequisite and phase closeout. Prepare and validate
 bounded worker packets before dispatch; gpt-6-luna is a candidate worker, not an
 assumed authority for unresolved contracts or acceptance decisions.
 
-**Status:** Q0–Q4 and Q5.1–Q5.3 have bounded development acceptance at their recorded heads. Q5.4 phase review is in progress. The coordinator reports independent fixture/hash replay complete; exact-head hosted acceptance remains pending, and Q5 remains open until the coordinator records closeout. This is not programme, release, clinical or MVP acceptance. Parent integration and release remain governed by their separate gates.
+**Status:** Q0–Q5 are accepted for the frozen experimental queue development scope. Q5.4 independent replay, corrected evidence/governance review and exact-head child hosted gates passed. This is not programme, release, clinical or ED MVP acceptance. Parent delivery status at source preparation: local gates passed; committed-pin check, hosted parent CI and merge readback await publication and must pass before delivery is reported.
 **Specification:** [spec.md](spec.md) · **Workflow:** [workflow.md](../../workflow.md)
 **Owners:** upstream 03, with 01/04/12/25 as recorded per milestone.
 
@@ -157,7 +157,7 @@ Owners 03/12/25; coordinate 22/32/34/35 without rewriting backend plans.
   provenance. Do not claim queue-owned portable checkpoint compatibility.
   Hand off single-LP ownership/zero-lookahead restrictions and queue fixtures to
   existing PDES/distributed owners; flag Metal queue execution as unsupported.
-- [ ] Q5.4 Conductor — review and verify phase (workflow.md).
+- [x] Q5.4 Conductor — review and verify phase (workflow.md).
 
 Exit: Q-01–Q-07 evidence, risk disposition, release notes, updated upstream records
 and clean scoped commits. Manual check: independent reader follows the example,
@@ -225,8 +225,8 @@ Preserves accepted C1.4/Q5.2. The child development PR stays stacked/draft; Q5.4
 Track 25/release/security and advanced backend/checkpoint/clinical holds remain.
 
 
-## Q5.4 current review — 2026-10-05
+## Q5.4 accepted development closeout — 2026-10-05
 
-Q5.1 conformance, Q5.2 benchmark qualification and Q5.3 compatibility are accepted for bounded development at their recorded source heads. The current source-bound evidence map and residual-risk disposition are in [the test matrix](test-matrix.md) and [risk register](risk-register.md). Q5.4 remains in progress: the coordinator reports independent replay of the documented example/fixtures and canonical hashes complete; exact-head hosted acceptance remains pending. The anticipated [Q5.4 evidence record](../../evidence/q5.4-completion-20261005/README.md) is not yet a receipt and must be created only after those checks are executed and reviewed. No Q5.4 completion is asserted here.
+[Executed evidence and dispositions](../../evidence/q5.4-completion-20261005/README.md) close Q-01–Q-07 for the frozen experimental queue development scope. Independent replay passed 11 selected tests, both exact example outputs and all twelve canonical hashes. Independent review corrected a removed Track 04 ledger entry; all 43 non-03 entries remain byte-identical to the predecessor. Fresh local phase/DAG/compatibility/boundary/strict-clean gates and exact-head hosted child native Linux/macOS plus reported checks passed at `8cd03c8f791ae58b33e5cc61b244071937a839ac`. Accepted C1.4/Q5.2 runtime source is unchanged. Parent local/hosted integration and merge are recorded separately in the delivery receipt; planned checks are not passes. Child PR #219 remains stacked/draft. Formal release/security, Track 25 promotion, Track 22 portability, Track 32 Metal, Track 34/35 distributed and clinical/MVP gates remain open.
 
-Historical Q5.1–Q5.3 acceptance paragraphs above preserve their original point-in-time receipt narratives; current status is stated in this reconciliation section.
+Historical Q5.1–Q5.3 acceptance paragraphs above retain point-in-time receipt narratives.
