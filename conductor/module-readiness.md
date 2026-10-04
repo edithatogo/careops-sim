@@ -190,3 +190,7 @@ hold records. That source review is not a direct maintainer approval. The
 [independent D0.3 review receipt](evidence/d0.3-execution-receipt-20260928.md)
 records the precise status and open owner-alignment work; it must not be
 represented as upstream approval.
+
+## Q5.2 development qualification — 2026-10-05
+
+[Queue qualification](evidence/q5.2-completion-20261005/README.md) records195 successful runtime measurements and two isolated unchanged-threshold canonical passes at the published development pin. Earlier local failures remain retained. This qualifies the benchmark task; full queue readiness still requires Q5.3 compatibility/API/migration and Q5.4 review. Broader Kairos PR checks, release/security, advanced backends and clinical calibration remain separate.

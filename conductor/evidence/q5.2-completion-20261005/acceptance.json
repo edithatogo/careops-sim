@@ -1,0 +1,391 @@
+{
+  "schema": "careops.q52-completion-evidence.v1",
+  "task": "Q5.2",
+  "as_of": "2026-10-05",
+  "status": "accepted_development_qualification",
+  "acceptance_passed": true,
+  "queue_phase_complete": false,
+  "next_task_eligible": "Q5.3",
+  "measured_source": {
+    "repository": "edithatogo/kairos",
+    "commit": "e06b4aa3cabcd7a6c84cc06193f72d95b1ed763f",
+    "tree_clean": true,
+    "rust_toolchain": "1.99.0",
+    "locked_release_build": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "kairo-ecs-des",
+        "--example",
+        "flow_queue_benchmark_v1",
+        "--target-dir",
+        ".artifacts/q52-runtime/target"
+      ],
+      "exit_code": 0,
+      "binary_sha256": "aa73f80883a85fe900e1dba832deed898cfe62afbbe4268cafc4d24cf0e37ab8"
+    }
+  },
+  "published_source": {
+    "repository": "edithatogo/kairos",
+    "pull_request": 214,
+    "head": "8daa0978578b8a5b5b6427e84db1a3e6c54a1123",
+    "native_owner_ci": {
+      "workflow_run": 37217406125,
+      "jobs": "12/12 succeeded",
+      "expected_pr_head": "8daa0978578b8a5b5b6427e84db1a3e6c54a1123",
+      "canonical_producer_head": "8daa0978578b8a5b5b6427e84db1a3e6c54a1123",
+      "direct_expected_head_checkout": "verified by qualified receipt"
+    },
+    "measured_input_equivalence": {
+      "result": "all_30_q52_paths_byte_identical_to_measured_head",
+      "published_addition": "accepted_C01_source_and_evidence_only",
+      "measurement_is_not_relabelled_to_published_head": true
+    },
+    "parent_pin": {
+      "accepted_C01_pin": "c441c693eccf666d00e2720a215dd1f238e331ad",
+      "q52_pin_installed": true
+    },
+    "runtime_input_equivalence_review": "Independent review: Q52 runtime and collector source/build family equals measured E06; reviewed CI additions only; accepted C441 C01 files retained."
+  },
+  "runtime_matrix": {
+    "contract": "q5.2-runtime-v1",
+    "matrix_cases": 39,
+    "requested_repeats_per_case": 5,
+    "successful_repeats": 195,
+    "timeouts": 0,
+    "status": "complete",
+    "n_100000_cases_completed": 13,
+    "seed": 42,
+    "timeout_seconds_per_child": 30,
+    "collector_exit_code": 0,
+    "collector_receipt": ".artifacts/q52-runtime/final-matrix/20261004T153823647541Z/result.json",
+    "collector_receipt_sha256": "372899d75d89e91789286db7067794dfb2317acf9889f30bc50cdaa3a4025632",
+    "collector_input_sha256": "c7962fbaa5ba273cfefd940585d3c10ca82a14639c0a35f866f9576d0ed69aa2",
+    "summary_interpretation": "Runtime source/build provenance and full matrix completion; not by itself Q5.2 performance acceptance",
+    "historical_initial_matrix": {
+      "commit": "d403b18ed97840effa76d06e6841c2ee333db786",
+      "complete_cases": 26,
+      "successful_repeats": 130,
+      "timed_out_large_cases": 13,
+      "attempted_processes": 143,
+      "disposition": "preserved_superseded_initial_run"
+    }
+  },
+  "measurement_limits": {
+    "dispatch_timer": "FlowRuntime step plus lifecycle classification/counting; staging/commit included; correctness readback excluded",
+    "setup_timer_separate": true,
+    "peak_rss": "Per-child wait4 ru_maxrss, normalized to bytes; includes process setup and child output readback, not per-claim allocation",
+    "p95": "Nearest-rank over five completed repeats; maximum observed sample, not a tail estimate",
+    "legacy_comparison": "Legacy Resource FIFO primitive only; not matched full Flow runtime",
+    "active_victim_scan": "Selector microbench evidence is not whole-runtime evidence; report only measured runtime scenarios that invoke the public path",
+    "speedup_claim": false
+  },
+  "correctness": {
+    "release_des_command": [
+      "rustup",
+      "run",
+      "1.99.0",
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "kairo-ecs-des",
+      "--release",
+      "--target-dir",
+      ".artifacts/q52-runtime/target",
+      "--",
+      "--nocapture"
+    ],
+    "release_des_exit_code": 0,
+    "release_des_passed": 225,
+    "release_des_failed": 0,
+    "release_des_ignored": 1,
+    "release_test_log": ".artifacts/q52-final-checks/des-release.log",
+    "release_test_log_sha256": "ee732c14fd85d7c94878eb7b12e9451726fb987d030c0bfeaffa9e5d7b053afa",
+    "q51_canonical_hash": "47cfb7dca4211252",
+    "q51_hash_workers": [
+      1,
+      2,
+      4
+    ],
+    "q51_traces_per_batch": 24,
+    "parent_full_suite": {
+      "python": "3.14.8",
+      "passed": 413,
+      "failed": 0
+    },
+    "collector_tests": {
+      "python": "3.14.8",
+      "passed": 19,
+      "failed": 0
+    }
+  },
+  "canonical_regression_gate": {
+    "status": "qualified_pass_isolated_ci; local_failures_preserved",
+    "original_failure_preserved": true,
+    "original_blocking_failures": [
+      "create_1m_entities",
+      "pop_1m_events",
+      "schedule_1m_events",
+      "schedule_cancel_1m_mixed"
+    ],
+    "thresholds_unchanged": {
+      "scheduler_blocking_percent": 5,
+      "ecs_blocking_percent": 3,
+      "hybrid_advisory_percent": 10
+    },
+    "matched_pair": {
+      "baseline_head": "f18aba1f1930aec228e830c9e58c67e4081ac4bb",
+      "current_head": "0944b8198e8208f7b2a016ad9774fbb91a895d5a",
+      "status": "fail",
+      "blocking_failures": {
+        "component_insert_1m": {
+          "change_percent": 91.0063,
+          "threshold_percent": 3
+        },
+        "pop_1m_events": {
+          "change_percent": 10.6969,
+          "threshold_percent": 5
+        }
+      },
+      "other_rows_passed": 4,
+      "receipt": "canonical-paired-current/comparison.json"
+    },
+    "metadata_only_comparison_is_pass": false,
+    "isolated_ci": [
+      {
+        "event": "push",
+        "workflow_run": 37217403302,
+        "head": "8daa0978578b8a5b5b6427e84db1a3e6c54a1123",
+        "status": "qualified_pass",
+        "comparison": [
+          {
+            "base_mean": 0.03174535177,
+            "benchmark": "component_insert_1m",
+            "change_percent": -2.4262,
+            "current_mean": 0.030975138705,
+            "gate": "blocking",
+            "status": "pass",
+            "threshold_percent": 3.0
+          },
+          {
+            "base_mean": 0.013014809502499999,
+            "benchmark": "create_1m_entities",
+            "change_percent": 2.2633,
+            "current_mean": 0.013309377689999999,
+            "gate": "blocking",
+            "status": "pass",
+            "threshold_percent": 3.0
+          },
+          {
+            "base_mean": 0.017013360930000002,
+            "benchmark": "hybrid_des_abm_smoke_100k",
+            "change_percent": 7.2403,
+            "current_mean": 0.018245182003333332,
+            "gate": "advisory",
+            "status": "pass",
+            "threshold_percent": 10.0
+          },
+          {
+            "base_mean": 0.33971593098,
+            "benchmark": "pop_1m_events",
+            "change_percent": 0.3917,
+            "current_mean": 0.3410465958,
+            "gate": "blocking",
+            "status": "pass",
+            "threshold_percent": 5.0
+          },
+          {
+            "base_mean": 0.07602414856,
+            "benchmark": "schedule_1m_events",
+            "change_percent": -2.2447,
+            "current_mean": 0.07431763886,
+            "gate": "blocking",
+            "status": "pass",
+            "threshold_percent": 5.0
+          },
+          {
+            "base_mean": 0.26683450107,
+            "benchmark": "schedule_cancel_1m_mixed",
+            "change_percent": -6.5338,
+            "current_mean": 0.24940003628000001,
+            "gate": "blocking",
+            "status": "pass",
+            "threshold_percent": 5.0
+          }
+        ],
+        "all_native_owner_jobs": "12/12 success",
+        "baseline": "f18aba1f1930aec228e830c9e58c67e4081ac4bb"
+      },
+      {
+        "event": "pr",
+        "workflow_run": 37217406125,
+        "head": "8daa0978578b8a5b5b6427e84db1a3e6c54a1123",
+        "status": "qualified_pass",
+        "comparison": [
+          {
+            "base_mean": 0.05533135122,
+            "benchmark": "component_insert_1m",
+            "change_percent": 0.0733,
+            "current_mean": 0.05537190778,
+            "gate": "blocking",
+            "status": "pass",
+            "threshold_percent": 3.0
+          },
+          {
+            "base_mean": 0.02297776477999999,
+            "benchmark": "create_1m_entities",
+            "change_percent": -25.2705,
+            "current_mean": 0.017171168200000003,
+            "gate": "blocking",
+            "status": "pass",
+            "threshold_percent": 3.0
+          },
+          {
+            "base_mean": 0.031011731045,
+            "benchmark": "hybrid_des_abm_smoke_100k",
+            "change_percent": -3.3883,
+            "current_mean": 0.029960958785000002,
+            "gate": "advisory",
+            "status": "pass",
+            "threshold_percent": 10.0
+          },
+          {
+            "base_mean": 0.37492473835,
+            "benchmark": "pop_1m_events",
+            "change_percent": 1.8476,
+            "current_mean": 0.38185196467000004,
+            "gate": "blocking",
+            "status": "pass",
+            "threshold_percent": 5.0
+          },
+          {
+            "base_mean": 0.15784105193,
+            "benchmark": "schedule_1m_events",
+            "change_percent": -9.5119,
+            "current_mean": 0.14282729701,
+            "gate": "blocking",
+            "status": "pass",
+            "threshold_percent": 5.0
+          },
+          {
+            "base_mean": 0.30529954538,
+            "benchmark": "schedule_cancel_1m_mixed",
+            "change_percent": 2.5451,
+            "current_mean": 0.31306968194,
+            "gate": "blocking",
+            "status": "pass",
+            "threshold_percent": 5.0
+          }
+        ],
+        "all_native_owner_jobs": "12/12 success",
+        "baseline": "f18aba1f1930aec228e830c9e58c67e4081ac4bb"
+      }
+    ],
+    "local_failure_disposition": "Preserved actual failures. Two independent unchanged-threshold isolated Ubuntu comparisons pass. No host-contention causal proof or general speedup claim.",
+    "binary_inputs_identical": true,
+    "cross_run_variability": "material; results qualify unchanged per-run gates only"
+  },
+  "pending_gates": [],
+  "deferred_holds": [
+    "Q5.3 feature-minimal, legacy/API compatibility, migration and provenance gates",
+    "Q5.4 phase review",
+    "Track 22 queue-owned portable checkpoint boundary",
+    "Track 25 experimental API/release",
+    "C1.4 and empirical calibration",
+    "Metal/GPU queue backend unsupported",
+    "Cross-LP/distributed execution and atomic multi-resource claims unsupported",
+    "Broader security and release gates"
+  ],
+  "scope_constraints": {
+    "single_lp_only": true,
+    "atomic_multi_resource_claim": false,
+    "starvation_guarantee": false,
+    "clinical_or_mvp_acceptance": false,
+    "mark_queue_phase_complete": false
+  },
+  "host_contention_observation": {
+    "artifact": "e06-final-checks-and-host-snapshot/host-contention-snapshot.json",
+    "interpretation": "High background CPU and CodeQL activity observed; contextual observation only, not causal proof."
+  },
+  "parent_delivery_base": "8a8f0cb",
+  "broader_pr_checks": {
+    "status": "not_all_green",
+    "failed_checks": [
+      "CI Policy",
+      "Docs Quality",
+      "Package Dry Runs rust-package",
+      "Validate Conductor Ubuntu",
+      "Rust stable verification",
+      "Validate Conductor Windows",
+      "Rust core quality"
+    ],
+    "development_native_qualification_does_not_waive_these": true,
+    "child_pr_remains_draft_unmerged": true,
+    "known_policy_example": "CI Policy run37217406064 still requires channel stable instead of canonical pinned 1.99.0; separate compatibility/policy followup"
+  },
+  "independent_reviews": [
+    "Reviewed expanded runtime/cache tests and source equivalence; reviewed CI qualifier correction and 14 tests under Python 3.14.8",
+    "Reviewed both isolated receipts: exact heads and clean source, raw estimates and 100 samples, hashes, serial ordering and comparator exit0; canonical binaries identical, no speedup claim"
+  ],
+  "archives": {
+    "isolated-ci-q52-isolated-ci.tar.gz": "52d2a323f5e8222d296336ad72c7ed9041d5d61d7eddef890bafe3060779adfb",
+    "local-q52-evidence.tar.gz": "38f9a4ca67cd068f2fe0b8065b051a03ddcbbeb4f0557f6fe109b624ffea64b2",
+    "isolated-ci-archive-build-receipt.json": "fd79f8dcc7aa6b02b38509301c64c8b80e29ff6bcb830bd96d2340295d65ec6f",
+    "local-inventory.json": "0ce14e6b6332a63567fac7f0ce2c8f202f65e27f787d6a3cb1e0bdddbfeb6e59",
+    "local-archive-build-receipt.json": "0659fa258dc3200d8c41f33f033ee6acb36a0b5a301c32a56b32c3742d6964d4",
+    "isolated-ci-inventory.json": "60588e5a61aa50b78948f5a2415ab01515074d90272f2cc1d5f0e0611cd8af46"
+  },
+  "parent_validation": {
+    "python": "3.14.8",
+    "planning_checks": [
+      {
+        "argv": [
+          "/opt/homebrew/bin/python3",
+          "tools/context.py",
+          "check"
+        ],
+        "cwd": "/private/tmp/careops-q52-completion",
+        "start": "2026-10-04T16:54:54.416142+00:00",
+        "exit_code": 0,
+        "log": ".artifacts/q52-parent-validation/context-final.log",
+        "sha256": "715c1704d28600c247aec58aa52797516b66979af6917d8afb7568f5c4e6de07"
+      },
+      {
+        "argv": [
+          "/opt/homebrew/bin/python3",
+          "tools/tasks.py",
+          "check"
+        ],
+        "cwd": "/private/tmp/careops-q52-completion",
+        "start": "2026-10-04T16:54:54.589422+00:00",
+        "exit_code": 0,
+        "log": ".artifacts/q52-parent-validation/tasks-final.log",
+        "sha256": "ac10bc7df9f1e00e058d4a74b630bd3e824b58447e6ec8f53e322314796f11f1"
+      },
+      {
+        "argv": [
+          "/opt/homebrew/bin/python3",
+          "tools/mvp.py",
+          "check"
+        ],
+        "cwd": "/private/tmp/careops-q52-completion",
+        "start": "2026-10-04T16:54:54.693088+00:00",
+        "exit_code": 0,
+        "log": ".artifacts/q52-parent-validation/mvp-final.log",
+        "sha256": "beaa82584df49f8a7832d7e59ff0980f5ac612aa1854d27df5e517a6f5469d60"
+      }
+    ],
+    "unittest_summary": "Ran 413 tests in 57.960s; OK",
+    "unittest_log_sha256": "de7159d481d0734d834bf1379d484af44c70e1a92619b6a75489cbd501c9b1c5",
+    "shell_chain_exit_code": 0,
+    "unittest_exit_code_separately_captured": false,
+    "context_initial_uninitialized_conductor_failure_preserved": true
+  }
+}
