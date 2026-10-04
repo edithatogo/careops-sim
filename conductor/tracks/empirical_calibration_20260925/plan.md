@@ -82,7 +82,7 @@ Entry: C0. Owners 04 (IO), 21 (semantics); can proceed alongside Q1–Q3.
   partial-order/occupancy validation, exclusions and provenance manifests. Test
   equivalent input at several batch sizes, row groups and physical row orders.
   Acceptance: [C1.3 qualification](../../evidence/c1.3-closeout-20261004/README.md),
-  development pin c052c66; source PR #212 remains unmerged while broader gates fail.
+  development pin ca111a2; source PR #212 remains unmerged while broader gates fail.
 - [ ] C1.4 Conductor — review and verify phase (workflow.md).
 
 Exit: C-01; exact normalized canonical record hashes match across reader layouts.
