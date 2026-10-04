@@ -148,7 +148,7 @@ Owners 03/12/25; coordinate 22/32/34/35 without rewriting backend plans.
   Compare canonical output hashes on repeated serial runs and independent
   replications at 1/2/N local workers. Run property seeds in debug and release.
   Run a bounded pinned SimPy comparison for shared semantics; intentional differences use local expected traces. AllOf is not atomic acquisition; queued cancel, active lease release and scheduled-event cancellation have separate oracles.
-- [ ] Q5.2 Benchmark FIFO/priority queues, rekey/cancel churn, high interruption
+- [x] Q5.2 Benchmark FIFO/priority queues, rekey/cancel churn, high interruption
   rates, and many resources at representative queue/active sizes. Record latency,
   throughput, memory and active-victim scan costs against the legacy baseline;
   retain upstream acceptance targets and review any regressions.
@@ -207,3 +207,7 @@ Q5.2 remains unchecked until those cases and canonical regression gates pass.
 Next source work follows the reviewed [scaling design](../../design/queue/q5.2-scaling-followup-20261004.md):
 delta staging, waiting-deadline lookup and ordered replacement selection,
 with source-bound Luna packets and independent failure-atomicity review.
+
+## Q5.2 acceptance — 2026-10-05
+
+[Development qualification](../../evidence/q5.2-completion-20261005/README.md): all 39 runtime cases/five repeats (195 processes) completed, including all 13 100k cases. Correctness and source-equivalence review passed. Both isolated Ubuntu native-owner runs passed 12/12 jobs and six canonical metrics under unchanged thresholds. Original local four-failure and later two-failure comparisons are preserved; source/binary-identical controls do not establish a speedup. Parent development pin advances to 8daa0978578b8a5b5b6427e84db1a3e6c54a1123 while retaining accepted C-01 and C1 readback. Q5.3 compatibility/API/migration and Q5.4 phase review remain open; broader child PR checks are not all green and child PR #214 remains draft/unmerged.
