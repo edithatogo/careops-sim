@@ -6,7 +6,8 @@ readback.
 The table names are acceptance identifiers, not necessarily Cargo target names.
 Q5.1 native conformance and independent worker invariance are accepted with
 exact-head Linux/macOS evidence; Q5.2 benchmarks and Q5.3 compatibility remain
-planned. Actual commands, source hashes and results belong in the phase receipts;
+open. Q5.2 has measured development evidence and an unresolved 100,000-request
+scaling gate; no performance acceptance follows from passing correctness CI. Actual commands, source hashes and results belong in the phase receipts;
 a checked design row does not substitute for those results. Each failed invariant
 blocks its phase.
 

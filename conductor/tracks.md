@@ -3,7 +3,7 @@
 - [~] **DES queues and preemption** — `des_queue_preemption_20260925`
   ([index](tracks/des_queue_preemption_20260925/index.md),
   [spec](tracks/des_queue_preemption_20260925/spec.md),
-  [plan](tracks/des_queue_preemption_20260925/plan.md)). In progress; upstream owner 03. Q0–Q4 and Q5.1 bounded native conformance are accepted. Q5.2 benchmarks are next; Q5.3 compatibility and Q5.4 phase closeout remain open. Parent integration is established separately by exact-head hosted checks and native merge readback.
+  [plan](tracks/des_queue_preemption_20260925/plan.md)). In progress; upstream owner 03. Q0–Q4 and Q5.1 bounded native conformance are accepted. Q5.2 benchmark harnesses are implemented; representative Flow scaling is unresolved; Q5.3 compatibility and Q5.4 phase closeout remain open. Parent integration is established separately by exact-head hosted checks and native merge readback.
 - [ ] **Empirical calibration and validation** — `empirical_calibration_20260925`
   ([index](tracks/empirical_calibration_20260925/index.md),
   [spec](tracks/empirical_calibration_20260925/spec.md),

@@ -196,3 +196,14 @@ all leaf instances and the original phase acceptance pass. Post-MVP tasks are
 outside this workpack. No Luna execution or qualification is implied by coverage.
 
 Q4.5 development acceptance (2026-10-04): final Kairos pin `1125b5268bb349a5befe12f5789045042faab3e3` passed exact-head two-host native-owner CI [37192692770](https://github.com/edithatogo/kairos/actions/runs/37192692770), phase/DAG/strict clean-tree gates and independent source/governance reviews. Canonical Rust is current stable 1.99.0; separate 1.88/1.76 compatibility floors remain. Parent PR delivery is pending. Q5, Track 22 portability, Track 25 experimental API and release holds are unchanged.
+
+## Q5.2 execution update — 2026-10-04
+
+Q5.2 execution update (2026-10-04): supplementary kernel/runtime harnesses and
+exact-key removal are implemented for development qualification. The first
+matrix timed out all 13 cases with 100,000 requests; a corrected immutable
+rerun and source/CI receipts are retained in the Q5.2 evidence document.
+Q5.2 remains unchecked until those cases and canonical regression gates pass.
+Next source work follows the reviewed [scaling design](../../design/queue/q5.2-scaling-followup-20261004.md):
+delta staging, waiting-deadline lookup and ordered replacement selection,
+with source-bound Luna packets and independent failure-atomicity review.
