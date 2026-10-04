@@ -52,3 +52,19 @@ return ready_for_review; coordinator accepts only actual commands and source.
 
 No changes to strict D3.3 mutation catalog/source binding or Track49/C4 paths.
 No release, clinical, GPU, distributed or later visualization qualification.
+
+## Integrated source and consumer-profile clarification
+
+Before final qualification, synchronize already-accepted main 42a6095, including
+C4.1 Kairos pin a2cdeab33286e14db59f377449816702e79b2a6a and checkout v6.1.0.
+Core/types source and previous Q5.2 thresholds are unchanged. Rebuild the locked
+CLI against that pin; retain older-pin diagnostic runs separately.
+
+The slow consumer pauses one millisecond per logical 64 KiB of stdout consumed,
+independent of OS pipe read sizes; EOF/stderr reads incur no artificial delay.
+This clarifies a cross-platform test profile before final measurement, without
+raising the frozen workload/time/memory/byte budgets. Earlier per-read drafts
+have retained failed 10-second measurements; the cause is not established by a
+later pass. This is a bounded process soak, not an in-process leak or clinical
+pathway qualification. E3.1/E3.2 and D4.1 own native bounded/atomic outputs,
+cancel/recovery and additional long-lived runner checks before v1.
