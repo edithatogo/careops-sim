@@ -1,0 +1,93 @@
+{
+  "status": "ready_for_review",
+  "scope": "Generic transport fixture qualification only; C1.1.formats instance set is incomplete",
+  "base": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+  "commands": [
+    {
+      "argv": [
+        "/private/tmp/kairos-c1-ci-python-qualify-20261004/.artifacts/c1-ci-python-qualification/venv-attempt2/bin/python",
+        "crates/kairo-ecs-arrow-io/tests/fixtures/interop_v1/generate.py",
+        "--check"
+      ],
+      "cwd": "/private/tmp/careops-c11-fixtures-20261004/libs/kairos",
+      "base": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+      "started_utc": "2026-10-04T07:25:12.081264+00:00",
+      "finished_utc": "2026-10-04T07:25:12.607932+00:00",
+      "exit": 0,
+      "stdout_sha256": "0ac7a995610c2616d51b4d20d9e4ad663a430ed303b588e11e11f8ad0b293f6b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "env",
+        "RUSTC=/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/rustc",
+        "CARGO_TARGET_DIR=/private/tmp/careops-c11-fixtures-20261004/libs/kairos/.artifacts/mvp/C1.1.formats.qualify_20261004/target",
+        "KAIROS_INTEROP_OUTDIR=/private/tmp/careops-c11-fixtures-20261004/libs/kairos/.artifacts/mvp/C1.1.formats.qualify_20261004/rust-outputs",
+        "/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "kairo-ecs-arrow-io",
+        "--features",
+        "ipc,parquet",
+        "--test",
+        "interop_v1"
+      ],
+      "cwd": "/private/tmp/careops-c11-fixtures-20261004/libs/kairos",
+      "base": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+      "started_utc": "2026-10-04T07:25:12.608304+00:00",
+      "finished_utc": "2026-10-04T07:25:46.523824+00:00",
+      "exit": 0,
+      "stdout_sha256": "ccf3cf20830d61c2a0f8fec30776f927dc123a855642a7ddb1eea3df214bf498",
+      "stderr_sha256": "f781b6508e3693a8accb3b9f65b0c9733ead5c632605c4cc029fe2c912aa2029"
+    },
+    {
+      "argv": [
+        "/private/tmp/kairos-c1-ci-python-qualify-20261004/.artifacts/c1-ci-python-qualification/venv-attempt2/bin/python",
+        "crates/kairo-ecs-arrow-io/tests/fixtures/interop_v1/generate.py",
+        "--check-rust",
+        "/private/tmp/careops-c11-fixtures-20261004/libs/kairos/.artifacts/mvp/C1.1.formats.qualify_20261004/rust-outputs"
+      ],
+      "cwd": "/private/tmp/careops-c11-fixtures-20261004/libs/kairos",
+      "base": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+      "started_utc": "2026-10-04T07:25:46.524191+00:00",
+      "finished_utc": "2026-10-04T07:25:46.899378+00:00",
+      "exit": 0,
+      "stdout_sha256": "19ca198b4840ebaf415d6a2c099f37e6e7e99135e07f973aa4abf6dad2ed4f5c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": {
+    ".artifacts/mvp/C1.1.formats.qualify_20261004/rust-outputs/rust.parquet": "ab7e6d91b4819ea22d2fa59c5a6442dc17bcc71348fd5af171ec1d7cf41dc637",
+    ".artifacts/mvp/C1.1.formats.qualify_20261004/rust-outputs/rust.ipc_file": "fd32f976422560484f1ab2f80ef37db66b2d9aea29ee2011adfbe04bae781440",
+    ".artifacts/mvp/C1.1.formats.qualify_20261004/rust-outputs/rust.ipc_stream": "f3b73e23c945622f170779f1a9e37303ba8dee92a05e6be2fe0f8e5b24fe9b34"
+  },
+  "holds": [
+    "No accepted calibration physical schema",
+    "No source-mapping or exclusion-accounting runtime",
+    "No pinned timezone resolver profile",
+    "No C1.1 task acceptance"
+  ],
+  "coordinator_disposition": "accepted_generic_transport_evidence_only",
+  "toolchain": {
+    "rust": "1.88.0",
+    "python": "3.14.8",
+    "pyarrow": "25.0.1",
+    "numpy": "2.5.3",
+    "host": "macOS arm64"
+  },
+  "raw_artifact_root": "/private/tmp/careops-c11-fixtures-20261004/libs/kairos/.artifacts/mvp/C1.1.formats.qualify_20261004",
+  "input_hashes": {
+    "Cargo.lock": "7cc2f5cc4e4c4ebfee950ddbcc335016df024832c26fd57b5f10d7791d1d1660",
+    "crates/kairo-ecs-arrow-io/tests/interop_v1.rs": "05489e5bf3c215bc034f6473cdd27f0e0fd58c2d7753dc7288c075fc917e4add",
+    "crates/kairo-ecs-arrow-io/tests/fixtures/interop_v1/generate.py": "f9da30bb0b091eabdb469ee120cd78180bf7b73e60ec26deffbf2d2dd882bb91",
+    "crates/kairo-ecs-arrow-io/tests/fixtures/interop_v1/golden.json": "10d2131b493bd728a2c61dc75aee7319525dec9e7faffb2c679c48f47570e2ed",
+    "conductor/design/calibration/c1-recordbatch-io-v1.md": "2854aff0be65914e1b0b16e6caa46122ea640b959632d95030edbdce83958449"
+  },
+  "tool_hashes": {
+    "/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/rustc": "6efc19b5cef1e23df77a75d94ce8b75ed9e8929f0dee0618154c88fd6d82c3e1",
+    "/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/cargo": "1e871156aaf10cf58364b6fd4c824859d5d178f227b963a81a58ade2442ac744",
+    "/private/tmp/kairos-c1-ci-python-qualify-20261004/.artifacts/c1-ci-python-qualification/venv-attempt2/bin/python": "7ebde552773a4045532637b114d645a313e045ac07b26f5e520bf039f1e34063"
+  }
+}
