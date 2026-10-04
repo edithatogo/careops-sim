@@ -67,15 +67,17 @@ identify which times are observed, inferred, clamped, predicted and censored.
 
 Entry: C0. Owners 04 (IO), 21 (semantics); can proceed alongside Q1–Q3.
 
-- [ ] C1.1 Write failing actual IPC/Parquet read/write and independent-reader
+- [x] C1.1 Write failing actual IPC/Parquet read/write and independent-reader
   fixtures, including wide/long mappings, timestamp units/timezones, DST
   ambiguity, nulls, duplicate IDs, invalid chronology and overflow. Include missing
   triage/cohort denominators, distinct administrative/physical departure and future-
   outcome leakage fixtures; observed task events must survive lossy standards mappings.
   Add report 30 negative transformations: meta.lastUpdated as event recording, MSH-7 as occurrence, A08 as automatic physical movement, and OMOP visit end as observed departure without lineage. Test reversed intervals, minute precision and valid boarding after episode end.
-- [ ] C1.2 Implement optional Arrow IPC/Parquet features, bounded RecordBatch
+- [x] C1.2 Implement optional Arrow IPC/Parquet features, bounded RecordBatch
   readers and typed schemas. Preserve custom smoke-format compatibility without
   mislabelling it IPC. Lock dependencies and verify feature-minimal/MSRV builds.
+  Acceptance: [C1.2 qualification](../../evidence/c1.2-closeout-20261004/README.md),
+  development pin f18aba1; source PR #211 remains unmerged while broader gates fail.
 - [ ] C1.3 Implement normalization, stable external sorting, origin conversion,
   partial-order/occupancy validation, exclusions and provenance manifests. Test
   equivalent input at several batch sizes, row groups and physical row orders.
