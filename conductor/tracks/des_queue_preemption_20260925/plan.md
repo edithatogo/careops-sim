@@ -119,7 +119,7 @@ to enter or exit this queue phase.
 - [x] Q4.1 Write API-level integration tests for acquire/priority/can_preempt/
   preemptible/deadline/work builders, non-reentrant notifications, behavior
   callbacks and a single shared DES/ABM time/world.
-- [ ] Q4.2 Implement builders, domain dispatch hooks for typed in-memory
+- [x] Q4.2 Implement builders, domain dispatch hooks for typed in-memory
   continuation context, deterministic notification order and bounded
   zero-duration feedback handling. Do not add portable codecs without an
   accepted Track 22 contract. Add a migration example retaining the old FIFO API.

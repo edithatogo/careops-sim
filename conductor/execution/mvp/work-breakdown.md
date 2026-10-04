@@ -535,7 +535,7 @@ Parent plan: [Q4.2](../../tracks/des_queue_preemption_20260925/plan.md)
 | --- | --- | --- | --- |
 | Q4.2.builder | Fluent builder implementation | Approved signatures submit checked commands rather than mutate arbitration inline | libs/kairos / worker |
 | Q4.2.dispatch | Domain handler and notification dispatch | Unrelated domain events are handled explicitly; canonical notification order | libs/kairos / worker |
-| Q4.2.codec | Registered context encode/decode implementation | Unknown codec/revision rejected; valid suspended context roundtrips | libs/kairos / worker |
+| Q4.2.codec | Typed in-memory continuation context and dispatch integration (historical leaf ID retained) | Owned typed context survives Suspend; registered callbacks receive live context; portable codecs remain deferred to Track22 | libs/kairos / worker |
 | Q4.2.limits | Zero-duration loop budget and legacy example | One same-tick completion; bounded feedback gives structured failure; old FIFO API still works | libs/kairos / worker |
 
 ## Q4.3

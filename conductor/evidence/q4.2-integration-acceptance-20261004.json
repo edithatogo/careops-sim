@@ -1,0 +1,1453 @@
+{
+  "schema_version": 1,
+  "task_id": "Q4.2",
+  "date": "2026-10-04",
+  "disposition": "bounded implementation join accepted for parent integration; hosted PR checks and merge remain separate gates",
+  "parent_base": "7e3e5db20bb20479997f0545a2ec10c7f56031c8",
+  "kairos_commit": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+  "engine_source_changes": [],
+  "pin_changes": [],
+  "coordinator": "root",
+  "requested_worker_model": "gpt-6-luna",
+  "model_identity_boundary": "Requested model is recorded; no served-model attestation or general capability qualification",
+  "leaf_joins": [
+    {
+      "leaf_id": "Q4.2.builder",
+      "status": "accepted",
+      "reviewer": "root-coordinator",
+      "all_instances_accepted": true,
+      "instance_set": [
+        "qualify_20261004"
+      ],
+      "packet": {
+        "schema_version": 1,
+        "packet_id": "Q4.2.builder.qualify_20261004",
+        "task_id": "Q4.2",
+        "target_repo": "libs/kairos",
+        "base_commit": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+        "model_role": "worker",
+        "model_candidate": "gpt-6-luna",
+        "status": "prepared",
+        "objective": "Qualify existing Q4.2 fluent builder implementation at accepted Kairos4a90eb; no source changes or self acceptance.",
+        "context_paths": [
+          ".artifacts/mvp/Q4.2.builder.qualify_20261004/context.md"
+        ],
+        "input_hashes": {
+          "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs": "e14865e211794e1700b7ca351dc6eefb9e5a1974e40b4feb600941c9816d3f09",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          ".artifacts/mvp/Q4.2.builder.qualify_20261004/context.md": "9c8bacb3a4e3c42fbef1a8147d6a9919bf7e78237a6e75a47d753206d3459aa8"
+        },
+        "write_paths": [
+          ".artifacts/mvp/Q4.2.builder.qualify_20261004/result.json",
+          ".artifacts/mvp/Q4.2.builder.qualify_20261004/logs",
+          ".artifacts/mvp/Q4.2.builder.qualify_20261004/target"
+        ],
+        "protected_paths": [
+          ".git",
+          "conductor/execution",
+          "conductor/current-state.json"
+        ],
+        "leaf_dependencies": [
+          "Q4.1.shared"
+        ],
+        "interface_contract": "Accepted Q4 runtime and typed continuation contracts; portable codecs deferred to Track22",
+        "steps": [
+          "Read bound context; recheck hashes and coordinator reservation.",
+          "Execute only the instance output; escalate any undefined interface.",
+          "Run exact verification; stop after two failed corrections.",
+          "Return actual diff, commands and result for coordinator review."
+        ],
+        "verification": [
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.builder.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.98.1",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_builder_migration_v1"
+            ],
+            "cwd": ".",
+            "expected_exit": 0,
+            "oracle": "Six independent builder/migration tests pass; capture actual compiler, counts, command times, exit and log hashes"
+          },
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.builder.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.88.0",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_builder_migration_v1"
+            ],
+            "cwd": ".",
+            "expected_exit": 0,
+            "oracle": "Six independent builder/migration tests pass; capture actual compiler, counts, command times, exit and log hashes"
+          }
+        ],
+        "acceptance": [
+          "Approved signatures submit checked commands rather than mutate arbitration inline",
+          "All instance/parent joins require independent coordinator acceptance"
+        ],
+        "result_path": ".artifacts/mvp/Q4.2.builder.qualify_20261004/result.json",
+        "stop_conditions": [
+          "Input/base drift",
+          "Scope or interface unresolved",
+          "Oracle unavailable",
+          "Two unsuccessful corrections"
+        ],
+        "coordinator_binding": {
+          "reviewer": "root-coordinator",
+          "reservation_id": "Q4.2.builder.qualify_20261004",
+          "instance_id": "qualify_20261004",
+          "instance_scope": "Qualify existing Q4.2 fluent builder implementation at accepted Kairos4a90eb; no source changes or self acceptance.",
+          "instance_set": [
+            "qualify_20261004"
+          ],
+          "reviewed_recipe_sha256": "035869b7390486676fc4c4010130d0b6cb8e93f833a74956d3f21145fc291113",
+          "interface_contract": "Accepted Q4 runtime and typed continuation contracts; portable codecs deferred to Track22",
+          "context_slices": [
+            {
+              "repo": ".",
+              "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+              "start": 118,
+              "end": 133
+            },
+            {
+              "repo": "libs/kairos",
+              "path": "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs",
+              "start": 1,
+              "end": 190
+            }
+          ],
+          "input_paths": [
+            "crates/kairo-ecs-des/src/flow.rs",
+            "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs"
+          ],
+          "write_paths": [
+            ".artifacts/mvp/Q4.2.builder.qualify_20261004/result.json",
+            ".artifacts/mvp/Q4.2.builder.qualify_20261004/logs",
+            ".artifacts/mvp/Q4.2.builder.qualify_20261004/target"
+          ],
+          "verification": [
+            {
+              "argv": [
+                "env",
+                "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.builder.qualify_20261004/target",
+                "rustup",
+                "run",
+                "1.98.1",
+                "cargo",
+                "test",
+                "--locked",
+                "--offline",
+                "-p",
+                "kairo-ecs-des",
+                "--test",
+                "flow_builder_migration_v1"
+              ],
+              "cwd": ".",
+              "expected_exit": 0,
+              "oracle": "Six independent builder/migration tests pass; capture actual compiler, counts, command times, exit and log hashes"
+            },
+            {
+              "argv": [
+                "env",
+                "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.builder.qualify_20261004/target",
+                "rustup",
+                "run",
+                "1.88.0",
+                "cargo",
+                "test",
+                "--locked",
+                "--offline",
+                "-p",
+                "kairo-ecs-des",
+                "--test",
+                "flow_builder_migration_v1"
+              ],
+              "cwd": ".",
+              "expected_exit": 0,
+              "oracle": "Six independent builder/migration tests pass; capture actual compiler, counts, command times, exit and log hashes"
+            }
+          ],
+          "prerequisite_receipts": {}
+        },
+        "source_hashes": {
+          "conductor/execution/mvp/recipes.json": "6280f8d1bfccb19d3e01afa471403b930b49acfb5b85e331c2c61dc7f0a6aed7",
+          "conductor/tracks/des_queue_preemption_20260925/plan.md": "1c4267c878def205a388ca44c433f05079ca9fd6eb74cda26a8464cd5579ffaa",
+          "libs/kairos/crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs": "e14865e211794e1700b7ca351dc6eefb9e5a1974e40b4feb600941c9816d3f09",
+          "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+          "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+        },
+        "context_budget_bytes": 24000
+      },
+      "receipt_sha256": "4b85a8e7d527a3e161fb59169263ff6d4092e767077e4b5a38a5a1c823ecdbf8",
+      "preserved_at": "/Users/doughnut/Documents/worktree-preservation-20261003/q42-qualification/Q4.2.builder.qualify_20261004",
+      "executed_receipt": {
+        "schema_version": 1,
+        "packet_id": "Q4.2.builder.qualify_20261004",
+        "instance_id": "qualify_20261004",
+        "status": "ready_for_review",
+        "base_commit": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+        "model": "gpt-6-luna",
+        "source_compilers": {
+          "1.98.1": {
+            "argv": [
+              "rustup",
+              "run",
+              "1.98.1",
+              "rustc",
+              "--version"
+            ],
+            "exit": 0,
+            "output": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          },
+          "1.88.0": {
+            "argv": [
+              "rustup",
+              "run",
+              "1.88.0",
+              "rustc",
+              "--version"
+            ],
+            "exit": 0,
+            "output": "rustc 1.88.0 (6b00bc388 2025-06-23)"
+          }
+        },
+        "input_hashes_before": {
+          "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs": "e14865e211794e1700b7ca351dc6eefb9e5a1974e40b4feb600941c9816d3f09",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          ".artifacts/mvp/Q4.2.builder.qualify_20261004/context.md": "9c8bacb3a4e3c42fbef1a8147d6a9919bf7e78237a6e75a47d753206d3459aa8"
+        },
+        "commands": [
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.builder.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.98.1",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_builder_migration_v1"
+            ],
+            "cwd": "/private/tmp/careops-q42-integration/libs/kairos",
+            "started_at_utc": "2026-10-04T04:00:02.153017+00:00",
+            "ended_at_utc": "2026-10-04T04:00:11.363916+00:00",
+            "elapsed_seconds": 9.211,
+            "exit_status": 0,
+            "log_path": ".artifacts/mvp/Q4.2.builder.qualify_20261004/logs/verification-1.log",
+            "log_sha256": "923ab58759dd67858fd2a281a0e31c2c9d9c8ae60b270f1db6b14e2b9ac54a1f",
+            "raw_log_bytes": 1548,
+            "test_counts": {
+              "passed": 6,
+              "failed": 0
+            },
+            "output_tail": "Compiling kairo-ecs-state v0.0.0 (/private/tmp/careops-q42-integration/libs/kairos/crates/kairo-ecs-state)\n   Compiling kairo-ecs-rng v0.0.0 (/private/tmp/careops-q42-integration/libs/kairos/crates/kairo-ecs-rng)\n   Compiling syn v3.0.6\n   Compiling thiserror-impl v2.0.20\n   Compiling kairo-ecs-des v0.1.0 (/private/tmp/careops-q42-integration/libs/kairos/crates/kairo-ecs-des)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.83s\n     Running tests/flow_builder_migration_v1.rs (.artifacts/mvp/Q4.2.builder.qualify_20261004/target/debug/deps/flow_builder_migration_v1-afd34638fe4c2868)\n\nrunning 6 tests\ntest failed_admission_preserves_association_and_full_public_scheduler_stats ... ok\ntest defaults_and_explicit_policy_translate_to_request ... ok\ntest scheduler_admission_priority_is_distinct_from_resource_queue_priority ... ok\ntest fifo_migration_keeps_label_order_and_teaches_buffered_lease_release ... ok\ntest deadline_at_completion_expires_without_replacement_grant_in_both_insertions ... ok\ntest boundary_pause_retains_context_and_matches_uninterrupted_causal_records ... ok\n\ntest result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+            "exit_code": 0
+          },
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.builder.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.88.0",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_builder_migration_v1"
+            ],
+            "cwd": "/private/tmp/careops-q42-integration/libs/kairos",
+            "started_at_utc": "2026-10-04T04:00:11.365023+00:00",
+            "ended_at_utc": "2026-10-04T04:00:19.016227+00:00",
+            "elapsed_seconds": 7.651,
+            "exit_status": 0,
+            "log_path": ".artifacts/mvp/Q4.2.builder.qualify_20261004/logs/verification-2.log",
+            "log_sha256": "4125c4d96d4aff3a14cd65e43791f7954353ba3fbd83a7190fe84b38648293a6",
+            "raw_log_bytes": 1548,
+            "test_counts": {
+              "passed": 6,
+              "failed": 0
+            },
+            "output_tail": "  Compiling kairo-ecs-rng v0.0.0 (/private/tmp/careops-q42-integration/libs/kairos/crates/kairo-ecs-rng)\n   Compiling kairo-ecs-core v0.0.0 (/private/tmp/careops-q42-integration/libs/kairos/crates/kairo-ecs-core)\n   Compiling syn v3.0.6\n   Compiling thiserror-impl v2.0.20\n   Compiling kairo-ecs-des v0.1.0 (/private/tmp/careops-q42-integration/libs/kairos/crates/kairo-ecs-des)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.25s\n     Running tests/flow_builder_migration_v1.rs (.artifacts/mvp/Q4.2.builder.qualify_20261004/target/debug/deps/flow_builder_migration_v1-2bd1157c59c12b00)\n\nrunning 6 tests\ntest failed_admission_preserves_association_and_full_public_scheduler_stats ... ok\ntest defaults_and_explicit_policy_translate_to_request ... ok\ntest boundary_pause_retains_context_and_matches_uninterrupted_causal_records ... ok\ntest scheduler_admission_priority_is_distinct_from_resource_queue_priority ... ok\ntest fifo_migration_keeps_label_order_and_teaches_buffered_lease_release ... ok\ntest deadline_at_completion_expires_without_replacement_grant_in_both_insertions ... ok\n\ntest result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+            "exit_code": 0
+          }
+        ],
+        "input_hashes_after": {
+          "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs": "e14865e211794e1700b7ca351dc6eefb9e5a1974e40b4feb600941c9816d3f09",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          ".artifacts/mvp/Q4.2.builder.qualify_20261004/context.md": "9c8bacb3a4e3c42fbef1a8147d6a9919bf7e78237a6e75a47d753206d3459aa8"
+        },
+        "source_changes": [],
+        "acceptance_claimed": false
+      }
+    },
+    {
+      "leaf_id": "Q4.2.dispatch",
+      "status": "accepted",
+      "reviewer": "root-coordinator",
+      "all_instances_accepted": true,
+      "instance_set": [
+        "qualify_20261004"
+      ],
+      "packet": {
+        "schema_version": 1,
+        "packet_id": "Q4.2.dispatch.qualify_20261004",
+        "task_id": "Q4.2",
+        "target_repo": "libs/kairos",
+        "base_commit": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+        "model_role": "worker",
+        "model_candidate": "gpt-6-luna",
+        "status": "prepared",
+        "objective": "Qualify existing Domain handler and notification dispatch at accepted Kairos4a90eb; no source changes or self acceptance.",
+        "context_paths": [
+          ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/context.md"
+        ],
+        "input_hashes": {
+          "conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+          "crates/kairo-ecs-des/tests/flow_shared_domain_v1.rs": "97ede277ce678f4857788e016b22561789a1f806dc699936cfea614885d022dd",
+          ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/context.md": "36376667d8c9020a0bfa0450438eb51afe15c9a28ef89dbb784619d2277a4843"
+        },
+        "write_paths": [
+          ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/result.json",
+          ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/logs",
+          ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/target"
+        ],
+        "protected_paths": [
+          ".git",
+          "conductor/execution",
+          "conductor/current-state.json"
+        ],
+        "leaf_dependencies": [
+          "Q4.2.builder"
+        ],
+        "interface_contract": "Accepted Q4 runtime and typed continuation contracts; portable codecs deferred to Track22",
+        "steps": [
+          "Read bound context; recheck hashes and coordinator reservation.",
+          "Execute only the instance output; escalate any undefined interface.",
+          "Run exact verification; stop after two failed corrections.",
+          "Return actual diff, commands and result for coordinator review."
+        ],
+        "verification": [
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.dispatch.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.98.1",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_continuations_v1",
+              "--test",
+              "flow_shared_domain_v1"
+            ],
+            "cwd": ".",
+            "expected_exit": 0,
+            "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+          },
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.dispatch.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.88.0",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_continuations_v1",
+              "--test",
+              "flow_shared_domain_v1"
+            ],
+            "cwd": ".",
+            "expected_exit": 0,
+            "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+          }
+        ],
+        "acceptance": [
+          "Unrelated domain events are handled explicitly; canonical notification order",
+          "All instance/parent joins require independent coordinator acceptance"
+        ],
+        "result_path": ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/result.json",
+        "stop_conditions": [
+          "Input/base drift",
+          "Scope or interface unresolved",
+          "Oracle unavailable",
+          "Two unsuccessful corrections"
+        ],
+        "coordinator_binding": {
+          "reviewer": "root-coordinator",
+          "reservation_id": "Q4.2.dispatch.qualify_20261004",
+          "instance_id": "qualify_20261004",
+          "instance_scope": "Qualify existing Domain handler and notification dispatch at accepted Kairos4a90eb; no source changes or self acceptance.",
+          "instance_set": [
+            "qualify_20261004"
+          ],
+          "reviewed_recipe_sha256": "d8c01f399286aba5cc163f0c8c83f276108ee4d270c24ae4322e184e75c55298",
+          "interface_contract": "Accepted Q4 runtime and typed continuation contracts; portable codecs deferred to Track22",
+          "context_slices": [
+            {
+              "repo": ".",
+              "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+              "start": 118,
+              "end": 133
+            },
+            {
+              "repo": "libs/kairos",
+              "path": "conductor/design/flow/q4-typed-continuations-v1.md",
+              "start": 76,
+              "end": 106
+            }
+          ],
+          "input_paths": [
+            "crates/kairo-ecs-des/src/flow.rs",
+            "crates/kairo-ecs-des/tests/flow_continuations_v1.rs",
+            "crates/kairo-ecs-des/tests/flow_shared_domain_v1.rs"
+          ],
+          "write_paths": [
+            ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/result.json",
+            ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/logs",
+            ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/target"
+          ],
+          "verification": [
+            {
+              "argv": [
+                "env",
+                "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.dispatch.qualify_20261004/target",
+                "rustup",
+                "run",
+                "1.98.1",
+                "cargo",
+                "test",
+                "--locked",
+                "--offline",
+                "-p",
+                "kairo-ecs-des",
+                "--test",
+                "flow_continuations_v1",
+                "--test",
+                "flow_shared_domain_v1"
+              ],
+              "cwd": ".",
+              "expected_exit": 0,
+              "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+            },
+            {
+              "argv": [
+                "env",
+                "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.dispatch.qualify_20261004/target",
+                "rustup",
+                "run",
+                "1.88.0",
+                "cargo",
+                "test",
+                "--locked",
+                "--offline",
+                "-p",
+                "kairo-ecs-des",
+                "--test",
+                "flow_continuations_v1",
+                "--test",
+                "flow_shared_domain_v1"
+              ],
+              "cwd": ".",
+              "expected_exit": 0,
+              "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+            }
+          ],
+          "prerequisite_receipts": {
+            "Q4.2.builder": {
+              "status": "accepted",
+              "reviewer": "root-coordinator",
+              "all_instances_accepted": true,
+              "artifacts": {
+                "libs/kairos/.artifacts/mvp/Q4.2.builder.qualify_20261004/result.json": "4b85a8e7d527a3e161fb59169263ff6d4092e767077e4b5a38a5a1c823ecdbf8"
+              }
+            }
+          }
+        },
+        "source_hashes": {
+          "conductor/execution/mvp/recipes.json": "6280f8d1bfccb19d3e01afa471403b930b49acfb5b85e331c2c61dc7f0a6aed7",
+          "conductor/tracks/des_queue_preemption_20260925/plan.md": "1c4267c878def205a388ca44c433f05079ca9fd6eb74cda26a8464cd5579ffaa",
+          "libs/kairos/conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+          "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+        },
+        "context_budget_bytes": 24000
+      },
+      "receipt_sha256": "a200930e43c2183c81bfb9e0838210f779a2dfd829e10683ae119f8f078385a0",
+      "preserved_at": "/Users/doughnut/Documents/worktree-preservation-20261003/q42-qualification/Q4.2.dispatch.qualify_20261004",
+      "executed_receipt": {
+        "schema_version": 1,
+        "packet_id": "Q4.2.dispatch.qualify_20261004",
+        "instance_id": "qualify_20261004",
+        "status": "ready_for_review",
+        "base_commit": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+        "model": "gpt-6-luna",
+        "source_compilers": {
+          "1.98.1": {
+            "argv": [
+              "rustup",
+              "run",
+              "1.98.1",
+              "rustc",
+              "--version"
+            ],
+            "exit_code": 0,
+            "output": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          },
+          "1.88.0": {
+            "argv": [
+              "rustup",
+              "run",
+              "1.88.0",
+              "rustc",
+              "--version"
+            ],
+            "exit_code": 0,
+            "output": "rustc 1.88.0 (6b00bc388 2025-06-23)"
+          }
+        },
+        "input_hashes_before": {
+          "conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+          "crates/kairo-ecs-des/tests/flow_shared_domain_v1.rs": "97ede277ce678f4857788e016b22561789a1f806dc699936cfea614885d022dd",
+          ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/context.md": "36376667d8c9020a0bfa0450438eb51afe15c9a28ef89dbb784619d2277a4843"
+        },
+        "commands": [
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.dispatch.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.98.1",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_continuations_v1",
+              "--test",
+              "flow_shared_domain_v1"
+            ],
+            "cwd": "/private/tmp/careops-q42-integration/libs/kairos",
+            "started_at_utc": "2026-10-04T04:01:34.641427+00:00",
+            "ended_at_utc": "2026-10-04T04:01:42.566072+00:00",
+            "elapsed_seconds": 7.925,
+            "exit_code": 0,
+            "log_path": ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/logs/verification-1.log",
+            "log_sha256": "0e51a818e5176e4035f63eb4fe196b4e355e9aa1ca33a280e9b9675a6293458c",
+            "raw_log_bytes": 2539,
+            "suite_counts": [
+              {
+                "summary": "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+                "passed": 8,
+                "failed": 0,
+                "ignored": 0
+              },
+              {
+                "summary": "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+                "passed": 7,
+                "failed": 0,
+                "ignored": 0
+              }
+            ]
+          },
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.dispatch.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.88.0",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_continuations_v1",
+              "--test",
+              "flow_shared_domain_v1"
+            ],
+            "cwd": "/private/tmp/careops-q42-integration/libs/kairos",
+            "started_at_utc": "2026-10-04T04:01:42.567457+00:00",
+            "ended_at_utc": "2026-10-04T04:01:50.095865+00:00",
+            "elapsed_seconds": 7.528,
+            "exit_code": 0,
+            "log_path": ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/logs/verification-2.log",
+            "log_sha256": "40cab0c0101a156bf3aa848b05fc2540ebdb932825945a754e947c22ae62ec96",
+            "raw_log_bytes": 2539,
+            "suite_counts": [
+              {
+                "summary": "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+                "passed": 8,
+                "failed": 0,
+                "ignored": 0
+              },
+              {
+                "summary": "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+                "passed": 7,
+                "failed": 0,
+                "ignored": 0
+              }
+            ]
+          }
+        ],
+        "input_hashes_after": {
+          "conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+          "crates/kairo-ecs-des/tests/flow_shared_domain_v1.rs": "97ede277ce678f4857788e016b22561789a1f806dc699936cfea614885d022dd",
+          ".artifacts/mvp/Q4.2.dispatch.qualify_20261004/context.md": "36376667d8c9020a0bfa0450438eb51afe15c9a28ef89dbb784619d2277a4843"
+        },
+        "source_changes": [],
+        "acceptance_claimed": false
+      }
+    },
+    {
+      "leaf_id": "Q4.2.codec",
+      "status": "accepted",
+      "reviewer": "root-coordinator",
+      "all_instances_accepted": true,
+      "instance_set": [
+        "qualify_20261004"
+      ],
+      "packet": {
+        "schema_version": 1,
+        "packet_id": "Q4.2.codec.qualify_20261004",
+        "task_id": "Q4.2",
+        "target_repo": "libs/kairos",
+        "base_commit": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+        "model_role": "worker",
+        "model_candidate": "gpt-6-luna",
+        "status": "prepared",
+        "objective": "Qualify existing Typed in-memory continuation context and dispatch integration at accepted Kairos4a90eb; no source changes or self acceptance.",
+        "context_paths": [
+          ".artifacts/mvp/Q4.2.codec.qualify_20261004/context.md"
+        ],
+        "input_hashes": {
+          "conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs": "e14865e211794e1700b7ca351dc6eefb9e5a1974e40b4feb600941c9816d3f09",
+          "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+          ".artifacts/mvp/Q4.2.codec.qualify_20261004/context.md": "790fa934fd16090b1058167d2511711a601553a63ab98cc4446aab87d6528b3b"
+        },
+        "write_paths": [
+          ".artifacts/mvp/Q4.2.codec.qualify_20261004/result.json",
+          ".artifacts/mvp/Q4.2.codec.qualify_20261004/logs",
+          ".artifacts/mvp/Q4.2.codec.qualify_20261004/target"
+        ],
+        "protected_paths": [
+          ".git",
+          "conductor/execution",
+          "conductor/current-state.json"
+        ],
+        "leaf_dependencies": [
+          "Q4.2.dispatch"
+        ],
+        "interface_contract": "Accepted Q4 runtime and typed continuation contracts; portable codecs deferred to Track22",
+        "steps": [
+          "Read bound context; recheck hashes and coordinator reservation.",
+          "Execute only the instance output; escalate any undefined interface.",
+          "Run exact verification; stop after two failed corrections.",
+          "Return actual diff, commands and result for coordinator review."
+        ],
+        "verification": [
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.codec.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.98.1",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_builder_migration_v1",
+              "--test",
+              "flow_continuations_v1"
+            ],
+            "cwd": ".",
+            "expected_exit": 0,
+            "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+          },
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.codec.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.88.0",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_builder_migration_v1",
+              "--test",
+              "flow_continuations_v1"
+            ],
+            "cwd": ".",
+            "expected_exit": 0,
+            "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+          }
+        ],
+        "acceptance": [
+          "Owned typed context survives Suspend; registered callbacks receive live context; portable codecs remain deferred to Track22",
+          "All instance/parent joins require independent coordinator acceptance"
+        ],
+        "result_path": ".artifacts/mvp/Q4.2.codec.qualify_20261004/result.json",
+        "stop_conditions": [
+          "Input/base drift",
+          "Scope or interface unresolved",
+          "Oracle unavailable",
+          "Two unsuccessful corrections"
+        ],
+        "coordinator_binding": {
+          "reviewer": "root-coordinator",
+          "reservation_id": "Q4.2.codec.qualify_20261004",
+          "instance_id": "qualify_20261004",
+          "instance_scope": "Qualify existing Typed in-memory continuation context and dispatch integration at accepted Kairos4a90eb; no source changes or self acceptance.",
+          "instance_set": [
+            "qualify_20261004"
+          ],
+          "reviewed_recipe_sha256": "c17a8e02eb77e33a6584500429a537e3c9784c6216ac010bcba97654ff8e92c6",
+          "interface_contract": "Accepted Q4 runtime and typed continuation contracts; portable codecs deferred to Track22",
+          "context_slices": [
+            {
+              "repo": ".",
+              "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+              "start": 118,
+              "end": 133
+            },
+            {
+              "repo": "libs/kairos",
+              "path": "conductor/design/flow/q4-typed-continuations-v1.md",
+              "start": 76,
+              "end": 106
+            }
+          ],
+          "input_paths": [
+            "crates/kairo-ecs-des/src/flow.rs",
+            "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs",
+            "crates/kairo-ecs-des/tests/flow_continuations_v1.rs"
+          ],
+          "write_paths": [
+            ".artifacts/mvp/Q4.2.codec.qualify_20261004/result.json",
+            ".artifacts/mvp/Q4.2.codec.qualify_20261004/logs",
+            ".artifacts/mvp/Q4.2.codec.qualify_20261004/target"
+          ],
+          "verification": [
+            {
+              "argv": [
+                "env",
+                "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.codec.qualify_20261004/target",
+                "rustup",
+                "run",
+                "1.98.1",
+                "cargo",
+                "test",
+                "--locked",
+                "--offline",
+                "-p",
+                "kairo-ecs-des",
+                "--test",
+                "flow_builder_migration_v1",
+                "--test",
+                "flow_continuations_v1"
+              ],
+              "cwd": ".",
+              "expected_exit": 0,
+              "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+            },
+            {
+              "argv": [
+                "env",
+                "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.codec.qualify_20261004/target",
+                "rustup",
+                "run",
+                "1.88.0",
+                "cargo",
+                "test",
+                "--locked",
+                "--offline",
+                "-p",
+                "kairo-ecs-des",
+                "--test",
+                "flow_builder_migration_v1",
+                "--test",
+                "flow_continuations_v1"
+              ],
+              "cwd": ".",
+              "expected_exit": 0,
+              "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+            }
+          ],
+          "prerequisite_receipts": {
+            "Q4.2.dispatch": {
+              "status": "accepted",
+              "reviewer": "root-coordinator",
+              "all_instances_accepted": true,
+              "artifacts": {
+                "libs/kairos/.artifacts/mvp/Q4.2.dispatch.qualify_20261004/result.json": "a200930e43c2183c81bfb9e0838210f779a2dfd829e10683ae119f8f078385a0"
+              }
+            }
+          }
+        },
+        "source_hashes": {
+          "conductor/execution/mvp/recipes.json": "6280f8d1bfccb19d3e01afa471403b930b49acfb5b85e331c2c61dc7f0a6aed7",
+          "conductor/tracks/des_queue_preemption_20260925/plan.md": "1c4267c878def205a388ca44c433f05079ca9fd6eb74cda26a8464cd5579ffaa",
+          "libs/kairos/conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+          "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+        },
+        "context_budget_bytes": 24000
+      },
+      "receipt_sha256": "008d3979b5fa479b3228bdde87aecf308f549767d7671a4e63be0521b4d76ea0",
+      "preserved_at": "/Users/doughnut/Documents/worktree-preservation-20261003/q42-qualification/Q4.2.codec.qualify_20261004",
+      "executed_receipt": {
+        "schema_version": 1,
+        "packet_id": "Q4.2.codec.qualify_20261004",
+        "instance_id": "qualify_20261004",
+        "status": "ready_for_review",
+        "base_commit": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+        "model": "gpt-6-luna",
+        "source_compilers": {
+          "1.98.1": {
+            "argv": [
+              "rustup",
+              "run",
+              "1.98.1",
+              "rustc",
+              "--version"
+            ],
+            "exit_code": 0,
+            "output": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          },
+          "1.88.0": {
+            "argv": [
+              "rustup",
+              "run",
+              "1.88.0",
+              "rustc",
+              "--version"
+            ],
+            "exit_code": 0,
+            "output": "rustc 1.88.0 (6b00bc388 2025-06-23)"
+          }
+        },
+        "input_hashes_before": {
+          "conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs": "e14865e211794e1700b7ca351dc6eefb9e5a1974e40b4feb600941c9816d3f09",
+          "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+          ".artifacts/mvp/Q4.2.codec.qualify_20261004/context.md": "790fa934fd16090b1058167d2511711a601553a63ab98cc4446aab87d6528b3b"
+        },
+        "commands": [
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.codec.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.98.1",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_builder_migration_v1",
+              "--test",
+              "flow_continuations_v1"
+            ],
+            "cwd": "/private/tmp/careops-q42-integration/libs/kairos",
+            "started_at_utc": "2026-10-04T04:02:43.966292+00:00",
+            "ended_at_utc": "2026-10-04T04:02:51.937109+00:00",
+            "elapsed_seconds": 7.971,
+            "exit_code": 0,
+            "log_path": ".artifacts/mvp/Q4.2.codec.qualify_20261004/logs/verification-1.log",
+            "log_sha256": "b81d9036dd4651bc7b766953a5ad23295b57cee3014574afb287be1ef3b5d466",
+            "raw_log_bytes": 2419,
+            "suite_counts": [
+              {
+                "summary": "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+                "passed": 6,
+                "failed": 0,
+                "ignored": 0
+              },
+              {
+                "summary": "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+                "passed": 8,
+                "failed": 0,
+                "ignored": 0
+              }
+            ]
+          },
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.codec.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.88.0",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_builder_migration_v1",
+              "--test",
+              "flow_continuations_v1"
+            ],
+            "cwd": "/private/tmp/careops-q42-integration/libs/kairos",
+            "started_at_utc": "2026-10-04T04:02:51.937871+00:00",
+            "ended_at_utc": "2026-10-04T04:02:59.995287+00:00",
+            "elapsed_seconds": 8.058,
+            "exit_code": 0,
+            "log_path": ".artifacts/mvp/Q4.2.codec.qualify_20261004/logs/verification-2.log",
+            "log_sha256": "8f2fa78c003f292291dd8655ea0b4a3d726b55bdc257b8979bba32274abc0e70",
+            "raw_log_bytes": 2419,
+            "suite_counts": [
+              {
+                "summary": "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+                "passed": 6,
+                "failed": 0,
+                "ignored": 0
+              },
+              {
+                "summary": "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+                "passed": 8,
+                "failed": 0,
+                "ignored": 0
+              }
+            ]
+          }
+        ],
+        "input_hashes_after": {
+          "conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs": "e14865e211794e1700b7ca351dc6eefb9e5a1974e40b4feb600941c9816d3f09",
+          "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+          ".artifacts/mvp/Q4.2.codec.qualify_20261004/context.md": "790fa934fd16090b1058167d2511711a601553a63ab98cc4446aab87d6528b3b"
+        },
+        "source_changes": [],
+        "acceptance_claimed": false
+      }
+    },
+    {
+      "leaf_id": "Q4.2.limits",
+      "status": "accepted",
+      "reviewer": "root-coordinator",
+      "all_instances_accepted": true,
+      "instance_set": [
+        "qualify_20261004"
+      ],
+      "packet": {
+        "schema_version": 1,
+        "packet_id": "Q4.2.limits.qualify_20261004",
+        "task_id": "Q4.2",
+        "target_repo": "libs/kairos",
+        "base_commit": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+        "model_role": "worker",
+        "model_candidate": "gpt-6-luna",
+        "status": "prepared",
+        "objective": "Qualify existing Zero-duration loop budget and legacy example at accepted Kairos4a90eb; no source changes or self acceptance.",
+        "context_paths": [
+          ".artifacts/mvp/Q4.2.limits.qualify_20261004/context.md"
+        ],
+        "input_hashes": {
+          "conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          "crates/kairo-ecs-des/tests/flow_same_tick_budget_v1.rs": "7013e0210f18fc08f46f916a111b4809231fa8c99b95236e1d40e12bd9bfc8be",
+          "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+          "crates/kairo-ecs-des/examples/flow_fifo_migration.rs": "3479886e4109f2d15246931096197668a2abd6968374a8d06360523c70b1668f",
+          ".artifacts/mvp/Q4.2.limits.qualify_20261004/context.md": "f0e17e1c825188ac7e1ea8566fb7fc47701efed7d4c07d06c7a9303f9864ebc4"
+        },
+        "write_paths": [
+          ".artifacts/mvp/Q4.2.limits.qualify_20261004/result.json",
+          ".artifacts/mvp/Q4.2.limits.qualify_20261004/logs",
+          ".artifacts/mvp/Q4.2.limits.qualify_20261004/target"
+        ],
+        "protected_paths": [
+          ".git",
+          "conductor/execution",
+          "conductor/current-state.json"
+        ],
+        "leaf_dependencies": [
+          "Q4.2.codec"
+        ],
+        "interface_contract": "Accepted Q4 runtime and typed continuation contracts; portable codecs deferred to Track22",
+        "steps": [
+          "Read bound context; recheck hashes and coordinator reservation.",
+          "Execute only the instance output; escalate any undefined interface.",
+          "Run exact verification; stop after two failed corrections.",
+          "Return actual diff, commands and result for coordinator review."
+        ],
+        "verification": [
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.limits.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.98.1",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_same_tick_budget_v1",
+              "--test",
+              "flow_continuations_v1"
+            ],
+            "cwd": ".",
+            "expected_exit": 0,
+            "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+          },
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.limits.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.88.0",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_same_tick_budget_v1",
+              "--test",
+              "flow_continuations_v1"
+            ],
+            "cwd": ".",
+            "expected_exit": 0,
+            "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+          },
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.limits.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.98.1",
+              "cargo",
+              "run",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--example",
+              "flow_fifo_migration"
+            ],
+            "cwd": ".",
+            "expected_exit": 0,
+            "oracle": "Legacy and Flow FIFO both first -> second -> third; buffered dispatch and expired lease assertion pass"
+          }
+        ],
+        "acceptance": [
+          "One same-tick completion; bounded feedback gives structured failure; old FIFO API still works",
+          "All instance/parent joins require independent coordinator acceptance"
+        ],
+        "result_path": ".artifacts/mvp/Q4.2.limits.qualify_20261004/result.json",
+        "stop_conditions": [
+          "Input/base drift",
+          "Scope or interface unresolved",
+          "Oracle unavailable",
+          "Two unsuccessful corrections"
+        ],
+        "coordinator_binding": {
+          "reviewer": "root-coordinator",
+          "reservation_id": "Q4.2.limits.qualify_20261004",
+          "instance_id": "qualify_20261004",
+          "instance_scope": "Qualify existing Zero-duration loop budget and legacy example at accepted Kairos4a90eb; no source changes or self acceptance.",
+          "instance_set": [
+            "qualify_20261004"
+          ],
+          "reviewed_recipe_sha256": "ea7e25c622b99992b47700f32e8dcea2d48c93b86550a2c01b0bdaeca02840e1",
+          "interface_contract": "Accepted Q4 runtime and typed continuation contracts; portable codecs deferred to Track22",
+          "context_slices": [
+            {
+              "repo": ".",
+              "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
+              "start": 118,
+              "end": 133
+            },
+            {
+              "repo": "libs/kairos",
+              "path": "conductor/design/flow/q4-typed-continuations-v1.md",
+              "start": 76,
+              "end": 106
+            }
+          ],
+          "input_paths": [
+            "crates/kairo-ecs-des/src/flow.rs",
+            "crates/kairo-ecs-des/tests/flow_same_tick_budget_v1.rs",
+            "crates/kairo-ecs-des/tests/flow_continuations_v1.rs",
+            "crates/kairo-ecs-des/examples/flow_fifo_migration.rs"
+          ],
+          "write_paths": [
+            ".artifacts/mvp/Q4.2.limits.qualify_20261004/result.json",
+            ".artifacts/mvp/Q4.2.limits.qualify_20261004/logs",
+            ".artifacts/mvp/Q4.2.limits.qualify_20261004/target"
+          ],
+          "verification": [
+            {
+              "argv": [
+                "env",
+                "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.limits.qualify_20261004/target",
+                "rustup",
+                "run",
+                "1.98.1",
+                "cargo",
+                "test",
+                "--locked",
+                "--offline",
+                "-p",
+                "kairo-ecs-des",
+                "--test",
+                "flow_same_tick_budget_v1",
+                "--test",
+                "flow_continuations_v1"
+              ],
+              "cwd": ".",
+              "expected_exit": 0,
+              "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+            },
+            {
+              "argv": [
+                "env",
+                "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.limits.qualify_20261004/target",
+                "rustup",
+                "run",
+                "1.88.0",
+                "cargo",
+                "test",
+                "--locked",
+                "--offline",
+                "-p",
+                "kairo-ecs-des",
+                "--test",
+                "flow_same_tick_budget_v1",
+                "--test",
+                "flow_continuations_v1"
+              ],
+              "cwd": ".",
+              "expected_exit": 0,
+              "oracle": "All targeted tests pass with zero failures/ignored; capture actual compiler and per-suite counts; no source mutation"
+            },
+            {
+              "argv": [
+                "env",
+                "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.limits.qualify_20261004/target",
+                "rustup",
+                "run",
+                "1.98.1",
+                "cargo",
+                "run",
+                "--locked",
+                "--offline",
+                "-p",
+                "kairo-ecs-des",
+                "--example",
+                "flow_fifo_migration"
+              ],
+              "cwd": ".",
+              "expected_exit": 0,
+              "oracle": "Legacy and Flow FIFO both first -> second -> third; buffered dispatch and expired lease assertion pass"
+            }
+          ],
+          "prerequisite_receipts": {
+            "Q4.2.codec": {
+              "status": "accepted",
+              "reviewer": "root-coordinator",
+              "all_instances_accepted": true,
+              "artifacts": {
+                "libs/kairos/.artifacts/mvp/Q4.2.codec.qualify_20261004/result.json": "008d3979b5fa479b3228bdde87aecf308f549767d7671a4e63be0521b4d76ea0"
+              }
+            }
+          }
+        },
+        "source_hashes": {
+          "conductor/execution/mvp/recipes.json": "6280f8d1bfccb19d3e01afa471403b930b49acfb5b85e331c2c61dc7f0a6aed7",
+          "conductor/tracks/des_queue_preemption_20260925/plan.md": "1c4267c878def205a388ca44c433f05079ca9fd6eb74cda26a8464cd5579ffaa",
+          "libs/kairos/conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+          "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+        },
+        "context_budget_bytes": 24000
+      },
+      "receipt_sha256": "5d73aa6dbb7718f4645fe2f4ab2fc9a390518424b64514bf3b1c23f5790ae2cd",
+      "preserved_at": "/Users/doughnut/Documents/worktree-preservation-20261003/q42-qualification/Q4.2.limits.qualify_20261004",
+      "executed_receipt": {
+        "schema_version": 1,
+        "packet_id": "Q4.2.limits.qualify_20261004",
+        "instance_id": "qualify_20261004",
+        "status": "ready_for_review",
+        "base_commit": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+        "model": "gpt-6-luna",
+        "source_compilers": {
+          "1.98.1": {
+            "argv": [
+              "rustup",
+              "run",
+              "1.98.1",
+              "rustc",
+              "--version"
+            ],
+            "exit_code": 0,
+            "output": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          },
+          "1.88.0": {
+            "argv": [
+              "rustup",
+              "run",
+              "1.88.0",
+              "rustc",
+              "--version"
+            ],
+            "exit_code": 0,
+            "output": "rustc 1.88.0 (6b00bc388 2025-06-23)"
+          }
+        },
+        "input_hashes_before": {
+          "conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          "crates/kairo-ecs-des/tests/flow_same_tick_budget_v1.rs": "7013e0210f18fc08f46f916a111b4809231fa8c99b95236e1d40e12bd9bfc8be",
+          "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+          "crates/kairo-ecs-des/examples/flow_fifo_migration.rs": "3479886e4109f2d15246931096197668a2abd6968374a8d06360523c70b1668f",
+          ".artifacts/mvp/Q4.2.limits.qualify_20261004/context.md": "f0e17e1c825188ac7e1ea8566fb7fc47701efed7d4c07d06c7a9303f9864ebc4"
+        },
+        "commands": [
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.limits.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.98.1",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_same_tick_budget_v1",
+              "--test",
+              "flow_continuations_v1"
+            ],
+            "cwd": "/private/tmp/careops-q42-integration/libs/kairos",
+            "started_at_utc": "2026-10-04T04:04:01.844413+00:00",
+            "ended_at_utc": "2026-10-04T04:04:09.678686+00:00",
+            "elapsed_seconds": 7.835,
+            "exit_code": 0,
+            "log_path": ".artifacts/mvp/Q4.2.limits.qualify_20261004/logs/verification-1.log",
+            "log_sha256": "88fff147738b35711edc0abce6c644ae377fe9a230315be0d778f127c92338e3",
+            "raw_log_bytes": 2561,
+            "suite_counts": [
+              {
+                "summary": "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+                "passed": 8,
+                "failed": 0,
+                "ignored": 0
+              },
+              {
+                "summary": "test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+                "passed": 9,
+                "failed": 0,
+                "ignored": 0
+              }
+            ],
+            "output_tail": "1004/target/debug/deps/flow_same_tick_budget_v1-6e69b5f33a1c5aa0)\n\nrunning 9 tests\ntest defaults_and_constructor_only_override ... ok\ntest timed_admission_uses_effective_dispatch_timestamp ... ok\ntest delivered_cancel_notification_counts_once_after_terminal_commit ... ok\ntest release_and_replacement_are_one_atomic_budget_plan ... ok\ntest predicted_obsolete_completion_has_zero_cost_and_natural_tick_reset ... ok\ntest first_admission_overflow_retains_head_and_permanently_halts ... ok\ntest exact_limit_and_normal_later_tick_reset_respect_max_events ... ok\ntest blocked_notification_preserves_context_and_pending_token ... ok\ntest due_boundary_and_rejected_cancel_eight_independent_ordering_cases ... ok\n\ntest result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+          },
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.limits.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.88.0",
+              "cargo",
+              "test",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--test",
+              "flow_same_tick_budget_v1",
+              "--test",
+              "flow_continuations_v1"
+            ],
+            "cwd": "/private/tmp/careops-q42-integration/libs/kairos",
+            "started_at_utc": "2026-10-04T04:04:09.679974+00:00",
+            "ended_at_utc": "2026-10-04T04:04:17.715468+00:00",
+            "elapsed_seconds": 8.036,
+            "exit_code": 0,
+            "log_path": ".artifacts/mvp/Q4.2.limits.qualify_20261004/logs/verification-2.log",
+            "log_sha256": "c929a9377c0565874b1be245b7cd9e96dab6609934545f417b8cf69d84878ae3",
+            "raw_log_bytes": 2561,
+            "suite_counts": [
+              {
+                "summary": "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+                "passed": 8,
+                "failed": 0,
+                "ignored": 0
+              },
+              {
+                "summary": "test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+                "passed": 9,
+                "failed": 0,
+                "ignored": 0
+              }
+            ],
+            "output_tail": "1004/target/debug/deps/flow_same_tick_budget_v1-a6ca2bde91f4159d)\n\nrunning 9 tests\ntest defaults_and_constructor_only_override ... ok\ntest first_admission_overflow_retains_head_and_permanently_halts ... ok\ntest timed_admission_uses_effective_dispatch_timestamp ... ok\ntest predicted_obsolete_completion_has_zero_cost_and_natural_tick_reset ... ok\ntest delivered_cancel_notification_counts_once_after_terminal_commit ... ok\ntest release_and_replacement_are_one_atomic_budget_plan ... ok\ntest blocked_notification_preserves_context_and_pending_token ... ok\ntest exact_limit_and_normal_later_tick_reset_respect_max_events ... ok\ntest due_boundary_and_rejected_cancel_eight_independent_ordering_cases ... ok\n\ntest result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+          },
+          {
+            "argv": [
+              "env",
+              "CARGO_TARGET_DIR=.artifacts/mvp/Q4.2.limits.qualify_20261004/target",
+              "rustup",
+              "run",
+              "1.98.1",
+              "cargo",
+              "run",
+              "--locked",
+              "--offline",
+              "-p",
+              "kairo-ecs-des",
+              "--example",
+              "flow_fifo_migration"
+            ],
+            "cwd": "/private/tmp/careops-q42-integration/libs/kairos",
+            "started_at_utc": "2026-10-04T04:04:17.715972+00:00",
+            "ended_at_utc": "2026-10-04T04:04:22.383358+00:00",
+            "elapsed_seconds": 4.668,
+            "exit_code": 0,
+            "log_path": ".artifacts/mvp/Q4.2.limits.qualify_20261004/logs/verification-3.log",
+            "log_sha256": "640f774f855a2969f247c21dab94051fa79dbcfc454e3829fb46dfe90b8d6517",
+            "raw_log_bytes": 718,
+            "suite_counts": [],
+            "output_tail": "   Compiling proc-macro2 v1.0.106\n   Compiling unicode-ident v1.0.24\n   Compiling quote v1.0.45\n   Compiling kairo-ecs-types v0.0.0 (/private/tmp/careops-q42-integration/libs/kairos/crates/kairo-ecs-types)\n   Compiling thiserror v2.0.20\n   Compiling syn v3.0.6\n   Compiling thiserror-impl v2.0.20\n   Compiling kairo-ecs-des v0.1.0 (/private/tmp/careops-q42-integration/libs/kairos/crates/kairo-ecs-des)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.29s\n     Running `.artifacts/mvp/Q4.2.limits.qualify_20261004/target/debug/examples/flow_fifo_migration`\nLegacy FIFO: first -> second -> third\nFlow FIFO: first -> second -> third\nFlow commands commit at dispatch; released leases cannot be reused.\n"
+          }
+        ],
+        "input_hashes_after": {
+          "conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+          "crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+          "crates/kairo-ecs-des/tests/flow_same_tick_budget_v1.rs": "7013e0210f18fc08f46f916a111b4809231fa8c99b95236e1d40e12bd9bfc8be",
+          "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+          "crates/kairo-ecs-des/examples/flow_fifo_migration.rs": "3479886e4109f2d15246931096197668a2abd6968374a8d06360523c70b1668f",
+          ".artifacts/mvp/Q4.2.limits.qualify_20261004/context.md": "f0e17e1c825188ac7e1ea8566fb7fc47701efed7d4c07d06c7a9303f9864ebc4"
+        },
+        "source_changes": [],
+        "acceptance_claimed": false
+      }
+    }
+  ],
+  "independent_source_review": {
+    "review": "Q4.2 recipe/work-breakdown correction verification",
+    "candidate_checkout": "/private/tmp/careops-q42-integration",
+    "checkout_head": "7e3e5db20bb20479997f0545a2ec10c7f56031c8",
+    "kairos_submodule_head": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+    "disposition": "accepted_consistent_scope",
+    "changes_verified": {
+      "recipe_leaf_id": "Q4.2.codec retained as historical identifier for packet/receipt traceability",
+      "recipe_output": "Typed in-memory continuation context and dispatch integration",
+      "recipe_oracle": "Owned typed context survives Suspend; registered callbacks receive live context; portable codecs remain deferred to Track22",
+      "work_breakdown": "Matches typed in-memory scope and explicitly states historical leaf ID retained",
+      "dependency": "Q4.2.codec depends on Q4.2.dispatch; Q4.2.limits retains dependency on historical Q4.2.codec identifier. Dependency is traceability/order only and no longer implies codec implementation.",
+      "remaining_codec_wording": "Only the historical leaf ID contains codec; Q4.2 output/oracle no longer requires encode/decode, roundtrip, schema, or portable checkpoint behavior."
+    },
+    "source_disposition": {
+      "Q4.2_requested_features_present_at_accepted_submodule_baseline": true,
+      "source_gaps_found": [],
+      "scope_limit": "Parent Q4.2 remains unchecked. This verifies recipe consistency and relies on prior bounded source audit; it does not claim parent acceptance, newly run qualification, Q4.3+, portable serialization, or release readiness.",
+      "evidence": "Existing source/test mapping in /tmp/q42-source-review.json; audited builder, domain dispatch, deterministic callback ordering, bounded same-tick feedback, and legacy FIFO migration fixtures."
+    },
+    "verification": {
+      "static_recipe_show": "python3 tools/mvp.py show Q4.2.codec returned corrected output/oracle and reviewed_recipe_sha256 c17a8e02eb77e33a6584500429a537e3c9784c6216ac010bcba97654ff8e92c6",
+      "tests_run": false,
+      "repository_mutations": false,
+      "worktree_status": "Two parent-owned modified files: recipes.json and work-breakdown.md; left untouched."
+    },
+    "sha256": {
+      "conductor/execution/mvp/recipes.json": "6280f8d1bfccb19d3e01afa471403b930b49acfb5b85e331c2c61dc7f0a6aed7",
+      "conductor/execution/mvp/work-breakdown.md": "25ab554d5e6cb6c1bfc6d5f965025bc44d23d59e6eff0c604c16eefa62ba749d"
+    }
+  },
+  "coordinator_verification": "Exact packet argv/cwd/base, input hashes before/after, actual raw log hashes and zero-failure/ignored counts independently read back",
+  "current_owner_ci_readback": {
+    "run_id": 37165239657,
+    "head_sha": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/edithatogo/kairos/actions/runs/37165239657"
+  },
+  "recipe_alignment": "Historical Q4.2.codec leaf identifier retained. Recipe and work-breakdown descriptions now require typed in-memory context, with portable codecs deferred to Track22.",
+  "verification_scope": "30 distinct public fixtures on each of two compilers; 52 targeted fixture executions per compiler including overlap among leaf joins. FIFO example executed on Rust1.98.1. Prior Q4.1 complete DES/ABM180-per-toolchain evidence remains separate.",
+  "remaining_gates": [
+    "Q4.3 staged lifecycle snapshots and Track04 sidecar",
+    "Q4.4 staged synthetic staff/bed/cleaning example",
+    "Q4.5 phase review",
+    "Full C1/C2 and experimental API compatibility/release gates",
+    "Portable checkpoint/codecs Track22",
+    "Dedicated callback re-entry compile-fail hardening fixture"
+  ]
+}
