@@ -1,0 +1,70 @@
+{
+  "status": "passed_planning_and_pin_integrity_only",
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": "/private/tmp/careops-readback-root-20261005",
+      "parent_head": "eee554bcb83b1c322b5ef5523b4e1bf90dd7e2c0",
+      "exit_code": 0,
+      "stdout": "143 task records: full coverage, prerequisites and DAG valid\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": "/private/tmp/careops-readback-root-20261005",
+      "parent_head": "eee554bcb83b1c322b5ef5523b4e1bf90dd7e2c0",
+      "exit_code": 0,
+      "stdout": "PASS: 80 MVP parents; 248 bounded leaves; complete joins and context/objective hashes\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": "/private/tmp/careops-readback-root-20261005",
+      "parent_head": "eee554bcb83b1c322b5ef5523b4e1bf90dd7e2c0",
+      "exit_code": 0,
+      "stdout": "{\n  \"tracks\": 5,\n  \"milestones\": 34,\n  \"local_links\": 665,\n  \"errors\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/check_kairos_pin.py"
+      ],
+      "cwd": "/private/tmp/careops-readback-root-20261005",
+      "parent_head": "eee554bcb83b1c322b5ef5523b4e1bf90dd7e2c0",
+      "exit_code": 0,
+      "stdout": "{\n  \"errors\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/private/tmp/careops-readback-root-20261005",
+      "parent_head": "eee554bcb83b1c322b5ef5523b4e1bf90dd7e2c0",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "tracked_workspace_inputs": {
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "cc4f9f95fdb88d8c293a02dbf415b0e3087f5d0bce14e590c272b29477b76cf3",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md": "612718a577cb4ac9c24bf71831da25ed4a3102829a37b40682151e366d16f59e",
+    "conductor/execution/tasks.json": "97f264fa0d7b20aab04d75b2011f57212624b95d444c1bf2a6c8dfaca546bdcd",
+    "conductor/execution/mvp/recipes.json": "1d0aed9af7c99feaa41d9d7ce1f28565064dac803affd9eccd3986d7d3cf416f"
+  }
+}

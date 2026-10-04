@@ -51,3 +51,13 @@ aliases. Exact bytes, ordered records, rows, byte lengths and SHA-256 match for
 all four populations. Observed spills, single-run controls, independent C0
 checks, schema-valid negative mutations and six retained actual representative
 output sets are verified. This accepts C-01 only; C1.4 remains open.
+
+## C1 executed independent manual readback — 5 October 2026
+
+[Readback and count acceptance](../../evidence/c1-independent-readback-20261005/README.md).
+666 actual retained files pass direct PyArrow schema/type/unit/null/payload reads;
+8 in-memory negatives reject. A separate standard-library verifier reconciles
+3 C-01 profiles and all51 C1.1 request partitions, including failures/unresolved
+units and distinct observed/right-censored outcomes. Null, absent and empty
+observations are recorded on logical paths. This closes the manual check only;
+C1.4 remains open and the accepted Kairos pin is unchanged.
