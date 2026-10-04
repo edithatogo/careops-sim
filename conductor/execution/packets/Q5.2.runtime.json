@@ -52,6 +52,26 @@
       "cwd": ".",
       "expected_exit": 0,
       "oracle": "All DES unit/integration conformance tests succeed; benchmark correctness test included; ignored measurements require separate release execution receipts."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "kairo-ecs-des",
+        "--example",
+        "flow_queue_benchmark_v1",
+        "--target-dir",
+        ".artifacts/q52-runtime/target"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Public Flow benchmark executable builds; collector exact CLI binding required before measurements."
     }
   ],
   "acceptance": [
@@ -68,5 +88,5 @@
   ],
   "size_exception": "Full flow.rs hash bound; progressive selected source reads because full file exceeds24KB. Ignored artifact directory declared for logs/build output.",
   "status": "prepared",
-  "coordinator_contract_sha256": "dcc7df3c01876234e6c77130c6627f66271f31ad140dfb350be95bfb6b7e0867"
+  "coordinator_contract_sha256": "dbd926007389daff42eee989402edb559dea78552617350c072dff6046eb0f4f"
 }
