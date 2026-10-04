@@ -194,7 +194,7 @@ class CiWorkflowTests(unittest.TestCase):
     def test_unit_lane_does_not_repeat_documentation_tests(self):
         workflow = WORKFLOW.read_text()
         native = workflow.split("  test:\n", 1)[1].split("  doctest:\n", 1)[0]
-        self.assertIn("python3 tools/nextest_ci.py --toolchain 1.98.1", native)
+        self.assertIn("python3 tools/nextest_ci.py --toolchain 1.99.0", native)
         self.assertIn("test --doc --workspace --all-features --locked", workflow)
 
     def test_context_check_fetches_pinned_submodule_documents(self):
@@ -259,8 +259,8 @@ class CiWorkflowTests(unittest.TestCase):
         for quoted_key in ('"uses"', '"us\\u0065s"'):
             with self.subTest(quoted_key=quoted_key):
                 escaped_key_action = workflow.replace(
-                    "- name: Install Rust 1.98.1",
-                    f"- {quoted_key}: actions/setup-go@v6\n      - name: Install Rust 1.98.1",
+                    "- name: Install Rust 1.99.0",
+                    f"- {quoted_key}: actions/setup-go@v6\n      - name: Install Rust 1.99.0",
                     1,
                 )
                 self.assertIn(
@@ -269,8 +269,8 @@ class CiWorkflowTests(unittest.TestCase):
                 )
 
         nested_quoted_key_action = workflow.replace(
-            "- name: Install Rust 1.98.1",
-            '- name: Install Rust 1.98.1\n        "uses": actions/setup-go@v6',
+            "- name: Install Rust 1.99.0",
+            '- name: Install Rust 1.99.0\n        "uses": actions/setup-go@v6',
             1,
         )
         self.assertIn(
@@ -279,8 +279,8 @@ class CiWorkflowTests(unittest.TestCase):
         )
 
         tagged_key_action = workflow.replace(
-            "- name: Install Rust 1.98.1",
-            "- !!str uses: actions/setup-go@v6\n      - name: Install Rust 1.98.1",
+            "- name: Install Rust 1.99.0",
+            "- !!str uses: actions/setup-go@v6\n      - name: Install Rust 1.99.0",
             1,
         )
         self.assertIn(
@@ -533,8 +533,8 @@ class CiWorkflowTests(unittest.TestCase):
         workflow = WORKFLOW.read_text()
         cargo_jobs = workflow.split("  required:", 1)[0]
         self.assertEqual(cargo_jobs.count("submodules: recursive"), 9)
-        self.assertEqual(cargo_jobs.count("rustup toolchain install 1.98.1"), 5)
-        for command in ("cargo +1.98.1 fmt", "cargo +1.98.1 clippy --locked", "python3 tools/nextest_ci.py --toolchain 1.98.1", "cargo +1.98.1 test --doc"):
+        self.assertEqual(cargo_jobs.count("rustup toolchain install 1.99.0"), 5)
+        for command in ("cargo +1.99.0 fmt", "cargo +1.99.0 clippy --locked", "python3 tools/nextest_ci.py --toolchain 1.99.0", "cargo +1.99.0 test --doc"):
             with self.subTest(command=command):
                 self.assertIn(command, cargo_jobs)
         msrv = workflow_job(workflow, "msrv")

@@ -16,7 +16,7 @@ import sys
 from install_nextest import InstallError, install_nextest
 
 
-VERSION = "1.98.1"
+VERSION = "1.99.0"
 SELECTION = ["--workspace", "--all-features", "--lib", "--bins", "--tests", "--locked"]
 RED_TEST = "injected_failure_is_detected"
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")

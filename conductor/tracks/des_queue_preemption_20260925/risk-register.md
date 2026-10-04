@@ -13,5 +13,10 @@
 | Latest dependency/toolchain breaks support | Unbuildable release | Pin resolved versions, preserve supported matrix or approved migration | 25/30 |
 | Passing toy benchmark misrepresents ED load | Performance regression | Queue/churn/interrupt/active-capacity matrix and existing acceptance gates | 12 |
 
-All risks are open at planning time; closure requires phase evidence, not a design
-statement. Q0 review may refine contracts without weakening determinism guarantees.
+Q4 local and hosted development evidence mitigates shared-world drift, lifecycle
+ordering and staged single-resource integration within the frozen contracts.
+Final parent integration remains pending. Portable checkpointing, starvation,
+atomic multi-resource claims, cross-LP causality, public API compatibility and
+realistic scaling remain open or explicitly unsupported. The dependency audit
+records newer candidates without silently changing RNG/MSRV contracts. Closure
+requires the owning phase evidence, not a design statement.

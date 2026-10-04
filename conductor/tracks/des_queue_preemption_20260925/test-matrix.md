@@ -1,7 +1,11 @@
 # Automated test matrix — queues and preemption
 
-All tests are planned. Names below are stable proposed fixture IDs, not claims
-that test targets already exist. Each failed invariant blocks its phase.
+Q0–Q4 have bounded implementation evidence; final Q4.5 integration is pending.
+The table names are acceptance identifiers, not necessarily Cargo target names.
+Q5 conformance, worker invariance, compatibility and benchmark joins remain
+planned. Actual commands, source hashes and results belong in the phase receipts;
+a checked design row does not substitute for those results. Each failed invariant
+blocks its phase.
 
 | ID / phase | Layer | Cases and automated oracle | Acceptance |
 | --- | --- | --- | --- |

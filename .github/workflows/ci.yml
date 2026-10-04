@@ -53,10 +53,10 @@ jobs:
         with:
           persist-credentials: false
           submodules: recursive
-      - name: Install Rust 1.98.1
-        run: rustup toolchain install 1.98.1 --profile minimal --component rustfmt
+      - name: Install Rust 1.99.0
+        run: rustup toolchain install 1.99.0 --profile minimal --component rustfmt
       - name: Format
-        run: cargo +1.98.1 fmt --all --check
+        run: cargo +1.99.0 fmt --all --check
 
   clippy:
     timeout-minutes: 15
@@ -69,10 +69,10 @@ jobs:
         with:
           persist-credentials: false
           submodules: recursive
-      - name: Install Rust 1.98.1
-        run: rustup toolchain install 1.98.1 --profile minimal --component clippy
+      - name: Install Rust 1.99.0
+        run: rustup toolchain install 1.99.0 --profile minimal --component clippy
       - name: Clippy
-        run: cargo +1.98.1 clippy --locked --workspace --all-targets --all-features -- -D warnings
+        run: cargo +1.99.0 clippy --locked --workspace --all-targets --all-features -- -D warnings
 
   test:
     timeout-minutes: 20
@@ -89,25 +89,25 @@ jobs:
         with:
           persist-credentials: false
           submodules: recursive
-      - name: Install Rust 1.98.1
+      - name: Install Rust 1.99.0
         run: |
           set -euo pipefail
           mkdir -p .artifacts/ci/nextest
-          rustup toolchain install 1.98.1 --profile minimal 2>&1 | tee .artifacts/ci/nextest/toolchain-install.log
+          rustup toolchain install 1.99.0 --profile minimal 2>&1 | tee .artifacts/ci/nextest/toolchain-install.log
       - name: Verify native host and export actual Rust tools
         env:
           EXPECTED_OS: ${{ matrix.os }}
         run: |
           set -euo pipefail
-          rustc_path="$(rustup which rustc --toolchain 1.98.1)"
-          rustdoc_path="$(rustup which rustdoc --toolchain 1.98.1)"
-          cargo_path="$(rustup which cargo --toolchain 1.98.1)"
+          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
           toolchain_bin="$(dirname "$rustc_path")"
           test -x "$rustc_path"
           test -x "$rustdoc_path"
           test -x "$cargo_path"
           export PATH="$toolchain_bin:$PATH"
-          export RUSTUP_TOOLCHAIN=1.98.1 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          export RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
           uname -a | tee .artifacts/ci/nextest/host.log
           rustc -vV | tee -a .artifacts/ci/nextest/host.log
           rustdoc --version | tee -a .artifacts/ci/nextest/host.log
@@ -122,7 +122,7 @@ jobs:
             grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/nextest/host.log
           fi
           {
-            echo "RUSTUP_TOOLCHAIN=1.98.1"
+            echo "RUSTUP_TOOLCHAIN=1.99.0"
             echo "RUSTC=$rustc_path"
             echo "RUSTDOC=$rustdoc_path"
           } >> "$GITHUB_ENV"
@@ -130,7 +130,7 @@ jobs:
       - name: Verify nextest discovery, failure handling and test suite
         run: |
           set -euo pipefail
-          python3 tools/nextest_ci.py --toolchain 1.98.1
+          python3 tools/nextest_ci.py --toolchain 1.99.0
       - name: Retain bounded failed native log
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -361,10 +361,10 @@ jobs:
         with:
           persist-credentials: false
           submodules: recursive
-      - name: Install Rust 1.98.1
-        run: rustup toolchain install 1.98.1 --profile minimal
+      - name: Install Rust 1.99.0
+        run: rustup toolchain install 1.99.0 --profile minimal
       - name: Documentation tests
-        run: cargo +1.98.1 test --doc --workspace --all-features --locked
+        run: cargo +1.99.0 test --doc --workspace --all-features --locked
 
   context:
     timeout-minutes: 10
@@ -408,11 +408,11 @@ jobs:
           mkdir -p .artifacts/ci/policy
           set -o pipefail
           python3 tools/install_ci_tools.py 2>&1 | tee .artifacts/ci/policy/install.log
-      - name: Install Rust 1.98.1
-        run: rustup toolchain install 1.98.1 --profile minimal
+      - name: Install Rust 1.99.0
+        run: rustup toolchain install 1.99.0 --profile minimal
       - name: Check all dependency, secret and workflow policies
         run: |
-          export RUSTUP_TOOLCHAIN=1.98.1
+          export RUSTUP_TOOLCHAIN=1.99.0
           python3 tools/ci_policy.py
           cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check
       - name: Retain bounded failed policy logs

@@ -546,8 +546,8 @@ Parent plan: [Q4.3](../../tracks/des_queue_preemption_20260925/plan.md)
 | --- | --- | --- | --- |
 | Q4.3.emit | Lifecycle record producer | No double-counted release/completion; key is run/event/transition ordinal | libs/kairos / worker |
 | Q4.3.encode | Arrow sidecar encoding | Schema matches owner04 types and event_log.v1 remains unchanged | libs/kairos / worker |
-| Q4.3.snapshot | Queue/context/scheduler snapshot integration | Sequences/revisions/leases/commands/notifications/RNG restored exactly | libs/kairos / worker |
-| Q4.3.resume | Interrupted checkpoint parity fixture | Uninterrupted and resumed canonical resource outcomes match | libs/kairos / worker |
+| Q4.3.snapshot | Same-runtime event-boundary state inspection | Inspect work, requests, leases and queue at an event boundary in the same runtime; portable checkpoint restoration is deferred to Track 22 | libs/kairos / worker |
+| Q4.3.resume | Same-runtime pause and continuation parity fixture | Pause and continue the same runtime; terminal state and canonical lifecycle records match uninterrupted execution; portable checkpoint/restore requires separate Track 22 evidence | libs/kairos / worker |
 
 ## Q4.4
 
@@ -557,7 +557,7 @@ Parent plan: [Q4.4](../../tracks/des_queue_preemption_20260925/plan.md)
 | --- | --- | --- | --- |
 | Q4.4.staff | Named staff urgent-interruption example | Uses public builder only and retains context/priority semantics | libs/kairos / worker |
 | Q4.4.bed | Staged bed/cleaning example | No premature reuse, unsupported atomic claim or clinical rule in generic core | libs/kairos / worker |
-| Q4.4.join | Composed Flow example evidence | One shared state conserves resources and survives suspended checkpoint | libs/kairos / proposal_or_review |
+| Q4.4.join | Composed staged staff/bed/cleaning Flow workflow evidence | One shared FlowRuntime conserves resources through urgent interruption, staged one-unit claims and cleaning before bed reuse; no checkpoint/restore claim | libs/kairos / proposal_or_review |
 
 ## Q4.5
 

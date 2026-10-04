@@ -1,5 +1,11 @@
 # Current dependency and toolchain policy
 
+## Canonical stable toolchain — 2026-10-04
+
+The Kairos owner directs the canonical development/integration toolchain to be the current stable Rust release: **1.99.0**, released 2026-10-01. Exact 1.99.0 pins in the toolchain, bootstrap profile and CI retain reproducibility; refresh these together promptly when a new stable release is adopted. This supersedes the historical 1.98.1 decision below. Prior receipts remain evidence for their actual compiler and source, and are not rewritten as 1.99.0 results.
+
+The default-feature Rust 1.76 support check and optional Arrow 60/Arrow IO Rust 1.88 check remain separate compatibility floors. Current stable is the canonical toolchain, not a change to those minimums. The official manifest and both host checksums are recorded in [the adoption receipt](evidence/rust-1.99.0-canonical-20261004.json). Beta/nightly remain advisory lanes. Only Rust is selected by this update; other refreshed candidates remain unapproved.
+
 Live registry observations are recorded in
 [dependency-candidates.json](evidence/dependency-candidates.json), including source
 URLs, fetch time, release date and declared MSRV. Refresh with
@@ -7,7 +13,38 @@ URLs, fetch time, release date and declared MSRV. Refresh with
 The snapshot is a candidate inventory, not a tested lockfile or promise that all
 packages should be adopted. Unknown MSRV means unknown, not compatible.
 
-## Latest registry observations — 2026-10-03
+## Active dependency freshness audit — 2026-10-04
+
+The 33-entry registry snapshot was refreshed at 09:09 UTC and compared with
+active parent pins, Kairos direct manifests, root/nested locks and workflows.
+Full read-only reviews are retained in the Rust adoption receipt. This is a
+freshness assessment, not proof that every latest version is installed.
+
+- Parent Serde/JSON and nextest/actionlint/gitleaks/cargo-deny/zizmor match the
+  snapshot; Kairos Arrow/Parquet are already pinned to 60.0.0.
+- CI checkout v6.0.2 and upload-artifact v4.6.2 trail v7.0.1. Evaluate verified
+  immutable release SHAs, runner support, permissions and artifact behavior in
+  a bounded workflow update with policy tests and hosted checks.
+- Kairos Serde 1.0.228/JSON 1.0.149 trail 1.0.229/1.0.151; thiserror's exact
+  2.0.20 pin trails 2.0.21. Review patch resolution, advisories/licences and
+  Rust 1.76/default plus 1.88/Arrow feature tests in separately owned changes.
+- Parent CLI sha2 0.10.9 trails 0.11.0; this is a breaking 0.x line change.
+  Preserve Rust 1.76 support and exact input-byte/SHA-256 manifest outputs with
+  golden checks before adoption. Parent lockfile Proptest 1.8.0 is not in the
+  active parent graph; stale lock cleanup is separate from a runtime upgrade.
+- Wasm bindings trail their latest release and require matching generated-tool
+  and target tests. Fuzz libfuzzer-sys already resolves to 0.4.13.
+- Preserve constrained Clap/Criterion and upstream-selected rand versions until
+  API/MSRV/determinism migrations have explicit contracts. Do not force a
+  transitive RNG major upgrade.
+- New semver-checks 0.51.0 and Renovate 44.132.5 are candidate observations;
+  neither establishes an active binary pin. Preserve the reviewed advisory
+  mitigation pin instead of equating newer with security clearance.
+
+The open Kairos website npm advisory remains a separate release/security hold.
+No manifest or lockfile upgrade was made by this Q4 freshness assessment.
+
+## Historical registry observations — 2026-10-03
 
 The complete 33-entry snapshot was refreshed successfully from the public registry
 endpoints recorded in the JSON. Four candidates changed since the prior snapshot:
@@ -15,7 +52,8 @@ Rust 1.99.0, insta 1.49.0, Renovate 44.132.2, and Codex CLI rust-v0.160.0.
 All remain `candidate_unvalidated`; no toolchain, manifest, lockfile, workflow pin,
 installed tool, compatibility decision, or desktop app version was changed.
 The reviewed baseline below remains historical decision context. Rust 1.98.1
-remains the approved integration pin; assess 1.99.0 separately before adoption.
+was the approved integration pin at that observation; the owner-authorized
+1.99.0 adoption above supersedes this historical decision.
 
 ## Reviewed candidate baseline, recorded 2026-09-28
 

@@ -123,16 +123,17 @@ to enter or exit this queue phase.
   continuation context, deterministic notification order and bounded
   zero-duration feedback handling. Do not add portable codecs without an
   accepted Track 22 contract. Add a migration example retaining the old FIFO API.
-- [ ] Q4.3 Add resource_lifecycle.v1 telemetry with owning tracks and preserve
+- [x] Q4.3 Add resource_lifecycle.v1 telemetry with owning tracks and preserve
   event_log.v1. Portable checkpoint/resume integration is a separate Track 22
   handoff; if its contract is unavailable, record it as deferred rather than
   blocking the queue API or claiming save/restore support.
-- [ ] Q4.4 Add a synthetic workflow fixture: named staff, urgent interruption,
+- [x] Q4.4 Add a synthetic workflow fixture: named staff, urgent interruption,
   staged staff/bed claims and bed cleaning before reavailability. Keep clinical
   rules in the adapter and avoid atomic multi-resource claims not supported by v1.
-- [ ] Q4.5 Conductor — review and verify phase (workflow.md).
+- [x] Q4.5 Conductor — review and verify phase (workflow.md).
 
-Exit: Q-05/Q-06 integration evidence; calibration C3 can consume the stable API.
+Exit: Q-05/Q-06 integration evidence; calibration C3 can consume the reviewed,
+versioned experimental API. Stable API and release acceptance remain Track 25/Q5 gates.
 Manual check: create an interruptible task using the fluent API with no manual
 component attachment; pause at an event boundary in the same runtime, continue,
 and compare terminal state and canonical lifecycle records to uninterrupted
@@ -193,3 +194,5 @@ are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
 commands and reviewer acceptance before dispatch. Parent tasks close only after
 all leaf instances and the original phase acceptance pass. Post-MVP tasks are
 outside this workpack. No Luna execution or qualification is implied by coverage.
+
+Q4.5 development acceptance (2026-10-04): final Kairos pin `1125b5268bb349a5befe12f5789045042faab3e3` passed exact-head two-host native-owner CI [37192692770](https://github.com/edithatogo/kairos/actions/runs/37192692770), phase/DAG/strict clean-tree gates and independent source/governance reviews. Canonical Rust is current stable 1.99.0; separate 1.88/1.76 compatibility floors remain. Parent PR delivery is pending. Q5, Track 22 portability, Track 25 experimental API and release holds are unchanged.
