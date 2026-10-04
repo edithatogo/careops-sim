@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "task": "C1.1",
+  "status": "in_progress_not_accepted",
+  "date": "2026-10-04",
+  "logical_oracles": {
+    "commit": "05cd95b97bc0ae9aed797045b2af182e5f3ed761",
+    "pr": "https://github.com/edithatogo/kairos/pull/205",
+    "case_count": 33,
+    "logical_record_count": 35,
+    "mutation_probe_count": 36,
+    "consumer_status": "not_executed",
+    "corpus_sha256": "2e7ac42d9073da62a2be891795580dafff870d1187b15491ff905d20b81c0d67",
+    "schema_sha256": "8c46db62f691f243385a4ebdf8a7a3d3670e2655dd0c3f82cba4335ced2a3842",
+    "hosted_run": {
+      "url": "https://github.com/edithatogo/kairos/actions/runs/37192207145",
+      "head_sha": "05cd95b97bc0ae9aed797045b2af182e5f3ed761",
+      "status": "completed",
+      "conclusion": "success",
+      "checker_step_executed": true
+    }
+  },
+  "raw_source_transport": {
+    "commit": "dc30d2467f32a282ad95b245693b64d25eb12b0f",
+    "pr": "https://github.com/edithatogo/kairos/pull/206",
+    "scope": "synthetic raw-source schemas only",
+    "tools": {
+      "python": "3.14.8",
+      "pyarrow": "25.0.1",
+      "rustc": "rustc 1.88.0 (6b00bc388 2025-06-23)",
+      "cargo": "cargo 1.88.0 (873a06493 2025-05-10)"
+    },
+    "commands": [
+      {
+        "argv": [
+          "/private/tmp/kairos-c1-ci-python-qualify-20261004/.artifacts/c1-ci-python-qualification/venv-attempt2/bin/python",
+          "crates/kairo-ecs-arrow-io/tests/fixtures/calibration_source_v1/generate.py",
+          "--generate-and-check"
+        ],
+        "exit_status": 0,
+        "oracle": "Pinned PyArrow writes and reads all six source IPC/Parquet fixtures; exact test-local schema and literal rows checked.",
+        "log_path": ".artifacts/mvp/C1.1.formats.source_transport_20261004/command-1.log",
+        "artifact_hashes": {
+          "wide.ipc_file": "a8edba97f09bcf2535b449b47da78259a999293bd68c27d034040f70f4dd838f",
+          "wide.ipc_stream": "1d5a86171eb56ead29b744ed8eed1b0c28981052cc172b77b26bb81d3591e8a4",
+          "wide.parquet": "857ea0dc3c30e8351fe32ad7cb70d75e6a70e5261c07d951125999d0c72fa633",
+          "long.ipc_file": "cf278c912394ed297d96205aa6111b8ca689422c24b63e14605358ddc31e858e",
+          "long.ipc_stream": "0a8b82c6583895e9b1b418189af361b816703c73e6c73ac185be848767cc704f",
+          "long.parquet": "b8f2506d2e96d0bcf53ec5eade8712558efc7ce89639102e10dfd02e4d048fb2",
+          "manifest.json": "ea4e47ec109b7681c02650572eb9e92fe14c5188f460daa17e4062bd466cd56c"
+        }
+      },
+      {
+        "argv": [
+          "env",
+          "RUSTC=/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/rustc",
+          "CARGO_TARGET_DIR=/private/tmp/careops-c11-source-packet-20261004/libs/kairos/.artifacts/mvp/C1.1.formats.source_transport_20261004/target",
+          "KAIROS_CALIBRATION_OUTDIR=/private/tmp/careops-c11-source-packet-20261004/libs/kairos/.artifacts/mvp/C1.1.formats.source_transport_20261004/rust-outputs",
+          "/Users/doughnut/.rustup/toolchains/1.88.0-aarch64-apple-darwin/bin/cargo",
+          "test",
+          "--locked",
+          "--offline",
+          "-p",
+          "kairo-ecs-arrow-io",
+          "--no-default-features",
+          "--features",
+          "ipc,parquet",
+          "--test",
+          "calibration_source_v1"
+        ],
+        "exit_status": 0,
+        "test_counts": {
+          "passed": 1,
+          "failed": 0
+        },
+        "oracle": "Rust reads all PyArrow source formats, asserts exact rows and frozen test-local schemas, rejects changed metadata/type/nullability/order and truncation, and writes six fresh Rust outputs.",
+        "log_path": ".artifacts/mvp/C1.1.formats.source_transport_20261004/command-2.log"
+      },
+      {
+        "argv": [
+          "/private/tmp/kairos-c1-ci-python-qualify-20261004/.artifacts/c1-ci-python-qualification/venv-attempt2/bin/python",
+          "crates/kairo-ecs-arrow-io/tests/fixtures/calibration_source_v1/generate.py",
+          "--check-rust",
+          "/private/tmp/careops-c11-source-packet-20261004/libs/kairos/.artifacts/mvp/C1.1.formats.source_transport_20261004/rust-outputs"
+        ],
+        "exit_status": 0,
+        "oracle": "Independent PyArrow reads all six Rust outputs and matches exact source rows, field order/types/nullability and schema metadata.",
+        "log_path": ".artifacts/mvp/C1.1.formats.source_transport_20261004/command-3.log",
+        "artifact_hashes": {
+          "wide.ipc_file": "9fae1b2fddba3ab90e85ff558ec2bf56878992e96d5aec0bb6e27640156e43e8",
+          "wide.ipc_stream": "6898362adf5abff98312c69a6b80576670d62d18eef9d9838b6f88183e6a7cb9",
+          "wide.parquet": "c95cc20f03a850bd16ddb5f9dafe09cd1a52b8c6e17deb83ed2fddf55b68d301",
+          "long.ipc_file": "74518f8ff9b0ea7340099bdbbd591385606929893d7236c9a4557c409ad8b874",
+          "long.ipc_stream": "6ae21c3455b4d927d83b7ae846a3d1b8ed7d12eda46934333978324bf1dae5f0",
+          "long.parquet": "4b4900c736d83b7d9103e95f5ee9a3d7c864bee24e31f2549c703de4fc3d4506"
+        }
+      }
+    ],
+    "source_hashes": {
+      "crates/kairo-ecs-arrow-io/tests/calibration_source_v1.rs": "1da5318046e8f9246487e4e3f8bbf364f9ecce68ed59aefbe1add15300edf1ea",
+      "crates/kairo-ecs-arrow-io/tests/fixtures/calibration_source_v1/generate.py": "74ff0beb9a80e471f6784e18af638dff351edf74c34d98c3c36f21b86385cb25",
+      "crates/kairo-ecs-arrow-io/tests/fixtures/calibration_source_v1/manifest.json": "ea4e47ec109b7681c02650572eb9e92fe14c5188f460daa17e4062bd466cd56c"
+    },
+    "input_binary_sha256": {
+      "wide.ipc_file": "a8edba97f09bcf2535b449b47da78259a999293bd68c27d034040f70f4dd838f",
+      "wide.ipc_stream": "1d5a86171eb56ead29b744ed8eed1b0c28981052cc172b77b26bb81d3591e8a4",
+      "wide.parquet": "857ea0dc3c30e8351fe32ad7cb70d75e6a70e5261c07d951125999d0c72fa633",
+      "long.ipc_file": "cf278c912394ed297d96205aa6111b8ca689422c24b63e14605358ddc31e858e",
+      "long.ipc_stream": "0a8b82c6583895e9b1b418189af361b816703c73e6c73ac185be848767cc704f",
+      "long.parquet": "b8f2506d2e96d0bcf53ec5eade8712558efc7ce89639102e10dfd02e4d048fb2"
+    },
+    "review": "independent exact-schema/row/hash/parity readback passed",
+    "native_test_passed": 1,
+    "hosted_native_source_proof": "pending output-directory/readback workflow integration with active Q4 owner"
+  },
+  "remaining": [
+    "Normalized calibration Arrow physical schemas and owner-reviewed mapping interface",
+    "Executable mapper-facing negative fixtures for source normalization and clinical semantics",
+    "Source native CI output-directory/readback handoff; workflow reserved by Q4",
+    "Parent gitlink integration by Q4 owner"
+  ],
+  "acceptance_limits": [
+    "Logical fixture integrity is not production mapper execution",
+    "Raw-source transport is not normalized calibration schema parity",
+    "No TZDB resolver or standards parser conformance",
+    "C1.1 remains unchecked; no full MVP or clinical validation"
+  ]
+}
