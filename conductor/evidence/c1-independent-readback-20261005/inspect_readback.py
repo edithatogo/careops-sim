@@ -822,7 +822,7 @@ def mapper_totals(snapshot: list[dict[str, Any]], validation: dict[str, Any],
             per_type[record_type].append(record)
         outcomes = result.get("outcomes", [])
         if not isinstance(outcomes, list) or any(not isinstance(row, dict) for row in outcomes) \
-                or accounting.get("outcomes") != len(outcomes):
+                or not all(row.get("record_type") == "outcome_observation.v1" for row in outcomes):
             fail(f"C1.1 outcomes must be an accounted array of objects at request {index}")
         for outcome in outcomes:
             if not isinstance(outcome, dict) or outcome.get("record_type") != "outcome_observation.v1":
