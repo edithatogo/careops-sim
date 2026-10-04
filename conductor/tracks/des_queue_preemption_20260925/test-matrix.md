@@ -4,7 +4,8 @@ Q0–Q4 have accepted bounded development evidence, including Q4.5. Parent
 publication is verified separately through exact-head hosted checks and merge
 readback.
 The table names are acceptance identifiers, not necessarily Cargo target names.
-Q5 conformance, worker invariance, compatibility and benchmark joins remain
+Q5.1 native conformance and independent worker invariance are accepted with
+exact-head Linux/macOS evidence; Q5.2 benchmarks and Q5.3 compatibility remain
 planned. Actual commands, source hashes and results belong in the phase receipts;
 a checked design row does not substitute for those results. Each failed invariant
 blocks its phase.
