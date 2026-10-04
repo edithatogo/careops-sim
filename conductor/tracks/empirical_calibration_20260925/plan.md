@@ -86,6 +86,7 @@ Entry: C0. Owners 04 (IO), 21 (semantics); can proceed alongside Q1–Q3.
 - [ ] C1.4 Conductor — review and verify phase (workflow.md).
 
 Exit: C-01; exact normalized canonical record hashes match across reader layouts.
+C-01 passes the declared synthetic matrix: [invariance qualification](../../evidence/c01-closeout-20261005/README.md); C1.4 phase review remains open.
 Manual check: inspect IPC/Parquet with a second implementation, verify units and
 nullable fields, and reconcile input/accepted/excluded/censored counts. Source
 identities stay out of public fixture/report artifacts.

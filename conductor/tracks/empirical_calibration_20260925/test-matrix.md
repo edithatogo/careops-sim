@@ -38,3 +38,16 @@ no fixed speedup is assumed. Browser/Metal/PDES gates remain separate owner work
 
 Include the task-specific cases in [reports 9–12 integration](../../research/ed-research-incorporation-9-12-20260927.md)
 when preparing executable packets. These are proposed oracles, not recorded passes.
+
+## C-01 executed synthetic qualification — 5 October 2026
+
+[Acceptance and boundaries](../../evidence/c01-closeout-20261005/README.md).
+Three profiles independently vary IPC batches {1, 2}, Parquet row groups {1, 3},
+physical order {forward, reverse}, formats {IPC file, IPC stream, Parquet} and
+writer limits {1, 2, 3}: 216 actual reader-derived sources. Each covers chunk
+rows {1, 2, 64}, run rows {1, 2, 64} and run bytes {4096, 1048576}.
+All 3,888 points pass with 108 actual executions and 3,780 explicit byte-equivalent
+aliases. Exact bytes, ordered records, rows, byte lengths and SHA-256 match for
+all four populations. Observed spills, single-run controls, independent C0
+checks, schema-valid negative mutations and six retained actual representative
+output sets are verified. This accepts C-01 only; C1.4 remains open.
