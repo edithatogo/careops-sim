@@ -55,3 +55,7 @@ The [spatial capability plan](spatial-visualization.md) records capture/CAD → 
 floor-plan package → PixiJS visualization and Kairos simulation, connected through
 WebSocket state sync. Early native development uses synthetic graphs; full capture/
 CAD adapters are separately qualified later. The backend remains authoritative.
+
+## Post-MVP reuse review
+
+After functional MVP E2 acceptance, [review delivered capabilities for reuse in Kairos](design/post-mvp-kairos-abstraction-review.md). Keep ED policies and site profiles separate; extract only capabilities supported by neutral contracts and concrete cross-domain evidence. This review does not add an MVP prerequisite or authorize speculative framework work.
