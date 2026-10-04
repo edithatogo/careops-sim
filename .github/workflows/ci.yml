@@ -367,7 +367,7 @@ jobs:
         run: cargo +1.99.0 test --doc --workspace --all-features --locked
 
   context:
-    timeout-minutes: 10
+    timeout-minutes: 20
     name: context
     needs: scope
     if: needs.scope.outputs.context == 'true'
@@ -390,6 +390,72 @@ jobs:
           .artifacts/ci/harness-venv/bin/pip install -r requirements-schema-validation.txt
       - name: Run harness and incompatible-pin regressions
         run: .artifacts/ci/harness-venv/bin/python -m unittest discover -s tests -v
+      - name: Check reviewed support and flaky-test inventory
+        run: |
+          python3 tools/quality_support.py --root .
+          python3 tools/quality_flakes.py --config .config/d33-quality-gates.json
+      - name: Measure bounded synthetic ED library coverage
+        if: needs.scope.outputs.native == 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/ci/d33/bin
+          rustup toolchain install 1.99.0 --profile minimal --component llvm-tools
+          archive=.artifacts/ci/d33/cargo-llvm-cov.tar.gz
+          curl --fail --location --max-time 90 https://github.com/taiki-e/cargo-llvm-cov/releases/download/v0.9.1/cargo-llvm-cov-x86_64-unknown-linux-gnu.tar.gz --output "$archive"
+          echo "b3f68e625481fed9b16444174f3fa5ebcdbde4a1878803a35eabe2dcefcdc41a  $archive" | sha256sum --check --strict
+          tar -xzf "$archive" -C .artifacts/ci/d33/bin cargo-llvm-cov
+          export PATH="$PWD/.artifacts/ci/d33/bin:$PATH"
+          cargo-llvm-cov llvm-cov --version | grep -E '^cargo-llvm-cov 0\.9\.1($| )'
+          export RUSTUP_TOOLCHAIN=1.99.0
+          RUSTC="$(rustup which rustc --toolchain 1.99.0)"
+          export RUSTC
+          RUSTDOC="$(rustup which rustdoc --toolchain 1.99.0)"
+          export RUSTDOC
+          "$RUSTC" --version | grep -E '^rustc 1\.99\.0 '
+          "$RUSTDOC" --version | grep -E '^rustdoc 1\.99\.0 '
+          cargo +1.99.0 -V | grep -E '^cargo 1\.99\.0 '
+          cargo +1.99.0 llvm-cov --locked --package careops-ed --all-features --all-targets --json --output-path .artifacts/ci/d33/coverage.json
+          python3 tools/quality_metrics.py --coverage .artifacts/ci/d33/coverage.json --config .config/d33-quality-gates.json
+      - name: Check current-source critical ED mutations
+        if: needs.scope.outputs.native == 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/ci/d33/bin
+          archive=.artifacts/ci/d33/cargo-mutants.tar.gz
+          curl --fail --location --max-time 90 https://github.com/sourcefrog/cargo-mutants/releases/download/v27.1.0/cargo-mutants-x86_64-unknown-linux-gnu.tar.gz --output "$archive"
+          echo "dfe6dc37d0342c891d2829b5a695aa57c2d0edecef7e7d0399a30cc6e206411e  $archive" | sha256sum --check --strict
+          tar -xzf "$archive" -C .artifacts/ci/d33/bin cargo-mutants
+          export PATH="$PWD/.artifacts/ci/d33/bin:$PATH"
+          cargo-mutants mutants --version | grep -E '^cargo-mutants 27\.1\.0($| )'
+          export RUSTUP_TOOLCHAIN=1.99.0
+          RUSTC="$(rustup which rustc --toolchain 1.99.0)"
+          export RUSTC
+          RUSTDOC="$(rustup which rustdoc --toolchain 1.99.0)"
+          export RUSTDOC
+          set +e
+          cargo +1.99.0 mutants --cargo-arg=--locked --manifest-path crates/careops-ed/Cargo.toml --package careops-ed --file crates/careops-ed/src/lib.rs --gitignore=true --jobs 2 --timeout 180 --output .artifacts/ci/d33/mutations >.artifacts/ci/d33/mutations.log 2>&1
+          status=$?
+          set -e
+          if [ "$status" != 0 ] && [ "$status" != 2 ]; then
+            cat .artifacts/ci/d33/mutations.log
+            exit "$status"
+          fi
+          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          python3 tools/quality_mutations.py --outcomes .artifacts/ci/d33/mutations/mutants.out/outcomes.json --source crates/careops-ed/src/lib.rs --cargo "$cargo_path"
+      - name: Retain bounded D3.3 quality evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: d33-quality-${{ github.run_id }}
+          path: |
+            .artifacts/ci/d33/coverage.json
+            .artifacts/ci/d33/mutations.log
+            .artifacts/ci/d33/mutations/mutants.out/outcomes.json
+            .artifacts/ci/d33/mutations/mutants.out/mutants.json
+            .artifacts/ci/d33/mutations/mutants.out/missed.txt
+            .artifacts/ci/d33/mutations/mutants.out/unviable.txt
+          if-no-files-found: warn
+          retention-days: 7
 
   policy:
     name: policy

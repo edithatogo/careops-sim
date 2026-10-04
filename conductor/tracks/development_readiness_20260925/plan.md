@@ -134,9 +134,13 @@ not workflow presence alone. Manual verification: clone remotely and run the fix
 - [x] D3.2 Add a tested dated nightly fuzz/sanitizer lane, selective Miri/unsafe
   checks and Rust CodeQL extraction where available. Keep unsupported analysis
   explicit; preserve advisories/licence/bans/source gates.
-- [ ] D3.3 Add nextest/doctest, feature/MSRV/semver/schema and mutation/coverage
+- [x] D3.3 Add nextest/doctest, feature/MSRV/semver/schema and mutation/coverage
   checks for critical paths. Audit flaky tests with owner/expiry, not hidden retries.
   Use a bounded supported feature matrix, independent bidirectional Arrow interoperability and separate doctests. Mutation thresholds and semver comparisons require legitimate baselines; nightly/Miri/security-advisory claims need verified versions before adoption.
+  Development qualification: see [current-source quality evidence](../../evidence/d3.3-quality-gates-20261005/README.md).
+  Stable API semver comparison is explicitly blocked without an owner-approved
+  release baseline; Track25/D4 owns that release prerequisite. Exact-head hosted
+  CI and merge are final publication gates, not implied by local test results.
 - [ ] D3.4 Establish representative ED/load/memory/cancellation/soak benchmarks;
   set recorded budgets before release and maintain existing upstream thresholds.
   Test slow consumers, oversized input, zero-time loops and exhausted storage.
