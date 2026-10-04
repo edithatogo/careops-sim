@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "packet_id": "Q5.2.runtime",
+  "task_id": "Q5.2",
+  "target_repo": ".",
+  "base_commit": "bcb11cd61bc38b4813815f574a6a051f3b9e8faf",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "objective": "Public FlowRuntime benchmark example and timeout/provenance/RSS collector with failure-handling tests; no production edits.",
+  "context_paths": [
+    "AGENTS.md",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/lib.rs"
+  ],
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "crates/kairo-ecs-des/src/flow.rs": "ecb0bc547ec2803fb69a9c59515df9099e9dddca51c7b9cdee9d8c58fd1b989e",
+    "crates/kairo-ecs-des/src/lib.rs": "85792d7f9c2b9c220930fa7a5a6c09cba66ae1bbc6935a29abcec017560fbba2"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-des/examples/flow_queue_benchmark_v1.rs",
+    "benches/queue/run_v1.py",
+    "benches/queue/test_run_v1.py",
+    ".artifacts/q52-runtime"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "/private/tmp/careops-q52/conductor/design/queue/q5.2-benchmark-contract-20261004.md",
+  "steps": [
+    "Read frozen contract and bounded selected source",
+    "Claim lease before writes; record scoped hashed context",
+    "Implement benchmark-only leaf; run reviewed verification; commit once and release"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--target-dir",
+        ".artifacts/q52-runtime/target"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All DES unit/integration conformance tests succeed; benchmark correctness test included; ignored measurements require separate release execution receipts."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "kairo-ecs-des",
+        "--example",
+        "flow_queue_benchmark_v1",
+        "--target-dir",
+        ".artifacts/q52-runtime/target"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Public Flow benchmark executable builds; collector exact CLI binding required before measurements."
+    },
+    {
+      "argv": [
+        "python3",
+        "benches/queue/run_v1.py",
+        "--binary",
+        ".artifacts/q52-runtime/target/release/examples/flow_queue_benchmark_v1",
+        "--matrix",
+        "--repeats",
+        "5",
+        "--timeout-seconds",
+        "30",
+        "--seed",
+        "42",
+        "--output-dir",
+        ".artifacts/q52-runtime/raw"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Five independently measured processes per completed case; exact timeout/reaped exit and perprocess RSS; any unresolvedcase fails acceptance without fabricated extrapolation. Collector failure-handling unit tests separately required."
+    }
+  ],
+  "acceptance": [
+    "No production/public API/dependency changes",
+    "Actual measurements and honest timeout/units/fairness",
+    "Bounded correctness tests pass"
+  ],
+  "result_path": ".artifacts/q52-runtime/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Missing prerequisite or undefined interface",
+    "Edit outside write_paths",
+    "Cannot establish the specified oracle"
+  ],
+  "size_exception": "Full flow.rs hash bound; progressive selected source reads because full file exceeds24KB. Ignored artifact directory declared for logs/build output.",
+  "status": "prepared",
+  "coordinator_contract_sha256": "dbd926007389daff42eee989402edb559dea78552617350c072dff6046eb0f4f"
+}

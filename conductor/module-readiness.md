@@ -41,9 +41,9 @@ establishes current boundaries; only the five-package test slice noted below ran
 | kairo-ecs-rng | Explicit deterministic streams | Versioned task/purpose keys, distribution sampling, stable patient identities; 01, C2/E1 | G1 |
 | kairo-ecs-des | Legacy FIFO resources and trajectories | Full queue/preemption/Flow track Q0–Q5; preserve legacy API; 03 | G1 |
 | kairo-ecs-abm | Behavior loop with separate context | Shared DES/ABM runtime and minimal staff policy/transit; 03, Q4/C2 | G1 |
-| kairo-ecs-arrow | Schema and smoke bytes, no Arrow deps | Real IPC/Parquet, versioned sidecars, bounded IO; 04, C1/C4 | G1 |
+| kairo-ecs-arrow | Legacy smoke bytes retained; shared temporal/lifecycle schemas and optional typed IO through kairo-ecs-arrow-io qualified for C1 | Broader sidecar/export and C4 gates remain scoped to their owners; 04 | G1 |
 | kairo-ecs-cli | Basic manifests/replay surfaces | Real ED execution, studies, interruption recovery, cancel/progress/errors and worker runs; 22, C5/E3 | G1 |
-| kairo-ecs-calibration (proposed) | Not present | C0 ADR then C1–C6; reusable Rust algorithms owned by 21 | G1 |
+| kairo-ecs-calibration | Seed foundation and private synthetic C1 ingestion qualified | C2–C6 and public API review remain; reusable Rust algorithms owned by 21 | G1 |
 | kairo-ecs-bench | Existing benchmark/fixture integration | Representative ED/resource/Arrow/calibration workloads and thresholds; 12/18/31, Q5/C6/D3 | G1 |
 | kairo-ecs-debug | Trace snapshots/deltas; not proof of full ECS serialization | Readable failure traces and replay integration; full interactive time travel optional; 40 with 01/22, Q4/E3 | G1 diagnostic subset |
 | kairo-ecs-viz | Headless snapshot facade; native renderer unavailable | ED snapshot/delta adapter, backpressure and sampling contracts; 05, E5 | G2 |
@@ -190,3 +190,33 @@ hold records. That source review is not a direct maintainer approval. The
 [independent D0.3 review receipt](evidence/d0.3-execution-receipt-20260928.md)
 records the precise status and open owner-alignment work; it must not be
 represented as upstream approval.
+
+## Q5.2 development qualification — 2026-10-05
+
+[Queue qualification](evidence/q5.2-completion-20261005/README.md) records195 successful runtime measurements and two isolated unchanged-threshold canonical passes at the published development pin. Earlier local failures remain retained. This qualifies the benchmark task; full queue readiness still requires Q5.3 compatibility/API/migration and Q5.4 review. Broader Kairos PR checks, release/security, advanced backends and clinical calibration remain separate.
+
+## C1.4 accepted synthetic ingestion phase — 2026-10-05
+
+Reviewed integrated development pin `34e1d776e0ab4e2c84eb07f7c45779220df7e9b1` preserves accepted Q5.2 and the
+90 exact tested C1 source files. Fresh native tests and C-01 runs, 666 independent
+IPC/Parquet file reads, schema/units/nulls, negative controls and input/accepted/
+excluded/censored count reconciliation pass. Final source has 48 successful
+hosted checks and two documented conditional skips; phase, DAG, strict-clean and
+evidence-boundary checks pass. See [C1.4 completion](evidence/c1.4-completion-20261005/README.md).
+Historical failed attempts remain retained. C2, public API review, clinical
+validation and release remain open. Earlier proposed/planning statements describe
+their original delivery, superseded for C0/C1 only by recorded acceptance.
+
+## Q5.3 compatibility qualification — 2026-10-05
+
+[Compatibility evidence](evidence/q5.3-completion-20261005/README.md) accepts
+legacy consumer/source checks and migration/backend ownership limits at
+`eae890b0a2a3524a543ec4ee4aca61346e273b52`, preserving C1.4/Q5.2. Canonical and
+retained MSRV gates, exact example output, two Luna source reviews and hosted
+Linux/macOS native owner plus broader child checks pass. Metal execution remains
+unsupported; no portable/cross-LP/distributed/clinical/release claim. Next Q5.4
+reviews the phase evidence and risk/release notes; full queue phase remains open.
+
+## Q5.4 queue development closeout — 2026-10-05
+
+[Q5.4 evidence](evidence/q5.4-completion-20261005/README.md) closes the queue track through Q0–Q5 at governance pin `8cd03c8f791ae58b33e5cc61b244071937a839ac`, preserving accepted C1.4/Q5.2 and unchanged runtime source eae890b. Independent replay, corrected ledger review and exact-head native Linux/macOS plus reported child checks passed. This satisfies the queue development prerequisite; calibration, generic ED implementation, quality/release and clinical/MVP gates still require their own acceptance. No global G1/ED-ready claim follows. Child PR219 remains stacked/draft.

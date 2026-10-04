@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "failed_attempt": {
+    "source": "c06fcef8ce2cada9b840ecc2275a731b4c99f863",
+    "run": "https://github.com/edithatogo/careops-sim/actions/runs/37237100498",
+    "job": "111538329173",
+    "result": "failed: validator expected bare cargo; hosted Cargo records exact Rustup-resolved executable",
+    "outcomes_sha256": "154a524d724d98ab91dbc2b3b4fecbe4535b1e7d63a03364a02648ddca55e8aa",
+    "catalog_sha256": "a2cb9d0d444dece53af296a0082b18dcdd4ad58616a2ceea58df2b0f3c86194e",
+    "experiment_counts": {
+      "total_mutants": 115,
+      "caught": 110,
+      "missed": 2,
+      "unviable": 3,
+      "timeout": 0
+    },
+    "baseline": {
+      "scenario": "Baseline",
+      "summary": "Success",
+      "log_path": "log/baseline.log",
+      "diff_path": null,
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 4.877923302,
+          "process_status": "Success",
+          "argv": [
+            "/home/runner/.rustup/toolchains/1.99.0-x86_64-unknown-linux-gnu/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=careops-ed@0.1.0",
+            "--locked"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.201146568,
+          "process_status": "Success",
+          "argv": [
+            "/home/runner/.rustup/toolchains/1.99.0-x86_64-unknown-linux-gnu/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=careops-ed@0.1.0",
+            "--locked"
+          ]
+        }
+      ]
+    }
+  },
+  "correction": {
+    "expected_cargo": "CLI --cargo independently resolved by rustup which cargo --toolchain1.99.0; phase executable must exactly match",
+    "arbitrary_commands": "rejected; remaining Build/Test/package flags exact; only one optional --locked",
+    "engine_source_changed": false,
+    "targeted_tests": 18,
+    "targeted_exit_status": 0,
+    "full_harness_tests": 474,
+    "full_harness_elapsed_seconds": 60.918,
+    "full_harness_exit_status": 0,
+    "hosted_report_revalidation_exit_status": 0,
+    "independent_review": "read-only gpt-6-luna reviewer found no concrete remaining issue",
+    "actionlint_exit_status": 0,
+    "zizmor_exit_status": 0
+  },
+  "logs": {
+    "hosted-command-red.log": "3242edf6b309cecc061ff81fb08bb75f53342e463a1c4cec38200aea8a814bb5",
+    "hosted-command-green.log": "01f4c55f86c7f62616185787ca92cc80461dd6678dba824925e8edcf01ee3f37",
+    "hosted-fix-harness.log": "62b96a07f99912a60c6f97ccde5b0baeff101500b01b93229ecc5737b6fa14ca",
+    "hosted-fix-zizmor.log": "0f6c10b0b5b9d7afa31814c22b9cc06645b7bd57bc486b4c0bf8d320e3e8276f"
+  }
+}

@@ -513,9 +513,9 @@
       "id": "D3.3",
       "track_id": "development_readiness_20260925",
       "phase": "D3",
-      "objective": "Add nextest/doctest, feature/MSRV/semver/schema and mutation/coverage checks for critical paths. Audit flaky tests with owner/expiry, not hidden retries. Use a bounded supported feature matrix, independent bidirectional Arrow interoperability and separate doctests. Mutation thresholds and semver comparisons require legitimate baselines; nightly/Miri/security-advisory claims need verified versions before adoption.",
+      "objective": "Add nextest/doctest, feature/MSRV/semver/schema and mutation/coverage checks for critical paths. Audit flaky tests with owner/expiry, not hidden retries. Use a bounded supported feature matrix, independent bidirectional Arrow interoperability and separate doctests. Mutation thresholds and semver comparisons require legitimate baselines; nightly/Miri/security-advisory claims need verified versions before adoption. Development qualification: see [current-source quality evidence](../../evidence/d3.3-quality-gates-20261005/README.md). Stable API semver comparison is explicitly blocked without an owner-approved release baseline; Track25/D4 owns that release prerequisite. Exact-head hosted CI and merge are final publication gates, not implied by local test results.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "D3.2"
       ],
@@ -550,7 +550,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 140
+        "line": 144
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -579,7 +579,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 143
+        "line": 147
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -609,7 +609,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 152
+        "line": 156
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -638,7 +638,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 156
+        "line": 160
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -667,7 +667,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 160
+        "line": 164
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -696,7 +696,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 163
+        "line": 167
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -724,7 +724,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 172
+        "line": 176
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -753,7 +753,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 175
+        "line": 179
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -782,7 +782,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 178
+        "line": 182
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -811,7 +811,7 @@
       ],
       "source": {
         "path": "conductor/tracks/development_readiness_20260925/plan.md",
-        "line": 180
+        "line": 184
       },
       "context_paths": [
         "conductor/tracks/development_readiness_20260925/spec.md",
@@ -1987,7 +1987,7 @@
       "phase": "Q4",
       "objective": "Add resource_lifecycle.v1 telemetry with owning tracks and preserve event_log.v1. Portable checkpoint/resume integration is a separate Track 22 handoff; if its contract is unavailable, record it as deferred rather than blocking the queue API or claiming save/restore support.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "Q4.2"
       ],
@@ -2017,7 +2017,7 @@
       "phase": "Q4",
       "objective": "Add a synthetic workflow fixture: named staff, urgent interruption, staged staff/bed claims and bed cleaning before reavailability. Keep clinical rules in the adapter and avoid atomic multi-resource claims not supported by v1.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "Q4.3"
       ],
@@ -2047,7 +2047,7 @@
       "phase": "Q4",
       "objective": "Conductor \u2014 review and verify phase (workflow.md).",
       "kind": "review_integrate",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "Q4.4"
       ],
@@ -2074,13 +2074,13 @@
       "phase": "Q5",
       "objective": "Add deterministic conformance fixtures for all boundary/strategy cases. Compare canonical output hashes on repeated serial runs and independent replications at 1/2/N local workers. Run property seeds in debug and release. Run a bounded pinned SimPy comparison for shared semantics; intentional differences use local expected traces. AllOf is not atomic acquisition; queued cancel, active lease release and scheduled-event cancellation have separate oracles.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "Q4.5"
       ],
       "source": {
         "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
-        "line": 146
+        "line": 147
       },
       "context_paths": [
         "conductor/tracks/des_queue_preemption_20260925/spec.md",
@@ -2102,13 +2102,13 @@
       "phase": "Q5",
       "objective": "Benchmark FIFO/priority queues, rekey/cancel churn, high interruption rates, and many resources at representative queue/active sizes. Record latency, throughput, memory and active-victim scan costs against the legacy baseline; retain upstream acceptance targets and review any regressions.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "Q5.1"
       ],
       "source": {
         "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
-        "line": 150
+        "line": 151
       },
       "context_paths": [
         "conductor/tracks/des_queue_preemption_20260925/spec.md",
@@ -2130,13 +2130,13 @@
       "phase": "Q5",
       "objective": "Run feature-minimal/legacy/API compatibility gates; document migration, starvation, one-resource limits, the Track 22 checkpoint boundary and result provenance. Do not claim queue-owned portable checkpoint compatibility. Hand off single-LP ownership/zero-lookahead restrictions and queue fixtures to existing PDES/distributed owners; flag Metal queue execution as unsupported.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "Q5.2"
       ],
       "source": {
         "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
-        "line": 154
+        "line": 155
       },
       "context_paths": [
         "conductor/tracks/des_queue_preemption_20260925/spec.md",
@@ -2158,13 +2158,13 @@
       "phase": "Q5",
       "objective": "Conductor \u2014 review and verify phase (workflow.md).",
       "kind": "review_integrate",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "Q5.3"
       ],
       "source": {
         "path": "conductor/tracks/des_queue_preemption_20260925/plan.md",
-        "line": 159
+        "line": 160
       },
       "context_paths": [
         "conductor/tracks/des_queue_preemption_20260925/spec.md",
@@ -2294,7 +2294,7 @@
       "phase": "C1",
       "objective": "Write failing actual IPC/Parquet read/write and independent-reader fixtures, including wide/long mappings, timestamp units/timezones, DST ambiguity, nulls, duplicate IDs, invalid chronology and overflow. Include missing triage/cohort denominators, distinct administrative/physical departure and future- outcome leakage fixtures; observed task events must survive lossy standards mappings. Add report 30 negative transformations: meta.lastUpdated as event recording, MSH-7 as occurrence, A08 as automatic physical movement, and OMOP visit end as observed departure without lineage. Test reversed intervals, minute precision and valid boarding after episode end.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "C0.4",
         "D2.5"
@@ -2321,9 +2321,9 @@
       "id": "C1.2",
       "track_id": "empirical_calibration_20260925",
       "phase": "C1",
-      "objective": "Implement optional Arrow IPC/Parquet features, bounded RecordBatch readers and typed schemas. Preserve custom smoke-format compatibility without mislabelling it IPC. Lock dependencies and verify feature-minimal/MSRV builds.",
+      "objective": "Implement optional Arrow IPC/Parquet features, bounded RecordBatch readers and typed schemas. Preserve custom smoke-format compatibility without mislabelling it IPC. Lock dependencies and verify feature-minimal/MSRV builds. Acceptance: [C1.2 qualification](../../evidence/c1.2-closeout-20261004/README.md), development pin f18aba1; source PR #211 historical source remains unmerged; broader gates pass on the C1.4 successor pin.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "C1.1"
       ],
@@ -2349,15 +2349,15 @@
       "id": "C1.3",
       "track_id": "empirical_calibration_20260925",
       "phase": "C1",
-      "objective": "Implement normalization, stable external sorting, origin conversion, partial-order/occupancy validation, exclusions and provenance manifests. Test equivalent input at several batch sizes, row groups and physical row orders.",
+      "objective": "Implement normalization, stable external sorting, origin conversion, partial-order/occupancy validation, exclusions and provenance manifests. Test equivalent input at several batch sizes, row groups and physical row orders. Acceptance: [C1.3 qualification](../../evidence/c1.3-closeout-20261004/README.md), development pin 18ee41e; source PR #212 historical source remains unmerged; broader gates pass on the C1.4 successor pin.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "C1.2"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 79
+        "line": 81
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2379,13 +2379,13 @@
       "phase": "C1",
       "objective": "Conductor \u2014 review and verify phase (workflow.md).",
       "kind": "review_integrate",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "C1.3"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 82
+        "line": 86
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2413,7 +2413,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 94
+        "line": 101
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2442,7 +2442,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 97
+        "line": 104
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2471,7 +2471,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 100
+        "line": 107
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2500,7 +2500,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 106
+        "line": 113
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2529,7 +2529,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 116
+        "line": 123
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2557,7 +2557,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 121
+        "line": 128
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2585,7 +2585,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 124
+        "line": 131
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2613,7 +2613,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 127
+        "line": 134
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2632,15 +2632,15 @@
       "id": "C4.1",
       "track_id": "empirical_calibration_20260925",
       "phase": "C4",
-      "objective": "Write analytic W1/KS tests, tied/weighted/unequal/empty cases and independent reference fixtures with pinned generator provenance. Add duration scaling, large-tick precision, null, censoring and missing-outcome tests. Add equal-marginal/opposite-dependence and W1=180/KS=0.2 tail fixtures; specify a simple joint/conditional diagnostic before optional multivariate metrics.",
+      "objective": "Write analytic W1/KS tests, tied/weighted/unequal/empty cases and independent reference fixtures with pinned generator provenance. Add duration scaling, large-tick precision, null, censoring and missing-outcome tests. Add equal-marginal/opposite-dependence and W1=180/KS=0.2 tail fixtures; specify a simple joint/conditional diagnostic before optional multivariate metrics. Preparation accepted: [retained evidence](../../evidence/c4.1-completion-20261005/README.md); actual runtime and C-04 remain open.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "C1.4"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 138
+        "line": 145
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2668,7 +2668,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 143
+        "line": 151
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2696,7 +2696,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 147
+        "line": 155
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2724,7 +2724,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 150
+        "line": 158
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2752,7 +2752,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 160
+        "line": 168
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2780,7 +2780,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 165
+        "line": 173
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2808,7 +2808,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 171
+        "line": 179
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2836,7 +2836,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 174
+        "line": 182
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2864,7 +2864,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 177
+        "line": 185
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2894,7 +2894,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 188
+        "line": 196
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2922,7 +2922,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 192
+        "line": 200
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2950,7 +2950,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 199
+        "line": 207
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2978,7 +2978,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 202
+        "line": 210
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -3006,7 +3006,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 206
+        "line": 214
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",

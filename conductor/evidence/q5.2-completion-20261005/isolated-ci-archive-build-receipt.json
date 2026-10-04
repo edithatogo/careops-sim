@@ -1,0 +1,16 @@
+{
+  "schema": "careops.q52.isolated-ci-archive.v1",
+  "status": "evidence_preservation_only",
+  "acceptance_claim": false,
+  "source_label": "kairos/.artifacts/q52-isolated-ci",
+  "run_readbacks": {
+    "pr": {"path": "pr-run.json", "head": "8daa0978578b8a5b5b6427e84db1a3e6c54a1123", "conclusion": "success", "job_count": 12, "all_jobs_success": true, "source_artifact_directories": 15},
+    "push": {"path": "push-run.json", "head": "8daa0978578b8a5b5b6427e84db1a3e6c54a1123", "conclusion": "success", "job_count": 12, "all_jobs_success": true, "source_artifact_directories": 15}
+  },
+  "copy_policy": {"included": "both run readbacks and every file in all PR and push downloaded artifact directories", "excluded": ["target directories", "compiled executables/libraries/objects", "symlinks", "private lease/token/session/store files"]},
+  "operations": [
+    {"argv": ["python3", "-"], "description": "copy completed PR and push CI run readbacks and downloaded artifact folders into scoped archive; source/destination comparison caught and restored four release.log files omitted by an overly broad initial filename filter", "exit_code": 0, "scope_check": "advisory artifact-only check passed before writes"},
+    {"argv": ["python3", "-"], "description": "build relative SHA-256 inventory and deterministic tar.gz with sorted members and normalized metadata", "exit_code": 0, "scope_check": "advisory artifact-only check passed before final package creation"}
+  ],
+  "acceptance": "not assessed"
+}

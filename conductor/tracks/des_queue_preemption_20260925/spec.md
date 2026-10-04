@@ -1,6 +1,6 @@
 # Specification: first-class DES queues and preemption
 
-**ID:** `des_queue_preemption_20260925` · **Status:** proposed
+**ID:** `des_queue_preemption_20260925` · **Status:** Q0–Q5 accepted for experimental development; release and ED MVP acceptance separate
 **Upstream owner:** 03 (Flow), with 01/04/12/25 review.
 **Baseline:** Kairos `fae901558f07b7b717a676adbafbe2cdc78dea1c`.
 
@@ -46,7 +46,12 @@ backend rewrite, binding expansion or ED triage policy is authorized by this spe
 
 ## 3. Component and identifier schemas
 
-Names and Rust shapes below are proposed public design, subject to Q0 API review.
+**Implementation reconciliation (2026-10-05):** the names and Rust shapes below
+are illustrative contract/design material, not a claim that every proposed
+constructor or schema is the current public API. Q5.3 development qualification
+at Kairos `eae890b0a2a3524a543ec4ee4aca61346e273b52` records the actual fluent
+consumer and migration surface in the [queue migration guide](../../../libs/kairos/docs/flow/queue-migration.md). Consult that source-linked guide and the pinned Kairos source for current usage. This note reconciles the specification with implementation; it does not rewrite or freeze schemas.
+
 Time values use existing `SimTime`/`SimDuration` nonnegative integer ticks. IDs
 wrap generational `EntityId`; allocation identity also includes an incrementing
 lease revision. Revision/sequence overflow returns an error, never wraps silently.

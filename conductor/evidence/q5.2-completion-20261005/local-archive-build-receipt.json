@@ -1,0 +1,142 @@
+{
+  "schema": "careops.q52.archive-build-receipt.v1",
+  "status": "evidence_preservation_only",
+  "acceptance_claim": false,
+  "archive_root": ".artifacts/q52-completion",
+  "copy_method": "Python standard-library walk/copy; no symlink traversal; target/build-product directories and compiled executables/libraries excluded; evidence logs, receipts, raw measurements, and CI artifact files included",
+  "source_labels": {
+    "runtime-e06": {
+      "repository": "kairos",
+      "recorded_head": "e06b4aa3cabcd7a6c84cc06193f72d95b1ed763f",
+      "source_root_label": "Kairos q52-runtime/final-matrix/20261004T153823647541Z"
+    },
+    "runtime-initial-d403": {
+      "repository": "kairos",
+      "recorded_head": "d403b18ed97840effa76d06e6841c2ee333db786",
+      "source_root_label": "Kairos q52-qualified/matrix/20261004T122005883098Z"
+    },
+    "canonical-original-f": {
+      "repository": "kairos",
+      "recorded_head": "f18aba1f1930aec228e830c9e58c67e4081ac4bb",
+      "source_root_label": "Kairos q52-canonical original baseline"
+    },
+    "canonical-e06-current": {
+      "repository": "kairos",
+      "recorded_head": "e06b4aa3cabcd7a6c84cc06193f72d95b1ed763f",
+      "source_root_label": "Kairos q52-canonical current run"
+    },
+    "canonical-paired-baseline": {
+      "repository": "kairos",
+      "recorded_head": "f18aba1f1930aec228e830c9e58c67e4081ac4bb",
+      "source_root_label": "Kairos q52-paired-baseline"
+    },
+    "canonical-paired-current": {
+      "repository": "kairos",
+      "recorded_head": "0944b8198e8208f7b2a016ad9774fbb91a895d5a",
+      "source_root_label": "Kairos q52-paired-current"
+    },
+    "native-owner-ci": {
+      "pull_request": 214,
+      "expected_head": "0944b8198e8208f7b2a016ad9774fbb91a895d5a",
+      "workflow_run": 37214343886,
+      "producer_head": "64a4544851946fd70bba00eb8d8322532d67f6f8",
+      "producer_tree_sha": "8dd75d09dcfaacc855e7f457fdef8a20530bc585",
+      "expected_head_tree_sha": "8dd75d09dcfaacc855e7f457fdef8a20530bc585",
+      "jobs": "11/11 succeeded",
+      "direct_expected_head_checkout": "pending"
+    },
+    "expanded-preempting-tests": {
+      "repository": "kairos",
+      "recorded_head": "a16b91ac41c146fe5eecc78b20c724fbe1b12093",
+      "source_root_label": "Kairos q52-preempting-index expanded checks"
+    },
+    "collector-provenance-history": {
+      "repository": "kairos",
+      "recorded_head": "e0b6da1752addeb0852da2edd6b6210cfae2660d",
+      "source_root_label": "Kairos q52-provenance corrected and superseded receipts"
+    },
+    "e06-final-checks": {
+      "repository": "kairos",
+      "recorded_head": "e06b4aa3cabcd7a6c84cc06193f72d95b1ed763f",
+      "source_root_label": "Kairos q52-final-checks including post-run host snapshot"
+    }
+  },
+  "canonical_gate": {
+    "original_result": "four blocking failures retained",
+    "matched_pair_result": "two blocking failures: component_insert_1m +91.0063%; pop_1m_events +10.6969%",
+    "acceptance": "not passed"
+  },
+  "operations": [
+    {
+      "argv": [
+        "python3",
+        "-"
+      ],
+      "stdin_description": "curated read-only-copy script: copied final and initial runtime matrix, original canonical F baseline, selected completed E06 release/check/CI evidence into the owned archive; initial pass mistakenly skipped nested build-receipt directories, then corrected by copying only JSON/log provenance from those directories",
+      "cwd": "/private/tmp/careops-q52-completion",
+      "exit_code": 0,
+      "source_paths": "source_label paths are represented in inventory.json; no private lease/session/token paths copied",
+      "scope_check": "safe_session check passed on .artifacts/q52-completion before copy"
+    },
+    {
+      "argv": [
+        "python3",
+        "-"
+      ],
+      "stdin_description": "curated copy script: paired current and baseline receipts/logs/normalization/native/comparison/Criterion JSON, fourteen downloaded PR #214 artifact folders, expanded preemption receipt/logs, collector corrected/superseded receipt history, host-contention snapshot",
+      "cwd": "/private/tmp/careops-q52-completion",
+      "exit_code": 0,
+      "source_paths": "source_label paths are represented in inventory.json",
+      "scope_check": "safe_session check passed on .artifacts/q52-completion before copy"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "0944b8198e8208f7b2a016ad9774fbb91a895d5a^{tree}",
+        "64a4544851946fd70bba00eb8d8322532d67f6f8^{tree}"
+      ],
+      "cwd": "Kairos object database",
+      "exit_code": 0,
+      "result": "8dd75d09dcfaacc855e7f457fdef8a20530bc585 for both PR head and CI producer"
+    },
+    {
+      "argv": [
+        "python3",
+        "-"
+      ],
+      "stdin_description": "archive inventoried and normalized deterministic tar.gz; sorted members, normalized tar uid/gid/names/modes/mtime and gzip mtime",
+      "cwd": "/private/tmp/careops-q52-completion",
+      "exit_code": 0,
+      "scope_check": "safe_session check passed on .artifacts/q52-completion before packaging"
+    }
+  ],
+  "matched_pair": {
+    "baseline_head": "f18aba1f1930aec228e830c9e58c67e4081ac4bb",
+    "current_head": "0944b8198e8208f7b2a016ad9774fbb91a895d5a",
+    "comparison_status": "fail",
+    "blocking_rows": {
+      "component_insert_1m": {
+        "change_percent": 91.0063,
+        "threshold_percent": 3
+      },
+      "pop_1m_events": {
+        "change_percent": 10.6969,
+        "threshold_percent": 5
+      }
+    },
+    "comparison_sha256": "cc89f34654b63ccdba257edff67f78b55900af4667d685ac53ef33b7eef84c58"
+  },
+  "native_owner_ci": {
+    "run": 37214343886,
+    "status": "all 11 jobs succeeded",
+    "producer_commit": "64a4544851946fd70bba00eb8d8322532d67f6f8",
+    "pr_head": "0944b8198e8208f7b2a016ad9774fbb91a895d5a",
+    "tree_sha256_equal": "8dd75d09dcfaacc855e7f457fdef8a20530bc585",
+    "direct_pr_head_checkout_with_expected_head": "pending"
+  },
+  "post_run_host_snapshot": {
+    "path": "e06-final-checks-and-host-snapshot/host-contention-snapshot.json",
+    "note": "high background CPU/CodeQL observed; context only, no causal inference"
+  }
+}

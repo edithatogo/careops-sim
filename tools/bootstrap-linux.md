@@ -10,7 +10,7 @@ On Ubuntu/Debian, install the native linker and Rustup prerequisites:
 ```sh
 sudo apt-get update
 sudo apt-get install -y build-essential curl ca-certificates
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain 1.98.1
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain 1.99.0
 . "$HOME/.cargo/env"
 ```
 

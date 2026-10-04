@@ -67,24 +67,31 @@ identify which times are observed, inferred, clamped, predicted and censored.
 
 Entry: C0. Owners 04 (IO), 21 (semantics); can proceed alongside Q1–Q3.
 
-- [ ] C1.1 Write failing actual IPC/Parquet read/write and independent-reader
+- [x] C1.1 Write failing actual IPC/Parquet read/write and independent-reader
   fixtures, including wide/long mappings, timestamp units/timezones, DST
   ambiguity, nulls, duplicate IDs, invalid chronology and overflow. Include missing
   triage/cohort denominators, distinct administrative/physical departure and future-
   outcome leakage fixtures; observed task events must survive lossy standards mappings.
   Add report 30 negative transformations: meta.lastUpdated as event recording, MSH-7 as occurrence, A08 as automatic physical movement, and OMOP visit end as observed departure without lineage. Test reversed intervals, minute precision and valid boarding after episode end.
-- [ ] C1.2 Implement optional Arrow IPC/Parquet features, bounded RecordBatch
+- [x] C1.2 Implement optional Arrow IPC/Parquet features, bounded RecordBatch
   readers and typed schemas. Preserve custom smoke-format compatibility without
   mislabelling it IPC. Lock dependencies and verify feature-minimal/MSRV builds.
-- [ ] C1.3 Implement normalization, stable external sorting, origin conversion,
+  Acceptance: [C1.2 qualification](../../evidence/c1.2-closeout-20261004/README.md),
+  development pin f18aba1; source PR #211 historical source remains unmerged; broader gates pass on the C1.4 successor pin.
+- [x] C1.3 Implement normalization, stable external sorting, origin conversion,
   partial-order/occupancy validation, exclusions and provenance manifests. Test
   equivalent input at several batch sizes, row groups and physical row orders.
-- [ ] C1.4 Conductor — review and verify phase (workflow.md).
+  Acceptance: [C1.3 qualification](../../evidence/c1.3-closeout-20261004/README.md),
+  development pin 18ee41e; source PR #212 historical source remains unmerged; broader gates pass on the C1.4 successor pin.
+- [x] C1.4 Conductor — review and verify phase (workflow.md).
 
 Exit: C-01; exact normalized canonical record hashes match across reader layouts.
+C-01 passes the declared synthetic matrix: [invariance qualification](../../evidence/c01-closeout-20261005/README.md); C1.4 phase review passes at the reviewed integrated development pin; see [C1.4 closeout](../../evidence/c1.4-completion-20261005/README.md).
 Manual check: inspect IPC/Parquet with a second implementation, verify units and
 nullable fields, and reconcile input/accepted/excluded/censored counts. Source
 identities stay out of public fixture/report artifacts.
+Manual readback passes: [independent physical and count evidence](../../evidence/c1-independent-readback-20261005/README.md);
+Historical readback retained. Fresh corrected independent readback verifies 666 files and conserves counts; [C1.4 closeout](../../evidence/c1.4-completion-20261005/README.md) records final integrated CI and governance acceptance.
 
 ## C2 — Macro/Micro execution and minimal spatial behavior
 
@@ -135,11 +142,12 @@ verify one probe cannot change another's starting historical state or occupancy.
 Entry: C0/C1 schemas; may proceed before C3 using synthetic predictions. Owner 21;
 04 owns typed sidecar encoding and 12 the independent reference fixtures.
 
-- [ ] C4.1 Write analytic W1/KS tests, tied/weighted/unequal/empty cases and
+- [x] C4.1 Write analytic W1/KS tests, tied/weighted/unequal/empty cases and
   independent reference fixtures with pinned generator provenance. Add duration
   scaling, large-tick precision, null, censoring and missing-outcome tests.
   Add equal-marginal/opposite-dependence and W1=180/KS=0.2 tail fixtures;
   specify a simple joint/conditional diagnostic before optional multivariate metrics.
+  Preparation accepted: [retained evidence](../../evidence/c4.1-completion-20261005/README.md); actual runtime and C-04 remain open.
 - [ ] C4.2 Implement deterministic sorted-CDF W1 and KS D, paired residual
   summaries, grouping/window semantics, counts/validity flags and explicit
   insufficient-data statuses. No automatic classical KS p-value for clustered,

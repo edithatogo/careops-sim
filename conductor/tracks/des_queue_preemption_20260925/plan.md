@@ -6,7 +6,7 @@ catalog preserves every prerequisite and phase closeout. Prepare and validate
 bounded worker packets before dispatch; gpt-6-luna is a candidate worker, not an
 assumed authority for unresolved contracts or acceptance decisions.
 
-**Status:** in progress; checked Q0–Q3 tasks record evidence-backed experimental development acceptance. Q4/Q5 remain open; the programme and release are not complete. Parent integration is governed by exact-head hosted checks and native merge readback.
+**Status:** Q0–Q5 are accepted for the frozen experimental queue development scope. Q5.4 independent replay, corrected evidence/governance review and exact-head child hosted gates passed. This is not programme, release, clinical or ED MVP acceptance. Parent delivery status at source preparation: local gates passed; committed-pin check, hosted parent CI and merge readback await publication and must pass before delivery is reported.
 **Specification:** [spec.md](spec.md) · **Workflow:** [workflow.md](../../workflow.md)
 **Owners:** upstream 03, with 01/04/12/25 as recorded per milestone.
 
@@ -123,16 +123,17 @@ to enter or exit this queue phase.
   continuation context, deterministic notification order and bounded
   zero-duration feedback handling. Do not add portable codecs without an
   accepted Track 22 contract. Add a migration example retaining the old FIFO API.
-- [ ] Q4.3 Add resource_lifecycle.v1 telemetry with owning tracks and preserve
+- [x] Q4.3 Add resource_lifecycle.v1 telemetry with owning tracks and preserve
   event_log.v1. Portable checkpoint/resume integration is a separate Track 22
   handoff; if its contract is unavailable, record it as deferred rather than
   blocking the queue API or claiming save/restore support.
-- [ ] Q4.4 Add a synthetic workflow fixture: named staff, urgent interruption,
+- [x] Q4.4 Add a synthetic workflow fixture: named staff, urgent interruption,
   staged staff/bed claims and bed cleaning before reavailability. Keep clinical
   rules in the adapter and avoid atomic multi-resource claims not supported by v1.
-- [ ] Q4.5 Conductor — review and verify phase (workflow.md).
+- [x] Q4.5 Conductor — review and verify phase (workflow.md).
 
-Exit: Q-05/Q-06 integration evidence; calibration C3 can consume the stable API.
+Exit: Q-05/Q-06 integration evidence; calibration C3 can consume the reviewed,
+versioned experimental API. Stable API and release acceptance remain Track 25/Q5 gates.
 Manual check: create an interruptible task using the fluent API with no manual
 component attachment; pause at an event boundary in the same runtime, continue,
 and compare terminal state and canonical lifecycle records to uninterrupted
@@ -143,20 +144,20 @@ execution. Portable checkpoint/restore requires separate Track 22 evidence.
 Entry: Q4; legacy compatibility baseline and benchmark environment recorded.
 Owners 03/12/25; coordinate 22/32/34/35 without rewriting backend plans.
 
-- [ ] Q5.1 Add deterministic conformance fixtures for all boundary/strategy cases.
+- [x] Q5.1 Add deterministic conformance fixtures for all boundary/strategy cases.
   Compare canonical output hashes on repeated serial runs and independent
   replications at 1/2/N local workers. Run property seeds in debug and release.
   Run a bounded pinned SimPy comparison for shared semantics; intentional differences use local expected traces. AllOf is not atomic acquisition; queued cancel, active lease release and scheduled-event cancellation have separate oracles.
-- [ ] Q5.2 Benchmark FIFO/priority queues, rekey/cancel churn, high interruption
+- [x] Q5.2 Benchmark FIFO/priority queues, rekey/cancel churn, high interruption
   rates, and many resources at representative queue/active sizes. Record latency,
   throughput, memory and active-victim scan costs against the legacy baseline;
   retain upstream acceptance targets and review any regressions.
-- [ ] Q5.3 Run feature-minimal/legacy/API compatibility gates; document migration,
+- [x] Q5.3 Run feature-minimal/legacy/API compatibility gates; document migration,
   starvation, one-resource limits, the Track 22 checkpoint boundary and result
   provenance. Do not claim queue-owned portable checkpoint compatibility.
   Hand off single-LP ownership/zero-lookahead restrictions and queue fixtures to
   existing PDES/distributed owners; flag Metal queue execution as unsupported.
-- [ ] Q5.4 Conductor — review and verify phase (workflow.md).
+- [x] Q5.4 Conductor — review and verify phase (workflow.md).
 
 Exit: Q-01–Q-07 evidence, risk disposition, release notes, updated upstream records
 and clean scoped commits. Manual check: independent reader follows the example,
@@ -193,3 +194,39 @@ are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
 commands and reviewer acceptance before dispatch. Parent tasks close only after
 all leaf instances and the original phase acceptance pass. Post-MVP tasks are
 outside this workpack. No Luna execution or qualification is implied by coverage.
+
+Q4.5 development acceptance (2026-10-04): final Kairos pin `1125b5268bb349a5befe12f5789045042faab3e3` passed exact-head two-host native-owner CI [37192692770](https://github.com/edithatogo/kairos/actions/runs/37192692770), phase/DAG/strict clean-tree gates and independent source/governance reviews. Canonical Rust is current stable 1.99.0; separate 1.88/1.76 compatibility floors remain. Parent PR delivery is pending. Q5, Track 22 portability, Track 25 experimental API and release holds are unchanged.
+
+## Q5.2 execution update — 2026-10-04
+
+Q5.2 execution update (2026-10-04): supplementary kernel/runtime harnesses and
+exact-key removal are implemented for development qualification. The first
+matrix timed out all 13 cases with 100,000 requests; a corrected immutable
+rerun and source/CI receipts are retained in the Q5.2 evidence document.
+Q5.2 remains unchecked until those cases and canonical regression gates pass.
+Next source work follows the reviewed [scaling design](../../design/queue/q5.2-scaling-followup-20261004.md):
+delta staging, waiting-deadline lookup and ordered replacement selection,
+with source-bound Luna packets and independent failure-atomicity review.
+
+## Q5.2 acceptance — 2026-10-05
+
+[Development qualification](../../evidence/q5.2-completion-20261005/README.md): all 39 runtime cases/five repeats (195 processes) completed, including all 13 100k cases. Correctness and source-equivalence review passed. Both isolated Ubuntu native-owner runs passed 12/12 jobs and six canonical metrics under unchanged thresholds. Original local four-failure and later two-failure comparisons are preserved; source/binary-identical controls do not establish a speedup. Parent development pin advances to 8daa0978578b8a5b5b6427e84db1a3e6c54a1123 while retaining accepted C-01 and C1 readback. Q5.3 compatibility/API/migration and Q5.4 phase review remain open; broader child PR checks are not all green and child PR #214 remains draft/unmerged.
+
+## Q5.3 compatibility qualification — 2026-10-05
+
+[Accepted development evidence](../../evidence/q5.3-completion-20261005/README.md)
+records the three-case public consumer fixture, source-linked migration/backend
+handoff, 228 passing DES tests per equivalent default/no-default configuration
+(one benchmark ignored), 11 selected Rust 1.76 tests, exact FIFO/staff outputs,
+and unchanged production source across all 15 registered surfaces. Two Luna
+source reviews and both exact-head native host runs passed at
+`eae890b0a2a3524a543ec4ee4aca61346e273b52`; broader child PR #218 checks have no failure or pending result.
+Preserves accepted C1.4/Q5.2. The child development PR stays stacked/draft; Q5.4,
+Track 25/release/security and advanced backend/checkpoint/clinical holds remain.
+
+
+## Q5.4 accepted development closeout — 2026-10-05
+
+[Executed evidence and dispositions](../../evidence/q5.4-completion-20261005/README.md) close Q-01–Q-07 for the frozen experimental queue development scope. Independent replay passed 11 selected tests, both exact example outputs and all twelve canonical hashes. Independent review corrected a removed Track 04 ledger entry; all 43 non-03 entries remain byte-identical to the predecessor. Fresh local phase/DAG/compatibility/boundary/strict-clean gates and exact-head hosted child native Linux/macOS plus reported checks passed at `8cd03c8f791ae58b33e5cc61b244071937a839ac`. Accepted C1.4/Q5.2 runtime source is unchanged. Parent local/hosted integration and merge are recorded separately in the delivery receipt; planned checks are not passes. Child PR #219 remains stacked/draft. Formal release/security, Track 25 promotion, Track 22 portability, Track 32 Metal, Track 34/35 distributed and clinical/MVP gates remain open.
+
+Historical Q5.1–Q5.3 acceptance paragraphs above retain point-in-time receipt narratives.

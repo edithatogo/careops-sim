@@ -1,0 +1,2218 @@
+{
+  "schema_version": 1,
+  "task": "Q5.2",
+  "status": "implemented_benchmark_leaves_acceptance_blocked",
+  "date": "2026-10-04",
+  "parent_base": "3563e7d67d3d6d12f246271872d393c2e5e30b58",
+  "accepted_parent_kairos_pin": "f18aba1f1930aec228e830c9e58c67e4081ac4bb",
+  "parent_pin_advanced": false,
+  "measured_kairos_commit": "d403b18ed97840effa76d06e6841c2ee333db786",
+  "published_development_commit": "0762fedb246c1e2df65b76f8d598024316bc52d5",
+  "source_identity": {
+    "difference_paths": [
+      ".github/workflows/careops-native-owner.yml",
+      "CHANGELOG.md"
+    ],
+    "interpretation": "Published followup changes only changelog and artifact policy. The full matrix remains bound to the separately qualified immutable measured commit, not silently relabelled as the later HEAD."
+  },
+  "draft_pr": {
+    "url": "https://github.com/edithatogo/kairos/pull/210",
+    "base": "codex/careops-q51-conformance",
+    "merge_hold": "Q5.2 performance and broader PR/release gates unresolved; no stable-main merge"
+  },
+  "owner_ci": [
+    {
+      "head_sha": "d403b18ed97840effa76d06e6841c2ee333db786",
+      "conclusion": "success",
+      "url": "https://github.com/edithatogo/kairos/actions/runs/37201747871",
+      "jobs": [
+        {
+          "name": "Native owner (ubuntu-24.04)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, ipc)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (macos-15, both)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Native owner (macos-15)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, both)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (macos-15, parquet)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, parquet)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (macos-15, ipc)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (macos-15, none)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, none)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Native and Arrow IO required",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "head_sha": "0762fedb246c1e2df65b76f8d598024316bc52d5",
+      "conclusion": "success",
+      "url": "https://github.com/edithatogo/kairos/actions/runs/37202122572",
+      "jobs": [
+        {
+          "name": "Native owner (macos-15)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Native owner (ubuntu-24.04)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (macos-15, ipc)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, both)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (macos-15, none)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (macos-15, parquet)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, ipc)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (macos-15, both)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, none)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Arrow IO Rust 1.88 (ubuntu-24.04, parquet)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Native and Arrow IO required",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "matrix": {
+    "status": "unresolved",
+    "collector_exit_code": 1,
+    "case_count": 39,
+    "complete_cases": 26,
+    "unresolved_cases": 13,
+    "failed_cases": 0,
+    "raw_repeats": 143,
+    "successful_repeats": 130,
+    "requested_repeats": 5,
+    "deadline_seconds": 30,
+    "seed": 42,
+    "timeout_handling": "First repeat for each oversized case killed/reaped with exit -9; remaining repeats skipped. Every timeout occurred during dispatch. No extrapolation.",
+    "provenance_qualified": true,
+    "source_or_binary_drift": {
+      "binary": false,
+      "head": false,
+      "sources": false
+    },
+    "python": "3.14.8",
+    "toolchain": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "rustc",
+        "-Vv"
+      ],
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: aarch64-apple-darwin\nrelease: 1.99.0\nLLVM version: 23.1.1"
+    },
+    "input_sha256": "a9e7844a578f6787fd9a55eed50e673ab7da03b3a8ecf10eb48b055cc035c7eb",
+    "binary_sha256": "c1efb2f6a854804ce8f07cf1ecc64b51d83e81e6cb72e44c44d81d6e92cb1103",
+    "receipt_sha256": "8a3e806816f58b611cdeee12e97172c5b339efd927f2a871db851634d5640c11",
+    "raw_receipt": "q52-qualified/matrix/20261004T122005883098Z/result.json",
+    "cases": [
+      {
+        "input": {
+          "capacity": 1,
+          "n": 10,
+          "resources": 1,
+          "scenario": "fifo"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 59209,
+            "p95": 96750,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 11,
+            "p95": 11,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 185782.567,
+            "p95": 190476.19,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2375680,
+            "p95": 2392064,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 27375,
+            "p95": 115417,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 168893.243,
+            "p95": 173160.173,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 1000,
+          "resources": 1,
+          "scenario": "fifo"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 214422500,
+            "p95": 267527750,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 1001,
+            "p95": 1001,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 4668.353,
+            "p95": 5083.066,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 5275648,
+            "p95": 5423104,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 508625,
+            "p95": 1247375,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 4663.69,
+            "p95": 5077.988,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 100000,
+          "resources": 1,
+          "scenario": "fifo"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 10,
+          "resources": 1,
+          "scenario": "fifo"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 101250,
+            "p95": 165542,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 20,
+            "p95": 20,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 197530.864,
+            "p95": 206362.145,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2457600,
+            "p95": 2473984,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 32792,
+            "p95": 42291,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 98765.432,
+            "p95": 103181.072,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 1000,
+          "resources": 1,
+          "scenario": "fifo"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 209075583,
+            "p95": 243017917,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 1010,
+            "p95": 1010,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 4830.789,
+            "p95": 7488.304,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 5341184,
+            "p95": 5357568,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 498250,
+            "p95": 503125,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 4782.959,
+            "p95": 7414.163,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 100000,
+          "resources": 1,
+          "scenario": "fifo"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 100,
+          "n": 10,
+          "resources": 1,
+          "scenario": "fifo"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 1395583,
+            "p95": 3195667,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 110,
+            "p95": 110,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 78820.106,
+            "p95": 79594.79,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2785280,
+            "p95": 2818048,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 75000,
+            "p95": 104709,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 7165.464,
+            "p95": 7235.89,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 100,
+          "n": 1000,
+          "resources": 1,
+          "scenario": "fifo"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 200783000,
+            "p95": 224783333,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 1100,
+            "p95": 1100,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 5478.551,
+            "p95": 5972.17,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 5849088,
+            "p95": 5865472,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 571042,
+            "p95": 589417,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 4980.501,
+            "p95": 5429.245,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 100,
+          "n": 100000,
+          "resources": 1,
+          "scenario": "fifo"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 10,
+          "resources": 1,
+          "scenario": "priority"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 64708,
+            "p95": 78209,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 11,
+            "p95": 11,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 169994.437,
+            "p95": 177536.758,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2375680,
+            "p95": 2392064,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 31125,
+            "p95": 42208,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 154540.397,
+            "p95": 161397.053,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 1000,
+          "resources": 1,
+          "scenario": "priority"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 2413870291,
+            "p95": 3658565208,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 1001,
+            "p95": 1001,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 414.687,
+            "p95": 501.745,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 5046272,
+            "p95": 5390336,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 558541,
+            "p95": 1365209,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 414.272,
+            "p95": 501.244,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 100000,
+          "resources": 1,
+          "scenario": "priority"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 10,
+          "resources": 1,
+          "scenario": "priority"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 105833,
+            "p95": 112000,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 20,
+            "p95": 20,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 188976.973,
+            "p95": 191999.386,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2457600,
+            "p95": 2473984,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 39708,
+            "p95": 42084,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 94488.487,
+            "p95": 95999.693,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 1000,
+          "resources": 1,
+          "scenario": "priority"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 759860042,
+            "p95": 1278962542,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 1010,
+            "p95": 1010,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 1329.192,
+            "p95": 3587.374,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 5357568,
+            "p95": 5439488,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 536959,
+            "p95": 5488084,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 1316.032,
+            "p95": 3551.856,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 100000,
+          "resources": 1,
+          "scenario": "priority"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 100,
+          "n": 10,
+          "resources": 1,
+          "scenario": "priority"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 1394875,
+            "p95": 15564042,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 110,
+            "p95": 110,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 78860.113,
+            "p95": 79515.677,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2785280,
+            "p95": 2818048,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 84084,
+            "p95": 87875,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 7169.101,
+            "p95": 7228.698,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 100,
+          "n": 1000,
+          "resources": 1,
+          "scenario": "priority"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 699860292,
+            "p95": 777784000,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 1100,
+            "p95": 1100,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 1571.742,
+            "p95": 1848.666,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 5898240,
+            "p95": 5914624,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 580666,
+            "p95": 592416,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 1428.857,
+            "p95": 1680.605,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 100,
+          "n": 100000,
+          "resources": 1,
+          "scenario": "priority"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 10,
+          "resources": 1,
+          "scenario": "churn"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 82291,
+            "p95": 87292,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 21,
+            "p95": 21,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 255191.941,
+            "p95": 260597.637,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2392064,
+            "p95": 2408448,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 23125,
+            "p95": 29625,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 121519.972,
+            "p95": 124094.113,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 1000,
+          "resources": 1,
+          "scenario": "churn"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 467634292,
+            "p95": 571092876,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 2001,
+            "p95": 2001,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 4278.985,
+            "p95": 5688.201,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 5373952,
+            "p95": 5390336,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 500042,
+            "p95": 595709,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 2138.423,
+            "p95": 2842.679,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 100000,
+          "resources": 1,
+          "scenario": "churn"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 10,
+          "resources": 1,
+          "scenario": "churn"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 140666,
+            "p95": 142458,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 30,
+            "p95": 30,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 213271.153,
+            "p95": 221811.46,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2473984,
+            "p95": 2473984,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 36292,
+            "p95": 40208,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 71090.384,
+            "p95": 73937.153,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 1000,
+          "resources": 1,
+          "scenario": "churn"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 434507041,
+            "p95": 511833959,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 2010,
+            "p95": 2010,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 4625.932,
+            "p95": 5139.091,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 5439488,
+            "p95": 5488640,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 522458,
+            "p95": 1312250,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 2301.459,
+            "p95": 2556.762,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 100000,
+          "resources": 1,
+          "scenario": "churn"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 100,
+          "n": 10,
+          "resources": 1,
+          "scenario": "churn"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 1537542,
+            "p95": 1547500,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 120,
+            "p95": 120,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 78046.648,
+            "p95": 78133.444,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2785280,
+            "p95": 2801664,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 77958,
+            "p95": 90625,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 6503.887,
+            "p95": 6511.12,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 100,
+          "n": 1000,
+          "resources": 1,
+          "scenario": "churn"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 558929708,
+            "p95": 767548209,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 2100,
+            "p95": 2100,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 3757.181,
+            "p95": 4305.85,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 5931008,
+            "p95": 5947392,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 563833,
+            "p95": 586541,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 1789.134,
+            "p95": 2050.405,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 100,
+          "n": 100000,
+          "resources": 1,
+          "scenario": "churn"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 10,
+          "resources": 10,
+          "scenario": "many_resources"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 143792,
+            "p95": 148500,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 20,
+            "p95": 20,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 139089.796,
+            "p95": 140146.313,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2555904,
+            "p95": 2555904,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 37916,
+            "p95": 62958,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 69544.898,
+            "p95": 70073.156,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 1000,
+          "resources": 10,
+          "scenario": "many_resources"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 141641583,
+            "p95": 167677125,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 1010,
+            "p95": 1010,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 7130.674,
+            "p95": 8687.612,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 5128192,
+            "p95": 5210112,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 534291,
+            "p95": 544958,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 7060.074,
+            "p95": 8601.596,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 100000,
+          "resources": 10,
+          "scenario": "many_resources"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 10,
+          "resources": 100,
+          "scenario": "many_resources"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 3702167,
+            "p95": 6976500,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 110,
+            "p95": 110,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 29712.328,
+            "p95": 31867.893,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 3473408,
+            "p95": 3506176,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 114166,
+            "p95": 2009042,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 2701.121,
+            "p95": 2897.081,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 1000,
+          "resources": 100,
+          "scenario": "many_resources"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 215481542,
+            "p95": 270572458,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 1100,
+            "p95": 1100,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 5104.846,
+            "p95": 6473.355,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 5980160,
+            "p95": 6029312,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 0,
+            "p95": 0,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 641209,
+            "p95": 671292,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 4640.769,
+            "p95": 5884.868,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 100000,
+          "resources": 100,
+          "scenario": "many_resources"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 10,
+          "resources": 1,
+          "scenario": "interruptions"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 116250,
+            "p95": 427542,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 21,
+            "p95": 21,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 180645.161,
+            "p95": 185361.72,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2490368,
+            "p95": 2523136,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 10,
+            "p95": 10,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 51583,
+            "p95": 1580166,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 86021.505,
+            "p95": 88267.486,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 1000,
+          "resources": 1,
+          "scenario": "interruptions"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 517969334,
+            "p95": 726659292,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 2001,
+            "p95": 2001,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 3863.163,
+            "p95": 4124.969,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 6144000,
+            "p95": 6209536,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 1000,
+            "p95": 1000,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 2675208,
+            "p95": 14814500,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 1930.616,
+            "p95": 2061.454,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 1,
+          "n": 100000,
+          "resources": 1,
+          "scenario": "interruptions"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 10,
+          "resources": 1,
+          "scenario": "interruptions"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 214958,
+            "p95": 558417,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 30,
+            "p95": 30,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 139562.147,
+            "p95": 141481.405,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 2654208,
+            "p95": 2670592,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 10,
+            "p95": 10,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 67792,
+            "p95": 144625,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 46520.716,
+            "p95": 47160.468,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 1000,
+          "resources": 1,
+          "scenario": "interruptions"
+        },
+        "status": "complete",
+        "attempted_repeats": 5,
+        "summary": {
+          "completed_repeats": 5,
+          "dispatch_ns": {
+            "p50": 615121541,
+            "p95": 682775209,
+            "samples": 5
+          },
+          "events_completed": {
+            "p50": 2010,
+            "p95": 2010,
+            "samples": 5
+          },
+          "events_per_second": {
+            "p50": 3267.647,
+            "p95": 4299.792,
+            "samples": 5
+          },
+          "peak_rss_bytes": {
+            "p50": 6127616,
+            "p95": 6209536,
+            "samples": 5
+          },
+          "preemptions": {
+            "p50": 1000,
+            "p95": 1000,
+            "samples": 5
+          },
+          "setup_ns": {
+            "p50": 1241833,
+            "p95": 12296833,
+            "samples": 5
+          },
+          "waiters_per_second": {
+            "p50": 1625.695,
+            "p95": 2139.2,
+            "samples": 5
+          }
+        }
+      },
+      {
+        "input": {
+          "capacity": 10,
+          "n": 100000,
+          "resources": 1,
+          "scenario": "interruptions"
+        },
+        "status": "unresolved",
+        "attempted_repeats": 1,
+        "summary": {
+          "completed_repeats": 0,
+          "dispatch_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_completed": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "events_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "peak_rss_bytes": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "preemptions": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "setup_ns": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          },
+          "waiters_per_second": {
+            "p50": null,
+            "p95": null,
+            "samples": 0
+          }
+        }
+      }
+    ]
+  },
+  "kernel": {
+    "hosted_rows_per_host": 311,
+    "hosts": [
+      "x86_64-unknown-linux-gnu",
+      "aarch64-apple-darwin"
+    ],
+    "local_selector_rows_per_size": 117,
+    "memory": {
+      "10": 3276800,
+      "1000": 3833856,
+      "100000": 29818880,
+      "unit": "bytes",
+      "scope": "whole compiled test process including setup, clones, fixtures and measurement; Darwin bytes, not per-claim allocation"
+    },
+    "measurement_scope": "Actual BTreeSet queue operations; actual private key-removal helper; matched historical retain reversible cycles; legacy Resource FIFO matched primitive only; production select_victim and select_replacement. Counted Ord is a separate structural diagnostic.",
+    "timer_notes": "Original single-command samples explicitly exploratory; batched reversible cycles include restoration cost. Five-repeat p95 is maximum sample, not a population tail estimate.",
+    "speedup_claim": false
+  },
+  "correctness": {
+    "rust_toolchain": "1.99.0",
+    "local_quality": [
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "kairo-ecs-des",
+          "--all-targets",
+          "--target-dir",
+          ".artifacts/q52-qualified/target",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": "/private/tmp/kairos-q52-measured",
+        "head": "d403b18ed97840effa76d06e6841c2ee333db786",
+        "exit_code": 0,
+        "log": ".artifacts/q52-qualified/quality-0.log",
+        "sha256": "ee1d3fffa2022e962e63e0dbe4d35c9c198450a20c29fc09030f635dbb38bfcd"
+      },
+      {
+        "argv": [
+          "/opt/homebrew/bin/python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "benches/queue",
+          "-p",
+          "test_run_v1.py",
+          "-v"
+        ],
+        "cwd": "/private/tmp/kairos-q52-measured",
+        "head": "d403b18ed97840effa76d06e6841c2ee333db786",
+        "exit_code": 0,
+        "log": ".artifacts/q52-qualified/quality-1.log",
+        "sha256": "224c27cf945ab40a4bdab0bc17ead3ad92663509e71427810e77088a5b9e2183"
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "cwd": "/private/tmp/kairos-q52-measured",
+        "head": "d403b18ed97840effa76d06e6841c2ee333db786",
+        "exit_code": 0,
+        "log": ".artifacts/q52-qualified/quality-2.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "collector_tests": 18,
+    "parent_tests": {
+      "python": "3.14.8",
+      "passed": 413,
+      "note": "System Python3.11 initial run had existing exact-float golden mismatch; explicit pinned3.14.8 full suite passed."
+    },
+    "canonical_q51_hash": "47cfb7dca4211252",
+    "canonical_hash_scope": "Observed debug/release worker batches on both exact-head native-owner CI hosts; bounded SimPy comparison also passed. No portable checkpoint, GPU, distributed or clinical acceptance."
+  },
+  "regression_gates": {
+    "native_baseline_current_pair": "unverified; not executed",
+    "metadata_only_commands": [
+      {
+        "argv": [
+          "/opt/homebrew/bin/python3",
+          "benches/benchmark_smoke.py"
+        ],
+        "cwd": "/private/tmp/kairos-q52-measured",
+        "exit_code": 0,
+        "log": ".artifacts/q52-qualified/benchmark-metadata.log",
+        "sha256": "e583b560df5c6a168967aef5b3bb23a61995b679dd5539e725d58f2f78e37e51",
+        "scope": "metadata/threshold coverage only; no native timing comparison"
+      },
+      {
+        "argv": [
+          "/opt/homebrew/bin/python3",
+          "benches/regression/compare.py"
+        ],
+        "cwd": "/private/tmp/kairos-q52-measured",
+        "exit_code": 0,
+        "log": ".artifacts/q52-qualified/threshold-metadata.log",
+        "sha256": "8e1eb805034d584e092d7106b99e4c581da25c622925a413753c32e98758928a",
+        "scope": "metadata/threshold coverage only; no native timing comparison"
+      }
+    ],
+    "thresholds_unchanged": {
+      "scheduler_blocking_percent": 5,
+      "ecs_blocking_percent": 3,
+      "hybrid_advisory_percent": 10
+    },
+    "no_regression_pass_claim": true
+  },
+  "independent_reviews": {
+    "runtime": "Earlier outcome/provenance/clean-checkout gaps corrected and independently reviewed at9c8fef69.",
+    "kernel": "Single-operation clock-overhead finding corrected with batched rows; independent final review found no remaining source blocker. Reviewer withdrew an incorrect i32 saturation finding after coordinator checked the actual type/range.",
+    "rollback": "Two-resource late-corrupt-key despawn fixture independently reviewed; debug/release pass.",
+    "worker_protocol": "Early worker attempts printed cooperative lease success JSON and one old-HEAD receipt edit was outside its live lease; those claims were released. Followups used private captured claims/output-safe checks, immediate postcommit release, and clean immutable coordinator reproduction. No general Luna qualification or unattended execution certification."
+  },
+  "label_interpretation": {
+    "runtime_peak_rss_method": "Value comes from os.wait4(selected_pid) for the direct child; existing RUSAGE_CHILDREN wording is inaccurate, not cumulative usage.",
+    "interruption_n": "Urgent arrivals, despite generic logical_waiters/waiters_per_second field names."
+  },
+  "blockers": [
+    "All13 100000-request Flow cases timeout: whole-state staging/rollback/commit plus waiting-deadline scans and replacement materialization.",
+    "Canonical native baseline/current six-result regression comparison remains unverified.",
+    "Broader draft-PR checks include calibration dead-code and package/Conductor release inventory holds; native-owner green is not all-PR green."
+  ],
+  "next_work": {
+    "task": "Q5.2 scaling remediation before Q5.3",
+    "design": "conductor/design/queue/q5.2-scaling-followup-20261004.md",
+    "leaves": [
+      "Freeze pure borrowed queue overlay and lazy record overlay interfaces; disjoint Luna writers with independent differential tests.",
+      "One Flow owner integrates causal closure, boundary delta rollback and owned-delta commit.",
+      "Implement private waiting-deadline index and order-preserving scalable replacement; atomic corruption and tie tests.",
+      "Rerun exact correctness/hash/quality and unchanged39-case performance contract; retain upstream canonical regression thresholds."
+    ],
+    "dispatch_gate": "Fresh source-bound reviewed packets required; design is not execution authority."
+  },
+  "preserved_holds": [
+    "Track22 queue-owned portable checkpoint",
+    "Track25 experimental API/release",
+    "C1/C2 empirical calibration",
+    "Metal/GPU queue execution unsupported",
+    "Single-LP only, no cross-LP or atomic multi-resource claim",
+    "No starvation guarantee or clinical/MVP acceptance"
+  ],
+  "publication_protocol_review": {
+    "secret_scan_false_positive": {
+      "rule": "generic-api-key",
+      "location": "scaling design event-ordering prose",
+      "fix": "Reworded the sentence in the unmerged branch; no detector exception or genuine secret removal."
+    },
+    "guard_deviation": {
+      "status": "recorded; no retrospective precommit pass claimed",
+      "cause": "Coordinator froze the editable design as an immutable input; the after-edit check rejected input hash drift. A multi-command shell continued to amend despite that nonzero check.",
+      "scope_review": "Only the intended event-ordering sentence changed between6807d5b and229cdc3; no other paths changed. Original seven-file Q5.2 diff remains within the previously reserved scope.",
+      "recovery": "Released the failed claim; acquired a fresh clean claim with a separate read-only contract input. Subsequent guard, edit, precommit, commit and release are separate checked calls.",
+      "reviewed_head": "229cdc392e32712889c3c3fbb155fe41bfe5f916"
+    }
+  },
+  "kairos_pin_at_dispatch": "bcb11cd61bc38b4813815f574a6a051f3b9e8faf",
+  "parent_pin_advance_scope": "No Q5.2 development source pin advancement; the accepted C1.2 advancement is inherited from independently mergedPR51.",
+  "parallel_integration": {
+    "parent_commit": "e5919ba",
+    "pr": "https://github.com/edithatogo/careops-sim/pull/51",
+    "accepted_task": "C1.2",
+    "kairos_commit": "f18aba1f1930aec228e830c9e58c67e4081ac4bb",
+    "queue_flow_and_preemption_diff_from_dispatch_base": [],
+    "source_checkout_coordination": "Existing C1.3 writer reservation prevented local accepted-pin checkout; no takeover or bypass. Hosted parent checks must validate the new pin; local synchronization waits for reservation release."
+  }
+}
