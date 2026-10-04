@@ -61,3 +61,15 @@ output sets are verified. This accepts C-01 only; C1.4 remains open.
 units and distinct observed/right-censored outcomes. Null, absent and empty
 observations are recorded on logical paths. This closes the manual check only;
 C1.4 remains open and the accepted Kairos pin is unchanged.
+
+## C1.4 accepted synthetic ingestion phase — 2026-10-05
+
+Reviewed integrated development pin `34e1d776e0ab4e2c84eb07f7c45779220df7e9b1` preserves accepted Q5.2 and the
+90 exact tested C1 source files. Fresh native tests and C-01 runs, 666 independent
+IPC/Parquet file reads, schema/units/nulls, negative controls and input/accepted/
+excluded/censored count reconciliation pass. Final source has 48 successful
+hosted checks and two documented conditional skips; phase, DAG, strict-clean and
+evidence-boundary checks pass. See [C1.4 completion](../../evidence/c1.4-completion-20261005/README.md).
+Historical failed attempts remain retained. C2, public API review, clinical
+validation and release remain open. Earlier proposed/planning statements describe
+their original delivery, superseded for C0/C1 only by recorded acceptance.

@@ -1,0 +1,11 @@
+# C1.4 accepted synthetic ingestion phase — 2026-10-05
+
+C1.4 is accepted at reviewed Kairos development pin `34e1d776e0ab4e2c84eb07f7c45779220df7e9b1` ([PR 217](https://github.com/edithatogo/kairos/pull/217)). C1.1–C1.4 are complete within the declared synthetic ingestion scope.
+
+Runtime source `7f72b7d9a9b6ae62e481a59b2cc04ce37da0a4a5` has fresh native lint/format/test proof, C-01 physical and actual transport runs, typed Arrow IO and C0 mapping/accounting checks. `final-source-preservation.json` proves the 90 C1 runtime files unchanged at the integrated pin and retains 32 accepted Q5.2 paths. Replicas and byte aliases are labeled separately from actual transport executions and distinct records.
+
+Independent corrected readback passes 666 files, types, units, logical null/empty/absent observations, eleven negative checks and count reconciliation. Exact verifier/report/receipt hashes and bounded independent acceptance are in `child-independent-review.json`. The retained child archive contains 1,969 fully hashed members (5,509,128 bytes), SHA-256 `1955ee5a36dc190cf83e7af308c0231a3aed92a4f0e17b0604b108b6ca013a03`, at `libs/kairos/conductor/evidence/c1.4-integrated-20261005/qualification.tar.gz`. Rejected readback and failed setup attempts remain preserved.
+
+Final-head hosted CI records 48 successful checks and two expected conditional skips: Q5.2 canonical native regression (Ubuntu), Codecov OIDC upload. The native owner aggregate and both native hosts pass. Feature-minimal and Rust 1.88 IO, Rust 1.76 workspace/default Arrow and other compatibility jobs pass. `child-final-pr-checks.json` and `child-final-native-owner.json` bind actual final head. `governance-final-receipts.json` records phase/DAG/strict-clean/boundary checks at that head. The prior inline registry-comment phase failure is retained in `governance-attempt-2734588-*`; standalone comments preserve the existing parser and statuses.
+
+`previous-pin-contract.json` and `previous-current-state.json` preserve Q5.2's accepted baseline and historical runtime/canonical results. The pin contract retains every previous source key and adds reviewed C1 proof. Q5.3/Q5.4, C2, public API review, clinical validation and release remain open. Child development qualification is separate from merging the historical upstream PR stack or release acceptance.
