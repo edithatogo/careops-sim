@@ -33,3 +33,7 @@ The earlier local failures remain real failed observations in the local archive.
 ## Retained evidence
 
 `acceptance.json` records source identities, actual outcomes, measurement limits and deferred holds. The local archive preserves 1,169 files including the complete 195-run matrix, earlier timeouts, both local failures, raw Criterion outputs, command receipts and earlier native CI. A separate isolated-CI archive preserves both current native workflow artifacts and exact-head readbacks. Inventory and archive hashes are recorded alongside them; no binaries, targets or private leases are included.
+
+## Pin contract correction
+
+Initial parent CI at fc1217a failed the unchanged pin checker because the D2.4 contract still described C441. The corrected contract binds the independently reviewed 8daa097 source, current native-owner CI and all reviewed changed source paths; the previous contract is preserved here. Local pin/context/tasks/MVP checks passed individually. All six pin guard regression tests passed; the guard implementation was unchanged. The subsequent parent CI must pass at the corrected head before merge.
