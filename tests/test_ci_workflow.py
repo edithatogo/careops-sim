@@ -533,7 +533,7 @@ class CiWorkflowTests(unittest.TestCase):
         workflow = WORKFLOW.read_text()
         cargo_jobs = workflow.split("  required:", 1)[0]
         self.assertEqual(cargo_jobs.count("submodules: recursive"), 9)
-        self.assertEqual(cargo_jobs.count("rustup toolchain install 1.99.0"), 5)
+        self.assertEqual(cargo_jobs.count("rustup toolchain install 1.99.0"), 6)
         for command in ("cargo +1.99.0 fmt", "cargo +1.99.0 clippy --locked", "python3 tools/nextest_ci.py --toolchain 1.99.0", "cargo +1.99.0 test --doc"):
             with self.subTest(command=command):
                 self.assertIn(command, cargo_jobs)
