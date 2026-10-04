@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "packet_id": "Q5.2.keyfix",
+  "task_id": "Q5.2",
+  "target_repo": ".",
+  "base_commit": "beae1f64a54d0f58e4940bde366f4e30988ce61d",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "objective": "Replace four linear waiting-key deletion/recovery paths with exactkey lookup; preserve transactionatomicity and all positive lifecycle outcomes.",
+  "context_paths": [
+    "AGENTS.md",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/preemption.rs"
+  ],
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "crates/kairo-ecs-des/src/flow.rs": "fd78740446c72eee98a66d6151948bee027fc79a66527321439886e3a9126fa5",
+    "crates/kairo-ecs-des/src/preemption.rs": "e2526578ec47f1ecedabc7bab8d02110ba16ea647adef375558b27a983fe9ff8"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/q52_key_removal_tests.rs",
+    ".artifacts/q52-keyfix"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "Q5.2.kernel immutable source and releasedwriter"
+  ],
+  "interface_contract": "/private/tmp/careops-q52-integration/conductor/design/queue/q5.2-key-removal-fix-20261004.md",
+  "steps": [
+    "Verify source hashes/read frozen correction contract",
+    "Claim owncheckout withprivatetoken andboundedcontext, read source progressively",
+    "Add focused behavior andcorruptkey atomicity tests; correctexactkeypaths only",
+    "Run debug/release/conformance andClippy; single scopedcommit andlease release"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--target-dir",
+        ".artifacts/q52-keyfix/target"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Focusedkeyremovalbehavior/corruption plus allDES conformancepass"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "kairo-ecs-des",
+        "--target-dir",
+        ".artifacts/q52-keyfix/target"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "AllDESrelease andQ51canonicalhash47cfb7dca4211252 unchanged"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--all-targets",
+        "--no-deps",
+        "--target-dir",
+        ".artifacts/q52-keyfix/target",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strictownerlintpass, no productionretains/key-recovery linear scans remain"
+    }
+  ],
+  "acceptance": [
+    "Exactoldkeybeforeprioritymutation",
+    "Pending/Active noqueue access; waitingmissingkey InvalidStateatomic",
+    "No publicAPI/semantics/deps/sourceotherowners changed",
+    "Debug/release/canonicalconformance andindependentreview pass",
+    "Doesnotclose unresolved globalstaging performance"
+  ],
+  "result_path": ".artifacts/q52-keyfix/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Missing prerequisite or undefined interface",
+    "Edit outside write_paths",
+    "Cannot establish the specified oracle"
+  ],
+  "size_exception": "Fullflow.rs hashbound, selectedprogressive source reads; optionalnew focusedtestmodule. No metadata/benchkernel edits.",
+  "status": "prepared",
+  "coordinator_contract_sha256": "8594ea508a062f0e265dee2eae4281e744af6e4080d95a03098741309d74c02e"
+}
