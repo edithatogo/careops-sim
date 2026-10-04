@@ -1,0 +1,496 @@
+{
+  "schema_version": 1,
+  "task": "Q4.1",
+  "status": "accepted_by_coordinator",
+  "parent_base": "a8fdc11cd9e65c93615e00ee28a1ed393775ca38",
+  "kairos_commit": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+  "requested_worker_model": "gpt-6-luna",
+  "model_qualification": "one supervised validation packet; no general model qualification claimed",
+  "result_sha256": "38dbd28b6767fe361ddddb1d41d78ee86f2df66f2e8e5559340cd6171729ab80",
+  "executed_result": {
+    "schema_version": 1,
+    "packet_id": "Q4.1.builder.qualify_v2_20261004",
+    "task_id": "Q4.1",
+    "instance_id": "qualify_v2_20261004",
+    "status": "ready_for_review",
+    "base_commit": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+    "input_hashes": {
+      "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs": "e14865e211794e1700b7ca351dc6eefb9e5a1974e40b4feb600941c9816d3f09",
+      "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+      "crates/kairo-ecs-des/tests/flow_shared_domain_v1.rs": "97ede277ce678f4857788e016b22561789a1f806dc699936cfea614885d022dd",
+      "crates/kairo-ecs-abm/src/flow_adapter.rs": "60d6d6d3b8684842369e0500cde5313f4d4e349004723e307620a9a6e3fd4b95",
+      ".artifacts/mvp/Q4.1.builder.qualify_v2_20261004/context.md": "3f71aa6cff6a133e8b211d7f69c36012a939e8fa6cadfaec18951339c24356a4"
+    },
+    "changed_source_files": [],
+    "compiler_versions": {
+      "1.98.1": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.98.1",
+          "rustc",
+          "--version"
+        ],
+        "exit_status": 0,
+        "version_output": "rustc 1.98.1 (48a229cea 2026-09-01)",
+        "log_path": ".artifacts/mvp/Q4.1.builder.qualify_v2_20261004/logs/rustc-1.98.1.log",
+        "log_sha256": "56675e92f6f7d544e32b047f9f56d609d1e3d2553b01eb9241a65c8a72cd5ed4"
+      },
+      "1.88.0": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.88.0",
+          "rustc",
+          "--version"
+        ],
+        "exit_status": 0,
+        "version_output": "rustc 1.88.0 (6b00bc388 2025-06-23)",
+        "log_path": ".artifacts/mvp/Q4.1.builder.qualify_v2_20261004/logs/rustc-1.88.0.log",
+        "log_sha256": "8034cc2867c8934308b4def0fca16c0d8bf089365572a14114f0266592454753"
+      }
+    },
+    "commands": [
+      {
+        "argv": [
+          "env",
+          "CARGO_TARGET_DIR=.artifacts/mvp/Q4.1.builder.qualify_v2_20261004/target",
+          "rustup",
+          "run",
+          "1.98.1",
+          "cargo",
+          "test",
+          "--locked",
+          "--offline",
+          "-p",
+          "kairo-ecs-des",
+          "-p",
+          "kairo-ecs-abm"
+        ],
+        "cwd": "/private/tmp/careops-q4-next-packet/libs/kairos",
+        "head": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+        "compiler": "rustc 1.98.1 (48a229cea 2026-09-01)",
+        "input_sha256": {
+          "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs": "e14865e211794e1700b7ca351dc6eefb9e5a1974e40b4feb600941c9816d3f09",
+          "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+          "crates/kairo-ecs-des/tests/flow_shared_domain_v1.rs": "97ede277ce678f4857788e016b22561789a1f806dc699936cfea614885d022dd",
+          "crates/kairo-ecs-abm/src/flow_adapter.rs": "60d6d6d3b8684842369e0500cde5313f4d4e349004723e307620a9a6e3fd4b95",
+          ".artifacts/mvp/Q4.1.builder.qualify_v2_20261004/context.md": "3f71aa6cff6a133e8b211d7f69c36012a939e8fa6cadfaec18951339c24356a4"
+        },
+        "exit_status": 0,
+        "duration_seconds": 21.201,
+        "stdout_path": ".artifacts/mvp/Q4.1.builder.qualify_v2_20261004/logs/command-1.stdout.log",
+        "stdout_sha256": "b6b2095f76741851f55fa84a4f81927a6bf1cf58ba49d20ef88ed59aae7322a4",
+        "stderr_path": ".artifacts/mvp/Q4.1.builder.qualify_v2_20261004/logs/command-1.stderr.log",
+        "stderr_sha256": "07e80e9b2e4d88d89c3de9f98a5fb6a86ca6f2de6391ec1c49c4087ba77ca9d5",
+        "test_result_counts": [
+          {
+            "passed": 8,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 3,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 7,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 74,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 6,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 6,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 8,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 8,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 8,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 9,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 7,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 6,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 0,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 0,
+            "failed": 0,
+            "ignored": 0
+          }
+        ]
+      },
+      {
+        "argv": [
+          "env",
+          "CARGO_TARGET_DIR=.artifacts/mvp/Q4.1.builder.qualify_v2_20261004/target",
+          "rustup",
+          "run",
+          "1.88.0",
+          "cargo",
+          "test",
+          "--locked",
+          "--offline",
+          "-p",
+          "kairo-ecs-des",
+          "-p",
+          "kairo-ecs-abm"
+        ],
+        "cwd": "/private/tmp/careops-q4-next-packet/libs/kairos",
+        "head": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+        "compiler": "rustc 1.88.0 (6b00bc388 2025-06-23)",
+        "input_sha256": {
+          "crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs": "e14865e211794e1700b7ca351dc6eefb9e5a1974e40b4feb600941c9816d3f09",
+          "crates/kairo-ecs-des/tests/flow_continuations_v1.rs": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+          "crates/kairo-ecs-des/tests/flow_shared_domain_v1.rs": "97ede277ce678f4857788e016b22561789a1f806dc699936cfea614885d022dd",
+          "crates/kairo-ecs-abm/src/flow_adapter.rs": "60d6d6d3b8684842369e0500cde5313f4d4e349004723e307620a9a6e3fd4b95",
+          ".artifacts/mvp/Q4.1.builder.qualify_v2_20261004/context.md": "3f71aa6cff6a133e8b211d7f69c36012a939e8fa6cadfaec18951339c24356a4"
+        },
+        "exit_status": 0,
+        "duration_seconds": 19.231,
+        "stdout_path": ".artifacts/mvp/Q4.1.builder.qualify_v2_20261004/logs/command-2.stdout.log",
+        "stdout_sha256": "e77a3a4b7d37c1fbfab3a1995896e99d0a0abe725e6cd53d8e6193a045e238e0",
+        "stderr_path": ".artifacts/mvp/Q4.1.builder.qualify_v2_20261004/logs/command-2.stderr.log",
+        "stderr_sha256": "e2e75f9e5fcc20ff182dd6c9dbaffbf63f1cbe4b7f827c83c9b34b89f911f884",
+        "test_result_counts": [
+          {
+            "passed": 8,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 3,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 7,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 74,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 6,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 6,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 8,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 8,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 8,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 9,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 7,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 6,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 0,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "passed": 0,
+            "failed": 0,
+            "ignored": 0
+          }
+        ]
+      }
+    ],
+    "review_notes": [
+      "Both DES/ABM suites passed on the requested compiler versions. No source edits. Independent coordinator acceptance remains required."
+    ]
+  },
+  "independent_source_review": {
+    "review": {
+      "scope": "Read-only review of Q4.1 fixture coverage on the accepted Kairos submodule baseline; no tests run and no files changed.",
+      "parent_checkout": "/private/tmp/careops-q4-next-packet",
+      "parent_head": "a8fdc11cd9e65c93615e00ee28a1ed393775ca38",
+      "kairos_path": "libs/kairos",
+      "kairos_head": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+      "kairos_worktree_clean": true,
+      "q41_plan": "conductor/tracks/des_queue_preemption_20260925/plan.md:119-121",
+      "q41_plan_status": "unchecked",
+      "task_catalog_check": "python3 tools/tasks.py check: 143 task records, full coverage/prerequisites/DAG valid",
+      "context_resume_note": "python3 tools/context.py resume reports extensions/conductor submodule drift (a8fdc11... vs expected 7a5c560...). This is outside libs/kairos and does not change the reviewed target commit."
+    },
+    "disposition": {
+      "q41_fixture_coverage": "SUBSTANTIALLY_COMPLETE_IN_AGGREGATE",
+      "basis": "The builder/migration fixture covers the requested fluent acquisition and work policy fields, deadline/priority/admission cases and same-runtime pause equivalence. Continuation fixtures cover notification delivery and buffered command batches. Shared-domain and ABM adapter fixtures use the same FlowRuntime, observing its committed time/world while combining ABM callbacks with DES resources/work. Existing qualification notes document execution on prior exact Kairos child commits that are joined into 4a90eb.",
+      "plan_acceptance": "The parent Q4.1 checkbox remains unchecked. This read-only source review does not change that status or independently rerun the suites.",
+      "remaining_specific_gap": "No explicit compile-fail fixture attempts to re-enter FlowRuntime from inside a callback. The callback interfaces omit a FlowRuntime reference and provide only snapshots/views plus a buffered command sink; the fixtures verify callbacks stage commands and effects are applied after delivery. This is a narrowly scoped negative-API-test gap, not evidence of reentrancy in the current API.",
+      "claims_excluded": [
+        "Q4.2 implementation acceptance",
+        "Q4.3 resource_lifecycle.v1 telemetry or Track 04 schema acceptance",
+        "Q4.4 synthetic staff/bed/cleaning workflow acceptance",
+        "Q4.5 phase acceptance",
+        "Q4 full closure, release stability, portable checkpoint/restore, or clinical validation"
+      ]
+    },
+    "coverage_map": [
+      {
+        "leaf": "Fluent builders, priorities, can_preempt/preemptible, deadlines, work, old FIFO migration and event-boundary pause",
+        "test_path": "libs/kairos/crates/kairo-ecs-des/tests/flow_builder_migration_v1.rs",
+        "sha256": "e14865e211794e1700b7ca351dc6eefb9e5a1974e40b4feb600941c9816d3f09",
+        "tests": [
+          "defaults_and_explicit_policy_translate_to_request",
+          "failed_admission_preserves_association_and_full_public_scheduler_stats",
+          "scheduler_admission_priority_is_distinct_from_resource_queue_priority",
+          "deadline_at_completion_expires_without_replacement_grant_in_both_insertions",
+          "fifo_migration_keeps_label_order_and_teaches_buffered_lease_release",
+          "boundary_pause_retains_context_and_matches_uninterrupted_causal_records"
+        ],
+        "source_oracles": "Default/explicit request translation includes owner, time, work, queue priority, scheduler priority, deadline, can_preempt, preemptible strategy and timed status. Negative admissions preserve work association and public budget snapshot. Deadline at completion is checked under both insertion orders. FIFO label order is compared while preserving delayed Flow dispatch/lease release semantics. Suspend preemption pauses at tick 3 and produces matching records/context on pause-resume versus uninterrupted execution."
+      },
+      {
+        "leaf": "Notifications, continuation callbacks and deferred/non-reentrant command handling",
+        "test_path": "libs/kairos/crates/kairo-ecs-des/tests/flow_continuations_v1.rs",
+        "sha256": "0c82e276e08df7b20d9d368ba856ae264a102d61d7f2c3e8027e4ba46a935ae8",
+        "tests": [
+          "completion_stages_existing_b_work_with_real_receipts_and_causal_snapshot",
+          "domain_context_and_reserved_ingress_are_explicit",
+          "rejected_batch_has_no_partial_association_but_keeps_context_effect",
+          "local_ticket_resolves_pending_cancel_and_foreign_or_non_acquire_reject",
+          "legacy_first_coexistence_type_checks_and_exact_delivery_budget",
+          "ignored_poison_is_atomic_for_every_kind_and_default_cap_is_1024",
+          "callback_emitted_zero_duration_is_charged_on_its_later_dispatch"
+        ],
+        "source_oracles": "Callbacks receive snapshots and FlowCommandSink; tests verify batch receipts, callbacks run once, rejected batches retain callback context changes without partial command admission, ticket/reference checks, legacy-first notification order, per-callback command caps, and emitted work enters later dispatch. No callback receives a FlowRuntime argument."
+      },
+      {
+        "leaf": "Shared DES/ABM World/time and behavior callbacks",
+        "test_paths": [
+          "libs/kairos/crates/kairo-ecs-des/tests/flow_shared_domain_v1.rs",
+          "libs/kairos/crates/kairo-ecs-abm/tests/flow_adapter_v1.rs"
+        ],
+        "sha256": {
+          "libs/kairos/crates/kairo-ecs-des/tests/flow_shared_domain_v1.rs": "97ede277ce678f4857788e016b22561789a1f806dc699936cfea614885d022dd",
+          "libs/kairos/crates/kairo-ecs-abm/tests/flow_adapter_v1.rs": "c1fe9db44339d8d1b5b451b1af119f8ff09e614688acd1c5d696e7a8f1937ea6"
+        },
+        "tests": [
+          "explicitly_registered_carrier_is_unique_per_actor_and_kind_bound",
+          "carrier_role_rejects_manual_and_timed_acquire_without_association",
+          "callback_actor_despawn_is_buffered_and_cleans_task_carrier_and_stale_update",
+          "same_batch_duplicate_despawn_rejects_atomically_at_second_ticket_but_context_changes_once",
+          "carrier_creation_registration_type_and_actor_failures_leave_no_association",
+          "same_tick_update_and_despawn_priority_controls_live_delivery_without_competing_time",
+          "shared_behavior_observes_authoritative_des_time_and_buffered_peer_lifetime",
+          "entity_stream_draw_positions_ignore_cross_actor_order_and_pause_boundaries",
+          "recycled_actor_generation_has_fresh_stream_and_old_handle_is_stale",
+          "registration_type_kind_and_unique_carrier_failures_are_atomic",
+          "rejected_callback_batches_keep_one_state_change_and_one_draw_without_replay",
+          "preconsume_budget_failure_preserves_behavior_draw_position_and_pending_head",
+          "behavior_commands_use_real_task_leases_and_never_acquire_the_carrier"
+        ],
+        "source_oracles": "ABM callbacks assert view.now equals delivery time and observe peer liveness through FlowWorldView while ordinary DES work/resource leases progress on the same FlowRuntime. Fixtures verify explicit seeds/draw positions, actor-generation replacement, scheduling order and pause boundaries, buffered despawn, registration/association failures, no callback replay after rejected batches, and real task lease operations excluding carrier acquisition."
+      }
+    ],
+    "runtime_api_hashes": {
+      "libs/kairos/crates/kairo-ecs-des/src/flow.rs": "8c48d7e7357e1c90b1852599f453c3f3283f9182514a055d81bcf31de7f53e7e",
+      "libs/kairos/crates/kairo-ecs-abm/src/flow_adapter.rs": "60d6d6d3b8684842369e0500cde5313f4d4e349004723e307620a9a6e3fd4b95"
+    },
+    "contract_and_qualification_hashes": {
+      "conductor/tracks/des_queue_preemption_20260925/plan.md": "783d8672bca70e07b57e5658501ea29178b5eb6bd5ef05a2b20a1093c74dccb6",
+      "libs/kairos/conductor/design/flow/q4-typed-continuations-v1.md": "3079b98f918612bf3c3ec7d332cb66ee439c5a036b430a9b7d262a6416ebdc17",
+      "libs/kairos/conductor/design/flow/q4-shared-abm-v1.md": "69a9c2d79963463a27f958d7251bac6fb0849a41b8ecdbd8ea4a072e55671099",
+      "libs/kairos/conductor/design/flow/q4-abm-registration-phase-v1.md": "c24d2cef6034cb9abef1d69a7a60a46214f7c4be5b14f89f6e224a57c9e7ea6d",
+      "conductor/evidence/q4-builder-migration-qualification-20261004.md": "78497847a78ff6be20c0e67c468044db45502d7a785e5d5ff8b98220e3ff1dcc",
+      "conductor/evidence/q4-typed-continuation-qualification-20261004.md": "9495fb646d1398515a550b740095fa8dcf44f2a1deb43130104dc8036e78e192",
+      "conductor/evidence/q4-abm-qualification-20261004.md": "3a21d657fde001aa6cffdef1c7ecafaa732de50571ad43cc2012ea89ff3e71fe",
+      "conductor/evidence/q4-world-view-qualification-20261004.md": "4b7dc6c4e6824aa833693749bd8b1496ab622d8e8ceeb77c0eaac859c788d962"
+    },
+    "qualification_boundary": "The source mapping supports Q4.1 behavioral test coverage in aggregate. Existing qualification records are separate bounded implementation/fixture evidence and distinguish local and hosted runs. This review did not run tests, update the parent plan checkbox, or infer phase/PR acceptance from those records."
+  },
+  "coordinator_readback": "All source/log hashes checked; both raw suite outputs total180passes,0failures,0ignored. No Kairos source changes.",
+  "non_reentrant_oracle": "flow_continuations_v1::callback_emitted_zero_duration_is_charged_on_its_later_dispatch verifies pending work and unchanged callback count/scheduler on later budget rejection.",
+  "hardening_followups": [
+    "A dedicated callback re-entry compile-fail fixture is not assessed by this join; restricted callback signature and deferred-dispatch behavior are covered."
+  ],
+  "historical_attempt": "Original cargo +version commands exited101 before tests because Homebrew cargo shadowed rustup. Raw failed attempt preserved; v2 uses rustup run.",
+  "hosted_owner_source": {
+    "run": 37165239657,
+    "head": "4a90ebce58d8d31655d89a6c7c35680241c0dec8",
+    "conclusion": "success",
+    "observed_now": true
+  },
+  "boundaries": [
+    "Q4.1 integration-test join only; Q4.2-Q4.5 remain open.",
+    "No new parent hosted check or PR merge claim at this source stage.",
+    "No stable public API, clinical validation, portable checkpoint, or release approval."
+  ]
+}
