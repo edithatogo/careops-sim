@@ -142,11 +142,12 @@ verify one probe cannot change another's starting historical state or occupancy.
 Entry: C0/C1 schemas; may proceed before C3 using synthetic predictions. Owner 21;
 04 owns typed sidecar encoding and 12 the independent reference fixtures.
 
-- [ ] C4.1 Write analytic W1/KS tests, tied/weighted/unequal/empty cases and
+- [x] C4.1 Write analytic W1/KS tests, tied/weighted/unequal/empty cases and
   independent reference fixtures with pinned generator provenance. Add duration
   scaling, large-tick precision, null, censoring and missing-outcome tests.
   Add equal-marginal/opposite-dependence and W1=180/KS=0.2 tail fixtures;
   specify a simple joint/conditional diagnostic before optional multivariate metrics.
+  Preparation accepted: [retained evidence](../../evidence/c4.1-completion-20261005/README.md); actual runtime and C-04 remain open.
 - [ ] C4.2 Implement deterministic sorted-CDF W1 and KS D, paired residual
   summaries, grouping/window semantics, counts/validity flags and explicit
   insufficient-data statuses. No automatic classical KS p-value for clustered,

@@ -1,0 +1,103 @@
+[
+  {
+    "id": "child-clean-closeout",
+    "argv": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/validate_conductor_git_closeout.ps1",
+      "-RequireCleanWorkingTree"
+    ],
+    "cwd": "/private/tmp/kairos-c41-integrated-20261005",
+    "head": "a2cdeab33286e14db59f377449816702e79b2a6a",
+    "env_overrides": {},
+    "started_utc": "2026-10-04T22:01:46.834439+00:00",
+    "ended_utc": "2026-10-04T22:01:54.975180+00:00",
+    "duration_seconds": 8.139057042077184,
+    "exit_status": 0,
+    "input_sha256": {},
+    "log": "child-clean-closeout.log",
+    "log_sha256": "5c81e061076443e943135183da6a1801315f53c466aaae9be3f425882bac5ad7",
+    "interpretation": "ordinary gate"
+  },
+  {
+    "id": "parent-context",
+    "argv": [
+      "python3",
+      "tools/context.py",
+      "check"
+    ],
+    "cwd": "/private/tmp/careops-c41-20261005",
+    "head": "0cc8d10e9be41e50aef3c544746bc23022da547f",
+    "env_overrides": {},
+    "started_utc": "2026-10-04T22:01:54.994981+00:00",
+    "ended_utc": "2026-10-04T22:01:55.220707+00:00",
+    "duration_seconds": 0.2257269169203937,
+    "exit_status": 0,
+    "input_sha256": {},
+    "log": "parent-context.log",
+    "log_sha256": "eda17382c1e6c30045b0b96e73eeaabb5c951f47f32cdf7297f49b8a8cfe9ca9",
+    "interpretation": "ordinary gate"
+  },
+  {
+    "id": "parent-tasks",
+    "argv": [
+      "python3",
+      "tools/tasks.py",
+      "check"
+    ],
+    "cwd": "/private/tmp/careops-c41-20261005",
+    "head": "0cc8d10e9be41e50aef3c544746bc23022da547f",
+    "env_overrides": {},
+    "started_utc": "2026-10-04T22:01:55.246479+00:00",
+    "ended_utc": "2026-10-04T22:01:55.315312+00:00",
+    "duration_seconds": 0.06883187498897314,
+    "exit_status": 0,
+    "input_sha256": {},
+    "log": "parent-tasks.log",
+    "log_sha256": "ac10bc7df9f1e00e058d4a74b630bd3e824b58447e6ec8f53e322314796f11f1",
+    "interpretation": "ordinary gate"
+  },
+  {
+    "id": "parent-mvp",
+    "argv": [
+      "python3",
+      "tools/mvp.py",
+      "check"
+    ],
+    "cwd": "/private/tmp/careops-c41-20261005",
+    "head": "0cc8d10e9be41e50aef3c544746bc23022da547f",
+    "env_overrides": {},
+    "started_utc": "2026-10-04T22:01:55.345611+00:00",
+    "ended_utc": "2026-10-04T22:01:55.412612+00:00",
+    "duration_seconds": 0.06700249994173646,
+    "exit_status": 0,
+    "input_sha256": {},
+    "log": "parent-mvp.log",
+    "log_sha256": "beaa82584df49f8a7832d7e59ff0980f5ac612aa1854d27df5e517a6f5469d60",
+    "interpretation": "ordinary gate"
+  },
+  {
+    "id": "parent-harness",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "cwd": "/private/tmp/careops-c41-20261005",
+    "head": "0cc8d10e9be41e50aef3c544746bc23022da547f",
+    "env_overrides": {},
+    "started_utc": "2026-10-04T22:01:55.443786+00:00",
+    "ended_utc": "2026-10-04T22:03:01.382543+00:00",
+    "duration_seconds": 65.93821254209615,
+    "exit_status": 1,
+    "input_sha256": {},
+    "log": "parent-harness.log",
+    "log_sha256": "9ebc7738144d43ea5bf1ce2bfd19551972e955dc736c07728d3670df3697add9",
+    "interpretation": "ordinary gate"
+  }
+]
