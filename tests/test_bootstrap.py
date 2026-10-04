@@ -11,7 +11,7 @@ bootstrap = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(bootstrap)
 
 
-def tool_output(tool, version="1.98.1", host="aarch64-apple-darwin"):
+def tool_output(tool, version="1.99.0", host="aarch64-apple-darwin"):
     return f"{tool} {version} (fixture)\nrelease: {version}\nhost: {host}\n"
 
 
@@ -22,7 +22,7 @@ class BootstrapTests(unittest.TestCase):
                    "cargo": cargo or tool_output("cargo")}
 
         def run(command, **kwargs):
-            self.assertEqual(command[:3], [rustup, "run", "1.98.1"])
+            self.assertEqual(command[:3], [rustup, "run", "1.99.0"])
             self.assertEqual(command[4:], ["--version", "--verbose"])
             tool = command[3]
             return type("Result", (), {"returncode": 0, "stdout": outputs[tool], "stderr": ""})()
@@ -45,7 +45,7 @@ class BootstrapTests(unittest.TestCase):
     def test_wrong_rustc_version_fails(self):
         with patch.object(bootstrap.subprocess, "run", return_value=type(
                 "Result", (), {"returncode": 0, "stdout": tool_output("rustc", "1.97.0"), "stderr": ""})()):
-            with self.assertRaisesRegex(bootstrap.BootstrapError, "Pinned rustc 1.98.1"):
+            with self.assertRaisesRegex(bootstrap.BootstrapError, "Pinned rustc 1.99.0"):
                 bootstrap.check(host="aarch64-apple-darwin", rustup_path="rustup")
 
     def test_wrong_cargo_version_fails(self):
@@ -55,11 +55,11 @@ class BootstrapTests(unittest.TestCase):
             nonlocal calls
             calls += 1
             tool = args[0][3]
-            version = "1.97.0" if tool == "cargo" else "1.98.1"
+            version = "1.97.0" if tool == "cargo" else "1.99.0"
             return type("Result", (), {"returncode": 0, "stdout": tool_output(tool, version), "stderr": ""})()
 
         with patch.object(bootstrap.subprocess, "run", side_effect=run):
-            with self.assertRaisesRegex(bootstrap.BootstrapError, "Pinned cargo 1.98.1"):
+            with self.assertRaisesRegex(bootstrap.BootstrapError, "Pinned cargo 1.99.0"):
                 bootstrap.check(host="aarch64-apple-darwin", rustup_path="rustup")
 
     def test_unsupported_host_fails_before_running_tools(self):
@@ -97,7 +97,7 @@ class BootstrapTests(unittest.TestCase):
             bootstrap.test_core()
         check.assert_called_once()
         command = run.call_args.args[0]
-        self.assertEqual(command[:5], ["rustup", "run", "1.98.1", "cargo", "test"])
+        self.assertEqual(command[:5], ["rustup", "run", "1.99.0", "cargo", "test"])
         self.assertIn("--locked", command)
         self.assertEqual(
             [command[index + 1] for index, value in enumerate(command[:-1]) if value == "-p"],
