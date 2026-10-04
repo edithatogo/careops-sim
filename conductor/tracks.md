@@ -1,9 +1,9 @@
 # Track registry
 
-- [~] **DES queues and preemption** — `des_queue_preemption_20260925`
+- [x] **DES queues and preemption** — `des_queue_preemption_20260925`
   ([index](tracks/des_queue_preemption_20260925/index.md),
   [spec](tracks/des_queue_preemption_20260925/spec.md),
-  [plan](tracks/des_queue_preemption_20260925/plan.md)). In progress; upstream owner 03. Q0–Q4 and Q5.1 bounded native conformance are accepted. Q5.2 development benchmark qualification and Q5.3 compatibility/migration are accepted; Q5.4 phase closeout remains open. Accepted integrated development pin preserves C1.4; release and advanced backend holds remain. Parent integration is established separately by exact-head hosted checks and native merge readback.
+  [plan](tracks/des_queue_preemption_20260925/plan.md)). Q0–Q5 accepted for experimental queue development; upstream owner 03. Independent Q5.4 replay, evidence/risk disposition, release notes and governance review passed with exact-head native and child hosted gates. Preserves C1.4/Q5.2; child PR219 stays stacked/draft and formal release/security, stable API, advanced backend, checkpoint and clinical/MVP gates remain separate. Parent local gates passed. At source preparation, the committed-pin check, hosted parent CI and merge readback await publication; this registry does not assert a completed parent merge.
 - [ ] **Empirical calibration and validation** — `empirical_calibration_20260925`
   ([index](tracks/empirical_calibration_20260925/index.md),
   [spec](tracks/empirical_calibration_20260925/spec.md),

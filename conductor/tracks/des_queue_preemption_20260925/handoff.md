@@ -1,3 +1,9 @@
+## Current Q5.4 accepted development handoff — 2026-10-05
+
+Q0–Q5 are accepted for the frozen experimental queue development scope at governance pin `8cd03c8f791ae58b33e5cc61b244071937a839ac`. Runtime source remains `eae890b0a2a3524a543ec4ee4aca61346e273b52`; C1.4 and Q5.2 qualification are preserved. [Completion evidence](../../evidence/q5.4-completion-20261005/README.md) contains actual independent replay, review corrections, local gates and exact-head native Linux/macOS plus child hosted checks. The [test matrix](test-matrix.md) and [risk register](risk-register.md) record the accepted invariants and residual owner gates. Child PR #219 remains stacked/draft; parent merge/readback is separately recorded. Release/security, portable checkpoint, advanced backends and clinical/ED MVP acceptance remain open.
+
+---
+
 # Q5.1 bounded conformance qualification
 
 Kairos `bcb11cd61bc38b4813815f574a6a051f3b9e8faf` is qualified by exact-head native owner CI

@@ -216,3 +216,7 @@ retained MSRV gates, exact example output, two Luna source reviews and hosted
 Linux/macOS native owner plus broader child checks pass. Metal execution remains
 unsupported; no portable/cross-LP/distributed/clinical/release claim. Next Q5.4
 reviews the phase evidence and risk/release notes; full queue phase remains open.
+
+## Q5.4 queue development closeout — 2026-10-05
+
+[Q5.4 evidence](evidence/q5.4-completion-20261005/README.md) closes the queue track through Q0–Q5 at governance pin `8cd03c8f791ae58b33e5cc61b244071937a839ac`, preserving accepted C1.4/Q5.2 and unchanged runtime source eae890b. Independent replay, corrected ledger review and exact-head native Linux/macOS plus reported child checks passed. This satisfies the queue development prerequisite; calibration, generic ED implementation, quality/release and clinical/MVP gates still require their own acceptance. No global G1/ED-ready claim follows. Child PR219 remains stacked/draft.
