@@ -1,0 +1,102 @@
+{
+  "status": "local_qualified_hosted_linux_pending",
+  "base_main": "42a6095e008be4b1b48ba46b04ff01e421ebb8dc",
+  "source_head_before_candidate_commit": "050cf389f4b8d070a38f6faf3d29f9ddb48cd755",
+  "source_hashes": {
+    "tools/ed_benchmarks.py": "b59063db643e96c62bfec952570afe4e0e35bc5ee64cd3f51b1ac75c00011589",
+    "tools/ed_benchmark_process.py": "ece8d0562159db3acb40946a3bbe0a70c09801fdeadbf7f49896123b576aa4c3",
+    "tests/test_ed_benchmarks.py": "e63fff4815b600c5d66465ed48b45e934a45b48d40f4aed24a082ecfdb0138f6",
+    "tests/test_ci_workflow.py": "0078db15312c4f3cfd4e66fdaf37c9d58a54ce96c1e0db24b5238731226402b6",
+    "crates/careops-ed/src/lib.rs": "4f7917f3976d84b86a1b2b6837065c803d75b29d6b4f594abbbb7ceaedc57380",
+    "crates/careops-ed-cli/src/main.rs": "b05d6fecf4f728796bc0ffe20883b41c8a8168e6cd09e40e19013c14989c12a9",
+    "Cargo.lock": "11b299b9ebde57892fa2539e727a28c68fa2857c1366bbc8a310e775a00bdfec"
+  },
+  "binary_sha256": "10bf708a7bb4db496841f113e069b5734f9dd9b1817e756e839216c503f32f56",
+  "kairos_pin": "a2cdeab33286e14db59f377449816702e79b2a6a",
+  "toolchain": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: aarch64-apple-darwin\nrelease: 1.99.0\nLLVM version: 23.1.1",
+  "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+  "python_tests": {
+    "passed": 490,
+    "seconds": 63.098,
+    "command": "/opt/homebrew/bin/python3 -m unittest discover -s tests -v",
+    "exit": 0
+  },
+  "native_tests": {
+    "passed": 80,
+    "command": "CARGO_TARGET_DIR=.artifacts/d34/target RUSTC=<canonical1.99> RUSTDOC=<canonical1.99> rustup run 1.99.0 cargo test --locked --workspace",
+    "exit": 0
+  },
+  "benchmark": {
+    "command": "/opt/homebrew/bin/python3 tools/ed_benchmarks.py --binary .artifacts/d34/target/release/careops-ed --output .artifacts/d34/publication/report.json",
+    "exit": 0,
+    "count": 26,
+    "max_seconds": 0.7910277920309454,
+    "max_rss_bytes": 14876672
+  },
+  "independent_review": {
+    "model_requested": "gpt-6-luna",
+    "served_model_not_attested": true,
+    "source_hashes": {
+      "tools/ed_benchmarks.py": "b59063db643e96c62bfec952570afe4e0e35bc5ee64cd3f51b1ac75c00011589",
+      "tools/ed_benchmark_process.py": "beefe76b074ba060e64ef27e06a5b8c8cec9e19509a0dc4e1c7c23baabca3f3a",
+      "tests/test_ed_benchmarks.py": "e63fff4815b600c5d66465ed48b45e934a45b48d40f4aed24a082ecfdb0138f6",
+      "tests/test_ci_workflow.py": "0078db15312c4f3cfd4e66fdaf37c9d58a54ce96c1e0db24b5238731226402b6",
+      "crates/careops-ed/src/lib.rs": "4f7917f3976d84b86a1b2b6837065c803d75b29d6b4f594abbbb7ceaedc57380",
+      "crates/careops-ed-cli/src/main.rs": "b05d6fecf4f728796bc0ffe20883b41c8a8168e6cd09e40e19013c14989c12a9",
+      "Cargo.lock": "11b299b9ebde57892fa2539e727a28c68fa2857c1366bbc8a310e775a00bdfec"
+    },
+    "findings_resolved": [
+      "post-spawn cleanup",
+      "reaped-parent descendants",
+      "canonical compiler provenance"
+    ],
+    "final_verdict": "no findings in bounded review; no reviewer test execution",
+    "reviewed_modules": [
+      "tools/ed_benchmarks.py",
+      "tools/ed_benchmark_process.py",
+      "tests/test_ed_benchmarks.py",
+      "tests/test_ci_workflow.py",
+      ".github/workflows/ci.yml"
+    ],
+    "post_review_change": "EOF blank line trimmed only; AST identical to independently reviewed helper"
+  },
+  "limits": [
+    "Synthetic E0 single-slot FIFO only; not clinical ED/MVP acceptance",
+    "Process soak not in-process leak qualification",
+    "Native CLI byte limits and cooperative cancellation remain E3.1/E3.2 and D4.1 gates",
+    "MacOS /dev/full unavailable; Linux hosted execution required",
+    "Stable release baseline still held by Track25/D4"
+  ],
+  "attempt_disposition": [
+    "Earlier per-read consumer runs failed at frozen10s; retained separately, causal diagnosis not established",
+    "Final profile delays1ms per logical64KiB; workload and budgets unchanged",
+    "Scheduler worker default ignored target write retained and scoped rerun passed",
+    "Worker stopped on lease expiry; coordinator recovered only after explicit stop",
+    "Oversized29.8k module failed context guard; extracted process module so both source slices fit24k",
+    "Full harness initial failure expected6 Rust installs; seventh D34 install made assertion stale; corrected",
+    "One full harness command interrupted after claim failed oversized input; not accepted as verification"
+  ],
+  "policy": {
+    "exit": 0,
+    "checks": [
+      "actionlint",
+      "zizmor",
+      "gitleaks",
+      "cargo-deny"
+    ]
+  },
+  "binary_build": {
+    "command": "CARGO_TARGET_DIR=.artifacts/d34/target RUSTC=\"$(rustup which rustc --toolchain 1.99.0)\" RUSTDOC=\"$(rustup which rustdoc --toolchain 1.99.0)\" rustup run 1.99.0 cargo build --locked --release --package careops-ed-cli",
+    "cwd": "/private/tmp/careops-d34-20261005",
+    "source_commit": "0268f2b1da7a69e84fbaeb6080ae9e99a2b4de4a",
+    "kairos_pin": "a2cdeab33286e14db59f377449816702e79b2a6a",
+    "exit": 0,
+    "log": "build.log",
+    "binary_sha256": "10bf708a7bb4db496841f113e069b5734f9dd9b1817e756e839216c503f32f56"
+  },
+  "module_context_bytes": {
+    "tools/ed_benchmarks.py": 18994,
+    "tools/ed_benchmark_process.py": 11365
+  },
+  "context_snapshots": "Private model-only and process+contract snapshots fit24k serialized budget; broader model+contract selection rejected, never truncated"
+}
