@@ -88,3 +88,15 @@ Update affected upstream owner plan/handoff and authoritative registry/phase
 records after implementation evidence exists. Keep Kairos implementation commits
 separate from the parent integration pin. Do not mark GPU, distributed, browser
 or empirical clinical validation complete from CPU/synthetic evidence.
+
+## Q5.3 accepted compatibility handoff — 2026-10-05
+
+See [source-bound acceptance](../../evidence/q5.3-completion-20261005/README.md).
+Q5.3 closes compatibility/migration only at `eae890b0a2a3524a543ec4ee4aca61346e273b52`;
+Q5.4 remains open. Track 22 owns portable checkpoint encoding/restore. For future
+Track 34/35 work, keep a queue/request/lease/work allocation in one LP until a
+reviewed ownership/message/causal-time/lookahead contract qualifies cross-LP
+claims; zero-lookahead cycles retain deadlock risk. Current local queue fixtures
+and independent replications do not establish distributed equivalence. Track 32
+owns future device parity; Flow Metal queue execution is unsupported. Existing
+owner plans are linked by the child backend guide, not rewritten.
