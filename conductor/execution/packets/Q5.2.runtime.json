@@ -72,6 +72,26 @@
       "cwd": ".",
       "expected_exit": 0,
       "oracle": "Public Flow benchmark executable builds; collector exact CLI binding required before measurements."
+    },
+    {
+      "argv": [
+        "python3",
+        "benches/queue/run_v1.py",
+        "--binary",
+        ".artifacts/q52-runtime/target/release/examples/flow_queue_benchmark_v1",
+        "--matrix",
+        "--repeats",
+        "5",
+        "--timeout-seconds",
+        "30",
+        "--seed",
+        "42",
+        "--output-dir",
+        ".artifacts/q52-runtime/raw"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Five independently measured processes per completed case; exact timeout/reaped exit and perprocess RSS; any unresolvedcase fails acceptance without fabricated extrapolation. Collector failure-handling unit tests separately required."
     }
   ],
   "acceptance": [
