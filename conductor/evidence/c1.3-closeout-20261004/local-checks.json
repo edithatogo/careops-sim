@@ -1,0 +1,58 @@
+{
+  "parent_base": "6e86db051c5529ef8fc2d43c7a57c5a56881ab4a",
+  "kairos_head": "c052c66532faef4f57f405eeb9162e4a1870ac15",
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": "/private/tmp/careops-c13-closeout-20261004",
+      "exit_code": 0,
+      "stdout": "143 task records: full coverage, prerequisites and DAG valid\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": "/private/tmp/careops-c13-closeout-20261004",
+      "exit_code": 0,
+      "stdout": "PASS: 80 MVP parents; 248 bounded leaves; complete joins and context/objective hashes\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": "/private/tmp/careops-c13-closeout-20261004",
+      "exit_code": 0,
+      "stdout": "{\n  \"tracks\": 5,\n  \"milestones\": 34,\n  \"local_links\": 654,\n  \"errors\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/private/tmp/careops-c13-closeout-20261004",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "source_sha256": {
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "b8eac2ffc60b5fbf54cc45ece73c9a6b8c6c362b6e6a638cb06c825f67be3d6f",
+    "conductor/current-state.json": "4d1cd582df0a0c30f4c415bd7c572a5a2b8b568070b623d43fbb4ffcd0ccdd70",
+    "conductor/execution/tasks.json": "55b361396f6b8856b7d722a59fc00a8cc96cd7c04ac5860888cdb3efaf99481d",
+    "conductor/execution/mvp/recipes.json": "5244ea84a8a06a4156dbac01522d8eb8147fd50f236b13350d4f9bb39441403e",
+    "conductor/evidence/d2.4-kairos-contract.json": "e14a0825d27d0e658be68edf48f67f30362551829eaf259a25b56d0bcec66326"
+  },
+  "pin_gate": "Check after commit: committed gitlink remains predecessor during preparation"
+}
