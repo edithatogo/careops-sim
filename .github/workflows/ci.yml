@@ -394,6 +394,20 @@ jobs:
         run: |
           python3 tools/quality_support.py --root .
           python3 tools/quality_flakes.py --config .config/d33-quality-gates.json
+      - name: Build and run representative ED benchmark
+        run: |
+          set -euo pipefail
+          rustup toolchain install 1.99.0 --profile minimal
+          cargo +1.99.0 build --locked --release --package careops-ed-cli
+          python3 tools/ed_benchmarks.py --binary target/release/careops-ed --output .artifacts/ci/d34/report.json
+      - name: Retain D3.4 benchmark report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: d34-benchmarks-${{ github.run_id }}
+          path: .artifacts/ci/d34/report.json
+          if-no-files-found: error
+          retention-days: 7
       - name: Measure bounded synthetic ED library coverage
         if: needs.scope.outputs.native == 'true'
         run: |

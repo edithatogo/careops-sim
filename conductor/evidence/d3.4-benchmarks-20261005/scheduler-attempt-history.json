@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "task": "D3.4.scheduler.20261005",
+  "base_commit": "0cc8d10e9be41e50aef3c544746bc23022da547f",
+  "kairos_submodule_commit": "8cd03c8f791ae58b33e5cc61b244071937a839ac",
+  "test_source_sha256_before_attempt_4": "48583e714c623b26531e7c7b03dd3e5e83d1e22a773fcedd8511916d47e1c047",
+  "attempts": [
+    {
+      "number": 1,
+      "result": "failed_to_compile",
+      "summary": "StepOutcome is private through kairo_ecs_core; corrected import to kairo_ecs_types::StepOutcome."
+    },
+    {
+      "number": 2,
+      "result": "one_test_failed",
+      "summary": "The first run_for(1000) expectation was Dispatched; actual API returns LimitReached when pending events remain. Corrected assertion while retaining pending=9000 and dispatched=1000 oracles."
+    },
+    {
+      "number": 3,
+      "result": "passed",
+      "summary": "3 tests passed, 0 failed. This invocation omitted CARGO_TARGET_DIR and wrote ignored Cargo build artifacts to the default /private/tmp/careops-d34-scheduler-20261005/target directory, outside the claimed paths. The generated target directory is preserved and recorded; it is not part of the commit.",
+      "log": ".artifacts/d34-scheduler/cargo-test-attempt-3-default-target.log",
+      "log_sha256": "6db57acee849bcd07ca5478b4f478fed03ae2b00a4f3001829fff4fdb5c4db58"
+    },
+    {
+      "number": 4,
+      "result": "passed",
+      "summary": "3 tests passed, 0 failed using CARGO_TARGET_DIR within the claimed ignored artifact path.",
+      "log": ".artifacts/d34-scheduler/cargo-test.log",
+      "log_sha256": "5e00607d58b1f37529b2959f754779897b01ce7f3facdff4058ebf82a9ffa86c"
+    }
+  ]
+}

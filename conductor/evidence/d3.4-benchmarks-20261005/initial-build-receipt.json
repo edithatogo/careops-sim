@@ -1,0 +1,29 @@
+{
+  "source_commit_at_build": "0cc8d10e9be41e50aef3c544746bc23022da547f",
+  "cwd": "/private/tmp/careops-d34-20261005",
+  "host": "macOS-27.0-arm64-arm-64bit",
+  "commands": [
+    {
+      "command": "CARGO_TARGET_DIR=.artifacts/d34/target cargo +1.99.0 build --locked --release --package careops-ed-cli",
+      "exit": 101,
+      "log": ".artifacts/d34/build.log",
+      "reason": "Homebrew Cargo is not the rustup proxy"
+    },
+    {
+      "command": "CARGO_TARGET_DIR=.artifacts/d34/target RUSTC=<rustup which rustc --toolchain 1.99.0> RUSTDOC=<rustup which rustdoc --toolchain 1.99.0> rustup run 1.99.0 cargo build --locked --release --package careops-ed-cli",
+      "exit": 0,
+      "log": ".artifacts/d34/build-canonical.log"
+    }
+  ],
+  "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+  "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+  "binary_sha256": "10bf708a7bb4db496841f113e069b5734f9dd9b1817e756e839216c503f32f56",
+  "protected_source_hashes": {
+    "crates/careops-ed/src/lib.rs": "4f7917f3976d84b86a1b2b6837065c803d75b29d6b4f594abbbb7ceaedc57380",
+    "crates/careops-ed-cli/src/main.rs": "b05d6fecf4f728796bc0ffe20883b41c8a8168e6cd09e40e19013c14989c12a9",
+    "Cargo.lock": "11b299b9ebde57892fa2539e727a28c68fa2857c1366bbc8a310e775a00bdfec",
+    "conductor/evidence/q5.2-benchmarks-20261004.json": "c4c983b1afbc09e64a88a5c646e4fd5913bb576608a5e4f69857a8b3cfa2eabb"
+  },
+  "clinical_acceptance": false,
+  "release_acceptance": false
+}

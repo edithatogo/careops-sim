@@ -141,9 +141,14 @@ not workflow presence alone. Manual verification: clone remotely and run the fix
   Stable API semver comparison is explicitly blocked without an owner-approved
   release baseline; Track25/D4 owns that release prerequisite. Exact-head hosted
   CI and merge are final publication gates, not implied by local test results.
-- [ ] D3.4 Establish representative ED/load/memory/cancellation/soak benchmarks;
+- [x] D3.4 Establish representative ED/load/memory/cancellation/soak benchmarks;
   set recorded budgets before release and maintain existing upstream thresholds.
   Test slow consumers, oversized input, zero-time loops and exhausted storage.
+  Qualified synthetic E0 development baseline: [D3.4 evidence](../../evidence/d3.4-benchmarks-20261005/README.md),
+  491 canonical Python tests,80 native tests,26 local and26 hosted Linux runs.
+  Genuine Linux exhausted-storage and all required checks pass at bb81846
+  (run37245641553); final closeout publication remains subject to final-head CI.
+  Native CLI limits/cooperative cancellation remain E3/D4 prerequisites.
 - [ ] D3.5 Conductor — review and verify phase (workflow.md).
 
 Exit: Q/C/E behavior has targeted failure detection and measured costs. Manual
