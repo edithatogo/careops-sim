@@ -1,17 +1,24 @@
 # D3.4 native benchmark qualification
 
-Status: local qualification complete; hosted Linux `/dev/full`, exact-head CI
-and publication remain required. D3.4 stays unchecked until that evidence exists.
+Status: local and hosted Linux qualification complete at bb81846; all PR checks
+passed in run37245641553. Final publication and shared plan/catalog closeout
+remain pending while the parallel C4.2 writer owns those shared context files.
 
 The [frozen contract](../../design/d34-benchmark-contract-20261005.md) defines
 synthetic E0 workload, independent row oracle and development budgets. The
 [qualification receipt](qualification.json) binds source, toolchain, commands,
 exits and limits; [raw local measurements](local-report.json) retain all 26 rows.
-490 Python tests and 80 native workspace tests passed. The 26-run matrix peaked
+491 canonical Python tests after the Linux repair and 80 native workspace tests
+passed (the initial qualification passed490 tests). The 26-run matrix peaked
 at 0.791 seconds and 14.88 MB RSS, below 10 seconds and 256 MiB per child.
 All repeat/20-run soak summaries matched. Slow-consumer, real blocked Rust CLI
 termination, zero-duration rejection and harness oversized-input refusal passed.
-MacOS has no `/dev/full`; that control is unverified here and required on Linux.
+MacOS has no `/dev/full`; hosted Linux verifies that control in
+[the retained report](hosted-linux-report.json). All26 hosted measurements pass.
+The first hosted attempt failed due to a missing Path import; its log is retained.
+The repair adds a cross-platform sink-wrapper regression. A test-only100ms startup
+deadline proved flaky under suite load; 500ms plus explicit SIGKILL verification
+passed the canonical suite. Production budgets remain unchanged.
 
 Independent gpt-6-luna review found cleanup/provenance issues, which were fixed;
 final review found none in its stated scope. Model selection is not served-model
