@@ -2,8 +2,10 @@
 
 Reviewed sourcea2b8f6c, development pin2f69a39, stacked KairosPR226.
 The exact-head native-owner run37264683985 passes Linux/macOS and all eight
-Arrow Rust1.88 feature cases. All reported child checks terminal:42SUCCESS,
-2 conditionalSKIPPED. No failed or running checks are accepted.
+Arrow Rust1.88 feature cases. All reported child checks are terminal. The raw rollup contains 43 successful
+rows and 2 conditional skips, including two successful CI Skip Guard rows from
+separate runs. Deduplicating the older guard gives 42 successful checks and
+2 conditional skips. No failed or running checks are accepted.
 
 Pinned child evidence/c2.2-provider-20261005 preserves raw logs and source hashes:
 24 canonical conformance cases pass, all22 required named cases once; library
