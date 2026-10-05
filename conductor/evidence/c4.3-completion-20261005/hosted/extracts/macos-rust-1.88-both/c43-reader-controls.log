@@ -1,0 +1,28 @@
+{
+  "controls": [
+    {
+      "file": "residual.ipc_file",
+      "id": "wrong_type",
+      "rejection": "ValueError: residual physical schema/type/order/nullability/metadata mismatch"
+    },
+    {
+      "file": "residual.ipc_stream",
+      "id": "mutated_u128",
+      "rejection": "ValueError: residual physical values/nulls differ from actual logical JSON"
+    },
+    {
+      "file": "residual.parquet",
+      "id": "required_null",
+      "rejection": "ValueError: residual physical schema/type/order/nullability/metadata mismatch"
+    },
+    {
+      "file": "residual.parquet",
+      "id": "wrong_metadata",
+      "rejection": "ValueError: residual physical schema/type/order/nullability/metadata mismatch"
+    }
+  ],
+  "logical_schema_validation": "bounded evaluator for unchanged C0 residual/metric definitions; fails closed on unsupported keywords",
+  "positive_oracle": "typed Arrow IPC file/stream and Parquet tables match independently frozen schemas and canonical logical records; residual 0-to-u128-max exact difference retained",
+  "pyarrow": "25.0.1",
+  "status": "pass"
+}
