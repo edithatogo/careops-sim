@@ -51,3 +51,13 @@ conditional skips. Parentfdc986f has14 successful reported checks.
 Local compatibility/context/catalog/MVP checks pass on this combined pin.
 The earlier pending statements are historical; independent final closeout review
 and publication remain pending. No runtime C2 acceptance follows.
+
+## Preparation acceptance
+
+C2.0 is accepted for frozen contracts and independently reviewed expected-red
+fixtures only. Independent gate review verified all318 compatibility source hashes,
+C4 ancestry and six joined preparation families. The stale standalone local receipt
+remains historical; [combined local checks](combined-parent-local.json) records
+actual successful pin/context/catalog/MVP checks againstd497d5f.
+C2.2/C2.3/C2.1/C2.4 remain open. Final closeout commit CI and publication are
+still required before implementation dispatch.
