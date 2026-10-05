@@ -98,9 +98,10 @@ Historical readback retained. Fresh corrected independent readback verifies 666 
 Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
 21 model adapter, 01 RNG and 22 scenario configuration review.
 
-- [ ] C2.1 Write failing mode resolution/boundary tests and common-random-number
-  fixtures. Assert Macro emits no transit, zero-transit Micro matches its paired
-  Macro fixture, and changing mode never discards active or suspended work.
+- [ ] C2.0 Freeze the provider/admission/transit-observation seams and write
+  independently reviewed test-first mode and paired integration fixtures. Record
+  expected red evidence for absent runtime APIs without claiming runtime acceptance;
+  this preparation gate enables C2.2 implementation, not C2.1 completion.
 - [ ] C2.2 Implement empirical work-duration providers, FidelityPolicy and stable
   entity/task/purpose keys. Separate intrinsic work from queue/transit intervals;
   persist all mode and stream state for resume.
@@ -110,7 +111,17 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   cleaning/reservation remains an explicit model resource lifecycle. Require explicit
   movement-mode speeds, versioned geometry and O/D purpose; test mixed-use pauses
   and sensor-derived distance are not silently treated as path/speed ground truth.
+- [ ] C2.1 Write failing mode resolution/boundary tests and common-random-number
+  fixtures. Assert Macro emits no transit, zero-transit Micro matches its paired
+  Macro fixture, and changing mode never discards active or suspended work.
 - [ ] C2.4 Conductor — review and verify phase (workflow.md).
+
+Execution order is preparation C2.0, implementation C2.2/C2.3, then full runtime
+join C2.1 and phase review C2.4. All C2.1 original oracles remain mandatory; a
+fixed-duration fixture, disconnected RNG check, compile failure or missing transit
+API cannot satisfy paired acceptance. Existing mode-test source is preliminary
+evidence, not an accepted C2.1 leaf before C2.3. See
+[the test-first join decision](../../decisions/ADR-0008-c2-test-first-join.md).
 
 Exit: C-02 in standalone fixtures; integrated interruption acceptance awaits Q4.
 Manual check: inspect the same synthetic case in Macro/Micro, reconcile clinical

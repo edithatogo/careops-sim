@@ -1,0 +1,80 @@
+{
+  "status": "draft dependency repair; static coverage-count test requires update",
+  "cwd": "/private/tmp/careops-c2-plan-20261005",
+  "head": "e68d6c4",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "build"
+      ],
+      "exit_status": 0,
+      "records": 144
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "exit_status": 0
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "exit_status": 0,
+      "parents": 81,
+      "leaves": 251
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests.test_tasks",
+        "tests.test_mvp",
+        "-v"
+      ],
+      "exit_status": 1,
+      "limitation": "incorrect package-style invocation; tests directory is not an importable package"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_tasks.py",
+        "-v"
+      ],
+      "exit_status": 0,
+      "passed": 26
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_mvp.py",
+        "-v"
+      ],
+      "exit_status": 1,
+      "passed": 12,
+      "failed": 1,
+      "failure": "test_complete_mvp_coverage asserts old80 count, new81 required"
+    }
+  ],
+  "toolchain": "Python3.14.8 /opt/homebrew/bin/python3",
+  "runtime_acceptance": false
+}
