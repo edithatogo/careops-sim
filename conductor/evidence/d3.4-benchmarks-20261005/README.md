@@ -41,3 +41,9 @@ MVP, stable API or native v1. E3.1/E3.2/D4.1 still own native bounded input/outp
 atomic output, cancellation/recovery and long-lived runner qualification. The
 existing Track25/D4 release-baseline hold remains explicit. Next after actual
 hosted acceptance: D3.5 phase review; parallel C4.2 ownership is preserved.
+
+Accepted C4.2 parent PR64 merged during final publication. Reconciliation
+preserves its private-runtime qualification, plan and new development pin21e48b2.
+Kairos core/types and workspace manifest/lock diff is empty from a2cdeab; the
+locked Rust1.99 release rebuild,80 native tests and26 local benchmark runs pass
+at the new pin. Final integrated-head hosted checks remain the merge gate.

@@ -3,7 +3,7 @@
   "updated_at": "2026-10-05",
   "active_track": "development_readiness_20260925",
   "active_phase": "D3",
-  "next_action": "D3.4 implementation qualified:491 canonical harness tests,80 native workspace tests,26 local and26 hosted Linux synthetic E0 benchmark runs; genuine /dev/full and all required checks passed at bb81846 in run37245641553. PR63 final closeout awaits exact-head CI and merge. Next D3.5 phase review; preserve parallel C4.2/Track49 work and synchronize accepted pins only. Q5.2/C1.4 evidence unchanged. Track25/D4 stable API baseline hold and E3/D4 native CLI limits/cooperative cancellation remain; no clinical, MVP or v1 acceptance.",
+  "next_action": "D3.4 implementation qualified:491 canonical harness tests,80 native workspace tests,26 local and26 hosted Linux synthetic E0 benchmark runs; genuine /dev/full and all required checks passed at bb81846 in run37245641553. PR63 final closeout awaits exact-head CI and merge. Next D3.5 phase review; C4.2 merged via parent PR64 at accepted Kairos development pin21e48b2; preserve its private-runtime qualification and parallel Track49. C4.3 Arrow and C4.4/C-04 remain open. Q5.2/C1.4 evidence unchanged. Track25/D4 stable API baseline hold and E3/D4 native CLI limits/cooperative cancellation remain; no clinical, MVP or v1 acceptance.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/index.md",
@@ -193,7 +193,6 @@
     "conductor/evidence/d2.1-artifact-acceptance-20261003.md",
     "conductor/evidence/d2.1-parent-acceptance-20261003.md",
     "conductor/evidence/d2.2-remote-preflight-20261003.md",
-    "conductor/tracks/development_readiness_20260925/plan.md",
     ".github/workflows/ci.yml",
     "tests/test_ci_workflow.py",
     "conductor/evidence/d2.2-hosted-required-proof-20261003.md",
@@ -252,10 +251,30 @@
     "conductor/evidence/d3.3-quality-gates-20261005/README.md",
     "conductor/evidence/c4.1-completion-20261005/README.md",
     "conductor/evidence/d3.4-benchmarks-20261005/README.md",
-    "conductor/design/d34-benchmark-contract-20261005.md"
+    "conductor/design/d34-benchmark-contract-20261005.md",
+    "conductor/evidence/c4.2-completion-20261005/README.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "a2cdeab33286e14db59f377449816702e79b2a6a",
+    "libs/kairos": "21e48b257b5c89dd9756b647d9ee17f698f9496b",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
+  },
+  "c42_runtime_qualification": {
+    "previous_accepted_pin": "a2cdeab33286e14db59f377449816702e79b2a6a",
+    "accepted_development_head": "21e48b257b5c89dd9756b647d9ee17f698f9496b",
+    "runtime_source": "59d7dbb0c004654e3da90951d42e2b983ef23993",
+    "pr": "https://github.com/edithatogo/kairos/pull/221",
+    "evidence": "conductor/evidence/c4.2-completion-20261005/README.md",
+    "actual_report_sha256": "1c8ebdb97b27459d221e509049f0e9ba44a247f9761647b77ee53158bc0d32ea",
+    "fixture_cases": 42,
+    "native_tests_each_toolchain": 119,
+    "ignored_default": 4,
+    "broader_current_child_checks": {
+      "success": 42,
+      "skipped": 2
+    },
+    "development_only": true,
+    "public_api_gate": "open",
+    "C4.3": "open",
+    "C4.4/C-04": "open"
   }
 }

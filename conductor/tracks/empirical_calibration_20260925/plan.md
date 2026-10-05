@@ -148,10 +148,11 @@ Entry: C0/C1 schemas; may proceed before C3 using synthetic predictions. Owner 2
   Add equal-marginal/opposite-dependence and W1=180/KS=0.2 tail fixtures;
   specify a simple joint/conditional diagnostic before optional multivariate metrics.
   Preparation accepted: [retained evidence](../../evidence/c4.1-completion-20261005/README.md); actual runtime and C-04 remain open.
-- [ ] C4.2 Implement deterministic sorted-CDF W1 and KS D, paired residual
+- [x] C4.2 Implement deterministic sorted-CDF W1 and KS D, paired residual
   summaries, grouping/window semantics, counts/validity flags and explicit
   insufficient-data statuses. No automatic classical KS p-value for clustered,
   tied records. Optional inference requires separate documented validity tests.
+  Runtime accepted: [retained C4.2 evidence](../../evidence/c4.2-completion-20261005/README.md); private development pin `21e48b2`, runtime source `59d7dbb`; public API, C4.3 and C4.4/C-04 remain open.
 - [ ] C4.3 Emit calibration_residual.v1/calibration_metric.v1 through actual Arrow
   IO, joined to existing run/event records. Verify stable reduction order and
   compatibility without altering event_log.v1 field types.
