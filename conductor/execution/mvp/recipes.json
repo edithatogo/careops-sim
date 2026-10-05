@@ -5119,8 +5119,8 @@
       ]
     },
     {
-      "task_id": "C2.1",
-      "task_objective_sha256": "18487c556746840be75910f6f7b6d4ce282a51428c4613c593cd2ceb38eec719",
+      "task_id": "C2.0",
+      "task_objective_sha256": "232d0216f085937360c0aa245e2f416ff1bac5db54cf510d3acc6a0b36f0af40",
       "parent_dependencies": [
         "C0.4",
         "P3.4"
@@ -5139,6 +5139,85 @@
       "join": "All leaf instances must be independently accepted and combined parent acceptance rerun; no partial checkbox completion",
       "leaves": [
         {
+          "id": "C2.0.mode",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Reviewed mode/boundary test preparation",
+          "oracle": "Real Flow lifecycle and scope-precedence test definitions reviewed; source passes where runtime exists; no paired/full-C2 runtime acceptance",
+          "dependencies": [
+            "C0.4.closeout",
+            "P3.4.closeout"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
+          "id": "C2.0.interfaces",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "proposal_or_review",
+          "output": "Frozen provider/admission/transit-observation contract",
+          "oracle": "Exact actual-runtime signatures and owners reviewed; no simulated counters or disconnected RNG accepted as runtime proof",
+          "dependencies": [
+            "C2.0.mode"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
+          "id": "C2.0.red-tests",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Reviewed paired test-first fixtures",
+          "oracle": "Tests target actual provider/Flow/transit behavior; expected missing-API red retained only as preparation evidence; C2.1 remains open",
+          "dependencies": [
+            "C2.0.interfaces"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        }
+      ]
+    },
+    {
+      "task_id": "C2.1",
+      "task_objective_sha256": "18487c556746840be75910f6f7b6d4ce282a51428c4613c593cd2ceb38eec719",
+      "parent_dependencies": [
+        "C2.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 114
+      },
+      "context_sources": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "status": "recipe_requires_binding",
+      "join": "All leaf instances must be independently accepted and combined parent acceptance rerun; no partial checkbox completion",
+      "leaves": [
+        {
           "id": "C2.1.mode",
           "target_repo": "libs/kairos",
           "model": "gpt-6-luna",
@@ -5146,8 +5225,7 @@
           "output": "Mode resolution/boundary fixtures",
           "oracle": "Macro emits no transit; active/suspended work cannot disappear on mode changes",
           "dependencies": [
-            "C0.4.closeout",
-            "P3.4.closeout"
+            "C2.3.dispatch"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
@@ -5183,11 +5261,11 @@
       "task_id": "C2.2",
       "task_objective_sha256": "70f0e73082bb6babcf5e84ede8a82e495ef6beacac74bcf3b0c8d6744eec3c51",
       "parent_dependencies": [
-        "C2.1"
+        "C2.0"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 104
+        "line": 105
       },
       "context_sources": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -5206,7 +5284,7 @@
           "output": "Empirical intrinsic-work provider",
           "oracle": "Samples exclude queue/transit; units/support/invalid parameters checked",
           "dependencies": [
-            "C2.1.paired"
+            "C2.0.red-tests"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
@@ -5265,7 +5343,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 107
+        "line": 108
       },
       "context_sources": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -5358,11 +5436,11 @@
       "task_id": "C2.4",
       "task_objective_sha256": "7c42fe09c4142cc4879f07a6c1fde6c17626bbf336431a499b922c218e9dcc7f",
       "parent_dependencies": [
-        "C2.3"
+        "C2.1"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 113
+        "line": 117
       },
       "context_sources": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -5381,7 +5459,7 @@
           "output": "Phase evidence reconciliation",
           "oracle": "Every parent task has integrated output and executed gates; unresolved failures prevent acceptance",
           "dependencies": [
-            "C2.3.dispatch"
+            "C2.1.paired"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",

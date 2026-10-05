@@ -20,7 +20,7 @@ SCOPES = {
     'E': ['crates/careops-ed', 'tests/ed'],
     'P': ['model-inputs/ed'],
 }
-COORDINATOR_TASKS = {'D1.2','D2.2','D4.1','D5.2','E5.1','E6.1','E7.1','E8.1','P3.2','P3.3'}
+COORDINATOR_TASKS = {'C2.0','D1.2','D2.2','D4.1','D5.2','E5.1','E6.1','E7.1','E8.1','P3.2','P3.3'}
 OVERRIDES = {
     'D0': ['tools', 'tests', 'conductor/dependency-policy.md',
            'conductor/decisions', 'conductor/evidence',
@@ -49,6 +49,10 @@ OVERRIDES = {
     'E8': ['libs/kairos/crates/kairo-ecs-mpi', 'libs/kairos/crates/kairo-ecs-grpc'],
 }
 TASK_OVERRIDES = {
+    'C2.0': ['libs/kairos/conductor/design/calibration',
+             'libs/kairos/crates/kairo-ecs-calibration/tests',
+             'libs/kairos/crates/kairo-ecs-des/tests',
+             'conductor/evidence'],
     'D1.3': ['tools', 'tests', 'conductor/dependency-policy.md',
              'conductor/evidence', '.agents/skills',
              'conductor/tracks/development_readiness_20260925/agent-contract.md'],

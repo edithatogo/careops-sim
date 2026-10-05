@@ -18,7 +18,7 @@ class CoverageTests(unittest.TestCase):
     def errors(self):return mvp.validate(ROOT,self.catalog,self.recipes)
     def test_complete_mvp_coverage(self):
         self.assertEqual(self.errors(),[])
-        self.assertEqual(len(self.recipes['tasks']),80)
+        self.assertEqual(len(self.recipes['tasks']),81)
     def test_missing_parent_rejected(self):
         self.recipes['tasks'].pop();self.assertTrue(self.errors())
     def test_changed_objective_rejected(self):

@@ -51,7 +51,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
 
 ## Complete MVP worker decomposition
 
-The [Luna MVP workpack](execution/mvp/README.md) covers all 80 MVP parent tasks with 241
+The [Luna MVP workpack](execution/mvp/README.md) covers all 81 MVP parent tasks with 251
 bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind reviewed
 context/commands just before dispatch. No autonomous execution or model
 qualification is claimed.
