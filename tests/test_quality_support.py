@@ -26,7 +26,7 @@ class QualitySupportTests(unittest.TestCase):
         self.config = {
             "schema_version": 1,
             "canonical_rust": "1.99.0",
-            "default_msrv": "1.76",
+            "default_msrv": "1.99",
             "packages": [
                 {"manifest": "Cargo.toml", "features": {}},
                 {"manifest": "crates/careops-ed/Cargo.toml", "features": {}},
@@ -50,7 +50,7 @@ class QualitySupportTests(unittest.TestCase):
         }
         self.write("rust-toolchain.toml", '[toolchain]\nchannel = "1.99.0"\n')
         self.write("Cargo.toml", '[workspace]\nmembers = ["crates/careops-ed", "crates/careops-ed-cli"]\n\n'
-                   '[workspace.package]\nrust-version = "1.76"\n\n[package]\nname = "careops-sim"\n')
+                   '[workspace.package]\nrust-version = "1.99"\n\n[package]\nname = "careops-sim"\n')
         self.write("crates/careops-ed/Cargo.toml", '[package]\nname = "careops-ed"\nrust-version.workspace = true\n')
         self.write("crates/careops-ed-cli/Cargo.toml", '[package]\nname = "careops-ed-cli"\nrust-version.workspace = true\n')
 
@@ -82,9 +82,14 @@ class QualitySupportTests(unittest.TestCase):
 
     def test_workspace_msrv_and_inherited_package_msrv_must_match(self):
         self.write("Cargo.toml", '[workspace]\nmembers = ["crates/careops-ed", "crates/careops-ed-cli"]\n\n'
-                   '[workspace.package]\nrust-version = "1.77"\n\n[package]\nname = "careops-sim"\n')
+                   '[workspace.package]\nrust-version = "1.76"\n\n[package]\nname = "careops-sim"\n')
         errors = self.errors()
         self.assertTrue(any("MSRV" in error for error in errors), errors)
+
+    def test_historical_default_msrv_field_rejects_older_floor(self):
+        self.config["default_msrv"] = "1.76"
+        errors = self.errors()
+        self.assertIn("config default_msrv must be 1.99", errors)
 
     def test_unreviewed_feature_declaration_is_rejected(self):
         self.write("crates/careops-ed/Cargo.toml", '[package]\nname = "careops-ed"\nrust-version.workspace = true\n\n'
