@@ -13,6 +13,12 @@ from tools.quality_mutations import check_outcomes, main
 
 SOURCE_PATH = Path(__file__).resolve().parents[1] / "crates/careops-ed/src/lib.rs"
 SOURCE_BYTES = SOURCE_PATH.read_bytes()
+HISTORICAL_SOURCE_SHA256 = "4f7917f3976d84b86a1b2b6837065c803d75b29d6b4f594abbbb7ceaedc57380"
+HISTORICAL_CATALOG_SHA256 = "a2cb9d0d444dece53af296a0082b18dcdd4ad58616a2ceea58df2b0f3c86194e"
+HISTORICAL_CATALOG_PATH = (
+    Path(__file__).resolve().parents[1]
+    / "conductor/evidence/d3.3-quality-gates-20261005/mutants.json"
+)
 BASELINE_UNVIABLES = (
     "crates/careops-ed/src/lib.rs:239:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
     "crates/careops-ed/src/lib.rs:635:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
@@ -116,7 +122,7 @@ def validate(document, source_bytes=SOURCE_BYTES, catalog=None, expected_catalog
 class MutationGateTests(unittest.TestCase):
     def test_accepts_full_bound_baseline_and_exact_equivalence_boundaries(self):
         result = validate(valid_outcomes())
-        self.assertEqual(result["source_sha256"], "4f7917f3976d84b86a1b2b6837065c803d75b29d6b4f594abbbb7ceaedc57380")
+        self.assertEqual(result["source_sha256"], "1f1f66bfd1f3f6e9457c025aa441c040c861029c2342ff9711cddc33e909d4e1")
         self.assertEqual(result["total_mutants"], 115)
         self.assertEqual(result["caught"], 110)
         self.assertEqual(result["missed"], 2)
@@ -162,6 +168,27 @@ class MutationGateTests(unittest.TestCase):
     def test_rejects_changed_source(self):
         with self.assertRaises(ValueError):
             validate(valid_outcomes(), source_bytes=SOURCE_BYTES + b"\n")
+
+    def test_rejects_historical_source_binding(self):
+        old_source = SOURCE_BYTES.replace(
+            b".is_none_or(|location|",
+            b".map_or(true, |location|",
+            1,
+        )
+        self.assertEqual(hashlib.sha256(old_source).hexdigest(), HISTORICAL_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError, "source SHA-256 mismatch"):
+            validate(valid_outcomes(), source_bytes=old_source)
+
+    def test_rejects_historical_catalog_for_current_binding(self):
+        old_catalog = HISTORICAL_CATALOG_PATH.read_bytes()
+        self.assertEqual(hashlib.sha256(old_catalog).hexdigest(), HISTORICAL_CATALOG_SHA256)
+        with self.assertRaisesRegex(ValueError, "mutants catalog SHA-256 mismatch"):
+            check_outcomes(
+                valid_outcomes(),
+                SOURCE_BYTES,
+                old_catalog,
+                expected_catalog_sha256="1a53086834f65010bdd10b20582153d2c9005609ed7e22427191ab2dc0bc2051",
+            )
 
     def test_rejects_wrong_version_and_missing_baseline(self):
         document = valid_outcomes()
