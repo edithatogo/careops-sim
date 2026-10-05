@@ -1,8 +1,8 @@
 # D3.4 native benchmark qualification
 
 Status: local and hosted Linux qualification complete at bb81846; all PR checks
-passed in run37245641553. Final publication and shared plan/catalog closeout
-remain pending while the parallel C4.2 writer owns those shared context files.
+passed in run37245641553. D3.4 is checked as implementation-qualified; final closeout publication remains
+subject to final-head CI and merge of PR63. D3.5 phase review is next.
 
 The [frozen contract](../../design/d34-benchmark-contract-20261005.md) defines
 synthetic E0 workload, independent row oracle and development budgets. The
