@@ -4,7 +4,7 @@
 
 The Kairos owner directs the canonical development/integration toolchain to be the current stable Rust release: **1.99.0**, released 2026-10-01. Exact 1.99.0 pins in the toolchain, bootstrap profile and CI retain reproducibility; refresh these together promptly when a new stable release is adopted. This supersedes the historical 1.98.1 decision below. Prior receipts remain evidence for their actual compiler and source, and are not rewritten as 1.99.0 results.
 
-The default-feature Rust 1.76 support check and optional Arrow 60/Arrow IO Rust 1.88 check remain separate compatibility floors. Current stable is the canonical toolchain, not a change to those minimums. The official manifest and both host checksums are recorded in [the adoption receipt](evidence/rust-1.99.0-canonical-20261004.json). Beta/nightly remain advisory lanes. Only Rust is selected by this update; other refreshed candidates remain unapproved.
+Rust 1.99.0 is the sole declared and executed Rust toolchain. The default-feature workspace lane, stable quality gates and optional feature checks use the same exact 1.99.0 toolchain; no older compatibility floor, beta, or nightly lane is maintained. The official manifest and both host checksums are recorded in [the adoption receipt](evidence/rust-1.99.0-canonical-20261004.json). Historical 1.76/1.88 receipts describe only their original commits and are not current compatibility qualifications. Miri and libFuzzer AddressSanitizer runtime checks require nightly and are unavailable under this owner policy; their historical evidence remains historical, and later release security obligations remain open. Other refreshed package candidates remain unapproved.
 
 Live registry observations are recorded in
 [dependency-candidates.json](evidence/dependency-candidates.json), including source
@@ -27,7 +27,7 @@ freshness assessment, not proof that every latest version is installed.
   a bounded workflow update with policy tests and hosted checks.
 - Kairos Serde 1.0.228/JSON 1.0.149 trail 1.0.229/1.0.151; thiserror's exact
   2.0.20 pin trails 2.0.21. Review patch resolution, advisories/licences and
-  Rust 1.76/default plus 1.88/Arrow feature tests in separately owned changes.
+  Rust 1.99.0 default and optional feature checks in separately owned changes.
 - Parent CLI sha2 0.10.9 trails 0.11.0; this is a breaking 0.x line change.
   Preserve Rust 1.76 support and exact input-byte/SHA-256 manifest outputs with
   golden checks before adoption. Parent lockfile Proptest 1.8.0 is not in the
@@ -99,17 +99,12 @@ owning repository. CI uses `--locked`; publishable Rust libraries still need
 appropriate dependency ranges and minimum/current resolution tests. Pinning only
 a library's lockfile does not constrain downstream consumer resolution.
 
-D1's policy direction is owner-approved: preserve the existing default-feature
-workspace floor at Rust 1.76; pin the developer/integration stable lane to Rust
-1.98.1; record Rust 1.99.0-beta.8 observed 2026-09-27 as a non-blocking advisory
-canary. Keep a raised floor for any existing package/feature behind Tracks 25/30's
-transition policy. Future Arrow/Parquet belongs behind a separately reviewed
-package boundary at candidate floor 1.88; optional TOML parsing belongs outside
-core at candidate floor 1.85. Do not advertise Rust 1.76 for a feature graph that
-includes Arrow 60. Do not add these candidate dependencies until source contracts,
-manifests, CI, interoperability checks and docs are aligned. See the D1.2
-compatibility assessment for test commands, receipts and pending Track 13/30
-review; owner approval does not itself close the D1 phase.
+D1's prior compatibility direction is historical and superseded by the explicit
+Rust 1.99.0 sole-toolchain owner policy above. The former Rust 1.76 default floor,
+1.88 Arrow candidate floor, and beta advisory canary are not maintained as
+current execution or compatibility promises. Package/API boundary reviews,
+interoperability checks and dependency approval remain independent obligations;
+historical receipts and decisions retain their original scope and are not rewritten.
 
 Updates: weekly grouped low-risk patch/minor review, immediate advisory triage,
 separate major/API/RNG/schema changes. New versions are reverified immediately

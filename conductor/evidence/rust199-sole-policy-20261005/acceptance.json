@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema_version": 1,
+  "evidence_id": "rust199-sole-policy-20261005",
+  "evidence_scope": "local Rust 1.99.0 sole-toolchain policy checks only",
+  "repository": "managed parent CareOps Sim",
+  "export_head": "b625d159971616af76db0fd958cf08d31f0fc4b8",
+  "exported_at_utc": "2026-10-05T07:31:15.684102+00:00",
+  "toolchain": {
+    "sole_executed_version": "1.99.0",
+    "older_or_nightly_runs_currently_qualified": false
+  },
+  "source_commit_lineage": [
+    {
+      "commit": "f874f113763f35708eeb2f39ec61f303b18b0eae",
+      "parent": "f5bf5699b15ce05215cf9d653748d50bf7271ee1",
+      "subject": "feat(toolchain): set Rust 1.99 sole workspace floor",
+      "role": "foundation source state tested by 21 policy tests, policy check, and Rust native workspace suite"
+    },
+    {
+      "commit": "f4b5dbb4471005714565852b9237062f337b6592",
+      "parent": "f874f113763f35708eeb2f39ec61f303b18b0eae",
+      "subject": "ci: use Rust 1.99 as sole policy lane",
+      "role": "CI policy source state tested by 22 targeted workflow tests and Rust 1.99 default-feature workspace suite"
+    },
+    {
+      "commit": "b625d159971616af76db0fd958cf08d31f0fc4b8",
+      "parent": "f4b5dbb4471005714565852b9237062f337b6592",
+      "subject": "test: assert canonical Rust binding for D3.4 benchmark",
+      "role": "committed D3.4 assertion source; tests were executed on f4 working base with this exact committed test-file byte content"
+    }
+  ],
+  "source_hashes_by_tested_commit": [
+    {
+      "commit": "f874f113763f35708eeb2f39ec61f303b18b0eae",
+      "files": [
+        {
+          "path": "Cargo.toml",
+          "digest_sha256": "5bf36d6e1db5f6c0ee37e21bf424d3b97aacd5eb014d611784521a98b7149343"
+        },
+        {
+          "path": ".config/d33-quality-gates.json",
+          "digest_sha256": "67056290d7f75bd0e8932c332501a0fcc1059d868b2a951ab55b0b11d8388ac5"
+        },
+        {
+          "path": "tools/quality_support.py",
+          "digest_sha256": "40224c5f142d1c2c306eebbd1b38e4e917b68a3e2ea31df8af099176839c7ab5"
+        },
+        {
+          "path": "tests/test_quality_support.py",
+          "digest_sha256": "4f26991e4b8447b1ee4e00cadcd9008b064af9e5e65497933fa71cfff9ba6110"
+        },
+        {
+          "path": "conductor/decisions/ADR-0009-current-stable-rust-only.md",
+          "digest_sha256": "b8b8994cec14039e8dae04f20b93aa688629dd8d2f31469ff42cca4801868ff2"
+        }
+      ]
+    },
+    {
+      "commit": "f4b5dbb4471005714565852b9237062f337b6592",
+      "files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "digest_sha256": "8c48f16f648d3e68c2978e69e9cb1d65f9d9ca28dde87a923c6347a152f85907"
+        },
+        {
+          "path": "tests/test_ci_workflow.py",
+          "digest_sha256": "09b1f0019bbc157473a177f26b484e74dcac8f40b2e507ef4d49527232f4f42b"
+        },
+        {
+          "path": "tools/ci_policy.py",
+          "digest_sha256": "cc97b4b2b6d88f0c8bb7d7cb6153f3cb05427ccf54102a01685a1e155cf36b40"
+        },
+        {
+          "path": "conductor/dependency-policy.md",
+          "digest_sha256": "2b84d5a1d90634245f519e4211ec9685f111b5f4da1c02cf55f4452eb7544d55"
+        },
+        {
+          "path": "conductor/ci-security-release.md",
+          "digest_sha256": "4a7f40379a9967a485a716c59ca58037f3c5abc0ea147eb85d2261d82dc65a72"
+        }
+      ]
+    },
+    {
+      "commit": "b625d159971616af76db0fd958cf08d31f0fc4b8",
+      "files": [
+        {
+          "path": "tests/test_d34_ci.py",
+          "digest_sha256": "61515e61e00c9815413a680d1e50d87acd711bb7215bb7c1018936784b35bc53"
+        }
+      ]
+    }
+  ],
+  "local_results": [
+    {
+      "commit": "f874f113763f35708eeb2f39ec61f303b18b0eae",
+      "quality_policy_tests": {
+        "passed": 21,
+        "failed": 0,
+        "exit": 0
+      },
+      "quality_policy_check": {
+        "passed": true,
+        "exit": 0
+      },
+      "rust_1_99_workspace_tests": {
+        "passed": 80,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      }
+    },
+    {
+      "commit": "f4b5dbb4471005714565852b9237062f337b6592",
+      "ci_workflow_tests": {
+        "passed": 22,
+        "failed": 0,
+        "exit": 0
+      },
+      "rust_1_99_default_feature_workspace_tests": {
+        "passed": 80,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      "full_python_harness": {
+        "ran": 497,
+        "failed": 1,
+        "exit": 1,
+        "failure": "test_d34_ci.D34CiTests.test_context_benchmark_runs_after_quality_inventory_without_native_gate expected cargo +1.99.0 build; the user-directed sole-toolchain policy requires plain cargo with canonical environment binding"
+      }
+    },
+    {
+      "execution_base_commit": "f4b5dbb4471005714565852b9237062f337b6592",
+      "committed_head": "b625d159971616af76db0fd958cf08d31f0fc4b8",
+      "tested_source_hashes": [
+        {
+          "path": "tests/test_d34_ci.py",
+          "digest_sha256": "61515e61e00c9815413a680d1e50d87acd711bb7215bb7c1018936784b35bc53"
+        }
+      ],
+      "focused_d34_tests": {
+        "exit": 0
+      },
+      "full_python_harness": {
+        "ran": 497,
+        "failed": 0,
+        "exit": 0
+      }
+    }
+  ],
+  "historical_failure_disposition": "The f4 full-suite failure is retained exactly. The obsolete D3.4 command literal assertion was updated in b625; the f4 working-tree test file used by the passing b625 verification has the same digest as the committed b625 blob.",
+  "export_index": [
+    {
+      "path": "README.md",
+      "digest_sha256": "6879bff4b75306124605c7d09c8dcc0c04d44e9a333061180c698348996807ff",
+      "size_bytes": 2625,
+      "source_path": "generated from reviewed intake summary"
+    },
+    {
+      "path": "runs/f874f113763f35708eeb2f39ec61f303b18b0eae/result.json",
+      "digest_sha256": "2b628570bffeeb4dfaaaffbea51530f6839b34045dc54b5636bc1e0b556ef092",
+      "size_bytes": 10121,
+      "source_path": ".artifacts/rust199-foundation/result.json"
+    },
+    {
+      "path": "runs/f874f113763f35708eeb2f39ec61f303b18b0eae/logs/1-quality-support-tests.log",
+      "digest_sha256": "9c44d0aeae2b1e2850493420d6b104f95ae3a41946958d1220147a09d90a131a",
+      "size_bytes": 3323,
+      "source_path": ".artifacts/rust199-foundation/logs/1-quality-support-tests.log"
+    },
+    {
+      "path": "runs/f874f113763f35708eeb2f39ec61f303b18b0eae/logs/2-quality-support-check.log",
+      "digest_sha256": "e5c16cf08b07576286e3d4c1399a66f4aea0d48a5861a4c62355e00a2e7d82ad",
+      "size_bytes": 125,
+      "source_path": ".artifacts/rust199-foundation/logs/2-quality-support-check.log"
+    },
+    {
+      "path": "runs/f874f113763f35708eeb2f39ec61f303b18b0eae/logs/3-rust-1.99-workspace-test.log",
+      "digest_sha256": "493ae8d1cf61af98273a0e549953c70c53689b07c96df1082aaa7a7815191dbd",
+      "size_bytes": 10929,
+      "source_path": ".artifacts/rust199-foundation/logs/3-rust-1.99-workspace-test.log"
+    },
+    {
+      "path": "runs/f4b5dbb4471005714565852b9237062f337b6592/result.json",
+      "digest_sha256": "a6b9b74aa4bffca1eae8387f8cb21a175d669b80637d001e0c8d507a4919f8b4",
+      "size_bytes": 6202,
+      "source_path": ".artifacts/rust199-ci-foundation/result.json"
+    },
+    {
+      "path": "runs/f4b5dbb4471005714565852b9237062f337b6592/logs/ci-workflow-tests.log",
+      "digest_sha256": "5d3537e244b848c14c80b64fa9d1e635d1c578f0b81359dbd34c966463986e7c",
+      "size_bytes": 3633,
+      "source_path": ".artifacts/rust199-ci-foundation/ci-workflow-tests.log"
+    },
+    {
+      "path": "runs/f4b5dbb4471005714565852b9237062f337b6592/logs/default-feature-workspace-tests-rust199.log",
+      "digest_sha256": "42c4e42a4b85a0394d08202446ff542bb7a9765bb1b715ab0e24fdadbb54cd76",
+      "size_bytes": 10276,
+      "source_path": ".artifacts/rust199-ci-foundation/default-feature-workspace-tests-rust199.log"
+    },
+    {
+      "path": "runs/f4b5dbb4471005714565852b9237062f337b6592/logs/full-python-original-failure.log",
+      "digest_sha256": "a446b73da3a3b5c723c103e2718c65fba561cc270d1167e16f10c8280b9a682e",
+      "size_bytes": 78328,
+      "source_path": ".artifacts/rust199-ci-foundation/full-python-harness-rust199-environment.log"
+    },
+    {
+      "path": "runs/f4b5dbb4471005714565852b9237062f337b6592/logs/attempt-precommit-ci-workflow-tests.log",
+      "digest_sha256": "cf4b2c5e590e1dd0ece4447bf7379175292a941969a7e08d81aab6c3d00fbd73",
+      "size_bytes": 3633,
+      "source_path": ".artifacts/rust199-ci-foundation/attempt-precommit/ci-workflow-tests.log"
+    },
+    {
+      "path": "runs/b625d159971616af76db0fd958cf08d31f0fc4b8/result.json",
+      "digest_sha256": "155b90c802f70be41bd42bf8e5ea7b6bb1e1c937f9a028d84495503cff6301d7",
+      "size_bytes": 3710,
+      "source_path": ".artifacts/rust199-d34-assertion/result.json"
+    },
+    {
+      "path": "runs/b625d159971616af76db0fd958cf08d31f0fc4b8/logs/d34-target-tests.log",
+      "digest_sha256": "f21f7edb9ba6cac430de1a3ca27a9c760e1f6a5f66b959e067a6f78e2313677a",
+      "size_bytes": 412,
+      "source_path": ".artifacts/rust199-d34-assertion/d34-target-tests.log"
+    },
+    {
+      "path": "runs/b625d159971616af76db0fd958cf08d31f0fc4b8/logs/full-python-497-pass.log",
+      "digest_sha256": "518b29c10303ccab8593254bddd856d539122901b7bf8bb0a34c180d639a6257",
+      "size_bytes": 76578,
+      "source_path": ".artifacts/rust199-d34-assertion/full-python-harness-rust199-environment.log"
+    },
+    {
+      "path": "runs/b625d159971616af76db0fd958cf08d31f0fc4b8/logs/attempt-before-fix-full-python-failure.log",
+      "digest_sha256": "a446b73da3a3b5c723c103e2718c65fba561cc270d1167e16f10c8280b9a682e",
+      "size_bytes": 78328,
+      "source_path": ".artifacts/rust199-d34-assertion/attempt-before-fix/full-python-harness-rust199-environment.log"
+    }
+  ],
+  "claim_limits": {
+    "local_only": true,
+    "hosted_ci_accepted": false,
+    "release_accepted": false,
+    "whole_d3_complete": false,
+    "miri_runtime_verified": false,
+    "libfuzzer_address_sanitizer_runtime_verified": false,
+    "nightly_runtime_unavailable_under_policy": true,
+    "future_release_gates_open": [
+      "FFI/unsafe review",
+      "malformed-input and resource-exhaustion assurance",
+      "sanitizer/Miri or fuzz evidence or equivalent owner-approved method"
+    ]
+  },
+  "process_limitations": [
+    {
+      "classification": "process limitation, not a test result",
+      "description": "One precommit targeted workflow log was produced before its artifact-only claim and is retained as a separate attempt artifact; the canonical f4 result is the postcommit run."
+    },
+    {
+      "classification": "process limitation, not a test result",
+      "description": "An ephemeral cooperative lease token appeared in a tool response during a scope check. The lease was released; the token value is deliberately excluded from this proposal and must not be copied into durable evidence."
+    }
+  ]
+}

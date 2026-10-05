@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "status": "blocked_gate_failure",
+  "source_commit": "f4b5dbb4471005714565852b9237062f337b6592",
+  "working_directory": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+  "toolchain_policy": "Rust 1.99.0 only",
+  "packet_sha256": "53fcb8098e0f421c765dfbf870a15a87a34a49e8a59c1fda980e49b947404c34",
+  "input_hashes": {
+    ".artifacts/preparation/rust199-ci-binding-proposal.json": "8d0794b64189fc30f5c95f53641b83b0cf7d16d757d0aa6895fe8df371322563",
+    ".artifacts/preparation/rust199-ci-selected-context.md": "25a107e9c7d8f60791d6212b70a7b54c2018d188a2021e4248abeafd1b4ed90c",
+    ".github/workflows/ci.yml": "8c48f16f648d3e68c2978e69e9cb1d65f9d9ca28dde87a923c6347a152f85907",
+    "Cargo.lock": "11b299b9ebde57892fa2539e727a28c68fa2857c1366bbc8a310e775a00bdfec",
+    "Cargo.toml": "5bf36d6e1db5f6c0ee37e21bf424d3b97aacd5eb014d611784521a98b7149343",
+    "conductor/ci-security-release.md": "4a7f40379a9967a485a716c59ca58037f3c5abc0ea147eb85d2261d82dc65a72",
+    "conductor/decisions/ADR-0009-current-stable-rust-only.md": "b8b8994cec14039e8dae04f20b93aa688629dd8d2f31469ff42cca4801868ff2",
+    "conductor/dependency-policy.md": "2b84d5a1d90634245f519e4211ec9685f111b5f4da1c02cf55f4452eb7544d55",
+    "conductor/execution/tasks.json": "5271171691916cd300bb0c91b058ff62b9910874e7d466bd2ef652328f89941e",
+    "fuzz/Cargo.lock": "d085a47413df7809965f618d4c8b41a3b813765e86dfd23035ebd3e6cda705ab",
+    "fuzz/Cargo.toml": "c1c0a382b30497c5a86ba204bea6e1068bf2418355b8a72dc7f28c227b048c7a",
+    "fuzz/deny.toml": "ef3f18c69bb997d45c9069a783428887aae81d98a11471c72abb21d13fc434e5",
+    "rust-toolchain.toml": "bd56168b72794297e8f07cd1ca1357cba26ad1cee0d05e1ab38a1cb8c8ad3b28",
+    "tests/test_ci_workflow.py": "09b1f0019bbc157473a177f26b484e74dcac8f40b2e507ef4d49527232f4f42b",
+    "tools/ci_policy.py": "cc97b4b2b6d88f0c8bb7d7cb6153f3cb05427ccf54102a01685a1e155cf36b40",
+    "tools/ci_scope.py": "52c78d24110ec00a287da3a837445b9cea3c6b5692369b46f9394bc9809a5c1c"
+  },
+  "gates": [
+    {
+      "name": "ci-workflow-tests",
+      "argv": [
+        "/opt/homebrew/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_ci_workflow.py",
+        "-v"
+      ],
+      "cwd": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+      "expected_exit": 0,
+      "started_utc": "2026-10-05T07:17:14.131536+00:00",
+      "log_path": ".artifacts/rust199-ci-foundation/ci-workflow-tests.log",
+      "exit": 0,
+      "finished_utc": "2026-10-05T07:17:15.219289+00:00",
+      "log_sha256": "5d3537e244b848c14c80b64fa9d1e635d1c578f0b81359dbd34c966463986e7c",
+      "log_bytes": 3633,
+      "status": "passed"
+    },
+    {
+      "name": "default-feature-workspace-tests-rust199",
+      "argv": [
+        "/bin/sh",
+        "-ec",
+        "export PATH='/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin'; export RUSTUP_TOOLCHAIN=1.99.0 RUSTC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc RUSTDOC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc CARGO_TARGET_DIR=.artifacts/rust199-ci-foundation/target; test \"$(command -v rustc)\" = \"$RUSTC\"; test \"$(command -v rustdoc)\" = \"$RUSTDOC\"; test \"$(command -v cargo)\" = /Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo; test \"$RUSTUP_TOOLCHAIN\" = 1.99.0; cargo test --workspace --lib --bins --tests --locked"
+      ],
+      "cwd": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+      "expected_exit": 0,
+      "started_utc": "2026-10-05T07:17:15.219692+00:00",
+      "log_path": ".artifacts/rust199-ci-foundation/default-feature-workspace-tests-rust199.log",
+      "exit": 0,
+      "finished_utc": "2026-10-05T07:17:27.298987+00:00",
+      "log_sha256": "42c4e42a4b85a0394d08202446ff542bb7a9765bb1b715ab0e24fdadbb54cd76",
+      "log_bytes": 10276,
+      "status": "passed"
+    },
+    {
+      "name": "full-python-harness-rust199-environment",
+      "argv": [
+        "/usr/bin/env",
+        "PATH=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin",
+        "RUSTUP_TOOLCHAIN=1.99.0",
+        "RUSTC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "/opt/homebrew/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "cwd": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+      "expected_exit": 0,
+      "started_utc": "2026-10-05T07:17:27.299463+00:00",
+      "log_path": ".artifacts/rust199-ci-foundation/full-python-harness-rust199-environment.log",
+      "exit": 1,
+      "finished_utc": "2026-10-05T07:18:00.427519+00:00",
+      "log_sha256": "a446b73da3a3b5c723c103e2718c65fba561cc270d1167e16f10c8280b9a682e",
+      "log_bytes": 78328,
+      "status": "failed"
+    }
+  ],
+  "process_limitation": "Prior precommit targeted-suite log was written before the artifact-only claim; it is preserved under attempt-precommit and is not a current-head gate result.",
+  "toolchain_binding": {
+    "version": "1.99.0",
+    "RUSTUP_TOOLCHAIN": "1.99.0",
+    "PATH_prefix": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin",
+    "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+    "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc"
+  },
+  "failure_summary": {
+    "gate": "full-python-harness-rust199-environment",
+    "tests_run": 497,
+    "failed_tests": 1,
+    "test": "test_d34_ci.D34CiTests.test_context_benchmark_runs_after_quality_inventory_without_native_gate",
+    "oracle": "The existing out-of-scope test expects the removed `cargo +1.99.0 build` spelling; CI now uses canonical PATH/RUSTUP_TOOLCHAIN/RUSTC/RUSTDOC binding and plain `cargo build`, per sole-toolchain policy.",
+    "disposition": "Escalated to root; no out-of-scope harness file changed."
+  },
+  "finished_utc": "2026-10-05T07:18:00.427519+00:00"
+}
