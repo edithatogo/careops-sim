@@ -41,3 +41,13 @@ and all eight Arrow1.88 cases. The duplicate push run37261797288 is tracked
 separately and does not replace that completed proof. Compatibility gate CI
 initially rejected the stale fd21188 receipt; source hashes are unchanged and
 the corrected receipt now binds the combined reviewed head and actual owner run.
+
+## Final combined hosted readback
+
+Both native-owner runs37261780875/37261797288 completed successfully at
+Kairosd497d5f. All reported child checks completed successfully or with explicit
+conditional skips. Parentfdc986f has14 successful reported checks.
+[Exact-head readback](combined-final-hosted.json) preserves both rollups.
+Local compatibility/context/catalog/MVP checks pass on this combined pin.
+The earlier pending statements are historical; independent final closeout review
+and publication remain pending. No runtime C2 acceptance follows.
