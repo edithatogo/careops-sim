@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "base_commit": "f4b5dbb4471005714565852b9237062f337b6592",
+  "tested_source_path": "tests/test_d34_ci.py",
+  "source_sha256_before": "d4b3d3b4ac68f097918e51b38f66257e2c9df77350279fe362ed1cb3a47387ea",
+  "source_sha256_tested": "61515e61e00c9815413a680d1e50d87acd711bb7215bb7c1018936784b35bc53",
+  "working_tree_scope": "tests/test_d34_ci.py only; all other packet inputs unchanged",
+  "toolchain_binding": {
+    "version": "1.99.0",
+    "env": {
+      "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin",
+      "RUSTUP_TOOLCHAIN": "1.99.0",
+      "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+      "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc"
+    }
+  },
+  "preserved_prior_failure": {
+    "path": ".artifacts/rust199-d34-assertion/attempt-before-fix/full-python-harness-rust199-environment.log",
+    "sha256": "a446b73da3a3b5c723c103e2718c65fba561cc270d1167e16f10c8280b9a682e"
+  },
+  "gates": [
+    {
+      "name": "d34-target-tests",
+      "argv": [
+        "/opt/homebrew/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_d34_ci.py",
+        "-v"
+      ],
+      "cwd": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+      "expected_exit": 0,
+      "env_binding": {
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin",
+        "RUSTUP_TOOLCHAIN": "1.99.0",
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc"
+      },
+      "started_utc": "2026-10-05T07:21:43.579680+00:00",
+      "log_path": ".artifacts/rust199-d34-assertion/d34-target-tests.log",
+      "exit": 0,
+      "finished_utc": "2026-10-05T07:21:43.665768+00:00",
+      "log_sha256": "f21f7edb9ba6cac430de1a3ca27a9c760e1f6a5f66b959e067a6f78e2313677a",
+      "log_bytes": 412,
+      "status": "passed"
+    },
+    {
+      "name": "full-python-harness-rust199-environment",
+      "argv": [
+        "/usr/bin/env",
+        "PATH=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin",
+        "RUSTUP_TOOLCHAIN=1.99.0",
+        "RUSTC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "/opt/homebrew/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "cwd": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+      "expected_exit": 0,
+      "env_binding": {
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin",
+        "RUSTUP_TOOLCHAIN": "1.99.0",
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc"
+      },
+      "started_utc": "2026-10-05T07:21:43.666564+00:00",
+      "log_path": ".artifacts/rust199-d34-assertion/full-python-harness-rust199-environment.log",
+      "exit": 0,
+      "finished_utc": "2026-10-05T07:22:20.692652+00:00",
+      "log_sha256": "518b29c10303ccab8593254bddd856d539122901b7bf8bb0a34c180d639a6257",
+      "log_bytes": 76578,
+      "status": "passed"
+    }
+  ],
+  "completed_utc": "2026-10-05T07:22:20.693183+00:00"
+}
