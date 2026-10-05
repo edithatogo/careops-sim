@@ -1,0 +1,116 @@
+ Downloading crates ...
+  Downloaded sha2 v0.11.0
+  Downloaded digest v0.11.3
+  Downloaded itoa v1.0.18
+  Downloaded zmij v1.0.21
+  Downloaded hybrid-array v0.4.15
+  Downloaded crypto-common v0.2.2
+  Downloaded typenum v1.20.1
+  Downloaded memchr v2.8.0
+  Downloaded const-oid v0.10.2
+  Downloaded serde_core v1.0.228
+  Downloaded cpufeatures v0.3.1
+  Downloaded serde_json v1.0.149
+  Downloaded block-buffer v0.12.1
+   Compiling typenum v1.20.1
+   Compiling zmij v1.0.21
+   Compiling serde_core v1.0.228
+   Compiling serde_json v1.0.149
+   Compiling const-oid v0.10.2
+   Compiling kairo-ecs-types v0.0.0 (/Users/runner/work/kairos/kairos/crates/kairo-ecs-types)
+   Compiling hybrid-array v0.4.15
+   Compiling cpufeatures v0.3.1
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.0
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling kairo-ecs-arrow v0.1.0 (/Users/runner/work/kairos/kairos/crates/kairo-ecs-arrow)
+   Compiling kairo-ecs-rng v0.0.0 (/Users/runner/work/kairos/kairos/crates/kairo-ecs-rng)
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.0
+   Compiling kairo-ecs-calibration v0.1.0 (/Users/runner/work/kairos/kairos/crates/kairo-ecs-calibration)
+warning: this lint expectation is unfulfilled
+ --> crates/kairo-ecs-calibration/src/lib.rs:8:5
+  |
+8 |     dead_code,
+  |     ^^^^^^^^^
+  |
+  = note: Private cohort adapter is qualified by C4.2 integration tests; public API review remains open
+  = note: `#[warn(unfulfilled_lint_expectations)]` on by default
+
+warning: this lint expectation is unfulfilled
+  --> crates/kairo-ecs-calibration/src/lib.rs:33:9
+   |
+33 |         dead_code,
+   |         ^^^^^^^^^
+   |
+   = note: Private C1 adapters are exercised by conformance tests; public API review is pending
+
+warning: this lint expectation is unfulfilled
+  --> crates/kairo-ecs-calibration/src/lib.rs:43:9
+   |
+43 |         dead_code,
+   |         ^^^^^^^^^
+   |
+   = note: Private C1 adapters are exercised by conformance tests; public API review is pending
+
+warning: this lint expectation is unfulfilled
+  --> crates/kairo-ecs-calibration/src/lib.rs:71:9
+   |
+71 |         dead_code,
+   |         ^^^^^^^^^
+   |
+   = note: Private C1 adapters are exercised by conformance tests; public API review is pending
+
+warning: `kairo-ecs-calibration` (lib) generated 4 warnings
+warning: this lint expectation is unfulfilled
+ --> crates/kairo-ecs-calibration/tests/../src/arrow_output.rs:3:5
+  |
+3 |     dead_code,
+  |     ^^^^^^^^^
+  |
+  = note: private C4.3 codec is path-imported by its focused integration qualification
+  = note: `#[warn(unfulfilled_lint_expectations)]` on by default
+
+warning: `kairo-ecs-calibration` (test "arrow_output_c43") generated 1 warning
+warning: `kairo-ecs-calibration` (test "sidecar_pipeline_c43") generated 1 warning (1 duplicate)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.00s
+     Running tests/arrow_output_c43.rs (target/debug/deps/arrow_output_c43-2f4842b4cb8f3672)
+
+running 7 tests
+test c43_rejects_inconsistent_residual_unknown_fields_and_duplicate_records ... ok
+test c43_residual_sort_uses_raw_string_order_for_escaped_ids ... ok
+test c43_roundtrips_full_width_ticks_nulls_and_canonical_strata ... ok
+test c43_schemas_preserve_empty_shapes_and_output_types ... ok
+test c43_sort_uses_full_residual_identity_and_numeric_occurrence ... ok
+test c43_validates_frozen_keys_metric_semantics_and_decode_rows ... ok
+test c43_actual_ipc_file_stream_and_parquet_roundtrip ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/sidecar_adapter_c43.rs (target/debug/deps/sidecar_adapter_c43-b4e7ad315c60a8ad)
+
+running 12 tests
+test c43_contradictory_source_clocks_fail_and_retain_both_raw_sides ... ok
+test c43_empty_residual_population_still_emits_declared_empty_metric_summaries ... ok
+test c43_emits_c0_sidecars_from_kernels_and_joins_explicit_event ... ok
+test c43_in_window_nonpoint_is_ineligible_but_not_window_excluded ... ok
+test c43_failed_prediction_preserves_reference_censor_and_missing_lineage ... ok
+test c43_input_permutation_preserves_logical_records_and_metric_bits ... ok
+test c43_max_u128_is_exact_and_window_exclusion_does_not_rewrite_point_residual ... ok
+test c43_invalid_run_event_hash_and_duplicate_key_fail_with_raw_diagnostics ... ok
+test c43_noncomputed_statuses_keep_null_contract_and_overlapping_counts ... ok
+test c43_structurally_invalid_metric_rows_fail_with_both_raw_cohorts ... ok
+test c43_paired_metric_denominator_is_matched_pairs_and_manifest_keeps_cohort_counts ... ok
+test c43_unmatched_missing_failed_and_infeasible_pairs_keep_schema_statuses ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/sidecar_pipeline_c43.rs (target/debug/deps/sidecar_pipeline_c43-45d7edc29bbe9342)
+
+running 2 tests
+test c43_empty_runtime_preserves_typed_residual_schema_and_null_metrics ... ok
+test c43_runtime_records_and_hashes_survive_permutation_and_physical_framing ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+

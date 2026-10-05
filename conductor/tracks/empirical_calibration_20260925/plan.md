@@ -164,9 +164,10 @@ Entry: C0/C1 schemas; may proceed before C3 using synthetic predictions. Owner 2
   insufficient-data statuses. No automatic classical KS p-value for clustered,
   tied records. Optional inference requires separate documented validity tests.
   Runtime accepted: [retained C4.2 evidence](../../evidence/c4.2-completion-20261005/README.md); private development pin `21e48b2`, runtime source `59d7dbb`; public API, C4.3 and C4.4/C-04 remain open.
-- [ ] C4.3 Emit calibration_residual.v1/calibration_metric.v1 through actual Arrow
+- [x] C4.3 Emit calibration_residual.v1/calibration_metric.v1 through actual Arrow
   IO, joined to existing run/event records. Verify stable reduction order and
   compatibility without altering event_log.v1 field types.
+  IO accepted: [C4.3 evidence](../../evidence/c4.3-completion-20261005/README.md); combined development pin `4e0cce4` preserves C2 `65858ad`. C4.4/C-04 remains open for emitted tie counts/derived coverage warnings and phase review.
 - [ ] C4.4 Conductor — review and verify phase (workflow.md).
 
 Exit: C-04; analytic examples match and independent oracle errors satisfy C0
