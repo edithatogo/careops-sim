@@ -98,7 +98,7 @@ Historical readback retained. Fresh corrected independent readback verifies 666 
 Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
 21 model adapter, 01 RNG and 22 scenario configuration review.
 
-- [ ] C2.0 Freeze the provider/admission/transit-observation seams and write
+- [x] C2.0 Freeze the provider/admission/transit-observation seams and write
   independently reviewed test-first mode and paired integration fixtures. Record
   expected red evidence for absent runtime APIs without claiming runtime acceptance;
   this preparation gate enables C2.2 implementation, not C2.1 completion.
