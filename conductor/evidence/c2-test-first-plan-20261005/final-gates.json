@@ -1,0 +1,90 @@
+{
+  "status": "planning dependency repair independently reviewed; publication/CI open",
+  "commands": [
+    {
+      "argv": [
+        "/opt/homebrew/bin/python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": "/private/tmp/careops-c2-plan-20261005",
+      "head_before_commit": "1a76cbb6e9705028703fc24548cc0ae4560ee586",
+      "dirty_source": true,
+      "toolchain": "Python 3.14.8",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2-test-first-plan-20261005/catalog.log",
+      "log_sha256": "3c9b46c6f92523f90a202f40d3e7982f5d6fb0fecc2022fd38bc0a271d22661d"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": "/private/tmp/careops-c2-plan-20261005",
+      "head_before_commit": "1a76cbb6e9705028703fc24548cc0ae4560ee586",
+      "dirty_source": true,
+      "toolchain": "Python 3.14.8",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2-test-first-plan-20261005/recipes.log",
+      "log_sha256": "a658533633a3a7ce2ea0358f6af8f02526b3cbfb84019b24494d97953580a8ed"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_tasks.py",
+        "-v"
+      ],
+      "cwd": "/private/tmp/careops-c2-plan-20261005",
+      "head_before_commit": "1a76cbb6e9705028703fc24548cc0ae4560ee586",
+      "dirty_source": true,
+      "toolchain": "Python 3.14.8",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2-test-first-plan-20261005/task-tests.log",
+      "log_sha256": "2281072699b012a476b0b6b069132b1beb8dfc801e1b1b6570dc7297af0bf7bf"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_mvp.py",
+        "-v"
+      ],
+      "cwd": "/private/tmp/careops-c2-plan-20261005",
+      "head_before_commit": "1a76cbb6e9705028703fc24548cc0ae4560ee586",
+      "dirty_source": true,
+      "toolchain": "Python 3.14.8",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2-test-first-plan-20261005/mvp-tests-final.log",
+      "log_sha256": "3ed411094c53794fb719ced2bc3e0e9663fd3e4c1bfec5e70a31933194bf0841"
+    }
+  ],
+  "input_source_hashes": {
+    "tests/test_mvp.py": "019924bb47890f1817987a0a4f3bbb8babf17e4a76db9b0aeedcc5e531b3d5e2",
+    "conductor/index.md": "17d0e7c2b7ae6e3f191c174fa926c24d48792a69197cc7368fad4b48bcead210",
+    "tools/tasks.py": "e3877bb04df4f1f9c80c4250ecd6476d5b4bc688c450dc793f5010af4bd0b4fb",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "1c18f1db7358b0f9fea325cdde2b220600c140d454eb011f72832b51c9f3d904",
+    "conductor/execution/tasks.json": "7a9de93444cfe92311c788230ad7368315423bbb18a36c874eb2ede244a711d2",
+    "conductor/execution/mvp/recipes.json": "a2fbc29b0571f6e071009a531dde1c7414e1e1e3aef55d86da9754a8580934ea",
+    "conductor/execution/mvp/README.md": "3c0b25fff92374934d3dac4d2f42f93c711859a525889694ddc59927d49b632b",
+    "conductor/decisions/ADR-0008-c2-test-first-join.md": "0b768699f3d60b53c4500bcf78954181b9df69ba4b6ffabca346c7e05e080c28"
+  },
+  "reviewer": "independent gpt-6-luna c21_paired_preparation",
+  "catalog_tasks": 144,
+  "mvp_parents": 81,
+  "mvp_leaves": 251,
+  "unchanged_existing_accepted_status": true,
+  "no_runtime_acceptance": true,
+  "historical_failures": "draft-gates.json retains prior package-invocation and stale80-count failures; not current gate state"
+}
