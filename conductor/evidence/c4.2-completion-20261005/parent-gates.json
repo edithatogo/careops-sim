@@ -1,0 +1,86 @@
+[
+  {
+    "id": "c42-parent-context",
+    "cwd": "/private/tmp/careops-c42-20261005",
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "tools/context.py",
+      "check"
+    ],
+    "inputs": [
+      "conductor/current-state.json",
+      "conductor/evidence/d2.4-kairos-contract.json",
+      "conductor/tracks/empirical_calibration_20260925/plan.md",
+      "conductor/execution/tasks.json"
+    ],
+    "interpretation": "Parent planning/harness integrity; no runtime/release acceptance inferred"
+  },
+  {
+    "id": "c42-parent-tasks",
+    "cwd": "/private/tmp/careops-c42-20261005",
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "tools/tasks.py",
+      "check"
+    ],
+    "inputs": [
+      "conductor/current-state.json",
+      "conductor/evidence/d2.4-kairos-contract.json",
+      "conductor/tracks/empirical_calibration_20260925/plan.md",
+      "conductor/execution/tasks.json"
+    ],
+    "interpretation": "Parent planning/harness integrity; no runtime/release acceptance inferred"
+  },
+  {
+    "id": "c42-parent-mvp",
+    "cwd": "/private/tmp/careops-c42-20261005",
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "tools/mvp.py",
+      "check"
+    ],
+    "inputs": [
+      "conductor/current-state.json",
+      "conductor/evidence/d2.4-kairos-contract.json",
+      "conductor/tracks/empirical_calibration_20260925/plan.md",
+      "conductor/execution/tasks.json"
+    ],
+    "interpretation": "Parent planning/harness integrity; no runtime/release acceptance inferred"
+  },
+  {
+    "id": "c42-parent-harness",
+    "cwd": "/private/tmp/careops-c42-20261005",
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "inputs": [
+      "conductor/current-state.json",
+      "conductor/evidence/d2.4-kairos-contract.json",
+      "conductor/tracks/empirical_calibration_20260925/plan.md",
+      "conductor/execution/tasks.json"
+    ],
+    "interpretation": "Parent planning/harness integrity; no runtime/release acceptance inferred"
+  },
+  {
+    "id": "c42-parent-diff",
+    "cwd": "/private/tmp/careops-c42-20261005",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "inputs": [
+      "conductor/current-state.json",
+      "conductor/evidence/d2.4-kairos-contract.json",
+      "conductor/tracks/empirical_calibration_20260925/plan.md",
+      "conductor/execution/tasks.json"
+    ],
+    "interpretation": "Parent planning/harness integrity; no runtime/release acceptance inferred"
+  }
+]

@@ -77,3 +77,7 @@ their original delivery, superseded for C0/C1 only by recorded acceptance.
 ## C4.1 fixture preparation — 5 October 2026
 
 Accepted source `6a17578a16d4bb13969961dfd116b3afaf7c8c6c`, evidence successor `a2cdeab33286e14db59f377449816702e79b2a6a`: 42 synthetic fixtures, eight native tests on Rust 1.99/1.88, ten Python tests, 23 pinned SciPy crosschecks and 28 independent exact numeric readbacks. Archive independently verified (137 members). Exact-head Linux/macOS native owner CI passed. [Evidence](../../evidence/c4.1-completion-20261005/README.md). Actual runtime candidate gate remains expected red; C4.2, C4.3, C4.4/C-04, clinical and release acceptance remain open.
+
+## C4.2 private runtime qualification — 5 October 2026
+
+Actual runtime source `59d7dbb0c004654e3da90951d42e2b983ef23993`; reviewed development head `21e48b257b5c89dd9756b647d9ee17f698f9496b` in Kairos draft PR221. All 42 frozen cases pass in Rust on 1.99/1.88 and an independent exact Python comparator. Full calibration: 119 pass/4 named ignores on each toolchain; strict current Clippy and formatting pass. False commit/toolchain and mutated metric fail as required. Exact-head Linux/macOS native owner CI and all 42 non-skipped child checks pass. Archive142 members independently read back. [Evidence and limits](../../evidence/c4.2-completion-20261005/README.md). Private API only; C4.3 Arrow, C4.4/C-04, clinical/release gates remain open. Historical C1/Q5/C4.1 records remain intact; parent publication is recorded separately.
