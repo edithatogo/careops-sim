@@ -5202,6 +5202,7 @@
       "task_id": "C2.1",
       "task_objective_sha256": "18487c556746840be75910f6f7b6d4ce282a51428c4613c593cd2ceb38eec719",
       "parent_dependencies": [
+        "C2.2",
         "C2.3"
       ],
       "source": {
@@ -5225,6 +5226,7 @@
           "output": "Mode resolution/boundary fixtures",
           "oracle": "Macro emits no transit; active/suspended work cannot disappear on mode changes",
           "dependencies": [
+            "C2.2.policy",
             "C2.3.dispatch"
           ],
           "approval": "coordinator_acceptance_required",
@@ -5244,7 +5246,9 @@
           "output": "Paired Macro/zero-transit Micro oracle",
           "oracle": "Same purpose draws and equal canonical outcomes in zero-transit fixture",
           "dependencies": [
-            "C2.1.mode"
+            "C2.1.mode",
+            "C2.2.seeds",
+            "C2.3.dispatch"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
@@ -5322,7 +5326,8 @@
           "output": "Stable task/purpose stream integration",
           "oracle": "No thread/wall-clock identity in keys; resume preserves mode and stream state",
           "dependencies": [
-            "C2.2.policy"
+            "C2.2.policy",
+            "C2.3.dispatch"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
@@ -5339,7 +5344,7 @@
       "task_id": "C2.3",
       "task_objective_sha256": "c76bbb24d73c9a83071ba3e64cd423ce3e4747e4f71d8b49b48f8b3f8cb08876",
       "parent_dependencies": [
-        "C2.2"
+        "C2.0"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
@@ -5362,7 +5367,7 @@
           "output": "Deterministic shortest-path implementation",
           "oracle": "Known route length correct; equal routes tie stably; unreachable gives typed error",
           "dependencies": [
-            "C2.2.seeds"
+            "C2.0.red-tests"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",

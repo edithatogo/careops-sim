@@ -203,3 +203,40 @@ class PacketTests(unittest.TestCase):
         self.assertTrue(any('Base commit drift' in e for e in tasks.packet_errors(self.root,self.packet)))
 
 if __name__=='__main__':unittest.main()
+
+class ExplicitDependencyTests(unittest.TestCase):
+    def test_c2_independent_foundations_and_full_join(self):
+        by = {t['id']: t for t in tasks.derive(tasks.ROOT)['tasks']}
+        self.assertEqual(by['C2.2']['dependencies'], ['C2.0'])
+        self.assertEqual(by['C2.3']['dependencies'], ['C2.0'])
+        self.assertEqual(by['C2.1']['dependencies'], ['C2.2', 'C2.3'])
+        self.assertEqual(by['C2.4']['dependencies'], ['C2.1'])
+        self.assertEqual(by['C2.0']['dependencies'], ['C0.4', 'P3.4'])
+
+    def test_override_errors_rejected_during_derivation(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            for source in (tasks.ROOT/'conductor/tracks').iterdir():
+                if not source.is_dir(): continue
+                target = root/'conductor/tracks'/source.name
+                target.mkdir(parents=True)
+                for name in ('metadata.json', 'plan.md'):
+                    (target/name).write_bytes((source/name).read_bytes())
+            path = root/'conductor/tracks/empirical_calibration_20260925/metadata.json'
+            baseline = json.loads(path.read_text())
+            for override in ({'C9.9':['C2.0']}, {'C2.3':['C9.9']}, {'C2.3':['C2.1']}, {'C2.3':'C2.0'}):
+                meta = copy.deepcopy(baseline)
+                meta['task_dependency_overrides'].update(override)
+                path.write_text(json.dumps(meta))
+                with self.assertRaises(ValueError): tasks.derive(root)
+
+    def test_malformed_override_containers_fail_deliberately(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            target = root/'conductor/tracks/example'
+            target.mkdir(parents=True)
+            for field in ('task_dependency_overrides', 'leaf_dependency_overrides'):
+                for malformed in (None, [], 'C2.0', 7):
+                    (target/'metadata.json').write_text(json.dumps({field: malformed}))
+                    with self.assertRaisesRegex(ValueError, 'Invalid '+field):
+                        tasks.derive(root)

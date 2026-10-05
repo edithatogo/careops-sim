@@ -74,6 +74,13 @@ def derive(root):
             continue
         meta = json.loads((folder/'metadata.json').read_text())
         metas.append(meta)
+        for field in ('task_dependency_overrides', 'leaf_dependency_overrides'):
+            overrides = meta.get(field, {})
+            if not isinstance(overrides, dict) or any(not isinstance(key, str) for key in overrides) or any(
+                not isinstance(dependencies, list) or not all(isinstance(d, str) for d in dependencies)
+                for dependencies in overrides.values()
+            ):
+                raise ValueError(f'Invalid {field}')
         plan = folder/'plan.md'
         lines = plan.read_text().splitlines()
         phase = None
@@ -97,7 +104,8 @@ def derive(root):
                 raise ValueError(f'{task_id}: task is outside its declared phase')
             phase_key = f"{meta['track_id']}:{phase}"
             siblings = phase_tasks.setdefault(phase_key, [])
-            dependencies = siblings[-1:]
+            overrides = meta.get('task_dependency_overrides', {})
+            dependencies = list(overrides.get(task_id, siblings[-1:]))
             siblings.append(task_id)
             review = 'Conductor — review and verify phase' in match[3]
             kind = 'review_integrate' if review else ('contract_decision' if phase.endswith('0') or task_id in COORDINATOR_TASKS else 'bounded_work')
@@ -119,10 +127,24 @@ def derive(root):
                 'model_route': 'coordinator' if kind != 'bounded_work' else 'gpt-6-luna_candidate_after_packet_review',
                 'phase_acceptance_source': str(plan.relative_to(root)) + '#' + phase,
             })
+        for leaf_id, dependencies in meta.get('leaf_dependency_overrides', {}).items():
+            parent_id = '.'.join(leaf_id.split('.')[:2])
+            parent = next((task for task in tasks if task['id'] == parent_id and task['track_id'] == meta['track_id']), None)
+            if parent is None or not isinstance(dependencies, list) or not all(isinstance(d, str) for d in dependencies):
+                raise ValueError(f'Invalid leaf dependency override: {leaf_id}')
+            parent.setdefault('leaf_dependency_overrides', {})[leaf_id] = dependencies
     by_id = {task['id']: task for task in tasks}
     if len(by_id) != len(tasks):
         raise ValueError('Task IDs must be unique across tracks')
     for meta in metas:
+        overrides = meta.get('task_dependency_overrides', {})
+        if not isinstance(overrides, dict):
+            raise ValueError('Task dependency overrides must be a mapping')
+        for task_id, dependencies in overrides.items():
+            if task_id not in by_id or by_id[task_id]['track_id'] != meta['track_id']:
+                raise ValueError(f'Unknown task dependency override: {task_id}')
+            if not isinstance(dependencies, list) or not all(isinstance(d, str) for d in dependencies):
+                raise ValueError(f'Invalid task dependency override: {task_id}')
         for phase, dependencies in meta['phase_dependencies'].items():
             current = phase_tasks[f"{meta['track_id']}:{phase}"][0]
             for dependency in dependencies:

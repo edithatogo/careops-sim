@@ -56,6 +56,7 @@ def validate(root, catalog, recipes):
             errors.append('Parent lacks leaves')
         for i, leaf in enumerate(row['leaves']):
             expected = [row['leaves'][i-1]['id']] if i else [last.get(d) for d in parent['dependencies']]
+            expected = parent.get('leaf_dependency_overrides', {}).get(leaf['id'], expected)
             if leaf['dependencies'] != expected:
                 errors.append(f"Leaf prerequisite/join mismatch: {leaf['id']}")
             if not leaf['id'].startswith(parent['id']+'.'):
@@ -71,6 +72,13 @@ def validate(root, catalog, recipes):
                 if not 0 < leaf.get(field,0) <= maximum: errors.append(f'Invalid budget: {field}')
             for path in row['context_sources']:
                 if not (root/path).is_file(): errors.append(f'Missing context source: {path}')
+    overrides = {key: value for task in catalog['tasks'] for key, value in task.get('leaf_dependency_overrides', {}).items()}
+    if set(overrides) - set(leaf_ids):
+        errors.append('Unknown leaf dependency override')
+    try:
+        tasks.validate({'tasks': [dict(id=leaf['id'], dependencies=leaf['dependencies'], accepted=False) for leaf in leaves]})
+    except (ValueError, KeyError) as error:
+        errors.append(f'Invalid leaf dependency graph: {error}')
     return errors
 
 
