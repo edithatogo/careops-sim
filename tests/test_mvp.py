@@ -85,3 +85,25 @@ class BindingTests(unittest.TestCase):
         self.assertTrue(any('Cross-repository source hash drift' in e for e in errors))
 
 if __name__=='__main__':unittest.main()
+
+class ExplicitLeafDependencyTests(unittest.TestCase):
+    def test_actual_c2_join_preserves_transit_and_owned_resume(self):
+        catalog = mvp.tasks.derive(ROOT)
+        recipes = json.loads((ROOT/mvp.RECIPES).read_text())
+        self.assertEqual(mvp.validate(ROOT, catalog, recipes), [])
+        leaves = {l['id']: l for t in recipes['tasks'] for l in t['leaves']}
+        self.assertEqual(leaves['C2.3.routing']['dependencies'], ['C2.0.red-tests'])
+        self.assertEqual(leaves['C2.2.seeds']['dependencies'], ['C2.2.policy', 'C2.3.dispatch'])
+        self.assertEqual(leaves['C2.1.paired']['dependencies'], ['C2.1.mode', 'C2.2.seeds', 'C2.3.dispatch'])
+        leaves['C2.2.seeds']['dependencies'] = ['C2.2.policy']
+        self.assertTrue(any('mismatch' in e for e in mvp.validate(ROOT, catalog, recipes)))
+
+    def test_unknown_override_and_leaf_cycle_fail(self):
+        catalog = mvp.tasks.derive(ROOT)
+        recipes = json.loads((ROOT/mvp.RECIPES).read_text())
+        task = next(t for t in catalog['tasks'] if t['id'] == 'C2.2')
+        task['leaf_dependency_overrides']['C2.2.missing'] = ['C2.0.red-tests']
+        self.assertIn('Unknown leaf dependency override', mvp.validate(ROOT, catalog, recipes))
+        leaves = {l['id']: l for t in recipes['tasks'] for l in t['leaves']}
+        leaves['C2.3.routing']['dependencies'] = ['C2.2.seeds']
+        self.assertTrue(any('cycle' in e for e in mvp.validate(ROOT, catalog, recipes)))

@@ -116,8 +116,11 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   Macro fixture, and changing mode never discards active or suspended work.
 - [ ] C2.4 Conductor — review and verify phase (workflow.md).
 
-Execution order is preparation C2.0, implementation C2.2/C2.3, then full runtime
-join C2.1 and phase review C2.4. All C2.1 original oracles remain mandatory; a
+After preparation C2.0, C2.2 provider/policy and C2.3 generic routing have
+independent foundations. The frozen calibration bridge names actual transit
+types, so the full C2.2 owned-stream/resume join waits for C2.3 dispatch. Both
+completed branches gate full runtime join C2.1 and phase review C2.4. Dependency
+readiness does not grant parallel writes: overlapping path claims remain serial. All C2.1 original oracles remain mandatory; a
 fixed-duration fixture, disconnected RNG check, compile failure or missing transit
 API cannot satisfy paired acceptance. Existing mode-test source is preliminary
 evidence, not an accepted C2.1 leaf before C2.3. See

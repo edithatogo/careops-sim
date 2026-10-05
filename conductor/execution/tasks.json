@@ -2439,6 +2439,7 @@
       "kind": "bounded_work",
       "accepted": false,
       "dependencies": [
+        "C2.2",
         "C2.3"
       ],
       "source": {
@@ -2458,7 +2459,18 @@
       ],
       "dispatch_gate": "reviewed_leaf_packet_required",
       "model_route": "gpt-6-luna_candidate_after_packet_review",
-      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2",
+      "leaf_dependency_overrides": {
+        "C2.1.mode": [
+          "C2.2.policy",
+          "C2.3.dispatch"
+        ],
+        "C2.1.paired": [
+          "C2.1.mode",
+          "C2.2.seeds",
+          "C2.3.dispatch"
+        ]
+      }
     },
     {
       "id": "C2.2",
@@ -2487,7 +2499,13 @@
       ],
       "dispatch_gate": "reviewed_leaf_packet_required",
       "model_route": "gpt-6-luna_candidate_after_packet_review",
-      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2",
+      "leaf_dependency_overrides": {
+        "C2.2.seeds": [
+          "C2.2.policy",
+          "C2.3.dispatch"
+        ]
+      }
     },
     {
       "id": "C2.3",
@@ -2497,7 +2515,7 @@
       "kind": "bounded_work",
       "accepted": false,
       "dependencies": [
-        "C2.2"
+        "C2.0"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
@@ -2559,7 +2577,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 134
+        "line": 137
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2587,7 +2605,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 139
+        "line": 142
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2615,7 +2633,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 142
+        "line": 145
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2643,7 +2661,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 145
+        "line": 148
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2670,7 +2688,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 156
+        "line": 159
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2698,7 +2716,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 162
+        "line": 165
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2726,7 +2744,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 167
+        "line": 170
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2754,7 +2772,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 171
+        "line": 174
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2782,7 +2800,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 182
+        "line": 185
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2810,7 +2828,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 187
+        "line": 190
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2838,7 +2856,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 193
+        "line": 196
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2866,7 +2884,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 196
+        "line": 199
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2894,7 +2912,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 199
+        "line": 202
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2924,7 +2942,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 210
+        "line": 213
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2952,7 +2970,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 214
+        "line": 217
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2980,7 +2998,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 221
+        "line": 224
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -3008,7 +3026,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 224
+        "line": 227
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -3036,7 +3054,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 228
+        "line": 231
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
