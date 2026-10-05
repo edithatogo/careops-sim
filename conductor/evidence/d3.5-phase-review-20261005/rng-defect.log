@@ -1,0 +1,33 @@
+   Compiling kairo-ecs-rng v0.0.0 (/private/tmp/careops-d35-20261005/.artifacts/d35/fifo-mutant/libs/kairos/crates/kairo-ecs-rng)
+warning: unused variable: `run_seed`
+  --> crates/kairo-ecs-rng/src/lib.rs:33:27
+   |
+33 | pub fn derive_entity_seed(run_seed: u64, entity: EntityId) -> u64 {
+   |                           ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_run_seed`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: `kairo-ecs-rng` (lib test) generated 1 warning (run `cargo fix --lib -p kairo-ecs-rng --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.29s
+     Running unittests src/lib.rs (/private/tmp/careops-d35-20261005/.artifacts/d35/target/debug/deps/kairo_ecs_rng-9ba8bdcfb5702227)
+
+running 1 test
+test tests::different_run_seeds_diverge ... FAILED
+
+failures:
+
+---- tests::different_run_seeds_diverge stdout ----
+
+thread 'tests::different_run_seeds_diverge' (48967280) panicked at crates/kairo-ecs-rng/src/lib.rs:171:9:
+assertion `left != right` failed
+  left: 2545593947906976329
+ right: 2545593947906976329
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tests::different_run_seeds_diverge
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p kairo-ecs-rng --lib`

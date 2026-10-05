@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "status": "D3_development_phase_review_accepted_publication_pending",
+  "base_commit": "2ace1df1b3d63b65b5f22617713382ec7cfce203",
+  "kairos_pin": "21e48b257b5c89dd9756b647d9ee17f698f9496b",
+  "source_hashes": {
+    ".github/workflows/ci.yml": "7d640b1f81179e8fc427c5cce4b09083f30411714b10585f48adbd7d320791bf",
+    "crates/careops-ed/src/lib.rs": "4f7917f3976d84b86a1b2b6837065c803d75b29d6b4f594abbbb7ceaedc57380",
+    "crates/careops-ed/tests/d3_regressions.rs": "78f9fc2c4d6673adf01e196803ae6f9a21bf8fb890349b57636521da281a4531",
+    "tools/quality_support.py": "8703a1cbb34d55aef4e2316a4f40639fd79780c146bb7fc7f4fb969d1232c7a8",
+    "tools/quality_mutations.py": "f0ae53f9aa9963cb707d85eaed5feb2f3d9e00d3cd9dc4932fab6ad59f456eac",
+    "tools/quality_metrics.py": "24d7a2e5eeb8626c4e9b117d17ae9adf036c0fa886c0f5b3d466adf3ff8b76ad",
+    "tools/ed_benchmarks.py": "b59063db643e96c62bfec952570afe4e0e35bc5ee64cd3f51b1ac75c00011589",
+    "tools/ed_benchmark_process.py": "65b6f94a1d15e65876fc8348265ad597f39814de17f9bc32349c36c8b435f90a"
+  },
+  "native_tests": 80,
+  "python_tests": 491,
+  "manual_defects": {
+    "FIFO_queue": "detected_exit101",
+    "wait_metric_plus1": "detected_exit101",
+    "run_seed_ignored": "baseline_pass_then_detected_exit101"
+  },
+  "production_source_unchanged": true,
+  "release_hold": {
+    "command": "/opt/homebrew/bin/python3 tools/quality_support.py --root . --release",
+    "cwd": "/private/tmp/careops-d35-20261005",
+    "exit": 1,
+    "reason": "no owner-approved stable API baseline"
+  },
+  "review_panel": {
+    "requested_model": "gpt-6-luna",
+    "served_model_not_attested": true,
+    "evidence_review": "development acceptance recommended; publication and manual reservations independently resolved by actual readback and fresh three-defect proof",
+    "gate_review": "no concrete blockers; source/test inspection only; same-PR trust boundary remains",
+    "candidate_review": "No D3.5 blocker; manual queue/metric/RNG and prior publication reservations resolved; final-head CI/merge still required.",
+    "candidate_checked_artifacts": [
+      "README.md",
+      "commands.json",
+      "manual-defect.json",
+      "additional-manual-defects.json",
+      "hosted-d34-final.json",
+      "pr63-publication.json"
+    ]
+  },
+  "verified_prior_publication": {
+    "pr61": "merged0cc8d10",
+    "pr63": "merged2ace1df",
+    "integrated_head": "8baf4a574c9c01f8c6c373a24e31ad204ddefdfa",
+    "hosted_run": 37246651490,
+    "conclusion": "success"
+  },
+  "limitations": [
+    "Synthetic E0 supplied-work engine; no full ED MVP or clinical calibration",
+    "E0 seed is metadata; RNG defect proof targets Kairos entity seed derivation, not stochastic ED behavior",
+    "CodeQL unavailable under documented D3.2 disposition; not a completed scan",
+    "No approved stable API release baseline; Track25/D4 hold preserved",
+    "Native byte limits, cooperative cancellation, output atomicity and runner hardening remain E3/D4",
+    "Process soak is not in-process leak or advanced-backend acceptance",
+    "D4 entry still requires C6.5 and E3.4; do not start release work prematurely"
+  ],
+  "commands_receipt": "commands.json"
+}
