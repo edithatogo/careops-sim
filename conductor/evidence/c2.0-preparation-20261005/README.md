@@ -35,3 +35,9 @@ receipts above remain historical. Six preparation runners pass again on the
 combined source; durable raw logs/hashes live in the pinned child
 conductor/evidence/c2.0-c4-join-20261005. Combined native-owner37261797288 and
 final-head child/parent hosted gates remain pending. No C2 checkbox changed.
+
+Completed exact-head PR native-owner37261780875 verifies d497d5f on both hosts
+and all eight Arrow1.88 cases. The duplicate push run37261797288 is tracked
+separately and does not replace that completed proof. Compatibility gate CI
+initially rejected the stale fd21188 receipt; source hashes are unchanged and
+the corrected receipt now binds the combined reviewed head and actual owner run.
