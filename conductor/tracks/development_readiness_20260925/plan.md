@@ -149,7 +149,11 @@ not workflow presence alone. Manual verification: clone remotely and run the fix
   Genuine Linux exhausted-storage and all required checks pass at bb81846
   (run37245641553); final closeout publication remains subject to final-head CI.
   Native CLI limits/cooperative cancellation remain E3/D4 prerequisites.
-- [ ] D3.5 Conductor — review and verify phase (workflow.md).
+- [x] D3.5 Conductor — review and verify phase (workflow.md).
+  [Phase review and fresh queue/metric/RNG defect proof](../../evidence/d3.5-phase-review-20261005/README.md):
+  491 canonical harness tests,80 native tests; original source unchanged.
+  PR61/PR63 publication and final integrated native/quality CI verified.
+  Development acceptance only; D4 release gates remain open.
 
 Exit: Q/C/E behavior has targeted failure detection and measured costs. Manual
 verification: inject a known queue/RNG/metric defect and verify the proper gate fails.

@@ -17,11 +17,10 @@ milestone Q4. See [milestones and ownership](kairos-enhancements.md).
 - [~] **Development readiness and hardened delivery** — `development_readiness_20260925`
   ([index](tracks/development_readiness_20260925/index.md),
   [spec](tracks/development_readiness_20260925/spec.md),
-  [plan](tracks/development_readiness_20260925/plan.md)). In progress: D0.1–D0.4
-  audit and phase closeout complete; D1.1 is accepted. D1.2 is active: the Kairos
-  owner approved its policy direction, and Rust 1.76/1.98.1/beta checks plus
-  toolchain/CI updates are implemented and locally reviewed. Kairos and parent commits are integrated; D1.2 local acceptance is recorded,
-  with formal phase review at D1.6. D1.3 is next; CI and release work remain.
+  [plan](tracks/development_readiness_20260925/plan.md)). D0–D3 complete for
+  development scope, including [D3 phase review](evidence/d3.5-phase-review-20261005/README.md).
+  D4 release/threat/provenance and D5 maintenance remain open. Native v1, stable
+  API and clinical acceptance are separate; D4 waits for integrated E3/C6 gates.
 - [ ] **Generic ED library delivery** — `generic_ed_delivery_20260925`
   ([index](tracks/generic_ed_delivery_20260925/index.md),
   [spec](tracks/generic_ed_delivery_20260925/spec.md),
@@ -45,8 +44,8 @@ formal Q0/C0 contracts; E0 unlocks D2 GitHub/CI, then Q1/C1 can proceed.
 All requested research themes have responses; embedded content is available.
 Remaining tasks verify sources, resolve conflicts, fill specific gaps and deliver
 tested outputs. See [research handoff and next steps](research/research-handoff.md).
-D1.2 is the current development-readiness task; no broad new research round is a
-prerequisite. Track checkboxes continue to represent full delivery acceptance.
+D3 development review is complete; D4 awaits its release entry dependencies.
+No broad new research round is a prerequisite. Track checkboxes continue to represent full delivery acceptance.
 
 ## Authoritative delivery sequence
 
