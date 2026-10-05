@@ -3,7 +3,7 @@
   "updated_at": "2026-10-05",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "Prepare C2.0 bounded test-first foundation packets under ADR-0008. D3.5 merged in parent PR65/e68d6c4. Preliminary mode/ownership source passed 241 DES tests, Rust 1.76, clippy/fmt and native-owner Linux/macOS run37252152532 at Kairos65858ad; child PR222 remains stacked/draft, with 43 successful hosted checks and 2 conditional skips. C2.0, C2.1 and full C2 remain open: freeze the real provider/admission/transit-observation seam and write paired red tests; implement C2.2/C2.3 before the full runtime C2.1 join. Preserve parallel Track49, Q5.2/C1.4 evidence and stable API, portable codec and release holds. C4.3 actual Arrow sidecars are accepted at combined Kairos4e0cce4, preserving C2 groundwork; C4.4 review will add missing tie-count and derived coverage-warning diagnostics; E1.1 awaits C2.4. No full ED MVP or v1 claim.",
+  "next_action": "Prepare C2.0 bounded test-first foundation packets under ADR-0008. D3.5 merged in parent PR65/e68d6c4. Preliminary mode/ownership source passed 241 DES tests, Rust 1.76, clippy/fmt and native-owner Linux/macOS run37252152532 at Kairos65858ad; child PR222 remains stacked/draft, with 43 successful hosted checks and 2 conditional skips. C2.0, C2.1 and full C2 remain open: freeze the real provider/admission/transit-observation seam and write paired red tests; implement C2.2/C2.3 before the full runtime C2.1 join. Preserve parallel Track49, Q5.2/C1.4 evidence and stable API, portable codec and release holds. C4.3 actual Arrow sidecars are accepted at combined Kairos4e0cce4, preserving C2 groundwork; C4.4/C-04 synthetic statistical implementation review is accepted at Kairosfd21188 with exact native/independent/hosted evidence; C2 remains the active parallel owner; E1.1 awaits C2.4. No full ED MVP or v1 claim.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -25,10 +25,13 @@
     "libs/kairos/conductor/design/calibration/c2-mode-native-qualification-20261005.md",
     "conductor/evidence/c2-foundation-20261005/README.md",
     "conductor/evidence/c4.3-completion-20261005/README.md",
-    "libs/kairos/conductor/design/calibration/c4.3-arrow-output-v1.md"
+    "libs/kairos/conductor/design/calibration/c4.3-arrow-output-v1.md",
+    "conductor/evidence/c4.4-completion-20261005/README.md",
+    "libs/kairos/conductor/design/calibration/c4.4-statistical-diagnostics-v1.md",
+    "libs/kairos/conductor/design/calibration/c4.4-statistical-diagnostics-readback-v1.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "4e0cce458ff708a0ff724a8d4f8f14db04ee68a2",
+    "libs/kairos": "fd211888a4f435bc3679fd40589e40b482b92cf7",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -82,6 +85,29 @@
     "development_only": true,
     "C4.4/C-04": "open",
     "C4.4_remaining": "source-derived tie counts and censor/coverage warnings; separate successor work",
+    "public_api": "open",
+    "release_or_clinical_acceptance": false,
+    "parent_hosted_publication": "pending exact-head CI after commit"
+  },
+  "c44_statistical_qualification": {
+    "accepted_development_head": "fd211888a4f435bc3679fd40589e40b482b92cf7",
+    "compiled_source": "79fac7ea52b8c21650759ef2d137104fa421c48d",
+    "previous_accepted_pin": "4e0cce458ff708a0ff724a8d4f8f14db04ee68a2",
+    "preserved_c2_head": "65858adfff7976f90802f9cda20aa34b6fd64d90",
+    "child_pr": "https://github.com/edithatogo/kairos/pull/224",
+    "child_pr_status": "open stacked draft",
+    "native_owner_run": 37259628661,
+    "exact_commit_checks": {
+      "success": 48,
+      "skipped": 2
+    },
+    "archive_sha256": "a56460e1c7327ca6046713b61be9f7c9cf5fe27694f6560adca20adfeb3681a0",
+    "evidence": "conductor/evidence/c4.4-completion-20261005/README.md",
+    "native_tests_each_toolchain": 146,
+    "ignored_default": 4,
+    "fixture_cases": 42,
+    "C4.4/C-04": "accepted synthetic implementation conformance",
+    "development_only": true,
     "public_api": "open",
     "release_or_clinical_acceptance": false,
     "parent_hosted_publication": "pending exact-head CI after commit"
