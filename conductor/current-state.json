@@ -3,7 +3,7 @@
   "updated_at": "2026-10-05",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "Publish/review the C2.0 parent closeout at Kairos52a478b / child PR225. Six integrated expected-red fixtures and independent definitions/evidence review pass; native-owner37261085253 passes Linux/macOS and eight Arrow1.88 cases, and exact-head child checks complete with conditional skips preserved. Parent491 Python tests and context/catalog/MVP checks pass. C2.0 closeout publication remains pending; then bind C2.2 provider/policy/owned-stream packets. C2.3 precedes C2.1 runtime join; preserve parallel Track49/C4, stable API/portable checkpoint holds and ED MVP scope.",
+  "next_action": "Close C2.0 preparation after combined C2/C4 hosted qualification and parent publication. Kairosd497d5f preserves accepted C4 fd21188 plus C2.0 contracts/fixtures52a478b. Six native expected-red families pass on compiled joincebff2d; logs/hashes retained. Native-owner37261797288 and child PR225 final-head checks remain pending. Preserve merged parent C4.3/C4.4 evidence and accepted statuses; do not regress their source pin. Then bind C2.2 provider/policy/owned streams, C2.3 transit and C2.1 runtime join. C2/ED MVP, stable release and portable checkpoint gates remain open; preserve Track49.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -22,13 +22,19 @@
     "libs/kairos/conductor/design/calibration/c2-seed-map-v1.md",
     "libs/kairos/conductor/design/calibration/c2-execution-admission-v1.md",
     "libs/kairos/conductor/design/calibration/ADR-0006-flow-runtime-identity.md",
+    "libs/kairos/conductor/design/calibration/c2-mode-native-qualification-20261005.md",
     "conductor/evidence/c2-foundation-20261005/README.md",
+    "conductor/evidence/c4.3-completion-20261005/README.md",
+    "libs/kairos/conductor/design/calibration/c4.3-arrow-output-v1.md",
+    "conductor/evidence/c4.4-completion-20261005/README.md",
+    "libs/kairos/conductor/design/calibration/c4.4-statistical-diagnostics-v1.md",
+    "libs/kairos/conductor/design/calibration/c4.4-statistical-diagnostics-readback-v1.md",
     "libs/kairos/conductor/design/calibration/c20-work-provider-v1.md",
     "libs/kairos/conductor/design/calibration/c20-preparation-qualification-20261005.md",
     "conductor/evidence/c2.0-preparation-20261005/README.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "52a478b89a9cb3e407bc45326a31ccc685516063",
+    "libs/kairos": "d497d5f16e9904dc510ffb8599190e7c60c31891",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -64,5 +70,61 @@
     "child_qualification_status": "pre-hosted source snapshot; its hosted requirement is satisfied by later parent native-owner-hosted.json",
     "full_c2_accepted": false,
     "development_only": true
+  },
+  "c43_arrow_qualification": {
+    "accepted_development_head": "4e0cce458ff708a0ff724a8d4f8f14db04ee68a2",
+    "previous_accepted_pin": "65858adfff7976f90802f9cda20aa34b6fd64d90",
+    "preserved_c2_head": "65858adfff7976f90802f9cda20aa34b6fd64d90",
+    "runtime_archive_source": "ddf93fc0c4348654a127494b975a22dbe2d5ea0b",
+    "child_pr": "https://github.com/edithatogo/kairos/pull/223",
+    "native_owner_run": 37253816240,
+    "exact_commit_checks": {
+      "success": 48,
+      "skipped": 2,
+      "note": "The check-runs API retains two successful Reject CI skip directives records (jobs 111586636108 and 111588093920). The PR rollup uses the newer run 37254328485: 47 successes and 2 skips; the API has 48 successes and 2 skips."
+    },
+    "archive_sha256": "88732ce4024f3f4040a1c625ade58d98cceb810721ef06ce68c408ea2bae8218",
+    "evidence": "conductor/evidence/c4.3-completion-20261005/README.md",
+    "development_only": true,
+    "C4.4/C-04": "open",
+    "C4.4_remaining": "source-derived tie counts and censor/coverage warnings; separate successor work",
+    "public_api": "open",
+    "release_or_clinical_acceptance": false,
+    "parent_hosted_publication": "pending exact-head CI after commit"
+  },
+  "c44_statistical_qualification": {
+    "accepted_development_head": "fd211888a4f435bc3679fd40589e40b482b92cf7",
+    "compiled_source": "79fac7ea52b8c21650759ef2d137104fa421c48d",
+    "previous_accepted_pin": "4e0cce458ff708a0ff724a8d4f8f14db04ee68a2",
+    "preserved_c2_head": "65858adfff7976f90802f9cda20aa34b6fd64d90",
+    "child_pr": "https://github.com/edithatogo/kairos/pull/224",
+    "child_pr_status": "open stacked draft",
+    "native_owner_run": 37259628661,
+    "exact_commit_checks": {
+      "success": 48,
+      "skipped": 2
+    },
+    "archive_sha256": "a56460e1c7327ca6046713b61be9f7c9cf5fe27694f6560adca20adfeb3681a0",
+    "evidence": "conductor/evidence/c4.4-completion-20261005/README.md",
+    "native_tests_each_toolchain": 146,
+    "ignored_default": 4,
+    "fixture_cases": 42,
+    "C4.4/C-04": "accepted synthetic implementation conformance",
+    "development_only": true,
+    "public_api": "open",
+    "release_or_clinical_acceptance": false,
+    "parent_hosted_publication": "pending exact-head CI after commit"
+  },
+  "c20_preparation_qualification": {
+    "standalone_reviewed_head": "52a478b89a9cb3e407bc45326a31ccc685516063",
+    "combined_head": "d497d5f16e9904dc510ffb8599190e7c60c31891",
+    "combined_compiled_source": "cebff2def1f64f9f8f119742cbe84a10ba2e9571",
+    "preserved_c4_head": "fd211888a4f435bc3679fd40589e40b482b92cf7",
+    "child_pr": "https://github.com/edithatogo/kairos/pull/225",
+    "combined_native_run": 37261797288,
+    "combined_hosted_qualification": "pending",
+    "runtime_acceptance": false,
+    "parent_closeout": "pending",
+    "evidence": "conductor/evidence/c2.0-preparation-20261005/README.md"
   }
 }

@@ -25,3 +25,13 @@ checkpoint or ED MVP acceptance follows from this preparation.
 
 Next order remains C2.0 -> C2.2 -> C2.3 -> C2.1 -> C2.4 under ADR-0008.
 Parallel Track49/C4 and all source/API/compatibility owners remain unchanged.
+
+## Published parallel C4 reconciliation
+
+Parent main advanced through PR67/68 to29f46ce, pinfd21188. The current candidate
+joins that accepted source with C2.0 atd497d5f, compiled sourcecebff2d. Both C4
+completion records/statuses and all incoming blobs are preserved; standalone52
+receipts above remain historical. Six preparation runners pass again on the
+combined source; durable raw logs/hashes live in the pinned child
+conductor/evidence/c2.0-c4-join-20261005. Combined native-owner37261797288 and
+final-head child/parent hosted gates remain pending. No C2 checkbox changed.
