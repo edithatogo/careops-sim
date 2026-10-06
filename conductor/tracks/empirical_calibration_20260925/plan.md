@@ -116,7 +116,7 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   reconcile only accepted arrival with the original timed work request, and allow
   one explicit retry only for the matching consumed rejected event. Macro and
   explicit-zero Micro continue to emit no transit event or Transit draw.
-- [ ] C2.1 Write failing mode resolution/boundary tests and common-random-number
+- [x] C2.1 Write failing mode resolution/boundary tests and common-random-number
   fixtures. Assert Macro emits no transit, zero-transit Micro matches its paired
   Macro fixture, and changing mode never discards active or suspended work.
 - [ ] C2.4 Conductor — review and verify phase (workflow.md).
