@@ -39,7 +39,7 @@
   "steps": [
     "Inspect the frozen contract and relevant bridge types only.",
     "Add an opaque crate-private bundle that owns the exact FlowRuntime, FidelityAdapter, and one BoundIntrinsicWork<T,C>; resume must consume it and infallibly return those same values.",
-    "Capture must return the original tuple on mismatch and validate bound.runtime == flow.identity() plus adapter.decision(bound.work()) == Some(&bound.decision()). Keep capture limited to a completed bound bridge call with no unobserved FlowDispatch.",
+    "Capture must return the original tuple for Flow identity or decision mismatches, and verify bound.runtime == flow.identity() plus adapter.decision(bound.work()) == Some(&bound.decision()). The same-adapter provenance is a caller precondition because DES exposes no adapter-instance lineage check. Keep capture limited to a completed bound bridge call with no unobserved FlowDispatch.",
     "Add focused actual-Flow unit tests for Macro, explicit-zero Micro, nonzero Micro after transit start, and nonzero Micro after a pause has been dispatched and observed. Verify identity, progress, adapter decisions/pending-policy blocking, bridge receipts and next Service draw continuity against uninterrupted control.",
     "Run only the bound stable Rust 1.99.0 commands, record exact outputs and hashes in the result file, commit once, and report ready_for_review; do not edit task metadata or parent evidence."
   ],
@@ -66,7 +66,7 @@
   "acceptance": [
     "Only flow_bridge.rs and the declared ignored worker result are changed; no public API, dependency, manifest, lockfile, seed algorithm, or DES internals change.",
     "The continuation owns exactly one bound bridge work item plus its same FlowRuntime and adapter. Rust ownership prevents duplicate resume; resume returns the exact original objects.",
-    "Capture validation is fail-closed and returns all original inputs on mismatch.",
+    "Capture rejects Flow identity or decision mismatches and returns original inputs; adapter-instance pairing remains a private caller precondition, not a mechanically checked guarantee.",
     "Tests do not capture while any FlowDispatch awaits observe_transit_dispatch and do not mutate aliased context payloads while detached.",
     "Receipt claims remain limited to a local same-process single-work handoff; no portable checkpoint, process restart, C2 phase completion, hosted, release, or clinical acceptance claim."
   ],
