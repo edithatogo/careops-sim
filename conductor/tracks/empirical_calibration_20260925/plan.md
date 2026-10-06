@@ -105,7 +105,7 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
 - [x] C2.2 Implement empirical work-duration providers, FidelityPolicy and stable
   entity/task/purpose keys. Separate intrinsic work from queue/transit intervals;
   persist all mode and stream state for resume.
-- [ ] C2.3 Implement a deterministic route-graph TransitModel with units, stable
+- [x] C2.3 Implement a deterministic route-graph TransitModel with units, stable
   shortest-path ties, integer tick conversion, unreachable errors and stored
   movement progress. Supply a minimal urgency/FIFO/zone/skill staff adapter;
   cleaning/reservation remains an explicit model resource lifecycle. Require explicit
