@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "coordinator_local_C2_2_seeds_instance_rust199_exact_pin",
+  "status": "local_leaf_instance_accepted_c22_parent_join_pending",
+  "leaf_id": "C2.2.seeds",
+  "instance_id": "snapshot-continuation",
+  "instance_set": [
+    "rust199-bound-retention",
+    "snapshot-continuation"
+  ],
+  "source_base_commit": "3d6efca658ba540c96f71f8f72c50214a4ef0eb2",
+  "implementation_commit": "9b360f433210d38868e1e5f102473fd6f148fccf",
+  "integrated_kairos_pin": "9b360f433210d38868e1e5f102473fd6f148fccf",
+  "packet_path": "conductor/evidence/c2.2-seeds-snapshot-continuation-20261006/packet.json",
+  "packet_sha256": "21fd9308a691fa6dcefbcd8da6b4a22d998e122c78d9c258b152d406a3fb7e62",
+  "worker_result_path": "conductor/evidence/c2.2-seeds-snapshot-continuation-20261006/worker-result.json",
+  "worker_result_sha256": "e6e86f8bf9fcf4c36aee82d8e6ddd19a6325f0ab6563d85b3e4c375ae12d2307",
+  "source_hashes": {
+    "libs/kairos/crates/kairo-ecs-calibration/src/seed_map.rs": "2a6dcae497c6001f1c6b09a4ce4c6034398986fb9593b01ed7e38fc69bb009c4",
+    "libs/kairos/conductor/design/calibration/c2-seed-map-v1.md": "046ba8d06f667472399cb2a3af9f15ef03168558edfc3859dd0f28c719972c5b"
+  },
+  "previous_instance": {
+    "instance_id": "rust199-bound-retention",
+    "status": "local_leaf_accepted_c22_parent_join_pending",
+    "receipt": "conductor/evidence/c2.2-seeds-rust199-20261006/acceptance-rust199.json",
+    "receipt_sha256": "a2093f64a18bb05a6999e0c7671ef5bb3e46f81fdb8ba437e3bac3c2704fa47c"
+  },
+  "prerequisites": {
+    "C2.2.policy": {
+      "status": "accepted",
+      "receipt": "conductor/evidence/c2.2-policy-20261006/acceptance.json",
+      "sha256": "fff8eabc5983bb1fd875be05b057ffcedaf6299ca801f009bf7dd2e27dbecb36"
+    },
+    "C2.3.dispatch": {
+      "status": "accepted",
+      "receipt": "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json",
+      "sha256": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d"
+    },
+    "C2.3.transit-bridge": {
+      "status": "accepted",
+      "receipt": "conductor/evidence/c2.3-transit-bridge-rust199-20261006/acceptance-rust199.json",
+      "sha256": "04b35a643a30347e5465d5f37936fd6443698692654cd6ea879cab9567fb80a2"
+    }
+  },
+  "independent_review": {
+    "reviewer_1": "gpt-6-luna read-only implementation audit",
+    "result_1": "One test-only change in seed_map.rs; test compares matching logical stream key and position, distinguishes next u64 from initial draw, then verifies exact resumed u64/u32 outputs and positions. No portable/process resume claim.",
+    "reviewer_2": "gpt-6-luna read-only result/hash audit",
+    "result_2": "Packet inputs, post-edit source hash, worker result and three logs match; pre-edit zero-selected test is labeled as a coverage baseline, not behavior failure.",
+    "coordinator_disposition": "Accepted this local C2.2.seeds instance after two independent reviews and a fresh exact test on the committed Kairos head with stable Rust 1.99.0."
+  },
+  "verification": {
+    "pre_edit_test_presence_baseline": {
+      "exit_status": 0,
+      "summary": "0 tests selected; 69 filtered. This reports missing test registration only, not broken behavior.",
+      "log_sha256": "39abe659aeff2489d063217c9b1384bc50e9345e7c8a5f0d8ebbcadd7bf861d0"
+    },
+    "post_edit_test": {
+      "exit_status": 0,
+      "summary": "1 passed; 0 failed; 0 ignored; 0 measured; 69 filtered.",
+      "log_sha256": "808428b184f4ba695bb43669c47fa0814fe5c76268543e025cbc1376be62c2cd"
+    },
+    "committed_head_test": "coordinator-head-check.json",
+    "format": {
+      "exit_status": 0,
+      "command": "rustup run 1.99.0 cargo fmt --all -- --check",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "claims": {
+    "opaque_in_memory_stream_snapshot_preserves_identity_draw_position_and_next_outputs": true,
+    "flow_bridge_snapshot_or_process_restart_restoration": false,
+    "portable_codec": false,
+    "C2_2_parent_complete": false,
+    "C2_1_runtime_accepted": false,
+    "hosted_release_or_clinical_acceptance": false
+  }
+}
