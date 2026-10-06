@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.1.paired.rust199-paired",
+  "attempt_id": "C2.1.paired.rust199-worker-attempt1",
+  "target_repo": "libs/kairos",
+  "base_commit": "dbd12c98b1a72a30760996590efa6a0f445368a6",
+  "source_commit": "bfbefa87ba15488837b01020f343685907ae09ac",
+  "worker_model": "gpt-6-luna candidate selected by coordinator; served-model identity not independently verified",
+  "status": "ready_for_review",
+  "changed_paths": [
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs"
+  ],
+  "source_sha256": "e4ef06a28b6feb00973dd7bb9c8525ccde8e4721814f0ec719a9d32417b0e8cc",
+  "packet_sha256": "1f8a0e5ae0b19e03481fa9204bf11f81e557e782b1d96fa89af64e043c2a889f",
+  "input_hashes": {
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "51d3f1a00c95361435d915d094f4f8ab152927f06c76ad7eabc4a7909b2749c3",
+    "crates/kairo-ecs-calibration/src/seed_map.rs": "2a6dcae497c6001f1c6b09a4ce4c6034398986fb9593b01ed7e38fc69bb009c4",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "4146dfb7ad2c221b2c9df8e72a790863b120bcd461db9e71e93c112359bcf8b7",
+    "crates/kairo-ecs-des/src/flow.rs": "2ef1756df8ba36a90182480cf1d8a9dbf1af790683a7a772df299586fc5e9111",
+    "conductor/design/calibration/c2-execution-admission-v1.md": "a2ffd67c9b01fba373ba70b1681c405d6301a15b7d97e50ff82e021d60d79d13",
+    ".artifacts/mvp/C2.1.paired.rust199-paired/context.md": "85f2c3e55906e0acdd7159ecff482059c243e009c5b5be3b229d3aa9360cc6f0"
+  },
+  "toolchain": "All verification commands invoked with rustup run 1.99.0; no earlier Rust toolchain used.",
+  "verification": [
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "test", "--locked", "-p", "kairo-ecs-calibration", "-p", "kairo-ecs-abm", "--features", "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support", "--lib", "flow_bridge::tests::macro_and_zero_micro_share_service_draws_and_submit_actual_timed_work"],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "Latest run selected the target calibration test (1 passed, 0 failed, 82 filtered); ABM selected 0 tests (18 filtered). The paired oracle passed.",
+      "log": ".artifacts/mvp/C2.1.paired.rust199-paired/test.log",
+      "sha256": "6eabcc4f707d32e7c5ba9cd3960d78b4ddc2d13fd042defe115de6407f65e1ff",
+      "earlier_attempts": "An initial run failed only because the new test hard-coded 42 ticks while the provider sampled 20; the assertion was corrected to derive the completion time from the sampled duration. The log preserves that output and subsequent passing runs."
+    },
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "clippy", "--locked", "-p", "kairo-ecs-calibration", "-p", "kairo-ecs-abm", "--features", "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support", "--all-targets", "--", "-D", "warnings"],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "Latest strict all-target Clippy run passed with warnings denied.",
+      "log": ".artifacts/mvp/C2.1.paired.rust199-paired/clippy.log",
+      "sha256": "944204b85f69a34b10c31e6de07d65c326df20b3a78052c5a2acaecebabeed5c"
+    },
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "fmt", "--all", "--", "--check"],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "Latest formatting check passed. Earlier formatting diffs and later successful checks remain recorded in the log.",
+      "log": ".artifacts/mvp/C2.1.paired.rust199-paired/fmt.log",
+      "sha256": "1de94eb463fa5a7d34f2e4c079f10dec03c1bc8e422cee1276095b12922dfa3c"
+    }
+  ],
+  "oracle_results": [
+    "Macro Route and explicit-zero Micro Zero use equal expected Service stream keys and derived seeds; their Service draw positions and sampled durations match, and each stream matches its expected identity.",
+    "Both actual Flow work items retain the sampled original duration and identical request configuration/state; after dispatch their terminal WorkProgress, ResourceRequest, FlowRun dispatches, and completion time match exactly.",
+    "The paired paths schedule one event before execution and two total events through timed completion. Macro Route intent does not create a transit carrier or transit event; explicit Micro Zero has no transit leg.",
+    "TransitContext is deterministic route progress/command state and has no RNG field; the bridge creates/uses only the Service-purpose stream here. There is no Transit-purpose stream available to this zero-transit runtime to draw from, and no disconnected stream was added."
+  ],
+  "limitations": [
+    "This worker result proposes the paired C2.1 fixture only. Independent coordinator/source review and parent acceptance remain required.",
+    "This does not establish hosted CI, portable continuation, Track03 phase review, clinical validity, or release acceptance."
+  ]
+}
