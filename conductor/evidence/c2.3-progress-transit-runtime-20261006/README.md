@@ -10,13 +10,13 @@ Pause/Resume, stale events, one actual timed service Acquire at arrival, and
 accepted/rejected batch state atomicity. Accepted command tickets are reconciled
 to actual EventIds through a DES accepted-batch receipt callback.
 
-This is local runtime progress, not accepted C2.3 dispatch. Independent review
-found that the initial start EventId is not retained: a different same-kind
-event at the exact start tick may be mistaken for the scheduled start. The
-reviewed packet did not authorize a runtime context mutation API needed to bind
-the helper's returned EventId. Exact initial-start identity, adapter validation
-of the carrier/actor/task/resource association, and rejected-dispatch retry
-reconciliation remain follow-on work.
+This is local runtime progress, not accepted C2.3 dispatch. Two reviewed
+follow-ups now bind the initial start EventId atomically into TransitContext,
+require matching EventId and tick before Ready/Paused start handling, and reject
+duplicate start scheduling while an EventId remains pending. Independent review
+found no remaining mismatch in these exact-ID paths. Adapter validation of the
+carrier/actor/task/resource association and rejected-dispatch retry reconciliation
+remain follow-on work.
 
 ## Verification
 
@@ -35,3 +35,22 @@ C2.3 actual calibration-bound dispatch, identity/retry reconciliation, C2.2
 callback and seed runtime joins, checkpoint/resume integration, and C2.1 paired
 Macro/Micro acceptance remain open. Hosted checks, release readiness, portable
 checkpoint, and clinical claims remain out of scope.
+
+## Exact start identity follow-ups
+
+- Source commit `606a27841a00c82589bc32fb5c1542088706d134` adds
+  `FlowRuntime::schedule_domain_and_bind<C>` and exact initial start EventId/tick
+  checks; receipt commit `2d40b3c3bc1d21e5e55dcb33ee7a44b5404a4bf0` records the
+  result. An independent reviewer confirmed same-tick alien events cannot begin
+  movement or clear a paused start.
+- Source commit `6d8e56341aabc54ea4e94455afb214b47d8a438a` makes duplicate initial
+  scheduling fail before allocation and proves the original EventId remains
+  bound; receipt commit `c72f3a7ac540b01174fc62398ca2ad283f422cc9` records it.
+- Both follow-ups passed all DES/ABM tests, strict Clippy and formatting using
+  Homebrew Rust 1.99. Combined current-pin test record: 282 passed, 0 failed,
+  1 ignored across 32 result groups. Logs are under `/tmp/c23-exact-start-*` and
+  `/tmp/c23-single-pending-start-*`, with hashes recorded in the Kairos packet
+  receipts.
+- Rust 1.76 is unverified for the exact-ID packet: `/Users/doughnut/.rustup`
+  points into the absent `/Volumes/PortableSSD/toolchains` mount. No 1.76 pass is
+  claimed. Hosted checks remain unrun.
