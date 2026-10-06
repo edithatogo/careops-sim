@@ -14,7 +14,7 @@ Track22 owns experiment-runner checkpoint semantics. Please decide whether and h
 - Track22 [`agent-contract.md`](../../../libs/kairos/conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md) prohibits new public Rust APIs without an ADR.
 - Track22 [`handoff.md`](../../../libs/kairos/conductor/tracks/22-experiment-runner-scenario-management/handoff.md) describes `checkpoint` as writing a scaffold manifest and `resume` as path validation plus a scaffold request; it explicitly leaves real checkpoint-state and resume semantics as follow-up.
 - Kairos [`ADR-0006-flow-runtime-identity.md`](../../../libs/kairos/conductor/design/calibration/ADR-0006-flow-runtime-identity.md) requires explicit rebinding because runtime identity cannot be serialized.
-- The [C2 specification](../../tracks/empirical_calibration_20260925/spec.md), clause C-06, requires candidate rankings, canonical integer traces, and IDs to survive repeat runs, checkpoints, and 1/2/N workers, with numeric comparisons using declared tolerances. This requirement motivates checkpoint-contract work; it does not establish that portable process restoration is already implemented or accepted. Current C2 evidence does not establish restoration in a new process.
+- The [C2 specification](../../tracks/empirical_calibration_20260925/spec.md), clause C-06, requires candidate rankings, canonical integer traces, and IDs to survive repeat runs, checkpoints, and 1/2/N workers, with numeric comparisons using declared tolerances. The [C5 plan](../../tracks/empirical_calibration_20260925/plan.md) assigns worker/resume equivalence to C5; its manual exit and [test matrix](../../tracks/empirical_calibration_20260925/test-matrix.md) add mid-study crash/resume and permuted completion-order cases. One checkpoint fixture cannot establish all C-06 requirements or complete the C5 matrix. These requirements motivate contract work; they do not establish that portable process restoration is already implemented or accepted. Current C2 evidence does not establish restoration in a new process.
 - The superseding [C2.4 current readback](../c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.md) records the current source pin and open gates.
 
 ## Current source-state inventory
@@ -42,6 +42,8 @@ Missing codecs or handlers, unobserved dispatches, in-flight callbacks/submissio
 6. Which reviewed ADR/API changes and owners are prerequisites for implementation, and what exact leaf can be authorized first?
 
 These are questions, not proposed answers. This packet intentionally does not select a serialization format, state layout, scheduler order, RNG reconstruction rule, rebinding algorithm, public API, or compatibility promise.
+
+The coordinator prepared a separate [nonbinding contract-options proposal](../c2-track22-checkpoint-contract-options-20261007/proposal.md) to make the decision points and possible bounded first sequence reviewable. It labels fresh-process restoration as a proposed acceptance interpretation for owner review, not an existing C2.4 plan statement. It is not an owner disposition or implementation authority; Track22 and contributing owners may revise or reject it.
 
 ## Current evidence boundary
 
