@@ -5500,12 +5500,44 @@
           "max_context_bytes": 24000,
           "max_corrections": 2,
           "existing_recipe": null
+        },
+        {
+          "id": "C2.3.flow-resource-lifecycle",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Private calibration adapter connecting explicit staff selections to Flow resource requests and owner-bound cleaning leases",
+          "oracle": "Selected Work and Walk preserve exact request/owner/resource claim lineage in real Flow; Wait creates no Flow request; a bed stays unavailable and the next request queued until the supplied cleaning completion callback for the same claim and owner is accepted and its exact release event is applied; release then activates the queued request; queue and resource counts conserve throughout. Staff and bed acquisition remain staged.",
+          "dependencies": [
+            "C2.2.flow-macro-zero",
+            "C2.3.routing",
+            "C2.3.time",
+            "C2.3.progress",
+            "C2.3.dispatch",
+            "C2.3.transit-bridge"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
         }
       ],
       "leaf_dependency_overrides": {
         "C2.3.transit-bridge": [
           "C2.2.flow-macro-zero",
           "C2.3.progress"
+        ],
+        "C2.3.flow-resource-lifecycle": [
+          "C2.2.flow-macro-zero",
+          "C2.3.routing",
+          "C2.3.time",
+          "C2.3.progress",
+          "C2.3.dispatch",
+          "C2.3.transit-bridge"
         ]
       }
     },
