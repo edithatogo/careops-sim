@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.4.runtime-ledger.rust199-integrated-ledger",
+  "task_id": "C2.4",
+  "target_repo": "libs/kairos",
+  "base_commit": "bfbefa87ba15488837b01020f343685907ae09ac",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Add one adjacent unit test in crates/kairo-ecs-calibration/src/flow_bridge.rs proving actual same-case Macro/Micro elapsed-time reconciliation: capacity-1 blocker releases at tick 5; Macro queues from tick 0, Micro takes a scheduled two-tick route then queues from tick 2; both use the existing shared Service stream and same sampled duration D, become granted at tick 5, and complete at tick 5+D. Keep production API, scheduler order, seed algorithm, and Cargo manifests unchanged.",
+  "context_paths": [
+    ".artifacts/mvp/C2.4.runtime-ledger.rust199-integrated-ledger/context.md"
+  ],
+  "input_hashes": {
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "e4ef06a28b6feb00973dd7bb9c8525ccde8e4721814f0ec719a9d32417b0e8cc",
+    "crates/kairo-ecs-calibration/Cargo.toml": "d4b2add138c68e8f3ee53a43e21a50f60b43e9d0ef5bb17742cb4f0f8823b24a",
+    ".artifacts/mvp/C2.4.runtime-ledger.rust199-integrated-ledger/context.md": "1cc7dfcd5d6ad4b10c4d49f4448890704013488d44827bb5d6351e462d8b1998"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    ".artifacts/packets/C2.4.runtime-ledger.rust199-integrated-ledger.json",
+    ".artifacts/mvp/C2.4.runtime-ledger.rust199-integrated-ledger/context.md",
+    ".artifacts/mvp/C2.4.runtime-ledger.rust199-integrated-ledger/result.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C2.1.paired"
+  ],
+  "interface_contract": "Use existing C2.1 paired Service identity and C2.3 TransitContext route/arrival bridge. The independently accepted C2.3 parent join is conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json (SHA-256 fd8d48f939b29901da7e6807f00d065e2414e56a076e3752b6523ef94e096afa), at Kairos pin dbd12c98b1a72a30760996590efa6a0f445368a6; C2.3 transit-bridge leaf receipt is separately recorded at source commit 7672a67988134438228014e7b3e0f56855cc65e8. The bound target is exact Kairos commit bfbefa87ba15488837b01020f343685907ae09ac, which must be verified as a descendant of the accepted C2.3 parent-join pin. Express durations from measured request.submitted_at, allocation granted_at/completion_at and TransitContext useful_elapsed, not arithmetic-only output. Test disjoint intervals: Macro 5 queue + D service; Micro 2 transit + 3 queue + D service; both elapsed 5+D. Rust commands are stable 1.99.0 only.",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All calibration and ABM package tests pass with the integrated elapsed-time fixture enabled; record exact counts, command/toolchain and log hash. Stable Rust 1.99.0 is required."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target Clippy passes on stable Rust 1.99.0 with flow and ABM test-support features."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting check passes on stable Rust 1.99.0."
+    }
+  ],
+  "acceptance": [
+    "In one paired fixture with the same service stream identity and sampled duration D, a capacity-1 blocker holds until tick 5. Macro submits at tick 0 and records 5 ticks queued plus D service. Micro uses a scheduled 2-tick nonzero route, submits only on accepted arrival at tick 2, records 3 ticks queued plus D service. Both actual Flow requests/work complete at tick 5+D with equal service draw/stream identity; assert queue wait from submission/grant timestamps, transit from TransitContext progress, and service from allocation/completion timestamps. Intervals are disjoint and sum to equal elapsed time; no arithmetic-only ledger, fixed duration substitute, extra Transit RNG, production API, scheduler-order, seed algorithm, or non-Rust-1.99 verification change.",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/C2.4.runtime-ledger.rust199-integrated-ledger/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root coordinator; packet to receive two independent read-only reviews before dispatch",
+    "reservation_id": "6d2aeba8866d4f0bb937776015d0db68",
+    "instance_id": "rust199-integrated-ledger",
+    "instance_scope": "Add one adjacent unit test in crates/kairo-ecs-calibration/src/flow_bridge.rs proving actual same-case Macro/Micro elapsed-time reconciliation: capacity-1 blocker releases at tick 5; Macro queues from tick 0, Micro takes a scheduled two-tick route then queues from tick 2; both use the existing shared Service stream and same sampled duration D, become granted at tick 5, and complete at tick 5+D. Keep production API, scheduler order, seed algorithm, and Cargo manifests unchanged.",
+    "instance_set": [
+      "rust199-integrated-ledger"
+    ],
+    "interface_contract": "Use existing C2.1 paired Service identity and C2.3 TransitContext route/arrival bridge. The independently accepted C2.3 parent join is conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json (SHA-256 fd8d48f939b29901da7e6807f00d065e2414e56a076e3752b6523ef94e096afa), at Kairos pin dbd12c98b1a72a30760996590efa6a0f445368a6; C2.3 transit-bridge leaf receipt is separately recorded at source commit 7672a67988134438228014e7b3e0f56855cc65e8. The bound target is exact Kairos commit bfbefa87ba15488837b01020f343685907ae09ac, which must be verified as a descendant of the accepted C2.3 parent-join pin. Express durations from measured request.submitted_at, allocation granted_at/completion_at and TransitContext useful_elapsed, not arithmetic-only output. Test disjoint intervals: Macro 5 queue + D service; Micro 2 transit + 3 queue + D service; both elapsed 5+D. Rust commands are stable 1.99.0 only.",
+    "context_slices": [
+      {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "start": 111,
+        "end": 124,
+        "repo": "."
+      },
+      {
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 987,
+        "end": 1168,
+        "repo": "libs/kairos"
+      },
+      {
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 1169,
+        "end": 1335,
+        "repo": "libs/kairos"
+      }
+    ],
+    "input_paths": [
+      "crates/kairo-ecs-calibration/Cargo.toml",
+      "crates/kairo-ecs-calibration/src/flow_bridge.rs"
+    ],
+    "write_paths": [
+      "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+      ".artifacts/packets/C2.4.runtime-ledger.rust199-integrated-ledger.json",
+      ".artifacts/mvp/C2.4.runtime-ledger.rust199-integrated-ledger/context.md",
+      ".artifacts/mvp/C2.4.runtime-ledger.rust199-integrated-ledger/result.json"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "-p",
+          "kairo-ecs-abm",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "All calibration and ABM package tests pass with the integrated elapsed-time fixture enabled; record exact counts, command/toolchain and log hash. Stable Rust 1.99.0 is required."
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "-p",
+          "kairo-ecs-abm",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Strict all-target Clippy passes on stable Rust 1.99.0 with flow and ABM test-support features."
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Workspace formatting check passes on stable Rust 1.99.0."
+      }
+    ],
+    "prerequisite_receipts": {
+      "C2.3.transit-bridge": {
+        "status": "accepted",
+        "reviewer": "coordinator readback of C2.3 parent join receipt and exact-pin ancestry",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json": "fd8d48f939b29901da7e6807f00d065e2414e56a076e3752b6523ef94e096afa",
+          "conductor/evidence/c2.3-flow-resource-lifecycle-20261007/parent-join-rust199.json": "7e1d074beca52eb726411ec6b050243b5adb9a035838b9c36e4b9ff73bcc104a",
+          "conductor/evidence/c2.3-transit-bridge-rust199-20261006/acceptance-rust199.json": "04b35a643a30347e5465d5f37936fd6443698692654cd6ea879cab9567fb80a2"
+        }
+      },
+      "C2.1.paired": {
+        "status": "accepted",
+        "reviewer": "coordinator readback of the exact-pin C2.1 paired leaf and parent join receipts",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.1-paired-20261007/acceptance-rust199.json": "59379a35c595a160f012f999bb8ba9e7a6df47732c07b34b0318c7ebac69d8c9",
+          "conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json": "4f1ba5b364dd3c908287c286e7414d19dcdc3da3f1458e95471f66a9a76b6f20"
+        }
+      }
+    },
+    "reviewed_recipe_sha256": "423236e03e79218ae75946f4335926505cf6797e39193bf102b8ea86aa1f5fd2"
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "a8b72dea5cd80694fc694d7ce7a3a503c5ea2b2b9c12accc708b2cbe9109009a",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "40726a675f0d146a9807d5805776e5bb08934aa4eeadb4c5debce0b0cc2eb6f2",
+    "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs": "e4ef06a28b6feb00973dd7bb9c8525ccde8e4721814f0ec719a9d32417b0e8cc",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}

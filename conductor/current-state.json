@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.1 local parent join accepted at exact Kairos pin bfbefa87 under Rust 1.99.0; C2.2 parent join accepted at 9b360f4; C2.3 parent join accepted at dbd12c9. C2 standalone synthetic elapsed-time accounting readback is recorded, but integrated runtime transit/wait behavior and C2.4 phase acceptance remain open. Track03 owner/phase review, portable process checkpoint/restart, hosted, release, and clinical acceptance remain open.",
+  "next_action": "C2.1, C2.2, and C2.3 local exact-pin joins remain accepted. C2.4.runtime-ledger is locally accepted at Kairos pin 5cc8250 under Rust 1.99.0; Macro 5 queue + 20 service equals Micro 2 transit + 3 queue + 20 service, both completing at tick 25. C2.4 phase evidence reconciliation and phase review remain open. Track03 owner review, hosted checks, portable process checkpoint/restart, release, and clinical acceptance remain open.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -51,10 +51,12 @@
     "conductor/evidence/c2.3-transit-bridge-rust199-20261006/worker-result.json",
     "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json",
     "conductor/evidence/c2.2-seeds-rust199-20261006/README.md",
-    "conductor/evidence/c2.2-seeds-rust199-20261006/acceptance-rust199.json"
+    "conductor/evidence/c2.2-seeds-rust199-20261006/acceptance-rust199.json",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/README.md",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json"
   ],
   "submodule_pins": {
-    "libs/kairos": "bfbefa87ba15488837b01020f343685907ae09ac",
+    "libs/kairos": "5cc825048a1116740e80e6c067ba046306f2ce10",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -383,5 +385,21 @@
     },
     "integrated_kairos_runtime": false,
     "C2_4_phase_acceptance": "open"
+  },
+  "c24_runtime_ledger": {
+    "status": "local_leaf_and_parent_join_accepted",
+    "source_pin": "5cc825048a1116740e80e6c067ba046306f2ce10",
+    "evidence": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json",
+    "rust_toolchain": "1.99.0 only",
+    "macro_elapsed_ticks": 25,
+    "micro_components_ticks": {
+      "transit": 2,
+      "queue_wait": 3,
+      "clinical_service": 20
+    },
+    "micro_transit_accepted_arrival": true,
+    "flow_work_completed": true,
+    "C2_4_phase_acceptance": "open",
+    "Track03_owner_phase_review": "open"
   }
 }
