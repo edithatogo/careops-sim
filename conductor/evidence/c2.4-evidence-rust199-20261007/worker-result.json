@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "task_id": "C2.4.evidence",
+  "instance_id": "rust199-evidence-reconciliation",
+  "status": "ready_for_review",
+  "packet_path": ".artifacts/packets/C2.4.evidence.rust199-evidence-reconciliation.json",
+  "packet_sha256": "462f527c39d8ef2106e3474297fff4488429b4ec16445595b07c4d3278a2a2e9",
+  "base_commit": "b55b46ca840598cb800146b0815edd91b0e426d7",
+  "write_paths": [
+    "conductor/evidence/c2.4-evidence-rust199-20261007/README.md",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json",
+    ".artifacts/mvp/C2.4.evidence.rust199-evidence-reconciliation/result.json"
+  ],
+  "input_hashes": {
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "8ba9f937fff0d74e384b53e686ec9fc3891c990bc233622dd521bb087c92040f",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md": "8819ff02e33b929962c6d5aeb8dc8695826ba17b53549c8a570090b405e809f4",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/README.md": "66aa0f5b29d470c731983d304bc487b31c55dd089c236e5bce7cbf1d52c33e04",
+    "conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json": "4f1ba5b364dd3c908287c286e7414d19dcdc3da3f1458e95471f66a9a76b6f20",
+    "conductor/evidence/c2.2-parent-rerun-rust199-20261007/acceptance-rust199.json": "72a4f1868bba86aed670aee50fd2b6682166969284bf05fea328488b805675b8",
+    "conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json": "fd8d48f939b29901da7e6807f00d065e2414e56a076e3752b6523ef94e096afa",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/packet.json": "66e3fbe834fd492eb0c51a1cfe0abeb4e00364d5b15a9572ecbbb33ec56edec7",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/worker-result.json": "b1d9370cb76a5045118edaf0d7390c2d3027007163b33747ae820d09da6b85c6",
+    "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d",
+    ".artifacts/mvp/C2.4.evidence.rust199-evidence-reconciliation/context.md": "f78e045e47d5c87ca01eb1bc81e16d9cf0c8e244375f5f069d32b8f5316d79fc"
+  },
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "144 task records: full coverage, prerequisites and DAG valid",
+      "stdout_sha256": "3c9b46c6f92523f90a202f40d3e7982f5d6fb0fecc2022fd38bc0a271d22661d"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "PASS: 81 MVP parents; 256 bounded leaves; complete joins and context/objective hashes",
+      "stdout_sha256": "f67345979e013ce605150fd6cc1576b0b40178650d7edd04c31f592aad3fa7bf"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "{\n  \"tracks\": 5,\n  \"milestones\": 34,\n  \"local_links\": 784,\n  \"errors\": []\n}",
+      "stdout_sha256": "f777b5b027d2ada709a0a8419d227a52bfec954a4ab71e057c684f6f7b078915"
+    }
+  ],
+  "diff_summary": {
+    "committed_outputs": [
+      "conductor/evidence/c2.4-evidence-rust199-20261007/README.md",
+      "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json"
+    ],
+    "source_catalog_plan_pin_changes": false
+  },
+  "findings": {
+    "accepted_local_records": 5,
+    "phase_acceptance": "open",
+    "unresolved_gates": [
+      "Track03 owner/phase review",
+      "C2.4 phase review",
+      "Q4 interruption acceptance",
+      "portable checkpoint/restart",
+      "hosted exact-head checks",
+      "release",
+      "clinical acceptance"
+    ]
+  },
+  "coordinator_acceptance_required": true
+}

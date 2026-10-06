@@ -1,5 +1,7 @@
 # C2.4 phase evidence reconciliation — Rust 1.99.0 scope
 
+**Coordinator status:** `C2.4.evidence` locally accepted at parent evidence base `a084862`; C2.4 phase acceptance remains open. See [the acceptance receipt](acceptance-rust199.json).
+
 This inventory reconciles the accepted local evidence at parent base `b55b46ca840598cb800146b0815edd91b0e426d7`, whose Kairos pin is `5cc825048a1116740e80e6c067ba046306f2ce10`. The machine-readable receipt links the exact accepted records and their hashes.
 
 ## Accepted local joins and their scope

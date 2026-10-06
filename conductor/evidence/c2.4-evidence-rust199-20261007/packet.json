@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.4.evidence.rust199-evidence-reconciliation",
+  "task_id": "C2.4",
+  "target_repo": ".",
+  "base_commit": "b55b46ca840598cb800146b0815edd91b0e426d7",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Reconcile the integrated C2 phase evidence at the exact parent base, document accepted local joins and actual executed checks, identify all unresolved C2/C2.4 gates, and recommend phase status without changing phase checkbox or asserting open gates passed.",
+  "context_paths": [
+    ".artifacts/mvp/C2.4.evidence.rust199-evidence-reconciliation/context.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "8ba9f937fff0d74e384b53e686ec9fc3891c990bc233622dd521bb087c92040f",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md": "8819ff02e33b929962c6d5aeb8dc8695826ba17b53549c8a570090b405e809f4",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/README.md": "66aa0f5b29d470c731983d304bc487b31c55dd089c236e5bce7cbf1d52c33e04",
+    "conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json": "4f1ba5b364dd3c908287c286e7414d19dcdc3da3f1458e95471f66a9a76b6f20",
+    "conductor/evidence/c2.2-parent-rerun-rust199-20261007/acceptance-rust199.json": "72a4f1868bba86aed670aee50fd2b6682166969284bf05fea328488b805675b8",
+    "conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json": "fd8d48f939b29901da7e6807f00d065e2414e56a076e3752b6523ef94e096afa",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/packet.json": "66e3fbe834fd492eb0c51a1cfe0abeb4e00364d5b15a9572ecbbb33ec56edec7",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/worker-result.json": "b1d9370cb76a5045118edaf0d7390c2d3027007163b33747ae820d09da6b85c6",
+    "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d",
+    ".artifacts/mvp/C2.4.evidence.rust199-evidence-reconciliation/context.md": "f78e045e47d5c87ca01eb1bc81e16d9cf0c8e244375f5f069d32b8f5316d79fc"
+  },
+  "write_paths": [
+    ".artifacts/packets/C2.4.evidence.rust199-evidence-reconciliation.json",
+    ".artifacts/mvp/C2.4.evidence.rust199-evidence-reconciliation/context.md",
+    ".artifacts/mvp/C2.4.evidence.rust199-evidence-reconciliation/result.json",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/README.md",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C2.4.runtime-ledger"
+  ],
+  "interface_contract": "Produce a source-linked local evidence inventory for C2.1, C2.2, C2.3, and C2.4.runtime-ledger using the bound receipts below. Distinguish accepted local leaf/parent joins from open Track03 owner/phase review, C2.4 phase review, hosted checks, portable process checkpoint/restart, release, and clinical acceptance. Do not modify source, parent pins, task catalog, or phase checkboxes; do not infer gate success from a planned check. Rust runtime verification remains limited to 1.99.0. Explicitly record C2.3.dispatch as one locally accepted staff-policy selector instance with Flow transit/resource reservation/cleaning still outside that instance.",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Task catalog dependency, owner and readiness structure remains valid after evidence reconciliation."
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "MVP recipe coverage, joins, and context/objective hashes remain valid."
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Current conductor context links have no errors."
+    }
+  ],
+  "acceptance": [
+    "Every parent task has integrated output and executed gates; unresolved failures prevent acceptance",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/C2.4.evidence.rust199-evidence-reconciliation/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root coordinator; two independent read-only reviewers required before local leaf acceptance",
+    "reservation_id": "d2d0b1b2d3b9477492692ba2b6c5e12a",
+    "instance_id": "rust199-evidence-reconciliation",
+    "instance_scope": "Reconcile the integrated C2 phase evidence at the exact parent base, document accepted local joins and actual executed checks, identify all unresolved C2/C2.4 gates, and recommend phase status without changing phase checkbox or asserting open gates passed.",
+    "instance_set": [
+      "rust199-evidence-reconciliation"
+    ],
+    "reviewed_recipe_sha256": "65548d6a715424f723a383bc6f672448a848dd668eec2c0360b41220935d4614",
+    "interface_contract": "Produce a source-linked local evidence inventory for C2.1, C2.2, C2.3, and C2.4.runtime-ledger using the bound receipts below. Distinguish accepted local leaf/parent joins from open Track03 owner/phase review, C2.4 phase review, hosted checks, portable process checkpoint/restart, release, and clinical acceptance. Do not modify source, parent pins, task catalog, or phase checkboxes; do not infer gate success from a planned check. Rust runtime verification remains limited to 1.99.0. Explicitly record C2.3.dispatch as one locally accepted staff-policy selector instance with Flow transit/resource reservation/cleaning still outside that instance.",
+    "context_slices": [
+      {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "start": 122,
+        "end": 143,
+        "repo": "."
+      },
+      {
+        "path": "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "start": 10,
+        "end": 18,
+        "repo": "."
+      },
+      {
+        "path": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/README.md",
+        "start": 1,
+        "end": 9,
+        "repo": "."
+      }
+    ],
+    "input_paths": [
+      "conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json",
+      "conductor/evidence/c2.2-parent-rerun-rust199-20261007/acceptance-rust199.json",
+      "conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json",
+      "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json",
+      "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/README.md",
+      "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/packet.json",
+      "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/worker-result.json",
+      "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json"
+    ],
+    "write_paths": [
+      ".artifacts/packets/C2.4.evidence.rust199-evidence-reconciliation.json",
+      ".artifacts/mvp/C2.4.evidence.rust199-evidence-reconciliation/context.md",
+      ".artifacts/mvp/C2.4.evidence.rust199-evidence-reconciliation/result.json",
+      "conductor/evidence/c2.4-evidence-rust199-20261007/README.md",
+      "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "python3",
+          "tools/tasks.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Task catalog dependency, owner and readiness structure remains valid after evidence reconciliation."
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/mvp.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "MVP recipe coverage, joins, and context/objective hashes remain valid."
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/context.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Current conductor context links have no errors."
+      }
+    ],
+    "prerequisite_receipts": {
+      "C2.4.runtime-ledger": {
+        "status": "accepted",
+        "reviewer": "Coordinator exact-pin acceptance after two independent packet reviews, two source reviews and Rust 1.99.0 combined rerun",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189",
+          "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/README.md": "66aa0f5b29d470c731983d304bc487b31c55dd089c236e5bce7cbf1d52c33e04",
+          "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/packet.json": "66e3fbe834fd492eb0c51a1cfe0abeb4e00364d5b15a9572ecbbb33ec56edec7",
+          "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/worker-result.json": "b1d9370cb76a5045118edaf0d7390c2d3027007163b33747ae820d09da6b85c6"
+        }
+      }
+    }
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "a8b72dea5cd80694fc694d7ce7a3a503c5ea2b2b9c12accc708b2cbe9109009a",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "8ba9f937fff0d74e384b53e686ec9fc3891c990bc233622dd521bb087c92040f",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md": "8819ff02e33b929962c6d5aeb8dc8695826ba17b53549c8a570090b405e809f4",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/README.md": "66aa0f5b29d470c731983d304bc487b31c55dd089c236e5bce7cbf1d52c33e04",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}
