@@ -133,6 +133,8 @@ fixture; the no-Transit-draw observation is scoped to that fixture and its
 TransitContext, which has no RNG field. The separate C2.3.dispatch leaf remains
 the staff-policy adapter. Integrated runtime-ledger leaf accepted at `5cc8250`; see
 [C2.4 runtime-ledger evidence](../../evidence/c2.4-runtime-ledger-rust199-20261007/README.md).
+The test-only Q4 urgent-interruption integration is locally accepted at exact
+Kairos pin `6053d8d`; see [its Rust 1.99.0 evidence](../../evidence/c2.4-q4-interruption-rust199-20261007/README.md).
 Standalone synthetic accounting remains in [the manual ledger evidence](../../evidence/c2-manual-ledger-20261007/README.md).
 C2.4 phase review and Track03 owner review remain open. Hosted checks, portable
 checkpoint/restart, release, and clinical acceptance also remain open.
@@ -141,7 +143,10 @@ remain serial. All C2.1 original oracles remain mandatory; a fixed-duration
 fixture, disconnected RNG check, compile failure or missing transit API cannot
 satisfy paired acceptance. See [the test-first join decision](../../decisions/ADR-0008-c2-test-first-join.md).
 
-Exit: C-02 in standalone fixtures; integrated interruption acceptance awaits Q4.
+Exit: C-02 has standalone fixtures and a locally accepted integrated Q4
+urgent-interruption runtime leaf. Q4.5 is accepted and integrated. Track03
+owner/phase review and the remaining hosted, portable-checkpoint, release, and
+clinical gates remain required before this phase can pass.
 Manual check: inspect the same synthetic case in Macro/Micro, reconcile clinical
 work plus transit plus waits, and demonstrate no double-counted elapsed time.
 

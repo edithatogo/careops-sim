@@ -5620,6 +5620,26 @@
           "existing_recipe": null
         },
         {
+          "id": "C2.4.q4-urgent-interruption-ledger",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Test-only actual Flow/Q4 urgent preemption integration through the calibration bridge, preserving interrupted service and separately reconciling route, queue, useful service, and interruption intervals",
+          "oracle": "In paired Macro and routed nonzero-transit Micro actual-Flow cases, hold a capacity-1 blocker until tick 5, begin a service whose frozen fixture seed samples 20 ticks at tick 5, and admit a 2-tick urgent request at tick 8 that suspends the original work until tick 10. Assert the original WorkId/RequestId, sampled service duration/key/draw position, exact remaining service progress, one suspend/resume/completion lifecycle, and resource/queue conservation. Macro completes at tick 27 with queue 5 + useful service 20 + interruption 2; Micro's accepted 2-tick route precedes service submission and completes at tick 27 with transit 2 + queue 3 + useful service 20 + interruption 2. Assert intervals from actual Flow/transit callbacks, no duplicate arrival/request, no extra Transit RNG, no production API or scheduler/seed changes, and run Rust 1.99.0 only.",
+          "dependencies": [
+            "C2.4.runtime-ledger",
+            "C2.5.continuation"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one paired deterministic urgent-interruption case; coordinator records exact Kairos commit, parent pin and Rust 1.99 receipt",
+          "timebox_minutes": 90,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
           "id": "C2.4.evidence",
           "target_repo": ".",
           "model": "gpt-6-luna",
@@ -5628,6 +5648,7 @@
           "oracle": "Every parent task has integrated output and executed gates; unresolved failures prevent acceptance",
           "dependencies": [
             "C2.4.runtime-ledger",
+            "C2.4.q4-urgent-interruption-ledger",
             "C2.5.continuation"
           ],
           "approval": "coordinator_acceptance_required",
