@@ -678,6 +678,7 @@ Parent plan: [C2.3](../../tracks/empirical_calibration_20260925/plan.md)
 | C2.3.time | Movement-mode/tick conversion | Positive valid speed and checked distance/time rounding; no wrap/negative durations | libs/kairos / worker |
 | C2.3.progress | Interruptible transit progress | Checkpoint/interruption preserves edge/progress and remaining duration | libs/kairos / worker |
 | C2.3.dispatch | Minimal urgency/FIFO/zone/skill adapter | Eligible staff only; work/walk/wait separate and cleaning/reservation remains explicit | libs/kairos / worker |
+| C2.3.transit-bridge | Calibration BoundIntrinsicWork route dispatch and actual arrival reconciliation | Exact owned event receipts; accepted arrival links the original task/resource/work; matching consumed rejection has one explicit retry | libs/kairos / worker |
 
 ## C2.4
 
