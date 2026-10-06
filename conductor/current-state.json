@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.2 parent local join is accepted at Kairos pin 9b360f4 under Rust 1.99.0; evidence: conductor/evidence/c2.2-parent-rerun-rust199-20261007/acceptance-rust199.json. C2.3 transit bridge leaf is accepted, but C2.3 parent/Track03 owner review and Flow event/resource lifecycle joins remain open. Do not prepare C2.1 until C2.3 parent dependencies are accepted through tools/mvp.py. Portable process checkpoint/restart, hosted, release, clinical, and C2.4 phase review remain open.",
+  "next_action": "C2.3 flow-resource-lifecycle local leaf and exact-pin parent join accepted at Kairos pin dbd12c98 under Rust 1.99.0; evidence: conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json. Track03 owner/phase review remains open. C2.1 may now be prepared through tools/mvp.py, but runtime acceptance remains pending its original paired mode/CRN oracles and reviewed checks. Portable process checkpoint/restart, hosted, release, clinical, and C2.4 phase review remain open.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -54,7 +54,7 @@
     "conductor/evidence/c2.2-seeds-rust199-20261006/acceptance-rust199.json"
   ],
   "submodule_pins": {
-    "libs/kairos": "9b360f433210d38868e1e5f102473fd6f148fccf",
+    "libs/kairos": "dbd12c98b1a72a30760996590efa6a0f445368a6",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -329,6 +329,18 @@
     "strict_clippy": true,
     "format": true,
     "C2.2_complete": true,
+    "portable_process_checkpoint_or_restart_codec": false,
+    "hosted_release_or_clinical_acceptance": false
+  },
+  "c23_flow_resource_lifecycle": {
+    "source_commit": "dbd12c98b1a72a30760996590efa6a0f445368a6",
+    "evidence": "conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json",
+    "combined_tests": "442 passed; 0 failed; 5 ignored across 43 result summaries",
+    "strict_clippy_rust199": true,
+    "format_rust199": true,
+    "local_leaf_and_parent_join_accepted": true,
+    "track03_owner_phase_review": "open",
+    "C2_1_runtime_accepted": false,
     "portable_process_checkpoint_or_restart_codec": false,
     "hosted_release_or_clinical_acceptance": false
   }
