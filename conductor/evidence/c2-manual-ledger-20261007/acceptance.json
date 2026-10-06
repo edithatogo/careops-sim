@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "task_id": "C2.manual-accounting",
+  "status": "standalone_synthetic_accounting_readback_recorded",
+  "read_at_utc": "2026-10-06T16:13:03Z",
+  "source_fixture": {
+    "path": "model-inputs/ed/abm/p23-synthetic-accounting.json",
+    "sha256": "0019e85efc859b7697a5c167e8e15e1f41d3661ead4720ef98c749036975f655",
+    "status": "synthetic_test_only"
+  },
+  "prior_hand_worked_evidence": {
+    "path": "conductor/evidence/p2.3-coordinator-acceptance-20261002.md",
+    "sha256": "91997b0853d0a34d71085bd018ca3fa597ac5aaa925528751b7301ac55c17a11"
+  },
+  "accounting_seconds": {
+    "macro_elapsed": 37.5,
+    "micro_queue_wait": 4.0,
+    "micro_active_clinical_work": 12.0,
+    "micro_transit": 18.5,
+    "micro_interruption_pause": 3.0,
+    "micro_elapsed_sum": 37.5
+  },
+  "arithmetic_reconciles": true,
+  "macro_and_micro_are_same_elapsed_window": true,
+  "macro_and_micro_totals_must_not_be_added": true,
+  "validator": {
+    "command": "python3 tools/validate_abm_example.py",
+    "cwd": ".",
+    "exit_code": 0,
+    "output": "synthetic graph and Macro/Micro accounting checks passed; no ED empirical value established"
+  },
+  "scope": {
+    "standalone_manual_accounting_check": true,
+    "integrated_kairos_macro_micro_runtime": false,
+    "runtime_transit_wait_interaction": false,
+    "portable_checkpoint_restart": false,
+    "Track03_owner_review": "open",
+    "C2_4_phase_acceptance": "open",
+    "hosted_release_clinical_acceptance": false
+  }
+}

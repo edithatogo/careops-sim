@@ -128,10 +128,12 @@ evidence. The paired comparison covers full Flow outcomes for its deterministic
 fixture; the no-Transit-draw observation is scoped to that fixture and its
 TransitContext, which has no RNG field. The separate C2.3.dispatch leaf remains
 the staff-policy adapter. Track03 owner/phase review and C2.4 phase review remain
-open. The manual Macro/Micro work, transit, and wait reconciliation, portable
-checkpoint/restart, hosted, release, and clinical acceptance are not recorded as
-complete. Dependency readiness does not grant parallel writes: overlapping path
-claims remain serial. All C2.1 original oracles remain mandatory; a fixed-duration
+open. A standalone synthetic Macro/Micro accounting readback is recorded in
+[the manual ledger evidence](../../evidence/c2-manual-ledger-20261007/README.md).
+It does not establish integrated Kairos runtime transit/wait behavior. Portable
+checkpoint/restart, hosted, release, and clinical acceptance remain open.
+Dependency readiness does not grant parallel writes: overlapping path claims
+remain serial. All C2.1 original oracles remain mandatory; a fixed-duration
 fixture, disconnected RNG check, compile failure or missing transit API cannot
 satisfy paired acceptance. See [the test-first join decision](../../decisions/ADR-0008-c2-test-first-join.md).
 

@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.1 local parent join accepted at exact Kairos pin bfbefa87 under Rust 1.99.0; evidence: conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json. C2.2 local parent join remains accepted at 9b360f4; C2.3 local parent join remains accepted at dbd12c9. Track03 owner/phase review and C2.4 Conductor phase review remain open; portable process checkpoint/restart, hosted, release, and clinical acceptance remain open.",
+  "next_action": "C2.1 local parent join accepted at exact Kairos pin bfbefa87 under Rust 1.99.0; C2.2 parent join accepted at 9b360f4; C2.3 parent join accepted at dbd12c9. C2 standalone synthetic elapsed-time accounting readback is recorded, but integrated runtime transit/wait behavior and C2.4 phase acceptance remain open. Track03 owner/phase review, portable process checkpoint/restart, hosted, release, and clinical acceptance remain open.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -370,5 +370,18 @@
     "Track03_owner_phase_review": "open",
     "C2.4_phase_review": "open",
     "hosted_release_or_clinical_acceptance": false
+  },
+  "c2_manual_accounting_readback": {
+    "status": "standalone_synthetic_accounting_readback_recorded",
+    "evidence": "conductor/evidence/c2-manual-ledger-20261007/acceptance.json",
+    "macro_elapsed_seconds": 37.5,
+    "micro_components_seconds": {
+      "queue_wait": 4.0,
+      "active_clinical_work": 12.0,
+      "transit": 18.5,
+      "interruption_pause": 3.0
+    },
+    "integrated_kairos_runtime": false,
+    "C2_4_phase_acceptance": "open"
   }
 }
