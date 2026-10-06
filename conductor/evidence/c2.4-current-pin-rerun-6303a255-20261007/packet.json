@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255",
+  "task_id": "C2.4",
+  "target_repo": "libs/kairos",
+  "base_commit": "6303a2552257f1fcbd2aaa002d38352a2a467592",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Re-run the accepted C2.4 Q4 urgent-interruption package checks at exact Kairos pin 6303a2552257f1fcbd2aaa002d38352a2a467592 using Rust 1.99.0 only. This is verification of the existing accepted source leaf after a one-line doc-hidden visibility correction; no source edits and no phase acceptance.",
+  "context_paths": [
+    ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255/context.md"
+  ],
+  "input_hashes": {
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "056bc718740f188fdee5bde7b29061acc23eae4878cebec95c8715a3ddc27e0c",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959",
+    "Cargo.lock": "946b09595a094549bfdfc7d45398810f959f539243fecb9934343cf297f4949f",
+    ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255/context.md": "499795dc4ab16f18f752b79943cb538deae79ed006a78337d7debfa735c975c1"
+  },
+  "write_paths": [
+    ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255",
+    ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255/result.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C2.4.runtime-ledger",
+    "C2.5.continuation"
+  ],
+  "interface_contract": "Do not change source, manifests, lockfiles, APIs, task catalog or acceptance checkboxes. Use only Rust/Cargo 1.99.0. Execute the exact locked DES/ABM/calibration feature-set test, strict all-target Clippy, and workspace fmt-check at the bound current Kairos commit. Preserve all output under this packet artifact directory. A pass refreshes only local exact-pin evidence; owner, hosted, release, clinical, and phase gates remain open.",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255/target"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All three exact-parent packages pass at Kairos 6303a255 under Rust 1.99.0; the Q4 calibration bridge tests execute in this feature set."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255/target",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target Clippy passes for the same exact-parent package and feature set on Rust 1.99.0."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting check passes at the exact Kairos pin using Rust 1.99.0."
+    }
+  ],
+  "acceptance": [
+    "In paired Macro and routed nonzero-transit Micro actual-Flow cases, hold a capacity-1 blocker until tick 5, begin a service whose frozen fixture seed samples 20 ticks at tick 5, and admit a 2-tick urgent request at tick 8 that suspends the original work until tick 10. Assert the original WorkId/RequestId, sampled service duration/key/draw position, exact remaining service progress, one suspend/resume/completion lifecycle, and resource/queue conservation. Macro completes at tick 27 with queue 5 + useful service 20 + interruption 2; Micro's accepted 2-tick route precedes service submission and completes at tick 27 with transit 2 + queue 3 + useful service 20 + interruption 2. Assert intervals from actual Flow/transit callbacks, no duplicate arrival/request, no extra Transit RNG, no production API or scheduler/seed changes, and run Rust 1.99.0 only.",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root coordinator",
+    "reservation_id": "fb7cc2b34a604b7ba8e3df203703617c",
+    "instance_id": "q4-rerun-6303a255",
+    "instance_scope": "Re-run the accepted C2.4 Q4 urgent-interruption package checks at exact Kairos pin 6303a2552257f1fcbd2aaa002d38352a2a467592 using Rust 1.99.0 only. This is verification of the existing accepted source leaf after a one-line doc-hidden visibility correction; no source edits and no phase acceptance.",
+    "instance_set": [
+      "q4-rerun-6303a255"
+    ],
+    "interface_contract": "Do not change source, manifests, lockfiles, APIs, task catalog or acceptance checkboxes. Use only Rust/Cargo 1.99.0. Execute the exact locked DES/ABM/calibration feature-set test, strict all-target Clippy, and workspace fmt-check at the bound current Kairos commit. Preserve all output under this packet artifact directory. A pass refreshes only local exact-pin evidence; owner, hosted, release, clinical, and phase gates remain open.",
+    "context_slices": [
+      {
+        "repo": ".",
+        "path": "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.md",
+        "start": 1,
+        "end": 16
+      },
+      {
+        "repo": ".",
+        "path": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/acceptance-rust199.json",
+        "start": 72,
+        "end": 110
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-abm/src/flow_adapter.rs",
+        "start": 165,
+        "end": 192
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 2177,
+        "end": 2225
+      }
+    ],
+    "input_paths": [
+      "Cargo.lock",
+      "crates/kairo-ecs-abm/src/flow_adapter.rs",
+      "crates/kairo-ecs-calibration/src/flow_bridge.rs"
+    ],
+    "write_paths": [
+      ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255",
+      ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255/result.json"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-des",
+          "-p",
+          "kairo-ecs-abm",
+          "-p",
+          "kairo-ecs-calibration",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+          "--target-dir",
+          ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255/target"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "All three exact-parent packages pass at Kairos 6303a255 under Rust 1.99.0; the Q4 calibration bridge tests execute in this feature set."
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "kairo-ecs-des",
+          "-p",
+          "kairo-ecs-abm",
+          "-p",
+          "kairo-ecs-calibration",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+          "--all-targets",
+          "--target-dir",
+          ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255/target",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Strict all-target Clippy passes for the same exact-parent package and feature set on Rust 1.99.0."
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Workspace formatting check passes at the exact Kairos pin using Rust 1.99.0."
+      }
+    ],
+    "prerequisite_receipts": {
+      "C2.4.runtime-ledger": {
+        "status": "accepted",
+        "reviewer": "root coordinator",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189"
+        }
+      },
+      "C2.5.continuation": {
+        "status": "accepted",
+        "reviewer": "root coordinator",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.5-continuation-rust199-20261007/acceptance-rust199.json": "543a0e9e6b73c7e392280bbe6b9f3cc69fe1b6abd29a635e2ad97444d0536282"
+        }
+      }
+    },
+    "reviewed_recipe_sha256": "ef9ee2851bb1b6b9e29d9da76e7d97ed734f41988aa4c8e8a93cc9db5930e2bc"
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "9e154cb72fcf2aa86dd2ae2167a69898fe812b6946b9b01d10f742c7b9cec37b",
+    "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.md": "cc4159bba7465d9508e72a272d5069db7ecb7539656657736edf5c2bbe749c71",
+    "conductor/evidence/c2.4-q4-interruption-rust199-20261007/acceptance-rust199.json": "88109c5dc3a35eada33d0f047ac33d5271f7a5050f138393ff4a435a265a97c1",
+    "libs/kairos/crates/kairo-ecs-abm/src/flow_adapter.rs": "056bc718740f188fdee5bde7b29061acc23eae4878cebec95c8715a3ddc27e0c",
+    "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs": "e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}
