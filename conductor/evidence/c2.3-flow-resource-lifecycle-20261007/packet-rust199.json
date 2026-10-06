@@ -56,7 +56,7 @@
         "-p",
         "kairo-ecs-abm",
         "--features",
-        "kairo-ecs-calibration/flow",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
         "--lib",
         "staff_flow_lifecycle::tests"
       ],
@@ -77,7 +77,7 @@
         "-p",
         "kairo-ecs-abm",
         "--features",
-        "kairo-ecs-calibration/flow",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
         "--all-targets",
         "--",
         "-D",
@@ -116,11 +116,38 @@
   ],
   "coordinator_binding": {
     "reviewer": "coordinator plus independent Luna recipe/API/packet review",
-    "reservation_id": "C2.3-flow-resource-lifecycle-rust199-attempt-1",
+    "reservation_id": "C2.3-flow-resource-lifecycle-rust199-attempt-2",
     "instance_id": "rust199-flow-resource-lifecycle",
     "instance_scope": "One focused actual-Flow scenario proving selected Work/Walk/Wait handling and a named bed claim held through a caller-supplied cleaning completion callback, exact accepted release command and applied release event, with one queued request admitted afterward.",
     "instance_set": [
       "rust199-flow-resource-lifecycle"
+    ],
+    "prior_attempts": [
+      {
+        "reservation_id": "C2.3-flow-resource-lifecycle-rust199-attempt-1",
+        "status": "blocked_before_module_compile",
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "-p",
+          "kairo-ecs-abm",
+          "--features",
+          "kairo-ecs-calibration/flow",
+          "--lib",
+          "staff_flow_lifecycle::tests"
+        ],
+        "cwd": "libs/kairos",
+        "exit_status": 101,
+        "log": "/tmp/c2-3-flow-lifecycle-test.log",
+        "log_sha256": "53d3ba275f99baaf64328b2d9519a7828f7645a151c5de7103eeb3804791538e",
+        "reason": "The existing calibration flow_bridge test imports an ABM helper gated by the already-declared kairo-ecs-abm/test-support feature; this feature was added to the re-bound test and Clippy commands."
+      }
     ],
     "reviewed_recipe_sha256": "bd23b9f8cce2ee7a2ffde81d10400d2bf14b2ec3cd49325570511b51f703d9fd",
     "interface_contract": "Implement only a crate-private calibration adapter in crates/kairo-ecs-calibration/src/staff_flow_lifecycle.rs and its private declaration in src/lib.rs. Connect the accepted select_dispatch result to caller-supplied Flow RequestId/EntityId/ResourceId/WorkId mappings without numeric casts. Keep Work, Walk and Wait as distinct typed activities; Work and Walk may submit distinct mapped requests, and Wait creates no request or claim. Model a named bed claim with explicit claim/owner/resource/request/lease identity and staged staff-versus-bed allocation, never atomic multi-resource acquisition. The fixture must schedule a caller-supplied cleaning domain callback for the same work/claim and bind its actual EventId. Keep the bed allocated and next request queued until the matching callback runs and its FlowBatchReceipt is Accepted with the exact emitted release ticket/event; step that actual release event before asserting release and queued admission. Assert request/owner/resource/lease lineage, callback and release EventIds, queue/resource conservation, and that wrong callback identity or rejected receipt cannot release the bed. Do not introduce cleaning duration/trigger policy, cancellation/expiry/conflict/failure policy, clinical semantics, public API, Cargo feature, DES/ABM core edits, or changes to accepted selector/transit modules.",
@@ -204,7 +231,7 @@
           "-p",
           "kairo-ecs-abm",
           "--features",
-          "kairo-ecs-calibration/flow",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
           "--lib",
           "staff_flow_lifecycle::tests"
         ],
@@ -225,7 +252,7 @@
           "-p",
           "kairo-ecs-abm",
           "--features",
-          "kairo-ecs-calibration/flow",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
           "--all-targets",
           "--",
           "-D",
