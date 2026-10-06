@@ -48,7 +48,16 @@ For each item, mark `accepted`, `accepted with follow-up`, `rejected`, or `not r
 - [ ] Routed Micro binds only an accepted arrival to the original Flow request and preserves the one-retry/rejection boundary.
 - [ ] At the Track03 Flow boundary, Q4 urgent suspension resumes the same work/request without resubmitting work or duplicating lifecycle events. Track21 owns intrinsic-duration provider semantics; this checks that the Flow boundary does not cause a second request.
 - [ ] At the Track03 boundary, resource callbacks and observed Flow/transit intervals reconcile in the bounded fixtures. This does not accept Track21 calibration-ledger semantics.
+- [ ] Resolve the C2.3 transit-contract questions below, identifying any cross-track owner and follow-up rather than assuming a new Track03 API.
 - [ ] No Track03 public contract changed without an ADR; any Track03-owned gap or follow-up is identified below.
+
+## C2.3 transit-contract questions for owner disposition
+
+These are scope questions, not prefilled findings or implementation instructions:
+
+- **Trip purpose:** The C2.3 plan calls for O/D purpose. The current `TransitGraphV1::route` and Flow route request carry origin/destination but no trip-purpose field. The C2.0 provider/transit proposal says a route receipt carries purpose, but that document remains a proposal awaiting owner review. Decide whether purpose belongs in the Track03 request/receipt, an upstream model/calibration record, or another contract; name the owner and ADR/follow-up required.
+- **“Mixed-use pauses”:** Current pause/resume coverage exercises a segmented route with one movement mode. Define what “mixed-use” means in this plan clause and whether the existing oracle is sufficient; if not, identify the owning contract and concrete fixture needed before implementation.
+- **Sensor-derived distance:** The generic route API consumes configured integer edge lengths and has no sensor input or provenance field. Confirm whether this satisfies the engine boundary, or identify the upstream geometry/data-provenance owner and evidence needed to ensure sensor observations are not treated as path or speed ground truth.
 
 ## Track03 disposition record — owner to complete
 
