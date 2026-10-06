@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "task_id": "C2.4.evidence",
+  "instance_id": "rust199-evidence-reconciliation",
+  "status": "ready_for_review",
+  "base_commit": "b55b46ca840598cb800146b0815edd91b0e426d7",
+  "integrated_kairos_pin_at_base": "5cc825048a1116740e80e6c067ba046306f2ce10",
+  "toolchain_scope": "Rust/Cargo verification in this reconciliation is limited to the bound Rust 1.99.0 receipts; no Rust commands were needed or run for this evidence-only packet.",
+  "accepted_local_evidence": [
+    {
+      "id": "C2.1",
+      "receipt_path": "conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json",
+      "receipt_sha256": "4f1ba5b364dd3c908287c286e7414d19dcdc3da3f1458e95471f66a9a76b6f20",
+      "status": "local_parent_join_accepted",
+      "kairos_pin": "bfbefa87ba15488837b01020f343685907ae09ac",
+      "toolchain": "Rust/Cargo 1.99.0 only",
+      "tests": {"passed": 442, "failed": 0, "ignored": 5, "result_lines": 43},
+      "strict_clippy": true,
+      "format": true,
+      "scope": "Exact-pin parent join for fidelity mode precedence/boundary behavior and paired Macro Route versus explicit-zero Micro Flow outcomes; accepted mode and paired leaf instances are named in the receipt.",
+      "limitations": ["Track03 owner/phase review and C2.4 phase review remain open", "portable process checkpoint/restart, hosted checks, release, clinical acceptance, and full C2 runtime acceptance are not established"]
+    },
+    {
+      "id": "C2.2",
+      "receipt_path": "conductor/evidence/c2.2-parent-rerun-rust199-20261007/acceptance-rust199.json",
+      "receipt_sha256": "72a4f1868bba86aed670aee50fd2b6682166969284bf05fea328488b805675b8",
+      "status": "local_parent_join_accepted",
+      "kairos_pin": "9b360f433210d38868e1e5f102473fd6f148fccf",
+      "toolchain": {"rustc": "rustc 1.99.0 (b940084d7 2026-09-28)", "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"},
+      "tests": {"passed": 441, "failed": 0, "ignored": 5, "result_lines": 43},
+      "strict_clippy": true,
+      "format": true,
+      "scope": "Exact-pin combined provider, policy, Flow submit/macro-zero/transit-retention, seed continuation, and named paired C2.0 transit fixture evidence.",
+      "limitations": ["The receipt's C2_1_runtime_accepted=false field predates and is historical relative to the later accepted C2.1 parent receipt", "C2.3/Track03 owner review, C2.4 phase review, portable process checkpoint/restart, hosted checks, release, and clinical acceptance remain open"]
+    },
+    {
+      "id": "C2.3.flow-resource-lifecycle",
+      "receipt_path": "conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json",
+      "receipt_sha256": "fd8d48f939b29901da7e6807f00d065e2414e56a076e3752b6523ef94e096afa",
+      "status": "local_leaf_and_parent_join_accepted",
+      "kairos_pin": "dbd12c98b1a72a30760996590efa6a0f445368a6",
+      "toolchain": {"rustc": "rustc 1.99.0 (b940084d7 2026-09-28)", "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"},
+      "tests": {"passed": 442, "failed": 0, "ignored": 5, "result_lines": 43},
+      "strict_clippy": true,
+      "format": true,
+      "scope": "Exact-pin join for typed Flow actor requests, named bed claim retaining original timed WorkId, separately observed cleaning completion, accepted callback lineage release, wrong-event rejection, and queue/resource conservation.",
+      "limitations": ["The receipt's C2.1_runtime_accepted=false field predates and is historical relative to the later accepted C2.1 parent receipt", "Track03 owner/phase review and C2.4 phase review remain open; portable process checkpoint/restart, hosted checks, release, and clinical acceptance are not established"]
+    },
+    {
+      "id": "C2.3.dispatch",
+      "receipt_path": "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json",
+      "receipt_sha256": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d",
+      "status": "locally_accepted_leaf_parent_and_track03_gates_open",
+      "kairos_pin": "7672a67988134438228014e7b3e0f56855cc65e8",
+      "toolchain": "Stable Rust 1.99.0, as recorded in the receipt's current-pin verification reference",
+      "tests": {"status": "passed", "details": "Exact package commands and totals are delegated to the referenced transit-bridge acceptance receipt; no additional total is asserted here."},
+      "strict_clippy": "delegated to the referenced current-pin verification receipt",
+      "format": "delegated to the referenced current-pin verification receipt",
+      "scope": "One accepted staff-policy selector instance: eligibility, urgency/FIFO/stable tie-break, zone/skill/availability filters, separation of work/walk/wait, and no staff assignment during wait.",
+      "limitations": ["Flow transit dispatch integration, staff resource reservation, and cleaning lifecycle are outside this selector instance", "C2.3 parent completion, Track03 owner review, hosted/release, and operational acceptance are not established by this leaf"]
+    },
+    {
+      "id": "C2.4.runtime-ledger",
+      "receipt_path": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json",
+      "receipt_sha256": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189",
+      "status": "accepted_local_leaf_and_exact_pin_parent_join_phase_review_open",
+      "kairos_pin": "5cc825048a1116740e80e6c067ba046306f2ce10",
+      "toolchain": "Rust/Cargo 1.99.0 only",
+      "tests": {"passed": 443, "failed": 0, "ignored": 5, "result_summaries": 43},
+      "strict_clippy": true,
+      "format": true,
+      "scope": "Test-only integrated same-case Macro/Micro elapsed-time reconciliation through actual Flow requests/completions and accepted TransitContext arrival: Macro 5 queue + 20 service; Micro 2 transit + 3 queue + 20 service; both complete at tick 25.",
+      "limitations": ["One local C2.4 runtime-ledger leaf and exact-pin parent join only", "C2.4 phase acceptance, Track03 owner/phase review, hosted checks, portable interruption checkpoint/restart, release, and clinical acceptance remain open"]
+    }
+  ],
+  "standalone_manual_reconciliation": {
+    "status": "locally_reconciled_synthetic_arithmetic",
+    "evidence_path": "conductor/evidence/c2-manual-ledger-20261007/README.md",
+    "macro_elapsed_seconds": 37.5,
+    "micro_components_seconds": {"queue_wait": 4.0, "active_clinical_work": 12.0, "transit": 18.5, "interruption_pause": 3.0},
+    "micro_elapsed_sum_seconds": 37.5,
+    "interpretation": "Manual standalone fixture arithmetic is reconciled; Macro and Micro describe the same elapsed window and must not be added together. The fixture is synthetic and is not integrated runtime, observed ED evidence, or interruption/restart proof."
+  },
+  "consistency_review": {
+    "status": "reconciled",
+    "older_c21_false_statuses_explanation": "The C2.2 and C2.3 receipts were recorded before the later C2.1 exact-pin parent join. Their C2_1_runtime_accepted=false fields are historical snapshots of their then-current prerequisites, not contradictions of the subsequently accepted C2.1 receipt.",
+    "integrated_runtime_transit_wait": true,
+    "unresolved_contradictions": []
+  },
+  "phase_acceptance": "open",
+  "open_gates": {
+    "Track03_owner_phase_review": "open",
+    "C2.4_phase_review": "open",
+    "Q4_interruption_acceptance": "open",
+    "portable_checkpoint_restart": "open",
+    "hosted_exact_head_checks": "open",
+    "release": "open",
+    "clinical_acceptance": "open"
+  },
+  "verification_required": [
+    "python3 tools/tasks.py check",
+    "python3 tools/mvp.py check",
+    "python3 tools/context.py check"
+  ],
+  "coordinator_acceptance_required": true
+}
