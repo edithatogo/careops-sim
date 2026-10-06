@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.4 manual Macro/Micro elapsed-time readback is recorded: base ledger 25 ticks per arm and Q4 interruption 27 ticks per arm, with Q4 runtime evidence historical at Kairos 6053d8d. The integrated Kairos pin is 6303a255 after a docs-only retry-helper visibility correction; the runtime suite has not been rerun there. Track03 and Track22 owner packets are prepared but unsent. Next: obtain Track03 owner disposition and Track22 contract decision, then resolve portable restart, exact-head hosted, release and clinical gates before separate C2.4 Conductor phase review. Full C2 remains open.",
+  "next_action": "C2.4 manual Macro/Micro elapsed-time readback is recorded: base ledger 25 ticks per arm and Q4 interruption 27 ticks per arm, with Q4 runtime evidence historical at Kairos 6053d8d. The integrated Kairos pin is 6303a255 after a docs-only retry-helper visibility correction; the runtime suite has not been rerun there. Track03 and Track22 owner packets are prepared but unsent; the Track22 packet now binds source parent 05599280 and lists owner-specific snapshot/rebind constraints. Next: obtain Track03 owner disposition and Track22 contract decision, then resolve portable restart, exact-head hosted, release and clinical gates before separate C2.4 Conductor phase review. Full C2 remains open.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -433,7 +433,7 @@
     "rust_toolchain": "1.99.0 only for referenced Rust receipts",
     "C2_4_phase_acceptance": "open",
     "Track03_owner_phase_review": "open",
-    "Q4_interruption_acceptance": "open",
+    "Q4_interruption_acceptance": "local leaf accepted at 6053d8dd; documentation-only correction at 6303a255; current-pin runtime suite not rerun",
     "portable_checkpoint_restart": "open",
     "hosted_exact_head_checks": "open",
     "release": "open",
@@ -471,5 +471,13 @@
     "Q4_tested_pin": "6053d8dd2f8057c423decc929c90a8bcd10837f9",
     "current_runtime_rerun_at_6303a255": false,
     "C2_4_phase_acceptance": "open"
+  },
+  "c22_checkpoint_contract_review": {
+    "packet": "conductor/evidence/c2-track22-checkpoint-owner-review-20261007/review-packet.md",
+    "packet_sha256": "38aee71d70e29d2d5828cf2c16016dd8614d923482ca8d373be7f14c4aedd360",
+    "source_parent": "05599280c565b4f31fcc52faae51c52ee4142e30",
+    "kairos_pin": "6303a2552257f1fcbd2aaa002d38352a2a467592",
+    "status": "prepared_unsent_owner_decision_required",
+    "portable_restart_implementation": "not_authorized_pending_contract_and_ADR"
   }
 }
