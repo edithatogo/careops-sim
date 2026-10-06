@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.4 exact-pin runtime verification passes at Kairos 6303a255 using Rust 1.99.0 only: 447 passed, 0 failed, 5 ignored across 43 result groups; strict Clippy and formatting passed. Manual elapsed-time readback reconciles to 25 ticks per base arm and 27 ticks per Q4 interruption arm. Track03 and Track22 packets have been refreshed to cite current-pin evidence and clearly label historical parent baselines; both remain prepared and unsent. Next: receive the Track03 owner disposition and Track22 contract decision, then resolve portable restart, hosted exact-head, release and clinical gates before the separate C2.4 Conductor phase review. Full C2 remains open.",
+  "next_action": "C2.1 paired Restart and C2.5 decision-mismatch assertions are reopened as packet-required local coverage gaps. C2.1 must proceed first; prepare and review a bounded Rust 1.99.0-only paired Restart packet, then implement and capture a superseding receipt. C2.5 follows serially on the shared flow_bridge.rs path. Earlier receipts remain historical. Track03 and Track22 owner packets remain prepared and unsent; hosted exact-head, portable restart contract, release, clinical and C2.4 phase gates remain open.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -382,12 +382,13 @@
   "c21_paired_qualification": {
     "source_commit": "bfbefa87ba15488837b01020f343685907ae09ac",
     "evidence": "conductor/evidence/c2.1-paired-20261007/acceptance-rust199.json",
-    "local_leaf_accepted": true,
-    "C2_1_parent_runtime_accepted": true,
-    "portable_checkpoint_or_restart": false
+    "local_leaf_accepted": false,
+    "C2_1_parent_runtime_accepted": false,
+    "portable_checkpoint_or_restart": false,
+    "reopened_reason": "Existing accepted fixture does not pair Macro and explicit-zero Micro under PreemptionStrategy::Restart."
   },
   "c21_parent_join": {
-    "status": "local_parent_join_accepted",
+    "status": "historical_join_reopened_for_paired_restart_oracle",
     "receipt": "conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json",
     "receipt_sha256": "4f1ba5b364dd3c908287c286e7414d19dcdc3da3f1458e95471f66a9a76b6f20",
     "kairos_pin": "bfbefa87ba15488837b01020f343685907ae09ac",
@@ -499,5 +500,10 @@
     "kairos_pin": "6303a2552257f1fcbd2aaa002d38352a2a467592",
     "status": "prepared_unsent_owner_decision_required",
     "portable_restart_implementation": "not_authorized_pending_contract_and_ADR"
+  },
+  "c25_continuation_qualification": {
+    "status": "historical_receipt_reopened_for_decision_mismatch_oracle",
+    "evidence": "conductor/evidence/c2.5-continuation-rust199-20261007/acceptance-rust199.json",
+    "reopened_reason": "Existing mismatch test covers foreign runtime identity, not decision mismatch exact-value preservation."
   }
 }

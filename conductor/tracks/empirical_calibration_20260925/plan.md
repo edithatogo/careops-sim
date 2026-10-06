@@ -125,10 +125,10 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   portable serialization and process restart remain Track22 gates.
 - [ ] C2.4 Conductor — review and verify phase (workflow.md).
 
-After preparation C2.0, C2.2 provider/policy, C2.3 generic routing, and C2.1
-fidelity-mode behavior have local exact-pin joins under Rust 1.99.0. C2.1.mode
-and C2.1.paired leaf receipts and the parent join are recorded in repository
-evidence. The paired comparison covers full Flow outcomes for its deterministic
+After preparation C2.0, C2.2 provider/policy, and C2.3 generic routing have
+local exact-pin joins under Rust 1.99.0. Earlier C2.1.mode and C2.1.paired leaf
+receipts remain historical; C2.1 paired Restart and C2.5 decision-mismatch
+coverage are reopened for the packet-required acceptance oracles. The paired comparison covers full Flow outcomes for its deterministic
 fixture; the no-Transit-draw observation is scoped to that fixture and its
 TransitContext, which has no RNG field. The separate C2.3.dispatch leaf remains
 the staff-policy adapter. Integrated runtime-ledger leaf accepted at `5cc8250`; see
