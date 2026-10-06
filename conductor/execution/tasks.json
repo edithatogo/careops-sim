@@ -2576,7 +2576,16 @@
       ],
       "dispatch_gate": "reviewed_leaf_packet_required",
       "model_route": "coordinator",
-      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2",
+      "leaf_dependency_overrides": {
+        "C2.4.runtime-ledger": [
+          "C2.1.paired"
+        ],
+        "C2.4.evidence": [
+          "C2.4.runtime-ledger",
+          "C2.5.continuation"
+        ]
+      }
     },
     {
       "id": "C2.5",
