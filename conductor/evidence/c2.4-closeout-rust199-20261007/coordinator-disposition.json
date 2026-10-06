@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "task_id": "C2.4.closeout",
+  "instance_id": "rust199-phase-gate-readback",
+  "status": "coordinator_readback_reviewed_phase_withheld",
+  "phase_acceptance": "withheld",
+  "worker_base_commit": "dada28affc59763bd648d5a6e9dc522562c265b9",
+  "parent_integration_base": "285c6379bdf67fddc4bdc5905faa6a0d7d5076ba",
+  "integrated_kairos_pin": "5cc825048a1116740e80e6c067ba046306f2ce10",
+  "packet": {
+    "path": "conductor/evidence/c2.4-closeout-rust199-20261007/packet.json",
+    "sha256": "1f98636a208abdb5ccc17a8178f2258c0a2c0b811ef66c6b963ca3b6c0f45bb8"
+  },
+  "worker_result": {
+    "path": "conductor/evidence/c2.4-closeout-rust199-20261007/worker-result.json",
+    "sha256": "411f3ffedac9f38cecb685a80b2074fb1d0fb604c987be7c466f8602cc9d6726"
+  },
+  "closeout_review": {
+    "path": "conductor/evidence/c2.4-closeout-rust199-20261007/closeout-review.json",
+    "sha256": "eccc9ff8967dd541cbea0ccdeb744ebc1ef43df14971bd0bf5955e0762a63787"
+  },
+  "pre_update_current_state_sha256": "8ed0acdb290d065e118b4de0462cb42aa8f1ae1dabb91ab4d87be570c756e326",
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "144 task records: full coverage, prerequisites and DAG valid\n",
+      "stdout_sha256": "3c9b46c6f92523f90a202f40d3e7982f5d6fb0fecc2022fd38bc0a271d22661d"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "PASS: 81 MVP parents; 256 bounded leaves; complete joins and context/objective hashes\n",
+      "stdout_sha256": "f67345979e013ce605150fd6cc1576b0b40178650d7edd04c31f592aad3fa7bf"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "{\n  \"tracks\": 5,\n  \"milestones\": 34,\n  \"local_links\": 786,\n  \"errors\": []\n}\n",
+      "stdout_sha256": "7043688afce80df1f55b3e3e1df2d98a5a2c938fa909aa1bec322b1e622747fd"
+    }
+  ],
+  "independent_review": "READY; verified withheld disposition, all seven open gates, six accepted receipt hashes, manual arithmetic, and packet/result hashes.",
+  "open_gates": {
+    "Track03_owner_phase_review": "open",
+    "Q4_interruption_integration": "open",
+    "portable_checkpoint_restart": "open",
+    "hosted_exact_head_checks": "open",
+    "release": "open",
+    "clinical_acceptance": "open",
+    "C2.4_phase_review": "open"
+  },
+  "decision": "C2.4 phase acceptance is withheld. This accepts the accuracy of this closeout readback only; it does not complete C2.4 or full C2.",
+  "checkbox_changed": false,
+  "catalog_changed": false,
+  "source_or_pin_changed": false,
+  "rust_commands_run": false
+}
