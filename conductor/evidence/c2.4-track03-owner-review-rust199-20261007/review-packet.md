@@ -10,7 +10,7 @@ Review whether the C2 execution behavior that touches Track03’s DES/ABM mode, 
 
 ## Exact reviewed state
 
-- Current parent review snapshot: `396e8e9def5fa6dc2510783dc4c118fd6d5eb138`.
+- Parent review baseline immediately before this packet refresh: `396e8e9def5fa6dc2510783dc4c118fd6d5eb138` (this revision changes review documentation only; Kairos remains at the pin below).
 - Parent source/execution baseline for the exact-pin runtime receipt: `b76bf0734ccb844e8bb15ecb9b1b5e2547850904`; intervening parent commits through the current review snapshot are evidence/documentation updates, with the integrated Kairos pin unchanged.
 - Integrated Kairos pin: `6303a2552257f1fcbd2aaa002d38352a2a467592`.
 - Q4 test source: `crates/kairo-ecs-calibration/src/flow_bridge.rs`; source SHA-256 `e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959`.
