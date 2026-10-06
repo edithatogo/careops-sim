@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "Current exact-pin DES/ABM/calibration verification passes at Kairos 3926d0f (449 passed, 0 failed, 5 ignored; strict Clippy/format passed) with all locally implementable C2 test gaps audited. C2.4 phase acceptance remains withheld pending Track03 and Track22 dispositions plus hosted, portable-restart, release and clinical gates.",
+  "next_action": "C2.2 provider sampling tests are integrated at Kairos 6784538; Rust 1.99.0 calibration tests pass (152 passed, 5 ignored), with strict Clippy and format passing. The last DES/ABM/calibration suite passed at 3926d0f (449 passed, 5 ignored); it was not rerun at the test-only 6784538 pin. C2.4 phase acceptance remains withheld pending Track03 and Track22 dispositions plus hosted, portable-restart, release and clinical gates.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -34,6 +34,8 @@
     "libs/kairos/conductor/design/calibration/c20-preparation-qualification-20261005.md",
     "conductor/evidence/c2.0-preparation-20261005/README.md",
     "conductor/evidence/c2.2-provider-20261005/README.md",
+    "conductor/evidence/c2.2-provider-sampling-rust199-20261007/README.md",
+    "conductor/evidence/c2.2-provider-sampling-rust199-20261007/acceptance-rust199.json",
     "conductor/evidence/c2.2-policy-20261006/README.md",
     "conductor/evidence/c2.3-staff-policy-20261006/README.md",
     "conductor/evidence/c2.2-api-surface-20261006/README.md",
@@ -89,7 +91,7 @@
     "conductor/evidence/c2-current-pin-rerun-rust199-20261007/worker-result.json"
   ],
   "submodule_pins": {
-    "libs/kairos": "3926d0f8f401b605ea62b15cde7b5ef1ffba89c1",
+    "libs/kairos": "678453838f391f3dd869b79fd502077f63f3a067",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -446,7 +448,7 @@
     "rust_toolchain": "1.99.0 only for referenced Rust receipts",
     "C2_4_phase_acceptance": "open",
     "Track03_owner_phase_review": "open",
-    "Q4_interruption_acceptance": "local leaf accepted at 6053d8dd; documentation-only correction at 6303a255; current-pin runtime suite not rerun",
+    "Q4_interruption_acceptance": "local leaf accepted at 6053d8dd; exact runtime suite rerun at Kairos 3926d0f (449 passed, 5 ignored); later 6784538 change adds provider tests only, full C2 suite not rerun at that pin",
     "portable_checkpoint_restart": "open",
     "hosted_exact_head_checks": "open",
     "release": "open",
@@ -536,6 +538,17 @@
     "strict_clippy": true,
     "format": true,
     "C2_2_leaf_specific_parent_receipt_replaced": false,
+    "full_C2_acceptance": false
+  },
+  "c22_provider_sampling_verification": {
+    "status": "local_provider_test_evidence_only",
+    "kairos_pin": "678453838f391f3dd869b79fd502077f63f3a067",
+    "evidence": "conductor/evidence/c2.2-provider-sampling-rust199-20261007/acceptance-rust199.json",
+    "toolchain": "Rust 1.99.0 only",
+    "focused_tests": "7 passed",
+    "package_tests": "152 passed; 0 failed; 5 ignored",
+    "strict_clippy": true,
+    "format": true,
     "full_C2_acceptance": false
   }
 }
