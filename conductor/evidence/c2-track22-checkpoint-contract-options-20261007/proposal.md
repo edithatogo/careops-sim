@@ -4,7 +4,7 @@
 
 ## Target outcome
 
-Meet C2 specification C-06: candidate rankings, canonical integer traces, and IDs survive repeat runs, checkpoint/resume, and 1/2/N workers; numeric comparisons use declared tolerances. The C2.4 checkpoint gate requires a fresh process to restore a supported checkpoint and continue from the saved boundary. Existing `resume-plan` and CLI scaffold files do not demonstrate either behavior.
+Meet C2 specification C-06: candidate rankings, canonical integer traces, and IDs survive repeat runs, checkpoints, and 1/2/N workers; numeric comparisons use declared tolerances. The plan leaves portable checkpoint/restart open. This proposal treats fresh-process restoration from a supported boundary as a candidate acceptance oracle for that gate, subject to Track22 and contributing-owner disposition; it is not stated as an already accepted C2.4 criterion. Existing `resume-plan` and CLI scaffold files do not demonstrate portable restoration.
 
 ## Proposed contract shape
 
@@ -29,7 +29,7 @@ The envelope describes the checkpoint; it does not define scheduler heap encodin
 3. Construct a fresh process/runtime, register the exact reviewed component handlers, restore owner payloads, and run explicit owner-defined logical-ID rebinding. Never serialize or compare `FlowRuntimeIdentity`; ADR-0006 makes it process-local.
 4. Capture all component state at one coherent logical instant across scheduler, Flow/world, calibration streams/ledger, and runner completion ledger. Resume only at an owner-approved boundary where callback/submission code has returned, dispatch results are observed and reconciled, and no callback batch, submission, permit, partially applied batch, or shard result is in flight. The owners must determine how the boundary is detected and how external mutable aliases are constrained or rejected. In particular, a checkpoint cannot split Flow dispatch from bridge observation.
 5. Define the commit relationship between checkpoint publication and result/artifact publication. The crash oracle must cover interruption on both sides of that boundary and show that resumed candidate/replication work is neither lost nor counted twice.
-6. Compare resumed and uninterrupted runs with exact equality for IDs, canonical integer traces, candidate order/budgets/seeds, and other owner-declared canonical outputs; compare numeric objectives using C0-declared tolerances. Do not choose tolerances, tie-breaking, reduction order, or worker-topology compatibility here. A portable checkpoint example alone does not satisfy the broader C5 1/2/N, finish-order permutation, and mid-study crash/resume matrix.
+6. Compare resumed and uninterrupted runs with exact equality for IDs, canonical integer traces, candidate order/budgets/seeds, and other owner-declared canonical outputs; compare numeric objectives using C0-declared tolerances. Do not choose tolerances, tie-breaking, reduction order, or worker-topology compatibility here. One fresh-process fixture cannot establish every C-06 requirement. The plan assigns worker/resume equivalence to C5, whose test matrix adds permuted completion order and crash/resume cases.
 
 ## Ownership decisions required before implementation
 
@@ -47,12 +47,12 @@ The envelope describes the checkpoint; it does not define scheduler heap encodin
 1. Track22 and the state owners accept/revise this contract and record an ADR with one explicit supported C2 boundary plus a fail-closed unsupported-state matrix.
 2. Bind a fixture and interruption point to exact scenario, seed/config hashes, source/toolchain, owner payload versions, and an uninterrupted-run oracle. Decide the worker-count cases and tolerances before coding.
 3. Implement only the approved envelope validation/publication or first owner codec leaf. Keep the C2 gate open until the fresh-process restore and suffix-equivalence oracle pass at the integrated exact pin.
-4. Expand to C5 worker-count, permuted completion-order, and mid-study resume acceptance separately; do not infer it from one C2 checkpoint.
+4. Complete C5 worker/resume equivalence, including permuted completion-order and mid-study resume acceptance; do not infer it from one checkpoint fixture.
 
 ## Open alternatives for owner disposition
 
 - **Broad runtime snapshot:** captures every supported engine/Flow/calibration component. Highest coverage and cost; only viable with codecs and restore ownership across all state owners.
-- **Explicitly supported subset with fail-closed rejection:** supports a reviewed C2 state subset and rejects all unknown contexts/handlers/state. Lower initial coverage; only acceptable if the subset still meets the agreed C-06 checkpoint oracle for the declared supported fixture(s).
+- **Explicitly supported subset with fail-closed rejection:** supports a reviewed C2 state subset and rejects all unknown contexts/handlers/state. Lower initial coverage; it cannot waive C-06 requirements and must have a declared scope and oracle reviewed by the owners.
 - **No portable checkpoint until all state owners expose a contract:** leaves the current CLI scaffold in place and keeps C2 acceptance open. Valid if the owner review concludes cross-track restoration is not ready.
 
 These alternatives do not choose an on-disk format or runtime serialization strategy. The owner disposition must select or replace them and bind the result to a concrete first implementation packet.
