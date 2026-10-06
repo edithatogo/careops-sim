@@ -14,7 +14,6 @@
   "input_hashes": {
     "crates/kairo-ecs-calibration/src/staff_dispatch.rs": "686247daf657b89baafbf7059194089c11591fcc96cbd23bfc9995e0bd26974a",
     "crates/kairo-ecs-des/src/flow.rs": "2ef1756df8ba36a90182480cf1d8a9dbf1af790683a7a772df299586fc5e9111",
-    "crates/kairo-ecs-calibration/src/lib.rs": "bd95e5b196b45053701cb76ee7946e10fe7739119ec25c653b40c46123d6113f",
     ".artifacts/mvp/C2.3.flow-resource-lifecycle.rust199-flow-resource-lifecycle/context.md": "d43c889372e817f754ffc39b6996ec74ac637f28b38eba92244235763f7cc7dd"
   },
   "write_paths": [
@@ -116,7 +115,7 @@
   ],
   "coordinator_binding": {
     "reviewer": "coordinator plus independent Luna recipe/API/packet review",
-    "reservation_id": "C2.3-flow-resource-lifecycle-rust199-attempt-2",
+    "reservation_id": "C2.3-flow-resource-lifecycle-rust199-attempt-3",
     "instance_id": "rust199-flow-resource-lifecycle",
     "instance_scope": "One focused actual-Flow scenario proving selected Work/Walk/Wait handling and a named bed claim held through a caller-supplied cleaning completion callback, exact accepted release command and applied release event, with one queued request admitted afterward.",
     "instance_set": [
@@ -147,6 +146,74 @@
         "log": "/tmp/c2-3-flow-lifecycle-test.log",
         "log_sha256": "53d3ba275f99baaf64328b2d9519a7828f7645a151c5de7103eeb3804791538e",
         "reason": "The existing calibration flow_bridge test imports an ABM helper gated by the already-declared kairo-ecs-abm/test-support feature; this feature was added to the re-bound test and Clippy commands."
+      },
+      {
+        "reservation_id": "C2.3-flow-resource-lifecycle-rust199-attempt-2",
+        "status": "focused_test_passed_then_clippy_and_format_blocked_before_correction",
+        "test": {
+          "argv": [
+            "rustup",
+            "run",
+            "1.99.0",
+            "cargo",
+            "test",
+            "--locked",
+            "-p",
+            "kairo-ecs-calibration",
+            "-p",
+            "kairo-ecs-abm",
+            "--features",
+            "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+            "--lib",
+            "staff_flow_lifecycle::tests"
+          ],
+          "exit_status": 0,
+          "selected": 1,
+          "passed": 1,
+          "log": "/tmp/c2-3-flow-lifecycle-test-attempt2.log",
+          "log_sha256": "607bf7de54f835bf83a51c56ac58a46e3dc8eb61412ba6a8cc397074507cf563"
+        },
+        "clippy": {
+          "argv": [
+            "rustup",
+            "run",
+            "1.99.0",
+            "cargo",
+            "clippy",
+            "--locked",
+            "-p",
+            "kairo-ecs-calibration",
+            "-p",
+            "kairo-ecs-abm",
+            "--features",
+            "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+            "--all-targets",
+            "--",
+            "-D",
+            "warnings"
+          ],
+          "exit_status": 101,
+          "log": "/tmp/c2-3-flow-lifecycle-clippy-attempt2.log",
+          "log_sha256": "99d9bea2ed947f7ccf5ce34a22576e0ceb032b3b3a6d41972fc8ed52e044d3fb",
+          "reason": "Clippy reported unused EventKind and SimDuration imports in the uncorrected draft."
+        },
+        "format": {
+          "argv": [
+            "rustup",
+            "run",
+            "1.99.0",
+            "cargo",
+            "fmt",
+            "--all",
+            "--",
+            "--check"
+          ],
+          "exit_status": 1,
+          "log": "/tmp/c2-3-flow-lifecycle-fmt-attempt2.log",
+          "log_sha256": "de6baf6957d90778d783388c83ac5bd63cd888a0d28502229ba8104e58791df7",
+          "reason": "Rustfmt reported formatting changes in the uncorrected new module."
+        },
+        "reason": "The path lease declared crates/kairo-ecs-calibration/src/lib.rs as both an input and output; its expected module declaration edit correctly triggered input-hash drift before correction. The next reservation omits the self-modifying file from lease inputs."
       }
     ],
     "reviewed_recipe_sha256": "bd23b9f8cce2ee7a2ffde81d10400d2bf14b2ec3cd49325570511b51f703d9fd",
@@ -209,7 +276,6 @@
     ],
     "input_paths": [
       "crates/kairo-ecs-calibration/src/staff_dispatch.rs",
-      "crates/kairo-ecs-calibration/src/lib.rs",
       "crates/kairo-ecs-des/src/flow.rs"
     ],
     "write_paths": [
