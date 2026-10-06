@@ -5561,6 +5561,25 @@
       "join": "All leaf instances must be independently accepted and combined parent acceptance rerun; no partial checkbox completion",
       "leaves": [
         {
+          "id": "C2.4.runtime-ledger",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Integrated same-case Macro/Micro elapsed-time ledger fixture using actual Flow queues and accepted transit arrival",
+          "oracle": "In one paired fixture with the same service stream identity and sampled duration D, a capacity-1 blocker holds until tick 5. Macro submits at tick 0 and records 5 ticks queued plus D service. Micro uses a scheduled 2-tick nonzero route, submits only on accepted arrival at tick 2, records 3 ticks queued plus D service. Both actual Flow requests/work complete at tick 5+D with equal service draw/stream identity; assert queue wait from submission/grant timestamps, transit from TransitContext progress, and service from allocation/completion timestamps. Intervals are disjoint and sum to equal elapsed time; no arithmetic-only ledger, fixed duration substitute, extra Transit RNG, production API, scheduler-order, seed algorithm, or non-Rust-1.99 verification change.",
+          "dependencies": [
+            "C2.1.paired"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "single paired deterministic case; coordinator records exact source commit and parent pin",
+          "timebox_minutes": 90,
+          "max_write_paths": 1,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
           "id": "C2.4.evidence",
           "target_repo": ".",
           "model": "gpt-6-luna",
@@ -5568,7 +5587,7 @@
           "output": "Phase evidence reconciliation",
           "oracle": "Every parent task has integrated output and executed gates; unresolved failures prevent acceptance",
           "dependencies": [
-            "C2.1.paired"
+            "C2.4.runtime-ledger"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
