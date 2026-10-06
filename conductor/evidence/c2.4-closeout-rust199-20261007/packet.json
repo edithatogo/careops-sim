@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.4.closeout.rust199-phase-gate-readback",
+  "task_id": "C2.4",
+  "target_repo": ".",
+  "base_commit": "dada28affc59763bd648d5a6e9dc522562c265b9",
+  "model_role": "proposal_or_review",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Independently reconcile current C2.4 evidence against the phase review protocol and record a coordinator closeout disposition. If any specified gate lacks evidence, recommend phase acceptance withheld; do not change the C2.4 checkbox, task catalog, parent pin, or claim C2 phase completion.",
+  "context_paths": [
+    ".artifacts/mvp/C2.4.closeout.rust199-phase-gate-readback/context.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "8ba9f937fff0d74e384b53e686ec9fc3891c990bc233622dd521bb087c92040f",
+    "conductor/workflow.md": "09f0cb1def43a83955a6d7f2620ad8e798a4142d5ab6c691c261938ec1c0d8f9",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/README.md": "beb99e819475d38b0317018810dada9e21c4b90de0e111f18e2b799fe5bc8bb4",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/acceptance-rust199.json": "1ac88afddeed737b7754ce73d1b842cd04ce9fb18c2d9e2d4bc415bf63d90ce2",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json": "7aad8b7edc3a185c3069c73752e80536fecd15da9ef79fc9e87761891168f1f9",
+    "conductor/evidence/c2-manual-ledger-20261007/acceptance.json": "b0b21dd5eb7aba5bf2e86797dd8d22f9c31b3e36f51bec7620b95a3ba063acbb",
+    "conductor/current-state.json": "8ed0acdb290d065e118b4de0462cb42aa8f1ae1dabb91ab4d87be570c756e326",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/packet.json": "462f527c39d8ef2106e3474297fff4488429b4ec16445595b07c4d3278a2a2e9",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/worker-result.json": "5b8cd8b03190c94a75ab99c2248d2d547e7fa84a160a61858adb657f982fc294",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189",
+    ".artifacts/mvp/C2.4.closeout.rust199-phase-gate-readback/context.md": "9217119f16e48d16dc0e04edf50ee74240f96ee1545313dc63343351a2333171"
+  },
+  "write_paths": [
+    ".artifacts/packets/C2.4.closeout.rust199-phase-gate-readback.json",
+    ".artifacts/mvp/C2.4.closeout.rust199-phase-gate-readback/context.md",
+    ".artifacts/mvp/C2.4.closeout.rust199-phase-gate-readback/result.json",
+    "conductor/evidence/c2.4-closeout-rust199-20261007/README.md",
+    "conductor/evidence/c2.4-closeout-rust199-20261007/closeout-review.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C2.4.evidence"
+  ],
+  "interface_contract": "Create a read-only phase closeout review. Check accepted C2.1-C2.4 local records and the explicit phase/manual/interruption criteria in the bound plan. Distinguish source-level local test acceptance from phase acceptance and owner/hosted/Q4/portable/release/clinical gates. The only safe outcome while any required phase gate is open is `phase_acceptance=withheld` with exact missing evidence listed. Do not run Rust commands; Rust version remains restricted to 1.99.0 for any referenced receipts.",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Task DAG and phase readiness catalog are structurally valid; this does not certify phase acceptance."
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All bounded leaf recipes and accepted joins remain structurally consistent."
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Conductor references remain valid; no C2 checkbox or closeout field is changed."
+    }
+  ],
+  "acceptance": [
+    "Independent readback agrees with evidence and upstream gates; only coordinator updates checkbox/catalog/pin",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/C2.4.closeout.rust199-phase-gate-readback/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root coordinator; independent read-only packet and output review required before phase disposition",
+    "reservation_id": "af01622d8a824419b4072adc1329668b",
+    "instance_id": "rust199-phase-gate-readback",
+    "instance_scope": "Independently reconcile current C2.4 evidence against the phase review protocol and record a coordinator closeout disposition. If any specified gate lacks evidence, recommend phase acceptance withheld; do not change the C2.4 checkbox, task catalog, parent pin, or claim C2 phase completion.",
+    "instance_set": [
+      "rust199-phase-gate-readback"
+    ],
+    "reviewed_recipe_sha256": "dd7fa467dfe7e5277f97e980954c61ebb0fd21d1e8d9dc01f38191fb62e4f76e",
+    "interface_contract": "Create a read-only phase closeout review. Check accepted C2.1-C2.4 local records and the explicit phase/manual/interruption criteria in the bound plan. Distinguish source-level local test acceptance from phase acceptance and owner/hosted/Q4/portable/release/clinical gates. The only safe outcome while any required phase gate is open is `phase_acceptance=withheld` with exact missing evidence listed. Do not run Rust commands; Rust version remains restricted to 1.99.0 for any referenced receipts.",
+    "context_slices": [
+      {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "start": 122,
+        "end": 143,
+        "repo": "."
+      },
+      {
+        "path": "conductor/workflow.md",
+        "start": 17,
+        "end": 36,
+        "repo": "."
+      },
+      {
+        "path": "conductor/evidence/c2.4-evidence-rust199-20261007/README.md",
+        "start": 1,
+        "end": 21,
+        "repo": "."
+      },
+      {
+        "path": "conductor/evidence/c2.4-evidence-rust199-20261007/acceptance-rust199.json",
+        "start": 1,
+        "end": 11,
+        "repo": "."
+      },
+      {
+        "path": "conductor/evidence/c2.4-evidence-rust199-20261007/acceptance-rust199.json",
+        "start": 63,
+        "end": 120,
+        "repo": "."
+      },
+      {
+        "path": "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json",
+        "start": 63,
+        "end": 106,
+        "repo": "."
+      },
+      {
+        "path": "conductor/evidence/c2-manual-ledger-20261007/acceptance.json",
+        "start": 15,
+        "end": 39,
+        "repo": "."
+      }
+    ],
+    "input_paths": [
+      "conductor/current-state.json",
+      "conductor/evidence/c2.4-evidence-rust199-20261007/README.md",
+      "conductor/evidence/c2.4-evidence-rust199-20261007/acceptance-rust199.json",
+      "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json",
+      "conductor/evidence/c2.4-evidence-rust199-20261007/packet.json",
+      "conductor/evidence/c2.4-evidence-rust199-20261007/worker-result.json",
+      "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json",
+      "conductor/evidence/c2-manual-ledger-20261007/acceptance.json"
+    ],
+    "write_paths": [
+      ".artifacts/packets/C2.4.closeout.rust199-phase-gate-readback.json",
+      ".artifacts/mvp/C2.4.closeout.rust199-phase-gate-readback/context.md",
+      ".artifacts/mvp/C2.4.closeout.rust199-phase-gate-readback/result.json",
+      "conductor/evidence/c2.4-closeout-rust199-20261007/README.md",
+      "conductor/evidence/c2.4-closeout-rust199-20261007/closeout-review.json"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "python3",
+          "tools/tasks.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Task DAG and phase readiness catalog are structurally valid; this does not certify phase acceptance."
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/mvp.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "All bounded leaf recipes and accepted joins remain structurally consistent."
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/context.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Conductor references remain valid; no C2 checkbox or closeout field is changed."
+      }
+    ],
+    "prerequisite_receipts": {
+      "C2.4.evidence": {
+        "status": "accepted",
+        "reviewer": "Coordinator local leaf acceptance after exact packet review, output review, and hash readback",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.4-evidence-rust199-20261007/README.md": "beb99e819475d38b0317018810dada9e21c4b90de0e111f18e2b799fe5bc8bb4",
+          "conductor/evidence/c2.4-evidence-rust199-20261007/acceptance-rust199.json": "1ac88afddeed737b7754ce73d1b842cd04ce9fb18c2d9e2d4bc415bf63d90ce2",
+          "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json": "7aad8b7edc3a185c3069c73752e80536fecd15da9ef79fc9e87761891168f1f9",
+          "conductor/evidence/c2.4-evidence-rust199-20261007/packet.json": "462f527c39d8ef2106e3474297fff4488429b4ec16445595b07c4d3278a2a2e9",
+          "conductor/evidence/c2.4-evidence-rust199-20261007/worker-result.json": "5b8cd8b03190c94a75ab99c2248d2d547e7fa84a160a61858adb657f982fc294"
+        }
+      }
+    }
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "a8b72dea5cd80694fc694d7ce7a3a503c5ea2b2b9c12accc708b2cbe9109009a",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "8ba9f937fff0d74e384b53e686ec9fc3891c990bc233622dd521bb087c92040f",
+    "conductor/workflow.md": "09f0cb1def43a83955a6d7f2620ad8e798a4142d5ab6c691c261938ec1c0d8f9",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/README.md": "beb99e819475d38b0317018810dada9e21c4b90de0e111f18e2b799fe5bc8bb4",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/acceptance-rust199.json": "1ac88afddeed737b7754ce73d1b842cd04ce9fb18c2d9e2d4bc415bf63d90ce2",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json": "7aad8b7edc3a185c3069c73752e80536fecd15da9ef79fc9e87761891168f1f9",
+    "conductor/evidence/c2-manual-ledger-20261007/acceptance.json": "b0b21dd5eb7aba5bf2e86797dd8d22f9c31b3e36f51bec7620b95a3ba063acbb",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}

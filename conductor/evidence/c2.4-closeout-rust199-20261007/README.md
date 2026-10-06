@@ -1,5 +1,7 @@
 # C2.4 phase closeout readback — Rust 1.99.0 evidence scope
 
+**Coordinator readback:** independent review confirms the phase disposition is withheld; see [the coordinator disposition](coordinator-disposition.json). The C2.4 checkbox remains open.
+
 **Disposition: phase acceptance withheld.** Accepted local C2.1, C2.2, C2.3, and C2.4 receipts establish only their bounded local leaf/join scopes, detailed in [the machine-readable review](closeout-review.json). They do not satisfy the phase checklist or external/domain gates.
 
 ## Accepted local evidence
