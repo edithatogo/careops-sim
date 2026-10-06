@@ -8,7 +8,7 @@ Track22 owns experiment-runner checkpoint semantics. Please decide whether and h
 
 ## Exact source context
 
-- Current parent review snapshot: `396e8e9def5fa6dc2510783dc4c118fd6d5eb138`.
+- Parent review baseline immediately before this packet refresh: `396e8e9def5fa6dc2510783dc4c118fd6d5eb138` (this revision changes review documentation only; Kairos remains at the pin below).
 - Parent source-inventory/preparation baseline: `05599280c565b4f31fcc52faae51c52ee4142e30` (historical packet baseline; later parent commits updated evidence and review context only).
 - Integrated Kairos pin: `6303a2552257f1fcbd2aaa002d38352a2a467592`.
 - C2 plan keeps portable process checkpoint/restart as a separate Track22 gate; C2.5 explicitly covers same-live-Flow continuation and excludes portable serialization and process restart.
