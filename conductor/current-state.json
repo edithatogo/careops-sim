@@ -3,7 +3,7 @@
   "updated_at": "2026-10-06",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.2.flow-macro-zero and C2.3.progress are locally accepted at exact Kairos pin aecb28c using Rust 1.99 only. C2.3.transit-bridge is now dependency-ready: prove calibration BoundIntrinsicWork observes a real transient rejection, retries the matching event, and reconciles one accepted arrival/request; obtain Track03 owner review. Then complete C2.2 owned-stream and C2.1 paired/resume joins. Deterministic MAX-time retries still reject because positive travel cannot advance beyond representable time. Do not mark C2.3, C2.2 or C2.1 complete; hosted gates and release/clinical claims remain open.",
+  "next_action": "C2.3.transit-bridge rust199-one-shot is locally accepted at Kairos pin 7672a67 on Rust 1.99 only after independent packet/source review and fresh exact-head checks. Track03 owner review is still required for C2.3 phase acceptance. Next bind the C2.2.seeds owned-stream join narrowly to actual in-memory Flow pause/resume and Service stream/mode retention; portable checkpointing stays with the runtime owner. Then complete C2.1 paired/lifecycle joins. Keep C2.3, C2.2 and C2.1 parents open; hosted gates and release/clinical claims remain open.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -44,7 +44,11 @@
     "conductor/evidence/c2.3-progress-transit-runtime-20261006/README.md",
     "conductor/evidence/c2.3-progress-transit-runtime-20261006/c2.3-abm-recovery-seam-result.json",
     "conductor/evidence/c2.3-progress-transit-runtime-20261006/acceptance-progress-rust199.json",
-    "conductor/execution/mvp/recipes.json"
+    "conductor/execution/mvp/recipes.json",
+    "conductor/evidence/c2.3-transit-bridge-rust199-20261006/README.md",
+    "conductor/evidence/c2.3-transit-bridge-rust199-20261006/acceptance-rust199.json",
+    "conductor/evidence/c2.3-transit-bridge-rust199-20261006/packet.json",
+    "conductor/evidence/c2.3-transit-bridge-rust199-20261006/worker-result.json"
   ],
   "submodule_pins": {
     "libs/kairos": "aecb28c7089b1861b72cbd96ce29fc2577ffe47f",
@@ -276,5 +280,23 @@
     "progress_leaf_independent_review": "checkpoint and actual Flow pause/resume preserve current edge, elapsed progress and remaining duration; full-runtime portable checkpoint remains open",
     "independent_review": "ABM recovery seam test reviewed with no remaining correctness or parallel-test isolation issues; calibration BoundIntrinsicWork recovery and Track03 owner review remain open",
     "status": "development implementation ready for review; C2.3 dispatch not accepted"
+  },
+  "c23_transit_bridge": {
+    "source_commit": "7672a67988134438228014e7b3e0f56855cc65e8",
+    "previous_parent_pin": "aecb28c7089b1861b72cbd96ce29fc2577ffe47f",
+    "evidence": "conductor/evidence/c2.3-transit-bridge-rust199-20261006/README.md",
+    "acceptance_evidence": "conductor/evidence/c2.3-transit-bridge-rust199-20261006/acceptance-rust199.json",
+    "actual_bound_rejection_retry_arrival_request_test": true,
+    "ABM_test_support_feature_non_default": true,
+    "strict_clippy_rust199": true,
+    "format_rust199": true,
+    "coordinator_exact_head_verification": true,
+    "local_transit_bridge_instance_accepted": true,
+    "track03_owner_review": "open; required for C2.3 phase acceptance",
+    "C2_3_complete": false,
+    "C2_2_complete": false,
+    "C2_1_runtime_accepted": false,
+    "hosted": false,
+    "portable_checkpoint_or_release_or_clinical_acceptance": false
   }
 }
