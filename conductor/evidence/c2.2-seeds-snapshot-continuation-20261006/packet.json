@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.2.seeds.snapshot-continuation",
+  "task_id": "C2.2",
+  "target_repo": "libs/kairos",
+  "base_commit": "3d6efca658ba540c96f71f8f72c50214a4ef0eb2",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Add one crate-internal positive regression proving CalibrationStreamSnapshot created after a completed draw restores the same logical key, draw position, and exact next RNG output without replaying from the initial seed. Test the opaque in-memory contract only; do not add serialization, public state construction, Flow bridge snapshot APIs, or process-restart claims.",
+  "context_paths": [
+    ".artifacts/mvp/C2.2.seeds.snapshot-continuation/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/calibration/c2-seed-map-v1.md": "046ba8d06f667472399cb2a3af9f15ef03168558edfc3859dd0f28c719972c5b",
+    "crates/kairo-ecs-calibration/src/seed_map.rs": "bbbd4249a01848802dc33636c4df68bb30a2843c75e5d2133220c594fe6c0571",
+    "crates/kairo-ecs-calibration/Cargo.toml": "d4b2add138c68e8f3ee53a43e21a50f60b43e9d0ef5bb17742cb4f0f8823b24a",
+    ".artifacts/mvp/C2.2.seeds.snapshot-continuation/context.md": "826fc348c3851a260c7d05d29b7a7b2ef9914ec291e3351907c97d5b41578345"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/seed_map.rs",
+    ".artifacts/mvp/C2.2.seeds.snapshot-continuation/result.json",
+    ".artifacts/mvp/C2.2.seeds.snapshot-continuation/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C2.2.policy",
+    "C2.3.dispatch",
+    "C2.3.transit-bridge"
+  ],
+  "interface_contract": "Use the frozen stream boundary in libs/kairos/conductor/design/calibration/c2-seed-map-v1.md: CalibrationStream::snapshot returns an opaque owned in-memory continuation and restore must reproduce the next draw. Keep all snapshot fields private; do not add a codec or public arbitrary-state constructor. Source ownership is Track21 calibration/seed_map.rs with Track01 logical seed identities. In the regression, use paired streams with the same logical identity; assert the uninterrupted second u64 differs from the first draw so a restart-from-root implementation cannot pass accidentally.",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--lib",
+        "seed_map::tests::snapshot_restore_continues_at_next_draw",
+        "--",
+        "--exact"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "PRE-EDIT TEST-PRESENCE BASELINE: before adding the named test, the exact filter must compile the real test target but select exactly zero tests (`running 0 tests`). Record this as missing regression-test coverage only; Cargo's exit 0 is expected and does not imply the behavior is broken.",
+      "phase": "pre_edit_test_presence_baseline"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--lib",
+        "seed_map::tests::snapshot_restore_continues_at_next_draw",
+        "--",
+        "--exact"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "POST-EDIT GREEN: the exact filter selects exactly one named test and it passes. After restoring a snapshot taken after a completed draw, the stream retains the same key and draw position and yields exactly the same next u64 and u32 outputs as the uninterrupted control, with positions advancing identically.",
+      "phase": "post_edit_green"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting passes on stable Rust 1.99.0.",
+      "phase": "post_edit_format"
+    }
+  ],
+  "acceptance": [
+    "No thread/wall-clock identity in keys; resume preserves mode and stream state",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/C2.2.seeds.snapshot-continuation/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "coordinator-plus-independent-gpt-6-luna-packet-review",
+    "reservation_id": "C2.2-seeds-rust199-snapshot-continuation-attempt-1",
+    "instance_id": "snapshot-continuation",
+    "instance_scope": "Add one crate-internal positive regression proving CalibrationStreamSnapshot created after a completed draw restores the same logical key, draw position, and exact next RNG output without replaying from the initial seed. Test the opaque in-memory contract only; do not add serialization, public state construction, Flow bridge snapshot APIs, or process-restart claims.",
+    "instance_set": [
+      "rust199-bound-retention",
+      "snapshot-continuation"
+    ],
+    "reviewed_recipe_sha256": "61a223cae395e7075f26d7ce68332a538211e66e7b93843b504898b39237d42e",
+    "interface_contract": "Use the frozen stream boundary in libs/kairos/conductor/design/calibration/c2-seed-map-v1.md: CalibrationStream::snapshot returns an opaque owned in-memory continuation and restore must reproduce the next draw. Keep all snapshot fields private; do not add a codec or public arbitrary-state constructor. Source ownership is Track21 calibration/seed_map.rs with Track01 logical seed identities. In the regression, use paired streams with the same logical identity; assert the uninterrupted second u64 differs from the first draw so a restart-from-root implementation cannot pass accidentally.",
+    "context_slices": [
+      {
+        "repo": ".",
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "start": 103,
+        "end": 132
+      },
+      {
+        "repo": ".",
+        "path": "conductor/tracks/empirical_calibration_20260925/agent-contract.md",
+        "start": 1,
+        "end": 20
+      },
+      {
+        "repo": ".",
+        "path": "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "start": 149,
+        "end": 157
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "conductor/design/calibration/c2-seed-map-v1.md",
+        "start": 28,
+        "end": 45
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/seed_map.rs",
+        "start": 193,
+        "end": 305
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/seed_map.rs",
+        "start": 372,
+        "end": 435
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/seed_map.rs",
+        "start": 590,
+        "end": 632
+      }
+    ],
+    "input_paths": [
+      "conductor/design/calibration/c2-seed-map-v1.md",
+      "crates/kairo-ecs-calibration/src/seed_map.rs",
+      "crates/kairo-ecs-calibration/Cargo.toml"
+    ],
+    "write_paths": [
+      "crates/kairo-ecs-calibration/src/seed_map.rs",
+      ".artifacts/mvp/C2.2.seeds.snapshot-continuation/result.json",
+      ".artifacts/mvp/C2.2.seeds.snapshot-continuation/logs"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "--lib",
+          "seed_map::tests::snapshot_restore_continues_at_next_draw",
+          "--",
+          "--exact"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "PRE-EDIT TEST-PRESENCE BASELINE: before adding the named test, the exact filter must compile the real test target but select exactly zero tests (`running 0 tests`). Record this as missing regression-test coverage only; Cargo's exit 0 is expected and does not imply the behavior is broken.",
+        "phase": "pre_edit_test_presence_baseline"
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "--lib",
+          "seed_map::tests::snapshot_restore_continues_at_next_draw",
+          "--",
+          "--exact"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "POST-EDIT GREEN: the exact filter selects exactly one named test and it passes. After restoring a snapshot taken after a completed draw, the stream retains the same key and draw position and yields exactly the same next u64 and u32 outputs as the uninterrupted control, with positions advancing identically.",
+        "phase": "post_edit_green"
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Workspace formatting passes on stable Rust 1.99.0.",
+        "phase": "post_edit_format"
+      }
+    ],
+    "prerequisite_receipts": {
+      "C2.2.policy": {
+        "status": "accepted",
+        "reviewer": "coordinator",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.2-policy-20261006/acceptance.json": "fff8eabc5983bb1fd875be05b057ffcedaf6299ca801f009bf7dd2e27dbecb36"
+        }
+      },
+      "C2.3.dispatch": {
+        "status": "accepted",
+        "reviewer": "coordinator",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d"
+        }
+      },
+      "C2.3.transit-bridge": {
+        "status": "accepted",
+        "reviewer": "coordinator",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.3-transit-bridge-rust199-20261006/acceptance-rust199.json": "04b35a643a30347e5465d5f37936fd6443698692654cd6ea879cab9567fb80a2"
+        }
+      }
+    },
+    "prior_instance_receipts": {
+      "C2.2.seeds.rust199-bound-retention": {
+        "status": "local_leaf_accepted_c22_parent_join_pending",
+        "receipt": "conductor/evidence/c2.2-seeds-rust199-20261006/acceptance-rust199.json",
+        "sha256": "a2093f64a18bb05a6999e0c7671ef5bb3e46f81fdb8ba437e3bac3c2704fa47c"
+      }
+    },
+    "immutable_lease_inputs": [
+      "conductor/design/calibration/c2-seed-map-v1.md",
+      "crates/kairo-ecs-calibration/Cargo.toml"
+    ],
+    "steps": [
+      "Read the bound context and verify the exact base, prerequisite receipt hashes, and immutable inputs. Run the exact target test filter before editing and capture its zero-selected-test output as test-presence baseline evidence only.",
+      "Add one crate-internal unit regression in seed_map.rs. Advance paired streams with the same logical identity; assert the second control output differs from the first output, snapshot the subject after one draw, restore it; assert key/draw-position equality and compare subsequent u64 then u32 output/positions with the uninterrupted control. Do not modify production logic or expose private fields, serialization, or arbitrary restore APIs.",
+      "Run the exact post-edit test, then formatting. Record the pre-edit absence and post-edit single pass distinctly in result.json with stable Rust 1.99.0 and output hashes. Commit only the owned test path after lease scope check, then release the lease."
+    ]
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "1da4b2b3898a7d86f775601e679c6b860588d1d5f1a29d0969461e6c9cee7dbc",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "c44e3a52ffbbb22930656d3b30f0c406a8323b683773c337ddfa00836314c341",
+    "conductor/tracks/empirical_calibration_20260925/agent-contract.md": "a67538a9e6b9a67eb8f1c3a4308da391dace15dda9b31926c8998e6caff5f806",
+    "conductor/tracks/empirical_calibration_20260925/spec.md": "ac39678081c2ea3391ddaf45b948e6ba62fb7f01a52e5905444ffd127c33b9f3",
+    "libs/kairos/conductor/design/calibration/c2-seed-map-v1.md": "046ba8d06f667472399cb2a3af9f15ef03168558edfc3859dd0f28c719972c5b",
+    "libs/kairos/crates/kairo-ecs-calibration/src/seed_map.rs": "bbbd4249a01848802dc33636c4df68bb30a2843c75e5d2133220c594fe6c0571",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}

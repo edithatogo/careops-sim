@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.2.seeds.snapshot-continuation",
+  "task_id": "C2.2",
+  "attempt_id": "C2.2-seeds-rust199-snapshot-continuation-attempt-1",
+  "status": "ready_for_review",
+  "base_commit": "3d6efca658ba540c96f71f8f72c50214a4ef0eb2",
+  "scope": {
+    "changed_source_paths": [
+      "crates/kairo-ecs-calibration/src/seed_map.rs"
+    ],
+    "production_logic_or_api_changes": false,
+    "serialization_or_portable_resume": false,
+    "flow_bridge_or_parent_pin_changes": false
+  },
+  "implementation": {
+    "test": "seed_map::tests::snapshot_restore_continues_at_next_draw",
+    "oracle": "Paired same-identity streams; after one draw, restored subject retains key and draw position and matches uninterrupted next u64 and following u32 transitions/positions. The uninterrupted next u64 differs from the initial draw.",
+    "portable_or_process_restart_claim": false
+  },
+  "input_hashes_verified": {
+    "conductor/design/calibration/c2-seed-map-v1.md": "046ba8d06f667472399cb2a3af9f15ef03168558edfc3859dd0f28c719972c5b",
+    "crates/kairo-ecs-calibration/src/seed_map.rs": "bbbd4249a01848802dc33636c4df68bb30a2843c75e5d2133220c594fe6c0571",
+    "crates/kairo-ecs-calibration/Cargo.toml": "d4b2add138c68e8f3ee53a43e21a50f60b43e9d0ef5bb17742cb4f0f8823b24a",
+    ".artifacts/mvp/C2.2.seeds.snapshot-continuation/context.md": "826fc348c3851a260c7d05d29b7a7b2ef9914ec291e3351907c97d5b41578345"
+  },
+  "source_hashes_after_edit": {
+    "crates/kairo-ecs-calibration/src/seed_map.rs": "2a6dcae497c6001f1c6b09a4ce4c6034398986fb9593b01ed7e38fc69bb009c4"
+  },
+  "prerequisite_receipts": {
+    "C2.2.policy": {
+      "status": "accepted",
+      "reviewer": "coordinator",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.2-policy-20261006/acceptance.json": "fff8eabc5983bb1fd875be05b057ffcedaf6299ca801f009bf7dd2e27dbecb36"
+      }
+    },
+    "C2.3.dispatch": {
+      "status": "accepted",
+      "reviewer": "coordinator",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d"
+      }
+    },
+    "C2.3.transit-bridge": {
+      "status": "accepted",
+      "reviewer": "coordinator",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.3-transit-bridge-rust199-20261006/acceptance-rust199.json": "04b35a643a30347e5465d5f37936fd6443698692654cd6ea879cab9567fb80a2"
+      }
+    }
+  },
+  "prior_instance_receipts": {
+    "C2.2.seeds.rust199-bound-retention": {
+      "status": "local_leaf_accepted_c22_parent_join_pending",
+      "receipt": "conductor/evidence/c2.2-seeds-rust199-20261006/acceptance-rust199.json",
+      "sha256": "a2093f64a18bb05a6999e0c7671ef5bb3e46f81fdb8ba437e3bac3c2704fa47c"
+    }
+  },
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--lib",
+        "seed_map::tests::snapshot_restore_continues_at_next_draw",
+        "--",
+        "--exact"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "PRE-EDIT TEST-PRESENCE BASELINE: before adding the named test, the exact filter must compile the real test target but select exactly zero tests (`running 0 tests`). Record this as missing regression-test coverage only; Cargo's exit 0 is expected and does not imply the behavior is broken.",
+      "phase": "pre_edit_test_presence_baseline",
+      "exit_code": 0,
+      "observed": {
+        "phase": "pre_edit_test_presence_baseline",
+        "summary": "running 0 tests; 0 passed; 0 failed; 0 ignored; 0 measured; 69 filtered out"
+      },
+      "log": ".artifacts/mvp/C2.2.seeds.snapshot-continuation/logs/pre-edit-baseline.log",
+      "log_sha256": "39abe659aeff2489d063217c9b1384bc50e9345e7c8a5f0d8ebbcadd7bf861d0"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--lib",
+        "seed_map::tests::snapshot_restore_continues_at_next_draw",
+        "--",
+        "--exact"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "POST-EDIT GREEN: the exact filter selects exactly one named test and it passes. After restoring a snapshot taken after a completed draw, the stream retains the same key and draw position and yields exactly the same next u64 and u32 outputs as the uninterrupted control, with positions advancing identically.",
+      "phase": "post_edit_green",
+      "exit_code": 0,
+      "observed": {
+        "phase": "post_edit_green",
+        "summary": "running 1 test; 1 passed; 0 failed; 0 ignored; 0 measured; 69 filtered out"
+      },
+      "log": ".artifacts/mvp/C2.2.seeds.snapshot-continuation/logs/post-edit-test.log",
+      "log_sha256": "808428b184f4ba695bb43669c47fa0814fe5c76268543e025cbc1376be62c2cd"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting passes on stable Rust 1.99.0.",
+      "phase": "post_edit_format",
+      "exit_code": 0,
+      "observed": {
+        "phase": "post_edit_format",
+        "summary": "format check passed; empty output"
+      },
+      "log": ".artifacts/mvp/C2.2.seeds.snapshot-continuation/logs/format.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "lease": {
+    "lease_id": "e8d4c20e6b7848b890c65ae9901282c0",
+    "scope_check_passed": true
+  },
+  "commit_binding": {
+    "commit": "9b360f433210d38868e1e5f102473fd6f148fccf",
+    "committed_paths": [
+      "crates/kairo-ecs-calibration/src/seed_map.rs"
+    ],
+    "parent_pin_updated": false,
+    "source_worktree_clean_after_commit": true
+  }
+}
