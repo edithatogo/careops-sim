@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption",
+  "instance_id": "rust199-urgent-preemption",
+  "status": "ready_for_review",
+  "base_commit": "774d1ed1c6c7f1bfd67a0a3875f5d9188eb1e9de",
+  "commit": "6053d8dd2f8057c423decc929c90a8bcd10837f9",
+  "changed_paths": [
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs"
+  ],
+  "source_sha256": "e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959",
+  "verification": [
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "fmt", "--all", "--", "--check"],
+      "exit_code": 0,
+      "log": ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/logs/fmt-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "test", "--locked", "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support", "--target-dir", ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/target"],
+      "exit_code": 0,
+      "counts": {"passed": 164, "failed": 0, "ignored": 4},
+      "log": ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/logs/test.log",
+      "log_sha256": "120d67ab2bd5d009ac6f6a894fa7be771c2ab9217d14bbd54cea36d27f8a0d41"
+    },
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "clippy", "--locked", "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support", "--all-targets", "--target-dir", ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/target", "--", "-D", "warnings"],
+      "exit_code": 0,
+      "log": ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/logs/clippy.log",
+      "log_sha256": "00a762ad404429c7a110944ea43931c82e557e1270bee89cc59fcbf25563dc98"
+    }
+  ],
+  "correction_attempts": [
+    {
+      "command": "cargo test --locked -p kairo-ecs-calibration --features flow,kairo-ecs-abm/test-support",
+      "exit_code": 101,
+      "finding": "Suspended original request remains in the queue behind the urgent active request; corrected queue assertion to expect the exact original RequestId.",
+      "log": ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/logs/test-attempt1.log",
+      "log_sha256": "538bc1bbbfc38d42c5706190eeb8cf3d29224f316296d48a03c34ad658463989"
+    },
+    {
+      "command": "cargo test --locked -p kairo-ecs-calibration --features flow,kairo-ecs-abm/test-support",
+      "exit_code": 101,
+      "finding": "Independent identical Flow instances allocate the same numeric WorkId; removed an invalid inequality across separate runtimes. Per-runtime lifecycle assertions preserve the intended work/request lineage.",
+      "log": ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/logs/test-attempt2.log",
+      "log_sha256": "61988e1848decda921b802b753288e323141fb43b1de84b45d9fd7f7e0c91283"
+    }
+  ],
+  "review": {
+    "status": "ready",
+    "note": "Independent source review confirmed the exact-once observation and request lineage additions close the bounded oracle limitation. Coordinator acceptance remains separate."
+  },
+  "lease": "released immediately after the source-only commit",
+  "acceptance_claim": false
+}

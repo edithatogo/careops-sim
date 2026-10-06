@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption",
+  "task_id": "C2.4",
+  "target_repo": "libs/kairos",
+  "base_commit": "774d1ed1c6c7f1bfd67a0a3875f5d9188eb1e9de",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Add one test-only paired Macro/routed-Micro calibration bridge case proving a real Q4 urgent Flow request suspends and resumes the same timed clinical service work, reconciles non-overlapping queue/transit/useful-service/interruption intervals, and preserves work identity and Service stream state.",
+  "context_paths": [
+    ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/calibration/c2-execution-admission-v1.md": "a2ffd67c9b01fba373ba70b1681c405d6301a15b7d97e50ff82e021d60d79d13",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "e1b8edeb4a6e17e37dd2a9d7b409980ed9f0e2a70cf047c5c422ebd9be586e0c",
+    "crates/kairo-ecs-des/tests/flow_staff_bed_cleaning_v1.rs": "784a87a0804421f107f92dc83a68b8f8be814fe6640f9746893793fd4e9a492a",
+    "crates/kairo-ecs-des/src/flow.rs": "2ef1756df8ba36a90182480cf1d8a9dbf1af790683a7a772df299586fc5e9111",
+    ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/context.md": "3743c1067641957a263dbc7e4ad74723f82bff10ea1aa1ca1e18999acb331ae6"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption",
+    ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/result.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C2.4.runtime-ledger",
+    "C2.5.continuation"
+  ],
+  "interface_contract": "Existing C2 execution-admission/continuation contracts and accepted Q4 Flow preemption semantics; test-only use of existing calibration and Flow APIs, no new public or production API.",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Formatting check passes using stable Rust 1.99.0 only."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/target"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All calibration crate tests pass, including the paired actual-Flow urgent preemption and interval-accounting oracle."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/target",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict Clippy passes for the calibration crate and all targets with warnings denied on stable Rust 1.99.0 only."
+    }
+  ],
+  "acceptance": [
+    "In paired Macro and routed nonzero-transit Micro actual-Flow cases, hold a capacity-1 blocker until tick 5, begin a service whose frozen fixture seed samples 20 ticks at tick 5, and admit a 2-tick urgent request at tick 8 that suspends the original work until tick 10. Assert the original WorkId/RequestId, sampled service duration/key/draw position, exact remaining service progress, one suspend/resume/completion lifecycle, and resource/queue conservation. Macro completes at tick 27 with queue 5 + useful service 20 + interruption 2; Micro's accepted 2-tick route precedes service submission and completes at tick 27 with transit 2 + queue 3 + useful service 20 + interruption 2. Assert intervals from actual Flow/transit callbacks, no duplicate arrival/request, no extra Transit RNG, no production API or scheduler/seed changes, and run Rust 1.99.0 only.",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "coordinator after independent contract and source audits",
+    "reservation_id": "C2.4-q4-urgent-interruption-attempt-20261007",
+    "instance_id": "rust199-urgent-preemption",
+    "instance_scope": "Add one test-only paired Macro/routed-Micro calibration bridge case proving a real Q4 urgent Flow request suspends and resumes the same timed clinical service work, reconciles non-overlapping queue/transit/useful-service/interruption intervals, and preserves work identity and Service stream state.",
+    "instance_set": [
+      "rust199-urgent-preemption"
+    ],
+    "reviewed_recipe_sha256": "ef9ee2851bb1b6b9e29d9da76e7d97ed734f41988aa4c8e8a93cc9db5930e2bc",
+    "interface_contract": "Existing C2 execution-admission/continuation contracts and accepted Q4 Flow preemption semantics; test-only use of existing calibration and Flow APIs, no new public or production API.",
+    "context_slices": [
+      {
+        "repo": "libs/kairos",
+        "path": "conductor/design/calibration/c2-execution-admission-v1.md",
+        "start": 60,
+        "end": 91
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 1005,
+        "end": 1100
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 1640,
+        "end": 1860
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-des/tests/flow_staff_bed_cleaning_v1.rs",
+        "start": 42,
+        "end": 125
+      }
+    ],
+    "input_paths": [
+      "conductor/design/calibration/c2-execution-admission-v1.md",
+      "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+      "crates/kairo-ecs-des/tests/flow_staff_bed_cleaning_v1.rs",
+      "crates/kairo-ecs-des/src/flow.rs"
+    ],
+    "write_paths": [
+      "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+      ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption",
+      ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/result.json"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Formatting check passes using stable Rust 1.99.0 only."
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "--features",
+          "flow,kairo-ecs-abm/test-support",
+          "--target-dir",
+          ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/target"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "All calibration crate tests pass, including the paired actual-Flow urgent preemption and interval-accounting oracle."
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "--features",
+          "flow,kairo-ecs-abm/test-support",
+          "--all-targets",
+          "--target-dir",
+          ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/target",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Strict Clippy passes for the calibration crate and all targets with warnings denied on stable Rust 1.99.0 only."
+      }
+    ],
+    "prerequisite_receipts": {
+      "C2.4.runtime-ledger": {
+        "status": "accepted",
+        "reviewer": "coordinator readback verified the exact-pin accepted local receipt",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189"
+        }
+      }
+    }
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "9e154cb72fcf2aa86dd2ae2167a69898fe812b6946b9b01d10f742c7b9cec37b",
+    "libs/kairos/conductor/design/calibration/c2-execution-admission-v1.md": "a2ffd67c9b01fba373ba70b1681c405d6301a15b7d97e50ff82e021d60d79d13",
+    "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs": "e1b8edeb4a6e17e37dd2a9d7b409980ed9f0e2a70cf047c5c422ebd9be586e0c",
+    "libs/kairos/crates/kairo-ecs-des/tests/flow_staff_bed_cleaning_v1.rs": "784a87a0804421f107f92dc83a68b8f8be814fe6640f9746893793fd4e9a492a",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}
