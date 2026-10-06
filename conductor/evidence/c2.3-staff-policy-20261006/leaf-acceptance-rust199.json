@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "local_leaf_accepted_rust199_current_pin",
+  "leaf_id": "C2.3.dispatch",
+  "instance_set": [
+    "staff-policy"
+  ],
+  "status": "locally_accepted_leaf_parent_and_track03_gates_open",
+  "source_commit": "b2e42e7c2a4ed157218e9de15807410d513e65ae",
+  "integrated_kairos_pin": "7672a67988134438228014e7b3e0f56855cc65e8",
+  "recipe_sha256": "8026e346141cf9865264ca06828de6e53f09849d11287c774f1af90e2aeaa6a7",
+  "prior_instance_receipt": "conductor/evidence/c2.3-staff-policy-20261006/acceptance.json",
+  "prior_instance_receipt_sha256": "8123ffd2ad8912b0eb65293037eb7ae58c977124ed8fc48e2500e64bfda9a14a",
+  "source_hashes": {
+    "libs/kairos/crates/kairo-ecs-calibration/src/staff_dispatch.rs": "686247daf657b89baafbf7059194089c11591fcc96cbd23bfc9995e0bd26974a"
+  },
+  "prerequisites": {
+    "C2.3.progress": {
+      "status": "locally accepted",
+      "receipt": "conductor/evidence/c2.3-progress-transit-runtime-20261006/acceptance-progress-rust199.json",
+      "sha256": "9c4431f35365c0fd6dfda7ca89fb4e88b3a4f4da5bfcb745ddeb028e2ea19eb5"
+    },
+    "current_pin_runtime_verification": {
+      "status": "passed",
+      "receipt": "conductor/evidence/c2.3-transit-bridge-rust199-20261006/acceptance-rust199.json",
+      "sha256": "04b35a643a30347e5465d5f37936fd6443698692654cd6ea879cab9567fb80a2"
+    }
+  },
+  "independent_review": {
+    "reviewer": "gpt-6-luna read-only acceptance audit",
+    "result": "exact recipe oracle met by the one accepted selector instance; current pin source hash matches accepted source",
+    "limitations": [
+      "Track03 owner/phase review remains open",
+      "Flow event integration, staff resource reservation and cleaning lifecycle remain open outside this selector leaf"
+    ]
+  },
+  "verification": {
+    "current_pin_package_tests": "passed on stable Rust 1.99.0; exact commands, totals and logs in the transit-bridge acceptance receipt"
+  },
+  "oracle": {
+    "eligible_staff_only": true,
+    "urgency_fifo_and_stable_tie_break": true,
+    "zone_skill_and_availability_filters": true,
+    "work_walk_wait_separate": true,
+    "wait_not_assigned": true,
+    "cleaning_and_reservation_left_explicit": true
+  },
+  "scope_limits": {
+    "C2_3_parent_complete": false,
+    "flow_transit_dispatch_complete": false,
+    "staff_resource_reservation_complete": false,
+    "cleaning_lifecycle_complete": false,
+    "hosted_or_release_or_operational_acceptance": false
+  }
+}
