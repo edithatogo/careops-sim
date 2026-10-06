@@ -8,13 +8,29 @@ Track22 owns experiment-runner checkpoint semantics. Please decide whether and h
 
 ## Exact source context
 
-- CareOps parent source commit: `77f85cd40e50e46130e8e00ceff27393bd792f1a`.
+- CareOps parent source commit: `05599280c565b4f31fcc52faae51c52ee4142e30`.
 - Integrated Kairos pin: `6303a2552257f1fcbd2aaa002d38352a2a467592`.
 - C2 plan keeps portable process checkpoint/restart as a separate Track22 gate; C2.5 explicitly covers same-live-Flow continuation and excludes portable serialization and process restart.
 - Track22 [`agent-contract.md`](../../../libs/kairos/conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md) prohibits new public Rust APIs without an ADR.
 - Track22 [`handoff.md`](../../../libs/kairos/conductor/tracks/22-experiment-runner-scenario-management/handoff.md) describes `checkpoint` as writing a scaffold manifest and `resume` as path validation plus a scaffold request; it explicitly leaves real checkpoint-state and resume semantics as follow-up.
 - Kairos [`ADR-0006-flow-runtime-identity.md`](../../../libs/kairos/conductor/design/calibration/ADR-0006-flow-runtime-identity.md) requires explicit rebinding because runtime identity cannot be serialized.
 - The [C2 specification](../../tracks/empirical_calibration_20260925/spec.md), clause C-06, requires candidate rankings, canonical integer traces, and IDs to survive repeat runs, checkpoints, and 1/2/N workers, with numeric comparisons using declared tolerances. This requirement motivates checkpoint-contract work; it does not establish that portable process restoration is already implemented or accepted. Current C2 evidence does not establish restoration in a new process.
+- The superseding [C2.4 current readback](../c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.md) records the current source pin and open gates.
+
+## Current source-state inventory
+
+The following are implementation constraints visible at Kairos `6303a255`, not a proposed byte layout or a claim that every listed field must be serialized. Track owners must decide which state is encoded, rebound, regenerated under a proven invariant, or rejected:
+
+| State area | Current code constraint | Existing owner boundary |
+| --- | --- | --- |
+| Scheduler frontier | Time, priority, and insertion sequence determine event order; event IDs and live/cancelled membership preserve event identity and references. Summary/preview views are not a complete restore image. | Track01 owns scheduler/entity/RNG ordering. |
+| World and Flow | Allocator generations, component/resource state, requests, leases, work progress, cleanup/callback state and private registries are not exposed as a unified snapshot. | Track03 owns Flow/DES mode, policy and execution state. |
+| Typed extensions | Components and contexts can be arbitrary type-erased values; handlers, hooks and factories include process-local function registrations. | Component and adapter owners must define codecs/handler rebinding or fail-closed cases. |
+| Calibration streams | Logical seed identity and draw positions affect deterministic outcomes; the seed-collision registry currently lacks a snapshot interface. | Track21 owns calibration providers, streams, ledger and bridge semantics. |
+| Runtime identity | `FlowRuntimeIdentity` is process-local and nonserializable; restore needs an explicit new-runtime rebind decision. | ADR-0006; Track03/21 decision with Track22 orchestration. |
+| Runner state | Current `checkpoint` writes a scaffold manifest and `resume` writes a request after path validation; neither captures or restores simulation state. | Track22 owns runner/checkpoint orchestration and artifact semantics. |
+
+Missing codecs or handlers, unobserved dispatches, in-flight callbacks/submissions, external mutable aliases, incompatible code/config/schema, unregistered streams/topologies, and corrupt/partial/oversized artifacts are candidate fail-closed cases for owner decision. The existing C2.5 same-live-Flow handoff does not provide portable serialization. C-06 states a checkpoint outcome; the broader C5 test-matrix oracle adds controlled worker scheduling and mid-study restart requirements, so a C2 checkpoint result alone must not be presented as full C-06/C5 acceptance.
 
 ## Contract questions for the owner
 
