@@ -1,5 +1,9 @@
 # C2.3 transit runtime progress — 2026-10-06
 
+## Status reconciliation — 2026-10-07
+
+This file records intermediate progress before the final transit-bridge leaf review. The later [C2.3.transit-bridge acceptance](../c2.3-transit-bridge-rust199-20261006/README.md) at Kairos `7672a67988134438228014e7b3e0f56855cc65e8` locally accepts the calibration `BoundIntrinsicWork` rejected-dispatch observation, exact one-shot retry, replay refusal, accepted arrival, and original timed-request reconciliation described below as still open. Treat the earlier “not accepted” and “remains open” statements as historical snapshots. The C2.3 parent/phase, Track03 owner review, hosted, release, and clinical gates remain open.
+
 ## Result
 
 Kairos receipt commit `1637d80ddc3a0da17c84afd6ea6eba0f7abe84e6` contains
