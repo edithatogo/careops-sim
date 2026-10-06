@@ -51,6 +51,7 @@ checkpoint, and clinical claims remain out of scope.
   1 ignored across 32 result groups. Logs are under `/tmp/c23-exact-start-*` and
   `/tmp/c23-single-pending-start-*`, with hashes recorded in the Kairos packet
   receipts.
-- Rust 1.76 is unverified for the exact-ID packet: `/Users/doughnut/.rustup`
-  points into the absent `/Volumes/PortableSSD/toolchains` mount. No 1.76 pass is
-  claimed. Hosted checks remain unrun.
+- The user specified current stable Rust 1.99 as the only required C2
+  verification toolchain. Both follow-ups passed DES/ABM tests, strict Clippy and
+  formatting on Rust 1.99. An earlier packet's Rust 1.76 command was unavailable
+  and is not required under the current scope. Hosted checks remain unrun.
