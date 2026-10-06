@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.1 paired Restart is locally accepted at exact Kairos pin 51b5e5d with the full calibration library suite, strict Clippy and formatting passing on Rust 1.99.0. Next, bind and implement C2.5 decision-mismatch exact-value preservation on the shared flow_bridge.rs path; then resume C2.4 phase review only after Track03 and Track22 decisions plus hosted, portable-restart, release and clinical gates.",
+  "next_action": "C2.5 decision-mismatch is locally accepted at exact Kairos pin 3926d0f after the full kairo-ecs-calibration library suite, strict Clippy and formatting passed on Rust 1.99.0. Resume C2.4 phase review only after Track03 and Track22 decisions plus hosted, portable-restart, release and clinical gates.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -79,10 +79,12 @@
     "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/acceptance-rust199.json",
     "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/packet.json",
     "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.md",
-    "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.json"
+    "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.json",
+    "conductor/evidence/c2.5-decision-mismatch-rust199-20261007/README.md",
+    "conductor/evidence/c2.5-decision-mismatch-rust199-20261007/acceptance-rust199.json"
   ],
   "submodule_pins": {
-    "libs/kairos": "51b5e5dcd09bf747e272dbfee71f924c2ccbf017",
+    "libs/kairos": "3926d0f8f401b605ea62b15cde7b5ef1ffba89c1",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -503,8 +505,20 @@
     "portable_restart_implementation": "not_authorized_pending_contract_and_ADR"
   },
   "c25_continuation_qualification": {
-    "status": "historical_receipt_reopened_for_decision_mismatch_oracle",
-    "evidence": "conductor/evidence/c2.5-continuation-rust199-20261007/acceptance-rust199.json",
-    "reopened_reason": "Existing mismatch test covers foreign runtime identity, not decision mismatch exact-value preservation."
+    "status": "superseded_by_local_decision_mismatch_parent_acceptance",
+    "evidence": "conductor/evidence/c2.5-decision-mismatch-rust199-20261007/acceptance-rust199.json",
+    "reopened_reason": "Resolved: exact decision-mismatch preservation oracle was added and the combined Rust 1.99.0 calibration library suite passed."
+  },
+  "c25_decision_mismatch_qualification": {
+    "status": "local_leaf_and_parent_join_accepted_phase_gates_open",
+    "source_commit": "3926d0f8f401b605ea62b15cde7b5ef1ffba89c1",
+    "evidence": "conductor/evidence/c2.5-decision-mismatch-rust199-20261007/acceptance-rust199.json",
+    "toolchain": "Rust 1.99.0 only",
+    "combined_calibration_tests": "88 passed; 0 failed; 2 ignored",
+    "strict_clippy": true,
+    "format": true,
+    "Track03_owner_phase_review": "open",
+    "Track22_portable_checkpoint_or_restart": "open",
+    "hosted_release_or_clinical_acceptance": false
   }
 }
