@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "task_id": "C2.4.closeout",
+  "instance_id": "rust199-current-readback-after-C2.5",
+  "status": "coordinator_readback_reviewed_phase_withheld",
+  "phase_acceptance": "withheld",
+  "base_commit": "dada28affc59763bd648d5a6e9dc522562c265b9",
+  "disposition": "Coordinator phase disposition: withheld. Accepted local evidence supports bounded local leaves and joins only. The phase checklist requires owner review and phase/manual verification plus upstream/domain gates; required integrated interruption, portable restart, hosted, release, and clinical evidence is absent.",
+  "accepted_local_evidence": [
+    {
+      "id": "C2.1",
+      "receipt_path": "conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json",
+      "receipt_sha256": "4f1ba5b364dd3c908287c286e7414d19dcdc3da3f1458e95471f66a9a76b6f20",
+      "status": "local_parent_join_accepted",
+      "kairos_pin": "bfbefa87ba15488837b01020f343685907ae09ac",
+      "scope": "Exact-pin local fidelity mode and paired Macro Route versus explicit-zero Micro Flow join; Rust/Cargo 1.99.0, 442 passed, 0 failed, 5 ignored."
+    },
+    {
+      "id": "C2.2",
+      "receipt_path": "conductor/evidence/c2.2-parent-rerun-rust199-20261007/acceptance-rust199.json",
+      "receipt_sha256": "72a4f1868bba86aed670aee50fd2b6682166969284bf05fea328488b805675b8",
+      "status": "local_parent_join_accepted",
+      "kairos_pin": "9b360f433210d38868e1e5f102473fd6f148fccf",
+      "scope": "Exact-pin provider, policy, Flow submit/macro-zero/transit retention and seed continuation join; Rust/Cargo 1.99.0, 441 passed, 0 failed, 5 ignored."
+    },
+    {
+      "id": "C2.3.flow-resource-lifecycle",
+      "receipt_path": "conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json",
+      "receipt_sha256": "fd8d48f939b29901da7e6807f00d065e2414e56a076e3752b6523ef94e096afa",
+      "status": "local_leaf_and_parent_join_accepted",
+      "kairos_pin": "dbd12c98b1a72a30760996590efa6a0f445368a6",
+      "scope": "Local Flow resource and lifecycle join; 442 passed, 0 failed, 5 ignored. Track03 owner/phase review and broader C2.3 phase completion remain open."
+    },
+    {
+      "id": "C2.3.dispatch",
+      "receipt_path": "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json",
+      "receipt_sha256": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d",
+      "status": "locally_accepted_leaf_parent_and_track03_gates_open",
+      "kairos_pin": "7672a67988134438228014e7b3e0f56855cc65e8",
+      "scope": "One accepted staff-policy selector leaf; does not establish C2.3 parent/phase completion."
+    },
+    {
+      "id": "C2.4.runtime-ledger",
+      "receipt_path": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json",
+      "receipt_sha256": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189",
+      "status": "accepted_local_leaf_and_exact_pin_parent_join_phase_review_open",
+      "kairos_pin": "5cc825048a1116740e80e6c067ba046306f2ce10",
+      "scope": "Test-only integrated Macro/Micro elapsed-time ledger through actual Flow work and accepted transit arrival; Rust/Cargo 1.99.0, 443 passed, 0 failed, 5 ignored, strict Clippy and formatting passed."
+    },
+    {
+      "id": "C2.4.evidence",
+      "receipt_path": "conductor/evidence/c2.4-evidence-rust199-20261007/acceptance-rust199.json",
+      "receipt_sha256": "1ac88afddeed737b7754ce73d1b842cd04ce9fb18c2d9e2d4bc415bf63d90ce2",
+      "status": "local_leaf_and_parent_join_accepted_phase_review_open",
+      "kairos_pin": "5cc825048a1116740e80e6c067ba046306f2ce10",
+      "scope": "Coordinator-accepted evidence reconciliation across five bounded C2 records; phase acceptance explicitly remains open."
+    },
+    {
+      "id": "C2.5.continuation",
+      "receipt_path": "conductor/evidence/c2.5-continuation-rust199-20261007/acceptance-rust199.json",
+      "receipt_sha256": "543a0e9e6b73c7e392280bbe6b9f3cc69fe1b6abd29a635e2ad97444d0536282",
+      "status": "locally_accepted_exact_pin_after_independent_source_review",
+      "kairos_pin": "774d1ed1c6c7f1bfd67a0a3875f5d9188eb1e9de",
+      "scope": "Crate-private, one-shot same-live-Flow owning handoff for one bound bridge work item; Rust 1.99.0 clean exact-head format, tests (85 library passed, 2 ignored; 78 integration passed, 2 ignored; no doc-test failures) and strict Clippy. Arrival handoff compares original timed request and work progress against uninterrupted control. No process restart, portable checkpoint, multi-work aggregate, timed service completion, or end-to-end elapsed-time claim."
+    }
+  ],
+  "manual_accounting": {
+    "receipt_path": "conductor/evidence/c2-manual-ledger-20261007/acceptance.json",
+    "receipt_sha256": "b0b21dd5eb7aba5bf2e86797dd8d22f9c31b3e36f51bec7620b95a3ba063acbb",
+    "status": "locally_reconciled_synthetic_arithmetic",
+    "macro_elapsed_seconds": 37.5,
+    "micro_components_seconds": {
+      "queue_wait": 4.0,
+      "active_clinical_work": 12.0,
+      "transit": 18.5,
+      "interruption_pause": 3.0
+    },
+    "micro_elapsed_sum_seconds": 37.5,
+    "interpretation": "Macro and Micro reconcile to the same synthetic 37.5-second window and must not be added. This is standalone manual accounting only; its synthetic pause component is not integrated interruption, Q4 pause/resume, or restart proof."
+  },
+  "missing_required_evidence": [
+    {
+      "gate": "Track03_owner_phase_review",
+      "status": "open",
+      "missing": "Recorded Track03 owner review and phase disposition."
+    },
+    {
+      "gate": "Q4_interruption_integration",
+      "status": "open",
+      "missing": "Integrated Q4 interruption acceptance remains absent. C2.5 proves one bound work item handoff through accepted transit arrival against a control, not Q4 pause/resume integration, timed service completion, or end-to-end elapsed accounting."
+    },
+    {
+      "gate": "portable_checkpoint_restart",
+      "status": "open",
+      "missing": "Portable process checkpoint and restart/readback evidence demonstrating restored execution state."
+    },
+    {
+      "gate": "hosted_exact_head_checks",
+      "status": "open",
+      "missing": "Hosted checks at the exact reviewed parent/Kairos heads."
+    },
+    {
+      "gate": "release",
+      "status": "open",
+      "missing": "Release acceptance evidence."
+    },
+    {
+      "gate": "clinical_acceptance",
+      "status": "open",
+      "missing": "Clinical acceptance evidence."
+    },
+    {
+      "gate": "C2.4_phase_review",
+      "status": "open",
+      "missing": "Completed Conductor phase review and verification; plan checklist remains unchecked."
+    }
+  ],
+  "basis": {
+    "plan_path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+    "plan_sha256": "95447de90102361c33f983d2ef9b6544798487ebfcf18e288a7bfbb4d75e14e6",
+    "workflow_path": "conductor/workflow.md",
+    "workflow_sha256": "09f0cb1def43a83955a6d7f2620ad8e798a4142d5ab6c691c261938ec1c0d8f9",
+    "evidence_reconciliation_path": "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json",
+    "evidence_reconciliation_sha256": "7aad8b7edc3a185c3069c73752e80536fecd15da9ef79fc9e87761891168f1f9",
+    "current_state_path": "conductor/current-state.json",
+    "phase_rule": "Every implementation phase requires Conductor review and manual verification. Plan leaves C2.4/Track03 review, hosted checks, portable checkpoint/restart, release, and clinical acceptance open; integrated interruption acceptance awaits Q4.",
+    "current_state_sha256_before_readback_link": "6c822277ef84ed08c5c58112ae242264a499448e1d08304e54e08ba1da9e5de2",
+    "mvp_recipes_path": "conductor/execution/mvp/recipes.json",
+    "mvp_recipes_sha256": "ecd09903a7f67e45f1a04a246ec0cafacca1b5a8e2d46d112ef5db4bb8343897",
+    "mvp_workbreakdown_path": "conductor/execution/mvp/work-breakdown.md",
+    "mvp_workbreakdown_sha256": "8b89c904d9cf8f46c4bad632df22c514ecf1ff3cfef46a531486ecdf7fc95f9d",
+    "historical_closeout_snapshot_current_state_sha256": "8ed0acdb290d065e118b4de0462cb42aa8f1ae1dabb91ab4d87be570c756e326",
+    "current_state_sha256_after_readback_links": "564ee58fb295b470db368a71bee3b07ef65c0cd178490374ae7a7cb918bb2342",
+    "task_catalog_path": "conductor/execution/tasks.json",
+    "task_catalog_sha256": "1e432d5f587d6175acc64d473ea930f916517b840b27db12631a1ee5537aa2b4",
+    "track_metadata_path": "conductor/tracks/empirical_calibration_20260925/metadata.json",
+    "track_metadata_sha256": "b9541c3d446b4f3993a03a7b9f899453ace5f55cacb45f7d1d5df87fe73bbf7d"
+  },
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "145 task records: full coverage, prerequisites and DAG valid\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "{\"tracks\":5,\"milestones\":34,\"local_links\":788,\"errors\":[]}\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "PASS: 82 MVP parents; 257 bounded leaves; complete joins and context/objective hashes\n"
+    }
+  ],
+  "scope_limits": {
+    "plan_checkbox": "not changed; C2.4 remains unchecked",
+    "task_catalog": "not changed for C2.4 acceptance; only recipe index metadata synchronized for C2.5 dependency",
+    "current_state": "not changed",
+    "parent_pin": "not changed in this readback",
+    "Rust_commands": "none run",
+    "phase_acceptance": "withheld",
+    "full_C2_acceptance": "not claimed",
+    "C2.5_leaf": "accepted local exact-pin leaf; not a phase or release acceptance"
+  },
+  "coordinator_acceptance_required": true,
+  "readback_base_parent_commit": "bbd92b0d862a00b00caf766b5d03f01d10f00dd9",
+  "integrated_parent_commit": "bbd92b0d862a00b00caf766b5d03f01d10f00dd9",
+  "integrated_kairos_pin": "774d1ed1c6c7f1bfd67a0a3875f5d9188eb1e9de",
+  "prior_readback": {
+    "path": "conductor/evidence/c2.4-closeout-rust199-20261007/closeout-review.json",
+    "sha256": "eccc9ff8967dd541cbea0ccdeb744ebc1ef43df14971bd0bf5955e0762a63787",
+    "note": "Historical six-record inventory; disposition remains correct and is superseded for current inventory by this readback."
+  },
+  "independent_review": "Refreshed exact-pin evidence inventory includes C2.5. Independent C2.5 source review found no blocker against the narrowed contract and confirmed adapter-pairing and end-to-end accounting limits. Phase acceptance remains withheld.",
+  "decision": "C2.4 phase acceptance remains withheld. This coordinator readback refresh records C2.5 at the exact Rust 1.99.0-verified pin; it does not complete C2.4 or full C2."
+}

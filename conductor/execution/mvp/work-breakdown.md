@@ -680,13 +680,22 @@ Parent plan: [C2.3](../../tracks/empirical_calibration_20260925/plan.md)
 | C2.3.dispatch | Minimal urgency/FIFO/zone/skill adapter | Eligible staff only; work/walk/wait separate and cleaning/reservation remains explicit | libs/kairos / worker |
 | C2.3.transit-bridge | Calibration BoundIntrinsicWork route dispatch and actual arrival reconciliation | Exact owned event receipts; accepted arrival links the original task/resource/work; matching consumed rejection has one explicit retry | libs/kairos / worker |
 
+## C2.5
+
+Parent plan: [C2.5](../../tracks/empirical_calibration_20260925/plan.md)
+
+| Leaf | Output | Oracle | Repository / role |
+| --- | --- | --- | --- |
+| C2.5.continuation | One bound work item same-live-Flow continuation | One-shot owning handoff preserves Flow, adapter, fidelity decision, Service stream and arrived timed request against an uninterrupted control; no restart or aggregate checkpoint | libs/kairos / worker |
+
 ## C2.4
 
 Parent plan: [C2.4](../../tracks/empirical_calibration_20260925/plan.md)
 
 | Leaf | Output | Oracle | Repository / role |
 | --- | --- | --- | --- |
-| C2.4.evidence | Phase evidence reconciliation | Every parent task has integrated output and executed gates; unresolved failures prevent acceptance | libs/kairos / worker |
+| C2.4.runtime-ledger | Integrated same-case Macro/Micro elapsed-time ledger | Actual Flow queue, transit and service intervals are disjoint and reconcile against the same elapsed time | libs/kairos / worker |
+| C2.4.evidence | Phase evidence reconciliation | Every parent task has integrated output and executed gates; unresolved failures prevent acceptance | . / worker |
 | C2.4.closeout | Coordinator phase acceptance record | Independent readback agrees with evidence and upstream gates; only coordinator updates checkbox/catalog/pin | libs/kairos / proposal_or_review |
 
 ## E0.1
