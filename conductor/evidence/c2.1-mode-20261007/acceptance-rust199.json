@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "task_id": "C2.1.mode",
+  "instance_id": "rust199-mode",
+  "status": "local_leaf_accepted",
+  "accepted_scope": "Exact-head qualification of existing fidelity policy resolution/boundary fixtures and actual Flow Macro/no-transit pair at the accepted C2.3 Kairos source pin.",
+  "kairos_pin": "dbd12c98b1a72a30760996590efa6a0f445368a6",
+  "packet": {
+    "path": "conductor/evidence/c2.1-mode-20261007/packet.json",
+    "sha256": "b1aeab718a0b22f2f8337e0a455551e4d2ced6cf1d005771fe3b2479b5898a19"
+  },
+  "recipe_sha256": "65f2204755f7bdcf538d312e30e7a13bfe277122692b227d86e65f86460a3c13",
+  "toolchain": {
+    "required": "Rust/Cargo 1.99.0 only",
+    "execution": "Every verification argv begins rustup run 1.99.0"
+  },
+  "combined_tests": {
+    "result_lines": 43,
+    "passed": 442,
+    "failed": 0,
+    "ignored": 5
+  },
+  "named_oracles": [
+    "fidelity::fidelity_tests::mode::policy_resolves_all_sixteen_scope_presence_masks",
+    "fidelity::fidelity_tests::mode::actual_pending_active_and_suspended_work_block_policy_application",
+    "flow_bridge::tests::macro_and_zero_micro_share_service_draws_and_submit_actual_timed_work"
+  ],
+  "strict_clippy": {
+    "passed": true,
+    "warnings_denied": true,
+    "log_sha256": "732186322402325172940531d8d6d7cfac85dc902585b2bef6715ad6839dacfd"
+  },
+  "format": {
+    "passed": true,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "test_log_sha256": "f344c0b18f7582deedc251db8fdc6212a2794f529f6f5919b8b0ce1cecfa1a45",
+  "independent_reviews": {
+    "packet": "2 independent reviewers READY",
+    "source_and_result": "2 independent reviewers READY; exact pin, named oracles, result/log hashes and scope verified"
+  },
+  "limits": {
+    "C2.1.paired": "open; full paired canonical outcome and Transit stream state oracle remains required",
+    "C2.1_parent_runtime_accepted": false,
+    "hosted": false,
+    "release": false,
+    "clinical_acceptance": false
+  },
+  "execution_result": {
+    "sha256": "7fadc366636b67b377f47b2bdec6a534168c9b90555ddf83638a84f87ba93b74",
+    "record": {
+      "schema_version": 1,
+      "packet_id": "C2.1.mode.rust199-mode",
+      "attempt_id": "C2.1.mode.rust199-coordinator-attempt-1",
+      "target_repo": "libs/kairos",
+      "base_commit": "dbd12c98b1a72a30760996590efa6a0f445368a6",
+      "worker_model": "coordinator exact-head qualification; no worker model invocation",
+      "status": "ready_for_review",
+      "result_commit_or_patch": "No source diff; exact-head qualification of existing fixtures.",
+      "changed_paths": [
+        ".artifacts/mvp/C2.1.mode.rust199-mode/result.json"
+      ],
+      "commands": [
+        {
+          "argv": [
+            "rustup",
+            "run",
+            "1.99.0",
+            "cargo",
+            "test",
+            "--locked",
+            "-p",
+            "kairo-ecs-des",
+            "-p",
+            "kairo-ecs-abm",
+            "-p",
+            "kairo-ecs-calibration",
+            "--features",
+            "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+          ],
+          "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+          "exit_code": 0,
+          "summary": "442 passed, 0 failed, 5 ignored across 43 test result summaries; all named mode oracles present.",
+          "log": "conductor/evidence/c2.1-mode-20261007/logs/mode-tests.log",
+          "sha256": "f344c0b18f7582deedc251db8fdc6212a2794f529f6f5919b8b0ce1cecfa1a45"
+        },
+        {
+          "argv": [
+            "rustup",
+            "run",
+            "1.99.0",
+            "cargo",
+            "clippy",
+            "--locked",
+            "-p",
+            "kairo-ecs-des",
+            "-p",
+            "kairo-ecs-abm",
+            "-p",
+            "kairo-ecs-calibration",
+            "--features",
+            "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+            "--all-targets",
+            "--",
+            "-D",
+            "warnings"
+          ],
+          "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+          "exit_code": 0,
+          "summary": "Strict all-target Clippy passed with warnings denied.",
+          "log": "conductor/evidence/c2.1-mode-20261007/logs/clippy.log",
+          "sha256": "732186322402325172940531d8d6d7cfac85dc902585b2bef6715ad6839dacfd"
+        },
+        {
+          "argv": [
+            "rustup",
+            "run",
+            "1.99.0",
+            "cargo",
+            "fmt",
+            "--all",
+            "--",
+            "--check"
+          ],
+          "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+          "exit_code": 0,
+          "summary": "Workspace formatting check passed.",
+          "log": "conductor/evidence/c2.1-mode-20261007/logs/fmt.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "acceptance_results": [
+        "All 16 fidelity policy scope-presence masks resolve as expected.",
+        "Actual Pending, Active and Suspended Flow work blocks policy replacement and preserves WorkSpec, progress and context.",
+        "Actual Flow Macro route plus explicit-zero Micro pair submits timed service work with identical service draws and no scheduled transit event before work submission."
+      ],
+      "unresolved_issues": [
+        "C2.1.paired full canonical outcome / Transit stream state comparison and mode-transition fixture remain a separate leaf; C2.1 parent runtime acceptance is not claimed."
+      ]
+    }
+  }
+}
