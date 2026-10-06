@@ -120,3 +120,24 @@ test isolation issue. The final integrated checks used Rust 1.99.0 at Kairos
 - `cargo test --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow --lib` — exit 0; 18 ABM tests passed, 78 calibration tests passed and 2 were ignored. Log `/tmp/c23-recovery-oracle-final-tests.log`, SHA-256 `01249c0164daab6a4d572692c56676c00c3a70eb5706a1626f7acb5e65acb2b4`.
 - `cargo clippy --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow --all-targets -- -D warnings` — exit 0. Log `/tmp/c23-recovery-oracle-final-clippy.log`, SHA-256 `5fa56c356ca0f304456646462ee6f2c026d6742d2cf7581fc3105c738923398d`.
 - `cargo fmt --all -- --check` and `git diff --check` — exit 0.
+
+## C2.3.progress leaf acceptance at Rust 1.99 exact pin
+
+The coordinator locally accepted the narrow `C2.3.progress` leaf at Kairos
+`aecb28c7089b1861b72cbd96ce29fc2577ffe47f`. An independent read-only source
+review confirmed that `TransitProgressState` checkpoint/restore retains the
+immutable route, current edge, elapsed ticks and remaining duration. The actual
+Flow pause/resume test also preserves in-flight segment progress across pause,
+a stale progress event and resume, then reaches one arrival and one timed acquire.
+
+Fresh verification at that exact pin used only the user-specified Rust 1.99.0:
+
+- `rustup run 1.99.0 cargo test --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow` — exit 0; 186 passed, 0 failed, 4 ignored. Log `/tmp/c23-progress-rust199-tests.log`, SHA-256 `242ee4c46370b3afb2c99ce6c7b6e78be417ee81ea43a2562d7654518dd3c55a`.
+- `rustup run 1.99.0 cargo clippy --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow --all-targets -- -D warnings` — exit 0. Log `/tmp/c23-progress-rust199-clippy.log`, SHA-256 `d7c4f31c9c81c01ecd74870967152f06ad4a97787d6a9f9f77ee447443658019`.
+- `rustup run 1.99.0 cargo fmt --all -- --check` — exit 0. Log `/tmp/c23-progress-rust199-fmt.log`, SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+
+This accepts only the local progress leaf. Its checkpoint is an in-memory cursor,
+not a portable or full Flow runtime checkpoint. The calibration-bound rejected
+event recovery/arrival join, Track03 owner review, C2.3 parent, C2.2/C2.1 joins,
+hosted exact-head checks and release gates remain open. Machine-readable receipt:
+`acceptance-progress-rust199.json`.
