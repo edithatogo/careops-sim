@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.4 urgent Q4 interruption is now accepted as a local exact-pin leaf at Kairos 6053d8d; the refreshed evidence inventory and current readback keep phase acceptance withheld. Next: obtain Track03 owner/phase review, then resolve the Track22 portable checkpoint/restart, exact-head hosted, release, and clinical gates before C2.4 Conductor phase review. Full C2 remains open.",
+  "next_action": "C2.4 Q4 interruption remains locally accepted at its recorded Kairos pin 6053d8d; the integrated Kairos pin is now 6303a255 after a docs-only retry-helper visibility correction. The runtime suite has not been rerun at 6303a255. The Track03 owner packet is refreshed for parent 189159274 and pin 6303a255, prepared but not sent. Next: obtain Track03 owner disposition, then resolve Track22 portable checkpoint/restart, exact-head hosted, release and clinical gates before separate C2.4 Conductor phase review. Full C2 remains open.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -69,10 +69,12 @@
     "conductor/evidence/c2.4-evidence-after-q4-rust199-20261007/acceptance-rust199.json",
     "conductor/evidence/c2.4-evidence-after-q4-rust199-20261007/reconciliation.json",
     "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-c2.4-q4.md",
-    "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-c2.4-q4.json"
+    "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-c2.4-q4.json",
+    "conductor/evidence/c2.4-retry-doc-hidden-rust199-20261007/README.md",
+    "conductor/evidence/c2.4-track03-owner-review-rust199-20261007/review-packet.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "6053d8dd2f8057c423decc929c90a8bcd10837f9",
+    "libs/kairos": "6303a2552257f1fcbd2aaa002d38352a2a467592",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -438,10 +440,21 @@
     "evidence": "conductor/evidence/c2.4-closeout-rust199-20261007/coordinator-disposition.json",
     "C2_4_phase_acceptance": "open",
     "Track03_owner_phase_review": "open",
-    "Q4_interruption_acceptance": "open",
+    "Q4_interruption_acceptance": "local leaf accepted at 6053d8dd; docs-only correction at 6303a255; runtime suite not rerun at new pin",
     "portable_checkpoint_restart": "open",
     "hosted_exact_head_checks": "open",
     "release": "open",
     "clinical_acceptance": "open"
+  },
+  "c24_retry_visibility_correction": {
+    "parent_commit": "922b0e5eb78936ae222735344ba90d24032cd51d",
+    "source_commit": "6303a2552257f1fcbd2aaa002d38352a2a467592",
+    "evidence": "conductor/evidence/c2.4-retry-doc-hidden-rust199-20261007/README.md",
+    "scope": "doc-hidden attribute on Rust-public experimental TransitContext::schedule_transit_retry",
+    "rust_toolchain": "1.99.0",
+    "format_and_rustdoc": "passed",
+    "runtime_suite_at_new_pin": "not rerun",
+    "Track03_owner_disposition": "open",
+    "C2_4_phase_acceptance": "open"
   }
 }
