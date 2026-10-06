@@ -1,0 +1,124 @@
+{
+  "reviewer": "root coordinator",
+  "reservation_id": "e5031a57334a46e99803773ce2b19247",
+  "instance_id": "q4-rerun-6784538",
+  "instance_scope": "Refresh exact-pin local DES/ABM/calibration verification at Kairos 678453838f391f3dd869b79fd502077f63f3a067, including the C2.2 provider sampling tests. No source edits and no C2.4/C2 phase acceptance.",
+  "instance_set": [
+    "q4-rerun-6784538"
+  ],
+  "interface_contract": "Do not change source, manifests, lockfiles, APIs, task catalog, parent pin, checkboxes, or owner decisions. Use only Rust/Cargo 1.99.0. Run the exact locked DES/ABM/calibration feature-set test, strict all-target Clippy, and workspace fmt-check at the bound Kairos commit. Preserve outputs in this instance artifact folder. A pass refreshes local current-pin verification only; C2.4 owner, hosted, portable restart, release, clinical and phase gates remain open.",
+  "context_slices": [
+    {
+      "repo": ".",
+      "path": "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.json",
+      "start": 1,
+      "end": 71
+    },
+    {
+      "repo": ".",
+      "path": "conductor/evidence/c2.5-decision-mismatch-rust199-20261007/acceptance-rust199.json",
+      "start": 1,
+      "end": 28
+    },
+    {
+      "repo": "libs/kairos",
+      "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+      "start": 2408,
+      "end": 2500
+    },
+    {
+      "repo": ".",
+      "path": "conductor/evidence/c2.2-provider-sampling-rust199-20261007/README.md",
+      "start": 1,
+      "end": 32
+    }
+  ],
+  "input_paths": [
+    "Cargo.lock",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "crates/kairo-ecs-calibration/src/work_duration.rs"
+  ],
+  "write_paths": [
+    ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6784538",
+    ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6784538/result.json"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6784538/target"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All three exact-pin DES, ABM, and calibration packages pass on Rust 1.99.0; C2.4 Q4 Flow interruption tests execute with later C2.1/C2.5 test additions present."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6784538/target",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target Clippy passes for the same packages/features at exact Kairos pin on Rust 1.99.0."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting passes at exact Kairos pin on Rust 1.99.0."
+    }
+  ],
+  "prerequisite_receipts": {
+    "C2.4.runtime-ledger": {
+      "status": "accepted",
+      "reviewer": "root coordinator",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189"
+      }
+    }
+  },
+  "reviewed_recipe_sha256": "ef9ee2851bb1b6b9e29d9da76e7d97ed734f41988aa4c8e8a93cc9db5930e2bc"
+}
