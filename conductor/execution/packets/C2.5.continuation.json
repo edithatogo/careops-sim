@@ -21,6 +21,7 @@
   ],
   "write_paths": [
     "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    ".artifacts/c2.5-continuation/target",
     ".artifacts/c2.5-continuation/worker-result.json"
   ],
   "protected_paths": [
@@ -49,13 +50,13 @@
       "oracle": "Workspace formatting is clean at the repository-pinned stable Rust 1.99.0 toolchain."
     },
     {
-      "argv": ["rustup", "run", "1.99.0", "cargo", "test", "--locked", "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support"],
+      "argv": ["rustup", "run", "1.99.0", "cargo", "test", "--locked", "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support", "--target-dir", ".artifacts/c2.5-continuation/target"],
       "cwd": ".",
       "expected_exit": 0,
       "oracle": "All calibration crate tests pass, including the new same-runtime owning continuation behavioral oracles and existing Flow bridge tests."
     },
     {
-      "argv": ["rustup", "run", "1.99.0", "cargo", "clippy", "--locked", "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support", "--all-targets", "--", "-D", "warnings"],
+      "argv": ["rustup", "run", "1.99.0", "cargo", "clippy", "--locked", "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support", "--all-targets", "--target-dir", ".artifacts/c2.5-continuation/target", "--", "-D", "warnings"],
       "cwd": ".",
       "expected_exit": 0,
       "oracle": "The changed calibration crate and all its targets pass strict Clippy with warnings denied at stable Rust 1.99.0."
