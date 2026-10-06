@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "task_id": "C2.current-pin-verification",
+  "instance_id": "C2.4.q4-rerun-3926d0f",
+  "status": "current_pin_local_verification_passed_phase_gates_open",
+  "parent_commit": "0528d7fdab323aebd0d86daa9c24f7d3c04b8f39",
+  "kairos_pin": "3926d0f8f401b605ea62b15cde7b5ef1ffba89c1",
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "source_hashes": {
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "6cb8218ff09ac51848cb449053256501e2f3c9b7ac39c0799367b5c424ec2ea4",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "056bc718740f188fdee5bde7b29061acc23eae4878cebec95c8715a3ddc27e0c",
+    "Cargo.lock": "946b09595a094549bfdfc7d45398810f959f539243fecb9934343cf297f4949f"
+  },
+  "packet_sha256": "643c80c71c05f56ea217c7e5404db658d07c8c55642facf30f88b8dae421c59a",
+  "commands": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-3926d0f/target"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "summary": {
+        "groups": 43,
+        "passed": 449,
+        "failed": 0,
+        "ignored": 5
+      },
+      "log": "test.log",
+      "log_sha256": "de9380cce092550836f55bd157bc2b34201b338c842341c9004409ba0f98e414"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-3926d0f/target",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "warnings_denied": true,
+      "log": "clippy.log",
+      "log_sha256": "1dc5ceff6278beb31dd35e86250ed1b02b0bcad00ac3fd2865e43a4d05af493c"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "fmt-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "observed_cases": [
+    "C2.1 paired actual-Flow Restart and routed Suspend regressions",
+    "C2.4 urgent-interruption actual-Flow Suspend integration",
+    "C2.5 decision-mismatch continuation preservation",
+    "C2.2/C2.3 provider, policy, routing, and lifecycle tests in the selected packages"
+  ],
+  "scope": "Exact-pin local DES/ABM/calibration verification only. No owner, hosted, portable restart, release, clinical, or C2.4 phase acceptance. This suite does not replace C2.2 leaf-specific parent receipts.",
+  "open_gates": [
+    "Track03 owner disposition",
+    "Track22 checkpoint contract and portable restart",
+    "hosted exact-head checks",
+    "C2.4 phase review",
+    "release",
+    "clinical acceptance"
+  ]
+}

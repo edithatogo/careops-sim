@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.4.q4-urgent-interruption-ledger.q4-rerun-3926d0f",
+  "attempt_id": "C2-current-pin-rerun-rust199-20261007",
+  "target_repo": "libs/kairos",
+  "base_commit": "3926d0f8f401b605ea62b15cde7b5ef1ffba89c1",
+  "worker_model": "coordinator-executed verification; model version not exposed",
+  "status": "ready_for_review",
+  "result_commit_or_patch": "3926d0f8f401b605ea62b15cde7b5ef1ffba89c1",
+  "changed_source_paths": [],
+  "source_sha256": "6cb8218ff09ac51848cb449053256501e2f3c9b7ac39c0799367b5c424ec2ea4",
+  "commands": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-3926d0f/target"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "43 groups: 449 passed, 0 failed, 5 ignored",
+      "log": "conductor/evidence/c2-current-pin-rerun-rust199-20261007/test.log",
+      "log_sha256": "de9380cce092550836f55bd157bc2b34201b338c842341c9004409ba0f98e414"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-3926d0f/target",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "Strict all-target Clippy passed with warnings denied.",
+      "log": "conductor/evidence/c2-current-pin-rerun-rust199-20261007/clippy.log",
+      "log_sha256": "1dc5ceff6278beb31dd35e86250ed1b02b0bcad00ac3fd2865e43a4d05af493c"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "Workspace formatting check passed.",
+      "log": "conductor/evidence/c2-current-pin-rerun-rust199-20261007/fmt-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "correction_history": [
+    {
+      "attempt": "First log-capture shell wrapper assigned the zsh-reserved read-only variable `status` and returned 1 after Cargo completed. Replaced it with `test_rc`; the exact locked test command reran and exited 0 with the retained log. No source changes."
+    }
+  ],
+  "acceptance_results": [
+    "Exact current-pin DES/ABM/calibration suite passes on Rust 1.99.0.",
+    "C2.4 urgent-interruption, C2.1 paired Restart/Suspend, and C2.5 decision-mismatch tests are present in the passing suite.",
+    "Strict all-target Clippy and workspace format pass.",
+    "Local verification only; no phase, owner, hosted, portable checkpoint/restart, release or clinical acceptance."
+  ]
+}

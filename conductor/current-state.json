@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.5 decision-mismatch is locally accepted at exact Kairos pin 3926d0f after the full kairo-ecs-calibration library suite, strict Clippy and formatting passed on Rust 1.99.0. Resume C2.4 phase review only after Track03 and Track22 decisions plus hosted, portable-restart, release and clinical gates.",
+  "next_action": "Current exact-pin DES/ABM/calibration verification passes at Kairos 3926d0f (449 passed, 0 failed, 5 ignored; strict Clippy/format passed) with all locally implementable C2 test gaps audited. C2.4 phase acceptance remains withheld pending Track03 and Track22 dispositions plus hosted, portable-restart, release and clinical gates.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -81,7 +81,12 @@
     "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.md",
     "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.json",
     "conductor/evidence/c2.5-decision-mismatch-rust199-20261007/README.md",
-    "conductor/evidence/c2.5-decision-mismatch-rust199-20261007/acceptance-rust199.json"
+    "conductor/evidence/c2.5-decision-mismatch-rust199-20261007/acceptance-rust199.json",
+    "conductor/evidence/c2-current-pin-rerun-rust199-20261007/README.md",
+    "conductor/evidence/c2-current-pin-rerun-rust199-20261007/acceptance-rust199.json",
+    "conductor/evidence/c2-current-pin-rerun-rust199-20261007/current-readback-3926d0f.md",
+    "conductor/evidence/c2-current-pin-rerun-rust199-20261007/current-readback-3926d0f.json",
+    "conductor/evidence/c2-current-pin-rerun-rust199-20261007/worker-result.json"
   ],
   "submodule_pins": {
     "libs/kairos": "3926d0f8f401b605ea62b15cde7b5ef1ffba89c1",
@@ -449,12 +454,12 @@
   },
   "c24_closeout_review": {
     "status": "current_readback_phase_withheld",
-    "evidence": "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.json",
-    "evidence_sha256": "1854351cc2ec266282db2830c2ad406029d541688b18a4ea1ead293d26c89687",
+    "evidence": "conductor/evidence/c2-current-pin-rerun-rust199-20261007/current-readback-3926d0f.json",
+    "evidence_sha256": "df95c551555d23059a43b4ea6491545a75203cf2dff9c0750a0732ac678fc584",
     "C2_4_phase_acceptance": "open",
     "Track03_owner_phase_review": "open",
-    "Q4_interruption_acceptance": "local leaf accepted at 6053d8dd; exact-pin package rerun at 6303a255 passed with 447 passed, 0 failed, 5 ignored; strict Clippy and format passed",
-    "portable_checkpoint_restart": "open",
+    "Track22_contract_and_portable_restart": "open",
+    "current_pin_verification": "449 passed; 0 failed; 5 ignored across 43 groups at Rust 1.99.0; strict Clippy and format passed",
     "hosted_exact_head_checks": "open",
     "release": "open",
     "clinical_acceptance": "open"
@@ -484,12 +489,12 @@
   },
   "c24_current_pin_verification": {
     "status": "exact_pin_checks_passed_phase_gates_open",
-    "evidence": "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/acceptance-rust199.json",
-    "evidence_sha256": "d8e11420de56c0938cc29abf49dc3a000503d4340d1231f8d02ea384b4e91ea8",
-    "parent_source_commit": "b76bf0734ccb844e8bb15ecb9b1b5e2547850904",
-    "kairos_pin": "6303a2552257f1fcbd2aaa002d38352a2a467592",
+    "evidence": "conductor/evidence/c2-current-pin-rerun-rust199-20261007/acceptance-rust199.json",
+    "evidence_sha256": "bdb523566790c52d87acf0fd8b442036baea902de2451f1f02119f3f7bbf52d9",
+    "parent_source_commit": "0528d7fdab323aebd0d86daa9c24f7d3c04b8f39",
+    "kairos_pin": "3926d0f8f401b605ea62b15cde7b5ef1ffba89c1",
     "toolchain": "Rust 1.99.0 only",
-    "tests": "447 passed, 0 failed, 5 ignored across 43 result groups",
+    "tests": "449 passed, 0 failed, 5 ignored across 43 groups",
     "strict_clippy": true,
     "format": true,
     "C2_4_phase_acceptance": "open"
@@ -520,5 +525,17 @@
     "Track03_owner_phase_review": "open",
     "Track22_portable_checkpoint_or_restart": "open",
     "hosted_release_or_clinical_acceptance": false
+  },
+  "c2_combined_current_pin_verification": {
+    "status": "exact_pin_local_checks_passed_phase_gates_open",
+    "parent_commit": "0528d7fdab323aebd0d86daa9c24f7d3c04b8f39",
+    "kairos_pin": "3926d0f8f401b605ea62b15cde7b5ef1ffba89c1",
+    "evidence": "conductor/evidence/c2-current-pin-rerun-rust199-20261007/acceptance-rust199.json",
+    "toolchain": "Rust 1.99.0 only",
+    "tests": "449 passed; 0 failed; 5 ignored across 43 groups",
+    "strict_clippy": true,
+    "format": true,
+    "C2_2_leaf_specific_parent_receipt_replaced": false,
+    "full_C2_acceptance": false
   }
 }
