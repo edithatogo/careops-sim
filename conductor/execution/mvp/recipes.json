@@ -5542,14 +5542,54 @@
       }
     },
     {
-      "task_id": "C2.4",
-      "task_objective_sha256": "7c42fe09c4142cc4879f07a6c1fde6c17626bbf336431a499b922c218e9dcc7f",
+      "task_id": "C2.5",
+      "task_objective_sha256": "b3503c80c1733aa53b05179e7fdaf247b54e0a214ae0615b94d94c0f1ef10e0a",
       "parent_dependencies": [
         "C2.1"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
         "line": 122
+      },
+      "context_sources": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "status": "recipe_requires_binding",
+      "join": "All leaf instances must be independently accepted and combined parent acceptance rerun; no partial checkbox completion",
+      "leaves": [
+        {
+          "id": "C2.5.continuation",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Crate-private one-shot same-live-Flow continuation for one bound bridge work item",
+          "oracle": "Capture and resume preserve the exact FlowRuntime, adapter, one bound work item, fidelity decision and Service stream. Mismatch returns original values. Actual-Flow tests compare Macro, explicit-zero Micro, transit start and observed pause/resume through accepted arrival against uninterrupted control, including the original timed request. No serialization/restart or multi-work aggregation.",
+          "dependencies": [
+            "C2.1.paired"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "single same-live-Flow continuation leaf; coordinator records exact source commit, parent pin and Rust 1.99 evidence",
+          "timebox_minutes": 90,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": "conductor/execution/packets/C2.5.continuation.json"
+        }
+      ]
+    },
+    {
+      "task_id": "C2.4",
+      "task_objective_sha256": "7c42fe09c4142cc4879f07a6c1fde6c17626bbf336431a499b922c218e9dcc7f",
+      "parent_dependencies": [
+        "C2.5"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 126
       },
       "context_sources": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -5587,7 +5627,8 @@
           "output": "Phase evidence reconciliation",
           "oracle": "Every parent task has integrated output and executed gates; unresolved failures prevent acceptance",
           "dependencies": [
-            "C2.4.runtime-ledger"
+            "C2.4.runtime-ledger",
+            "C2.5.continuation"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
