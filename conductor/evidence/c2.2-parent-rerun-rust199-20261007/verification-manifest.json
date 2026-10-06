@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "task": "C2.2",
+  "status": "all_packet_verification_passed",
+  "base_parent_commit": "ab269f3c3289f1b727d50a6e8dcd1ad85aba4056",
+  "integrated_kairos_pin": "9b360f433210d38868e1e5f102473fd6f148fccf",
+  "packet_sha256": "a207f71853a7e17cbc00a4ff5c15b0ea4ff49011ce4d8b893e2b30148ffb1f54",
+  "commands": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "rustc",
+        "--version"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit": 0,
+      "duration_seconds": 0.437,
+      "log": "logs/00-toolchain-rustc.log",
+      "log_sha256": "8dc912acd5bfeafc70b01b1d2a2afb0844afa02f5dba2f1ae8d5c212d005afb6",
+      "summary_lines": [
+        "rustc 1.99.0 (b940084d7 2026-09-28)"
+      ]
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "--version"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit": 0,
+      "duration_seconds": 0.081,
+      "log": "logs/01-toolchain-cargo.log",
+      "log_sha256": "1f88eaf7fe1aaec83184752cf4c944cd22f00184136ff36a3e4c318cc60ef566",
+      "summary_lines": [
+        "cargo 1.99.0 (5f94df478 2026-08-27)"
+      ]
+    },
+    {
+      "argv": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/careops-c22-parent-rerun-target",
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit": 0,
+      "duration_seconds": 8.699,
+      "log": "logs/06-combined-native-tests-explicit-env.log",
+      "log_sha256": "c883da764b057464212334e104c06b539139742e4dab0d2c3e1bc1234d711809",
+      "summary_lines": [
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+        "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      ],
+      "packet_exact_invocation_repeat": true,
+      "summary_totals": {
+        "result_lines": 43,
+        "passed": 441,
+        "failed": 0,
+        "ignored": 5
+      }
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "python3",
+        "conformance/c20/run_transit_red.py",
+        "--expect",
+        "green"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit": 0,
+      "duration_seconds": 15.539,
+      "log": "logs/03-c20-bound-retention.log",
+      "log_sha256": "395c24d9bb69fdbe3f95235250c9597f7fdccd7aff0c322c542c102253e5461c",
+      "summary_lines": []
+    },
+    {
+      "argv": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/careops-c22-parent-rerun-target",
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit": 0,
+      "duration_seconds": 0.466,
+      "log": "logs/07-strict-clippy-explicit-env.log",
+      "log_sha256": "f2066ca264b9a8598ecd436c70919e1efe1acea4098ad2a13b5d82d67bc049ec",
+      "summary_lines": [],
+      "packet_exact_invocation_repeat": true
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit": 0,
+      "duration_seconds": 0.803,
+      "log": "logs/05-format.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary_lines": []
+    }
+  ],
+  "seed": "not applicable; deterministic continuation assertion uses fixed logical identity, no stochastic experiment seed",
+  "inputs_sha256": {
+    "recipes": "1da4b2b3898a7d86f775601e679c6b860588d1d5f1a29d0969461e6c9cee7dbc",
+    "plan": "c44e3a52ffbbb22930656d3b30f0c406a8323b683773c337ddfa00836314c341",
+    "seed_map": "2a6dcae497c6001f1c6b09a4ce4c6034398986fb9593b01ed7e38fc69bb009c4"
+  },
+  "c20_current_pin_result": {
+    "status": "named_paired_transit_fixture_passed",
+    "commit": "9b360f433210d38868e1e5f102473fd6f148fccf",
+    "fixture_sha256": "a6169373466b43075e35507bd7d39a044943d88c223b6d39efcca2cc79607fc9",
+    "cargo_exit_status": 0,
+    "cargo_log_sha256": "85997d2cccd3d03911a97de7cd31e15643d822be8443adbbbc8f22df041392ae",
+    "toolchain_log_sha256": "f3ffefce2bf5646f08551258a1972fefaee9894e907a8a0473c7e9502797dc7d",
+    "exact_test": "paired_transit_c20::actual_nonzero_route_consumes_stale_start_and_arrival_across_pause_resume_once",
+    "test_summary": "1 passed; 0 failed; 0 ignored; 0 measured; 82 filtered"
+  },
+  "c20_preservation": {
+    "pre_run_backup_sha256": "9a7fada17c993bb26bf95739957e771f3397e1a2af02e5d8cdfefc066d19c9da",
+    "pre_run_members": 3764,
+    "archive_members": 3765,
+    "restored_inventory_verified": true,
+    "restored_file_hashes_verified": true,
+    "previous_ignored_tree_restored": true,
+    "previous_root_result_sha256": "5a84db922fab5f2b6c78a0d887d82066876b20a159eee68b5a9ecaa11f8c12b9"
+  },
+  "limitations": "Local C2.2 parent join only. No portable process checkpoint codec, full C2.3 parent/Track03 phase acceptance, C2.1 runtime acceptance, hosted/release/clinical acceptance."
+}
