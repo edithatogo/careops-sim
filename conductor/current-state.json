@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.4 manual Macro/Micro elapsed-time readback is recorded: base ledger 25 ticks per arm and Q4 interruption 27 ticks per arm, with Q4 runtime evidence historical at Kairos 6053d8d. The integrated Kairos pin is 6303a255 after a docs-only retry-helper visibility correction; the runtime suite has not been rerun there. Track03 and Track22 owner packets are prepared but unsent; the Track22 packet now binds source parent 05599280, with a nonbinding contract-options proposal indexed below. Next: obtain Track03 owner disposition and Track22 contract decision, then resolve portable restart, exact-head hosted, release and clinical gates before separate C2.4 Conductor phase review. Full C2 remains open.",
+  "next_action": "C2.4 exact-pin runtime verification now passes at Kairos 6303a255 using Rust 1.99.0 only: 447 passed, 0 failed, 5 ignored across 43 result groups; strict Clippy and formatting also pass. The manual Macro/Micro readback remains 25 ticks per base arm and 27 ticks per Q4 interruption arm. Track03 and Track22 owner packets are prepared but unsent; the Track22 packet binds parent 05599280 and has a nonbinding contract-options proposal indexed below. Next: obtain Track03 owner disposition and Track22 contract decision, then resolve portable restart, hosted exact-head, release and clinical gates before separate C2.4 Conductor phase review. Full C2 remains open.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -75,6 +75,9 @@
     "conductor/evidence/c2-track22-checkpoint-owner-review-20261007/review-packet.md",
     "conductor/evidence/c2-track22-checkpoint-contract-options-20261007/proposal.md",
     "conductor/evidence/c2.4-runtime-manual-readback-20261007/README.md",
+    "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/README.md",
+    "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/acceptance-rust199.json",
+    "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/packet.json",
     "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.md",
     "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.json"
   ],
@@ -443,10 +446,10 @@
   "c24_closeout_review": {
     "status": "current_readback_phase_withheld",
     "evidence": "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.json",
-    "evidence_sha256": "98eccc6b50e8c72b1da614e9fff368074b7f875365afa15bdea9154fe7a4a6be",
+    "evidence_sha256": "1854351cc2ec266282db2830c2ad406029d541688b18a4ea1ead293d26c89687",
     "C2_4_phase_acceptance": "open",
     "Track03_owner_phase_review": "open",
-    "Q4_interruption_acceptance": "local leaf accepted at 6053d8dd; docs-only correction at 6303a255; runtime suite not rerun at new pin",
+    "Q4_interruption_acceptance": "local leaf accepted at 6053d8dd; exact-pin package rerun at 6303a255 passed with 447 passed, 0 failed, 5 ignored; strict Clippy and format passed",
     "portable_checkpoint_restart": "open",
     "hosted_exact_head_checks": "open",
     "release": "open",
@@ -459,7 +462,8 @@
     "scope": "doc-hidden attribute on Rust-public experimental TransitContext::schedule_transit_retry",
     "rust_toolchain": "1.99.0",
     "format_and_rustdoc": "passed",
-    "runtime_suite_at_new_pin": "not rerun",
+    "runtime_suite_at_new_pin": "passed: 447 passed, 0 failed, 5 ignored across 43 result groups; strict Clippy and format passed",
+    "verification_evidence": "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/acceptance-rust199.json",
     "Track03_owner_disposition": "open",
     "C2_4_phase_acceptance": "open"
   },
@@ -470,7 +474,20 @@
     "q4_interruption_ticks": 27,
     "source_sha256": "e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959",
     "Q4_tested_pin": "6053d8dd2f8057c423decc929c90a8bcd10837f9",
-    "current_runtime_rerun_at_6303a255": false,
+    "current_runtime_rerun_at_6303a255": true,
+    "current_runtime_rerun_summary": "447 passed, 0 failed, 5 ignored across 43 result groups; strict Clippy and format passed",
+    "C2_4_phase_acceptance": "open"
+  },
+  "c24_current_pin_verification": {
+    "status": "exact_pin_checks_passed_phase_gates_open",
+    "evidence": "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/acceptance-rust199.json",
+    "evidence_sha256": "d8e11420de56c0938cc29abf49dc3a000503d4340d1231f8d02ea384b4e91ea8",
+    "parent_source_commit": "b76bf0734ccb844e8bb15ecb9b1b5e2547850904",
+    "kairos_pin": "6303a2552257f1fcbd2aaa002d38352a2a467592",
+    "toolchain": "Rust 1.99.0 only",
+    "tests": "447 passed, 0 failed, 5 ignored across 43 result groups",
+    "strict_clippy": true,
+    "format": true,
     "C2_4_phase_acceptance": "open"
   },
   "c22_checkpoint_contract_review": {
