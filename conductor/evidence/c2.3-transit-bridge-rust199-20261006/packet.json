@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.3.transit-bridge.rust199-one-shot",
+  "task_id": "C2.3",
+  "target_repo": "libs/kairos",
+  "base_commit": "aecb28c7089b1861b72cbd96ce29fc2577ffe47f",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "One calibration-bound nonzero Micro Route, actual one-shot callback rejection followed by exact matching retry and one accepted arrival/request",
+  "context_paths": [
+    ".artifacts/mvp/C2.3.transit-bridge.rust199-one-shot/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/calibration/ADR-0008-c20-transit-retry-seam.md": "8658c41767d918e2c1edee731f9d982046db9d0ddd9c1fa17ab34138c76bd01f",
+    "crates/kairo-ecs-abm/Cargo.toml": "3593f927b084bbf0b45b66e4dc6a88dec91479a237feb6163926fd6db46957c7",
+    "crates/kairo-ecs-abm/src/lib.rs": "8bbc7853549edd38b1318ee8243c6e7ed0428f5a8116747e07950b1d5222a210",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "1535859601597bcbf687c18bcc6f44bc90e272d233723728d816405f8011f15a",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "e20d695c92f599b2a99109c99354cfc7701db985a43d17754097b965116c8048",
+    ".artifacts/mvp/C2.3.transit-bridge.rust199-one-shot/context.md": "ab46a9d509e00aeda551a1162550a3f2f8efe8efe10c42329b5cc99cddffd97b"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-abm/Cargo.toml",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs",
+    "crates/kairo-ecs-abm/src/lib.rs",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    ".artifacts/mvp/C2.3.transit-bridge.rust199-one-shot/result.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C2.2.flow-macro-zero",
+    "C2.3.progress"
+  ],
+  "interface_contract": "Nonzero Micro Route must be exercised through the actual Calibration BoundIntrinsicWork and FlowRuntime. Add an ABM-only optional Cargo feature `test-support` and an explicitly test-only registration helper, compiled only when that feature is enabled, which rejects the first actual transit planner callback once per test thread and then delegates to the unchanged TransitContext::plan and actual accept_transit_context receipt application. Export that helper only behind the non-default feature. In calibration tests, enable it via `--features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support`; drive BoundIntrinsicWork.start_transit, observe the actual scheduler-produced Rejected FlowDispatch for the exact source EventId, retry that matching receipt once, reject replay without scheduler mutation, then observe actual accepted retry, progress and arrival. Assert only accepted arrival yields exactly one actual timed Acquire linked to the original work/resource/owner and finish_transit returns that exact request. Keep all production/default features and APIs unchanged; do not edit DES scheduler, parent files, manifests other than the ABM feature declaration, or evidence/plan status.",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Full calibration and ABM package suites pass with the new actual-rejection/retry/arrival integration oracle enabled; record exact test totals and output log hash."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target clippy passes on stable Rust 1.99.0 with the non-default test-support feature enabled."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting check passes with stable Rust 1.99.0."
+    }
+  ],
+  "acceptance": [
+    "Nonzero Micro Route uses the actual TransitContext carrier and exact owned event IDs; only accepted arrival reconciles the original timed task/resource request and work link; explicit retry is one-shot and limited to the matching consumed rejected event. Macro and Zero Micro emit no transit event or Transit draw.",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/C2.3.transit-bridge.rust199-one-shot/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "coordinator-read-only-review-plus-independent-packet-review",
+    "reservation_id": "C2.3-transit-bridge-rust199-attempt-1",
+    "instance_id": "rust199-one-shot",
+    "instance_scope": "One calibration-bound nonzero Micro Route, actual one-shot callback rejection followed by exact matching retry and one accepted arrival/request",
+    "instance_set": [
+      "rust199-one-shot"
+    ],
+    "reviewed_recipe_sha256": "ea67cd37c401b2337fba25a973e32450a0cfdd0a8b2c359b3135df7e086076d2",
+    "interface_contract": "Nonzero Micro Route must be exercised through the actual Calibration BoundIntrinsicWork and FlowRuntime. Add an ABM-only optional Cargo feature `test-support` and an explicitly test-only registration helper, compiled only when that feature is enabled, which rejects the first actual transit planner callback once per test thread and then delegates to the unchanged TransitContext::plan and actual accept_transit_context receipt application. Export that helper only behind the non-default feature. In calibration tests, enable it via `--features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support`; drive BoundIntrinsicWork.start_transit, observe the actual scheduler-produced Rejected FlowDispatch for the exact source EventId, retry that matching receipt once, reject replay without scheduler mutation, then observe actual accepted retry, progress and arrival. Assert only accepted arrival yields exactly one actual timed Acquire linked to the original work/resource/owner and finish_transit returns that exact request. Keep all production/default features and APIs unchanged; do not edit DES scheduler, parent files, manifests other than the ABM feature declaration, or evidence/plan status.",
+    "context_slices": [
+      {
+        "repo": ".",
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "start": 96,
+        "end": 132
+      },
+      {
+        "repo": ".",
+        "path": "conductor/tracks/empirical_calibration_20260925/agent-contract.md",
+        "start": 1,
+        "end": 20
+      },
+      {
+        "repo": ".",
+        "path": "conductor/decisions/ADR-0008-c2-test-first-join.md",
+        "start": 21,
+        "end": 49
+      },
+      {
+        "path": "conductor/design/calibration/ADR-0008-c20-transit-retry-seam.md",
+        "start": 1,
+        "end": 19
+      },
+      {
+        "path": "conductor/design/calibration/ADR-0008-c20-transit-retry-seam.md",
+        "start": 48,
+        "end": 92
+      },
+      {
+        "path": "crates/kairo-ecs-abm/Cargo.toml",
+        "start": 1,
+        "end": 14
+      },
+      {
+        "path": "crates/kairo-ecs-abm/src/lib.rs",
+        "start": 1,
+        "end": 20
+      },
+      {
+        "path": "crates/kairo-ecs-abm/src/flow_adapter.rs",
+        "start": 522,
+        "end": 540
+      },
+      {
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 957,
+        "end": 975
+      },
+      {
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 1104,
+        "end": 1148
+      }
+    ],
+    "input_paths": [
+      "conductor/design/calibration/ADR-0008-c20-transit-retry-seam.md",
+      "crates/kairo-ecs-abm/Cargo.toml",
+      "crates/kairo-ecs-abm/src/flow_adapter.rs",
+      "crates/kairo-ecs-abm/src/lib.rs",
+      "crates/kairo-ecs-calibration/src/flow_bridge.rs"
+    ],
+    "write_paths": [
+      "crates/kairo-ecs-abm/Cargo.toml",
+      "crates/kairo-ecs-abm/src/flow_adapter.rs",
+      "crates/kairo-ecs-abm/src/lib.rs",
+      "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+      ".artifacts/mvp/C2.3.transit-bridge.rust199-one-shot/result.json"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "-p",
+          "kairo-ecs-abm",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Full calibration and ABM package suites pass with the new actual-rejection/retry/arrival integration oracle enabled; record exact test totals and output log hash."
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "-p",
+          "kairo-ecs-abm",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Strict all-target clippy passes on stable Rust 1.99.0 with the non-default test-support feature enabled."
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Workspace formatting check passes with stable Rust 1.99.0."
+      }
+    ],
+    "prerequisite_receipts": {
+      "C2.2.flow-macro-zero": {
+        "status": "accepted",
+        "reviewer": "coordinator",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.2-flow-macro-zero-20261006/acceptance-rust199-corrected.json": "e6a17919762dba8893d3e24009929b812047879e8512bf387a642d8185bab752"
+        }
+      },
+      "C2.3.progress": {
+        "status": "accepted",
+        "reviewer": "coordinator",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.3-progress-transit-runtime-20261006/acceptance-progress-rust199.json": "9c4431f35365c0fd6dfda7ca89fb4e88b3a4f4da5bfcb745ddeb028e2ea19eb5"
+        }
+      }
+    }
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "1da4b2b3898a7d86f775601e679c6b860588d1d5f1a29d0969461e6c9cee7dbc",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "c44e3a52ffbbb22930656d3b30f0c406a8323b683773c337ddfa00836314c341",
+    "conductor/tracks/empirical_calibration_20260925/agent-contract.md": "a67538a9e6b9a67eb8f1c3a4308da391dace15dda9b31926c8998e6caff5f806",
+    "conductor/decisions/ADR-0008-c2-test-first-join.md": "0b768699f3d60b53c4500bcf78954181b9df69ba4b6ffabca346c7e05e080c28",
+    "libs/kairos/conductor/design/calibration/ADR-0008-c20-transit-retry-seam.md": "8658c41767d918e2c1edee731f9d982046db9d0ddd9c1fa17ab34138c76bd01f",
+    "libs/kairos/crates/kairo-ecs-abm/Cargo.toml": "3593f927b084bbf0b45b66e4dc6a88dec91479a237feb6163926fd6db46957c7",
+    "libs/kairos/crates/kairo-ecs-abm/src/lib.rs": "8bbc7853549edd38b1318ee8243c6e7ed0428f5a8116747e07950b1d5222a210",
+    "libs/kairos/crates/kairo-ecs-abm/src/flow_adapter.rs": "1535859601597bcbf687c18bcc6f44bc90e272d233723728d816405f8011f15a",
+    "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs": "e20d695c92f599b2a99109c99354cfc7701db985a43d17754097b965116c8048",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}

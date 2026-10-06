@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.3.transit-bridge.rust199-one-shot",
+  "attempt_id": "C2.3.transit-bridge.rust199-one-shot-attempt-1",
+  "status": "ready_for_review",
+  "base_commit": "aecb28c7089b1861b72cbd96ce29fc2577ffe47f",
+  "commit": "7672a67988134438228014e7b3e0f56855cc65e8",
+  "scope": {
+    "changed_source_paths": [
+      "crates/kairo-ecs-abm/Cargo.toml",
+      "crates/kairo-ecs-abm/src/flow_adapter.rs",
+      "crates/kairo-ecs-abm/src/lib.rs",
+      "crates/kairo-ecs-calibration/src/flow_bridge.rs"
+    ],
+    "result_path": ".artifacts/mvp/C2.3.transit-bridge.rust199-one-shot/result.json",
+    "production_api_or_default_changes": false,
+    "parent_pin_or_plan_changes": false
+  },
+  "implementation": {
+    "test_support_feature": "Non-default kairo-ecs-abm/test-support gates an explicitly test-only registration helper. Its thread-local fault switch rejects only the first transit planner callback on that test thread; later calls delegate to TransitContext::plan and retain accept_transit_context as the receipt callback.",
+    "calibration_oracle": "The calibration BoundIntrinsicWork test observes the actual rejected scheduled start receipt, retries that exact receipt once, proves replay leaves scheduler state unchanged, observes the accepted retry and arrival, verifies exact owned/consumed EventId lineage including the separate Acquire event, confirms exactly one accepted timed request linked to the original work/resource/owner, and verifies finish_transit returns the same work and request."
+  },
+  "verification": [
+    {
+      "argv": [
+        "rustup", "run", "1.99.0", "cargo", "test", "--locked",
+        "-p", "kairo-ecs-calibration", "-p", "kairo-ecs-abm", "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "stdout_sha256": "a6e00d295dc554d7e65496a6150f36a8c1aebae82a55f06d6ca7256d7c84a52f",
+      "stdout_bytes": 18967,
+      "test_totals": {
+        "kairo-ecs-abm": {"passed": 30, "failed": 0, "ignored": 0},
+        "kairo-ecs-calibration": {"passed": 157, "failed": 0, "ignored": 4}
+      }
+    },
+    {
+      "argv": [
+        "rustup", "run", "1.99.0", "cargo", "clippy", "--locked",
+        "-p", "kairo-ecs-calibration", "-p", "kairo-ecs-abm", "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support", "--all-targets",
+        "--", "-D", "warnings"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "stdout_sha256": "cf772742fcc74b65bea038cb55ce5b666fd733d6880a7775653453f467ff089a",
+      "stdout_bytes": 392
+    },
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "fmt", "--all", "--", "--check"],
+      "cwd": ".",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0
+    }
+  ],
+  "corrections": [
+    "The first exact-lineage assertion expected only the transit events. Runtime readback showed that accepted arrival also owns the distinct actual Acquire event, so the oracle now asserts all four owned IDs and the three consumed transit IDs separately. Final exact verification passed."
+  ],
+  "unresolved": [
+    "Track03 owner review and coordinator acceptance remain required; this worker result does not accept C2.3 or the parent phase."
+  ],
+  "commit_binding": "Git excludes .artifacts from commits. The source changes are in commit 7672a67988134438228014e7b3e0f56855cc65e8; this local result is the worker artifact and remains ignored/uncommitted."
+}
