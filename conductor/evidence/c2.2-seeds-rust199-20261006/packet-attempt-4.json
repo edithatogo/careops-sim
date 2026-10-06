@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.2.seeds.rust199-bound-retention",
+  "task_id": "C2.2",
+  "target_repo": "libs/kairos",
+  "base_commit": "315b9c5c832e3071b6e20cc7ea76b107efa248c1",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Make the C20 clean-tree runner report exact success for the one committed C2.2.seeds retention fixture, without unrelated package tests contributing ignored results; keep compilation of the calibration library and the strict package Clippy gate.",
+  "context_paths": [
+    ".artifacts/mvp/C2.2.seeds.rust199-bound-retention/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/calibration/c2-seed-map-v1.md": "046ba8d06f667472399cb2a3af9f15ef03168558edfc3859dd0f28c719972c5b",
+    "conformance/c20/run_transit_red.py": "6fc78be7d844a2b1d997757d92c0b02abca2cfa87a8cbcdbf2a987fe0c0e1792",
+    "conformance/c20/transit_flow_c20.rs": "a6169373466b43075e35507bd7d39a044943d88c223b6d39efcca2cc79607fc9",
+    "crates/kairo-ecs-abm/Cargo.toml": "af495c37b2c3dfa6b40d85863933adf647feec0691a5bd26a01e22f1285714cd",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "4146dfb7ad2c221b2c9df8e72a790863b120bcd461db9e71e93c112359bcf8b7",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "51d3f1a00c95361435d915d094f4f8ab152927f06c76ad7eabc4a7909b2749c3",
+    ".artifacts/mvp/C2.2.seeds.rust199-bound-retention/context.md": "b308aa52fd96aca0c8667e24cd42f6267259ad8e6b1602eb37a3320b1516b2d1"
+  },
+  "write_paths": [
+    "conformance/c20/run_transit_red.py",
+    ".artifacts/mvp/C2.2.seeds.rust199-bound-retention/result.json",
+    ".artifacts/mvp/C2.0.red-tests.paired-transit"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C2.2.policy",
+    "C2.3.dispatch",
+    "C2.3.transit-bridge"
+  ],
+  "interface_contract": "Edit only conformance/c20/run_transit_red.py. In the ready branch preserve `flow,kairo-ecs-abm/test-support` and add Cargo test-harness arguments `-- --exact paired_transit_c20::actual_nonzero_route_consumes_stale_start_and_arrival_across_pause_resume_once`. Tighten the green summary oracle to exactly one passed, zero failed, zero ignored, zero measured, with any remaining package tests filtered out; keep the named test-pass assertion, Rust 1.99 pin, missing-module red behavior, and manifest/lock immutability unchanged. This ensures the runner compiles current production modules but executes only its named Flow fixture. Preserve every run output before runner cleanup and retain its declared logs/artifacts. Then strict Clippy all targets checks the full calibration/ABM package feature combination on Rust 1.99.0. No production Rust code, portable checkpoint, full C2.2 parent, hosted, clinical or release acceptance claim.",
+  "steps": [
+    "Read the exact bound context; verify base, every packet input hash, all five retained attempt-3 artifact hashes and the attempt-4 Kairos reservation before editing.",
+    "Verify the coordinator-preserved attempt-3 worker result, runner result, cargo-test log, toolchain log and commands file under `.artifacts/mvp/C2.0.red-tests.paired-transit/attempt-3-preserved/` against coordinator_binding.preserved_attempt3_artifacts. The runner regenerates its disposable extracted workspace/target, which is scratch. Edit only conformance/c20/run_transit_red.py: for the ready branch filter to the exact named retention test; keep the feature set, test name, red path, and immutability checks intact. Run the exact stable Rust 1.99 format check before commit.",
+    "From the parent checkout, run `python3 tools/agent_session.py --root libs/kairos check --token <Kairos lease token> --paths conformance/c20/run_transit_red.py .artifacts/mvp/C2.2.seeds.rust199-bound-retention/result.json .artifacts/mvp/C2.0.red-tests.paired-transit`. The attempt-4 Kairos lease uses only coordinator_binding.immutable_lease_inputs; the edited runner is a hashed packet input and owned output. Commit exactly the runner, then release the lease immediately.",
+    "From the clean committed Kairos head run the exact green C20 runner and strict Rust 1.99.0 Clippy. Confirm the fixture named test passes with exactly 1 passed/0 failed/0 ignored/0 measured and any unrelated tests filtered out; the runner also verifies unchanged manifest/lock. Write structured result at the declared path; do not update parent pin/evidence."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting check passes on stable Rust 1.99.0 before the scoped runner change is committed."
+    },
+    {
+      "argv": [
+        "python3",
+        "conformance/c20/run_transit_red.py",
+        "--expect",
+        "green"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "On the clean committed head, the ready runner enables flow and ABM test-support, filters execution to the exact named transit retention case, requires exactly 1 passed/0 failed/0 ignored/0 measured, and confirms package Cargo manifest and lock remain unchanged."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target Clippy passes on stable Rust 1.99.0 with the complete calibration/ABM test feature combination."
+    }
+  ],
+  "acceptance": [
+    "No thread/wall-clock identity in keys; resume preserves mode and stream state",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/C2.2.seeds.rust199-bound-retention/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "coordinator-plus-independent-gpt-6-luna-packet-review",
+    "reservation_id": "C2.2-seeds-rust199-bound-retention-attempt-4",
+    "instance_id": "rust199-bound-retention",
+    "instance_set": [
+      "rust199-bound-retention"
+    ],
+    "instance_scope": "Make the C20 clean-tree runner report exact success for the one committed C2.2.seeds retention fixture, without unrelated package tests contributing ignored results; keep compilation of the calibration library and the strict package Clippy gate.",
+    "reviewed_recipe_sha256": "61a223cae395e7075f26d7ce68332a538211e66e7b93843b504898b39237d42e",
+    "interface_contract": "Edit only conformance/c20/run_transit_red.py. In the ready branch preserve `flow,kairo-ecs-abm/test-support` and add Cargo test-harness arguments `-- --exact paired_transit_c20::actual_nonzero_route_consumes_stale_start_and_arrival_across_pause_resume_once`. Tighten the green summary oracle to exactly one passed, zero failed, zero ignored, zero measured, with any remaining package tests filtered out; keep the named test-pass assertion, Rust 1.99 pin, missing-module red behavior, and manifest/lock immutability unchanged. This ensures the runner compiles current production modules but executes only its named Flow fixture. Preserve every run output before runner cleanup and retain its declared logs/artifacts. Then strict Clippy all targets checks the full calibration/ABM package feature combination on Rust 1.99.0. No production Rust code, portable checkpoint, full C2.2 parent, hosted, clinical or release acceptance claim.",
+    "context_slices": [
+      {
+        "repo": ".",
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "start": 105,
+        "end": 127
+      },
+      {
+        "repo": ".",
+        "path": "conductor/tracks/empirical_calibration_20260925/agent-contract.md",
+        "start": 1,
+        "end": 20
+      },
+      {
+        "path": "conductor/design/calibration/c2-seed-map-v1.md",
+        "start": 31,
+        "end": 45
+      },
+      {
+        "path": "conformance/c20/run_transit_red.py",
+        "start": 64,
+        "end": 145
+      },
+      {
+        "path": "conformance/c20/transit_flow_c20.rs",
+        "start": 119,
+        "end": 133
+      },
+      {
+        "path": "conformance/c20/transit_flow_c20.rs",
+        "start": 199,
+        "end": 228
+      },
+      {
+        "path": "crates/kairo-ecs-abm/Cargo.toml",
+        "start": 9,
+        "end": 16
+      },
+      {
+        "path": "crates/kairo-ecs-abm/src/flow_adapter.rs",
+        "start": 539,
+        "end": 565
+      },
+      {
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 1,
+        "end": 20
+      }
+    ],
+    "input_paths": [
+      "conformance/c20/run_transit_red.py",
+      "conformance/c20/transit_flow_c20.rs",
+      "crates/kairo-ecs-abm/Cargo.toml",
+      "crates/kairo-ecs-abm/src/flow_adapter.rs",
+      "crates/kairo-ecs-calibration/src/flow_bridge.rs"
+    ],
+    "write_paths": [
+      "conformance/c20/run_transit_red.py",
+      ".artifacts/mvp/C2.2.seeds.rust199-bound-retention/result.json",
+      ".artifacts/mvp/C2.0.red-tests.paired-transit"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Workspace formatting check passes on stable Rust 1.99.0 before the scoped runner change is committed."
+      },
+      {
+        "argv": [
+          "python3",
+          "conformance/c20/run_transit_red.py",
+          "--expect",
+          "green"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "On the clean committed head, the ready runner enables flow and ABM test-support, filters execution to the exact named transit retention case, requires exactly 1 passed/0 failed/0 ignored/0 measured, and confirms package Cargo manifest and lock remain unchanged."
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "-p",
+          "kairo-ecs-abm",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Strict all-target Clippy passes on stable Rust 1.99.0 with the complete calibration/ABM test feature combination."
+      }
+    ],
+    "prerequisite_receipts": {
+      "C2.2.policy": {
+        "status": "accepted",
+        "reviewer": "coordinator",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.2-policy-20261006/acceptance.json": "fff8eabc5983bb1fd875be05b057ffcedaf6299ca801f009bf7dd2e27dbecb36"
+        }
+      },
+      "C2.3.dispatch": {
+        "status": "accepted",
+        "reviewer": "coordinator",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d"
+        }
+      },
+      "C2.3.transit-bridge": {
+        "status": "accepted",
+        "reviewer": "coordinator",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.3-transit-bridge-rust199-20261006/acceptance-rust199.json": "04b35a643a30347e5465d5f37936fd6443698692654cd6ea879cab9567fb80a2"
+        }
+      }
+    },
+    "immutable_lease_inputs": [
+      "conductor/design/calibration/c2-seed-map-v1.md",
+      "crates/kairo-ecs-abm/Cargo.toml"
+    ],
+    "preserved_attempt3_artifacts": {
+      ".artifacts/mvp/C2.0.red-tests.paired-transit/attempt-3-preserved/worker-result.json": "b5abc78d9e0ece574a346e4989d5af141ab856c3bd9e64b7239a2b5fca9c4de2",
+      ".artifacts/mvp/C2.0.red-tests.paired-transit/attempt-3-preserved/runner-result.json": "0f7450c3b18ea03f9112f16025f429052786939852819fd6aa431e5d3552d397",
+      ".artifacts/mvp/C2.0.red-tests.paired-transit/attempt-3-preserved/cargo-test.log": "c72e2e0036dee511bd52870d5a43819d2b873cd7717becd4085b45c2df1919cc",
+      ".artifacts/mvp/C2.0.red-tests.paired-transit/attempt-3-preserved/toolchain.log": "f3ffefce2bf5646f08551258a1972fefaee9894e907a8a0473c7e9502797dc7d",
+      ".artifacts/mvp/C2.0.red-tests.paired-transit/attempt-3-preserved/commands.json": "c56218c9a67b0e9c97e137598d937e3490c6322603f94b4f20ce50c7e3180b77"
+    }
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "1da4b2b3898a7d86f775601e679c6b860588d1d5f1a29d0969461e6c9cee7dbc",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "c44e3a52ffbbb22930656d3b30f0c406a8323b683773c337ddfa00836314c341",
+    "conductor/tracks/empirical_calibration_20260925/agent-contract.md": "a67538a9e6b9a67eb8f1c3a4308da391dace15dda9b31926c8998e6caff5f806",
+    "libs/kairos/conductor/design/calibration/c2-seed-map-v1.md": "046ba8d06f667472399cb2a3af9f15ef03168558edfc3859dd0f28c719972c5b",
+    "libs/kairos/conformance/c20/run_transit_red.py": "6fc78be7d844a2b1d997757d92c0b02abca2cfa87a8cbcdbf2a987fe0c0e1792",
+    "libs/kairos/conformance/c20/transit_flow_c20.rs": "a6169373466b43075e35507bd7d39a044943d88c223b6d39efcca2cc79607fc9",
+    "libs/kairos/crates/kairo-ecs-abm/Cargo.toml": "af495c37b2c3dfa6b40d85863933adf647feec0691a5bd26a01e22f1285714cd",
+    "libs/kairos/crates/kairo-ecs-abm/src/flow_adapter.rs": "4146dfb7ad2c221b2c9df8e72a790863b120bcd461db9e71e93c112359bcf8b7",
+    "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs": "51d3f1a00c95361435d915d094f4f8ab152927f06c76ad7eabc4a7909b2749c3",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}
