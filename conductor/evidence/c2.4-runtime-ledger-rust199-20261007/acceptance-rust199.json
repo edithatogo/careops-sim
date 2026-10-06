@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "local_leaf_and_parent_join_accepted_rust199_exact_pin",
+  "leaf_id": "C2.4.runtime-ledger",
+  "instance_id": "rust199-integrated-ledger",
+  "status": "local_leaf_and_parent_join_accepted_phase_review_open",
+  "accepted_scope": "Test-only integrated same-case Macro/Micro elapsed-time reconciliation using actual Flow queue, scheduled two-tick TransitContext route, accepted arrival, sampled Service stream, and completion timestamps.",
+  "parent_base_commit": "53a466d92f6becbab08e36ce645add8ef2a7b884",
+  "target_repository": "libs/kairos",
+  "previous_parent_pin": "bfbefa87ba15488837b01020f343685907ae09ac",
+  "source_commit": "5cc825048a1116740e80e6c067ba046306f2ce10",
+  "source_branch": "codex/c2-runtime-ledger",
+  "recipe_sha256": "423236e03e79218ae75946f4335926505cf6797e39193bf102b8ea86aa1f5fd2",
+  "packet": {
+    "path": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/packet.json",
+    "sha256": "66e3fbe834fd492eb0c51a1cfe0abeb4e00364d5b15a9572ecbbb33ec56edec7",
+    "original_packet_path": ".artifacts/packets/C2.4.runtime-ledger.rust199-integrated-ledger.json"
+  },
+  "worker_result": {
+    "path": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/worker-result.json",
+    "sha256": "b1d9370cb76a5045118edaf0d7390c2d3027007163b33747ae820d09da6b85c6",
+    "original_worker_result_path": "libs/kairos/.artifacts/mvp/C2.4.runtime-ledger.rust199-integrated-ledger/result.json"
+  },
+  "source_hashes": {
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "c0ae15875801a5086fc547a54d18f09bdd29a45423563a1bcf53a9f82f70598c"
+  },
+  "prerequisites": {
+    "C2.1.paired": {
+      "status": "accepted",
+      "receipt": "conductor/evidence/c2.1-paired-20261007/acceptance-rust199.json",
+      "sha256": "59379a35c595a160f012f999bb8ba9e7a6df47732c07b34b0318c7ebac69d8c9"
+    },
+    "C2.3.transit-bridge": {
+      "status": "accepted within C2.3 parent join",
+      "leaf_receipt": "conductor/evidence/c2.3-transit-bridge-rust199-20261006/acceptance-rust199.json",
+      "leaf_sha256": "04b35a643a30347e5465d5f37936fd6443698692654cd6ea879cab9567fb80a2",
+      "parent_receipt": "conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json",
+      "parent_sha256": "fd8d48f939b29901da7e6807f00d065e2414e56a076e3752b6523ef94e096afa",
+      "parent_pin": "dbd12c98b1a72a30760996590efa6a0f445368a6",
+      "ancestor_of_source_commit": true
+    }
+  },
+  "toolchain": "Rust and Cargo commands invoked only as `rustup run 1.99.0`; no earlier Rust version was used.",
+  "worker_verification": {
+    "tests": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "exit_status": 0,
+      "summary": "190 passed, 0 failed, 5 ignored across package summaries; doc tests passed",
+      "log": "/tmp/c24-runtime-ledger-test-rust199.log",
+      "log_sha256": "f12a7d0e17847a4f715bcc228b7e87c60d23faa36aa11377de2ecc3f2fd9a15c"
+    },
+    "clippy": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_status": 0,
+      "log": "/tmp/c24-runtime-ledger-clippy-rust199.log",
+      "log_sha256": "2b34696728dc82b03cbf6311d7e3a6a41658bbde097834c3010a78bc82842c1a"
+    },
+    "format": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_status": 0,
+      "log": "/tmp/c24-runtime-ledger-fmt-rust199.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "parent_exact_pin_rerun": {
+    "kairos_pin": "5cc825048a1116740e80e6c067ba046306f2ce10",
+    "tests": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "result_summaries": 43,
+      "passed": 443,
+      "failed": 0,
+      "ignored": 5,
+      "log": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/logs/test.log",
+      "log_sha256": "8233569abc68a4f31d98c912fae542d02017d8aca568ec78c0f33da11505743f"
+    },
+    "clippy": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "warnings_denied": true,
+      "log": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/logs/clippy.log",
+      "log_sha256": "9763c680c26c327ddd75ab7044b7dd0b5c847ff3f6015fd82af715c4ecb7dd90"
+    },
+    "format": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/logs/fmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "oracle": {
+    "sampled_service_duration_ticks": 20,
+    "shared_service_seed_hex": "0x4e65a0feae853a9b",
+    "macro_queue_ticks": 5,
+    "micro_transit_ticks": 2,
+    "micro_queue_ticks": 3,
+    "grant_tick": 5,
+    "completion_tick": 25,
+    "macro_elapsed": "5 queue + 20 service = 25",
+    "micro_elapsed": "2 transit + 3 queue + 20 service = 25",
+    "flow_work_completed_in_both_arms": true,
+    "accepted_transit_arrival_reconciled": true
+  },
+  "independent_reviews": {
+    "packet": "2 independent reviewers READY on final exact-base packet",
+    "source": "2 independent read-only source reviewers READY on immutable commit 5cc8250"
+  },
+  "scope_limits": {
+    "production_api_changed": false,
+    "scheduler_order_changed": false,
+    "seed_algorithm_changed": false,
+    "C2.4_phase_accepted": false,
+    "Track03_owner_phase_review_complete": false,
+    "hosted_checks": false,
+    "portable_checkpoint_restart": false,
+    "release_acceptance": false,
+    "clinical_acceptance": false
+  }
+}
