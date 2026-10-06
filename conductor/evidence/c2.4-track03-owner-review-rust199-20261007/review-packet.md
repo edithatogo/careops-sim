@@ -10,15 +10,16 @@ Review whether the C2 execution behavior that touches Track03’s DES/ABM mode, 
 
 ## Exact reviewed state
 
-- Parent repository commit: `922b0e5eb78936ae222735344ba90d24032cd51d` (`docs(c2): reconcile retry helper visibility`).
+- Current parent review snapshot: `396e8e9def5fa6dc2510783dc4c118fd6d5eb138`.
+- Parent source/execution baseline for the exact-pin runtime receipt: `b76bf0734ccb844e8bb15ecb9b1b5e2547850904`; intervening parent commits through the current review snapshot are evidence/documentation updates, with the integrated Kairos pin unchanged.
 - Integrated Kairos pin: `6303a2552257f1fcbd2aaa002d38352a2a467592`.
 - Q4 test source: `crates/kairo-ecs-calibration/src/flow_bridge.rs`; source SHA-256 `e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959`.
 - Q4 leaf acceptance receipt: [`acceptance-rust199.json`](../c2.4-q4-interruption-rust199-20261007/acceptance-rust199.json), SHA-256 `88109c5dc3a35eada33d0f047ac33d5271f7a5050f138393ff4a435a265a97c1`.
 - Current local evidence inventory: [`reconciliation.json`](../c2.4-evidence-after-q4-rust199-20261007/reconciliation.json), SHA-256 `3a8484bd73d21804b5f69e69310a448db88de335c707991c5887f48f242ec19f`.
 
-The Q4 acceptance receipt records Rust 1.99.0-only worker verification (164 passed, 4 ignored) and parent exact-pin verification (447 passed, 5 ignored), with strict Clippy, formatting, and independent source review recorded. These are local checks, not hosted checks.
+The Q4 leaf acceptance receipt is historically bound to Kairos pin `6053d8d` and records Rust 1.99.0-only worker verification (164 passed, 4 ignored) and parent exact-pin verification (447 passed, 5 ignored), with strict Clippy, formatting, and independent source review recorded. These are local checks, not hosted checks.
 
-The Q4 runtime receipt is historically bound to Kairos pin `6053d8d`, before the documentation-only correction at `6303a25`; the Q4 runtime suite has not been rerun at the current pin. The later correction and its Rust 1.99.0 formatting/rustdoc evidence are recorded in the [retry-helper visibility receipt](../c2.4-retry-doc-hidden-rust199-20261007/README.md) (receipt SHA-256 `8ed2d2b604e3beaac8c773d5962571290bc5ae94e66c66cbadac17df20592e16`). It adds `#[doc(hidden)]` to a Rust-public experimental helper; it does not make that helper private or feature-gated.
+The coordinator separately reran the package suite at the current Kairos pin `6303a255` using Rust 1.99.0 only: 447 passed, 0 failed, and 5 ignored across 43 result groups; strict all-target Clippy and formatting passed. See the [current-pin acceptance receipt](../c2.4-current-pin-rerun-6303a255-20261007/acceptance-rust199.json), SHA-256 `d8e11420de56c0938cc29abf49dc3a000503d4340d1231f8d02ea384b4e91ea8`. This is local re-verification of the package suite, not a new leaf acceptance, hosted check, owner disposition, or phase acceptance. The later documentation-only correction and its Rust 1.99.0 formatting/rustdoc evidence are recorded in the [retry-helper visibility receipt](../c2.4-retry-doc-hidden-rust199-20261007/README.md) (receipt SHA-256 `8ed2d2b604e3beaac8c773d5962571290bc5ae94e66c66cbadac17df20592e16`). It adds `#[doc(hidden)]` to a Rust-public experimental helper; it does not make that helper private or feature-gated.
 
 ## Track03-relevant evidence inventory
 
