@@ -50,3 +50,30 @@ C2.3 actual transit dispatch/progress, C2.2 callback receipts and checkpoint /
 resume joins, the full paired C2.1 Macro/Micro runtime, hosted exact-head checks,
 and parent/full C2 acceptance remain open. No stable API, portable checkpoint,
 release, or clinical claim follows from this local slice.
+
+## Corrected C2.2.flow-macro-zero local acceptance — 2026-10-06
+
+The old recipe's blanket requirement that nonzero Micro routes reject before
+Service sampling was stale against the frozen bridge contract and active C2.3
+route plan. The coordinator corrected the recipe at parent commit `ab5bc9b`; an
+independent read-only review confirmed that this leaf covers Macro and explicit-
+zero Micro direct submission while nonzero Micro Route dispatch and accepted-
+arrival reconciliation belong to `C2.3.transit-bridge`. The historical result
+above remains evidence for its original source commit and does not satisfy the
+corrected recipe by itself.
+
+At Kairos pin `aecb28c7089b1861b72cbd96ce29fc2577ffe47f`, the coordinator
+locally accepted the corrected leaf after full-package verification using only
+Rust 1.99.0:
+
+- `rustup run 1.99.0 cargo test --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow` — exit 0; 186 passed, 0 failed, 4 ignored. The paired Macro/zero-Micro actual timed work/acquisition regression passed. Log `/tmp/c22-macro-zero-rust199-tests.log`, SHA-256 `fba23cd3d436d58379d695b7618c11909905609febdd4da5ad1e81d45ef18f1c`.
+- `rustup run 1.99.0 cargo clippy --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow --all-targets -- -D warnings` — exit 0. Log `/tmp/c22-macro-zero-rust199-clippy.log`, SHA-256 `f2066ca264b9a8598ecd436c70919e1efe1acea4098ad2a13b5d82d67bc049ec`.
+- `rustup run 1.99.0 cargo fmt --all -- --check` — exit 0. Log `/tmp/c22-macro-zero-rust199-fmt.log`, SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+
+The corrected recipe and fresh packet bind source, prerequisite and command hashes;
+the prior C2.2.flow-submit-atomicity leaf proves cumulative scheduler-cap
+preflight does not orphan a request. No separate adapter-level cap retry fixture
+was added. This accepts only the C2.2 Macro/zero-Micro leaf: C2.2 parent joins,
+C2.3 calibration transit-bridge acceptance and Track03 owner review, C2.1 paired
+runtime, hosted gates, release and clinical acceptance remain open. Receipt:
+`acceptance-rust199-corrected.json`.
