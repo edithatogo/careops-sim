@@ -102,7 +102,7 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   independently reviewed test-first mode and paired integration fixtures. Record
   expected red evidence for absent runtime APIs without claiming runtime acceptance;
   this preparation gate enables C2.2 implementation, not C2.1 completion.
-- [ ] C2.2 Implement empirical work-duration providers, FidelityPolicy and stable
+- [x] C2.2 Implement empirical work-duration providers, FidelityPolicy and stable
   entity/task/purpose keys. Separate intrinsic work from queue/transit intervals;
   persist all mode and stream state for resume.
 - [ ] C2.3 Implement a deterministic route-graph TransitModel with units, stable
