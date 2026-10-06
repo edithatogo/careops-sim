@@ -54,4 +54,48 @@ checkpoint, and clinical claims remain out of scope.
 - The user specified current stable Rust 1.99 as the only required C2
   verification toolchain. Both follow-ups passed DES/ABM tests, strict Clippy and
   formatting on Rust 1.99. An earlier packet's Rust 1.76 command was unavailable
-  and is not required under the current scope. Hosted checks remain unrun.
+and is not required under the current scope. Hosted checks remain unrun.
+
+## Calibration-bound transit bridge candidate — 2026-10-06
+
+The development pin now includes Kairos commits `3ec35e51cd46216b0982ce13058008ca9258c829`
+and `a514590e485bfb5aa4df675d13940d98f62b0b7b`. The first adds the
+calibration `BoundIntrinsicWork` route bridge, actual carrier/task/resource
+validation, receipt and event lineage, accepted-arrival request reconciliation,
+and the explicit one-shot ABM retry seam. The second adds real runtime-generated
+rejected-start and rejected-progress retry regressions. Both worker receipts are
+copied alongside this README and remain `ready_for_review`.
+
+The final exact-head checks at Kairos `a514590e` used only the user-specified
+Rust 1.99.0 toolchain. `cargo test --locked -p kairo-ecs-calibration -p
+kairo-ecs-abm --features kairo-ecs-calibration/flow --lib` passed 17 ABM and 78
+calibration tests (2 ignored); strict Clippy and workspace formatting also
+passed. Full command strings, log paths and SHA-256 values are in the two result
+receipts.
+
+This candidate is not accepted as C2.3 dispatch. Independent review confirmed
+that the tests use real `flow.step()` rejected receipts, retain exact carrier,
+event, due, progress and priority, schedule one replacement, and reject replay.
+The injected checked-time overflow remains true at the retry tick, so the
+replacement is rejected again. ADR-0008 still requires successful accepted
+movement after a rejected start and one arrival/acquire after a rejected
+progress event. Those recovery outcomes, Track03 owner review, hosted gates,
+and all downstream C2 joins remain open. The parent task does not mark C2.3,
+C2.2, C2.1, or C2.4 complete.
+
+## Parent-pin integration recheck
+
+After updating the parent pin to `a514590e485bfb5aa4df675d13940d98f62b0b7b`,
+the coordinator reran all three gates from
+`/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos`
+using `rustc 1.99.0 (b940084d7 2026-09-28)` and `cargo 1.99.0
+(5f94df478 2026-08-27)`. The locked ABM/calibration library tests exited 0
+(17 ABM, 78 calibration, 2 ignored), strict Clippy exited 0, and workspace
+`cargo fmt --all -- --check` exited 0. Logs and hashes:
+
+- `/tmp/c23-parent-pin-tests.log` — SHA-256
+  `15db8b3f8a443e254c0559c11802eb13400837279e93d5dbce160565b803057f`
+- `/tmp/c23-parent-pin-clippy.log` — SHA-256
+  `d7dae192715495fa89ccbe279af3efb9792c1dae1768228e369035e68a1df673`
+- `/tmp/c23-parent-pin-fmt.log` — SHA-256
+  `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
