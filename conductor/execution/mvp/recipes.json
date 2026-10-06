@@ -5319,6 +5319,25 @@
           "existing_recipe": null
         },
         {
+          "id": "C2.2.flow-submit-atomicity",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Preflight cumulative Flow scheduler event capacity before timed request mutation",
+          "oracle": "When scheduler cumulative scheduled-event count cannot admit acquisition plus optional deadline, submit returns CounterOverflow with no ResourceRequest, WorkSpec.request, request registry entry, scheduled counter, or scheduler event mutation.",
+          "dependencies": [
+            "C2.2.policy"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 2,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
           "id": "C2.2.flow-macro-zero",
           "target_repo": "libs/kairos",
           "model": "gpt-6-luna",
@@ -5326,7 +5345,7 @@
           "output": "Transactional Macro and explicit-zero Micro bridge to actual Flow work and acquisition",
           "oracle": "One frozen Fidelity decision binds the actual Pending Flow work created at the sampled intrinsic duration; successful timed acquisition returns the actual request; every failure retains state without resampling/recreation; Macro and explicit-zero Micro have no transit draw/event; nonzero Micro route rejects before sampling; Flow submit failure at cumulative scheduler cap creates no orphan request.",
           "dependencies": [
-            "C2.2.policy"
+            "C2.2.flow-submit-atomicity"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
