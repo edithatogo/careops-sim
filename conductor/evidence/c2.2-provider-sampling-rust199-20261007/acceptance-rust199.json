@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "task": "C2.2 provider sampling test coverage",
+  "status": "local_test_evidence_only",
+  "parent_baseline": "9896dd9ddd5bef614aabbd0e1522d9cbc2e2d2b5",
+  "parent_pin_commit": "7b9e5bcb4e382959f08ee80a473400548d0d6a9e",
+  "kairos_commit": "678453838f391f3dd869b79fd502077f63f3a067",
+  "working_directory": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "inputs": [
+    {
+      "path": "libs/kairos/conductor/design/calibration/c20-work-provider-v1.md",
+      "sha256": "51ac6dc6783c280368dfd4630e4c33c5d585bf4c9657484e5e6c4ccb5c541333"
+    }
+  ],
+  "source": {
+    "path": "libs/kairos/crates/kairo-ecs-calibration/src/work_duration.rs",
+    "sha256": "4c140e2b73334f6d6a0355ec53a3fe9138985029ebfaeb86da3ada9e9e3d15ef"
+  },
+  "commands": [
+    {
+      "command": "rustup run 1.99.0 cargo test --manifest-path libs/kairos/Cargo.toml -p kairo-ecs-calibration work_duration::tests --locked",
+      "exit_status": 0,
+      "result": "7 passed",
+      "artifact": "logs/work-duration-tests.log",
+      "sha256": "2ef17c87dfc36933d8711533e862bb16e824195b1502ba3acd269d52f6f9c38b"
+    },
+    {
+      "command": "rustup run 1.99.0 cargo test --manifest-path libs/kairos/Cargo.toml -p kairo-ecs-calibration --locked",
+      "exit_status": 0,
+      "result": "152 passed, 5 ignored",
+      "artifact": "logs/package-tests.log",
+      "sha256": "0b355e708bc3e33b7c9dbd451a3863584cd111603911751ec598ad499bf5d668"
+    },
+    {
+      "command": "rustup run 1.99.0 cargo clippy --manifest-path libs/kairos/Cargo.toml -p kairo-ecs-calibration --all-targets --locked -- -D warnings",
+      "exit_status": 0,
+      "result": "passed",
+      "artifact": "logs/clippy.log",
+      "sha256": "f59875ed94cd8146cae9f091caab42d92cc7584f10727ebb0da84abc994763d2"
+    },
+    {
+      "command": "rustup run 1.99.0 cargo fmt --manifest-path libs/kairos/Cargo.toml -p kairo-ecs-calibration -- --check",
+      "exit_status": 0,
+      "result": "passed",
+      "artifact": "logs/fmt-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "git -C libs/kairos diff --check",
+      "exit_status": 0,
+      "result": "passed before source commit"
+    }
+  ],
+  "phase_acceptance": false,
+  "unresolved_gates": [
+    "Track03 owner/phase review",
+    "Track22 portable checkpoint/restart contract and review",
+    "hosted exact-head checks",
+    "release acceptance",
+    "clinical acceptance",
+    "C2.4 Conductor phase review"
+  ]
+}
