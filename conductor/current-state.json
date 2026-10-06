@@ -3,7 +3,7 @@
   "updated_at": "2026-10-06",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "Continue C2.2 production integration with the optional calibration Flow bridge for Macro and explicit Zero Micro using actual prepare/create/bind/submit, retaining sample/work state across failures. Nonzero Micro Route remains gated on C2.3 transit dispatch. Then implement C2.3 actual transit dispatch/progress and the C2.1 paired Macro/Micro runtime; keep seeds/checkpoint joins, hosted gates, Track49/website work and C4 acceptance open. No ED MVP, stable release, portable checkpoint or clinical claim.",
+  "next_action": "Implement C2.3 actual transit dispatch and progress using the Macro/Zero Flow bridge as the admission foundation. Then close remaining C2.2 callback, seed, checkpoint and resume joins and implement the C2.1 paired Macro/Micro runtime; keep hosted gates, Track49/website work and C4 acceptance open. No ED MVP, stable release, portable checkpoint or clinical claim.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -36,10 +36,11 @@
     "conductor/evidence/c2.2-policy-20261006/README.md",
     "conductor/evidence/c2.3-staff-policy-20261006/README.md",
     "conductor/evidence/c2.2-api-surface-20261006/README.md",
-    "conductor/evidence/c2.2-flow-submit-atomicity-20261006/README.md"
+    "conductor/evidence/c2.2-flow-submit-atomicity-20261006/README.md",
+    "conductor/evidence/c2.2-flow-macro-zero-20261006/README.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "da323b69315365eb8f0bee092d4a78828e96a223",
+    "libs/kairos": "ff764e7d57a577f39bab30fce752d0eb9b415623",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -194,6 +195,22 @@
     "existing_ignored": 1,
     "strict_clippy": true,
     "format": true,
+    "local_instance_only": true,
+    "hosted": false,
+    "C2.2_complete": false,
+    "C2.1_runtime_accepted": false
+  },
+  "c22_flow_macro_zero_qualification": {
+    "source_commit": "ff764e7d57a577f39bab30fce752d0eb9b415623",
+    "previous_parent_pin": "da323b69315365eb8f0bee092d4a78828e96a223",
+    "evidence": "conductor/evidence/c2.2-flow-macro-zero-20261006/README.md",
+    "default_tests_passed": 67,
+    "feature_tests_passed": 74,
+    "existing_ignored_each": 2,
+    "strict_clippy": true,
+    "format": true,
+    "macro_zero_runtime_instance_implemented": true,
+    "request_work_association_verified": true,
     "local_instance_only": true,
     "hosted": false,
     "C2.2_complete": false,
