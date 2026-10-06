@@ -1,0 +1,266 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.1.paired.restart",
+  "task_id": "C2.1",
+  "target_repo": "libs/kairos",
+  "base_commit": "6303a2552257f1fcbd2aaa002d38352a2a467592",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Test-only paired Macro and explicit-zero Micro actual-Flow urgent-preemption Restart case; preserve existing Suspend oracle and prove same purpose/service draw identity plus equal canonical terminal outcomes.",
+  "context_paths": [
+    ".artifacts/mvp/C2.1.paired.restart/context.md"
+  ],
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "README.md": "900dd6ad75ee2fd9a16082ff7781ff3168f11a68fbbd5286248944e4b779943c",
+    "CONTRIBUTING.md": "2d9160e4bdbf723f654536bf9c439ff41f79a893130ad499d66e015e26bff622",
+    "conductor/design/calibration/c2-execution-admission-v1.md": "a2ffd67c9b01fba373ba70b1681c405d6301a15b7d97e50ff82e021d60d79d13",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959",
+    "Cargo.lock": "946b09595a094549bfdfc7d45398810f959f539243fecb9934343cf297f4949f",
+    "crates/kairo-ecs-calibration/Cargo.toml": "d4b2add138c68e8f3ee53a43e21a50f60b43e9d0ef5bb17742cb4f0f8823b24a",
+    ".artifacts/mvp/C2.1.paired.restart/context.md": "69592483326eac4262dfcd78ac6435e050d1a4a8039069de3be78a3c9bf54de1"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    ".artifacts/mvp/C2.1.paired.restart/result.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C2.1.mode",
+    "C2.2.seeds",
+    "C2.3.dispatch"
+  ],
+  "interface_contract": "libs/kairos/conductor/design/calibration/c2-execution-admission-v1.md; existing private flow bridge and PreemptionStrategy::Restart behavior only. No production/API changes, no Transit RNG claim, no portable restart claim.",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "cwd": ".",
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--lib",
+        "flow_bridge::tests::actual_flow_urgent_restart_reuses_sampled_service_for_macro_and_zero_transit_micro"
+      ],
+      "oracle": "Focused paired Restart test passes; same service sample and draw position retained across Restart; Macro/Micro canonical terminal outcomes equal at tick 30; existing Suspend case unchanged.",
+      "expected_exit": 0
+    },
+    {
+      "cwd": ".",
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "oracle": "Strict Clippy succeeds with warnings denied.",
+      "expected_exit": 0
+    },
+    {
+      "cwd": ".",
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "oracle": "Workspace formatting check succeeds.",
+      "expected_exit": 0
+    }
+  ],
+  "acceptance": [
+    "Same purpose draws and equal canonical outcomes across paired Macro and explicit-zero Micro Restart fixtures; no transit event or Transit draw",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/C2.1.paired.restart/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "codex-current coordinator review",
+    "reservation_id": "b01773f0f617485895485815fa594822",
+    "instance_id": "restart",
+    "instance_scope": "Test-only paired Macro and explicit-zero Micro actual-Flow urgent-preemption Restart case; preserve existing Suspend oracle and prove same purpose/service draw identity plus equal canonical terminal outcomes.",
+    "instance_set": [
+      "restart"
+    ],
+    "reviewed_recipe_sha256": "ba1298adefff041cb35cad0cb7becabe38746b97817a7b9549063436c29a02b8",
+    "interface_contract": "libs/kairos/conductor/design/calibration/c2-execution-admission-v1.md; existing private flow bridge and PreemptionStrategy::Restart behavior only. No production/API changes, no Transit RNG claim, no portable restart claim.",
+    "context_slices": [
+      {
+        "repo": "libs/kairos",
+        "path": "AGENTS.md",
+        "start": 1,
+        "end": 22
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "README.md",
+        "start": 1,
+        "end": 30
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "CONTRIBUTING.md",
+        "start": 1,
+        "end": 30
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "conductor/design/calibration/c2-execution-admission-v1.md",
+        "start": 82,
+        "end": 94
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 1,
+        "end": 32
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 1473,
+        "end": 1515
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 1880,
+        "end": 1945
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 2010,
+        "end": 2075
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 2160,
+        "end": 2205
+      }
+    ],
+    "input_paths": [
+      "Cargo.lock",
+      "crates/kairo-ecs-calibration/Cargo.toml"
+    ],
+    "write_paths": [
+      "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+      ".artifacts/mvp/C2.1.paired.restart/result.json"
+    ],
+    "verification": [
+      {
+        "cwd": ".",
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "--features",
+          "flow,kairo-ecs-abm/test-support",
+          "--lib",
+          "flow_bridge::tests::actual_flow_urgent_restart_reuses_sampled_service_for_macro_and_zero_transit_micro"
+        ],
+        "oracle": "Focused paired Restart test passes; same service sample and draw position retained across Restart; Macro/Micro canonical terminal outcomes equal at tick 30; existing Suspend case unchanged.",
+        "expected_exit": 0
+      },
+      {
+        "cwd": ".",
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "--features",
+          "flow,kairo-ecs-abm/test-support",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "oracle": "Strict Clippy succeeds with warnings denied.",
+        "expected_exit": 0
+      },
+      {
+        "cwd": ".",
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "oracle": "Workspace formatting check succeeds.",
+        "expected_exit": 0
+      }
+    ],
+    "prerequisite_receipts": {
+      "C2.1.mode": {
+        "status": "accepted",
+        "reviewer": "codex-current coordinator review",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.1-mode-20261007/acceptance-rust199.json": "6dc68d4cb2afa3229ae8d75ee236c84852ca37b7df997a628cc67390728be004"
+        }
+      }
+    }
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "46af5f58ada635c74144f33e12d663865855589a4f784533b34f1f578ae93f1c",
+    "libs/kairos/AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "libs/kairos/README.md": "900dd6ad75ee2fd9a16082ff7781ff3168f11a68fbbd5286248944e4b779943c",
+    "libs/kairos/CONTRIBUTING.md": "2d9160e4bdbf723f654536bf9c439ff41f79a893130ad499d66e015e26bff622",
+    "libs/kairos/conductor/design/calibration/c2-execution-admission-v1.md": "a2ffd67c9b01fba373ba70b1681c405d6301a15b7d97e50ff82e021d60d79d13",
+    "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs": "e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}

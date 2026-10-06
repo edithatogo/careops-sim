@@ -116,11 +116,9 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   reconcile only accepted arrival with the original timed work request, and allow
   one explicit retry only for the matching consumed rejected event. Macro and
   explicit-zero Micro continue to emit no transit event or Transit draw.
-- [ ] C2.1 Write failing mode resolution/boundary tests and common-random-number
+- [x] C2.1 Write failing mode resolution/boundary tests and common-random-number
   fixtures. Assert Macro emits no transit, zero-transit Micro matches its paired
-  Macro fixture, and changing mode never discards active or suspended work. The
-  accepted paired fixture lacks the required paired Restart oracle; add it under
-  the existing contract before restoring this check.
+  Macro fixture, and changing mode never discards active or suspended work.
 - [ ] C2.5 Implement and test the reviewed same-live-Flow in-memory
   continuation contract for fidelity policy/decisions, the owned Service stream
   and one bound bridge work item. Preserve state across a one-shot in-process
@@ -129,10 +127,11 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   add the packet-required exact-value preservation assertion before restoring this check.
 - [ ] C2.4 Conductor — review and verify phase (workflow.md).
 
-After preparation C2.0, C2.2 provider/policy, and C2.3 generic routing have
-local exact-pin joins under Rust 1.99.0. Earlier C2.1.mode and C2.1.paired leaf
-receipts remain historical; C2.1 paired Restart and C2.5 decision-mismatch
-coverage are reopened for the packet-required acceptance oracles. The paired comparison covers full Flow outcomes for its deterministic
+After preparation C2.0, C2.2 provider/policy, C2.3 generic routing, and C2.1
+mode/paired behavior have local exact-pin joins under Rust 1.99.0. The earlier
+C2.1 paired receipt is historical; its superseding paired Restart and parent
+integration receipt are recorded at Kairos pin `51b5e5d`. C2.5 decision-mismatch
+coverage remains reopened for its packet-required acceptance oracle. The paired comparison covers full Flow outcomes for its deterministic
 fixture; the no-Transit-draw observation is scoped to that fixture and its
 TransitContext, which has no RNG field. The separate C2.3.dispatch leaf remains
 the staff-policy adapter. Integrated runtime-ledger leaf accepted at `5cc8250`; see
