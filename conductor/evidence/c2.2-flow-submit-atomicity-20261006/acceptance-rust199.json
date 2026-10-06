@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "coordinator_local_C2_2_flow_submit_atomicity_leaf",
+  "status": "local_leaf_accepted_rust199_exact_head",
+  "leaf_id": "C2.2.flow-submit-atomicity",
+  "instance_id": "event-cap-atomicity",
+  "base_commit": "aecb28c7089b1861b72cbd96ce29fc2577ffe47f",
+  "implementation_commit": "da323b69315365eb8f0bee092d4a78828e96a223",
+  "integrated_kairos_pin": "aecb28c7089b1861b72cbd96ce29fc2577ffe47f",
+  "source_hashes": {
+    "libs/kairos/crates/kairo-ecs-des/src/flow.rs": "2ef1756df8ba36a90182480cf1d8a9dbf1af790683a7a772df299586fc5e9111"
+  },
+  "prerequisite_receipt": {
+    "leaf_id": "C2.2.policy",
+    "status": "accepted",
+    "reviewer": "Codex coordinator local exact-head policy permit review",
+    "source_commit": "f1f510e6c9ff9c3923b63ad733c05c19c495b46c",
+    "artifacts": {
+      "conductor/evidence/c2.2-policy-20261006/README.md": "0ec0b977566539480a1e1bf009b89bd3ec4b996ca5ba3987dade0d614a01debc",
+      "conductor/evidence/c2.2-policy-20261006/acceptance.json": "fff8eabc5983bb1fd875be05b057ffcedaf6299ca801f009bf7dd2e27dbecb36"
+    }
+  },
+  "review": {
+    "independent_source_audit": "The implementation checks required cumulative events before spawn, request registration, scheduler scheduling and WorkSpec.request mutation. The regression verifies the two-event acquire-plus-deadline rejection and unchanged request registry, work association, scheduler stats, world snapshot, counters and commands.",
+    "coordinator_disposition": "Accepted this local leaf instance after exact-head Rust 1.99 verification. This does not accept C2.2 as a parent or complete Track03 ownership/release gates."
+  },
+  "verification": [
+    {
+      "command": "rustup run 1.99.0 cargo test --locked -p kairo-ecs-des",
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "27 test groups; 253 passed, 0 failed, 1 ignored. C2.2 capacity regression passed.",
+      "log": "/tmp/c22-flow-submit-rust199-tests.log",
+      "sha256": "676fb8609852ff457ea441a65bae2a38293dfee7fd7a4d77e2623b770bdc094b"
+    },
+    {
+      "command": "rustup run 1.99.0 cargo clippy --locked -p kairo-ecs-des --all-targets -- -D warnings",
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "log": "/tmp/c22-flow-submit-rust199-clippy.log",
+      "sha256": "5c263279e02b434646b7fb14eeb1d32fd2acae2f8ca4cc4e417d31a3ab7dc424"
+    },
+    {
+      "command": "rustup run 1.99.0 cargo fmt --all -- --check",
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "log": "/tmp/c22-flow-submit-rust199-fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "claims": {
+    "C2_2_flow_submit_atomicity_instance": true,
+    "C2_2_complete": false,
+    "C2_3_complete": false,
+    "C2_1_runtime_accepted": false,
+    "hosted_exact_head_checks": false
+  },
+  "limitations": [
+    "The regression covers acquire-plus-deadline capacity rejection; an acquire-only zero-cap case is not separately tested.",
+    "No hosted exact-head check is implied."
+  ]
+}
