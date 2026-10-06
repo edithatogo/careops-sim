@@ -3,7 +3,7 @@
   "updated_at": "2026-10-06",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "Implement C2.3 actual transit dispatch and progress using the Macro/Zero Flow bridge as the admission foundation. Then close remaining C2.2 callback, seed, checkpoint and resume joins and implement the C2.1 paired Macro/Micro runtime; keep hosted gates, Track49/website work and C4 acceptance open. No ED MVP, stable release, portable checkpoint or clinical claim.",
+  "next_action": "Implement a reviewed C2.3 follow-on that binds and validates the exact initial transit start EventId and integrates calibration BoundIntrinsicWork dispatch/retry reconciliation. Then close C2.2 callback and seed runtime joins, checkpoint/resume integration, and C2.1 paired Macro/Micro acceptance; keep hosted gates, Track49/website work and C4 acceptance open. No ED MVP, stable release, portable checkpoint or clinical claim.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -38,10 +38,11 @@
     "conductor/evidence/c2.2-api-surface-20261006/README.md",
     "conductor/evidence/c2.2-flow-submit-atomicity-20261006/README.md",
     "conductor/evidence/c2.2-flow-macro-zero-20261006/README.md",
-    "conductor/evidence/c2.3-progress-partial-20261006/README.md"
+    "conductor/evidence/c2.3-progress-partial-20261006/README.md",
+    "conductor/evidence/c2.3-progress-transit-runtime-20261006/README.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "826d5171c51205e8d120e5aa00abb3dca422e4f9",
+    "libs/kairos": "1637d80ddc3a0da17c84afd6ea6eba0f7abe84e6",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -226,5 +227,20 @@
     "C2_3_dispatch_complete": false,
     "C2_2_complete": false,
     "C2_1_runtime_accepted": false
+  },
+  "c23_transit_runtime_progress": {
+    "source_commit": "34de9c0fb90b4472db2ba2b6f164eccfee2f7250",
+    "receipt_commit": "1637d80ddc3a0da17c84afd6ea6eba0f7abe84e6",
+    "previous_parent_pin": "826d5171c51205e8d120e5aa00abb3dca422e4f9",
+    "evidence": "conductor/evidence/c2.3-progress-transit-runtime-20261006/README.md",
+    "DES_ABM_tests_passed": true,
+    "strict_clippy": true,
+    "format": true,
+    "local_runtime_progress_only": true,
+    "initial_start_event_identity_bound": false,
+    "C2_3_dispatch_complete": false,
+    "C2_2_complete": false,
+    "C2_1_runtime_accepted": false,
+    "hosted": false
   }
 }
