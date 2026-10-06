@@ -1,0 +1,80 @@
+argv=rustup run 1.99.0 cargo fmt --all -- --check
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1244:
+         assert_eq!(micro_submitted.decision().mode, FidelityMode::Micro);
+         assert_eq!(macro_submitted.acquire_intent().scheduler_priority, 7);
+         assert_eq!(micro_submitted.acquire_intent().scheduler_priority, 7);
+-        assert_eq!(
+-            macro_flow.budget_snapshot().scheduler.scheduled_events,
+-            1
+-        );
+-        assert_eq!(
+-            micro_flow.budget_snapshot().scheduler.scheduled_events,
+-            1
+-        );
++        assert_eq!(macro_flow.budget_snapshot().scheduler.scheduled_events, 1);
++        assert_eq!(micro_flow.budget_snapshot().scheduler.scheduled_events, 1);
+ 
+         let macro_request = {
+             let flow = &mut macro_flow;
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1314:
+             micro_flow.work_progress(micro_submitted.work()).unwrap()
+         );
+         assert_eq!(
+-            macro_flow.work_progress(macro_submitted.work()).unwrap().state,
++            macro_flow
++                .work_progress(macro_submitted.work())
++                .unwrap()
++                .state,
+             WorkState::Completed
+         );
+         assert_eq!(
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1329:
+             macro_flow.budget_snapshot().scheduler.scheduled_events,
+             micro_flow.budget_snapshot().scheduler.scheduled_events
+         );
+-        assert_eq!(
+-            macro_flow.budget_snapshot().scheduler.scheduled_events,
+-            2
+-        );
++        assert_eq!(macro_flow.budget_snapshot().scheduler.scheduled_events, 2);
+         // TransitContext contains deterministic route progress and command tickets,
+         // but no CalibrationStream or other RNG state. This path submits only the
+         // Service-purpose stream and schedules exactly the two Flow events above.
+
+EXIT_STATUS=1
+
+FINAL argv=rustup run 1.99.0 cargo fmt --all -- --check
+
+FINAL_EXIT_STATUS=0
+
+LATEST argv=rustup run 1.99.0 cargo fmt --all -- --check
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1251:
+             let flow = &mut macro_flow;
+             let spec = flow.work(macro_submitted.work()).unwrap();
+             assert_eq!(spec.context_type_key, "bridge.context");
+-            assert_eq!(
+-                spec.original_duration,
+-                macro_submitted.sampled_duration()
+-            );
++            assert_eq!(spec.original_duration, macro_submitted.sampled_duration());
+             assert_eq!(spec.request, Some(macro_submitted.request()));
+             let request = flow.request(macro_submitted.request()).unwrap();
+             assert_eq!(request.resource, macro_resource);
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1276:
+             let flow = &mut micro_flow;
+             let spec = flow.work(micro_submitted.work()).unwrap();
+             assert_eq!(spec.context_type_key, "bridge.context");
+-            assert_eq!(
+-                spec.original_duration,
+-                micro_submitted.sampled_duration()
+-            );
++            assert_eq!(spec.original_duration, micro_submitted.sampled_duration());
+             assert_eq!(spec.request, Some(micro_submitted.request()));
+             let request = flow.request(micro_submitted.request()).unwrap();
+             assert_eq!(request.resource, micro_resource);
+
+LATEST_EXIT_STATUS=1
+
+LATEST_CAPTURED argv=rustup run 1.99.0 cargo fmt --all -- --check
+
+LATEST_CAPTURED_EXIT_STATUS=0

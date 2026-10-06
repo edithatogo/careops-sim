@@ -1,5 +1,7 @@
-# C2.1.paired — bounded worker packet
+# C2.1.paired — Rust 1.99.0 local leaf acceptance
 
-The C2.1.mode prerequisite is locally accepted at Kairos pin `dbd12c98b1a72a30760996590efa6a0f445368a6`. The paired packet was independently reviewed twice and dispatched to a Luna worker. It extends the existing actual-Flow Macro Route / explicit-zero Micro fixture to compare identical Service stream lineage and canonical task/request/progress/time/terminal outcomes.
+Kairos change `bfbefa87ba15488837b01020f343685907ae09ac` extends the existing actual-Flow pair. Macro with Route intent and explicit-zero Micro with Zero intent use the same Service identity, derived seed and draw position. The fixture compares matching requests, sampled work, Flow dispatch trajectory, terminal progress and request/work states, completion time, and scheduled event counts. Two independent packet reviewers and two independent source reviewers returned READY.
 
-The frozen deterministic `TransitContext` has no RNG stream field. The worker must assert actual no-transit event behavior and record that no Transit-purpose stream exists in this runtime; it must not create a disconnected stream. The worker is bound to one calibration test file plus a result and three logs, and Rust/Cargo 1.99.0 only. Implementation and leaf acceptance remain open until source review and result checks complete.
+The fixture has one matching timed-work trajectory and no transit event. Its typed deterministic TransitContext has no RNG field, so there is no Transit-purpose stream in this context to consume; this is a fixture-scoped statement, not a global RNG claim. The worker’s initial time-expectation and formatting failures, corrections, and latest successful outputs remain in the logs.
+
+The parent exact-pin join at this commit reports 442 passed, 0 failed, and 5 ignored across 43 result summaries; strict Clippy and formatting pass. See the parent receipt at `conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json`. Track03 owner/phase review, C2.4 phase review, portable restart, hosted checks, release, and clinical acceptance remain open.
