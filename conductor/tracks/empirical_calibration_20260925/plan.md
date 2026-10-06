@@ -116,13 +116,17 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   reconcile only accepted arrival with the original timed work request, and allow
   one explicit retry only for the matching consumed rejected event. Macro and
   explicit-zero Micro continue to emit no transit event or Transit draw.
-- [x] C2.1 Write failing mode resolution/boundary tests and common-random-number
+- [ ] C2.1 Write failing mode resolution/boundary tests and common-random-number
   fixtures. Assert Macro emits no transit, zero-transit Micro matches its paired
-  Macro fixture, and changing mode never discards active or suspended work.
-- [x] C2.5 Implement and test the reviewed same-live-Flow in-memory
+  Macro fixture, and changing mode never discards active or suspended work. The
+  accepted paired fixture lacks the required paired Restart oracle; add it under
+  the existing contract before restoring this check.
+- [ ] C2.5 Implement and test the reviewed same-live-Flow in-memory
   continuation contract for fidelity policy/decisions, the owned Service stream
-  and one bound bridge work item. Preserve state across a one-shot in-process handoff;
-  portable serialization and process restart remain Track22 gates.
+  and one bound bridge work item. Preserve state across a one-shot in-process
+  handoff; portable serialization and process restart remain Track22 gates. The
+  accepted mismatch case covers foreign runtime identity but not decision mismatch;
+  add the packet-required exact-value preservation assertion before restoring this check.
 - [ ] C2.4 Conductor — review and verify phase (workflow.md).
 
 After preparation C2.0, C2.2 provider/policy, and C2.3 generic routing have
