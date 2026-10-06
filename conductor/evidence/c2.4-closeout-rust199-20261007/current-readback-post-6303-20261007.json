@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "task_id": "C2.4.closeout",
+  "instance_id": "current-readback-post-6303-20261007",
+  "status": "coordinator_current_readback_phase_withheld",
+  "parent_source_baseline": "3e2cf21bcde297f27888f02eb54bdf058e07e013",
+  "current_kairos_pin": "6303a2552257f1fcbd2aaa002d38352a2a467592",
+  "phase_acceptance": "withheld",
+  "full_C2_acceptance_claimed": false,
+  "phase_checkbox_changed": false,
+  "q4_interruption_leaf": {
+    "status": "locally_accepted_at_historical_tested_pin",
+    "tested_pin": "6053d8dd2f8057c423decc929c90a8bcd10837f9",
+    "receipt": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/acceptance-rust199.json",
+    "receipt_sha256": "88109c5dc3a35eada33d0f047ac33d5271f7a5050f138393ff4a435a265a97c1",
+    "tested_flow_bridge_sha256": "e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959",
+    "runtime_suite_rerun_at_6303a255": false
+  },
+  "current_pin_delta": {
+    "from": "6053d8dd2f8057c423decc929c90a8bcd10837f9",
+    "to": "6303a2552257f1fcbd2aaa002d38352a2a467592",
+    "summary": "Adds #[doc(hidden)] to Rust-public TransitContext::schedule_transit_retry; no executable code or test inputs changed.",
+    "rust_toolchain": "1.99.0",
+    "format_passed": true,
+    "rustdoc_passed": true,
+    "receipt": "conductor/evidence/c2.4-retry-doc-hidden-rust199-20261007/README.md",
+    "receipt_sha256": "8ed2d2b604e3beaac8c773d5962571290bc5ae94e66c66cbadac17df20592e16",
+    "runtime_suite_or_strict_clippy_at_new_pin": false
+  },
+  "manual_elapsed_time_readback": {
+    "status": "manual_source_reconciliation_complete",
+    "evidence": "conductor/evidence/c2.4-runtime-manual-readback-20261007/README.md",
+    "evidence_sha256": "fcf95929debabdd56e078e01ccb9756fd7b996658c11b4f3ebf0f0829749163c",
+    "base_macro_ticks": "5 queue + 20 service = 25",
+    "base_micro_ticks": "2 transit + 3 queue + 20 service = 25",
+    "q4_macro_ticks": "5 queue + 20 service + 2 interruption = 27",
+    "q4_micro_ticks": "2 transit + 3 queue + 20 service + 2 interruption = 27",
+    "new_test_or_rust_command_run": false
+  },
+  "owner_packets": {
+    "Track03": {
+      "path": "conductor/evidence/c2.4-track03-owner-review-rust199-20261007/review-packet.md",
+      "status": "prepared_unsent",
+      "owner_disposition": "open"
+    },
+    "Track22": {
+      "path": "conductor/evidence/c2-track22-checkpoint-owner-review-20261007/review-packet.md",
+      "status": "prepared_unsent",
+      "portable_checkpoint_restart": "open"
+    }
+  },
+  "open_gates": {
+    "Track03_owner_disposition": true,
+    "Track22_contract_and_portable_restart": true,
+    "hosted_exact_head_checks": true,
+    "release_acceptance": true,
+    "clinical_acceptance": true,
+    "C2_4_Conductor_phase_review": true
+  },
+  "prior_closeout_status": "historical_snapshot_retained",
+  "current_runtime_acceptance_claim": false
+}
