@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.1.paired.restart",
+  "attempt_id": "restart-rust199-worker-attempt-1",
+  "target_repo": "libs/kairos",
+  "base_commit": "6303a2552257f1fcbd2aaa002d38352a2a467592",
+  "worker_model": "Codex delegated worker; exact model identifier was not exposed",
+  "status": "ready_for_review",
+  "result_commit_or_patch": "9e3ec7f075553525f288093b993c1afa35c23775",
+  "changed_paths": [
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs"
+  ],
+  "commands": [
+    {
+      "command": "python3 tools/tasks.py packet-check .artifacts/packets/C2.1.paired.restart.json",
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+      "exit_status": 0,
+      "summary": "Passed on the clean bound source before edits; coordinator later reprepared the packet with the corrected test selector."
+    },
+    {
+      "argv": [
+        "rustup", "run", "1.99.0", "cargo", "test", "--locked",
+        "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support",
+        "--lib", "flow_bridge::tests::actual_flow_urgent_restart_reuses_sampled_service_for_macro_and_zero_transit_micro"
+      ],
+      "cwd": "libs/kairos",
+      "toolchain": "Rust/Cargo 1.99.0",
+      "exit_status": 0,
+      "summary": "1 passed, 0 failed, 88 filtered."
+    },
+    {
+      "argv": [
+        "rustup", "run", "1.99.0", "cargo", "clippy", "--locked",
+        "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support",
+        "--all-targets", "--", "-D", "warnings"
+      ],
+      "cwd": "libs/kairos",
+      "toolchain": "Rust/Cargo 1.99.0",
+      "exit_status": 0,
+      "summary": "Strict Clippy passed with warnings denied."
+    },
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "fmt", "--all", "--", "--check"],
+      "cwd": "libs/kairos",
+      "toolchain": "Rust/Cargo 1.99.0",
+      "exit_status": 0,
+      "summary": "Workspace formatting check passed."
+    }
+  ],
+  "acceptance_results": [
+    "Added a paired actual-Flow Macro and explicit-zero Micro Restart scenario using the same sampled Service identity, seed, duration and draw position.",
+    "Both paired runs have no Transit carrier and zero transit elapsed; the explicit-zero Micro path skips transit context registration and start scheduling.",
+    "Both runs preserve Restart lifecycle and equal terminal work progress at tick 30, including the discarded first three-tick attempt, interruption and full 20-tick restarted sample.",
+    "The pre-existing Suspend assertions remain in the shared helper and are unchanged in their expected values; the packet's focused selector exercised Restart only."
+  ],
+  "unresolved_issues": [
+    "The existing Suspend scenario was not separately run by this packet's focused selector; coordinator integration checks should exercise it. No production/API behavior, Transit RNG, or portable restart behavior is claimed."
+  ],
+  "next_action": "Coordinator reviews the source and receipt, then runs integration checks and records independent acceptance."
+}

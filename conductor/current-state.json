@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.1 paired Restart and C2.5 decision-mismatch assertions are reopened as packet-required local coverage gaps. C2.1 must proceed first; prepare and review a bounded Rust 1.99.0-only paired Restart packet, then implement and capture a superseding receipt. C2.5 follows serially on the shared flow_bridge.rs path. Earlier receipts remain historical. Track03 and Track22 owner packets remain prepared and unsent; hosted exact-head, portable restart contract, release, clinical and C2.4 phase gates remain open.",
+  "next_action": "C2.1 paired Restart is locally accepted at exact Kairos pin 51b5e5d with the full calibration library suite, strict Clippy and formatting passing on Rust 1.99.0. Next, bind and implement C2.5 decision-mismatch exact-value preservation on the shared flow_bridge.rs path; then resume C2.4 phase review only after Track03 and Track22 decisions plus hosted, portable-restart, release and clinical gates.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -82,7 +82,7 @@
     "conductor/evidence/c2.4-closeout-rust199-20261007/current-readback-post-6303-20261007.json"
   ],
   "submodule_pins": {
-    "libs/kairos": "6303a2552257f1fcbd2aaa002d38352a2a467592",
+    "libs/kairos": "51b5e5dcd09bf747e272dbfee71f924c2ccbf017",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -380,25 +380,26 @@
     "C2_1_parent_runtime_accepted": true
   },
   "c21_paired_qualification": {
-    "source_commit": "bfbefa87ba15488837b01020f343685907ae09ac",
-    "evidence": "conductor/evidence/c2.1-paired-20261007/acceptance-rust199.json",
-    "local_leaf_accepted": false,
-    "C2_1_parent_runtime_accepted": false,
+    "source_commit": "51b5e5dcd09bf747e272dbfee71f924c2ccbf017",
+    "evidence": "conductor/evidence/c2.1-paired-restart-rust199-20261007/acceptance-rust199.json",
+    "local_leaf_accepted": true,
+    "C2_1_parent_runtime_accepted": true,
     "portable_checkpoint_or_restart": false,
-    "reopened_reason": "Existing accepted fixture does not pair Macro and explicit-zero Micro under PreemptionStrategy::Restart."
+    "supersedes": "conductor/evidence/c2.1-paired-20261007/acceptance-rust199.json"
   },
   "c21_parent_join": {
-    "status": "historical_join_reopened_for_paired_restart_oracle",
-    "receipt": "conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json",
-    "receipt_sha256": "4f1ba5b364dd3c908287c286e7414d19dcdc3da3f1458e95471f66a9a76b6f20",
-    "kairos_pin": "bfbefa87ba15488837b01020f343685907ae09ac",
-    "toolchain": "Rust/Cargo 1.99.0",
-    "combined_tests": "442 passed; 0 failed; 5 ignored across 43 summaries",
+    "status": "local_parent_join_accepted_phase_gates_open",
+    "receipt": "conductor/evidence/c2.1-paired-restart-rust199-20261007/acceptance-rust199.json",
+    "receipt_sha256": "5e69e88183403cc49b072d4ef9d812e0f0c815811d764f09f0edaabfbecc3bfb",
+    "kairos_pin": "51b5e5dcd09bf747e272dbfee71f924c2ccbf017",
+    "toolchain": "Rust/Cargo 1.99.0 only",
+    "combined_tests": "87 passed; 0 failed; 2 ignored in kairo-ecs-calibration library suite",
     "strict_clippy": true,
     "format": true,
     "Track03_owner_phase_review": "open",
     "C2.4_phase_review": "open",
-    "hosted_release_or_clinical_acceptance": false
+    "hosted_release_or_clinical_acceptance": false,
+    "portable_checkpoint_or_restart": false
   },
   "c2_manual_accounting_readback": {
     "status": "standalone_synthetic_accounting_readback_recorded",
