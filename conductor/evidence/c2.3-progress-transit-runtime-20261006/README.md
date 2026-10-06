@@ -77,11 +77,13 @@ This candidate is not accepted as C2.3 dispatch. Independent review confirmed
 that the tests use real `flow.step()` rejected receipts, retain exact carrier,
 event, due, progress and priority, schedule one replacement, and reject replay.
 The injected checked-time overflow remains true at the retry tick, so the
-replacement is rejected again. ADR-0008 still requires successful accepted
-movement after a rejected start and one arrival/acquire after a rejected
-progress event. Those recovery outcomes, Track03 owner review, hosted gates,
-and all downstream C2 joins remain open. The parent task does not mark C2.3,
-C2.2, C2.1, or C2.4 complete.
+replacement is rejected again. A follow-up ABM-only test now uses a test
+planner that rejects one start and one progress callback, then accepts their
+explicit same-tick retries; it verifies movement, arrival and one actual timed
+acquire. This exercises the ABM retry seam, not calibration's
+`BoundIntrinsicWork` observation/retry/reconciliation path. C2.3 remains open
+pending that integrated recovery proof, Track03 owner review and hosted gates.
+The parent task does not mark C2.3, C2.2, C2.1, or C2.4 complete.
 
 ## Parent-pin integration recheck
 
@@ -99,3 +101,22 @@ using `rustc 1.99.0 (b940084d7 2026-09-28)` and `cargo 1.99.0
   `d7dae192715495fa89ccbe279af3efb9792c1dae1768228e369035e68a1df673`
 - `/tmp/c23-parent-pin-fmt.log` — SHA-256
   `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+
+## ABM successful-recovery seam supplement
+
+Kairos source commit `aecb28c7089b1861b72cbd96ce29fc2577ffe47f` adds a
+test-only planner in `kairo-ecs-abm` that rejects the actual start and first
+progress callback once each, then delegates to `TransitContext::plan`. The
+test invokes the explicit retry helper with the actual rejected dispatch,
+checks the accepted replacements, retained progress, replay refusal, movement,
+one arrival and one accepted timed acquire linked to the original service work.
+It does not exercise calibration `BoundIntrinsicWork`, so it is supplemental
+runtime evidence and does not accept C2.3.
+
+The independent source reviewer found no remaining correctness or parallel
+test isolation issue. The final integrated checks used Rust 1.99.0 at Kairos
+`aecb28c`:
+
+- `cargo test --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow --lib` — exit 0; 18 ABM tests passed, 78 calibration tests passed and 2 were ignored. Log `/tmp/c23-recovery-oracle-final-tests.log`, SHA-256 `01249c0164daab6a4d572692c56676c00c3a70eb5706a1626f7acb5e65acb2b4`.
+- `cargo clippy --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow --all-targets -- -D warnings` — exit 0. Log `/tmp/c23-recovery-oracle-final-clippy.log`, SHA-256 `5fa56c356ca0f304456646462ee6f2c026d6742d2cf7581fc3105c738923398d`.
+- `cargo fmt --all -- --check` and `git diff --check` — exit 0.

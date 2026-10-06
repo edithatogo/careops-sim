@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.3.abm-recovery-seam",
+  "status": "ready_for_review",
+  "attempt_id": "C2.3.retry-recovery-oracle-attempt1",
+  "base_commit": "a514590e485bfb5aa4df675d13940d98f62b0b7b",
+  "source_commit": "aecb28c7089b1861b72cbd96ce29fc2577ffe47f",
+  "changed_paths": [
+    "crates/kairo-ecs-abm/src/flow_adapter.rs"
+  ],
+  "implemented": [
+    "Added a deterministic test-only Flow planner that rejects the actual start and first progress callback once each, then delegates to TransitContext::plan with the normal receipt handler.",
+    "Verified each rejected runtime receipt, same-due explicit retry on the same carrier and kind, accepted replacement, start replay refusal, retained progress, movement, one arrival, and exactly one accepted timed acquire linked to the original service work."
+  ],
+  "verification": [
+    {
+      "command": "cargo test --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow --lib",
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c23-transit-runtime-stable-20261006",
+      "exit_code": 0,
+      "summary": "18 ABM tests passed; 78 calibration tests passed; 2 calibration tests ignored",
+      "log": "/tmp/c23-recovery-oracle-final-tests.log",
+      "sha256": "01249c0164daab6a4d572692c56676c00c3a70eb5706a1626f7acb5e65acb2b4"
+    },
+    {
+      "command": "cargo clippy --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow --all-targets -- -D warnings",
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c23-transit-runtime-stable-20261006",
+      "exit_code": 0,
+      "log": "/tmp/c23-recovery-oracle-final-clippy.log",
+      "sha256": "5fa56c356ca0f304456646462ee6f2c026d6742d2cf7581fc3105c738923398d"
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c23-transit-runtime-stable-20261006",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c23-transit-runtime-stable-20261006",
+      "exit_code": 0
+    }
+  ],
+  "toolchain": "rustc 1.99.0 (b940084d7 2026-09-28) (Homebrew); cargo 1.99.0 (5f94df478 2026-08-27) (Homebrew)",
+  "independent_review": "Read-only reviewer found no remaining correctness or parallel-test isolation issue; confirmed this tests the ABM TransitContext seam only.",
+  "input_hashes": {
+    "conductor/decisions/ADR-0008-c2-test-first-join.md": "0b768699f3d60b53c4500bcf78954181b9df69ba4b6ffabca346c7e05e080c28",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "c44e3a52ffbbb22930656d3b30f0c406a8323b683773c337ddfa00836314c341",
+    "conductor/design/calibration/ADR-0008-c20-transit-retry-seam.md": "8658c41767d918e2c1edee731f9d982046db9d0ddd9c1fa17ab34138c76bd01f",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs@a514590e": "c13793e459109ce36dd032f960cea5e5a1aed430f90d5f273551fc67d4351c7e"
+  },
+  "limitations": [
+    "The test calls TransitContext::schedule_transit_retry directly; it does not exercise calibration BoundIntrinsicWork rejection observation, retry bookkeeping, or accepted-arrival reconciliation.",
+    "This receipt is supplemental ABM seam evidence and remains ready for independent task review only; C2.3, C2.2, C2.1 and C2.4 remain open."
+  ]
+}
