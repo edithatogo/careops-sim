@@ -4,7 +4,7 @@
 
 ## Base runtime-ledger fixture
 
-Read the paired actual-Flow test `macro_and_micro_reconcile_queue_transit_and_service_elapsed_time` in `libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs` (Kairos source pin `6053d8dd2f8057c423decc929c90a8bcd10837f9`, file SHA-256 `e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959`). The test and its accepted receipt observe Flow submit/grant/completion times, a two-tick Micro route and accepted arrival, and the same Service duration/key/derived seed in both arms.
+Read the paired actual-Flow test [`macro_and_micro_reconcile_queue_transit_and_service_elapsed_time`](../../../libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs#L1642) in `libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs` (Kairos source pin `6053d8dd2f8057c423decc929c90a8bcd10837f9`, file SHA-256 `e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959`). The test and its accepted receipt observe Flow submit/grant/completion times, a two-tick Micro route and accepted arrival, and the same Service duration/key/derived seed in both arms.
 
 | Arm | Disjoint intervals | Elapsed window |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ The associated [`runtime-ledger receipt`](../c2.4-runtime-ledger-rust199-2026100
 
 ## Separate urgent-interruption corroboration
 
-The distinct test `actual_flow_urgent_suspend_resumes_same_macro_and_routed_micro_service` uses the same nominal service setup with an urgent interruption. Its actual callbacks and completion assertions produce:
+The distinct test [`actual_flow_urgent_suspend_resumes_same_macro_and_routed_micro_service`](../../../libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs#L2177) uses the same nominal service setup with an urgent interruption. Its actual callbacks and completion assertions produce:
 
 | Arm | Disjoint intervals | Elapsed window |
 | --- | --- | --- |
