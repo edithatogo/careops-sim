@@ -1,0 +1,318 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.1.paired.rust199-paired",
+  "task_id": "C2.1",
+  "target_repo": "libs/kairos",
+  "base_commit": "dbd12c98b1a72a30760996590efa6a0f445368a6",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Complete the actual-Flow common-random-number fixture in which Macro retains Route intent and explicit-zero Micro has Zero intent: assert same Service seed identity/draws, equal canonical Flow work/request timing and terminal outcomes, and no scheduled transit event or Transit draw. The implementation must not add a disconnected Transit stream: TransitContext is deterministic and owns no RNG stream, so treat absent Transit-purpose stream state as an architecture fact and stop if any runtime stream cannot be proved unused.",
+  "context_paths": [
+    ".artifacts/mvp/C2.1.paired.rust199-paired/context.md"
+  ],
+  "input_hashes": {
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "51d3f1a00c95361435d915d094f4f8ab152927f06c76ad7eabc4a7909b2749c3",
+    "crates/kairo-ecs-calibration/src/seed_map.rs": "2a6dcae497c6001f1c6b09a4ce4c6034398986fb9593b01ed7e38fc69bb009c4",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "4146dfb7ad2c221b2c9df8e72a790863b120bcd461db9e71e93c112359bcf8b7",
+    "crates/kairo-ecs-des/src/flow.rs": "2ef1756df8ba36a90182480cf1d8a9dbf1af790683a7a772df299586fc5e9111",
+    "conductor/design/calibration/c2-execution-admission-v1.md": "a2ffd67c9b01fba373ba70b1681c405d6301a15b7d97e50ff82e021d60d79d13",
+    ".artifacts/mvp/C2.1.paired.rust199-paired/context.md": "85f2c3e55906e0acdd7159ecff482059c243e009c5b5be3b229d3aa9360cc6f0"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    ".artifacts/mvp/C2.1.paired.rust199-paired/result.json",
+    ".artifacts/mvp/C2.1.paired.rust199-paired/test.log",
+    ".artifacts/mvp/C2.1.paired.rust199-paired/clippy.log",
+    ".artifacts/mvp/C2.1.paired.rust199-paired/fmt.log"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C2.1.mode",
+    "C2.2.seeds",
+    "C2.3.dispatch"
+  ],
+  "interface_contract": "Frozen C2.1 contract: identical source/family/case/task identity and Service purpose stream for paired Macro and zero-transit Micro; same Flow work timing/outcome; neither schedules transit. TransitContext uses deterministic route progress and owns no RNG field, so no Transit-purpose stream is available or consumed in this bridge. Compare only real runtime state; do not fabricate an unconnected stream.",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--lib",
+        "flow_bridge::tests::macro_and_zero_micro_share_service_draws_and_submit_actual_timed_work"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "At least one focused paired test is selected and passes under Rust 1.99.0. It compares exact Service seed identity/draw lineage and canonical Flow work/request state, progress, time and terminal outcome for Macro Route versus explicit-zero Micro Zero; verifies zero transit events and one matching actual timed-work trajectory. The typed TransitContext has no RNG field, so the evidence must state that the deterministic runtime has no Transit-purpose stream to consume; never create a disconnected stream. If full canonical outcome comparison cannot be made with the inspected APIs, stop and report the exact missing API."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target Clippy passes with warnings denied under Rust 1.99.0."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting passes under Rust 1.99.0."
+    }
+  ],
+  "acceptance": [
+    "Same purpose draws and equal canonical outcomes in zero-transit fixture",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/C2.1.paired.rust199-paired/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "coordinator plus two independent C2.1.paired packet reviewers",
+    "reservation_id": "5cb9a1ad0ec94198ae7c396efabb3b25",
+    "instance_id": "rust199-paired",
+    "instance_scope": "Complete the actual-Flow common-random-number fixture in which Macro retains Route intent and explicit-zero Micro has Zero intent: assert same Service seed identity/draws, equal canonical Flow work/request timing and terminal outcomes, and no scheduled transit event or Transit draw. The implementation must not add a disconnected Transit stream: TransitContext is deterministic and owns no RNG stream, so treat absent Transit-purpose stream state as an architecture fact and stop if any runtime stream cannot be proved unused.",
+    "instance_set": [
+      "rust199-paired"
+    ],
+    "reviewed_recipe_sha256": "d2c687f4ba06d82e5d0e087d7ca8e157acb9550e6c561b9918646b6c917fc382",
+    "interface_contract": "Frozen C2.1 contract: identical source/family/case/task identity and Service purpose stream for paired Macro and zero-transit Micro; same Flow work timing/outcome; neither schedules transit. TransitContext uses deterministic route progress and owns no RNG field, so no Transit-purpose stream is available or consumed in this bridge. Compare only real runtime state; do not fabricate an unconnected stream.",
+    "context_slices": [
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 987,
+        "end": 1055
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "start": 1169,
+        "end": 1248
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/seed_map.rs",
+        "start": 15,
+        "end": 24
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-calibration/src/seed_map.rs",
+        "start": 200,
+        "end": 235
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-abm/src/flow_adapter.rs",
+        "start": 127,
+        "end": 155
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-des/src/flow.rs",
+        "start": 170,
+        "end": 195
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-des/src/flow.rs",
+        "start": 268,
+        "end": 325
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-des/src/flow.rs",
+        "start": 2082,
+        "end": 2088
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-des/src/flow.rs",
+        "start": 2130,
+        "end": 2135
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-des/src/flow.rs",
+        "start": 2258,
+        "end": 2265
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-des/src/flow.rs",
+        "start": 2396,
+        "end": 2410
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "conductor/design/calibration/c2-execution-admission-v1.md",
+        "start": 70,
+        "end": 88
+      },
+      {
+        "repo": ".",
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "start": 119,
+        "end": 132
+      }
+    ],
+    "input_paths": [
+      "crates/kairo-ecs-calibration/src/seed_map.rs"
+    ],
+    "write_paths": [
+      "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+      ".artifacts/mvp/C2.1.paired.rust199-paired/result.json",
+      ".artifacts/mvp/C2.1.paired.rust199-paired/test.log",
+      ".artifacts/mvp/C2.1.paired.rust199-paired/clippy.log",
+      ".artifacts/mvp/C2.1.paired.rust199-paired/fmt.log"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "-p",
+          "kairo-ecs-abm",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+          "--lib",
+          "flow_bridge::tests::macro_and_zero_micro_share_service_draws_and_submit_actual_timed_work"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "At least one focused paired test is selected and passes under Rust 1.99.0. It compares exact Service seed identity/draw lineage and canonical Flow work/request state, progress, time and terminal outcome for Macro Route versus explicit-zero Micro Zero; verifies zero transit events and one matching actual timed-work trajectory. The typed TransitContext has no RNG field, so the evidence must state that the deterministic runtime has no Transit-purpose stream to consume; never create a disconnected stream. If full canonical outcome comparison cannot be made with the inspected APIs, stop and report the exact missing API."
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "-p",
+          "kairo-ecs-abm",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Strict all-target Clippy passes with warnings denied under Rust 1.99.0."
+      },
+      {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Workspace formatting passes under Rust 1.99.0."
+      }
+    ],
+    "prerequisite_receipts": {
+      "C2.1.mode": {
+        "status": "accepted",
+        "reviewer": "coordinator; two independent source/result reviewers READY",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.1-mode-20261007/acceptance-rust199.json": "6dc68d4cb2afa3229ae8d75ee236c84852ca37b7df997a628cc67390728be004"
+        }
+      },
+      "C2.2.seeds": {
+        "status": "accepted",
+        "reviewer": "coordinator; C2.2 parent local join accepted",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.2-parent-rerun-rust199-20261007/acceptance-rust199.json": "72a4f1868bba86aed670aee50fd2b6682166969284bf05fea328488b805675b8"
+        }
+      },
+      "C2.3.dispatch": {
+        "status": "accepted",
+        "reviewer": "coordinator; C2.3 parent local join accepted",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d"
+        }
+      }
+    }
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "4c3445b69ed530f7e878ed653780dac7f43c7ed09ad11fb07558d8f69236c191",
+    "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs": "51d3f1a00c95361435d915d094f4f8ab152927f06c76ad7eabc4a7909b2749c3",
+    "libs/kairos/crates/kairo-ecs-calibration/src/seed_map.rs": "2a6dcae497c6001f1c6b09a4ce4c6034398986fb9593b01ed7e38fc69bb009c4",
+    "libs/kairos/crates/kairo-ecs-abm/src/flow_adapter.rs": "4146dfb7ad2c221b2c9df8e72a790863b120bcd461db9e71e93c112359bcf8b7",
+    "libs/kairos/crates/kairo-ecs-des/src/flow.rs": "2ef1756df8ba36a90182480cf1d8a9dbf1af790683a7a772df299586fc5e9111",
+    "libs/kairos/conductor/design/calibration/c2-execution-admission-v1.md": "a2ffd67c9b01fba373ba70b1681c405d6301a15b7d97e50ff82e021d60d79d13",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "eeb661fd3109a90b7f36d7faca0b7fbd56d946f7fa909ee6cdc45472122810f3",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}
