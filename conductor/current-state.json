@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "The current-pin C2.4 coordinator review manually reconciled the synthetic Macro/Micro elapsed-time fixtures at Kairos 6784538 and withheld phase acceptance. Next action remains Track03 and Track22 owner dispositions plus hosted, portable-restart, release and clinical gates; local C2 implementation leaves are covered.",
+  "next_action": "The routed Macro/Micro service draw-position oracle is now implemented at Kairos 809ade8 and focused Rust 1.99.0 verification passed. The previous 455-test full-suite receipt remains bound to 6784538. Refresh the unsent Track03 review packet for the new pin, then continue Track03 and Track22 owner dispositions plus hosted, portable-restart, release and clinical gates; C2.4 phase acceptance remains withheld.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -92,12 +92,14 @@
     "conductor/evidence/c2-current-pin-rerun-rust199-20261007-6784538/acceptance-rust199.json",
     "conductor/evidence/c2-current-pin-rerun-rust199-20261007-6784538/current-readback-6784538.md",
     "conductor/evidence/c2-current-pin-rerun-rust199-20261007-6784538/current-readback-6784538.json",
+    "conductor/evidence/c2-service-draw-position-rust199-20261007/README.md",
+    "conductor/evidence/c2-service-draw-position-rust199-20261007/acceptance-rust199.json",
     "conductor/evidence/c2-current-pin-rerun-rust199-20261007/worker-result.json",
     "conductor/evidence/c2.4-coordinator-review-rust199-20261007/README.md",
     "conductor/evidence/c2.4-coordinator-review-rust199-20261007/coordinator-review.json"
   ],
   "submodule_pins": {
-    "libs/kairos": "678453838f391f3dd869b79fd502077f63f3a067",
+    "libs/kairos": "809ade8103239c1cef3f5d0622ca99834abdabbe",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -545,6 +547,21 @@
     "format": true,
     "C2_2_leaf_specific_parent_receipt_replaced": false,
     "full_C2_acceptance": false
+  },
+  "c2_service_draw_position_oracle": {
+    "status": "focused_local_verification_passed_phase_gates_open",
+    "kairos_pin": "809ade8103239c1cef3f5d0622ca99834abdabbe",
+    "evidence": "conductor/evidence/c2-service-draw-position-rust199-20261007/acceptance-rust199.json",
+    "evidence_sha256": "92b4cf3f0b722894f86fa35d02618c6755dd1ca71589a16e56033008f0b3402a",
+    "readme_sha256": "1631e14a3a3193dc74d599c00c5cfcebad730d26c3e7f284bd50e3a7e23e5777",
+    "toolchain": "Rust 1.99.0 only",
+    "focused_test": "1 passed; 0 failed",
+    "strict_clippy": true,
+    "format": true,
+    "full_suite_at_this_pin": false,
+    "previous_full_suite_pin": "678453838f391f3dd869b79fd502077f63f3a067",
+    "Track03_review_packet_refresh": "required before owner review",
+    "C2_4_phase_acceptance": "withheld"
   },
   "c22_provider_sampling_verification": {
     "status": "local_provider_test_evidence_only",

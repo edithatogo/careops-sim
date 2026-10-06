@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "instance_id": "C2.service-draw-position.809ade8",
+  "status": "focused_local_verification_passed_phase_gates_open",
+  "parent_source_commit": "98c306a977a88cce6c039a9774b7d2f2676fdf7b",
+  "kairos_pin": "809ade8103239c1cef3f5d0622ca99834abdabbe",
+  "kairos_commit_message": "test(calibration): assert transit preserves service draw",
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "source": {
+    "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "sha256": "a29fdca89b899be8f036b3681e4170cec26db3334dc2ef68fbe9386e4ce01cf4",
+    "change": "The routed Macro/Micro elapsed-time fixture now asserts equal Service draw position. No production code, API, seed algorithm, or Cargo manifest changed.",
+    "bounded_context_excerpt_sha256": [
+      "173fc1cd187f99878562b14934268dd7f19b289432ccdcd2704b1a973cb10afd",
+      "bab41713bf03a0bdbeb9550f46aaa53ddd97906f92737bf3ee97652648759094"
+    ],
+    "context_limit_note": "The full 118 KB source file exceeds the harness 24 KB context snapshot cap. The writer used bounded local excerpts around the test and accessor; the harness claim still recorded the exact file path and source HEAD."
+  },
+  "verification": {
+    "targeted_test": {
+      "command": "CARGO_TARGET_DIR=/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-service-draw-position/target rustup run 1.99.0 cargo test --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support macro_and_micro_reconcile_queue_transit_and_service_elapsed_time",
+      "cwd": "libs/kairos",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "filtered": 95
+    },
+    "strict_clippy": {
+      "command": "CARGO_TARGET_DIR=/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-service-draw-position/target rustup run 1.99.0 cargo clippy --locked -p kairo-ecs-calibration -p kairo-ecs-abm --features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support --all-targets -- -D warnings",
+      "cwd": "libs/kairos",
+      "exit_code": 0
+    },
+    "format": {
+      "command": "rustup run 1.99.0 cargo fmt --all -- --check",
+      "cwd": "libs/kairos",
+      "exit_code": 0
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "cwd": "libs/kairos",
+      "exit_code": 0
+    }
+  },
+  "prior_full_suite": {
+    "kairos_pin": "678453838f391f3dd869b79fd502077f63f3a067",
+    "tests": "455 passed, 0 failed, 5 ignored across 43 groups",
+    "note": "This prior full-suite receipt does not cover pin 809ade8. Only the focused test, strict Clippy, formatting, and diff checks listed above were rerun at 809ade8."
+  },
+  "phase_acceptance": false,
+  "unresolved_gates": [
+    "Track03 owner disposition and refreshed review packet at the new Kairos pin",
+    "Track22 portable checkpoint/restart contract and review",
+    "hosted exact-head checks",
+    "release acceptance",
+    "clinical acceptance",
+    "C2.4 phase review"
+  ]
+}
