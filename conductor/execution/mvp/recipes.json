@@ -5207,7 +5207,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 114
+        "line": 119
       },
       "context_sources": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -5365,7 +5365,8 @@
           "oracle": "No thread/wall-clock identity in keys; resume preserves mode and stream state",
           "dependencies": [
             "C2.2.policy",
-            "C2.3.dispatch"
+            "C2.3.dispatch",
+            "C2.3.transit-bridge"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
@@ -5376,11 +5377,18 @@
           "max_corrections": 2,
           "existing_recipe": null
         }
-      ]
+      ],
+      "leaf_dependency_overrides": {
+        "C2.2.seeds": [
+          "C2.2.policy",
+          "C2.3.dispatch",
+          "C2.3.transit-bridge"
+        ]
+      }
     },
     {
       "task_id": "C2.3",
-      "task_objective_sha256": "c76bbb24d73c9a83071ba3e64cd423ce3e4747e4f71d8b49b48f8b3f8cb08876",
+      "task_objective_sha256": "65f1052c3c4adb3528229003dbe9870b8687acc46916554d7702d4d7926d0ff8",
       "parent_dependencies": [
         "C2.0"
       ],
@@ -5472,8 +5480,34 @@
           "max_context_bytes": 24000,
           "max_corrections": 2,
           "existing_recipe": null
+        },
+        {
+          "id": "C2.3.transit-bridge",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Calibration BoundIntrinsicWork route dispatch and actual arrival reconciliation",
+          "oracle": "Nonzero Micro Route uses the actual TransitContext carrier and exact owned event IDs; only accepted arrival reconciles the original timed task/resource request and work link; explicit retry is one-shot and limited to the matching consumed rejected event. Macro and Zero Micro emit no transit event or Transit draw.",
+          "dependencies": [
+            "C2.2.flow-macro-zero",
+            "C2.3.progress"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
         }
-      ]
+      ],
+      "leaf_dependency_overrides": {
+        "C2.3.transit-bridge": [
+          "C2.2.flow-macro-zero",
+          "C2.3.progress"
+        ]
+      }
     },
     {
       "task_id": "C2.4",
@@ -5483,7 +5517,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 117
+        "line": 122
       },
       "context_sources": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",

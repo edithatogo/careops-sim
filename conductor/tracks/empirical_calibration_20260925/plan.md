@@ -111,6 +111,11 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   cleaning/reservation remains an explicit model resource lifecycle. Require explicit
   movement-mode speeds, versioned geometry and O/D purpose; test mixed-use pauses
   and sensor-derived distance are not silently treated as path/speed ground truth.
+  Connect the calibration bridge to actual route carriers: validate actor/task/
+  resource association, track exact owned event IDs and Flow callback receipts,
+  reconcile only accepted arrival with the original timed work request, and allow
+  one explicit retry only for the matching consumed rejected event. Macro and
+  explicit-zero Micro continue to emit no transit event or Transit draw.
 - [ ] C2.1 Write failing mode resolution/boundary tests and common-random-number
   fixtures. Assert Macro emits no transit, zero-transit Micro matches its paired
   Macro fixture, and changing mode never discards active or suspended work.
@@ -118,7 +123,8 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
 
 After preparation C2.0, C2.2 provider/policy and C2.3 generic routing have
 independent foundations. The frozen calibration bridge names actual transit
-types, so the full C2.2 owned-stream/resume join waits for C2.3 dispatch. Both
+types, so the full C2.2 owned-stream/resume join waits for the C2.3 transit
+dispatch bridge. The separate C2.3.dispatch leaf remains the staff-policy adapter. Both
 completed branches gate full runtime join C2.1 and phase review C2.4. Dependency
 readiness does not grant parallel writes: overlapping path claims remain serial. All C2.1 original oracles remain mandatory; a
 fixed-duration fixture, disconnected RNG check, compile failure or missing transit

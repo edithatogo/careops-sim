@@ -2444,7 +2444,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 114
+        "line": 119
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2503,7 +2503,8 @@
       "leaf_dependency_overrides": {
         "C2.2.seeds": [
           "C2.2.policy",
-          "C2.3.dispatch"
+          "C2.3.dispatch",
+          "C2.3.transit-bridge"
         ]
       }
     },
@@ -2511,7 +2512,7 @@
       "id": "C2.3",
       "track_id": "empirical_calibration_20260925",
       "phase": "C2",
-      "objective": "Implement a deterministic route-graph TransitModel with units, stable shortest-path ties, integer tick conversion, unreachable errors and stored movement progress. Supply a minimal urgency/FIFO/zone/skill staff adapter; cleaning/reservation remains an explicit model resource lifecycle. Require explicit movement-mode speeds, versioned geometry and O/D purpose; test mixed-use pauses and sensor-derived distance are not silently treated as path/speed ground truth.",
+      "objective": "Implement a deterministic route-graph TransitModel with units, stable shortest-path ties, integer tick conversion, unreachable errors and stored movement progress. Supply a minimal urgency/FIFO/zone/skill staff adapter; cleaning/reservation remains an explicit model resource lifecycle. Require explicit movement-mode speeds, versioned geometry and O/D purpose; test mixed-use pauses and sensor-derived distance are not silently treated as path/speed ground truth. Connect the calibration bridge to actual route carriers: validate actor/task/ resource association, track exact owned event IDs and Flow callback receipts, reconcile only accepted arrival with the original timed work request, and allow one explicit retry only for the matching consumed rejected event. Macro and explicit-zero Micro continue to emit no transit event or Transit draw.",
       "kind": "bounded_work",
       "accepted": false,
       "dependencies": [
@@ -2534,7 +2535,13 @@
       ],
       "dispatch_gate": "reviewed_leaf_packet_required",
       "model_route": "gpt-6-luna_candidate_after_packet_review",
-      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2",
+      "leaf_dependency_overrides": {
+        "C2.3.transit-bridge": [
+          "C2.2.flow-macro-zero",
+          "C2.3.progress"
+        ]
+      }
     },
     {
       "id": "C2.4",
@@ -2548,7 +2555,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 117
+        "line": 122
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2577,7 +2584,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 137
+        "line": 143
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2605,7 +2612,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 142
+        "line": 148
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2633,7 +2640,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 145
+        "line": 151
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2661,7 +2668,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 148
+        "line": 154
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2688,7 +2695,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 159
+        "line": 165
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2716,7 +2723,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 165
+        "line": 171
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2744,7 +2751,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 170
+        "line": 176
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2772,7 +2779,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 174
+        "line": 180
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2800,7 +2807,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 185
+        "line": 191
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2828,7 +2835,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 190
+        "line": 196
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2856,7 +2863,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 196
+        "line": 202
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2884,7 +2891,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 199
+        "line": 205
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2912,7 +2919,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 202
+        "line": 208
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2942,7 +2949,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 213
+        "line": 219
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2970,7 +2977,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 217
+        "line": 223
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2998,7 +3005,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 224
+        "line": 230
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -3026,7 +3033,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 227
+        "line": 233
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -3054,7 +3061,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 231
+        "line": 237
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
