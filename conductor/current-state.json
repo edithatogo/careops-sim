@@ -3,7 +3,7 @@
   "updated_at": "2026-10-06",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "Implement C2.3 calibration BoundIntrinsicWork transit dispatch: bind actual route carrier to the sampled service work, validate carrier/actor/task/resource association, observe dispatch receipts and actual arrival request linkage, and provide explicit one-shot retry only for matching consumed rejected events. Then close C2.2 callback/seed/runtime joins, checkpoint/resume integration and C2.1 paired Macro/Micro acceptance; keep hosted gates, Track49/website work and C4 acceptance open. No ED MVP, stable release, portable checkpoint or clinical claim.",
+  "next_action": "Review and complete the C2.3 transit retry recovery oracle. The pinned development bridge validates the actual carrier/request, tracks receipts, and retries matching rejected start/progress events; the current MAX-overflow fixtures re-reject after retry, so successful movement/arrival after retry and Track03 owner review remain open. Do not mark C2.3 complete. After acceptance, continue C2.2 callback/seed joins, C2.1 paired Macro/Micro acceptance, and checkpoint/resume integration; hosted gates and release/clinical claims remain open.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -42,7 +42,7 @@
     "conductor/evidence/c2.3-progress-transit-runtime-20261006/README.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "c72f3a7ac540b01174fc62398ca2ad283f422cc9",
+    "libs/kairos": "a514590e485bfb5aa4df675d13940d98f62b0b7b",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -231,7 +231,7 @@
   "c23_transit_runtime_progress": {
     "source_commit": "34de9c0fb90b4472db2ba2b6f164eccfee2f7250",
     "receipt_commit": "c72f3a7ac540b01174fc62398ca2ad283f422cc9",
-    "previous_parent_pin": "826d5171c51205e8d120e5aa00abb3dca422e4f9",
+    "previous_parent_pin": "c72f3a7ac540b01174fc62398ca2ad283f422cc9",
     "evidence": "conductor/evidence/c2.3-progress-transit-runtime-20261006/README.md",
     "DES_ABM_tests_passed": true,
     "strict_clippy": true,
@@ -247,7 +247,15 @@
     "single_pending_start_source_commit": "6d8e56341aabc54ea4e94455afb214b47d8a438a",
     "exact_start_event_identity_bound": true,
     "duplicate_pending_start_rejected": true,
-    "test_toolchain": "Homebrew Rust 1.99",
-    "required_toolchain": "Rust 1.99 (user-specified current stable)"
+    "test_toolchain": "Homebrew Rust 1.99.0 only",
+    "required_toolchain": "Rust 1.99 (user-specified current stable)",
+    "latest_development_source_commit": "a514590e485bfb5aa4df675d13940d98f62b0b7b",
+    "bridge_implementation_source_commit": "3ec35e51cd46216b0982ce13058008ca9258c829",
+    "runtime_retry_tests_source_commit": "a514590e485bfb5aa4df675d13940d98f62b0b7b",
+    "runtime_rejected_start_retry_test": true,
+    "runtime_rejected_progress_retry_test": true,
+    "retry_recovery_after_overflow": "not accepted; the deterministic MAX-time retry is rejected again",
+    "independent_review": "prior carrier/control/atomicity issues fixed; successful retry recovery outcomes and Track03 owner review remain open",
+    "status": "development implementation ready for review; C2.3 dispatch not accepted"
   }
 }
