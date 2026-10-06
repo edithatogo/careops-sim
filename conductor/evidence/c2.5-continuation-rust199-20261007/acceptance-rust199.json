@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "coordinator_local_C2_5_continuation_leaf_rust199_exact_pin",
+  "status": "locally_accepted_exact_pin",
+  "leaf_id": "C2.5",
+  "packet_path": ".artifacts/packets/C2.5.continuation.json",
+  "packet_sha256": "845d3c263b65a959674ab68c698319fe7982a6535cc82be8e91bf67d62a7eb1b",
+  "integrated_parent_commit": "e957029a12d93d4a0741873422ffdf2ffb777c38",
+  "integrated_kairos_pin": "774d1ed1c6c7f1bfd67a0a3875f5d9188eb1e9de",
+  "implementation_commits": [
+    "e7a963e54aee56d175f23df2e5212c9f25c25bbc",
+    "387fa0d598655316fc4484807ffd0f90534b3a09",
+    "0af5d2c9f26aef351c01786af3d88784ce3b93da",
+    "774d1ed1c6c7f1bfd67a0a3875f5d9188eb1e9de"
+  ],
+  "toolchain": "rustc 1.99.0 (b940084d7 2026-09-28)",
+  "source_hashes_sha256": {
+    "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs": "e1b8edeb4a6e17e37dd2a9d7b409980ed9f0e2a70cf047c5c422ebd9be586e0c",
+    "libs/kairos/conductor/design/calibration/c2-in-memory-continuation-v1.md": "eccff11d9c8304c864e26fe589f2968d75be8fbf07a601cd995460e2da933991"
+  },
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "libs/kairos",
+      "head": "774d1ed1c6c7f1bfd67a0a3875f5d9188eb1e9de",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.5-continuation-rust199-20261007/logs/format-rust199.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "working_tree_clean_at_execution": true
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--target-dir",
+        ".artifacts/c2.5-continuation/target"
+      ],
+      "cwd": "libs/kairos",
+      "head": "774d1ed1c6c7f1bfd67a0a3875f5d9188eb1e9de",
+      "exit_status": 0,
+      "summary": {
+        "library_tests_passed": 85,
+        "library_tests_failed": 0,
+        "library_tests_ignored": 2,
+        "integration_passed": 78,
+        "integration_failed": 0,
+        "integration_ignored": 2,
+        "doc_test_failures": 0
+      },
+      "log": "conductor/evidence/c2.5-continuation-rust199-20261007/logs/test-rust199.log",
+      "log_sha256": "63646dbea0f3006b3176997915c5bc32d8fefc48b68ea6a2bfb49e85ed72f7b8",
+      "working_tree_clean_at_execution": true
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--target-dir",
+        ".artifacts/c2.5-continuation/target",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "libs/kairos",
+      "head": "774d1ed1c6c7f1bfd67a0a3875f5d9188eb1e9de",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.5-continuation-rust199-20261007/logs/clippy-rust199.log",
+      "log_sha256": "d7dae192715495fa89ccbe279af3efb9792c1dae1768228e369035e68a1df673",
+      "working_tree_clean_at_execution": true
+    }
+  ],
+  "claims": {
+    "crate_private_one_shot_bundle_owns_same_flow_adapter_and_one_bound_work": true,
+    "mismatched_runtime_capture_returns_original_values": true,
+    "macro_zero_micro_and_nonzero_micro_transit_continuity_tested": true,
+    "portable_checkpoint_or_process_restart": false,
+    "multi_bound_work_aggregate": false,
+    "C2_5_leaf_accepted": true,
+    "C2_4_phase_accepted": false,
+    "Track03_owner_review_complete": false,
+    "hosted_release_or_clinical_acceptance": false,
+    "arrival_handoff_returns_original_timed_request_without_resubmit": true
+  },
+  "limitations": [
+    "The continuation supports one bound bridge item in the bundled runtime; it is not an aggregate run checkpoint.",
+    "Capture preconditions exclude a returned but unobserved FlowDispatch; the caller must honor that boundary.",
+    "Adapter pairing comes from the same prepare/create/bind sequence as a private caller precondition; equal WorkId and decision do not prove adapter-instance provenance.",
+    "Externally aliased interior-mutable custom context payloads are outside the ownership guarantee.",
+    "The arrival oracle verifies request/work continuity against a control but does not run timed service work to completion or claim end-to-end elapsed-time accounting.",
+    "Portable checkpoint/restart, C2.4 phase review, hosted checks, release readiness and clinical acceptance remain open."
+  ],
+  "independent_source_review": {
+    "reviewed_kairos_commit": "774d1ed1c6c7f1bfd67a0a3875f5d9188eb1e9de",
+    "disposition": "no blocker against the narrowed contract; acceptance may proceed with recorded scope limits",
+    "findings": [
+      "Adapter instance pairing is a caller precondition and is not mechanically enforced; this is explicit in contract revision at the pinned commit.",
+      "Transit finish oracle verifies the arrived timed request remains associated with the work and preserves matching request/work progress against an uninterrupted twin.",
+      "The oracle does not execute timed service work to completion or reconcile total transit-plus-service elapsed time."
+    ]
+  }
+}
