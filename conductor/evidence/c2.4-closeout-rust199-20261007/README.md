@@ -1,5 +1,7 @@
 # C2.4 phase closeout readback — Rust 1.99.0 evidence scope
 
+> **Historical snapshot; not a current status source.** This readback records Q4 acceptance as open. The subsequent Q4 receipt locally accepts that leaf at Kairos `6053d8d`, and the current source pin is `6303a25`. See [the superseding current readback](current-readback-post-6303-20261007.md) for the latest pin, manual elapsed-time reconciliation, and still-open gates. This historical record is retained without rewriting its disposition.
+
 **Coordinator readback:** independent review confirms the phase disposition is withheld; see [the coordinator disposition](coordinator-disposition.json). The C2.4 checkbox remains open.
 
 **Disposition: phase acceptance withheld.** Accepted local C2.1, C2.2, C2.3, and C2.4 receipts establish only their bounded local leaf/join scopes, detailed in [the machine-readable review](closeout-review.json). They do not satisfy the phase checklist or external/domain gates.
