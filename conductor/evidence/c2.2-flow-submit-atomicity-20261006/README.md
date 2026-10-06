@@ -26,3 +26,17 @@ Commands ran in `/Users/doughnut/Documents/careops-sim-session-worktrees/c2-impl
 No hosted exact-head evidence has been collected. This resolves one Flow
 failure-atomicity prerequisite; it does not implement the calibration bridge or
 accept C2.2/C2.1.
+
+## Current stable Rust 1.99 verification
+
+The historical 1.76 test receipt above is retained as provenance but is not
+used for the current acceptance. At integrated Kairos `aecb28c7089b1861b72cbd96ce29fc2577ffe47f`, a fresh read-only verification used **only Rust 1.99.0**: all 253 DES tests passed, 1 existing test was ignored, strict all-target Clippy passed and workspace formatting passed. The capacity regression passed on the exact integrated source. Raw logs and hashes are recorded in [the acceptance receipt](acceptance-rust199.json); the prepared packet and execution result remain under the ignored `.artifacts` directories.
+
+An independent source audit confirmed the event-capacity calculation runs before
+request/entity creation, event scheduling or work association mutation. It noted
+that the regression specifically exercises the two-event acquire-plus-deadline
+failure case; an acquire-only cap failure is not separately tested.
+
+The coordinator accepted the `C2.2.flow-submit-atomicity` instance locally at
+this exact pin. C2.2 as a whole remains incomplete; C2.3, C2.1, hosted checks and
+checkpoint/release gates remain open.
