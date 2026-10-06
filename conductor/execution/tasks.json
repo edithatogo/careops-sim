@@ -2559,6 +2559,33 @@
       "kind": "review_integrate",
       "accepted": false,
       "dependencies": [
+        "C2.5"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 126
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
+    },
+    {
+      "id": "C2.5",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C2",
+      "objective": "Implement and test the reviewed same-live-Flow in-memory continuation contract for fidelity policy/decisions, purpose streams and bound bridge progress. Preserve state across a one-shot in-process handoff; portable serialization and process restart remain Track22 gates.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
         "C2.1"
       ],
       "source": {
@@ -2572,10 +2599,13 @@
         "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
       ],
       "write_reservations": [
-        "conductor/tracks"
+        "libs/kairos/crates/kairo-ecs-des/src/fidelity.rs",
+        "libs/kairos/crates/kairo-ecs-calibration/src/seed_map.rs",
+        "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "conductor/evidence"
       ],
       "dispatch_gate": "reviewed_leaf_packet_required",
-      "model_route": "coordinator",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
       "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
     },
     {
@@ -2592,7 +2622,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 148
+        "line": 152
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2620,7 +2650,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 153
+        "line": 157
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2648,7 +2678,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 156
+        "line": 160
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2676,7 +2706,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 159
+        "line": 163
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2703,7 +2733,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 170
+        "line": 174
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2731,7 +2761,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 176
+        "line": 180
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2759,7 +2789,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 181
+        "line": 185
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2787,7 +2817,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 185
+        "line": 189
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2815,7 +2845,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 196
+        "line": 200
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2843,7 +2873,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 201
+        "line": 205
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2871,7 +2901,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 207
+        "line": 211
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2899,7 +2929,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 210
+        "line": 214
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2927,7 +2957,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 213
+        "line": 217
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2957,7 +2987,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 224
+        "line": 228
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2985,7 +3015,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 228
+        "line": 232
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -3013,7 +3043,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 235
+        "line": 239
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -3041,7 +3071,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 238
+        "line": 242
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -3069,7 +3099,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 242
+        "line": 246
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",

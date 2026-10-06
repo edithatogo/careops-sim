@@ -119,6 +119,10 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
 - [x] C2.1 Write failing mode resolution/boundary tests and common-random-number
   fixtures. Assert Macro emits no transit, zero-transit Micro matches its paired
   Macro fixture, and changing mode never discards active or suspended work.
+- [ ] C2.5 Implement and test the reviewed same-live-Flow in-memory
+  continuation contract for fidelity policy/decisions, the owned Service stream
+  and one bound bridge work item. Preserve state across a one-shot in-process handoff;
+  portable serialization and process restart remain Track22 gates.
 - [ ] C2.4 Conductor — review and verify phase (workflow.md).
 
 After preparation C2.0, C2.2 provider/policy, C2.3 generic routing, and C2.1
