@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "local_leaf_accepted_rust199_corrected_recipe_exact_pin",
+  "leaf_id": "C2.2.flow-macro-zero",
+  "status": "local_leaf_accepted_c22_parent_join_pending",
+  "parent_base_commit": "ab5bc9b4b454eaad9196ad14665fad3d6acef231",
+  "target_repository": "libs/kairos",
+  "source_commit": "aecb28c7089b1861b72cbd96ce29fc2577ffe47f",
+  "corrected_recipe_sha256": "f790ce56dbd5b5184036171f3afd031a45c147b83cba585132e96609c584a355",
+  "superseded_historical_recipe_sha256": "ce5ba8f3423f8b4447cc5cd243e7c21830e6adf917bbc5ed1b9cab821abccd94",
+  "recipe_correction_commit": "ab5bc9b4b454eaad9196ad14665fad3d6acef231",
+  "packet_path": ".artifacts/packets/C2.2.flow-macro-zero.rust199-corrected-oracle.json",
+  "packet_sha256": "bb18c1749f86da808640b55f6d89af70e65f400b5adacf02c531e7c502f46fa9",
+  "worker_result_path": "libs/kairos/.artifacts/mvp/C2.2.flow-macro-zero.rust199-corrected-oracle/result.json",
+  "worker_result_sha256": "210e96e41ea3d570757047a2dcd4b76e20dbb433830df9687636b877d5c3b51d",
+  "prerequisites": {
+    "C2.2.flow-submit-atomicity": {
+      "status": "accepted",
+      "receipt_path": "conductor/evidence/c2.2-flow-submit-atomicity-20261006/acceptance-rust199.json",
+      "receipt_sha256": "09ccb4b7e567ee1d845a37ba42d0ec010fa430782f67ce2aadff188217ccc0"
+    }
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "1da4b2b3898a7d86f775601e679c6b860588d1d5f1a29d0969461e6c9cee7dbc",
+    "libs/kairos/conductor/design/calibration/c20-admission-bridge-v1.md": "3a659df216fd1b035e0c561b5df566a73a34660289239dc947992502f36049f9",
+    "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs": "e20d695c92f599b2a99109c99354cfc7701db985a43d17754097b965116c8048",
+    "libs/kairos/crates/kairo-ecs-des/src/flow.rs": "2ef1756df8ba36a90182480cf1d8a9dbf1af790683a7a772df299586fc5e9111"
+  },
+  "reviews": {
+    "recipe_scope": {
+      "reviewer": "gpt-6-luna read-only recipe/contract review",
+      "result": "corrected oracle matches the frozen contract and active C2.3 plan; nonzero Micro route belongs to C2.3.transit-bridge"
+    },
+    "source": {
+      "reviewer": "gpt-6-luna read-only current-head source audit",
+      "result": "paired Macro/zero-Micro work, acquisition, no-transit and retained-state assertions are present",
+      "limitation": "No distinct adapter-level scheduler-cap retry fixture; the accepted C2.2.flow-submit-atomicity predecessor tests actual cap preflight and no-orphan-request behavior."
+    }
+  },
+  "verification": {
+    "toolchain": {
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+    },
+    "tests": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "test", "--locked", "-p", "kairo-ecs-calibration", "-p", "kairo-ecs-abm", "--features", "kairo-ecs-calibration/flow"],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "summary": "186 passed, 0 failed, 4 ignored",
+      "log": "/tmp/c22-macro-zero-rust199-tests.log",
+      "log_sha256": "fba23cd3d436d58379d695b7618c11909905609febdd4da5ad1e81d45ef18f1c"
+    },
+    "clippy": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "clippy", "--locked", "-p", "kairo-ecs-calibration", "-p", "kairo-ecs-abm", "--features", "kairo-ecs-calibration/flow", "--all-targets", "--", "-D", "warnings"],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "/tmp/c22-macro-zero-rust199-clippy.log",
+      "log_sha256": "f2066ca264b9a8598ecd436c70919e1efe1acea4098ad2a13b5d82d67bc049ec"
+    },
+    "format": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "fmt", "--all", "--", "--check"],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "/tmp/c22-macro-zero-rust199-fmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "oracle": {
+    "frozen_fidelity_decision_binds_real_work_at_sampled_duration": true,
+    "macro_and_explicit_zero_micro_share_duration_and_service_draw_position": true,
+    "successful_timed_acquisition_returns_actual_request_linked_to_work": true,
+    "macro_and_explicit_zero_micro_emit_no_transit_event_or_transit_draw": true,
+    "tested_failures_preserve_state_without_resampling_or_recreating_work": true,
+    "cumulative_scheduler_cap_atomicity_proved_by_accepted_predecessor": true,
+    "nonzero_micro_route_dispatch_and_arrival_reconciliation_in_scope_of_this_leaf": false
+  },
+  "scope_limits": {
+    "C2_2_parent_accepted": false,
+    "C2_3_transit_bridge_accepted": false,
+    "C2_3_owner_review_complete": false,
+    "C2_1_runtime_accepted": false,
+    "hosted_exact_head_checks": false,
+    "release_or_clinical_acceptance": false
+  }
+}
