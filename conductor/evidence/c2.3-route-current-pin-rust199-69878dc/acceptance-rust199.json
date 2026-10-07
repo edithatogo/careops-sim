@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "task": "C2.3.current-pin-route-and-public-api-verification",
+  "status": "all_named_route_and_public_api_tests_passed_local_phase_gates_open",
+  "parent_head_before_evidence_commit": "9e3386518308ce2b8aabe019ac8109335d10d890",
+  "source_commit": "69878dcaf9d1eac7f1eba84ef19647642b77435d",
+  "source_tree_clean_before_test": true,
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "input_sha256": {
+    "crates/kairo-ecs-abm/src/lib.rs": "c3f4114e44873819a4ec3140cc8eed737b0697318910f697e1801e97fe250fc3",
+    "crates/kairo-ecs-abm/src/spatial.rs": "53264dca3f0af57b57211aa38c0f03ae8ead1d42a425bf77fba1c05dcf242cbb",
+    "crates/kairo-ecs-abm/Cargo.toml": "af495c37b2c3dfa6b40d85863933adf647feec0691a5bd26a01e22f1285714cd",
+    "Cargo.lock": "946b09595a094549bfdfc7d45398810f959f539243fecb9934343cf297f4949f",
+    "conformance/c20/spatial_routes_c20.rs": "1ca26266d74bee8156f7262bc04c77ca344703b85eaa4249743101e8a9716de0",
+    "conformance/c23/spatial_api_smoke.rs": "328a85581f4cd66410f48d8479b7e8c592fb7fa7d3a5090e2db1f2b7a072210b"
+  },
+  "C20": {
+    "fixture": "conformance/c20/spatial_routes_c20.rs",
+    "runner": "python3 conformance/c20/run_routes_red.py --expect green",
+    "runner_cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+    "cargo_argv": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "kairo-ecs-abm",
+      "--test",
+      "spatial_routes_c20"
+    ],
+    "cargo_cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/.artifacts/mvp/C2.0.red-tests.routes/disposable",
+    "exit_status": 0,
+    "named_test_count": 9,
+    "passed": 9,
+    "failed": 0,
+    "ignored": 0,
+    "raw_log": "c20-cargo-test.log",
+    "raw_log_sha256": "43043f6e1761008b22f6c4b735f568fbfca2f2ad27723dcdb4f9c9cfd498a110",
+    "toolchain_invocation": "runner explicitly invoked rustup run 1.99.0 rustc/cargo; toolchain details are in the prior runner log at libs/kairos/.artifacts/mvp/C2.0.red-tests.routes/logs/toolchain.log"
+  },
+  "C23": {
+    "fixture": "conformance/c23/spatial_api_smoke.rs",
+    "execution": "git archive of source_commit into a temporary directory; copied the fixture to crates/kairo-ecs-abm/tests/spatial_api_c23.rs, then ran the native Cargo target",
+    "argv": [
+      "rustup",
+      "run",
+      "1.99.0",
+      "cargo",
+      "test",
+      "--locked",
+      "--manifest-path",
+      "/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T/c2-c23-69878dc-0xe9vj65/Cargo.toml",
+      "-p",
+      "kairo-ecs-abm",
+      "--test",
+      "spatial_api_c23"
+    ],
+    "cwd": "/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T/c2-c23-69878dc-0xe9vj65",
+    "exit_status": 0,
+    "named_test_count": 3,
+    "passed": 3,
+    "failed": 0,
+    "ignored": 0,
+    "raw_log": "c23-cargo-test.log",
+    "raw_log_sha256": "08f95ce6357b728197c87c049c9d598c9f63f8be9cf89b615d4569d37c3d612d",
+    "named_tests": [
+      "exact_v1_topology_byte_golden",
+      "actual_public_getters_bind_geometry_profile_and_time",
+      "exact_mode_identity_boundaries_and_unicode_are_checked"
+    ]
+  },
+  "phase_acceptance": false,
+  "limitations": [
+    "Local C20 route and C23 API fixtures only.",
+    "No receipt-hash adapter or graph/profile continuation identity check is implemented; that path remains subject to Track03/21 owner review.",
+    "This evidence does not close C2.4, Track03/Track22 owner review, portable restart, hosted checks, release, or clinical gates."
+  ]
+}
