@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "task_id": "C2.4.closeout",
+  "instance_id": "current-pin-69878dc-rust199-20261007",
+  "status": "coordinator_review_withheld_local_readback_current",
+  "parent_commit": "c7d8036f8235564d402ba374692206fc235d1bb7",
+  "kairos_pin": "69878dcaf9d1eac7f1eba84ef19647642b77435d",
+  "manual_elapsed_time_review": {
+    "status": "manual_source_reconciliation_passed",
+    "source": "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "source_sha256": "898d96efb005e4e9da0fbc88ba997f7bbee63c58c0da419d1716a5ab485f2227",
+    "base_fixture": {
+      "name": "macro_and_micro_reconcile_queue_transit_and_service_elapsed_time",
+      "macro_ticks": {
+        "queue": 5,
+        "service": 20,
+        "elapsed": 25
+      },
+      "routed_micro_ticks": {
+        "transit": 2,
+        "queue": 3,
+        "service": 20,
+        "elapsed": 25
+      }
+    },
+    "urgent_suspend_fixture": {
+      "name": "actual_flow_urgent_suspend_resumes_same_macro_and_routed_micro_service",
+      "macro_ticks": {
+        "queue": 5,
+        "useful_service": 20,
+        "pause": 2,
+        "elapsed": 27
+      },
+      "routed_micro_ticks": {
+        "transit": 2,
+        "queue": 3,
+        "useful_service": 20,
+        "pause": 2,
+        "elapsed": 27
+      }
+    },
+    "urgent_restart_fixture": {
+      "name": "actual_flow_urgent_restart_reuses_sampled_service_for_macro_and_zero_transit_micro",
+      "macro_ticks": {
+        "queue": 5,
+        "discarded_attempt": 3,
+        "pause": 2,
+        "restarted_service": 20,
+        "transit": 0,
+        "elapsed": 30
+      },
+      "explicit_zero_micro_ticks": {
+        "queue": 5,
+        "discarded_attempt": 3,
+        "pause": 2,
+        "restarted_service": 20,
+        "transit": 0,
+        "elapsed": 30
+      }
+    }
+  },
+  "runtime_verification": {
+    "receipt": "conductor/evidence/c2.4-q4-event-drain-rust199-20261007/acceptance-rust199.json",
+    "receipt_sha256": "5ac4522e19a58f2d48aa36c24dfc1725a1511c6fc46ee0c8f15c004f105ac2e5",
+    "toolchain": {
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+    },
+    "result_groups": 43,
+    "passed": 457,
+    "failed": 0,
+    "ignored": 5,
+    "strict_clippy_exit_status": 0,
+    "format_exit_status": 0
+  },
+  "open_gates": {
+    "Track03_Track21_owner_disposition": "open",
+    "Track22_checkpoint_contract": "open",
+    "portable_process_restart": "open",
+    "hosted_exact_head_checks": "open",
+    "release_acceptance": "open",
+    "clinical_acceptance": "open",
+    "C2.4_phase_acceptance": "withheld"
+  },
+  "plan_checkbox_changed": false,
+  "owner_contacted": false,
+  "rust_command_run_during_manual_review": false
+}
