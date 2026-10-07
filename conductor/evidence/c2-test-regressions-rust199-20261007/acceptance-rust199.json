@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "instance_id": "C2.test-regressions.6364a92.rust199",
+  "status": "local_exact_pin_verification_passed_phase_gates_open",
+  "parent_head_before_integrated_pin_and_evidence_update": "bbdd87778ae6cb0aa809a6bb85437c2ec507a662",
+  "kairos_pin": "6364a92b12a2b1c186ab1477814bc3dfb8a50aef",
+  "integrated_commits": [
+    {
+      "commit": "98d4af2",
+      "change": "C2.2 provider validation precedence test",
+      "source_commit": "486dc1bbea77a1f6b066e45de646899302618e5e"
+    },
+    {
+      "commit": "07c9891",
+      "change": "C2.5 non-empty Flow state preservation test",
+      "source_commit": "ba92064cf2594cc5e46ed7eeceaecd10084c7ea0"
+    },
+    {
+      "commit": "6364a92",
+      "change": "C2 mixed-subsystem runtime test",
+      "source_commit": "9fd9dc550cef99182de69e17da5f872e81883201"
+    }
+  ],
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+    "policy": "stable Rust 1.99.0 only"
+  },
+  "source_hashes": {
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "18663b5407f4992d72bec07f6352b9a05ca6a59828b56299f841aa23a46df66c",
+    "crates/kairo-ecs-calibration/src/work_duration.rs": "3c85675fe65a2c049fccc112f558017c66d3f9ec6e9f3a0f55ac3fdd1c06c697"
+  },
+  "contract_hashes": {
+    "conductor/design/calibration/c20-work-provider-v1.md": "51ac6dc6783c280368dfd4630e4c33c5d585bf4c9657484e5e6c4ccb5c541333",
+    "conductor/design/calibration/c2-in-memory-continuation-v1.md": "eccff11d9c8304c864e26fe589f2968d75be8fbf07a601cd995460e2da933991",
+    "conductor/design/calibration/c2-seed-map-v1.md": "046ba8d06f667472399cb2a3af9f15ef03168558edfc3859dd0f28c719972c5b"
+  },
+  "verification": {
+    "combined_package_suite": {
+      "command": "rustup run 1.99.0 cargo test --locked -p kairo-ecs-des -p kairo-ecs-abm -p kairo-ecs-calibration --features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support --target-dir /Users/doughnut/Documents/careops-sim-session-worktrees/kairo-c2-service-draw-position/target",
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "passed": 457,
+      "failed": 0,
+      "ignored": 5,
+      "result_groups": 43,
+      "log_path": "conductor/evidence/c2-test-regressions-rust199-20261007/suite.log",
+      "log_sha256": "ef35162f6b87cb39557f400f45f930d40bb96aecc0cf39f6c93cf7ba3c8bdd54"
+    },
+    "strict_clippy": {
+      "command": "rustup run 1.99.0 cargo clippy --locked --target-dir /Users/doughnut/Documents/careops-sim-session-worktrees/kairo-c2-service-draw-position/target -p kairo-ecs-des -p kairo-ecs-abm -p kairo-ecs-calibration --features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support --all-targets -- -D warnings",
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "warnings_denied": true,
+      "log_path": "conductor/evidence/c2-test-regressions-rust199-20261007/clippy.log",
+      "log_sha256": "cc92ab15a3f53116bc13764f702d17e751c587974f7a223ec4a597383261b52c"
+    },
+    "format": {
+      "command": "rustup run 1.99.0 cargo fmt --all -- --check",
+      "cwd": "libs/kairos",
+      "exit_code": 0
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "cwd": "libs/kairos",
+      "exit_code": 0
+    },
+    "parent_context_check": {
+      "command": "python3 tools/context.py check",
+      "exit_code": 0,
+      "summary": "5 tracks, 34 milestones, 866 local links, no errors"
+    },
+    "parent_task_catalog_check": {
+      "command": "python3 tools/tasks.py check",
+      "exit_code": 0,
+      "summary": "145 task records, complete coverage/prerequisites/DAG"
+    },
+    "parent_mvp_check": {
+      "command": "python3 tools/mvp.py check",
+      "exit_code": 0,
+      "summary": "82 parents, 258 bounded leaves, complete joins and hashes"
+    }
+  },
+  "worker_receipts": [
+    {
+      "packet": "C2.2.validation-precedence.809ade8.attempt1",
+      "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.2-validation-precedence/.artifacts/c2-followups/C2.2.validation-precedence.809ade8.attempt1/result.json",
+      "result_sha256": "a439b9ae706e07a7ffd899a554f81a54fc17171869943a9c65d064642fe12617",
+      "independent_review": "passed"
+    },
+    {
+      "packet": "C2.5.flow-state-preservation-nonempty.809ade8.attempt1",
+      "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.5-flow-preservation/.artifacts/c2-followups/C2.5.flow-state-preservation-nonempty.809ade8.attempt1/result.json",
+      "result_sha256": "5b33d69ebce491504f25264b0fd6e3507996162dd27c72f7fd514bf776b94877",
+      "independent_review": "passed"
+    },
+    {
+      "packet": "C2.mixed-subsystem-runtime.07c9891.attempt2",
+      "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-mixed-subsystem/.artifacts/c2-followups/C2.mixed-subsystem-runtime.07c9891.attempt2/result.json",
+      "result_sha256": "bca05b2b584f87816da6944963fa6737a4c72006e1ff11642ca2a22fa784463b",
+      "independent_review": "passed after scheduler no-event assertion"
+    }
+  ],
+  "previous_pin_receipt": {
+    "kairos_pin": "678453838f391f3dd869b79fd502077f63f3a067",
+    "passed": 455,
+    "failed": 0,
+    "ignored": 5,
+    "groups": 43,
+    "historical": true
+  },
+  "phase_acceptance": false,
+  "unresolved_gates": [
+    "Track03 owner disposition",
+    "Track22 checkpoint/restart contract and owner disposition",
+    "hosted exact-head checks",
+    "release acceptance",
+    "clinical acceptance",
+    "C2.4 Conductor phase review"
+  ]
+}
