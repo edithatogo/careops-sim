@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-07",
+  "updated_at": "2026-10-07T15:02:04+10:00",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2 test-only regressions are integrated at Kairos 6364a92 and the combined DES/ABM/calibration suite passed under stable Rust 1.99.0 (457 passed, 0 failed, 5 ignored); strict Clippy and formatting passed. The refreshed Track03 and Track22 owner packets remain unsent and undispositioned. Continue owner review and hosted, portable checkpoint/restart, release and clinical gates; C2.4 phase acceptance remains withheld.",
+  "next_action": "C2.4 manual source reconciliation is recorded at exact parent edd170f / Kairos 6364a92; Macro/Micro elapsed-time oracles reconcile to 25 ticks and urgent Suspend to 27 ticks. C2.4 phase acceptance remains withheld pending Track03 and Track22 owner decisions, portable checkpoint/restart, hosted exact-head checks, release and clinical gates.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -585,23 +585,28 @@
     "superseded_by_current_verification": "c2_test_regression_verification at Kairos 6364a92; original record retained as historical evidence"
   },
   "c24_current_pin_coordinator_review": {
-    "status": "manual_reconciliation_passed_phase_acceptance_withheld",
-    "evidence": "conductor/evidence/c2.4-coordinator-review-rust199-20261007/coordinator-review.json",
-    "evidence_sha256": "9f4577904b2400a2e04d24f148cd0b95497148b1291a2737d178d9b985b96836",
-    "readme": "conductor/evidence/c2.4-coordinator-review-rust199-20261007/README.md",
-    "readme_sha256": "41b0fcdbc50daacc5f83be57fc09af8462f332239e88034f50d7c9da9e4131ce",
-    "parent_review_baseline": "8ee0d59d81c4b2988429213d8487a50f3e390ea5",
-    "kairos_pin": "678453838f391f3dd869b79fd502077f63f3a067",
+    "status": "manual_source_reconciliation_passed_phase_acceptance_withheld",
+    "evidence": "conductor/evidence/c2.4-coordinator-review-rust199-20261007-6364a92/coordinator-review.json",
+    "readme": "conductor/evidence/c2.4-coordinator-review-rust199-20261007-6364a92/README.md",
+    "parent_head": "edd170fc2be9e9a3f99d1f53f8c76c32a5b01b8f",
+    "kairos_pin": "6364a92b12a2b1c186ab1477814bc3dfb8a50aef",
+    "source_path": "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "source_sha256": "18663b5407f4992d72bec07f6352b9a05ca6a59828b56299f841aa23a46df66c",
     "manual_base_elapsed_ticks": 25,
     "manual_urgent_suspend_elapsed_ticks": 27,
-    "current_pin_suite": "455 passed, 0 failed, 5 ignored across 43 groups; Rust 1.99.0 only; strict Clippy and format passed",
-    "Track03_owner_phase_review": "open",
-    "Track22_contract_and_portable_restart": "open",
-    "hosted_exact_head_checks": "open",
-    "release": "open",
-    "clinical_acceptance": "open",
-    "C2_4_phase_acceptance": "withheld",
-    "superseded_by_current_verification": "c2_test_regression_verification at Kairos 6364a92; original record retained as historical evidence"
+    "rust_policy": "stable Rust 1.99.0 only; no tests/builds rerun for this review",
+    "phase_acceptance": false,
+    "unresolved_gates": [
+      "Track03 owner decisions",
+      "Track22 checkpoint/restart contract and ADR decisions",
+      "portable fresh-process checkpoint/restart",
+      "hosted exact-head checks",
+      "release acceptance",
+      "clinical acceptance"
+    ],
+    "plan_checkbox_changed": false,
+    "evidence_sha256": "7b9eb3bccea19713e44ac89e30f6c62871921516f470a1a65c58d060f5cbb504",
+    "readme_sha256": "de0b10d9c993a28996b381246e688275f618db6966d713c3349209a39f8a9b94"
   },
   "c2_test_regression_verification": {
     "kairos_pin": "6364a92b12a2b1c186ab1477814bc3dfb8a50aef",

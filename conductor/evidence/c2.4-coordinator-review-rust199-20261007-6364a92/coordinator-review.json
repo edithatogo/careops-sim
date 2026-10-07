@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "instance_id": "C2.4.coordinator-review.6364a92.rust199",
+  "status": "manual_source_reconciliation_passed_phase_acceptance_withheld",
+  "parent_head": "edd170fc2be9e9a3f99d1f53f8c76c32a5b01b8f",
+  "kairos_pin": "6364a92b12a2b1c186ab1477814bc3dfb8a50aef",
+  "toolchain_policy": "stable Rust 1.99.0 only; no additional tests or builds run during this review",
+  "manual_source_review": {
+    "path": "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "sha256": "18663b5407f4992d72bec07f6352b9a05ca6a59828b56299f841aa23a46df66c",
+    "runtime_ledger_test": {
+      "symbol": "macro_and_micro_reconcile_queue_transit_and_service_elapsed_time",
+      "source_lines": "2106-2327",
+      "macro": {
+        "submitted_tick": 0,
+        "grant_tick": 5,
+        "service_ticks": 20,
+        "completion_tick": 25,
+        "reconciled_ticks": "5 queue + 20 service = 25"
+      },
+      "routed_micro": {
+        "transit_ticks": 2,
+        "submit_tick": 2,
+        "grant_tick": 5,
+        "queue_ticks": 3,
+        "service_ticks": 20,
+        "completion_tick": 25,
+        "reconciled_ticks": "2 transit + 3 queue + 20 service = 25"
+      },
+      "oracle": "Assertions read actual dispatches, TransitContext progress, Flow request/allocation/completion state, and compare service stream identity/draw position."
+    },
+    "urgent_suspend_test": {
+      "helper_lines": "2351-2711",
+      "test_symbol": "actual_flow_urgent_suspend_resumes_same_macro_and_routed_micro_service",
+      "test_lines": "2714-2758",
+      "macro": {
+        "queue_ticks": 5,
+        "useful_service_ticks": 20,
+        "interruption_ticks": 2,
+        "completion_tick": 27,
+        "reconciled_ticks": "5 + 20 + 2 = 27"
+      },
+      "routed_micro": {
+        "transit_ticks": 2,
+        "queue_ticks": 3,
+        "useful_service_ticks": 20,
+        "interruption_ticks": 2,
+        "completion_tick": 27,
+        "reconciled_ticks": "2 + 3 + 20 + 2 = 27"
+      },
+      "oracle": "The helper observes same work/request identity, suspend after 3 useful ticks with 17 remaining, urgent completion at tick 10, resume, terminal completion at tick 27, lifecycle rows, and conservation. Pair test compares service stream and transit observations."
+    },
+    "qualification_limit": "These are deterministic fixture-specific local oracles. The TransitContext has no RNG field; no global RNG-consumption counter or generalized empirical validity claim is demonstrated. The urgent Suspend helper also does not assert that every unrelated future scheduled event is absent after the target work completes."
+  },
+  "evidence_reconciliation": {
+    "current_pin_suite": "conductor/evidence/c2-test-regressions-rust199-20261007/acceptance-rust199.json",
+    "current_pin_suite_result": "457 passed, 0 failed, 5 ignored across 43 result groups; strict Clippy and formatting passed on stable Rust 1.99.0",
+    "current_pin_suite_scope": "Compatibility/regression verification at the integrated pin; it is not a new C2.4 runtime-leaf execution receipt.",
+    "runtime_ledger_leaf_receipt": {
+      "path": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json",
+      "recorded_pin": "5cc825048a1116740e80e6c067ba046306f2ce10",
+      "historical_leaf_receipt": true
+    },
+    "urgent_interruption_leaf_receipt": {
+      "path": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/acceptance-rust199.json",
+      "recorded_pin": "6053d8dd2f8057c423decc929c90a8bcd10837f9",
+      "historical_leaf_receipt": true
+    },
+    "prior_coordinator_receipt": {
+      "path": "conductor/evidence/c2.4-coordinator-review-rust199-20261007/coordinator-review.json",
+      "recorded_parent": "8ee0d59d81c4b2988429213d8487a50f3e390ea5",
+      "recorded_kairos_pin": "678453838f391f3dd869b79fd502077f63f3a067",
+      "status": "superseded; retained as historical evidence"
+    },
+    "exact_pin_reviewer_findings": "Three independent read-only source/gate reviews confirmed the current parent and Kairos pins, current source hash, arithmetic, stale receipt boundary, and open gates."
+  },
+  "phase_acceptance": false,
+  "plan_checkbox_changed": false,
+  "unresolved_gates": [
+    "Track03 owner decisions and disposition of the prepared, unsent packet",
+    "Track22 owner contract/ADR decisions and disposition of the prepared, unsent packet",
+    "portable checkpoint and fresh-process restart implementation/oracle",
+    "hosted exact-head checks",
+    "release acceptance",
+    "clinical acceptance"
+  ],
+  "decision": "Record the manual source reconciliation as passed. Keep C2.4 and C2 phase acceptance withheld until the listed gates have current evidence and owner decisions."
+}
