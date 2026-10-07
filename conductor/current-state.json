@@ -3,7 +3,7 @@
   "updated_at": "2026-10-07T15:02:04+10:00",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.4 manual source reconciliation is recorded at exact parent edd170f / Kairos 6364a92; Macro/Micro elapsed-time oracles reconcile to 25 ticks and urgent Suspend to 27 ticks. C2.4 phase acceptance remains withheld pending Track03 and Track22 owner decisions, portable checkpoint/restart, hosted exact-head checks, release and clinical gates.",
+  "next_action": "C2.4 manual source reconciliation remains recorded; a test-only zero-pending-events oracle is now integrated at exact parent pin and Kairos 69878dc. C2.4 phase acceptance remains withheld pending Track03/Track22 owner decisions, portable checkpoint/restart, hosted exact-head checks, release and clinical gates.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -102,10 +102,12 @@
     "conductor/evidence/c2-test-regressions-rust199-20261007/suite.log",
     "conductor/evidence/c2-test-regressions-rust199-20261007/clippy.log",
     "conductor/evidence/c2.3-route-current-pin-rust199-20261007/README.md",
-    "conductor/evidence/c2.3-route-current-pin-rust199-20261007/acceptance-rust199.json"
+    "conductor/evidence/c2.3-route-current-pin-rust199-20261007/acceptance-rust199.json",
+    "conductor/evidence/c2.4-q4-event-drain-rust199-20261007/README.md",
+    "conductor/evidence/c2.4-q4-event-drain-rust199-20261007/acceptance-rust199.json"
   ],
   "submodule_pins": {
-    "libs/kairos": "6364a92b12a2b1c186ab1477814bc3dfb8a50aef",
+    "libs/kairos": "69878dcaf9d1eac7f1eba84ef19647642b77435d",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -587,7 +589,7 @@
     "superseded_by_current_verification": "c2_test_regression_verification at Kairos 6364a92; original record retained as historical evidence"
   },
   "c24_current_pin_coordinator_review": {
-    "status": "manual_source_reconciliation_passed_phase_acceptance_withheld",
+    "status": "manual_source_reconciliation_passed_at_reviewed_pin_6364_phase_acceptance_withheld",
     "evidence": "conductor/evidence/c2.4-coordinator-review-rust199-20261007-6364a92/coordinator-review.json",
     "readme": "conductor/evidence/c2.4-coordinator-review-rust199-20261007-6364a92/README.md",
     "parent_head": "edd170fc2be9e9a3f99d1f53f8c76c32a5b01b8f",
@@ -609,7 +611,9 @@
     "plan_checkbox_changed": false,
     "evidence_sha256": "7b9eb3bccea19713e44ac89e30f6c62871921516f470a1a65c58d060f5cbb504",
     "readme_sha256": "de0b10d9c993a28996b381246e688275f618db6966d713c3349209a39f8a9b94",
-    "current_parent_head_after_evidence_only_refresh": "58262775416690dd64c79a9f21c941c84de46903"
+    "parent_head_after_evidence_only_refresh": "58262775416690dd64c79a9f21c941c84de46903",
+    "superseded_for_current_source_by": "test-only Q4 zero-pending-events oracle at Kairos 69878dc; only flow_bridge.rs changed and elapsed-time behavior is unchanged",
+    "current_source_compatibility_receipt": "conductor/evidence/c2.4-q4-event-drain-rust199-20261007/acceptance-rust199.json"
   },
   "c2_test_regression_verification": {
     "kairos_pin": "6364a92b12a2b1c186ab1477814bc3dfb8a50aef",
@@ -641,11 +645,23 @@
     }
   },
   "c23_current_pin_route_verification": {
-    "status": "nine_C20_route_cases_and_three_C23_public_API_cases_passed",
+    "status": "nine_C20_route_cases_and_three_C23_public_API_cases_passed_at_6364; route sources unchanged at current 69878dc pin",
     "parent_evidence_commit": "58262775416690dd64c79a9f21c941c84de46903",
     "kairos_pin": "6364a92b12a2b1c186ab1477814bc3dfb8a50aef",
     "toolchain": "stable Rust 1.99.0 only",
     "evidence": "conductor/evidence/c2.3-route-current-pin-rust199-20261007/acceptance-rust199.json",
-    "phase_acceptance": "C2.4 remains open; local route evidence does not close owner, hosted, portable restart, release or clinical gates"
+    "phase_acceptance": "C2.4 remains open; local route evidence does not close owner, hosted, portable restart, release or clinical gates",
+    "current_kairos_pin": "69878dcaf9d1eac7f1eba84ef19647642b77435d",
+    "route_source_and_fixture_hashes_match_current_pin": true
+  },
+  "c24_q4_event_drain_test_verification": {
+    "status": "test_only_pending_event_oracle_passed_phase_gates_open",
+    "parent_head_before_evidence_commit": "8f40a0ac2bd4d91bd16b060ebc2c075d744b8586",
+    "kairos_pin": "69878dcaf9d1eac7f1eba84ef19647642b77435d",
+    "source_sha256": "898d96efb005e4e9da0fbc88ba997f7bbee63c58c0da419d1716a5ab485f2227",
+    "toolchain": "stable Rust 1.99.0 only",
+    "verification": "targeted Q4 Suspend/Restart passed; combined suite 457 passed, 0 failed, 5 ignored across 43 groups; strict Clippy and format passed",
+    "evidence": "conductor/evidence/c2.4-q4-event-drain-rust199-20261007/acceptance-rust199.json",
+    "phase_acceptance": false
   }
 }

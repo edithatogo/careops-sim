@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "task": "C2.4.q4-no-pending-event-assertion",
+  "status": "test_only_oracle_passed_local_phase_gates_open",
+  "parent_head_before_evidence_commit": "8f40a0ac2bd4d91bd16b060ebc2c075d744b8586",
+  "integrated_kairos_pin": "69878dcaf9d1eac7f1eba84ef19647642b77435d",
+  "code_change_commit": "69878dcaf9d1eac7f1eba84ef19647642b77435d",
+  "source_sha256": "898d96efb005e4e9da0fbc88ba997f7bbee63c58c0da419d1716a5ab485f2227",
+  "source_path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "change": "Assert the isolated urgent-interruption fixture has zero pending scheduler events after terminal service completion.",
+  "scope": "test-only assertion; no production scheduler behavior, APIs, contracts, fixtures, lockfiles, or manifests changed.",
+  "verification": {
+    "q4_suspend": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--lib",
+        "flow_bridge::tests::actual_flow_urgent_suspend_resumes_same_macro_and_routed_micro_service",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.4-no-pending-event-20261007",
+      "exit_status": 0,
+      "log": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.4-no-pending-event-20261007/.artifacts/c2.4-no-pending-event-rust199/q4_suspend.log",
+      "log_sha256": "0f7688baf3770f1d39468d1f16569d229aca300eb22d3000695c18ccb9853b79"
+    },
+    "q4_restart": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--lib",
+        "flow_bridge::tests::actual_flow_urgent_restart_reuses_sampled_service_for_macro_and_zero_transit_micro",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.4-no-pending-event-20261007",
+      "exit_status": 0,
+      "log": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.4-no-pending-event-20261007/.artifacts/c2.4-no-pending-event-rust199/q4_restart.log",
+      "log_sha256": "b48d4b43c430ee4112d750ce4ee5499537bddda2e400281a4e31d82b050baf83"
+    },
+    "combined": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.4-no-pending-event-20261007",
+      "exit_status": 0,
+      "log": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.4-no-pending-event-20261007/.artifacts/c2.4-no-pending-event-rust199/combined.log",
+      "log_sha256": "016099fe0a7ba27afe47ae789059944237cc883577c6fc4e15d614e879e3ad6d",
+      "result_groups": 43,
+      "passed": 457,
+      "failed": 0,
+      "ignored": 5,
+      "summaries": [
+        [
+          18,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          0
+        ],
+        [
+          7,
+          0,
+          0
+        ],
+        [
+          96,
+          0,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          6,
+          0,
+          0
+        ],
+        [
+          15,
+          0,
+          1
+        ],
+        [
+          8,
+          0,
+          1
+        ],
+        [
+          8,
+          0,
+          0
+        ],
+        [
+          23,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          0
+        ],
+        [
+          13,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          147,
+          0,
+          1
+        ],
+        [
+          4,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          6,
+          0,
+          0
+        ],
+        [
+          6,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          0
+        ],
+        [
+          8,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          8,
+          0,
+          0
+        ],
+        [
+          4,
+          0,
+          0
+        ],
+        [
+          8,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          8,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          0
+        ],
+        [
+          9,
+          0,
+          0
+        ],
+        [
+          7,
+          0,
+          0
+        ],
+        [
+          6,
+          0,
+          0
+        ],
+        [
+          4,
+          0,
+          0
+        ],
+        [
+          6,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "clippy": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.4-no-pending-event-20261007",
+      "exit_status": 0,
+      "log": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.4-no-pending-event-20261007/.artifacts/c2.4-no-pending-event-rust199/clippy.log",
+      "log_sha256": "22e0df986057b9ba5be07526ac5fb348862a3dedef42108383cc3e088acbb889"
+    },
+    "format": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.4-no-pending-event-20261007",
+      "exit_status": 0,
+      "log": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2.4-no-pending-event-20261007/.artifacts/c2.4-no-pending-event-rust199/format.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}
