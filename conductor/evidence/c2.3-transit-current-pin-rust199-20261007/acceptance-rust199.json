@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "task": "C2.3 exact-pin actual-Flow transit fixture evidence",
+  "status": "passed",
+  "parent_commit": "fdcef188d3cb672a60260232afa09caab1109dc8",
+  "kairos_commit": "69878dcaf9d1eac7f1eba84ef19647642b77435d",
+  "working_directory": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+  "command": [
+    "python3",
+    "conformance/c20/run_transit_red.py",
+    "--expect",
+    "green"
+  ],
+  "toolchain": {
+    "rustc": "1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "1.99.0 (5f94df478 2026-08-27)"
+  },
+  "runner_oracle": "exact named actual provider/Flow transit fixture passed once; other package tests were filtered out",
+  "fixture_sha256": "a6169373466b43075e35507bd7d39a044943d88c223b6d39efcca2cc79607fc9",
+  "cargo_exit_status": 0,
+  "cargo_argv": [
+    "cargo",
+    "test",
+    "--locked",
+    "-p",
+    "kairo-ecs-calibration",
+    "--lib",
+    "--features",
+    "flow,kairo-ecs-abm/test-support",
+    "--",
+    "--exact",
+    "paired_transit_c20::actual_nonzero_route_consumes_stale_start_and_arrival_across_pause_resume_once"
+  ],
+  "cargo_log_sha256": "a529ab9df949e873c9b997432d0d2c9021bdcd32f84f9c36a9eb3fea5ae64f5e",
+  "copied_evidence_sha256": {
+    "runner-result.json": "5f8cf0d82a97760edb0f43da434c13dae61b66add55aeb8e6db16478a70824f7",
+    "cargo-test.log": "a529ab9df949e873c9b997432d0d2c9021bdcd32f84f9c36a9eb3fea5ae64f5e",
+    "toolchain.log": "f3ffefce2bf5646f08551258a1972fefaee9894e907a8a0473c7e9502797dc7d",
+    "commands.json": "a442208287b60283e4257b240d642608f28c0be8c3d013964e6532eaaf48fb52"
+  },
+  "kairos_input_sha256": {
+    "conformance/c20/run_transit_red.py": "bdd7c146fa3112e568b2e7d31303427701543c1fed4c34f5be8bc1033c26058c",
+    "conformance/c20/transit_flow_c20.rs": "a6169373466b43075e35507bd7d39a044943d88c223b6d39efcca2cc79607fc9",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "898d96efb005e4e9da0fbc88ba997f7bbee63c58c0da419d1716a5ab485f2227",
+    "crates/kairo-ecs-calibration/Cargo.toml": "d4b2add138c68e8f3ee53a43e21a50f60b43e9d0ef5bb17742cb4f0f8823b24a",
+    "Cargo.lock": "946b09595a094549bfdfc7d45398810f959f539243fecb9934343cf297f4949f"
+  },
+  "manifest_lock_unchanged": true,
+  "scope": "One named actual provider/Flow transit test in a disposable archive of the exact Kairos commit; other package tests filtered out. No source or manifest changes."
+}
