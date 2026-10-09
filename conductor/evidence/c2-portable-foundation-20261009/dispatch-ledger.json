@@ -1,0 +1,115 @@
+{
+  "coordinator": "root",
+  "parent_base": "05720ec581f8e1674bd775ac3aac13b49206c37d",
+  "child_existing_pin": "bc98ae5ec15805d3e82c4e60af8d52d13de4f726",
+  "contract_commit": "89e69ac",
+  "contract_hash": "28f16f0b97d3b76942c71361aa27f6ffd8183c6d4aba41a9462c17e023eefb7d",
+  "workers": [
+    {
+      "packet": "C2.portable.scheduler.v1",
+      "attempt": 1,
+      "worker": "portable_des_state",
+      "requested_model": "gpt-6-luna",
+      "served_model_not_attested": true,
+      "state": "dispatched_after_contract_review",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-scheduler-checkpoint-20261009",
+      "base_commit": "89e69ac",
+      "contract": "conductor/design/calibration/ADR-0016-c2-portable-state-foundation.md",
+      "contract_sha256": "28f16f0b97d3b76942c71361aa27f6ffd8183c6d4aba41a9462c17e023eefb7d",
+      "owned_source_paths": [
+        "crates/kairo-ecs-core/src/lib.rs",
+        "crates/kairo-ecs-core/src/checkpoint.rs",
+        "crates/kairo-ecs-core/tests/scheduler_checkpoint_v1.rs"
+      ],
+      "input_sha256": {
+        "crates/kairo-ecs-core/src/lib.rs": "865cd8ba77db35953cc9b333d3428f1e4f4801154e638e7617825371d3a02038",
+        "crates/kairo-ecs-core/tests/scheduler_checkpoint_v1.rs": "d9590c98c06688082c23f4a79920ee634c3d61568e96ffe801a98c08346b18a7"
+      },
+      "verification_command": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-core"
+      ],
+      "verification_cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-scheduler-checkpoint-20261009",
+      "toolchain": "Rust1.99.0 only, full Rustup PATH/RUSTC/RUSTDOC, isolated target",
+      "scope": "Full owner component state DTO, not a fixed recipe and not end-to-end portable acceptance",
+      "publication": "none until independent integration"
+    },
+    {
+      "packet": "C2.portable.world.v1",
+      "attempt": 1,
+      "worker": "portable_c2_state",
+      "requested_model": "gpt-6-luna",
+      "served_model_not_attested": true,
+      "state": "dispatched_after_contract_review",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-world-checkpoint-20261009",
+      "base_commit": "89e69ac",
+      "contract": "conductor/design/calibration/ADR-0016-c2-portable-state-foundation.md",
+      "contract_sha256": "28f16f0b97d3b76942c71361aa27f6ffd8183c6d4aba41a9462c17e023eefb7d",
+      "owned_source_paths": [
+        "crates/kairo-ecs-state/src/lib.rs",
+        "crates/kairo-ecs-state/src/checkpoint.rs",
+        "crates/kairo-ecs-state/tests/world_checkpoint_v1.rs"
+      ],
+      "input_sha256": {
+        "crates/kairo-ecs-state/src/lib.rs": "ca14b012a7f9df3904577d4f5ef57624a09c8af80de54eb82b6dfcd4094a8623",
+        "crates/kairo-ecs-state/src/checkpoint.rs": "ac1a89204a83ed55c25347f912698385d2d46b1ffdce0a90ff75224b492ac18b",
+        "crates/kairo-ecs-state/tests/world_checkpoint_v1.rs": "06c4e6c01e121571c7bd9cc4a56ef18dcc2eb232a14e9cc21ef48d8c5a5c8172"
+      },
+      "verification_command": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-state"
+      ],
+      "verification_cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-world-checkpoint-20261009",
+      "toolchain": "Rust1.99.0 only, full Rustup PATH/RUSTC/RUSTDOC, isolated target",
+      "scope": "Full owner component state DTO, not a fixed recipe and not end-to-end portable acceptance",
+      "publication": "none until independent integration"
+    },
+    {
+      "packet": "C2.portable.seed-registry.v1",
+      "attempt": 1,
+      "worker": "portable_track22_contract",
+      "requested_model": "gpt-6-luna",
+      "served_model_not_attested": true,
+      "state": "dispatched_after_contract_review",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-seed-registry-checkpoint-20261009",
+      "base_commit": "89e69ac",
+      "contract": "conductor/design/calibration/ADR-0016-c2-portable-state-foundation.md",
+      "contract_sha256": "28f16f0b97d3b76942c71361aa27f6ffd8183c6d4aba41a9462c17e023eefb7d",
+      "owned_source_paths": [
+        "crates/kairo-ecs-calibration/src/seed_map.rs"
+      ],
+      "input_sha256": {
+        "crates/kairo-ecs-calibration/src/seed_map.rs": "a6b69becbf1c0a377ba74522144463cfd512da82decc6bf1d5718be8b2120cbe"
+      },
+      "verification_command": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support"
+      ],
+      "verification_cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-seed-registry-checkpoint-20261009",
+      "toolchain": "Rust1.99.0 only, full Rustup PATH/RUSTC/RUSTDOC, isolated target",
+      "scope": "Full owner component state DTO, not a fixed recipe and not end-to-end portable acceptance",
+      "publication": "none until independent integration"
+    }
+  ],
+  "next_join": "Review three component commits, integrate in scheduler/world/seed order, then full affected native suite; Flow/context/adapter and envelope codecs remain required"
+}
