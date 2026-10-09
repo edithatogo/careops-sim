@@ -120,3 +120,18 @@ hex receipt formatting compile failure; failed attempts remain retained. Hosted
 PR243 now points at58827f30 and is qualifying this source; older hosted success
 remains scoped to fad0380. Parent pin unchanged. Manual/coordinator C2.4 review,
 new hosted source proof, clinical, release and C5 gates remain distinct.
+
+## Hosted source qualification and parent adoption — 10 October
+
+PR243 source58827f30 has66 successful checks and two named conditional skips.
+Both native owner jobs and eight Arrow lanes pass on Rust1.99. Both compiled
+synthetic merge0118eb00 trees equal reviewed tree175d44d7. Four portable source
+hashes match; Flow tests592/0/5 per host and40 hosted child inputs/exit/control
+traces reconcile. Separate provider readback accepts only this source/artifact
+qualification. Phase/DAG/strict-clean commands return0 on the reviewed source.
+
+See [hosted receipt](hosted-composite-readback/acceptance.json) and
+[Conductor review](hosted-composite-readback/review-report.md). Source58827f30 is
+now the parent pin; local documentation successorcd47fd5 is not the pin or a new
+hosted source claim. C2.4 internal owner/coordinator disposition is still pending.
+Release, clinical, stable public API and C5 acceptance remain separate.

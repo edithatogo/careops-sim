@@ -1,0 +1,149 @@
+{
+  "run": 37958390838,
+  "reviewed_head": "58827f30fde5bc4330bc38eff1875470592b74e0",
+  "reviewed_tree": "175d44d7812a1e04df873be74cdfc6b1e6173578",
+  "host_readbacks": [
+    {
+      "host": "ubuntu-24.04",
+      "compiled_commit": "0118eb0014a380b0cdd1b2733f2f1c94802bb847",
+      "tree": "175d44d7812a1e04df873be74cdfc6b1e6173578",
+      "source_hashes": {
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "2872e931c2151ed51b5a64a5ef86cdec6a823fb5e0d84537273d0eba4c0bd47c",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "58d9da00a74ebfb25b7788c11b8c7016a8c8500b176cf76110e1672bb73d8f95",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/generic_context_tests.rs": "5191fbf2d64e0cae611e22a36be81818bebc04e21c3d81f4bef8bd7b36c32daf",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/identity_rng_tests.rs": "27a74693c76b66d49e9aaa1de1d54e0d7d2fb0d5b758995ab424262e101f3deb"
+      },
+      "rust_release": "1.99.0",
+      "rust_host": "x86_64-unknown-linux-gnu",
+      "flow_tests": {
+        "passed": 592,
+        "failed": 0,
+        "ignored": 5,
+        "groups": 50
+      },
+      "matrix_cases": [
+        "macro-zero-ready",
+        "micro-zero-ready",
+        "transit-ready",
+        "transit-rejected-start-retry",
+        "transit-rejected-progress-retry",
+        "transit-moving-mid-edge",
+        "transit-paused-ready",
+        "transit-paused-mid-edge",
+        "transit-paused-at-end",
+        "transit-control-command-pending",
+        "transit-arrived-queued",
+        "submitted-pending",
+        "submitted-active",
+        "service-suspend-sample20",
+        "service-restart-sample20",
+        "service-suspend-pending-cut-sample20",
+        "service-restart-pending-cut-sample20",
+        "multi-graph-mixed-frozen-pending"
+      ],
+      "additional_proofs": [
+        {
+          "proof": "c2-generic-context-tests",
+          "input_sha256": "0713f4fe75ae7a9b512d50197621640f1103211ba4131eaf44eb0fe04ce851d1"
+        },
+        {
+          "proof": "c2-identity-rng",
+          "input_sha256": "de1c5115d99e422258a59989b70282f79bccb7ae2860514a0eba81c7c409362e"
+        }
+      ],
+      "portable_children_verified": 20
+    },
+    {
+      "host": "macos-15",
+      "compiled_commit": "0118eb0014a380b0cdd1b2733f2f1c94802bb847",
+      "tree": "175d44d7812a1e04df873be74cdfc6b1e6173578",
+      "source_hashes": {
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "2872e931c2151ed51b5a64a5ef86cdec6a823fb5e0d84537273d0eba4c0bd47c",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "58d9da00a74ebfb25b7788c11b8c7016a8c8500b176cf76110e1672bb73d8f95",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/generic_context_tests.rs": "5191fbf2d64e0cae611e22a36be81818bebc04e21c3d81f4bef8bd7b36c32daf",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/identity_rng_tests.rs": "27a74693c76b66d49e9aaa1de1d54e0d7d2fb0d5b758995ab424262e101f3deb"
+      },
+      "rust_release": "1.99.0",
+      "rust_host": "aarch64-apple-darwin",
+      "flow_tests": {
+        "passed": 592,
+        "failed": 0,
+        "ignored": 5,
+        "groups": 50
+      },
+      "matrix_cases": [
+        "macro-zero-ready",
+        "micro-zero-ready",
+        "transit-ready",
+        "transit-rejected-start-retry",
+        "transit-rejected-progress-retry",
+        "transit-moving-mid-edge",
+        "transit-paused-ready",
+        "transit-paused-mid-edge",
+        "transit-paused-at-end",
+        "transit-control-command-pending",
+        "transit-arrived-queued",
+        "submitted-pending",
+        "submitted-active",
+        "service-suspend-sample20",
+        "service-restart-sample20",
+        "service-suspend-pending-cut-sample20",
+        "service-restart-pending-cut-sample20",
+        "multi-graph-mixed-frozen-pending"
+      ],
+      "additional_proofs": [
+        {
+          "proof": "c2-generic-context-tests",
+          "input_sha256": "0713f4fe75ae7a9b512d50197621640f1103211ba4131eaf44eb0fe04ce851d1"
+        },
+        {
+          "proof": "c2-identity-rng",
+          "input_sha256": "de1c5115d99e422258a59989b70282f79bccb7ae2860514a0eba81c7c409362e"
+        }
+      ],
+      "portable_children_verified": 20
+    }
+  ],
+  "checks": {
+    "success": 66,
+    "skipped": [
+      "Q5.2 canonical native regression (Ubuntu)",
+      "Codecov OIDC upload"
+    ]
+  },
+  "scope": "Actual hosted source/tree/toolchain and complete process input/exit/control-trace reconciliation; phase/release/clinical/C5 acceptance separate.",
+  "executed_command": "python3 .artifacts/c2-composite-hosted-58827f3/verify_readback.py",
+  "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009",
+  "exit": 0,
+  "reviewer": "provider_checkpoint read-only independent artifact/source review; accepted within stated scope",
+  "local_governance_commands": [
+    {
+      "command": "pwsh -NoProfile -File scripts/validate_conductor_phase_gates.ps1",
+      "exit": 0,
+      "log": "phase-gates.log"
+    },
+    {
+      "command": "pwsh -NoProfile -File scripts/validate_conductor_dag.ps1",
+      "exit": 0,
+      "log": "dag.log"
+    },
+    {
+      "command": "pwsh -NoProfile -File scripts/validate_conductor_git_closeout.ps1 -RequireCleanWorkingTree",
+      "exit": 0,
+      "log": "git-closeout.log"
+    }
+  ],
+  "artifact_ids": {
+    "c2-native-ubuntu-24.04": 11630386023,
+    "c2-native-macos-15": 11630560960
+  },
+  "script_sha256": "f53e7faa4af618d22f432fd8e3c24fb63fe7f0340127dc1683a9d9b9defeceae",
+  "file_sha256": {
+    "dag.log": "1b6c16661033b4e48f46dba859451989697ae70fb9781bc42e78673960a0508a",
+    "git-closeout.log": "5c81e061076443e943135183da6a1801315f53c466aaae9be3f425882bac5ad7",
+    "readback.log": "c8b4342a09a3b934d050bb840fa3b4d99ad7554fcc56191b7b1abcf5962eaeb8",
+    "phase-gates.log": "adfb3a1b1335bcc0c11862ff3968bad10d42656554bdd2007bd29739e4d883c2"
+  },
+  "parent_pin_candidate": "58827f30fde5bc4330bc38eff1875470592b74e0",
+  "full_C2_phase_accepted": false
+}
