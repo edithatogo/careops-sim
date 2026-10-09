@@ -210,7 +210,8 @@ class ExplicitDependencyTests(unittest.TestCase):
         self.assertEqual(by['C2.2']['dependencies'], ['C2.0'])
         self.assertEqual(by['C2.3']['dependencies'], ['C2.0'])
         self.assertEqual(by['C2.1']['dependencies'], ['C2.2', 'C2.3'])
-        self.assertEqual(by['C2.4']['dependencies'], ['C2.1'])
+        self.assertEqual(by['C2.5']['dependencies'], ['C2.1'])
+        self.assertEqual(by['C2.4']['dependencies'], ['C2.5'])
         self.assertEqual(by['C2.0']['dependencies'], ['C0.4', 'P3.4'])
 
     def test_override_errors_rejected_during_derivation(self):

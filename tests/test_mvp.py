@@ -18,7 +18,7 @@ class CoverageTests(unittest.TestCase):
     def errors(self):return mvp.validate(ROOT,self.catalog,self.recipes)
     def test_complete_mvp_coverage(self):
         self.assertEqual(self.errors(),[])
-        self.assertEqual(len(self.recipes['tasks']),81)
+        self.assertEqual(len(self.recipes['tasks']),82)
     def test_missing_parent_rejected(self):
         self.recipes['tasks'].pop();self.assertTrue(self.errors())
     def test_changed_objective_rejected(self):
@@ -93,7 +93,7 @@ class ExplicitLeafDependencyTests(unittest.TestCase):
         self.assertEqual(mvp.validate(ROOT, catalog, recipes), [])
         leaves = {l['id']: l for t in recipes['tasks'] for l in t['leaves']}
         self.assertEqual(leaves['C2.3.routing']['dependencies'], ['C2.0.red-tests'])
-        self.assertEqual(leaves['C2.2.seeds']['dependencies'], ['C2.2.policy', 'C2.3.dispatch'])
+        self.assertEqual(leaves['C2.2.seeds']['dependencies'], ['C2.2.policy', 'C2.3.dispatch', 'C2.3.transit-bridge'])
         self.assertEqual(leaves['C2.1.paired']['dependencies'], ['C2.1.mode', 'C2.2.seeds', 'C2.3.dispatch'])
         leaves['C2.2.seeds']['dependencies'] = ['C2.2.policy']
         self.assertTrue(any('mismatch' in e for e in mvp.validate(ROOT, catalog, recipes)))
