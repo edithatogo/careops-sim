@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-09T16:37:53+10:00",
+  "updated_at": "2026-10-09T17:37:40+10:00",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "Internal reviews and real runtime oracles now support actual-carrier route metadata, pre-draw validation, same-live continuation, and stale replaced-event handling. Versioned paired fixture v2 corrects terminal active-due observation using actual completion records and passes at 1a9c49a; frozen v1 and its mismatch remain historical. Finish current-pin native receipt, then implement sealed fresh-process C2 replay-journal recovery with fail-closed unsupported-state rejection. Learning workflow is installed and parent 512-test regression suite passes; C2.4 and portable/hosted/release/clinical gates remain open.",
+  "next_action": "Sealed synthetic C2 recovery proof committed4367ddf: actual retained artifact restored in a fresh process, complete prefix and exact suffix/resource/RNG parity, bounded invalid-input and no-overwrite controls. Next graduate the same validated closed recipe into a small explicitly experimental native save/restore demo; do not claim general runtime/C5 recovery or C2.4 acceptance. Actual-carrier metadata and stale-event correction plus paired-v2 runtime oracle are integrated; local learning system is installed and parent512tests pass. Hosted, broader recovery and release/clinical qualification remain separate.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -115,10 +115,11 @@
     "libs/kairos/conductor/design/calibration/ADR-0009-c2-route-receipt.md",
     "libs/kairos/conductor/design/calibration/ADR-0010-c2-route-metadata.md",
     "libs/kairos/conductor/design/calibration/ADR-0011-c20-paired-runner-compatibility.md",
-    "libs/kairos/conductor/design/calibration/ADR-0012-c2-paired-terminal-time-oracle.md"
+    "libs/kairos/conductor/design/calibration/ADR-0012-c2-paired-terminal-time-oracle.md",
+    "libs/kairos/conductor/design/calibration/ADR-0013-c2-replay-journal.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "1a9c49afd1bbd9e384d82f5dafcc01ee2d045e14",
+    "libs/kairos": "4367ddf0e653c695d60468273d2a17c29f321367",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -736,6 +737,21 @@
     "original_fixture_sha256": "75417d45a5c4f53e31529b6610500fd4909180019596498290ce7ac28b2355fc",
     "original_fixture_status": "preserved unchanged; runtime oracle mismatch is historical, not green",
     "runtime_semantics_changed": false,
+    "phase_accepted": false
+  },
+  "c2_sealed_checkpoint_proof_20261009": {
+    "source_pin": "4367ddf0e653c695d60468273d2a17c29f321367",
+    "scope": "Test-binary proof of one sealed annotated-Micro recipe and pause frontier; not production/general restore API",
+    "adr": "libs/kairos/conductor/design/calibration/ADR-0013-c2-replay-journal.md",
+    "fresh_process": true,
+    "retained_artifact_loaded": true,
+    "focused_tests": 4,
+    "calibration_library_tests": {
+      "passed": 107,
+      "ignored": 2
+    },
+    "strict_clippy": "worker pass Rust1.99",
+    "artifact_sha256": "7e468b7f6df58bd2dc3079e9491b177ef895849459cec9ef335d98db3c975639",
     "phase_accepted": false
   }
 }
