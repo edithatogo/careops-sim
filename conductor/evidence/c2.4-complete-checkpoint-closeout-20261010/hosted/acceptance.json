@@ -1,0 +1,151 @@
+{
+  "run": 37964052376,
+  "reviewed_head": "63a72aa563258777686ee3d2e25794628daae4ec",
+  "reviewed_tree": "fd58d564b5709f75f102a1c09b02b1e1e9e8e444",
+  "host_readbacks": [
+    {
+      "host": "ubuntu-24.04",
+      "compiled_commit": "92fe34ead09f24aad1a97a83ed22ec9dfcff1ebb",
+      "tree": "fd58d564b5709f75f102a1c09b02b1e1e9e8e444",
+      "source_hashes": {
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "2872e931c2151ed51b5a64a5ef86cdec6a823fb5e0d84537273d0eba4c0bd47c",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "a03a2618d8956bcde62f659a453d93f36565fd6fca11739872b0ad8a275553c2",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/generic_context_tests.rs": "5191fbf2d64e0cae611e22a36be81818bebc04e21c3d81f4bef8bd7b36c32daf",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/identity_rng_tests.rs": "27a74693c76b66d49e9aaa1de1d54e0d7d2fb0d5b758995ab424262e101f3deb"
+      },
+      "rust_release": "1.99.0",
+      "rust_host": "x86_64-unknown-linux-gnu",
+      "flow_tests": {
+        "passed": 592,
+        "failed": 0,
+        "ignored": 5,
+        "groups": 50
+      },
+      "matrix_cases": [
+        "macro-zero-ready",
+        "micro-zero-ready",
+        "transit-ready",
+        "transit-rejected-start-retry",
+        "transit-rejected-progress-retry",
+        "transit-moving-mid-edge",
+        "transit-paused-ready",
+        "transit-paused-mid-edge",
+        "transit-paused-mid-edge-native-activity",
+        "transit-paused-at-end",
+        "transit-control-command-pending",
+        "transit-arrived-queued",
+        "submitted-pending",
+        "submitted-active",
+        "service-suspend-sample20",
+        "service-restart-sample20",
+        "service-suspend-pending-cut-sample20",
+        "service-restart-pending-cut-sample20",
+        "multi-graph-mixed-frozen-pending"
+      ],
+      "additional_proofs": [
+        {
+          "proof": "c2-generic-context-tests",
+          "input_sha256": "0713f4fe75ae7a9b512d50197621640f1103211ba4131eaf44eb0fe04ce851d1"
+        },
+        {
+          "proof": "c2-identity-rng",
+          "input_sha256": "de1c5115d99e422258a59989b70282f79bccb7ae2860514a0eba81c7c409362e"
+        }
+      ],
+      "portable_children_verified": 21
+    },
+    {
+      "host": "macos-15",
+      "compiled_commit": "92fe34ead09f24aad1a97a83ed22ec9dfcff1ebb",
+      "tree": "fd58d564b5709f75f102a1c09b02b1e1e9e8e444",
+      "source_hashes": {
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "2872e931c2151ed51b5a64a5ef86cdec6a823fb5e0d84537273d0eba4c0bd47c",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "a03a2618d8956bcde62f659a453d93f36565fd6fca11739872b0ad8a275553c2",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/generic_context_tests.rs": "5191fbf2d64e0cae611e22a36be81818bebc04e21c3d81f4bef8bd7b36c32daf",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/identity_rng_tests.rs": "27a74693c76b66d49e9aaa1de1d54e0d7d2fb0d5b758995ab424262e101f3deb"
+      },
+      "rust_release": "1.99.0",
+      "rust_host": "aarch64-apple-darwin",
+      "flow_tests": {
+        "passed": 592,
+        "failed": 0,
+        "ignored": 5,
+        "groups": 50
+      },
+      "matrix_cases": [
+        "macro-zero-ready",
+        "micro-zero-ready",
+        "transit-ready",
+        "transit-rejected-start-retry",
+        "transit-rejected-progress-retry",
+        "transit-moving-mid-edge",
+        "transit-paused-ready",
+        "transit-paused-mid-edge",
+        "transit-paused-mid-edge-native-activity",
+        "transit-paused-at-end",
+        "transit-control-command-pending",
+        "transit-arrived-queued",
+        "submitted-pending",
+        "submitted-active",
+        "service-suspend-sample20",
+        "service-restart-sample20",
+        "service-suspend-pending-cut-sample20",
+        "service-restart-pending-cut-sample20",
+        "multi-graph-mixed-frozen-pending"
+      ],
+      "additional_proofs": [
+        {
+          "proof": "c2-generic-context-tests",
+          "input_sha256": "0713f4fe75ae7a9b512d50197621640f1103211ba4131eaf44eb0fe04ce851d1"
+        },
+        {
+          "proof": "c2-identity-rng",
+          "input_sha256": "de1c5115d99e422258a59989b70282f79bccb7ae2860514a0eba81c7c409362e"
+        }
+      ],
+      "portable_children_verified": 21
+    }
+  ],
+  "checks": {
+    "success": 66,
+    "skipped": [
+      "Q5.2 canonical native regression (Ubuntu)",
+      "Codecov OIDC upload"
+    ]
+  },
+  "scope": "Actual hosted source/tree/toolchain and complete process input/exit/control-trace reconciliation; phase/release/clinical/C5 acceptance separate.",
+  "executed_command": "python3 .artifacts/c2-final-hosted-63a72aa/verify_readback.py",
+  "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009",
+  "exit": 0,
+  "reviewer": "provider_checkpoint independent read-only hosted/source/42-child trace review; accepted within scope",
+  "artifact_ids": {
+    "c2-native-macos-15": 11631769320,
+    "c2-native-ubuntu-24.04": 11631524644
+  },
+  "local_governance_commands": [
+    {
+      "command": "pwsh -NoProfile -File scripts/validate_conductor_phase_gates.ps1",
+      "exit": 0,
+      "log": "phase-gates.log"
+    },
+    {
+      "command": "pwsh -NoProfile -File scripts/validate_conductor_dag.ps1",
+      "exit": 0,
+      "log": "dag.log"
+    },
+    {
+      "command": "pwsh -NoProfile -File scripts/validate_conductor_git_closeout.ps1 -RequireCleanWorkingTree",
+      "exit": 0,
+      "log": "git-closeout.log"
+    }
+  ],
+  "script_sha256": "06e5b90ed1c22200b6cde6aeff548aea82b2fce4b0d540f946049ab77465a8a5",
+  "logs_sha256": {
+    "dag.log": "1b6c16661033b4e48f46dba859451989697ae70fb9781bc42e78673960a0508a",
+    "git-closeout.log": "5c81e061076443e943135183da6a1801315f53c466aaae9be3f425882bac5ad7",
+    "readback.log": "b523c15d0dcec3a05dd295878310e9b26be59cd1ddd8a960c8ab5ab155a2e686",
+    "phase-gates.log": "adfb3a1b1335bcc0c11862ff3968bad10d42656554bdd2007bd29739e4d883c2"
+  },
+  "parent_pin_candidate": "63a72aa563258777686ee3d2e25794628daae4ec",
+  "phase_acceptance": "separate coordinator action after parent adoption"
+}

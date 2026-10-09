@@ -125,7 +125,7 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   handoff; portable serialization and process restart remain Track22 gates. The decision-mismatch rejection now has a test-only exact-value preservation oracle. Local
   same-live-Flow continuation acceptance does not close the Track03/Track22, hosted,
   portable checkpoint/restart, release, clinical or C2.4 phase gates.
-- [ ] C2.4 Conductor — review and verify phase (workflow.md).
+- [x] C2.4 Conductor — review and verify phase (workflow.md).
 
 After preparation C2.0, C2.2 provider/policy, C2.3 generic routing, and C2.1
 mode/paired behavior have local exact-pin joins under Rust 1.99.0. The earlier
@@ -153,6 +153,24 @@ owner/phase review and the remaining hosted, portable-checkpoint, release, and
 clinical gates remain required before this phase can pass.
 Manual check: inspect the same synthetic case in Macro/Micro, reconcile clinical
 work plus transit plus waits, and demonstrate no double-counted elapsed time.
+
+## C2.4 synthetic implementation acceptance — 10 October 2026
+
+[Complete checkpoint closeout](../../evidence/c2.4-complete-checkpoint-closeout-20261010/README.md)
+accepts C2/C-02 implementation conformance at source63a72aa5 under Rust1.99 only.
+Full owner bytes/coherent restore and19 lifecycle cuts plus generic context/nonzero
+RNG children pass the local656/0/5 join and actual two-host42-child readback.
+Both hosted compiled trees match the reviewed source;66 checks succeed and two
+named conditional skips remain unverified. Internal Track03/Track22 dispositions,
+original-task crosswalk, cleaning/reservation, policy boundaries and paired manual
+accounting pass. Explicit non-transit activity during paused travel closes the
+mixed-use clause without claiming intermodal per-edge routing or sensor ground truth.
+
+This dated acceptance supersedes earlier C2 phase/owner/hosted/portable pending
+statements for the synthetic implementation. Stable public API/release, clinical/
+empirical/ED validity, general Track22/C5 recovery and full C-06 worker equivalence
+remain separate. Earlier exact-pin receipts, failed attempts and preparation remain
+historical. No original C2 behavioral oracle or tolerance has been relaxed.
 
 ## C3 — Trace-driven shadow runner
 
