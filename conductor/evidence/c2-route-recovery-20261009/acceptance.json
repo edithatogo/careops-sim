@@ -1,0 +1,276 @@
+{
+  "schema_version": 1,
+  "status": "route_metadata_paired_v2_and_sealed_replay_verified_local_demo_graduation_pending",
+  "route_metadata_source": "059992d92f09b3ecd96b3fa2967c03cceff413c0",
+  "paired_v2_source": "1a9c49afd1bbd9e384d82f5dafcc01ee2d045e14",
+  "sealed_proof_source": "4367ddf0e653c695d60468273d2a17c29f321367",
+  "paired_v2_review": {
+    "source_commit": "1a9c49afd1bbd9e384d82f5dafcc01ee2d045e14",
+    "toolchain": {
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+    },
+    "environment": {
+      "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+      "RUSTC": "/Volumes/PortableSSD/toolchains/rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+      "RUSTDOC": "/Volumes/PortableSSD/toolchains/rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc"
+    },
+    "commands": {
+      "combined": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-des",
+          "-p",
+          "kairo-ecs-abm",
+          "-p",
+          "kairo-ecs-calibration",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009",
+        "exit_status": 0,
+        "log_sha256": "e3366ce890283e5205b0e334a62cb7817b6f0baf2343ff7676cf9cba1511c503",
+        "groups": 43,
+        "passed": 464,
+        "failed": 0,
+        "ignored": 5
+      },
+      "paired-v2": {
+        "argv": [
+          "python3",
+          "conformance/c20/run_paired_red.py",
+          "--fixture-version",
+          "2",
+          "--expect",
+          "green"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009",
+        "exit_status": 0,
+        "log_sha256": "d99ba041e7316d34ca4f21ef209400776bca174eafa5c2e42102bc84f61f93e6"
+      },
+      "transit": {
+        "argv": [
+          "python3",
+          "conformance/c20/run_transit_red.py",
+          "--expect",
+          "green"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009",
+        "exit_status": 0,
+        "log_sha256": "1760f5e7b02b83f1f0e34a5e7aa6886509caab934358795168a0688da2653728"
+      },
+      "clippy": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "kairo-ecs-des",
+          "-p",
+          "kairo-ecs-abm",
+          "-p",
+          "kairo-ecs-calibration",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009",
+        "exit_status": 101,
+        "log_sha256": "63fcb36a5e797734b4e6b70e78831ee85122ae70a3ba3a224a22cafd13dadabf"
+      },
+      "format": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009",
+        "exit_status": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "corrected_clippy": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009",
+      "source_commit": "1a9c49afd1bbd9e384d82f5dafcc01ee2d045e14",
+      "exit_status": 0,
+      "log_sha256": "61b292e39adb7f3efabc93727b04178a9120ae5ecb53d6577df6b346d970398f",
+      "clippy_driver": "/Volumes/PortableSSD/toolchains/rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/clippy-driver",
+      "isolated_target": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009/.artifacts/c2-current-pin-review-20261009/clippy-target",
+      "summary": [
+        "    Checking block-buffer v0.12.1",
+        "    Checking cpufeatures v0.3.1",
+        "   Compiling syn v3.0.6",
+        "    Checking chrono v0.4.45",
+        "    Checking digest v0.11.3",
+        "    Checking sha2 v0.11.0",
+        "   Compiling thiserror-impl v2.0.20",
+        "    Checking kairo-ecs-des v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009/crates/kairo-ecs-des)",
+        "    Checking kairo-ecs-arrow v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009/crates/kairo-ecs-arrow)",
+        "    Checking kairo-ecs-abm v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009/crates/kairo-ecs-abm)",
+        "    Checking kairo-ecs-calibration v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009/crates/kairo-ecs-calibration)",
+        "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.09s"
+      ]
+    }
+  },
+  "sealed_proof_review": {
+    "source_commit": "4367ddf0e653c695d60468273d2a17c29f321367",
+    "toolchain": {
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+    },
+    "commands": {
+      "focused": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "--features",
+          "flow,kairo-ecs-abm/test-support",
+          "c2_checkpoint_journal::tests",
+          "--",
+          "--nocapture"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-replay-20261009",
+        "exit_status": 0,
+        "log_sha256": "6979e929eed578554c57feabb63f72955d4786e1f4a572ac0f5f231c26329dd2",
+        "groups": 10,
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0
+      },
+      "combined": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-des",
+          "-p",
+          "kairo-ecs-abm",
+          "-p",
+          "kairo-ecs-calibration",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-replay-20261009",
+        "exit_status": 0,
+        "log_sha256": "1f98568d7982cd5eb9f89af82ce27c8e878b37393cc6705610854e2b70f2a8cd",
+        "groups": 43,
+        "passed": 468,
+        "failed": 0,
+        "ignored": 5
+      },
+      "clippy": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "kairo-ecs-des",
+          "-p",
+          "kairo-ecs-abm",
+          "-p",
+          "kairo-ecs-calibration",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-replay-20261009",
+        "exit_status": 0,
+        "log_sha256": "8da7e4e17e75d8990088a4c5d2bc2f65e8c33504125b5846f189870f56e68265"
+      },
+      "format": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-replay-20261009",
+        "exit_status": 1,
+        "log_sha256": "ab713426ed4746e08bf5f40ad265e93a78139acf207478c49f38611af57352b0"
+      }
+    },
+    "scope": "Sealed synthetic test-binary replay proof; no general recovery or phase acceptance"
+  },
+  "sealed_worker_input_sha256": "7e468b7f6df58bd2dc3079e9491b177ef895849459cec9ef335d98db3c975639",
+  "log_sha256": {
+    "metadata-lifecycle-red.log": "d952a015726e29e4afd8069c507ad59aab6af6403fea03d751c5aa9e3f223725",
+    "metadata-lifecycle-green.log": "173d566cb1cb900086f0c7498a068d4e08a9b2e61d432842c94339b3df63b4d5",
+    "paired-v1-compile-fail.log": "649743d992aa1dfd63f3208f6d5e53a31c66ededa5fe1f472d9da1b5592b6e65",
+    "paired-v1-runtime-fail.log": "7dc66da0e1f6bad9c4464f31a1f26f656259ff4efc58491c64af2df0600026d0",
+    "paired-v2-pass.log": "ec3e338f819a6a7d5ed198e8a8fd011beeb4e12308e21b377284f9eb2a857d4f",
+    "paired-v2-result.json": "d99ba041e7316d34ca4f21ef209400776bca174eafa5c2e42102bc84f61f93e6",
+    "transit-pass.log": "9e6405e1a999ca89dc51fdfc6495bd2565d420252326ee59cfcccf2ef517b940",
+    "current-pin-combined.log": "e3366ce890283e5205b0e334a62cb7817b6f0baf2343ff7676cf9cba1511c503",
+    "clippy-mixed-vendor-fail.log": "63fcb36a5e797734b4e6b70e78831ee85122ae70a3ba3a224a22cafd13dadabf",
+    "clippy-corrected-pass.log": "61b292e39adb7f3efabc93727b04178a9120ae5ecb53d6577df6b346d970398f",
+    "sealed-focused-pass.log": "6979e929eed578554c57feabb63f72955d4786e1f4a572ac0f5f231c26329dd2",
+    "sealed-combined-pass.log": "1f98568d7982cd5eb9f89af82ce27c8e878b37393cc6705610854e2b70f2a8cd",
+    "sealed-clippy-pass.log": "8da7e4e17e75d8990088a4c5d2bc2f65e8c33504125b5846f189870f56e68265",
+    "sealed-format-gap.log": "ab713426ed4746e08bf5f40ad265e93a78139acf207478c49f38611af57352b0"
+  },
+  "limits": [
+    "Sealed replay currently test-binary proof only; production demo graduation underway",
+    "General runtime/checkpoint/C5 worker recovery unsupported",
+    "Workspace formatting gap in4367 is import/module order; graduation must correct required check",
+    "Initial same-version vendor Clippy cache mismatch retained and corrected with fullsysroot PATH+isolatedtarget",
+    "Original v1 fixture unchanged, known invalid terminal active-due oracle superseded explicitly by v2; no false v1 green",
+    "C2.4/hosted/release/clinical acceptance not claimed"
+  ]
+}

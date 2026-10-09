@@ -1,0 +1,123 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.45
+   Compiling unicode-ident v1.0.24
+   Compiling thiserror v2.0.20
+    Checking typenum v1.20.1
+   Compiling autocfg v1.5.0
+   Compiling libc v0.2.186
+   Compiling zmij v1.0.21
+   Compiling serde_core v1.0.228
+    Checking const-oid v0.10.2
+   Compiling serde_json v1.0.149
+    Checking cfg-if v1.0.4
+    Checking memchr v2.8.0
+   Compiling num-traits v0.2.19
+    Checking itoa v1.0.18
+    Checking hybrid-array v0.4.15
+    Checking crypto-common v0.2.2
+    Checking block-buffer v0.12.1
+   Compiling syn v3.0.6
+    Checking cpufeatures v0.3.1
+    Checking chrono v0.4.45
+    Checking digest v0.11.3
+    Checking sha2 v0.11.0
+   Compiling thiserror-impl v2.0.20
+    Checking kairo-ecs-des v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009/crates/kairo-ecs-des)
+    Checking kairo-ecs-arrow v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009/crates/kairo-ecs-arrow)
+error[E0514]: found crate `thiserror` compiled by an incompatible version of rustc
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:10:45
+   |
+10 | #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
+   |                                             ^^^^^^^^^
+   |
+   = note: the following crate versions were found:
+           crate `thiserror` compiled by rustc 1.99.0 (b940084d7 2026-09-28): /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009/target/debug/deps/libthiserror-d7c97d862f605898.rmeta
+   = help: please recompile that crate using this compiler (rustc 1.99.0 (b940084d7 2026-09-28) (Homebrew)) (consider running `cargo clean` first)
+
+error[E0514]: found crate `thiserror` compiled by an incompatible version of rustc
+  --> crates/kairo-ecs-des/src/fidelity.rs:13:5
+   |
+13 | use thiserror::Error;
+   |     ^^^^^^^^^
+   |
+   = note: the following crate versions were found:
+           crate `thiserror` compiled by rustc 1.99.0 (b940084d7 2026-09-28): /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-journal-20261009/target/debug/deps/libthiserror-d7c97d862f605898.rmeta
+   = help: please recompile that crate using this compiler (rustc 1.99.0 (b940084d7 2026-09-28) (Homebrew)) (consider running `cargo clean` first)
+
+For more information about this error, try `rustc --explain E0514`.
+error: could not compile `kairo-ecs-des` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `kairo-ecs-des` (lib test) due to 1 previous error
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:12:7
+   |
+12 |     #[error("occurrence precedes origin")]
+   |       ^^^^^
+
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:14:7
+   |
+14 |     #[error("temporal arithmetic overflow")]
+   |       ^^^^^
+
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:16:7
+   |
+16 |     #[error("missing occurrence time")]
+   |       ^^^^^
+
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:18:7
+   |
+18 |     #[error("unresolved local time")]
+   |       ^^^^^
+
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:20:7
+   |
+20 |     #[error("ambiguous local time")]
+   |       ^^^^^
+
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:22:7
+   |
+22 |     #[error("nonexistent local time")]
+   |       ^^^^^
+
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:24:7
+   |
+24 |     #[error("unsupported coarse precision")]
+   |       ^^^^^
+
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:26:7
+   |
+26 |     #[error("sub-nanosecond precision")]
+   |       ^^^^^
+
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:28:7
+   |
+28 |     #[error("clock role mismatch")]
+   |       ^^^^^
+
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:30:7
+   |
+30 |     #[error("unverified physical movement")]
+   |       ^^^^^
+
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:32:7
+   |
+32 |     #[error("missing temporal lineage")]
+   |       ^^^^^
+
+error: cannot find attribute `error` in this scope
+  --> crates/kairo-ecs-arrow/src/trace_time.rs:34:7
+   |
+34 |     #[error("reversed location interval")]
+   |       ^^^^^
+
+error: could not compile `kairo-ecs-arrow` (lib) due to 13 previous errors

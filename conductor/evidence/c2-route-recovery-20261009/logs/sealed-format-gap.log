@@ -1,0 +1,43 @@
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-replay-20261009/crates/kairo-ecs-calibration/src/c2_checkpoint_journal.rs:1:
+ //! Private replay-only checkpoint proof for one sealed C2 route scenario.
+ //! This is not a general Flow serializer or durable continuation API.
+ 
+-use serde_json::{Value, json};
++use serde_json::{json, Value};
+ use sha2::{Digest, Sha256};
+ use std::fs::{self, File, OpenOptions};
+ use std::io::{Read, Write};
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-replay-20261009/crates/kairo-ecs-calibration/src/c2_checkpoint_journal.rs:242:
+     use crate::route_receipt::{DistanceProvenance, RouteMetadata};
+     use crate::seed_map::{CalibrationSeedMap, SeedPurpose};
+     use crate::work_duration::{
+-        INTRINSIC_WORK_PROVIDER_VERSION_V1, IntrinsicDurationDistribution, IntrinsicWorkProvider,
++        IntrinsicDurationDistribution, IntrinsicWorkProvider, INTRINSIC_WORK_PROVIDER_VERSION_V1,
+     };
+     use kairo_ecs_abm::spatial::{
+         EdgeId, MovementModeId, MovementProfile, NodeId, TransitEdge, TransitGraphV1,
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-replay-20261009/crates/kairo-ecs-calibration/src/c2_checkpoint_journal.rs:249:
+     };
+-    use kairo_ecs_abm::{TransitContext, TransitPhase, register_transit_context};
++    use kairo_ecs_abm::{register_transit_context, TransitContext, TransitPhase};
+     use kairo_ecs_des::fidelity::{FidelityAdapter, FidelityMode, FidelityPolicy};
+     use kairo_ecs_des::{FlowBatchReceipt, FlowDomainControl, FlowRuntime, WorkHandlers};
+     use kairo_ecs_types::{EventKind, SimTime};
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-replay-20261009/crates/kairo-ecs-calibration/src/lib.rs:36:
+ 
+ // Experimental adapter for actual Flow work; it remains crate-private while
+ // C2.2 transit, checkpoint and public-API joins are unfinished.
++#[cfg(all(feature = "flow", test))]
++mod c2_checkpoint_journal;
+ #[cfg(feature = "flow")]
+ #[cfg_attr(
+     not(test),
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-checkpoint-replay-20261009/crates/kairo-ecs-calibration/src/lib.rs:45:
+     )
+ )]
+ mod flow_bridge;
+-#[cfg(all(feature = "flow", test))]
+-mod c2_checkpoint_journal;
+ 
+ // Private C4.2 numeric implementation; no public API or sidecar promises.
+ #[expect(
