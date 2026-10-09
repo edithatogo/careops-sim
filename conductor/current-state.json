@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-09T16:14:23+10:00",
+  "updated_at": "2026-10-09T16:37:53+10:00",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "User-authorized internal roles resolved route receipt and metadata contracts; Kairos 059992d integrates actual-carrier receipts, pre-draw metadata validation, same-live continuation and a fixed replaced-event stale classification. Finish integrated native verification, then define and implement the bounded fresh-process C2 recovery boundary. The learning loop and 512-test parent regression repair are implemented; C2.4, portable checkpoint/restart and hosted/release/clinical gates remain open without presumed external owner blockers.",
+  "next_action": "Internal reviews and real runtime oracles now support actual-carrier route metadata, pre-draw validation, same-live continuation, and stale replaced-event handling. Versioned paired fixture v2 corrects terminal active-due observation using actual completion records and passes at 1a9c49a; frozen v1 and its mismatch remain historical. Finish current-pin native receipt, then implement sealed fresh-process C2 replay-journal recovery with fail-closed unsupported-state rejection. Learning workflow is installed and parent 512-test regression suite passes; C2.4 and portable/hosted/release/clinical gates remain open.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -113,10 +113,12 @@
     "conductor/decisions/ADR-0009-internal-owner-review-and-learning.md",
     "conductor/harness/learning-loop.md",
     "libs/kairos/conductor/design/calibration/ADR-0009-c2-route-receipt.md",
-    "libs/kairos/conductor/design/calibration/ADR-0010-c2-route-metadata.md"
+    "libs/kairos/conductor/design/calibration/ADR-0010-c2-route-metadata.md",
+    "libs/kairos/conductor/design/calibration/ADR-0011-c20-paired-runner-compatibility.md",
+    "libs/kairos/conductor/design/calibration/ADR-0012-c2-paired-terminal-time-oracle.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "059992d92f09b3ecd96b3fa2967c03cceff413c0",
+    "libs/kairos": "1a9c49afd1bbd9e384d82f5dafcc01ee2d045e14",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -718,5 +720,22 @@
     "performance_improvement_claim": false,
     "global_memory_modified": false,
     "background_service_installed": false
+  },
+  "c2_paired_v2_oracle_20261009": {
+    "source_pin": "1a9c49afd1bbd9e384d82f5dafcc01ee2d045e14",
+    "status": "local_named_fixture_passed_internal_reviewed",
+    "fixture": "libs/kairos/conformance/c20/paired_flow_c20_v2.rs",
+    "fixture_sha256": "40b0c380ddea4247297a2f36ba1bba315059344cb8430132f721d9b399ab76dc",
+    "command": "python3 conformance/c20/run_paired_red.py --fixture-version 2 --expect green",
+    "counts": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "filtered": 105
+    },
+    "original_fixture_sha256": "75417d45a5c4f53e31529b6610500fd4909180019596498290ce7ac28b2355fc",
+    "original_fixture_status": "preserved unchanged; runtime oracle mismatch is historical, not green",
+    "runtime_semantics_changed": false,
+    "phase_accepted": false
   }
 }
