@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-09T18:02:14+10:00",
+  "updated_at": "2026-10-09T18:37:35.321218+10:00",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "Integrate reviewed C2-enabled native CI and current-stable1.99 policy packets. Current-pin C-02 manual interval and internal Track03 boundary review are recorded; no new source correctness gap was identified. C2.4 remains open for its declared hosted/general portable/stable-release/clinical gates; do not invent external-owner approval requirements or substitute sealed replay for arbitrary checkpointing.",
+  "next_action": "Complete bounded hosted PR243 changelog/CI triage at current C2 source. Local literal nativeCI468/0/5 and current-stable1.99 policy validation pass; child integrated atc16936f. Eight hosted Arrow1.99 featurejobs and Linux C2 step passed in initial readback; overall nativejobs pending. General portable/stable-release/clinical gates remain distinct; C2.4 is unchecked.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -122,7 +122,7 @@
     "libs/kairos/conductor/design/calibration/ADR-0014-c2-replay-demo-api.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "adf5fed6a86670b5b07be5e7522f174f7823ef0c",
+    "libs/kairos": "c16936f08c4e3df6a7ccd7b0e41f20318f2e2b7f",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -789,5 +789,20 @@
     "Track03_internal_boundary_review": "accepted experimental boundary; existing cross-track ADR decisions confirmed by root",
     "phase": "C2.4 withheld; declared wider gates remain open",
     "next_work": "Bounded current-stable-only CI and policy packets; add missing calibration flow/demo execution before hosted qualification"
+  },
+  "c2_native_ci_qualification_20261009": {
+    "kairos_pin": "c16936f08c4e3df6a7ccd7b0e41f20318f2e2b7f",
+    "receipt": "conductor/evidence/c2-native-ci-rust199-20261009/root/acceptance.json",
+    "local_native": {
+      "groups": 43,
+      "passed": 468,
+      "failed": 0,
+      "ignored": 5
+    },
+    "local_static_and_installed_policy": "pass; wrong-version negative rejects; Rust1.99 only",
+    "draft_pr": "https://github.com/edithatogo/kairos/pull/243",
+    "base_pr": 229,
+    "hosted": "initial: eight Arrow feature jobs pass; Linux C2 step pass; nativejobs pending, changelog failure triage",
+    "phase_acceptance": "C2.4 withheld; no general portable/clinical/release acceptance"
   }
 }

@@ -1,0 +1,109 @@
+{
+  "source_base": "2e6b12f792f774e9b8d2f8e03ee5cf9652b4266c",
+  "tested_staged_tree": "219a26a8f4fa50ed0e948e3b85aba7abb313c26f",
+  "toolchain": {
+    "sysroot": "/Volumes/PortableSSD/toolchains/rustup/toolchains/1.99.0-aarch64-apple-darwin",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: aarch64-apple-darwin\nrelease: 1.99.0\nLLVM version: 23.1.1",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "commands": {
+    "actionlint": {
+      "argv": [
+        "actionlint",
+        ".github/workflows/careops-native-owner.yml",
+        ".github/workflows/ci-core.yml",
+        ".github/workflows/toolchain-check.yml"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-current-toolchain-policy-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "matrix-static": {
+      "argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "conductor/tracks/30-toolchain-version-support-matrix/validate-toolchain-matrix.ps1"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-current-toolchain-policy-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "log_sha256": "a6751aee8888659467b172efe3b59650b174695dc78f346e6bdff86a7b16ff8b"
+    },
+    "matrix-installed": {
+      "argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "conductor/tracks/30-toolchain-version-support-matrix/validate-toolchain-matrix.ps1",
+        "-CheckInstalled",
+        "-Ecosystem",
+        "rust",
+        "-ExpectedPrefix",
+        "1.99"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-current-toolchain-policy-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "log_sha256": "e43dcdc9992069c6fc42574ffee09805b8693550f046eaea5fa8be04430c079d"
+    },
+    "matrix-wrong-prefix": {
+      "argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "conductor/tracks/30-toolchain-version-support-matrix/validate-toolchain-matrix.ps1",
+        "-CheckInstalled",
+        "-Ecosystem",
+        "rust",
+        "-ExpectedPrefix",
+        "1.98"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-current-toolchain-policy-20261009",
+      "exit_status": 1,
+      "expected_exit": 1,
+      "matched": true,
+      "log_sha256": "c8a16f33092540f9289c6836e32200a59e348f4b3a59e13b22ddd59dd75aa047"
+    },
+    "literal-c2-workflow": {
+      "argv": [
+        "bash",
+        "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-current-toolchain-policy-20261009/.artifacts/c2-native-ci-root/ci-step.sh"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-current-toolchain-policy-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "log_sha256": "595a7e14b63e4240bf5a04e0c685e2cece7d25210d09b15a9d261458c5af9413"
+    },
+    "diff-check": {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-current-toolchain-policy-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "workflow_step_sha256": "7ec9db676ae90892782947feaf8847a77e6c630f3c9704ab8b5ccbde463e67cf",
+  "scope": "Local macOS execution of literal current-stable native C2 run block and integrated static/installed-policy validation; hosted/Linux/general-recovery/phase acceptance unverified",
+  "native_counts": {
+    "groups": 43,
+    "passed": 468,
+    "failed": 0,
+    "ignored": 5
+  },
+  "flow_log_sha256": "3587c62110354c1e5b9f1791d93cb9b04c010453f3f7de7d87344f44476c3387",
+  "restore_repeat_equal": true,
+  "sentinel_check": "sentinel_save_exit=1\nexisting_target_rejected=true\nsentinel_bytes_unchanged=true",
+  "source_commit": "c16936f08c4e3df6a7ccd7b0e41f20318f2e2b7f",
+  "readback_correction": "Initial post-run aggregator looked for exit_status=1 instead of actual sentinel_save_exit=1 and raised AssertionError. Native workflow itself exited0 with correct exit1 and unchanged sentinel. Corrected postcommit readback passes and tested tree equals committed tree. No source or oracle relaxation."
+}
