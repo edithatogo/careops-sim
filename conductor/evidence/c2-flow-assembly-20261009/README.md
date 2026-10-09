@@ -61,7 +61,9 @@ effectiveness is not yet measured and it has not been automatically promoted.
 
 At2e27bbe root joined the seven exact ABM/calibration owner source files after
 transit ownership correction and separate review. Full five-package flow and
-test-support join passed598/0/5 across59 groups; strict Clippy and format passed.
+test-support join passed598/0/5 across59 groups; strict Clippy passed. The initial
+formatting pass claim was wrong; fmt-amendment.md supersedes it and retains the
+failed raw log.
 The bridge's route-bound restore still needs the actual joined oracle. Source
 review identified two next fixes: bound trusted graph bytes/identity before route
 allocation, and allow the retained retryable pending event to resolve as issued
