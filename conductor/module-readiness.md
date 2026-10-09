@@ -43,7 +43,7 @@ establishes current boundaries; only the five-package test slice noted below ran
 | kairo-ecs-abm | Behavior loop with separate context | Shared DES/ABM runtime and minimal staff policy/transit; 03, Q4/C2 | G1 |
 | kairo-ecs-arrow | Legacy smoke bytes retained; shared temporal/lifecycle schemas and optional typed IO through kairo-ecs-arrow-io qualified for C1 | Broader sidecar/export and C4 gates remain scoped to their owners; 04 | G1 |
 | kairo-ecs-cli | Basic manifests/replay surfaces | Real ED execution, studies, interruption recovery, cancel/progress/errors and worker runs; 22, C5/E3 | G1 |
-| kairo-ecs-calibration | Seed foundation and private synthetic C1 ingestion qualified | C2–C6 and public API review remain; reusable Rust algorithms owned by 21 | G1 |
+| kairo-ecs-calibration | Private synthetic ingestion and C2 execution/complete checkpoint implementation qualified | Shadow/study/ED integration and public API review remain; reusable Rust algorithms owned by 21 | G1 |
 | kairo-ecs-bench | Existing benchmark/fixture integration | Representative ED/resource/Arrow/calibration workloads and thresholds; 12/18/31, Q5/C6/D3 | G1 |
 | kairo-ecs-debug | Trace snapshots/deltas; not proof of full ECS serialization | Readable failure traces and replay integration; full interactive time travel optional; 40 with 01/22, Q4/E3 | G1 diagnostic subset |
 | kairo-ecs-viz | Headless snapshot facade; native renderer unavailable | ED snapshot/delta adapter, backpressure and sampling contracts; 05, E5 | G2 |
@@ -220,3 +220,21 @@ reviews the phase evidence and risk/release notes; full queue phase remains open
 ## Q5.4 queue development closeout — 2026-10-05
 
 [Q5.4 evidence](evidence/q5.4-completion-20261005/README.md) closes the queue track through Q0–Q5 at governance pin `8cd03c8f791ae58b33e5cc61b244071937a839ac`, preserving accepted C1.4/Q5.2 and unchanged runtime source eae890b. Independent replay, corrected ledger review and exact-head native Linux/macOS plus reported child checks passed. This satisfies the queue development prerequisite; calibration, generic ED implementation, quality/release and clinical/MVP gates still require their own acceptance. No global G1/ED-ready claim follows. Child PR219 remains stacked/draft.
+
+## C2 synthetic implementation acceptance — 10 October 2026
+
+[C2.4 closeout](evidence/c2.4-complete-checkpoint-closeout-20261010/README.md) records
+source `63a72aa5`: Rust 1.99 locked join 656/0/5, strict Clippy/format, 66 successful
+hosted checks and two conditional skips. Both actual compiled host trees match
+the reviewed source; 42 portable child inputs/exits/control traces reconcile.
+Original mode/policy, CRN, staff/cleaning, routing/progress, same-live continuation
+and complete portable owner state pass, including actual activity during paused
+travel. This accepts C-02 synthetic implementation conformance and C2.4 review.
+It does not complete G1/G2/MVP, stable API/release, clinical/ED validation, or general
+runner/C5 study/worker recovery. Historical pending statements retain their earlier
+source scope and are superseded for this bounded C2 implementation only.
+
+Status synchronization correction: the preceding registry commit updated metadata
+and the human track registry, but its exact index-row assertion failed before
+these two files were written. This change completes the index/readiness update;
+no runtime test or hosted result was inferred from that failed edit helper.
