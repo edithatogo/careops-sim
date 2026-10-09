@@ -103,3 +103,20 @@ qualify these owner components; the aggregate composite and process matrix remai
 separate obligations. The committed composite worker287f57ae has four component
 oracles and is under review. Its complete fresh-process matrix writer is active.
 No full portability acceptance follows from those four component tests.
+
+## Complete composite and joined process proof — 10 October
+
+Source58827f30 joins the complete transaction with18 independent lifecycle cut
+restores, mutable non-Clone context/multiple registrations, and actual nonzero
+owned-stream continuation. Root locked Rust1.99 join656/0/5 across63 groups,
+strict Clippy0 and separately observed formatting0. Two crossreviews and the
+writer supplemental review found no blocking source issue; the separate retained
+artifact readback reconciles20 inputs, actual child exits and control traces.
+See [receipt](composite-process-join/receipt.json) and
+[joined review](composite-process-join/joined-source-review.md).
+
+Root removed an untracked module-directory dependency and corrected a test-only
+hex receipt formatting compile failure; failed attempts remain retained. Hosted
+PR243 now points at58827f30 and is qualifying this source; older hosted success
+remains scoped to fad0380. Parent pin unchanged. Manual/coordinator C2.4 review,
+new hosted source proof, clinical, release and C5 gates remain distinct.

@@ -70,7 +70,7 @@
     "bridge_oracle_base": "2e27bbe",
     "bridge_oracle_state": "dispatched; graphpreflight and retry-history fixes required",
     "format_amendment": "fmt-amendment.md",
-    "byte_integrator": "95a830a",
+    "byte_integrator": "58827f30",
     "flow_wire": "dde6ce4",
     "transit_wire": "1d42a081",
     "provider_wire": "fb67eea9",
@@ -80,8 +80,8 @@
     "sections": "e55f03f8",
     "owner_wire_join": "622/0/5; strictclippy0; workspacefmt0 actuallyobserved",
     "bridge_wire_state": "reviewed and integrated at f18f9f5; locked five-package join 645/0/5, strict Clippy and formatting exit 0",
-    "coherent_composite": "287f57ae1330beaca7a27aaf93a6bd153c1d7d3f committed; component reviewed; root integration pending",
-    "process_matrix": "84ea6832bb3e182a598e881e0e2d291330879fd0 independently reviewed; 14 genuine fresh-process fixture cases; expanded evidence still required"
+    "coherent_composite": "joined and locally reviewed",
+    "process_matrix": "18 independent cut restores plus generic-context and nonzero owned-RNG proofs; root20 artifactreadbacks passed"
   },
   "matrix_expansion_dispatch": {
     "base": "84ea6832bb3e182a598e881e0e2d291330879fd0",
@@ -94,7 +94,8 @@
           "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs"
         ],
         "objective": "Independently restore actual intermediate Suspend/Restart and production control/rejection cuts",
-        "state": "dispatched"
+        "state": "integrated and bounded-reviewed; root gates passed",
+        "implementation_commit": "bd6cd1430d78aeec4ec9324f85ede4e645df5ba7"
       },
       {
         "agent": "component_store_codec",
@@ -102,7 +103,8 @@
           "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/generic_context_tests.rs"
         ],
         "objective": "Mutable non-Clone caller context and distinct supported codec/factory registrations; do not waive existing T:Clone contract",
-        "state": "dispatched"
+        "state": "integrated and bounded-reviewed; root gates passed",
+        "implementation_commit": "9e977e648aa39dd07b2ed99d1e48c03add2c1d1b"
       },
       {
         "agent": "provider_checkpoint",
@@ -110,10 +112,12 @@
           "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/identity_rng_tests.rs"
         ],
         "objective": "Independently reconstructed trusted fingerprint derivation and future stream/provider draws",
-        "state": "dispatched"
+        "state": "integrated and bounded-reviewed; root gates passed",
+        "implementation_commit": "3d3f52e04b2d6658de09c0802b462e94d4d3cdbc"
       }
     ],
     "join_owner": "root; parent module hooks serialize after writer release",
-    "whole_C2_accepted": false
+    "whole_C2_accepted": false,
+    "integrated_head": "58827f30fde5bc4330bc38eff1875470592b74e0"
   }
 }

@@ -1,0 +1,81 @@
+{
+  "base": "5f6fdb89c819a3a53634f6c58273e54ccc585ea4",
+  "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009",
+  "rust": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: aarch64-apple-darwin\nrelease: 1.99.0\nLLVM version: 23.1.1\n",
+  "worker_commits": {
+    "composite": "287f57ae1330beaca7a27aaf93a6bd153c1d7d3f",
+    "matrix": "bd6cd1430d78aeec4ec9324f85ede4e645df5ba7",
+    "generic": "9e977e648aa39dd07b2ed99d1e48c03add2c1d1b",
+    "identity_rng": "3d3f52e04b2d6658de09c0802b462e94d4d3cdbc"
+  },
+  "root_changes": [
+    "Explicit inline tests module directory avoids hidden untracked tests-directory dependency",
+    "Register generic and identity/RNG modules",
+    "Retain both new proof inputs, child logs and invocation hashes for hosted readback"
+  ],
+  "tests": {
+    "command": "cargo test --locked -p kairo-ecs-core -p kairo-ecs-state -p kairo-ecs-des -p kairo-ecs-abm -p kairo-ecs-calibration --features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+    "exit": 0,
+    "passed": 656,
+    "failed": 0,
+    "ignored": 5,
+    "groups": 63
+  },
+  "clippy": {
+    "command": "cargo clippy --locked -p kairo-ecs-core -p kairo-ecs-state -p kairo-ecs-des -p kairo-ecs-abm -p kairo-ecs-calibration --all-targets --features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support -- -D warnings",
+    "exit": 0
+  },
+  "fmt": {
+    "command": "cargo fmt --all --check",
+    "log": "fmt-final-after-hex.log",
+    "exit": 0
+  },
+  "process_artifact_readback": {
+    "command": "python3 - (inline standard-library input/hash/child-exit/control-trace reconciliation)",
+    "exit": 0,
+    "verified_processes": 20,
+    "artifact": "independent-artifact-readback.json"
+  },
+  "failed_attempts": [
+    {
+      "log": "tests-module-path-failure.log",
+      "exit": 101,
+      "reason": "untracked tests directory was needed by previous relative module declaration"
+    },
+    {
+      "log": "fmt.log",
+      "exit": 1,
+      "reason": "same module path dependency"
+    },
+    {
+      "log": "tests-hex-format-failure.log",
+      "exit": 101,
+      "reason": "root test receipt used unsupported LowerHex on SHA array; corrected to per-byte hex"
+    }
+  ],
+  "source_sha256": {
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "2872e931c2151ed51b5a64a5ef86cdec6a823fb5e0d84537273d0eba4c0bd47c",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "58d9da00a74ebfb25b7788c11b8c7016a8c8500b176cf76110e1672bb73d8f95",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/generic_context_tests.rs": "5191fbf2d64e0cae611e22a36be81818bebc04e21c3d81f4bef8bd7b36c32daf",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/identity_rng_tests.rs": "27a74693c76b66d49e9aaa1de1d54e0d7d2fb0d5b758995ab424262e101f3deb",
+    "crates/kairo-ecs-calibration/src/lib.rs": "1c28c0f6289b531aab0584d9efdd0bcdac3f07a4c6b80eb846a41aadaeab5ead"
+  },
+  "logs_sha256": {
+    "fmt.log": "96a0ce9d08b0882a429105a554ff009de31afb4c664dd63548fcfb177c19868d",
+    "tests-before-artifact-retention.log": "5773f225dea46e406dbc549a0788692fafe69b5f3cc2d4ba18c277663c8553a0",
+    "tests-hex-format-failure.log": "3a4db3110c8b37eb999f6da820903f46df28854e29000f3d67b0f39a12e441c8",
+    "clippy.log": "ba272e86f6866f2a00f497b0f10b47cccd371e91e3264c4fedf0a4580fa46ed5",
+    "fmt-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests.log": "d995fb65863fa4aa20639ee37e2f30ebe1b448801df0626b458379da03920a06",
+    "tests-module-path-failure.log": "80efc2915636cdb544e5090854887189659a2456ce27a3711c0d6f20a07ba25b",
+    "focused-path-fix.log": "a22555f35855b24818e6f3d18aeaf2be3f7b8a76083e96d1944d5126a73608fd",
+    "fmt-path-fix.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fmt-final-after-hex.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "whole_C2_accepted": false,
+  "remaining": [
+    "independent joined-source review",
+    "new source hosted qualification",
+    "C2.4 phase and exact manual reconciliation"
+  ]
+}
