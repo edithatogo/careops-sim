@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.4.evidence.current-native-review-20261009",
+  "task_id": "C2.4",
+  "target_repo": ".",
+  "base_commit": "21538abda2221a79c08ee84a1cab3c28e801b804",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Current-pin C2 manual interval and internal owner review; record withheld phase gates without changing oracles",
+  "context_paths": [
+    ".artifacts/mvp/C2.4.evidence.current-native-review-20261009/context.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "9f033973eb5f081980475b8595b6d6c7d5f628f54d98879a4d2a78b258ce9625",
+    "conductor/tracks/empirical_calibration_20260925/spec.md": "ac39678081c2ea3391ddaf45b948e6ba62fb7f01a52e5905444ffd127c33b9f3",
+    "conductor/decisions/ADR-0009-internal-owner-review-and-learning.md": "c0b6beebb9e9875e8bbdfef66084664688487aff828b760e0581419234e77e74",
+    "conductor/evidence/c2-replay-demo-20261009/acceptance.json": "917d3401eccc02a6d3ddce072262f645d4428be50e35c875c36e767eee9725cd",
+    ".artifacts/mvp/C2.4.evidence.current-native-review-20261009/context.md": "dc62d77ac8057c42fa83909338872210c1ac0e57ab92ef0cc6dcb6b08d9783d2"
+  },
+  "write_paths": [
+    "conductor/evidence/c2-current-phase-review-20261009/README.md",
+    "conductor/evidence/c2-current-phase-review-20261009/review.json",
+    ".artifacts/mvp/C2.4.evidence.current-native-review-20261009/result.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C2.4.runtime-ledger",
+    "C2.4.q4-urgent-interruption-ledger",
+    "C2.5.continuation"
+  ],
+  "interface_contract": "ADR-0009 internal review; existing C2 acceptance specification and unmodified plan exit",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Task graph remains valid; C2.4 remains unchecked"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "MVP decomposition remains coherent"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Current state and context integrity remain valid; no phase acceptance inferred"
+    }
+  ],
+  "acceptance": [
+    "Every parent task has integrated output and executed gates; unresolved failures prevent acceptance",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/C2.4.evidence.current-native-review-20261009/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root coordinator under ADR-0009 and user authority",
+    "reservation_id": "afa55f1df6914711bf0ba7fbf3b52337",
+    "instance_id": "current-native-review-20261009",
+    "instance_scope": "Current-pin C2 manual interval and internal owner review; record withheld phase gates without changing oracles",
+    "instance_set": [
+      "current-native-review-20261009"
+    ],
+    "reviewed_recipe_sha256": "030d017d877b78008f0e785d1c5e7d5bee84871f24a1a6965c39cdb21614a25d",
+    "interface_contract": "ADR-0009 internal review; existing C2 acceptance specification and unmodified plan exit",
+    "context_slices": [
+      {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "start": 96,
+        "end": 153
+      },
+      {
+        "path": "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "start": 318,
+        "end": 340
+      },
+      {
+        "path": "conductor/decisions/ADR-0009-internal-owner-review-and-learning.md",
+        "start": 1,
+        "end": 35
+      }
+    ],
+    "input_paths": [
+      "conductor/evidence/c2-replay-demo-20261009/acceptance.json"
+    ],
+    "write_paths": [
+      "conductor/evidence/c2-current-phase-review-20261009/README.md",
+      "conductor/evidence/c2-current-phase-review-20261009/review.json",
+      ".artifacts/mvp/C2.4.evidence.current-native-review-20261009/result.json"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "python3",
+          "tools/tasks.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Task graph remains valid; C2.4 remains unchecked"
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/mvp.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "MVP decomposition remains coherent"
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/context.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Current state and context integrity remain valid; no phase acceptance inferred"
+      }
+    ],
+    "prerequisite_receipts": {
+      "C2.4.runtime-ledger": {
+        "status": "accepted",
+        "reviewer": "root existing local leaf acceptance with current source/log readback",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189"
+        }
+      },
+      "C2.4.q4-urgent-interruption-ledger": {
+        "status": "accepted",
+        "reviewer": "root existing local leaf acceptance with current source/log readback",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.4-q4-interruption-rust199-20261007/acceptance-rust199.json": "88109c5dc3a35eada33d0f047ac33d5271f7a5050f138393ff4a435a265a97c1"
+        }
+      },
+      "C2.5.continuation": {
+        "status": "accepted",
+        "reviewer": "root existing local leaf acceptance with current source/log readback",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/c2.5-continuation-rust199-20261007/acceptance-rust199.json": "543a0e9e6b73c7e392280bbe6b9f3cc69fe1b6abd29a635e2ad97444d0536282"
+        }
+      }
+    }
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "cd245b5799daf864000a6f8a78aff85c8caa5258a2471cbe90fb1b5d5d7703c7",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "9f033973eb5f081980475b8595b6d6c7d5f628f54d98879a4d2a78b258ce9625",
+    "conductor/tracks/empirical_calibration_20260925/spec.md": "ac39678081c2ea3391ddaf45b948e6ba62fb7f01a52e5905444ffd127c33b9f3",
+    "conductor/decisions/ADR-0009-internal-owner-review-and-learning.md": "c0b6beebb9e9875e8bbdfef66084664688487aff828b760e0581419234e77e74",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}

@@ -1,0 +1,129 @@
+{
+  "task_id": "C2.4.evidence",
+  "parent_review_base": "21538abda2221a79c08ee84a1cab3c28e801b804",
+  "kairos_review_pin": "adf5fed6a86670b5b07be5e7522f174f7823ef0c",
+  "verification_toolchain": "1.99.0 only",
+  "status": "current_native_manual_and_internal_boundary_review_accepted_phase_withheld",
+  "reviewers": {
+    "interval_review": "internal c24_requirement_map agent; root coordinator readback",
+    "Track03_DES_ABM": "internal c2_recovery_gap agent; root integration",
+    "learning": "internal learning_closeout_review agent"
+  },
+  "review_identity_boundary": "Internal engineering roles under user authority and parent ADR-0009; no external maintainer response or authenticated identity claim",
+  "Track03_checklist": [
+    {
+      "item": "admission decision freeze",
+      "disposition": "accepted for current experimental boundary",
+      "source": "flow_bridge.rs:265-370,1499-1547"
+    },
+    {
+      "item": "Flow/work/request identity and busy boundary",
+      "disposition": "accepted for current experimental boundary",
+      "source": "flow_bridge.rs:205-241,802-845,1770-1838"
+    },
+    {
+      "item": "Macro/zero Micro parity without transit",
+      "disposition": "accepted for current experimental boundary",
+      "source": "flow_bridge.rs:1499-1547,1998-2044; conformance/c20/paired_flow_c20_v2.rs:138-323"
+    },
+    {
+      "item": "mixed subsystem decisions remain distinct",
+      "disposition": "accepted for current experimental boundary",
+      "source": "flow_bridge.rs:2167-2422"
+    },
+    {
+      "item": "actual carrier, rejected-event retry and one arrival",
+      "disposition": "accepted for current experimental boundary",
+      "source": "flow_bridge.rs:566-670,802-917,3255-3364"
+    },
+    {
+      "item": "interruption retains sample/work/request",
+      "disposition": "accepted for current experimental boundary",
+      "source": "flow_bridge.rs:3039-3139"
+    },
+    {
+      "item": "resource callbacks and elapsed intervals reconcile",
+      "disposition": "accepted for current experimental boundary",
+      "source": "flow_bridge.rs:2424-2646,2921-3021"
+    },
+    {
+      "item": "purpose/provenance/graph identity contract",
+      "disposition": "accepted for current experimental boundary",
+      "source": "route_receipt.rs:29-70,135-164; ADR-0009-c2-route-receipt.md"
+    },
+    {
+      "item": "experimental public helpers have explicit ADRs",
+      "disposition": "accepted for current experimental boundary",
+      "source": "flow_adapter.rs:147-189,246-253; ADR-0008-c20-transit-retry-seam.md; ADR-0009-c2-route-receipt.md"
+    }
+  ],
+  "cross_track_resolution": {
+    "purpose": "Track21 optional versioned RouteMetadata validates explicit trip purpose; receipt binds it. ADR-0009/0010 freeze placement outside geometry route API. Root confirms the already implemented requirement, not a new API change.",
+    "mixed_use": "ADR-0009 defines external activity pausing one movement profile; exact old-event5 stale/arrival7 oracle passes. Multi-profile movement remains unsupported, not silently claimed.",
+    "sensor_distance": "SensorObservationOnly metadata rejects before service draw/admission. Configured geometry responsibility remains model input contract; provenance label is not truth certification.",
+    "graph_hash": "Track21 receipt SHA256 binds canonical actual topology, profile/ticks/O-D/purpose/provenance and ordered segments. Track03 canonical bytes remain hash-library-free."
+  },
+  "manual_intervals_ticks": [
+    {
+      "case": "paired Macro",
+      "queue": 5,
+      "transit": 0,
+      "useful_service": 20,
+      "total": 25
+    },
+    {
+      "case": "paired routed Micro",
+      "queue": 3,
+      "transit": 2,
+      "useful_service": 20,
+      "total": 25
+    },
+    {
+      "case": "Suspend Macro",
+      "queue": 5,
+      "transit": 0,
+      "useful_service": 20,
+      "interruption": 2,
+      "total": 27
+    },
+    {
+      "case": "Suspend routed Micro",
+      "queue": 3,
+      "transit": 2,
+      "useful_service": 20,
+      "interruption": 2,
+      "total": 27
+    },
+    {
+      "case": "Restart Macro and explicit-zero Micro",
+      "queue": 5,
+      "transit": 0,
+      "discarded_service_attempt": 3,
+      "interruption": 2,
+      "restarted_service": 20,
+      "total": 30
+    }
+  ],
+  "executed_tests": [
+    "macro_and_micro_reconcile_queue_transit_and_service_elapsed_time",
+    "actual_flow_urgent_suspend_resumes_same_macro_and_routed_micro_service",
+    "actual_flow_urgent_restart_reuses_sampled_service_for_macro_and_zero_transit_micro"
+  ],
+  "evidence_hashes": {
+    "conductor/evidence/c2-replay-demo-20261009/acceptance.json": "917d3401eccc02a6d3ddce072262f645d4428be50e35c875c36e767eee9725cd",
+    "conductor/evidence/c2-replay-demo-20261009/logs/combined.log": "e47fb3dae0fc486132d856af29fd17df242c724a528f595cd24df113949bd92e",
+    "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs": "0fd2022c021d79ecf0248df08f16d3023236aa14e90e576cd1e9ae621a039e7d"
+  },
+  "hosted_readback": {
+    "command": "gh api repos/edithatogo/kairos/commits/adf5fed6a86670b5b07be5e7522f174f7823ef0c/check-runs",
+    "result": "HTTP422 No commit found for SHA; not hosted/exact-head qualified"
+  },
+  "open_gates": [
+    "Current stable-only C2-enabled native CI wiring and exact-head Linux/macOS execution",
+    "General Track22 portable checkpoint/restart (sealed recipe only is implemented)",
+    "Stable public API/release qualification",
+    "Clinical/ED acceptance",
+    "C2.4 phase acceptance remains withheld by unmodified declared exit"
+  ],
+  "coordinator_decision": "Local C-02/manual interval and internal Track03 boundary review accepted for current experimental profile. Existing local runtime leaves remain accepted. Do not mark C2.4 complete or reinterpret wider phase gates as passed."
+}
