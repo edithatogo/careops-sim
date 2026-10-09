@@ -3,11 +3,13 @@
   "root_review": "ADR0017 API accepted with shared-type store/multi-factory/remaining-budget/exactidentity clarifications",
   "contracts": [
     "conductor/design/calibration/ADR-0017-c2-flow-checkpoint-assembly.md",
-    "conductor/design/calibration/ADR-0018-c2-stream-route-state.md"
+    "conductor/design/calibration/ADR-0018-c2-stream-route-state.md",
+    "conductor/design/calibration/ADR-0019-c2-owner-transport.md"
   ],
   "contracts_sha256": {
     "conductor/design/calibration/ADR-0017-c2-flow-checkpoint-assembly.md": "5aa51dae0d5ee32196b44445c4a8722b2e507991f7ddd63c19a647896c21b4b5",
-    "conductor/design/calibration/ADR-0018-c2-stream-route-state.md": "b0652931136fee9835c827c415e71c95fa6366b66febe819bae6556a5f8bcc71"
+    "conductor/design/calibration/ADR-0018-c2-stream-route-state.md": "b0652931136fee9835c827c415e71c95fa6366b66febe819bae6556a5f8bcc71",
+    "conductor/design/calibration/ADR-0019-c2-owner-transport.md": "9d1905cd3d0824d76ad193dd639ccc6d48ecc3dbbff09664e2fa0c7b7e5f3add"
   },
   "workers": [
     {
@@ -20,11 +22,12 @@
         "crates/kairo-ecs-des/src/lib.rs",
         "crates/kairo-ecs-des/tests/flow_checkpoint_v1.rs"
       ],
-      "state": "unaccepted; independent review corrections running",
+      "state": "native Flow reviewed and integrated; full byte layer separately dispatched",
       "requested_model": "gpt-6-luna",
       "source_model_not_attested": true,
-      "implementation_commit": "5c41632dae5d761a9176a44434f9a86400e9117e",
-      "correction_packet": "native-flow-review.md"
+      "implementation_commit": "fda8c24a3eeffaa4a2109967aaa64ca61bcea451",
+      "correction_packet": "native-flow-review.md",
+      "integrated_commit": "77e5978"
     },
     {
       "packet": "C2.portable.stream",
@@ -50,5 +53,15 @@
       "source_model_not_attested": true,
       "implementation_commit": "0f6f2f32ff88c1f1b6980bbfe40dbbbb38453825"
     }
-  ]
+  ],
+  "native_owner_stage": {
+    "flow_environment": "de4ca506131aca76b3659486f0d3797aad508edc",
+    "transit_native": "f012b117c40b890fa84cd27f6550cca2947b6374",
+    "transit_status": "owner crosslink correction pending after independent review",
+    "bridge_native": "334eea9c5248d8b2850dcff0734114b01c42d0d3",
+    "bridge_status": "carrier crosslink/receipt allocation correction pending after independent review",
+    "flow_wire_base": "de4ca506131aca76b3659486f0d3797aad508edc",
+    "flow_wire_state": "dispatched; implementation in progress",
+    "whole_C2_accepted": false
+  }
 }

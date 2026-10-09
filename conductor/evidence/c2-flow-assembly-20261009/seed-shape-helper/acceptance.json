@@ -1,0 +1,28 @@
+{
+  "source_base": "ca7ee8f",
+  "toolchain": "rustc 1.99.0 (b940084d7 2026-09-28)",
+  "initial_attempt": {
+    "command": "cargo test --locked -p kairo-ecs-calibration --features flow --lib seed_map::tests::checkpoint_identifier",
+    "exit": 101,
+    "reason": "missing ABM test-support feature"
+  },
+  "tests": {
+    "command": "cargo test --locked -p kairo-ecs-calibration --features flow,kairo-ecs-abm/test-support --lib seed_map::tests::checkpoint_identifier",
+    "exit": 0,
+    "passed": 2
+  },
+  "clippy": {
+    "command": "cargo clippy --locked -p kairo-ecs-calibration --all-targets --features flow,kairo-ecs-abm/test-support -- -D warnings",
+    "exit": 0
+  },
+  "fmt": {
+    "command": "cargo fmt --all --check",
+    "exit": 0
+  },
+  "logs": {
+    "fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "clippy.log": "cb0b4a9933ba5c3690a0982739f62f9006c5a0bd53fc8e262d5665073933f4e7",
+    "tests-joined.log": "982607cd7b463036087dbdaa9f5a7d6fd111e7087f1d8a84f2f2e1d07ba5bbb2",
+    "tests.log": "9044c86570ffd6952c43899740c58a87d6432e83ea87470226c7dfcf3969e13d"
+  }
+}

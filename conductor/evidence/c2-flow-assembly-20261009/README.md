@@ -29,3 +29,32 @@ outer byte artifact. Full runtime capture/import, ABM TransitContext and bound
 bridge rebind, coherent frontier, durable bounded envelope and fresh-process
 parity across the complete C2 mode/progress matrix remain required. Clinical,
 release and C5 worker/candidate acceptance remain separate; C2.4 stays unchecked.
+
+## Native owner stage
+
+The initial Flow review corrections were followed by source-produced first-tick
+and cross-tick budget-halt cases. Root caught the false rejection of those legal
+snapshots; corrected worker sourcefda8c24 passed the full five-package feature join
+574/0/5 and strict Clippy/format. Root integrated its exact four source files at
+77e5978 and reran17 focused Flow tests successfully. The source-derived stale
+release cases preserve both reservation-retained preemption and reservation-cleared
+actor cleanup states.
+
+Root then added caller-owned encoder/decoder environments, actual dense row IDs,
+and a returned validated rebind view atde4ca50. Legacy function-pointer helpers
+share the same path. Read-only current work bindings and retained work ownership
+support complete owner cross-links; native request/domain ownership is validated
+before decoders. Independent review accepted the seam with no findings. Full DES
+tests282/0/1, strict Clippy and format passed. Seed identifier-byte getters at
+61058af passed2 focused cases and separate source review. Their first missing
+test-support feature build and the environment seam's initial field-name compile
+failure are retained in the prior-attempt logs, rather than counted as passes.
+
+ABM transit and calibration bridge native images are committed. Separate reviews
+found owner cross-links and receipt allocation checks requiring correction. They
+remain outside composite acceptance until corrected and directly exercised with
+the real joined context codec. Complete bounded Flow/dispatch byte transport is
+dispatched fromde4ca50; outer durable envelope, coherent frontier and fresh-process
+matrix remain next. Hosted results still coverfad0380 only. The parent pin is
+unchanged. Local learning gained an evidence-bound restore-review proposal; its
+effectiveness is not yet measured and it has not been automatically promoted.
