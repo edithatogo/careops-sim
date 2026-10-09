@@ -1,0 +1,62 @@
+{
+  "base": "cd47fd52e12cb645e782159d0c957872239caebc",
+  "worker": "396a816febc9cdccb9dc2f10854999377e9afb66",
+  "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009",
+  "rust": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: aarch64-apple-darwin\nrelease: 1.99.0\nLLVM version: 23.1.1\n",
+  "tests": {
+    "command": "cargo test --locked -p kairo-ecs-core -p kairo-ecs-state -p kairo-ecs-des -p kairo-ecs-abm -p kairo-ecs-calibration --features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+    "exit": 0,
+    "passed": 656,
+    "failed": 0,
+    "ignored": 5,
+    "groups": 63
+  },
+  "clippy": {
+    "command": "cargo clippy --locked -p kairo-ecs-core -p kairo-ecs-state -p kairo-ecs-des -p kairo-ecs-abm -p kairo-ecs-calibration --all-targets --features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support -- -D warnings",
+    "exit": 0
+  },
+  "fmt": {
+    "command": "cargo fmt --all --check",
+    "exit": 0
+  },
+  "artifact_readback": {
+    "command": "python3 - (inline standard-library exact input/child/control-trace reconciliation)",
+    "exit": 0,
+    "verified_processes": [
+      "macro-zero-ready",
+      "micro-zero-ready",
+      "transit-ready",
+      "transit-rejected-start-retry",
+      "transit-rejected-progress-retry",
+      "transit-moving-mid-edge",
+      "transit-paused-ready",
+      "transit-paused-mid-edge",
+      "transit-paused-mid-edge-native-activity",
+      "transit-paused-at-end",
+      "transit-control-command-pending",
+      "transit-arrived-queued",
+      "submitted-pending",
+      "submitted-active",
+      "service-suspend-sample20",
+      "service-restart-sample20",
+      "service-suspend-pending-cut-sample20",
+      "service-restart-pending-cut-sample20",
+      "multi-graph-mixed-frozen-pending",
+      "c2-generic-context-tests",
+      "c2-identity-rng"
+    ],
+    "count": 21
+  },
+  "source_sha256": "a03a2618d8956bcde62f659a453d93f36565fd6fca11739872b0ad8a275553c2",
+  "log_sha256": {
+    "fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "clippy.log": "a0e0c635fe3efb75c4754d742d28541efad84f51fe29f681105409f6582a0b17",
+    "tests.log": "6d90e921b1d8f007a8e81345fc8963cf32bc0d7795b5d9f7e919d9c35804827a"
+  },
+  "source_reviews": [
+    "component_store_codec accepted immutable396",
+    "provider_checkpoint accepted immutable396 and actual19 artifact readback"
+  ],
+  "hosted_status": "pending new root head; source588 hosted proof not substituted",
+  "whole_C2_accepted": false
+}
