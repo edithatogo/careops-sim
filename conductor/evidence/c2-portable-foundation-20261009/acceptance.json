@@ -1,0 +1,116 @@
+{
+  "base_commit": "89e69ac619726e4068e6a7833f4fbbcc1ff07fae",
+  "tested_staged_tree": "ccaae283ef209f0206287508127d39cf5550c307",
+  "toolchain": {
+    "sysroot": "/Volumes/PortableSSD/toolchains/rustup/toolchains/1.99.0-aarch64-apple-darwin",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: aarch64-apple-darwin\nrelease: 1.99.0\nLLVM version: 23.1.1",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "commands": {
+    "combined": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-core",
+        "-p",
+        "kairo-ecs-state",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-portable-foundation-20261009",
+      "exit_status": 0,
+      "log_sha256": "f44a5941d444e21a2570a4cb74cb32316279c80e190b022955aa6e92457077ec"
+    },
+    "clippy": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-core",
+        "-p",
+        "kairo-ecs-state",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-portable-foundation-20261009",
+      "exit_status": 0,
+      "log_sha256": "8ce718b2c8fdb3480a4f4ccbc0b4fca495fa024a652b18ca2ed1a7b610d845ec"
+    },
+    "format": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-portable-foundation-20261009",
+      "exit_status": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "diff": {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-portable-foundation-20261009",
+      "exit_status": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "source_sha256": {
+    "conductor/design/calibration/ADR-0016-c2-portable-state-foundation.md": "85185688219a599c28db65f089fe0927fe95e62cf09ddeda62163b33484af50f",
+    "crates/kairo-ecs-calibration/src/seed_map.rs": "808a25c68b4c2e101da276ecdf31a3b7fbfc89653e4d6521f0d187ef39e53bb9",
+    "crates/kairo-ecs-core/src/checkpoint.rs": "418ff2c1abc4e99b963cae7cf63816d0d4ec5772085ccd0e58aa07d74999574c",
+    "crates/kairo-ecs-core/src/lib.rs": "865cd8ba77db35953cc9b333d3428f1e4f4801154e638e7617825371d3a02038",
+    "crates/kairo-ecs-core/tests/scheduler_checkpoint_v1.rs": "a6bae4cc3923375663ac35f5fc124f6fe8c4e1ccf97566035460874693abbdb1",
+    "crates/kairo-ecs-state/src/checkpoint.rs": "d2726a2f1c0216df9789627bc4cc4cc7f6030393f34b6600206e8c4d343e8a10",
+    "crates/kairo-ecs-state/src/lib.rs": "ca14b012a7f9df3904577d4f5ef57624a09c8af80de54eb82b6dfcd4094a8623",
+    "crates/kairo-ecs-state/tests/world_checkpoint_v1.rs": "14e08ea9fb6f8cc098b73f79a888f292293068ba02a7494a02c5b53589112058"
+  },
+  "size_exception": "Coordinator atomic integration of three independently bounded/reviewed disjoint components;8source/doc paths, five-package native join; no manifest/algorithm changes",
+  "scope": "Full owner component state DTO foundations only; no bytecodec/Flow/context/adapter/freshprocess fullcheckpoint acceptance",
+  "native_counts": {
+    "groups": 54,
+    "passed": 527,
+    "failed": 0,
+    "ignored": 5
+  },
+  "compiled_source_commit": "e5a130223fad6148dabea2379f767514bd1eaeb3",
+  "published_head": "fad03807a41206d5b3247307493188c13888dec1",
+  "docs_successor_only": [
+    "CHANGELOG.md",
+    "conductor/tracks/01-heart-kairo-ecs-core-state/handoff.md",
+    "conductor/tracks/22-experiment-runner-scenario-management/handoff.md"
+  ]
+}

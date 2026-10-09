@@ -1,0 +1,26 @@
+   Compiling kairo-ecs-core v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-scheduler-checkpoint-20261009/crates/kairo-ecs-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.50s
+     Running tests/scheduler_checkpoint_v1.rs (.artifacts/c2-scheduler-checkpoint/target/debug/deps/scheduler_checkpoint_v1-eb8e5e7ab3215ac7)
+
+running 5 tests
+test empty_scheduler_checkpoint_roundtrips_and_continues ... ok
+test preserves_physical_tombstones_and_original_queue_continuation ... ok
+test prune_frontier_round_trips_after_dispatch_and_preserves_tie_sequence ... ok
+test rejects_invalid_checkpoint_invariants_with_exact_errors ... FAILED
+test near_wrap_generation_frontier_keeps_next_identifier_and_order ... ok
+
+failures:
+
+---- rejects_invalid_checkpoint_invariants_with_exact_errors stdout ----
+
+thread 'rejects_invalid_checkpoint_invariants_with_exact_errors' (2225549) panicked at crates/kairo-ecs-core/tests/scheduler_checkpoint_v1.rs:262:62:
+called `Result::unwrap_err()` on an `Ok` value: Scheduler { heap: [QueueEntry { request: ScheduleRequest { at: SimTime { ticks: 8 }, priority: 0, entity: None, kind: Custom(30) }, sequence: 0, id: EventId { index: 0, generation: 0 } }, QueueEntry { request: ScheduleRequest { at: SimTime { ticks: 9 }, priority: 0, entity: None, kind: Custom(31) }, sequence: 1, id: EventId { index: 1, generation: 1 } }], pending: {EventId { index: 0, generation: 0 }, EventId { index: 1, generation: 1 }}, next_event_index: 2, next_event_generation: 2, next_sequence: 2, now: SimTime { ticks: 1 }, scheduled_events: 2, dispatched_events: 0, cancelled_events: 0 }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    rejects_invalid_checkpoint_invariants_with_exact_errors
+
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p kairo-ecs-core --test scheduler_checkpoint_v1`

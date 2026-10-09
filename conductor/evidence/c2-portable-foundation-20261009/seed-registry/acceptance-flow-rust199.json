@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "task": "c2-seed-registry-checkpoint-correction-20261009",
+  "scope": "crate-private seed registry state capture/import; no byte codec or stream-state portability claim",
+  "working_directory": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-seed-registry-checkpoint-20261009",
+  "base_commit": "7a6b64603d0075765ee4625f5f362878a235cf17",
+  "implementation_commit": "c450f5214366659d8bd54c8d9dd631e5068614d7",
+  "source_sha256": {
+    "crates/kairo-ecs-calibration/src/seed_map.rs": "808a25c68b4c2e101da276ecdf31a3b7fbfc89653e4d6521f0d187ef39e53bb9"
+  },
+  "input_sha256": {
+    "conductor/design/calibration/ADR-0016-c2-portable-state-foundation.md": "28f16f0b97d3b76942c71361aa27f6ffd8183c6d4aba41a9462c17e023eefb7d",
+    "conductor/design/calibration/c2-seed-map-v1.md": "046ba8d06f667472399cb2a3af9f15ef03168558edfc3859dd0f28c719972c5b"
+  },
+  "toolchain": {
+    "rustc": "1.99.0",
+    "cargo": "1.99.0",
+    "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+    "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc"
+  },
+  "commands": [
+    {
+      "command": "cargo test --locked -p kairo-ecs-calibration --features flow,kairo-ecs-abm/test-support",
+      "exit_code": 0,
+      "log": ".artifacts/c2-seed-registry-checkpoint-correction/flow-tests.log",
+      "log_sha256": "d090dffa7df93495a93c23fa59f358f9f5a6324f3f8f23f0b340a9900220f1a7",
+      "result_groups": 11,
+      "passed": 189,
+      "failed": 0,
+      "ignored": 4
+    },
+    {
+      "command": "cargo clippy --locked -p kairo-ecs-calibration --all-targets --features flow,kairo-ecs-abm/test-support -- -D warnings",
+      "exit_code": 0,
+      "log": ".artifacts/c2-seed-registry-checkpoint-correction/flow-clippy.log",
+      "log_sha256": "e414973fff3e7e2cf0dd6b0525a1475cfc4c003cebe1ac911e075976a136b351"
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "exit_code": 0,
+      "log": ".artifacts/c2-seed-registry-checkpoint-correction/fmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "coverage": "Cumulative identifier-byte limits are validated before seed derivation; capture and import include empty-registry limits; checkpoint-only errors remain crate-private and wrap existing public seed errors; capture/import initial allocations use fallible reserve.",
+  "acceptance_boundary": "Local Rust 1.99 flow-feature package evidence only. Does not establish full portable checkpoint, C-06/C5, hosted, release, or clinical acceptance."
+}

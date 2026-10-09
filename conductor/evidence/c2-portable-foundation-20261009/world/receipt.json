@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "classification": "local_world_allocator_checkpoint_correction_evidence",
+  "working_directory": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-world-checkpoint-20261009",
+  "base_commit": "d94eb7db67802170044f907be3a1b0977acee432",
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+    "rustdoc": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+    "cargo_home": "/tmp/c2-route-receipt-cargo-home",
+    "target_dir": "/tmp/kairo-c2-world-checkpoint-target"
+  },
+  "input_hashes": {
+    "conductor/tracks/01-heart-kairo-ecs-core-state/agent-contract.md": "a4c3ca5966d314d994f49fc47fa995fdd168acc0d53f1fe87dd5f511eaa6fbf3"
+  },
+  "updated_contract_path": "conductor/design/calibration/ADR-0016-c2-portable-state-foundation.md",
+  "seed": "not applicable; deterministic allocator cases use no randomness",
+  "commands": [
+    {
+      "command": "cargo test -p kairo-ecs-state",
+      "exit_status": 0,
+      "log": "package-test.log"
+    },
+    {
+      "command": "cargo clippy -p kairo-ecs-state --all-targets -- -D warnings",
+      "exit_status": 0,
+      "log": "clippy.log"
+    },
+    {
+      "command": "cargo fmt --all --check",
+      "exit_status": 0,
+      "log": "fmt.log"
+    },
+    {
+      "command": "git diff --check",
+      "exit_status": 0,
+      "log": "diff-check.log"
+    }
+  ],
+  "test_counts": {
+    "existing": 6,
+    "checkpoint": 5,
+    "total": 11
+  },
+  "log_sha256": {
+    "package-test.log": "16dc50f14e96263db3ec2c7a134e6f5c8ef9eee4edbad632458e8defe3a7bf09",
+    "clippy.log": "bb56c4d7ba335fa8f139010a74ef0ff9a95f621b22c7f29a5f7c861c9e3542ce",
+    "fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "diff-check.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
