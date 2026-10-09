@@ -7,8 +7,10 @@
 - [ ] **Empirical calibration and validation** — `empirical_calibration_20260925`
   ([index](tracks/empirical_calibration_20260925/index.md),
   [spec](tracks/empirical_calibration_20260925/spec.md),
-  [plan](tracks/empirical_calibration_20260925/plan.md)). Proposed; upstream owner 21,
-  with 03/04/22 integration.
+  [plan](tracks/empirical_calibration_20260925/plan.md)). In progress; upstream owner 21,
+  with 03/04/22 integration. C2/C-02 synthetic execution and complete checkpoint
+  implementation accepted at source `63a72aa5`; [C2.4 closeout](evidence/c2.4-complete-checkpoint-closeout-20261010/README.md).
+  Shadow/study/ED integration, stable API, release and clinical gates remain separate.
 
 Calibration schema/ingestion/metrics can proceed independently after contract
 review. Shadow replay of interrupted work depends on the queue/Flow integration
