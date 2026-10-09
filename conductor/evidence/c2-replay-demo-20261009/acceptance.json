@@ -1,0 +1,385 @@
+{
+  "source_commit": "adf5fed6a86670b5b07be5e7522f174f7823ef0c",
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "environment": {
+    "sysroot": "/Volumes/PortableSSD/toolchains/rustup/toolchains/1.99.0-aarch64-apple-darwin",
+    "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+    "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009/.artifacts/c2-replay-demo/target-rustup"
+  },
+  "commands": {
+    "build-example": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow",
+        "--example",
+        "c2_replay_demo"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched_expected_exit": true,
+      "log_sha256": "e4616b71dbfa4cd19021a1219666be28b2d5ee9c03a37af74afe60ce67f8cae9"
+    },
+    "no-flow": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "check",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--example",
+        "c2_replay_demo"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched_expected_exit": true,
+      "log_sha256": "9f8b7b6c5e9d3b208213df93566bd3fa929369cc7385255ec71da078405bd01d"
+    },
+    "save": {
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009/.artifacts/c2-replay-demo/target-rustup/debug/examples/c2_replay_demo",
+        "save",
+        ".artifacts/c2-replay-demo-root/root-checkpoint.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched_expected_exit": true,
+      "log_sha256": "d3c2d8865ea20aa26b4f2c723c806b31a5e3e16afde6b8114d4eb4681e32b306"
+    },
+    "restore-one": {
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009/.artifacts/c2-replay-demo/target-rustup/debug/examples/c2_replay_demo",
+        "restore",
+        ".artifacts/c2-replay-demo-root/root-checkpoint.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched_expected_exit": true,
+      "log_sha256": "3735a54c6ae7a5cd4b64092999779def5e4ece30ba74a3904c67607fd2428855"
+    },
+    "restore-two": {
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009/.artifacts/c2-replay-demo/target-rustup/debug/examples/c2_replay_demo",
+        "restore",
+        ".artifacts/c2-replay-demo-root/root-checkpoint.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched_expected_exit": true,
+      "log_sha256": "3735a54c6ae7a5cd4b64092999779def5e4ece30ba74a3904c67607fd2428855"
+    },
+    "corrupt": {
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009/.artifacts/c2-replay-demo/target-rustup/debug/examples/c2_replay_demo",
+        "restore",
+        ".artifacts/c2-replay-demo-root/corrupt.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 1,
+      "expected_exit": 1,
+      "matched_expected_exit": true,
+      "log_sha256": "63507c372196201fda19c5cf43bc2d432d2ea8c38ceaf8b4cde62fdab26bf09f"
+    },
+    "existing": {
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009/.artifacts/c2-replay-demo/target-rustup/debug/examples/c2_replay_demo",
+        "save",
+        ".artifacts/c2-replay-demo-root/existing.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 1,
+      "expected_exit": 1,
+      "matched_expected_exit": true,
+      "log_sha256": "ec52babacaf09db8701360ef0248ef30fdd44e1eebcf5e4d0b34e278a82544af"
+    },
+    "missing-arg": {
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009/.artifacts/c2-replay-demo/target-rustup/debug/examples/c2_replay_demo",
+        "restore"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 2,
+      "expected_exit": 2,
+      "matched_expected_exit": true,
+      "log_sha256": "071a47050bb425e50a9b98f94812f821423f8dfb5ca785443121af64d6bd51df"
+    },
+    "unknown": {
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009/.artifacts/c2-replay-demo/target-rustup/debug/examples/c2_replay_demo",
+        "unknown",
+        ".artifacts/c2-replay-demo-root/root-checkpoint.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 2,
+      "expected_exit": 2,
+      "matched_expected_exit": true,
+      "log_sha256": "071a47050bb425e50a9b98f94812f821423f8dfb5ca785443121af64d6bd51df"
+    },
+    "combined": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched_expected_exit": true,
+      "log_sha256": "e47fb3dae0fc486132d856af29fd17df242c724a528f595cd24df113949bd92e",
+      "groups": 43,
+      "passed": 468,
+      "failed": 0,
+      "ignored": 5
+    },
+    "paired-v2": {
+      "argv": [
+        "python3",
+        "conformance/c20/run_paired_red.py",
+        "--fixture-version",
+        "2",
+        "--expect",
+        "green"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched_expected_exit": true,
+      "log_sha256": "d28a4a483e7d3c2e92bc5673b985db430d9eb5f30fb3ba29b2c28cd7a54032f9"
+    },
+    "transit": {
+      "argv": [
+        "python3",
+        "conformance/c20/run_transit_red.py",
+        "--expect",
+        "green"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched_expected_exit": true,
+      "log_sha256": "45b9df21c5935da7c8acb1f2ef7a50848565a6a1681be15110daca25ea4f3894"
+    },
+    "clippy": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched_expected_exit": true,
+      "log_sha256": "ad7f9856acf71f93c1997e11a9057748ff95277fc69758f20a317ad2209b6648"
+    },
+    "format": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-replay-demo-20261009",
+      "exit_status": 0,
+      "expected_exit": 0,
+      "matched_expected_exit": true,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "checkpoint_sha256": "ee5a77993895072f115833c776dc7d39844879373e9b9e741017892dff1810a9",
+  "binary_sha256": "51b88b74809445299023accb690fabd833f870f7e85d7f82b4816a1bfbde4050",
+  "repeat_trace_equal": true,
+  "trace": {
+    "next_service_draw": "4082319478949806137",
+    "request_id": {
+      "generation": 0,
+      "index": 5
+    },
+    "request_state": "Completed",
+    "resource": {
+      "active": 0,
+      "available": 1,
+      "queued": 0,
+      "total": 1
+    },
+    "route_arrival_at": "7",
+    "route_phase": "Arrived",
+    "route_receipt_sha256": "346daef79a8e8cbcfc22a023779bacfa370218fb0c58d7649eb1ab8bc7ec5685",
+    "route_remaining": "0",
+    "route_suffix": [
+      {
+        "at": "3",
+        "event": {
+          "generation": 2,
+          "index": 2
+        },
+        "observation": "Resumed"
+      },
+      {
+        "at": "5",
+        "event": {
+          "generation": 3,
+          "index": 3
+        },
+        "observation": "IgnoredStale"
+      },
+      {
+        "at": "7",
+        "event": {
+          "generation": 4,
+          "index": 4
+        },
+        "observation": "Arrived"
+      }
+    ],
+    "route_useful_elapsed": "5",
+    "scheduler": {
+      "dispatched": 7,
+      "pending": 0,
+      "scheduled": 7
+    },
+    "service_completion_at": "27",
+    "service_draw_position": "1",
+    "service_events": [
+      {
+        "at": "7",
+        "event": {
+          "generation": 5,
+          "index": 5
+        },
+        "lifecycle": [
+          {
+            "at": "7",
+            "progress": {
+              "remaining": "20",
+              "state": "Pending",
+              "useful_elapsed": "0"
+            },
+            "request": {
+              "generation": 0,
+              "index": 5
+            },
+            "resource": {
+              "generation": 0,
+              "index": 2
+            },
+            "state": "Queued",
+            "transition": "Queued",
+            "work": {
+              "generation": 0,
+              "index": 3
+            }
+          },
+          {
+            "at": "7",
+            "progress": {
+              "remaining": "20",
+              "state": "Active",
+              "useful_elapsed": "0"
+            },
+            "request": {
+              "generation": 0,
+              "index": 5
+            },
+            "resource": {
+              "generation": 0,
+              "index": 2
+            },
+            "state": "Active",
+            "transition": "Granted",
+            "work": {
+              "generation": 0,
+              "index": 3
+            }
+          }
+        ]
+      },
+      {
+        "at": "27",
+        "event": {
+          "generation": 6,
+          "index": 6
+        },
+        "lifecycle": [
+          {
+            "at": "27",
+            "progress": {
+              "remaining": "0",
+              "state": "Completed",
+              "useful_elapsed": "20"
+            },
+            "request": {
+              "generation": 0,
+              "index": 5
+            },
+            "resource": {
+              "generation": 0,
+              "index": 2
+            },
+            "state": "Completed",
+            "transition": "Completed",
+            "work": {
+              "generation": 0,
+              "index": 3
+            }
+          }
+        ]
+      }
+    ],
+    "service_remaining": "0",
+    "service_useful_elapsed": "20",
+    "service_work_state": "Completed",
+    "stale_event": {
+      "generation": 3,
+      "index": 3
+    }
+  },
+  "scope": "One sealed synthetic demo, same executable; generalC5/release/clinical/phase acceptance open"
+}
