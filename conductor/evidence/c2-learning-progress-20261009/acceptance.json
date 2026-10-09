@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "status": "C2_route_receipt_local_pass_learning_focused_pass_parent_regressions_pending",
+  "parent_review_head": "751f3d44f7b4342be0a20cffbcf9457c0826d899",
+  "kairos_receipt_source": "dbe7c34c26aceac4dd2191e5758ed1f25234261b",
+  "rust_combined": {
+    "argv": [
+      "rustup",
+      "run",
+      "1.99.0",
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "kairo-ecs-des",
+      "-p",
+      "kairo-ecs-abm",
+      "-p",
+      "kairo-ecs-calibration",
+      "--features",
+      "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+    ],
+    "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-route-receipt-20261009",
+    "source_commit": "dbe7c34c26aceac4dd2191e5758ed1f25234261b",
+    "exit_status": 0,
+    "log_sha256": "af96ea90326bfafe020b082a6c07f65bf2b17267986cd9ab95ed61fa97e5e33d",
+    "toolchain": {
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+    },
+    "environment": {
+      "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+      "RUSTC": "/Volumes/PortableSSD/toolchains/rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+      "RUSTDOC": "/Volumes/PortableSSD/toolchains/rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc"
+    },
+    "result_groups": 43,
+    "counts": {
+      "passed": 462,
+      "failed": 0,
+      "ignored": 5
+    }
+  },
+  "python_first_run": {
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+    "parent_commit": "751f3d44f7b4342be0a20cffbcf9457c0826d899",
+    "exit_status": 1,
+    "log_sha256": "32928299388b0a7125755678800a2d700d47ae2ce20da59cdab959a4ac0ca36f",
+    "summary": [
+      "Ran 510 tests in 84.677s",
+      "",
+      "FAILED (failures=4)",
+      "appended 1 proposed lessons",
+      "appended 0 proposed lessons",
+      "{\"baseline\": \"Success\", \"cargo_mutants_version\": \"27.1.0\", \"catalog_sha256\": \"b0462379cc6000736ddac35540cfc1aa709bf58ff6d0743dacd81d9005c92e3b\", \"caught\": 110, \"equivalent_misses\": [{\"column\": 60, \"line\": 735, \"name\": \"crates/careops-ed/src/lib.rs:735:60: replace || with && in run_scenario\"}, {\"column\": 43, \"line\": 798, \"name\": \"crates/careops-ed/src/lib.rs:798:43: replace || with && in run_scenario\"}], \"missed\": 2, \"source\": \"crates/careops-ed/src/lib.rs\", \"source_sha256\": \"4f7917f3976d84b86a1b2b6837065c803d75b29d6b4f594abbbb7ceaedc57380\", \"timeout\": 0, \"total_mutants\": 115, \"unviable\": 3}"
+    ]
+  },
+  "learning_focused_tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_learning.py",
+      "-v"
+    ],
+    "passed": 14,
+    "failed": 0
+  },
+  "source_sha256": {
+    "crates/kairo-ecs-calibration/src/route_receipt.rs": "5992cae0c4d6ff912b956ed54910afeeaafb23773b3faec5813786efee7f0ecc",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "a23b014f1cc6173e3373177b5eda1e36eeb952d91c17d6fc3abc349918423ed0",
+    "conductor/design/calibration/ADR-0009-c2-route-receipt.md": "4ad2c2bbe16055d09d2037b31c594236416f80a9a8f4bb78b665840f73fd7a96"
+  },
+  "learning_sha256": {
+    "tools/learning.py": "18d37e35f3c3ad13bf8d7f66120214324df3e872fbd0852a8827758159c8ed9f",
+    "tests/test_learning.py": "ad18a2c314b1aec2f0c9b5483d7323728f57f9aaff636e6b384d74ca1d356071",
+    ".agents/skills/careops-learning-loop/SKILL.md": "791e14e9eb8e857910116ea978a6e0b024acd8bcc5f49a47bdcae6a661beb745"
+  },
+  "log_sha256": {
+    "rust-combined.log": "af96ea90326bfafe020b082a6c07f65bf2b17267986cd9ab95ed61fa97e5e33d",
+    "python-first.log": "32928299388b0a7125755678800a2d700d47ae2ce20da59cdab959a4ac0ca36f",
+    "receipt-targeted.log": "c2f3209cd13a3908baf3b1fbb883790185b99b5d006790ae6b6ab5b5d2019e47",
+    "abm-pause-resume.log": "44771e79cd0fc8c2716930333c8d6106e2ed9e3186b4986ad21d1b58a38ba4ca",
+    "clippy.log": "f0f65aa55c454e8a50f4904c0f59f99be9db7fc7219b29040e8919b80564ada4",
+    "format.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "phase_accepted": false,
+  "external_owner_messages_sent": false,
+  "remaining": [
+    "Bridge annotated receipt integration in progress",
+    "Parent regression failures: three stale graph assertions and P32 candidate snapshot difference under investigation",
+    "Portable checkpoint/restart and hosted verification remain open",
+    "Release and clinical acceptance remain separate"
+  ]
+}
