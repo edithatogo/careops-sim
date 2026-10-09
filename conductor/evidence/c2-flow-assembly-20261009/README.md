@@ -12,9 +12,13 @@ only runtime identity changes. Root expanded sparse-generation/mutation tests.
 Independent source reviewers accepted corrected fidelity and provider code. All
 component images preserve mutable state rather than rebuilding it from defaults.
 
-Stream and route owner payloads have committed implementations and independent
-source review, awaiting integration. Full Flow image code is actively being
-implemented in the separate worker worktree, including all built-in stores,
+Stream and route owner payloads are integrated at968bc05; targeted ABM and stream
+tests and strict checks passed. Allocation-free store dimensions followed at
+b8cdd4a. Full Flow image code is committed at5c41632 in the separate worker
+worktree but is not accepted: independent reviews found restore-validation gaps
+listed in native-flow-review.md, and a correction packet is running. Its default
+profile537/0/5 results do not substitute for the full five-package feature join.
+The image includes all built-in stores,
 queues/commands/notifications/counters and typed context/template values. Function
 pointers/type IDs/process identity must never enter the image; callback/factory
 bindings are checked against current trusted registration code and versioned IDs.
