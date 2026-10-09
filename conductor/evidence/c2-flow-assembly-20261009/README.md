@@ -58,3 +58,14 @@ dispatched fromde4ca50; outer durable envelope, coherent frontier and fresh-proc
 matrix remain next. Hosted results still coverfad0380 only. The parent pin is
 unchanged. Local learning gained an evidence-bound restore-review proposal; its
 effectiveness is not yet measured and it has not been automatically promoted.
+
+At2e27bbe root joined the seven exact ABM/calibration owner source files after
+transit ownership correction and separate review. Full five-package flow and
+test-support join passed598/0/5 across59 groups; strict Clippy and format passed.
+The bridge's route-bound restore still needs the actual joined oracle. Source
+review identified two next fixes: bound trusted graph bytes/identity before route
+allocation, and allow the retained retryable pending event to resolve as issued
+history after a rejected dispatch has left the heap. These are dispatched with
+the real route restore tests. Complete Flow/dispatch bytes and complete transit
+context bytes run as separate writers. The parent pin and hosted source remain
+fad0380; full portable, coherent-frontier and fresh-process C2 acceptance are open.

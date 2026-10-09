@@ -1,0 +1,236 @@
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/flow_bridge.rs:18:
+ };
+ use kairo_ecs_abm::spatial::{MovementProfile, NodeId, TransitError, TransitGraphV1};
+ use kairo_ecs_abm::{
+-    TransitContext, TransitPhase, schedule_transit_control, schedule_transit_start,
++    schedule_transit_control, schedule_transit_start, TransitContext, TransitPhase,
+ };
+ use kairo_ecs_des::fidelity::{
+     FidelityAdapter, FidelityAdmissionPermit, FidelityDecision, FidelityError, FidelityMode,
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/flow_bridge.rs:2203:
+     use super::*;
+     use crate::route_receipt::DistanceProvenance;
+     use crate::seed_map::CalibrationSeedMap;
+-    use crate::work_duration::{INTRINSIC_WORK_PROVIDER_VERSION_V1, IntrinsicDurationDistribution};
++    use crate::work_duration::{IntrinsicDurationDistribution, INTRINSIC_WORK_PROVIDER_VERSION_V1};
+     use kairo_ecs_abm::spatial::{EdgeId, MovementModeId, TransitEdge};
+     use kairo_ecs_abm::{register_transit_context, register_transit_context_reject_first_for_test};
+     use kairo_ecs_des::fidelity::{FidelityCheckpointLimits, FidelityPolicy};
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/flow_bridge.rs:2433:
+         bound_route_with_metadata(false)
+     }
+ 
+-    fn bound_annotated_route_with_adapter()
+-    -> (FlowRuntime, FidelityAdapter, BoundIntrinsicWork<u32, u32>) {
++    fn bound_annotated_route_with_adapter(
++    ) -> (FlowRuntime, FidelityAdapter, BoundIntrinsicWork<u32, u32>) {
+         bound_route_with_metadata(true)
+     }
+ 
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/flow_bridge.rs:3054:
+         assert_eq!(start, control_start);
+         assert_eq!(control_bound.route_receipt, None);
+         let expected_receipt = bound.route_receipt.clone().unwrap();
+-        assert!(
+-            bound
+-                .validate_route_context(&flow, bound.carrier.unwrap())
+-                .is_ok()
+-        );
++        assert!(bound
++            .validate_route_context(&flow, bound.carrier.unwrap())
++            .is_ok());
+ 
+         let continuation = BoundWorkContinuation::capture(flow, adapter, bound)
+             .ok()
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/flow_bridge.rs:3227:
+                 )
+                 .unwrap();
+                 assert_eq!(stale_image.stale_events, vec![replaced_progress_event]);
+-                assert!(
+-                    stale_image
+-                        .consumed_events
+-                        .contains(&replaced_progress_event)
+-                );
++                assert!(stale_image
++                    .consumed_events
++                    .contains(&replaced_progress_event));
+             }
+             arrived = observation == TransitObservation::Arrived;
+         }
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/flow_bridge.rs:3247:
+         let arrived_progress = arrived_context.progress_at(flow.now()).unwrap();
+         assert_eq!(arrived_progress.useful_elapsed, SimDuration::from_ticks(5));
+         assert_eq!(arrived_progress.remaining, SimDuration::ZERO);
+-        assert!(
+-            bound
+-                .validate_route_context(&flow, bound.carrier.unwrap())
+-                .is_ok()
+-        );
++        assert!(bound
++            .validate_route_context(&flow, bound.carrier.unwrap())
++            .is_ok());
+         let arrived_image = BoundIntrinsicWorkCheckpointV1::capture(
+             &bound,
+             &flow,
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/flow_bridge.rs:4509:
+             .filter(|row| row.snapshot.work == Some(work_id))
+             .collect();
+         assert_eq!(bridge_lineage_rows.len(), original_rows.len());
+-        assert!(
+-            bridge_lineage_rows
+-                .iter()
+-                .all(|row| row.request == request_id)
+-        );
++        assert!(bridge_lineage_rows
++            .iter()
++            .all(|row| row.request == request_id));
+         let urgent_rows: Vec<_> = records
+             .iter()
+             .filter(|row| row.request == urgent_request)
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/flow_bridge.rs:4832:
+ 
+         let replacement = bound.retry_transit(&mut flow, &rejected).unwrap();
+         assert_ne!(replacement, original);
+-        assert!(
+-            flow.work_context::<TransitContext>(carrier)
+-                .unwrap()
+-                .expects_event(replacement, SimTime::from_ticks(0))
+-        );
++        assert!(flow
++            .work_context::<TransitContext>(carrier)
++            .unwrap()
++            .expects_event(replacement, SimTime::from_ticks(0)));
+         let after_retry = flow.budget_snapshot().scheduler;
+         assert_eq!(
+             bound.retry_transit(&mut flow, &rejected),
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/flow_bridge.rs:4934:
+             flow.budget_snapshot().scheduler.scheduled_events,
+             before_retry.scheduled_events + 1
+         );
+-        assert!(
+-            flow.work_context::<TransitContext>(carrier)
+-                .unwrap()
+-                .expects_event(replacement, max)
+-        );
++        assert!(flow
++            .work_context::<TransitContext>(carrier)
++            .unwrap()
++            .expects_event(replacement, max));
+         let after_retry = flow.budget_snapshot().scheduler;
+         assert_eq!(
+             bound.retry_transit(&mut flow, &rejected_start),
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/flow_bridge.rs:5008:
+             flow.budget_snapshot().scheduler.scheduled_events,
+             before_retry.scheduled_events + 1
+         );
+-        assert!(
+-            flow.work_context::<TransitContext>(carrier)
+-                .unwrap()
+-                .expects_event(replacement, max)
+-        );
++        assert!(flow
++            .work_context::<TransitContext>(carrier)
++            .unwrap()
++            .expects_event(replacement, max));
+         let after_retry = flow.budget_snapshot().scheduler;
+         assert_eq!(
+             bound.retry_transit(&mut flow, &rejected_progress),
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/route_receipt.rs:3:
+ //! The receipt hashes the immutable route retained by an actual transit carrier.
+ //! It is not a seed identity, checkpoint codec, or authenticity signature.
+ 
+-use kairo_ecs_abm::TransitContext;
+ use kairo_ecs_abm::spatial::{RoutePlan, RouteSegment};
++use kairo_ecs_abm::TransitContext;
+ use sha2::{Digest, Sha256};
+ 
+ const RECEIPT_TAG: &[u8] = b"KAIROS-CALIBRATION-ROUTE-RECEIPT\0";
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/route_receipt.rs:378:
+         EdgeId, MovementModeId, MovementProfile, NodeId, TransitEdge, TransitGraphV1,
+     };
+     use kairo_ecs_abm::{
+-        TransitPhase, register_transit_context, schedule_transit_control, schedule_transit_start,
++        register_transit_context, schedule_transit_control, schedule_transit_start, TransitPhase,
+     };
+     use kairo_ecs_des::{FlowAcquireCommand, FlowBatchReceipt, FlowDomainControl, FlowRuntime};
+     use kairo_ecs_types::{EventKind, SimDuration, SimTime};
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/route_receipt.rs:477:
+                 .collect::<String>(),
+             "6e2de4e99a98adaadfb78a64e8a0d438c6036f6c43c7c5b953238893532d5425"
+         );
+-        assert!(
+-            a.validate_context(&reordered, &route_metadata("patient-transfer"))
+-                .is_ok()
+-        );
++        assert!(a
++            .validate_context(&reordered, &route_metadata("patient-transfer"))
++            .is_ok());
+         let other_purpose =
+             RouteReceipt::from_context(&reordered, &route_metadata("staff-transfer")).unwrap();
+         assert_ne!(a.digest(), other_purpose.digest());
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/route_receipt.rs:677:
+         let paused_progress = paused.progress_at(flow.now()).unwrap();
+         assert_eq!(paused_progress.useful_elapsed.ticks(), 1);
+         assert_eq!(paused_progress.remaining.ticks(), 4);
+-        assert!(
+-            receipt
+-                .validate_context(paused, &route_metadata("patient-transfer"))
+-                .is_ok()
+-        );
++        assert!(receipt
++            .validate_context(paused, &route_metadata("patient-transfer"))
++            .is_ok());
+ 
+         schedule_transit_control(
+             &mut flow,
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/route_receipt.rs:716:
+         let completed_progress = arrived.progress_at(flow.now()).unwrap();
+         assert_eq!(completed_progress.useful_elapsed.ticks(), 5);
+         assert_eq!(completed_progress.remaining.ticks(), 0);
+-        assert!(
+-            receipt
+-                .validate_context(arrived, &route_metadata("patient-transfer"))
+-                .is_ok()
+-        );
++        assert!(receipt
++            .validate_context(arrived, &route_metadata("patient-transfer"))
++            .is_ok());
+         let request_id = flow.work(service).unwrap().request.unwrap();
+         let request = flow.request(request_id).unwrap();
+         assert_eq!(request.work, Some(service));
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/work_duration.rs:4:
+ //! to the execution model and are deliberately not represented here.
+ 
+ use crate::seed_map::{
+-    CalibrationSeedError, CalibrationStream, CalibrationStreamKey, SeedPurpose, validate_id,
++    validate_id, CalibrationSeedError, CalibrationStream, CalibrationStreamKey, SeedPurpose,
+ };
+ use kairo_ecs_types::SimDuration;
+ use std::collections::{HashMap, HashSet};
+Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-flow-checkpoint-20261009/crates/kairo-ecs-calibration/src/work_duration.rs:569:
+             .unwrap();
+         let (duration, stored_key, before, after) = weighted.checkpoint_parts();
+         let restored = stream.snapshot().restore().unwrap();
+-        assert!(
+-            SampledWorkDuration::from_checkpoint_parts(
+-                duration,
+-                stored_key.clone(),
+-                before,
+-                after,
+-                &restored,
+-                &key,
+-            )
+-            .is_ok()
+-        );
++        assert!(SampledWorkDuration::from_checkpoint_parts(
++            duration,
++            stored_key.clone(),
++            before,
++            after,
++            &restored,
++            &key,
++        )
++        .is_ok());
+ 
+         assert_eq!(
+             SampledWorkDuration::from_checkpoint_parts(
