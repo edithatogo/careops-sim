@@ -1,0 +1,47 @@
+{
+  "base": "f1a7089abd4ea1263e90ab185ea3a61932a05d4a",
+  "worker_heads": [
+    "dde6ce4ac6ea547670bb7b35ad09f1189bfce79b",
+    "1d42a08155adfcacec04143bc46952bba3970cc1",
+    "414c9dda258e381c699b6447080e9f9348ca87c2"
+  ],
+  "source_sha256": {
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "5d5490cf97fec0f6b65826a19284eba75f486044385c1bb822e416bd1678c4a1",
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "8479e54d6bca19f5d71eeab7a1623198968cad6bb0006d7dd9933e537b3f5384",
+    "crates/kairo-ecs-abm/src/lib.rs": "a174773318ddcb873e42bb02f77c10e97bd67afb1249a74dd283ecc2bb77dea2",
+    "crates/kairo-ecs-abm/src/spatial.rs": "1b9aef736effff49ddc00d77b66887437790c50decef8cb27b7d7d83b850d485",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v1.rs": "8de74a6d9da9f347ce631d774216be325b93031b6a47e76a3b388e962fdbcaa8",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "75a4d1fe691c4947595961eb4d31752c3764d985d62453d7c60c01d40fd0eb52",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "111e94b50e6acaa0035f0a5a90694f1021e15e5f108a2b1746d4c4acc5d59254",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "b963b5fe64d4dbfc6fc5eda47b361e13728f45af472e529ccdf2f3fb633eeaac",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v1.rs": "16c32e8112a1f7beba7d65059548b9746db1d41c29778965470bcbdc1f15dbad"
+  },
+  "rust": "1.99.0",
+  "tests": {
+    "command": "cargo test --locked -p kairo-ecs-core -p kairo-ecs-state -p kairo-ecs-des -p kairo-ecs-abm -p kairo-ecs-calibration --features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+    "exit": 0,
+    "passed": 611,
+    "failed": 0,
+    "ignored": 5,
+    "groups": 60
+  },
+  "clippy": {
+    "command": "cargo clippy --locked -p kairo-ecs-core -p kairo-ecs-state -p kairo-ecs-des -p kairo-ecs-abm -p kairo-ecs-calibration --all-targets --features kairo-ecs-calibration/flow,kairo-ecs-abm/test-support -- -D warnings",
+    "exit": 0
+  },
+  "fmt": {
+    "command": "cargo fmt --all --check",
+    "exit": 0,
+    "observed_as_separate_command": true
+  },
+  "logs": {
+    "fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "clippy.log": "0428c6aebce8dce3c17eedcd220d3c214fae3be41c96ff8364bddd57e9bb5f2c",
+    "tests.log": "381949d99709c72866bc433b791c9df0cc72790d5cd7fbcbec7378253c4d293e"
+  },
+  "limitations": [
+    "bridge restore oracle still native DTO test sidechannel; real transit bytes tested separately",
+    "provider/fidelity/seed/bridge bytes and complete outer composite/envelope remain",
+    "no freshprocess fullmatrix or hosted newhead qualification"
+  ]
+}

@@ -71,3 +71,27 @@ history after a rejected dispatch has left the heap. These are dispatched with
 the real route restore tests. Complete Flow/dispatch bytes and complete transit
 context bytes run as separate writers. The parent pin and hosted source remain
 fad0380; full portable, coherent-frontier and fresh-process C2 acceptance are open.
+
+## Real owner bytes and framing — 10 October
+
+Root integrated separately reviewed Flow/dispatch and complete TransitContext
+bytes with route/native restore fixes at0784826: full join611/0/5, strict Clippy0,
+and an independently observed workspace format0. This is the fresh corrected
+format result; the prior failed native-owner log and amendment remain intact.
+Provider, fidelity and registry/key/exact-stream bytes followed atefb3bac, including
+a separately reviewed allocation-free captured-stream encoder seam. Full join
+622/0/5, strict Clippy0 and workspace format0 were separately observed.
+
+Root5251dc4 adds dispatch measurement and allocation-free nested dispatch
+preflight, source-reviewed separately and tested292 DES passes/1 ignored. Root
+7b8207e integrates the complete six-class bounded section directory and model/code/
+configuration-bound file envelope. Its13 focused tests include actual reload and
+12-thread no-clobber publication, with strict Clippy0 and format0. These framing
+tests qualify file primitives, not complete runtime restoration.
+
+The bridge/receipt byte writer and actual same-cut observer validator are active.
+Transactional full-owner composite restore and complete fresh-process C2 matrix
+remain required by ADR0020. Test-only native bridge payload sidechannels are
+historical component evidence and cannot support complete-byte/process acceptance.
+No sealed recipe replaces the generic/full-mode scope. Parent pin and hosted
+source remainfad0380; C2.4, clinical, release and C5 gates remain open.

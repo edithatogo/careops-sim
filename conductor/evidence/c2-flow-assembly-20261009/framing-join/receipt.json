@@ -1,0 +1,26 @@
+{
+  "base": "5251dc4eb94dae04c4aa582c7194526663ad896d",
+  "worker_envelope": "303b0d98057b7f70a84b56e5a412d2e3561db4cf",
+  "worker_sections": "e55f03f8d6592a128a9f8286fa1e55625504a3ef",
+  "root_module_registration": "private Flow-feature modules, no public export",
+  "rust": "1.99.0",
+  "tests": {
+    "command": "cargo test --locked -p kairo-ecs-calibration --features flow,kairo-ecs-abm/test-support --test checkpoint_envelope_v1 --test checkpoint_sections_v1",
+    "exit": 0,
+    "passed": 13
+  },
+  "clippy": {
+    "command": "cargo clippy --locked -p kairo-ecs-calibration --all-targets --features flow,kairo-ecs-abm/test-support -- -D warnings",
+    "exit": 0
+  },
+  "fmt": {
+    "command": "cargo fmt --all --check",
+    "exit": 0
+  },
+  "logs": {
+    "fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "clippy.log": "81f95d46f4e1aebc63e4175c6fee05c2d192045a2809f82d66147b96190e04d1",
+    "tests.log": "7954a6e072c98798288f4add5edcc4bb0359b0aba195782bd04b8476b21c178a"
+  },
+  "limitations": "framing/file primitives only; complete composite and process validation remain"
+}
