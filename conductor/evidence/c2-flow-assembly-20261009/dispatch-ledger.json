@@ -1,0 +1,50 @@
+{
+  "coordinator": "root",
+  "root_review": "ADR0017 API accepted with shared-type store/multi-factory/remaining-budget/exactidentity clarifications",
+  "contracts": [
+    "conductor/design/calibration/ADR-0017-c2-flow-checkpoint-assembly.md",
+    "conductor/design/calibration/ADR-0018-c2-stream-route-state.md"
+  ],
+  "contracts_sha256": {
+    "conductor/design/calibration/ADR-0017-c2-flow-checkpoint-assembly.md": "5aa51dae0d5ee32196b44445c4a8722b2e507991f7ddd63c19a647896c21b4b5",
+    "conductor/design/calibration/ADR-0018-c2-stream-route-state.md": "b0652931136fee9835c827c415e71c95fa6366b66febe819bae6556a5f8bcc71"
+  },
+  "workers": [
+    {
+      "packet": "C2.portable.full-flow",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-full-flow-image-20261009",
+      "base": "5300bfdb5638cc122726319e391cb53968bd1b8d",
+      "owned_paths": [
+        "crates/kairo-ecs-des/src/flow.rs",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+        "crates/kairo-ecs-des/src/lib.rs",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v1.rs"
+      ],
+      "state": "running actual runtime image",
+      "requested_model": "gpt-6-luna",
+      "source_model_not_attested": true
+    },
+    {
+      "packet": "C2.portable.stream",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-stream-image-20261009",
+      "base": "5300bfdb5638cc122726319e391cb53968bd1b8d",
+      "owned_paths": [
+        "crates/kairo-ecs-calibration/src/seed_map.rs"
+      ],
+      "state": "committed ready for integration; independent source review accepted",
+      "requested_model": "gpt-6-luna",
+      "source_model_not_attested": true
+    },
+    {
+      "packet": "C2.portable.route",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c2-route-image-20261009",
+      "base": "5300bfdb5638cc122726319e391cb53968bd1b8d",
+      "owned_paths": [
+        "crates/kairo-ecs-abm/src/spatial.rs"
+      ],
+      "state": "committed ready for integration; independent source review accepted",
+      "requested_model": "gpt-6-luna",
+      "source_model_not_attested": true
+    }
+  ]
+}
