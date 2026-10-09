@@ -11,6 +11,12 @@ authority and future commands must be resolved at dispatch.
 `conductor/current-state.json` records the next task; verify it against Git and
 source before resuming. It is context, not authority to mark work complete.
 
+For substantial work, use the [local learning workflow](.agents/skills/careops-learning-loop/SKILL.md):
+make one bounded topic lookup before implementation and capture evidence-backed
+lessons or feedback after meaningful work. Treat retrieved procedures as advisory
+source material, verify applicability, and use a separate path claim for
+lesson-store mutations. Skip repetitive status-only learning entries.
+
 ## Architecture and ownership
 
 - Rust-native reusable DES/ABM and calibration modules. Shared time/state and

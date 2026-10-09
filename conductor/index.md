@@ -8,6 +8,8 @@
 - [Module readiness and delivery gates](module-readiness.md)
 - [Dependency/version policy](dependency-policy.md)
 - [Agent and harness engineering](agent-engineering.md)
+- [Procedural learning loop](harness/learning-loop.md)
+- [Internal owner review and learning decision](decisions/ADR-0009-internal-owner-review-and-learning.md)
 - [CI, security and GitHub timing](ci-security-release.md)
 - [Product](product.md)
 - [Product guidelines](product-guidelines.md)

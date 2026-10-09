@@ -35,6 +35,24 @@ Every implementation phase ends with the checklist item
 `Conductor — review and verify phase (workflow.md)`. A checkpoint is evidence of
 that phase only; GPU hardware and distributed acceptance require their own runs.
 
+## Procedural learning
+
+Before substantial implementation, run one bounded topic lookup through
+`python3 tools/learning.py search TOPIC` and inspect only applicable records.
+Review candidate advice against current source, task authority and evidence.
+After meaningful work, capture a new reusable procedure or correction with
+hashed evidence, or record use/outcome feedback for an existing validated lesson.
+Use a separate clean-source path claim and commit for store mutations after the
+implementation commit; do not let incidental learning writes bypass packet scope.
+Revise procedures through reviewed successors, preserving failures and history.
+No entry or success count establishes permission, competence or task acceptance.
+See [the learning-loop commands and limits](harness/learning-loop.md).
+
+Internal engineering-role reviews may resolve ordinary contract decisions within
+the user's scope. Before escalating, name the actual external authority and
+action requiring approval; an unfilled owner-role packet alone is insufficient.
+See [ADR-0009](decisions/ADR-0009-internal-owner-review-and-learning.md).
+
 ## Scope management
 
 Honor [the existing alignment policy](../docs/kairos-alignment.md). Preserve
