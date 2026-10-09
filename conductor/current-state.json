@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-07T15:57:03+10:00",
+  "updated_at": "2026-10-09T16:14:23+10:00",
   "active_track": "empirical_calibration_20260925",
   "active_phase": "C2",
-  "next_action": "C2.4 elapsed-time coordinator review is refreshed at Kairos 69878dc, including base (25-tick), routed Suspend (27-tick), and zero-transit Restart (30-tick) source reconciliation; actual-Flow transit evidence is also current. C2.4 phase acceptance remains withheld pending Track03/Track22 owner decisions, portable checkpoint/restart, hosted exact-head checks, release and clinical gates.",
+  "next_action": "User-authorized internal roles resolved route receipt and metadata contracts; Kairos 059992d integrates actual-carrier receipts, pre-draw metadata validation, same-live continuation and a fixed replaced-event stale classification. Finish integrated native verification, then define and implement the bounded fresh-process C2 recovery boundary. The learning loop and 512-test parent regression repair are implemented; C2.4, portable checkpoint/restart and hosted/release/clinical gates remain open without presumed external owner blockers.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -107,10 +107,16 @@
     "conductor/evidence/c2.4-q4-event-drain-rust199-20261007/acceptance-rust199.json",
     "conductor/evidence/c2.3-transit-current-pin-rust199-20261007/README.md",
     "conductor/evidence/c2.4-current-pin-review-rust199-69878dc-20261007/manual-readback.md",
-    "conductor/evidence/c2.4-current-pin-review-rust199-69878dc-20261007/coordinator-review.json"
+    "conductor/evidence/c2.4-current-pin-review-rust199-69878dc-20261007/coordinator-review.json",
+    "conductor/evidence/c2-learning-progress-20261009/README.md",
+    "conductor/evidence/c2-learning-parent-regressions-20261009/README.md",
+    "conductor/decisions/ADR-0009-internal-owner-review-and-learning.md",
+    "conductor/harness/learning-loop.md",
+    "libs/kairos/conductor/design/calibration/ADR-0009-c2-route-receipt.md",
+    "libs/kairos/conductor/design/calibration/ADR-0010-c2-route-metadata.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "69878dcaf9d1eac7f1eba84ef19647642b77435d",
+    "libs/kairos": "059992d92f09b3ecd96b3fa2967c03cceff413c0",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -650,7 +656,8 @@
     "parent_head_reviewed": "487d126cb1e278efc808f137a8e88452e25e2939",
     "current_source_sha256": "898d96efb005e4e9da0fbc88ba997f7bbee63c58c0da419d1716a5ab485f2227",
     "current_q4_event_drain_receipt": "conductor/evidence/c2.4-q4-event-drain-rust199-20261007/acceptance-rust199.json",
-    "current_q4_event_drain_receipt_sha256": "5ac4522e19a58f2d48aa36c24dfc1725a1511c6fc46ee0c8f15c004f105ac2e5"
+    "current_q4_event_drain_receipt_sha256": "5ac4522e19a58f2d48aa36c24dfc1725a1511c6fc46ee0c8f15c004f105ac2e5",
+    "internal_scope_review_superseded_by": "c2_internal_role_resolution_20261009; external packets remain unsent historical records"
   },
   "c23_current_pin_route_verification": {
     "status": "nine_C20_route_cases_and_three_C23_public_API_cases_passed_at_exact_69878dc_using_Rust_1.99.0_only",
@@ -682,6 +689,34 @@
     "kairos_pin": "69878dcaf9d1eac7f1eba84ef19647642b77435d",
     "current_q4_event_drain_receipt": "conductor/evidence/c2.4-q4-event-drain-rust199-20261007/acceptance-rust199.json",
     "current_q4_event_drain_receipt_sha256": "5ac4522e19a58f2d48aa36c24dfc1725a1511c6fc46ee0c8f15c004f105ac2e5",
-    "status": "prepared_unsent_undispositioned_refreshed_to_current_pin"
+    "status": "prepared_unsent_undispositioned_refreshed_to_current_pin",
+    "internal_scope_review_superseded_by": "c2_internal_role_resolution_20261009; external packets remain unsent historical records"
+  },
+  "c2_internal_role_resolution_20261009": {
+    "authority": "User directed proceeding with recommendations and internal role reviews",
+    "scope": "Bounded experimental DES/ABM + model adapter reviews; not external maintainer approval or stable release",
+    "architecture": "conductor/decisions/ADR-0009-internal-owner-review-and-learning.md",
+    "source_pin": "059992d92f09b3ecd96b3fa2967c03cceff413c0",
+    "receipt_source": "dbe7c34c26aceac4dd2191e5758ed1f25234261b",
+    "route_metadata_source": "059992d92f09b3ecd96b3fa2967c03cceff413c0",
+    "runtime_bug_fixed": "Accepted resume records replaced future progress event as stale before replacement; regression pause1/resume3/stale5/arrival7",
+    "limits": [
+      "Legacy omitted metadata remains explicitly unreceipted",
+      "One movement profile per route",
+      "Fresh-process checkpoint is not yet implemented",
+      "No phase checkbox changed"
+    ]
+  },
+  "learning_loop_qualification": {
+    "status": "implemented_local_mechanism",
+    "tool": "tools/learning.py",
+    "skill": ".agents/skills/careops-learning-loop/SKILL.md",
+    "focused_tests": 14,
+    "parent_suite_tests": 512,
+    "parent_suite_evidence": "conductor/evidence/c2-learning-parent-regressions-20261009/acceptance.json",
+    "evidence": "conductor/evidence/c2-learning-progress-20261009/acceptance.json",
+    "performance_improvement_claim": false,
+    "global_memory_modified": false,
+    "background_service_installed": false
   }
 }
