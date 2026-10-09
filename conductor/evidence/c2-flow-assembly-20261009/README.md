@@ -95,3 +95,11 @@ remain required by ADR0020. Test-only native bridge payload sidechannels are
 historical component evidence and cannot support complete-byte/process acceptance.
 No sealed recipe replaces the generic/full-mode scope. Parent pin and hosted
 source remainfad0380; C2.4, clinical, release and C5 gates remain open.
+
+Rootf18f9f5 joins the complete bridge/receipt bytes and observed-cut checker,
+plus trusted Service-key/graph comparison and provider wire configuration seams.
+Full source join645/0/5 across63 groups, strict Clippy0 and format0. Source reviews
+qualify these owner components; the aggregate composite and process matrix remain
+separate obligations. The committed composite worker287f57ae has four component
+oracles and is under review. Its complete fresh-process matrix writer is active.
+No full portability acceptance follows from those four component tests.
