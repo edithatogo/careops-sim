@@ -43,7 +43,7 @@ establishes current boundaries; only the five-package test slice noted below ran
 | kairo-ecs-abm | Behavior loop with separate context | Shared DES/ABM runtime and minimal staff policy/transit; 03, Q4/C2 | G1 |
 | kairo-ecs-arrow | Legacy smoke bytes retained; shared temporal/lifecycle schemas and optional typed IO through kairo-ecs-arrow-io qualified for C1 | Broader sidecar/export and C4 gates remain scoped to their owners; 04 | G1 |
 | kairo-ecs-cli | Basic manifests/replay surfaces | Real ED execution, studies, interruption recovery, cancel/progress/errors and worker runs; 22, C5/E3 | G1 |
-| kairo-ecs-calibration | Private synthetic ingestion and C2 execution/complete checkpoint implementation qualified | Shadow/study/ED integration and public API review remain; reusable Rust algorithms owned by 21 | G1 |
+| kairo-ecs-calibration | Private synthetic ingestion, C2 execution/checkpoint and C3 shadow implementation qualified | Study/ED integration and public API review remain; reusable Rust algorithms owned by 21 | G1 |
 | kairo-ecs-bench | Existing benchmark/fixture integration | Representative ED/resource/Arrow/calibration workloads and thresholds; 12/18/31, Q5/C6/D3 | G1 |
 | kairo-ecs-debug | Trace snapshots/deltas; not proof of full ECS serialization | Readable failure traces and replay integration; full interactive time travel optional; 40 with 01/22, Q4/E3 | G1 diagnostic subset |
 | kairo-ecs-viz | Headless snapshot facade; native renderer unavailable | ED snapshot/delta adapter, backpressure and sampling contracts; 05, E5 | G2 |
@@ -238,3 +238,12 @@ Status synchronization correction: the preceding registry commit updated metadat
 and the human track registry, but its exact index-row assertion failed before
 these two files were written. This change completes the index/readiness update;
 no runtime test or hosted result was inferred from that failed edit helper.
+
+## C3 accepted synthetic shadow implementation — 10 October 2026
+
+[C3 closeout](evidence/c3-completion-20261010/README.md) accepts C3.1–C3.4/C-03
+at `da327cf263ff6e4507f48f597c201bb269680d51`. Rust 1.99-only local native/Arrow,
+recovery, isolation, residual/feasibility and identifiability oracles pass. Final
+hosted checks: 47 success/two conditional skips; both actual native host trees and
+checkpoint/results independently reconcile. Earlier pending C3 records retain
+historical scope. Next C5; stable API, clinical/ED, whole MVP and release remain open.

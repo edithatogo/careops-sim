@@ -176,22 +176,24 @@ historical. No original C2 behavioral oracle or tolerance has been relaxed.
 
 Entry: C1, C2 and Q4. Owners 21 (probe semantics), 22 (runner), 03 (runtime).
 
-- [ ] C3.1 Write failing anchor/probe fixtures: early completion, late completion,
+- [x] C3.1 Write failing anchor/probe fixtures: early completion, late completion,
   completion exactly at anchor, missing target, impossible resource occupancy,
   repeated events, interrupted transit/work and bounded probe termination.
   Add the walk+work=5 ridge fixture and independent walk observation;
   assert objective ties do not imply uniquely identified empirical primitives.
-- [ ] C3.2 Implement observed-ledger replay and isolated predictive probes with
+- [x] C3.2 Implement observed-ledger replay and isolated predictive probes with
   explicit snapshots. Preserve macro anchor ticks; allow late probes to finish
   in isolated virtual time or return censored/failed. Never rewind the macro run.
-- [ ] C3.3 Capture unclamped target predictions and signed residuals, feasibility,
+- [x] C3.3 Capture unclamped target predictions and signed residuals, feasibility,
   missingness and replay role. Implement strict/diagnostic policy and checkpoint
   recovery of outstanding probes without duplicates or future-state leakage.
-- [ ] C3.4 Conductor — review and verify phase (workflow.md).
+- [x] C3.4 Conductor — review and verify phase (workflow.md).
 
 Exit: C-03; intentionally slow walking produces positive residuals despite exact
 macro anchoring. Manual check: compare observed ledger and probe logs separately;
 verify one probe cannot change another's starting historical state or occupancy.
+
+Accepted at Kairos `da327cf263ff6e4507f48f597c201bb269680d51`; [C3 closeout](../../evidence/c3-completion-20261010/README.md). Rust 1.99-only local/hosted proof and independent two-host readback pass. C5/API/clinical/release remain separate.
 
 ## C4 — Residual telemetry and statistical distance metrics
 

@@ -10,7 +10,8 @@
   [plan](tracks/empirical_calibration_20260925/plan.md)). In progress; upstream owner 21,
   with 03/04/22 integration. C2/C-02 synthetic execution and complete checkpoint
   implementation accepted at source `63a72aa5`; [C2.4 closeout](evidence/c2.4-complete-checkpoint-closeout-20261010/README.md).
-  Shadow/study/ED integration, stable API, release and clinical gates remain separate.
+  C3/C-03 shadow implementation accepted at `da327cf2`; [C3 closeout](evidence/c3-completion-20261010/README.md).
+  Study/ED integration, stable API, release and clinical gates remain separate.
 
 Calibration schema/ingestion/metrics can proceed independently after contract
 review. Shadow replay of interrupted work depends on the queue/Flow integration
