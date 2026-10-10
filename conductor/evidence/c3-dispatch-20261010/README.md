@@ -15,3 +15,10 @@ Protocol join `2b7cb7d` passes focused ledger/pool/report tests and strict Clipp
 Three reviewed Luna packets at that exact base: native-model (actual C2 worlds and executable recovery fixture), runner (trusted observed replay and typed recovery), contract-fixes (review defects and negative fixtures). Disjoint worktrees and claims; root owns module wiring, combined fixture, Arrow integration and final review. Local packets contain exact input hashes and bounded commands.
 
 Native model structural handoff: two executable import approaches failed because nested private modules resolve differently under path/include imports. WIP `d3eb4de` is not accepted. Packet v3 explicitly transfers private `lib.rs` wiring to the native worker and uses the actual crate test executable; root defers conflicting module edits until handoff. No public API is added. Independent review also required exact restored holder inventory, matching-event error propagation and the correct 20-byte outer header bound.
+
+## Integrated local qualification
+
+[Implementation handoff](../c3-implementation-20261010/README.md) records the
+completed native/recovery/metadata joins and independent readback. Draft Kairos
+PR244 is running hosted qualification. Rust 1.99.0 only; C3.4 and the accepted
+parent pin remain pending final hosted review.
