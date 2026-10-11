@@ -9,3 +9,8 @@ The locked native-success log is preserved byte-for-byte as e0-native-network.lo
 Its decompressed SHA-256 matches the native receipt. Compression preserves its
 original trailing blank line without failing the staged whitespace check. The
 first staged check stopped with exit2 before commit; no gate was bypassed.
+
+The worker log directory included a released local advisory lease token; initial
+archive copying included it in local commit386861c. Follow-up removes that token
+and retains scope metadata only. No parent remote exists and nothing was pushed.
+Future archive copying must allowlist command logs rather than copy directories.
