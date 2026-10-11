@@ -38,3 +38,11 @@ transit; unknown positions and display interpolation cannot become observations.
 
 The [delivery contract](../../delivery-contract.md) defines the manual recipe;
 record executed evidence before marking the corresponding task complete.
+
+## E1 test-first acceptance clarification
+
+[ADR-0010](../../decisions/ADR-0010-e1-test-first-acceptance.md) and the
+[fixture contract](../../design/ed/e1-fixture-contract.md) define E1.1 as reviewed
+executable specifications, following E0.1 precedent. E1.2/E1.3 must bind every
+case to real native execution. E1.4 requires all mapped runtime assertions green;
+unbound/ignored/skipped/expected-red cases prevent phase acceptance.

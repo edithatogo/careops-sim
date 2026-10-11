@@ -820,3 +820,7 @@ Parent plan: [E2.4](../../tracks/generic_ed_delivery_20260925/plan.md)
 | --- | --- | --- | --- |
 | E2.4.evidence | Phase evidence reconciliation | Every parent task has integrated output and executed gates; unresolved failures prevent acceptance | . / worker |
 | E2.4.closeout | Coordinator phase acceptance record | Independent readback agrees with evidence and upstream gates; only coordinator updates checkbox/catalog/pin | . / proposal_or_review |
+
+E1.1 scheduling update (2026-10-11): endpoints, extremes and invalid consume
+one frozen contract in parallel under ADR-0010; all three remain mandatory.
+Recipes contain the exact accepted prerequisite edges.
