@@ -88,3 +88,5 @@ Combined checkpoint consumers accepted: [Rust 1.99 and legacy envelope evidence]
 Portable V2 checkpoint acceptance: [local Rust 1.99 evidence](evidence/e2.2-checkpoint-portable-completion-20261011/README.md). Deferred allocation and V3 persistence remain open before parent integration.
 
 Explicit V3 wire/native continuation accepted: [Rust 1.99 evidence](evidence/e2.2-wire-v3-completion-20261012/README.md). Routing, actual V3 consumers, parent pin and ED binding remain open.
+
+V3 routing contract/handoffs accepted and bounded source packet authorized: [dispatch record](evidence/e2.2-routing-v3-dispatch-20261012/README.md). Source and final clean-head qualification remain pending.
