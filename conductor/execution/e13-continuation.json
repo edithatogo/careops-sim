@@ -1,5 +1,5 @@
 {
-  "status": "exits_dispatch_authorized",
+  "status": "exits_native_review_and_abandonment_dispatch",
   "coordinator": "root",
   "current_leaf": "E1.3.exits",
   "contract": "conductor/design/ed/e1-offers-contract.md",
@@ -64,6 +64,28 @@
     ],
     "instance_set": [
       "native"
+    ],
+    "checks": "full package tests, strictClippy, owned rustfmt; Rust1.99.0"
+  },
+  "exits_required_instances": [
+    "native",
+    "abandonment"
+  ],
+  "exits_join_reason": "E1.4 scope audit identified enabled optional abandonment capability missing from Disabled-only runtime. Separate reviewed extension preserves original native packet and requires both instances before leaf closes.",
+  "abandonment_dispatch": {
+    "owner": "e1_endpoint_preparation",
+    "model": "gpt-6-luna",
+    "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-abandonment-20261011",
+    "base_commit": "dd2bca0d28081da6eb9fdd9f40de3773c29cb051",
+    "packet": ".artifacts/packets/E1.3.exits.abandonment.json",
+    "contract": "conductor/design/ed/e1-abandonment-extension-contract.md",
+    "source_paths": [
+      "crates/careops-ed/src/pathway.rs",
+      "crates/careops-ed/src/terminal.rs"
+    ],
+    "instance_set": [
+      "native",
+      "abandonment"
     ],
     "checks": "full package tests, strictClippy, owned rustfmt; Rust1.99.0"
   }
