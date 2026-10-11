@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.deferred-allocation-runtime",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "2fb908cae59f2e21285fb0d5ace437a9e2cb11f6",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "objective": "Implement opt-in deferred native allocation and transactional explicit flush, preserve Eager behavior and failclosed legacycheckpoint capture pendingV3.",
+  "context_paths": [
+    ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/context.md"
+  ],
+  "input_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "08fc5f9bd7fe77bd4f0b27cd0b6d6f8d5de9a9f20925ff1794b04cc9d03995c4",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "9fcc232fb14403e91c43fc7cd7640210ce2d33b61468527b307d573e4906af81",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f6622ccf102a122bc6869617f2e9bd60a464892d7a99b0ab9cf74af5e4dc5b94",
+    "conductor/design/des/ADR-e2-deferred-allocation.md": "7099e0f33d3dac667b6b7eac15160ca3e20806ef60522f7489d80be17cda0c17",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v2.md": "f1aa471f94e77dfa8fed9b58c5b37d94c0a41bc1cbba80b9a5bd5ae5a8c6c46f",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "611bedc892b6d06d24c5e2d266165e31caa9e57228ec0e7d3400720639b93466",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/context.md": "789644ab79be7d3932a8253824d5d564e6fb94ad5734fa7884b55e0321240b94",
+    ".artifacts/e22-deferred-runtime/record_gate.py": "cc6002a5025715c56be6b427fe20c60811384bf31bbf40f04217ad4eb0777a2d"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs",
+    ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/result.json",
+    ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/src/lib.rs",
+    "crates/kairo-ecs-calibration",
+    "crates/kairo-ecs-core",
+    "crates/kairo-ecs-state",
+    "crates/kairo-ecs-abm",
+    "conductor/design/des/ADR-e2-deferred-allocation.md",
+    ".artifacts/e22-deferred-runtime/record_gate.py"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.checkpoint-consumers",
+    "E2.2.engine.deferred-allocation-design"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-deferred-allocation.md",
+  "steps": [
+    "Verifyhashes/base, claim, sendearlycommand/cache/guardmap.",
+    "Implement exactreviewedruntime+legacyguards+sixnamedmeaningfuloracles.",
+    "Format and inspect before3immutablegates; stopafter2failedgateexecutions.",
+    "FreezevalidJSON/allfailures/sourcehashes; no commitbeforeindependentreview."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-deferred-runtime/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "FullDESsuite with6named runtimeoracles passes."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-deferred-runtime/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strictall-targetDESClippyzero warnings."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-deferred-runtime/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Rust1.99targeted4sourcefmtpass."
+    }
+  ],
+  "acceptance": [
+    "Allrequirednativebehavior/counter/cache/halting oracles andEagerparity pass onRust1.99.",
+    "LegacyV1/V2/routedcapture failclosed beforecodecs onDeferredstate; wire/publicDTOformatsunchanged.",
+    "Scope runtimeonly; V3persistence/consumer/fullE2 remainsopen."
+  ],
+  "result_path": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/result.json",
+  "stop_conditions": [
+    "Input/base/claimdrift",
+    "UndefinedAPI/oracle orprotectededitrequired",
+    "Twofailedgateexecutions total",
+    "Cannotprove realnativebehavior"
+  ],
+  "size_exception": "Six owned paths: four inseparable Rust files include runtime plus exhaustive legacy checkpoint conversion guards and one focused test file; result and logs add two. No unrelated behavior or wire/consumer edits.",
+  "status": "prepared",
+  "coordinator_binding": {
+    "reviewer": "root and GPT-6.1-sol",
+    "reason_not_mvp_prepare": "Reviewed Kairos engine dependency for parentE2.2 closedadmission contract; parentfidelity recipe targetsparent and cannot dispatchengineowner APIs."
+  }
+}
