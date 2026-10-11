@@ -78,3 +78,5 @@ E2 engine grant-gate runtime qualified: [evidence](evidence/e2.2-engine-grant-ga
 Native V2 checkpoint acceptance: [local Rust 1.99 evidence](evidence/e2.2-checkpoint-native-completion-20261011/README.md). Wire and consumer qualification remain open.
 
 Version-aware preview acceptance: [Rust 1.99 local evidence](evidence/e2.2-checkpoint-preview-completion-20261011/README.md). Wire and coherent adapter remain active.
+
+Native coherent-cut adapter acceptance: [Rust 1.99 evidence](evidence/e2.2-checkpoint-coherent-completion-20261011/README.md). Portable V2 routing remains open.
