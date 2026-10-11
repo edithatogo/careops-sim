@@ -1,0 +1,116 @@
+{
+  "reviewer": "root coordinator; independent e1_next_planner and e1_endpoint_preparation contract review",
+  "reservation_id": "afb850624eab4db29c610676f2c0d94c",
+  "instance_id": "native",
+  "instance_set": [
+    "native",
+    "fixture-components"
+  ],
+  "instance_scope": "Provisional disposition wrapper, hidden intent and composed generator/service decision test",
+  "reviewed_recipe_sha256": "f2bc4ba701fc93f5b4a502c69439d636f2c7fee584be062b8940d110ba7cea09",
+  "interface_contract": "conductor/design/ed/e1-disposition-contract.md",
+  "context_slices": [
+    {
+      "path": "conductor/design/ed/e1-disposition-contract.md",
+      "start": 1,
+      "end": 28
+    },
+    {
+      "path": "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md",
+      "start": 1,
+      "end": 24
+    }
+  ],
+  "input_paths": [
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/careops-ed/Cargo.toml",
+    "crates/careops-ed/src/lib.rs",
+    "crates/careops-ed/src/pathway.rs",
+    "crates/careops-ed/src/arrivals.rs",
+    "conductor/design/ed/e1-disposition-contract.md",
+    "conductor/design/ed/e1-runtime-binding-ownership.md",
+    "crates/careops-ed/src/disposition.rs"
+  ],
+  "write_paths": [
+    "crates/careops-ed/src/disposition.rs",
+    ".artifacts/mvp/E1.2.disposition.native/result.json",
+    ".artifacts/mvp/E1.2.disposition.native/logs",
+    ".artifacts/e12-disposition-native/target"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "disposition::"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-disposition-20261011/.artifacts/e12-disposition-native/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2",
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/Users/doughnut/.local/bin:/Users/doughnut/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/opt/homebrew/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/quarto/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/doughnut/.codex/tmp/arg0/codex-arg0HiNZ1u:/Users/doughnut/.grok/bin:/Users/doughnut/.codeium/windsurf/bin:/Users/doughnut/.opencode/bin:/Users/doughnut/.antigravity/antigravity/bin:/Users/doughnut/.lmstudio/bin:/Users/doughnut/bin:/Users/doughnut/.dotnet/tools:/Users/doughnut/.local/pac-cli:/Users/doughnut/.local/bin:/Users/doughnut/scripts:/opt/homebrew/sbin:/Users/doughnut/.orbstack/bin:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS:/Users/doughnut/.local/bin:/Users/doughnut/.orbstack/bin"
+      },
+      "oracle": "Frozen disposition or component contract native checks; all required cases covered"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-disposition-20261011/.artifacts/e12-disposition-native/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2",
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/Users/doughnut/.local/bin:/Users/doughnut/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/opt/homebrew/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/quarto/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/doughnut/.codex/tmp/arg0/codex-arg0HiNZ1u:/Users/doughnut/.grok/bin:/Users/doughnut/.codeium/windsurf/bin:/Users/doughnut/.opencode/bin:/Users/doughnut/.antigravity/antigravity/bin:/Users/doughnut/.lmstudio/bin:/Users/doughnut/bin:/Users/doughnut/.dotnet/tools:/Users/doughnut/.local/pac-cli:/Users/doughnut/.local/bin:/Users/doughnut/scripts:/opt/homebrew/sbin:/Users/doughnut/.orbstack/bin:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS:/Users/doughnut/.local/bin:/Users/doughnut/.orbstack/bin"
+      },
+      "oracle": "Frozen disposition or component contract native checks; all required cases covered"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/src/disposition.rs"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Frozen disposition or component contract native checks; all required cases covered"
+    }
+  ],
+  "prerequisite_receipts": {
+    "E1.2.diagnostics": {
+      "status": "accepted",
+      "reviewer": "root+e1_next_planner exact source/native proof",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/e1.2-diagnostics-completion-20261011/acceptance.json": "687b23e2fbfaad554785b4329511be4f842a9f078596b593111a5ca400985e89"
+      }
+    }
+  }
+}

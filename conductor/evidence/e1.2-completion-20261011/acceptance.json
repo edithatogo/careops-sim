@@ -1,0 +1,62 @@
+{
+  "status": "accepted",
+  "parent": "E1.2",
+  "leaf": "E1.2.disposition",
+  "instance_set": [
+    "native",
+    "fixture-components"
+  ],
+  "all_instances_accepted": true,
+  "reviewer": "root integration and fixture review; independent GPT-6.1-sol disposition source review",
+  "integrated_source_commit": "ab6be9f614b61f6368215c15fb45d283f1362d2b",
+  "worker_commits": {
+    "native": "5940676298e1244d6fb25daacfba07f6281659ae",
+    "fixture-components": "338f9d7933b9f2775a48f07d8f6989f6b322c2c1"
+  },
+  "source_hashes": {
+    "crates/careops-ed/src/lib.rs": "a79aa97f98e5585f622484691e42ba5725eff3a88b5276234b93eb8061cf591c",
+    "crates/careops-ed/src/arrivals.rs": "139ec1e37c5be167bf703d866bf2886ae9af0ed75040b953ad9bd77af456b0bd",
+    "crates/careops-ed/src/pathway.rs": "145da08ca7d45e6f9ee8c8eea0a0d08a11efd58f01ceb62d6aa19cf80b689ad6",
+    "crates/careops-ed/src/disposition.rs": "a9e64d30e009775596cd2ed9a23be1c44f053733196b1e7ee43da335436a9aa3",
+    "crates/careops-ed/tests/e12_fixture_components.rs": "e0da050cb4b053a3d8434eec12aac89b002f6240bb91955634bf585a97e22db8",
+    "Cargo.lock": "7584401156344be95139f6a5db70a7be57a10155aae688f901c66bbd2f4adad6",
+    "rust-toolchain.toml": "bd56168b72794297e8f07cd1ca1357cba26ad1cee0d05e1ab38a1cb8c8ad3b28"
+  },
+  "rust_version": "1.99.0",
+  "native_tests_passed": 67,
+  "disposition_unit_tests": 7,
+  "fixture_component_test_functions": 3,
+  "fixture_component_cases": 46,
+  "invalid_repair_controls": 17,
+  "python_fixture_tests_passed": 12,
+  "strict_clippy_exit": 0,
+  "rustfmt_exit": 0,
+  "prior_leaf_receipts": {
+    "E1.2.arrivals": {
+      "status": "accepted",
+      "evidence": "conductor/evidence/e1.2-arrivals-completion-20261011/acceptance.json",
+      "sha256": "a5c606712052fb73dd778de0ef70abed7f54b76c4b81a285ef4aac729878fe93"
+    },
+    "E1.2.triage": {
+      "status": "accepted",
+      "evidence": "conductor/evidence/e1.2-triage-completion-20261011/acceptance.json",
+      "sha256": "cc6935404cd334854571f6809363265bd621c1ba05aaf4c84bc6776ca6006e1b"
+    },
+    "E1.2.diagnostics": {
+      "status": "accepted",
+      "evidence": "conductor/evidence/e1.2-diagnostics-completion-20261011/acceptance.json",
+      "sha256": "687b23e2fbfaad554785b4329511be4f842a9f078596b593111a5ca400985e89"
+    }
+  },
+  "scope": "Synthetic seeded arrivals, triage/assessment, optional/repeated diagnostics, treatment, configured service laws and provisional disposition; all frozen fixture components bound",
+  "limitations": [
+    "Local macOS native qualification only; no new hosted or clinical qualification",
+    "Decision wrapper observes actual treatment completion after execution; no live decision event mechanism",
+    "TreatmentComplete and provisional intents are not physical departure or realized terminal outcomes",
+    "All46 historical fixture runtime_status values remain unbound for complete composite E1.3/E1.4 acceptance",
+    "Physical discharge/admission/transfer, bed offers, boarding occupancy/recurrent care, optional abandonment, terminal counts/timestamps and completed LOS remain E1.3",
+    "No E2 MVP, public API, release or publication claim"
+  ],
+  "next_leaf": "E1.3.offers",
+  "next_execution": "Contract preparation before bounded implementation; no automatic E1.3 launch under this heartbeat"
+}

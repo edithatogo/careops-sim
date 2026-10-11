@@ -1,0 +1,15 @@
+# E1.2 acceptance — 11 October 2026
+
+All four E1.2 leaves and both final disposition instances are accepted at integrated source `ab6be9f`. [Acceptance](acceptance.json) records exact source hashes and prior leaf receipts. Rust/Cargo 1.99.0: **67 native tests**, including seven disposition tests and three fixture-component test functions covering **46 cases and 17 repair controls**, passed. Twelve Python frozen-fixture tests, strict Clippy and rustfmt passed. Root receipts record the clean integrated commit, commands, times, toolchain and log hashes; gzip logs preserve raw bytes.
+
+The two GPT-6-luna workers owned disjoint disposition and fixture-test files. GPT-6.1-sol independently reviewed the final disposition source; the coordinator reviewed fixture mappings and ran combined qualification. Disposition reveals supplied synthetic intent only after actual final treatment completion, including the exact horizon. The composed generator/template/service/decision test asserts a literal generated ID and independent intervals [1,2), [2,3), [3,12), [12,14), with decision at14. Before completion, paired latent intents produce identical observable outputs. Patient, service and decision order permutations preserve output. Validation precedes native execution and service draws.
+
+[Component crosswalk](component-crosswalk.json) enumerates all23 endpoint,6 extreme and17 invalid fixtures. Native component evidence compares frozen expected stage/work/queue/knowledge fields; invalid cases assert legal baselines, targeted errors and17 repair controls. Resource identity is checked in input mapping, because StageEpisode exposes no resource trace. Full fixture status remains unbound: physical discharge/admission/transfer, offer use, boarding occupancy/recurrent care, terminal timestamps/counts and completed LOS require E1.3 and full E1.4 binding. This is local synthetic implementation acceptance, not clinical qualification or E2 MVP acceptance.
+
+## Evidence and corrections
+
+Only explicitly allowlisted files were copied; private lease files and build trees are excluded. Worker results are precommit receipts; their actual commits are mapped in acceptance.json. Earlier failed test/compilation/lint attempts are retained. Disposition needed an explicitly authorized bounded third test-only correction after stale expected ticks and a mutability cleanup error. Fixture review strengthened exact ID sets, metadata paths, isolated sequence mutations and independent native assertions. A fixture worker postcommit metadata-write attempt was rejected by the scope guard; its result stayed unchanged. Root qualification initially could not acquire a claim using oversized source inputs; rebinding the same owned outputs to the smaller frozen contracts succeeded before execution. Source hashes are independently retained in every root receipt.
+
+## Next work
+
+[Next-work handoff](next-work.md) identifies E1.3 offers first and safe parallel preparation. The E1.2 heartbeat is retired only after this archive and parent acceptance pass independent readback. No E1.3 implementation, public release, publication or hook installation is implied by this closeout.

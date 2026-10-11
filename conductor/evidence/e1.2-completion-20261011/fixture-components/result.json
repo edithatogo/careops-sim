@@ -1,0 +1,73 @@
+{
+  "packet_id": "E1.2.disposition.fixture-components",
+  "status": "ready_for_review",
+  "base_commit": "0a00b3b7e4de16770efa5e317e16bea38929c74a",
+  "source_sha256": "e0da050cb4b053a3d8434eec12aac89b002f6240bb91955634bf585a97e22db8",
+  "changed_source": [
+    "crates/careops-ed/tests/e12_fixture_components.rs"
+  ],
+  "case_coverage": {
+    "endpoints": 23,
+    "extremes": 6,
+    "invalid": 17,
+    "invalid_repair_controls": 17
+  },
+  "claims": [
+    "native component projection evidence only",
+    "no full endpoint or disposition terminal claim",
+    "fixture runtime_status remains unbound"
+  ],
+  "commands": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--test",
+        "e12_fixture_components"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "stdout_sha256": "c8142a5471132575128e95c02047eae897fb526cef323f95a895fa61dec4ddd3",
+      "stderr_sha256": "0428bb2848e6a06294c0d87b445e864fc31d7a4757a45372eed95189e5c92a7b",
+      "stdout_log": ".artifacts/mvp/E1.2.disposition.fixture-components/logs/01-native-test.stdout.log",
+      "stderr_log": ".artifacts/mvp/E1.2.disposition.fixture-components/logs/01-native-test.stderr.log"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "47e11ce96c0d90c6eacf4403cf769dbe2fd8d12f86c1d61b9e79ce5fd07f1f38",
+      "stdout_log": ".artifacts/mvp/E1.2.disposition.fixture-components/logs/02-clippy.stdout.log",
+      "stderr_log": ".artifacts/mvp/E1.2.disposition.fixture-components/logs/02-clippy.stderr.log"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/tests/e12_fixture_components.rs"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_log": ".artifacts/mvp/E1.2.disposition.fixture-components/logs/03-rustfmt.stdout.log",
+      "stderr_log": ".artifacts/mvp/E1.2.disposition.fixture-components/logs/03-rustfmt.stderr.log"
+    }
+  ]
+}

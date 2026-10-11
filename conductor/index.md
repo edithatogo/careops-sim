@@ -61,4 +61,5 @@ qualification is claimed.
 E1.1 fixture specifications accepted on 11 October 2026: [evidence](evidence/e1.1-completion-20261011/README.md).
 E1.2.arrivals accepted: [native evidence](evidence/e1.2-arrivals-completion-20261011/README.md).
 Triage and diagnostics accepted: [latest evidence](evidence/e1.2-diagnostics-completion-20261011/README.md).
-Next is parallel disposition/component-fixture join; E1.2 and MVP remain open.
+E1.2 accepted: [combined evidence](evidence/e1.2-completion-20261011/README.md).
+Next preparation is E1.3 offers, boarding and terminal policies; MVP remains open.

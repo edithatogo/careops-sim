@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "packet_id": "E1.2.disposition.native",
+  "attempt_id": "afb850624eab4db29c610676f2c0d94c",
+  "target_repo": ".",
+  "base_commit": "0a00b3b7e4de16770efa5e317e16bea38929c74a",
+  "worker_model": "gpt-6-luna",
+  "status": "ready_for_review",
+  "result_commit_or_patch": null,
+  "changed_paths": [
+    "crates/careops-ed/src/disposition.rs"
+  ],
+  "source_sha256": "a9e64d30e009775596cd2ed9a23be1c44f053733196b1e7ee43da335436a9aa3",
+  "commands": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "disposition::"
+      ],
+      "cwd": ".",
+      "toolchain": "Rust 1.99.0",
+      "exit": 0,
+      "summary": "7 passed; 32 filtered",
+      "log": ".artifacts/mvp/E1.2.disposition.native/logs/tests-final.log",
+      "log_sha256": "a393c3935a49b7ad0a0c02a9449e7d4a0f3f638413e67c38e6399f61fd051e66"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "toolchain": "Rust 1.99.0",
+      "exit": 0,
+      "log": ".artifacts/mvp/E1.2.disposition.native/logs/clippy-final.log",
+      "log_sha256": "3343ae3e9ca5c475676681680c3b377396376759719095ff31899cd7382377e6"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/src/disposition.rs"
+      ],
+      "cwd": ".",
+      "toolchain": "Rustfmt 1.99.0",
+      "exit": 0,
+      "log": ".artifacts/mvp/E1.2.disposition.native/logs/rustfmt-final.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "acceptance_results": [
+    "Frozen disposition wrapper API implemented; validation precedes pathway/service execution.",
+    "Latent intent is revealed only on completed final treatment, including exact completion tick; active/queued treatment returns no decision.",
+    "Paired hidden-intent outputs, zero/one/repeated diagnostics, sampled timing, permutations (including patient input order), empty population, input mutations, and generator/template/service/disposition composition are covered. Composed root11 oracle: arrival1; triage[1,2); assessment[2,3); diagnostic[3,12); treatment[12,14); decision tick14 with literal generated patient ID and metadata assertions.",
+    "No terminal disposition/LOS/outcome claims added."
+  ],
+  "unresolved_issues": [
+    "Coordinator integration and combined native checks remain pending."
+  ],
+  "next_action": "Coordinator reviews scope/evidence and runs integration checks",
+  "evidence_notes": [
+    "Authorized bounded third correction restored mut only for the composition services binding; targeted tests, strict Clippy and rustfmt all pass. Earlier failed logs retained: tests-first-red exit101 (missing API), tests-run1 exit101 (stale sampled-timing expectation), tests-run2 exit101 (mutability compile error)."
+  ]
+}

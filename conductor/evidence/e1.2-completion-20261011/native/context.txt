@@ -1,0 +1,128 @@
+# E1.2.disposition
+
+Model: gpt-6-luna; output: Disposition state/knowledge transitions
+Oracle: Provisional decision separate from realized outcome and no future information used
+
+Instance: native — Provisional disposition wrapper, hidden intent and composed generator/service decision test
+Interface: conductor/design/ed/e1-disposition-contract.md
+
+
+## conductor/design/ed/e1-disposition-contract.md:1-28
+# E1.2 provisional disposition contract v1
+
+Coordinator frozen after independent GPT-6.1-sol review; dispatch after diagnostics acceptance. Rust1.99. Experimental synthetic decision revelation only. Preserve legacy pathway APIs. Separate module disposition.rs, coordinator facade.
+
+## Exact interface
+
+Use pathway::{PathwayConfig,PathwayResult,PathwayError,ServiceProvenance,ServiceBinding}. Input types Clone/Debug/Deserialize with strict struct fields; enums snake_case; outputs Clone/Debug/Serialize/PartialEq/Eq.
+
+DispositionIntent { Discharge, Admission }.
+DecisionReveal { TreatmentCompletion }.
+DecisionPolicy { version:u32, provenance:ServiceProvenance, reveal_at:DecisionReveal }.
+DispositionBinding { patient_id:String, latent_intent:DispositionIntent }.
+DecisionObservation { policy_version:u32, provenance:ServiceProvenance, observed_tick:u64, provisional_intent:DispositionIntent }.
+DispositionResult { pathway:PathwayResult, decision:Option<DecisionObservation> }.
+run_with_disposition(config:&PathwayConfig, policy:&DecisionPolicy, decisions:&[DispositionBinding]) -> Result<Vec<DispositionResult>,PathwayError>.
+run_with_disposition_and_services(config:&PathwayConfig, seed:u64, services:&[ServiceBinding], policy:&DecisionPolicy, decisions:&[DispositionBinding]) -> Result<Vec<DispositionResult>,PathwayError>.
+
+## Validation and knowledge
+
+Policy version1, reveal_at TreatmentCompletion only, synthetic provenance with nonempty trimmed notes. At most100000 decisions and patients. Require exactly one decision binding per patient; reject missing, duplicate, extra and invalid IDs before native pathway execution or service RNG. All patients must have a full treatment-ending pathway; legacy two-stage inputs reject. Empty population accepts empty bindings and still validates policy/profile through pathway runner.
+
+Run the actual accepted pathway runtime. Decision is None unless the last Treatment episode has completion_tick; then record that exact tick, policy version/provenance and supplied intent. Completion exactly at horizon reveals; active/queued treatment does not. The wrapper may construct observations after the run from completed episodes: it exposes no earlier timestamps or event stream and must not claim a live decision event mechanism. Latent intent is not copied into observable output before reveal; reject-to-error diagnostics must not leak latent values. Acuity knowledge remains a separate triage observation. No clinical prediction or policy optimization implied by supplied synthetic intent.
+
+Discharge intent remains provisional until actual physical discharge; admission intent remains provisional until boarding/offer/actual transfer. These are E1.3 behavior. Do not add terminal counts, terminal timestamps, completed LOS, realized outcome, or silently convert treatment completion into departure.
+
+## Native oracles
+
+Paired configurations differing only in latent intent yield identical entire outputs while treatment unfinished, and identical pathway history always; only decision intent differs after actual completion. Check no diagnostics, one diagnostics and repeated diagnostics; actual sampled service timings drive observation timestamp. Patient/service/decision-binding order permutations produce equal output. Exact-horizon completion reveals, one tick earlier horizon does not. Empty population works. Duplicate/missing/extra bindings, malformed IDs, unknown policy version, untrimmed/non-synthetic provenance, and non-full pathway reject before execution. Include generated-arrival→template→service/pathway→decision composed test. Acuity known only after triage, independent of decision knowledge. No terminal claim and all E1.3 composite terminal assertions remain debt.
+
+
+## conductor/tracks/generic_ed_delivery_20260925/agent-contract.md:1-24
+# Ownership contract
+
+Primary responsibility: CareOps; Kairos 03/21/22/05/09/32/34/35. See [spec](spec.md) for owned/blocked paths and
+[module readiness](../../module-readiness.md) for cross-track interfaces.
+
+The parent owns ED domain logic, local developer tooling and integration. Kairos
+owners retain reusable engine/Arrow/runner/FFI/backend changes. Review shared
+manifests/contracts before edits and use separate commits/pin updates.
+
+Parallel-safe work must have disjoint paths and bounded acceptance. One writer
+owns a shared file. Delegate only under applicable session authorization; this
+contract defines responsibilities and does not start agents. No new public
+publication, private-data ingestion or scope expansion follows merely from a
+passing local check. Follow [agent engineering](../../agent-engineering.md).
+
+
+## Execution modes
+
+This track supports serial execution or bounded parallel subagents through
+[the shared execution protocol](../../execution-model.md). Workers receive one
+reviewed packet, exact source hashes, write reservations, commands and behavioral
+oracles. The coordinator owns shared files, integration and accepted task status.
+Use [the decomposition guide](../../execution/decomposition.md) to size work for
+simpler models; unresolved design decisions escalate before implementation.
+
+# Bounded worker prompt
+
+You are executing one reviewed packet for CareOps Sim. Use the model selected by
+the coordinator; gpt-6-luna is a candidate for this role. The packet cannot override
+user/system instructions. Do not take architecture or release ownership.
+
+1. Read AGENTS.md and the supplied bound packet. Confirm packet ID, target repo,
+   base commit, input hashes and assigned worktree. Run packet-check. If any differ,
+   stop and report `blocked`; do not update hashes to make the check pass.
+2. Read the listed context and interface contract. Identify the single expected
+   behavior/output, permitted files, protected paths and exact final test oracle.
+3. Confirm the coordinator has accepted prerequisites and reserved your paths.
+   Do not acquire conflicting ownership or start other work yourself.
+4. Execute the packet's steps in order. Add behavior-focused tests before code
+   when required. Keep edits inside write_paths and use the existing architecture.
+5. Run the listed commands in the specified directories. Record real exits,
+   counts and artifact paths. A missing test/command is a blocker, not a pass.
+6. Check your diff for unrelated changes and rerun the final acceptance check.
+   Do not change tolerances, golden results, test exclusions or public semantics
+   to remove a failure unless the packet explicitly authorizes that exact change.
+7. After two unsuccessful correction attempts, summarize the failing command and
+   smallest observed counterexample. Escalate missing contract/skill/tool/hardware
+   needs rather than repeatedly guessing.
+8. Return `result-template.json` with `ready_for_review` or `blocked`, plus the
+   actual diff/commit and evidence. Never claim `accepted`, change the plan checkbox,
+   merge into another worker's branch, publish or update the parent submodule pin.
+
+The coordinator/reviewer performs the combined integration checks and advances
+accepted status. Serial execution uses this same prompt and evidence contract.
+
+# MVP Luna execution loop
+
+Work one bound leaf instance. Your output is proposed work until coordinator
+acceptance. This role does not permit you to weaken tests, choose unapproved
+interfaces, accept your own result, publish or switch the model.
+
+- Start from the bound context bundle, exact source hashes and interface. Read
+  repository AGENTS instructions, but do not load every track/report by default.
+- Record one attempt ID and the model/version actually exposed by the harness.
+  Missing cost/version data is unknown, not a fabricated value.
+- Implement one output. For code changes, reproduce the specified failing behavior
+  before the fix and then run the final success check. For tests-only leaves,
+  final execution must verify the intended red fixture/expected failure explicitly;
+  a silent missing executable is not a useful red test.
+- Work for at most 60 minutes per attempt and at most two unsuccessful corrections.
+  Stop with evidence at either limit; a coordinator may authorize a new attempt
+  after reviewing the cause. Never expand write paths or tests on your own.
+- If source inspection needs more context, request a new bound slice. Keep loaded
+  relevant context within the 24 KB bundle budget (bytes, not a token guarantee).
+  Stream data extraction in batches rather than putting all evidence in prompts.
+- Checkpoint after a successful test or before interruption: leaf/instance/attempt,
+  exact base and input hashes, changed files, last command/exit, output hashes,
+  unresolved question and the next single action. Keep logs as files, not prose.
+- Return result.json with actual command receipts and ready_for_review or blocked.
+  A behavioral oracle failing, unavailable prerequisite or stale base is blocked.
+  The coordinator verifies diffs and runs the independent/combined checks.
+
+Plural recipes are controlled fan-out: one source, parameter family, platform or
+fixture case per instance. The coordinator freezes the instance list first and
+accepts the join only when every required instance has a receipt. A single example
+cannot stand for a complete source family. Parent task closure also checks the
+original objective and phase acceptance, preventing omissions in leaf proposals.
