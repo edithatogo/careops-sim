@@ -1,0 +1,42 @@
+{
+  "head": "a27713ec5c8e903ecb8a9730d0cb4f105e8a7b83",
+  "scope": "Combined DES/core/ABM/calibration flow tests, strictClippy,targetedfmt; process artifacts explicitly claimed; freeze baseline after test",
+  "driver_sha256": "62d5ca950b8e471599717de639e7cc10780e2728ce2e2cd0379098ca542c1213",
+  "required_tests": [
+    "native_preview_handles_v2_pending_disable_and_horizon_without_advancing",
+    "native_preview_disabled_queue_has_no_next_event_or_completion",
+    "c5_native_preview_preserves_pending_disable_and_completion",
+    "c5_native_preview_limit_error_propagates_without_v1_fallback",
+    "coherent_v2_transit_and_control_join_rejects_independent_mutations",
+    "coherent_v2_requires_observed_domain_frontier",
+    "coherent_v2_observed_arrival_requires_queued_submit_join",
+    "nested_queue_and_allocation_order_corruption_is_rejected_by_nonowning_scan",
+    "full_owner_image_restores_in_a_new_process_and_matches_uninterrupted_suffix"
+  ],
+  "sources": [
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs",
+    "crates/kairo-ecs-calibration/src/shadow_native.rs",
+    "crates/kairo-ecs-calibration/src/c5_native.rs",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs"
+  ],
+  "commands_packages": [
+    "-p",
+    "kairo-ecs-core",
+    "-p",
+    "kairo-ecs-des",
+    "-p",
+    "kairo-ecs-abm",
+    "-p",
+    "kairo-ecs-calibration",
+    "--features",
+    "kairo-ecs-calibration/flow"
+  ],
+  "rust": "1.99.0"
+}

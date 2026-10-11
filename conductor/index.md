@@ -82,3 +82,5 @@ Version-aware preview acceptance: [Rust 1.99 local evidence](evidence/e2.2-check
 Native coherent-cut adapter acceptance: [Rust 1.99 evidence](evidence/e2.2-checkpoint-coherent-completion-20261011/README.md). Portable V2 routing remains open.
 
 V2 wire support accepted: [Rust 1.99 evidence](evidence/e2.2-checkpoint-wire-completion-20261011/README.md). Combined consumer qualification and portable routing remain open.
+
+Combined checkpoint consumers accepted: [Rust 1.99 and legacy envelope evidence](evidence/e2.2-checkpoint-consumers-completion-20261011/README.md). Portable V2 routing is next.
