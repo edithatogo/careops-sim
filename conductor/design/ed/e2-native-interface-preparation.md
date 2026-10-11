@@ -77,6 +77,31 @@ same-tick urgent request after a grant and retrospectively reorder that grant.
 Do not replace step semantics with a general tick-batching API without a new
 demonstrated requirement and review. No gate means legacy runtime behavior.
 
+### Resource lifetime and transactional admission
+
+Further GPT-6.1-sol source review identified these rules for the future owner ADR:
+
+- Reject resource removal while gate commands remain pending, at admission and
+  dispatch. Conversely reject new gate commands while removal is queued. No
+  implicit cancellation or silent loss of scheduled toggles. An idle disabled
+  resource with no pending toggles may be removed; a new generational resource
+  identity starts enabled and inherits no old gate/index state.
+- Validate resource identity, time/frontier, duplicate boundary, pending removal
+  and all command/event/index/counter budgets before publishing any mutation.
+  Rejected admission leaves gate state, queues, scheduler counters and event
+  identities unchanged; a valid retry must match an untouched control.
+- At initial time zero, now()==0 does not distinguish unstarted from started
+  execution. Use an explicit optional started frontier or a verified equivalent.
+  A gate at zero is allowed before the first committed dispatch, then rejected.
+  A precommit budget rejection does not start the frontier; a dispatched command
+  with a semantic rejection does. V2 persists this distinction; V1 restore must
+  derive the legacy frontier from actual scheduler dispatch state.
+
+These add native oracles for remove/toggle admission in both orders, disabled
+idle removal and generational reuse, duplicate/time/budget rejection atomicity,
+and tick-zero behavior before/after dispatch and restore. They do not authorize
+engine edits before the owner ADR and bounded packet review.
+
 ## Checkpoint compatibility
 
 Flow V1 encodes resource capacity as a bare u32, has command tags 0 through 11,
