@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "packet_id": "E1.3.horizon.composition",
+  "status": "ready_for_review",
+  "base_commit": "42d2cf2304b8f35b65a11705865764ffeda29151",
+  "commit": null,
+  "source_hashes": {
+    "crates/careops-ed/tests/e13_arrival_terminal_composition.rs": "f322b515f4b7b48052e07ac05813ddc1ac2cad0fe345114d74fd97bd3ede3fb9"
+  },
+  "changed_paths": [
+    ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-1-cargo-test-nocapture.log",
+    ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-2-gate-1.log",
+    ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-2-gate-2.log",
+    ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-3-gate-1.log",
+    ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-3-gate-2.log",
+    ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-3-gate-3.log",
+    "crates/careops-ed/tests/e13_arrival_terminal_composition.rs"
+  ],
+  "non_owned_inputs_verified": 21,
+  "checks": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "attempt": 3,
+      "log": {
+        "path": ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-3-gate-1.log",
+        "sha256": "686009ab4ce7a3f10c4d265aa8a8b7e133aa3186190ff965d9c4d35f65f6a5b1"
+      }
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "attempt": 3,
+      "log": {
+        "path": ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-3-gate-2.log",
+        "sha256": "b8f7b962cff1a7a5082478880fbb1c5b1ed8c49809d0ef85b91dd92e35456757"
+      }
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/tests/e13_arrival_terminal_composition.rs"
+      ],
+      "exit_code": 0,
+      "attempt": 3,
+      "log": {
+        "path": ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-3-gate-3.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "test_result_groups": [
+    74,
+    3,
+    1,
+    4,
+    10,
+    3,
+    1,
+    11,
+    7,
+    0
+  ],
+  "total_tests_passed": 114,
+  "total_tests_failed": 0,
+  "trace": {
+    "prefix": "E13_ARRIVAL_TERMINAL_COMPOSITION",
+    "case_id": "seed11-arrivals-four-stage-capacity5-horizon10",
+    "log": {
+      "path": ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-3-gate-1.log",
+      "sha256": "686009ab4ce7a3f10c4d265aa8a8b7e133aa3186190ff965d9c4d35f65f6a5b1"
+    }
+  },
+  "logs": [
+    {
+      "path": ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-1-cargo-test-nocapture.log",
+      "sha256": "78315326f9f67900f4049b57f4a99159a26d2d2c60c8e9cf714604ed83ddae7c"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-2-gate-1.log",
+      "sha256": "dcea68606865b939cb833d042eaa373e0296fcdfa5d2b3e35e03b2df658b0d14"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-2-gate-2.log",
+      "sha256": "1afa869842ebaced13dfd9fa97c41c971e092cd8ecadd0845aa5f121838817d7"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-3-gate-1.log",
+      "sha256": "686009ab4ce7a3f10c4d265aa8a8b7e133aa3186190ff965d9c4d35f65f6a5b1"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-3-gate-2.log",
+      "sha256": "b8f7b962cff1a7a5082478880fbb1c5b1ed8c49809d0ef85b91dd92e35456757"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.horizon.composition/logs/attempt-3-gate-3.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "corrections": [
+    {
+      "attempt": 2,
+      "gate": "cargo clippy --locked -p careops-ed --all-targets -- -D warnings",
+      "exit_code": 101,
+      "reason": "unused stage binding and dead-code warning on shared test support module",
+      "resolution": "use stage index range and locally allow dead_code on imported test helper module; attempt 3 passed all gates"
+    }
+  ],
+  "limitations": [
+    "Synthetic native composition fixture only; no real-world calibration or ED operational acceptance.",
+    "No external offer, ward, or transport capacity inference."
+  ],
+  "scope_check": "passed before receipt write; private lease contents suppressed"
+}

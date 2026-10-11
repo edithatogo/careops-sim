@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "packet_id": "E1.3.horizon.fixtures",
+  "task_id": "E1.3",
+  "target_repo": ".",
+  "base_commit": "42d2cf2304b8f35b65a11705865764ffeda29151",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "All46 frozen native fixture bindings with17repair controls and actual traces",
+  "context_paths": [
+    ".artifacts/mvp/E1.3.horizon.fixtures/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/ed/e1-horizon-parallel-join.md": "dab0abd374bb25e3b099f1f8b238914494c4bc5e3089a47e4577313419ed5196",
+    "conductor/design/ed/e1-terminal-acceptance-contract.md": "405764be13de93f792e9d369f6e5070f7eb0c150a9437291639cbc5298348ef0",
+    "Cargo.toml": "ea8549f39166ff09cdf63b7d3f2ef4226ecbe929a61f061dcfb3be988ab3df48",
+    "Cargo.lock": "7584401156344be95139f6a5db70a7be57a10155aae688f901c66bbd2f4adad6",
+    "crates/careops-ed/Cargo.toml": "19674824de350de9d11a40c4ef970bfc259ad62bc3b76b3a80b6e578b3b94abd",
+    "crates/careops-ed/src/lib.rs": "f4028362ed68297b2fa7a835d71eab6a1e9db35df2c1a722a48cac4c2921ff39",
+    "crates/careops-ed/src/pathway.rs": "626166def4b59c4223ea44bb2ffa16b1939499cc9d405f8415e70614452778a2",
+    "crates/careops-ed/src/terminal.rs": "349f53977db1cbaa59e8f597bc830507cadec8b3810feec3c699f533e9d90a97",
+    "crates/careops-ed/src/offers.rs": "155f2359502ba5ad9161920f520e9cf6ff2d34b280751c5bcebc8eb9804de7f7",
+    "crates/careops-ed/src/disposition.rs": "a9e64d30e009775596cd2ed9a23be1c44f053733196b1e7ee43da335436a9aa3",
+    "conductor/design/ed/e1-terminal-runtime-contract.md": "964504ea93088ff7049ab6c4ce21e434cc522e604c3d26f709b8669959a229ff",
+    "conductor/design/ed/e1-offers-contract.md": "09c344a30d07cd21b5bca3c1bef2920c346eeba9b41f72a0ebe1fda10916a0fe",
+    "conductor/design/ed/e1-endpoints.json": "06fa8868cae80ca266ed7bda28b0af17f8f471ae20aa498d2a1cdd137fb345a2",
+    "conductor/design/ed/e1-extremes.json": "cb3d7d8ad33972228ac54f4c0874e3a117791ae331320477496162a1502bf795",
+    "conductor/design/ed/e1-invalid.json": "c1b397830a33747c99947561d58cbb600ae3725829f2d87817f749a10239162a",
+    "crates/careops-ed/tests/e12_fixture_components.rs": "e0da050cb4b053a3d8434eec12aac89b002f6240bb91955634bf585a97e22db8",
+    "crates/careops-ed/src/arrivals.rs": "139ec1e37c5be167bf703d866bf2886ae9af0ed75040b953ad9bd77af456b0bd",
+    "crates/careops-ed/tests/support/e13.rs": "5566d6789614e66e9d59de8bc8a62607e40b7ab90afc51c7d0153372f88117fc",
+    "crates/careops-ed/tests/e13_terminal_runtime.rs": "c0cb245ff4ae30dd0d388aadf98384ebd1e817f01006f81b0cf5659b1408fac3",
+    "conductor/design/ed/e1-abandonment-extension-contract.md": "9da6640869dc1e8aa6ce0f413d66deffeed2c98fe5ce42d02b51906923fb79d8",
+    ".artifacts/mvp/E1.3.horizon.fixtures/context.md": "2f15160ab98bda4221377f7a573ab2f23362d16de35b39efab5e5814639f3480"
+  },
+  "write_paths": [
+    "crates/careops-ed/tests/e13_native_fixture_join.rs",
+    ".artifacts/mvp/E1.3.horizon.fixtures/result.json",
+    ".artifacts/mvp/E1.3.horizon.fixtures/logs",
+    ".artifacts/e13-horizon-fixtures/target"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "E1.3.exits"
+  ],
+  "interface_contract": "conductor/design/ed/e1-horizon-parallel-join.md",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-horizon-fixtures-20261011/.artifacts/e13-horizon-fixtures/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2",
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/Users/doughnut/.local/bin:/Users/doughnut/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/opt/homebrew/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/quarto/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/doughnut/.codex/tmp/arg0/codex-arg0HiNZ1u:/Users/doughnut/.grok/bin:/Users/doughnut/.codeium/windsurf/bin:/Users/doughnut/.opencode/bin:/Users/doughnut/.antigravity/antigravity/bin:/Users/doughnut/.lmstudio/bin:/Users/doughnut/bin:/Users/doughnut/.dotnet/tools:/Users/doughnut/.local/pac-cli:/Users/doughnut/.local/bin:/Users/doughnut/scripts:/opt/homebrew/sbin:/Users/doughnut/.orbstack/bin:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS:/Users/doughnut/.local/bin:/Users/doughnut/.orbstack/bin"
+      },
+      "oracle": "All46 frozen native fixture bindings with17repair controls and actual traces; no production/helper/fixture edits; original contracts and counts preserved"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-horizon-fixtures-20261011/.artifacts/e13-horizon-fixtures/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2",
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/Users/doughnut/.local/bin:/Users/doughnut/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/opt/homebrew/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/quarto/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/doughnut/.codex/tmp/arg0/codex-arg0HiNZ1u:/Users/doughnut/.grok/bin:/Users/doughnut/.codeium/windsurf/bin:/Users/doughnut/.opencode/bin:/Users/doughnut/.antigravity/antigravity/bin:/Users/doughnut/.lmstudio/bin:/Users/doughnut/bin:/Users/doughnut/.dotnet/tools:/Users/doughnut/.local/pac-cli:/Users/doughnut/.local/bin:/Users/doughnut/scripts:/opt/homebrew/sbin:/Users/doughnut/.orbstack/bin:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS:/Users/doughnut/.local/bin:/Users/doughnut/.orbstack/bin"
+      },
+      "oracle": "All46 frozen native fixture bindings with17repair controls and actual traces; no production/helper/fixture edits; original contracts and counts preserved"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/tests/e13_native_fixture_join.rs"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All46 frozen native fixture bindings with17repair controls and actual traces; no production/helper/fixture edits; original contracts and counts preserved"
+    }
+  ],
+  "acceptance": [
+    "Horizon truncation not completion; no causal ward/fleet claims from external offers",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/E1.3.horizon.fixtures/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root coordinator; independent GPT-6.1-sol semantics and Luna feasibility review",
+    "reservation_id": "18010d7c20354442b30f1eab40673721",
+    "instance_id": "fixtures",
+    "instance_set": [
+      "fixtures",
+      "composition"
+    ],
+    "instance_scope": "All46 frozen native fixture bindings with17repair controls and actual traces",
+    "reviewed_recipe_sha256": "4379da1337fd75d9aa25d9b6b178b5c153b0230061179d19df769151457cfe1b",
+    "interface_contract": "conductor/design/ed/e1-horizon-parallel-join.md",
+    "context_slices": [
+      {
+        "path": "conductor/design/ed/e1-horizon-parallel-join.md",
+        "start": 1,
+        "end": 78
+      },
+      {
+        "path": "conductor/design/ed/e1-terminal-acceptance-contract.md",
+        "start": 1,
+        "end": 95
+      }
+    ],
+    "input_paths": [
+      "Cargo.toml",
+      "Cargo.lock",
+      "crates/careops-ed/Cargo.toml",
+      "crates/careops-ed/src/lib.rs",
+      "crates/careops-ed/src/pathway.rs",
+      "crates/careops-ed/src/terminal.rs",
+      "crates/careops-ed/src/offers.rs",
+      "crates/careops-ed/src/disposition.rs",
+      "conductor/design/ed/e1-terminal-runtime-contract.md",
+      "conductor/design/ed/e1-offers-contract.md",
+      "conductor/design/ed/e1-terminal-acceptance-contract.md",
+      "conductor/design/ed/e1-endpoints.json",
+      "conductor/design/ed/e1-extremes.json",
+      "conductor/design/ed/e1-invalid.json",
+      "crates/careops-ed/tests/e12_fixture_components.rs",
+      "crates/careops-ed/src/arrivals.rs",
+      "crates/careops-ed/tests/support/e13.rs",
+      "crates/careops-ed/tests/e13_terminal_runtime.rs",
+      "conductor/design/ed/e1-horizon-parallel-join.md",
+      "conductor/design/ed/e1-abandonment-extension-contract.md"
+    ],
+    "write_paths": [
+      "crates/careops-ed/tests/e13_native_fixture_join.rs",
+      ".artifacts/mvp/E1.3.horizon.fixtures/result.json",
+      ".artifacts/mvp/E1.3.horizon.fixtures/logs",
+      ".artifacts/e13-horizon-fixtures/target"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+          "test",
+          "--locked",
+          "-p",
+          "careops-ed",
+          "--",
+          "--nocapture"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "env": {
+          "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+          "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+          "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+          "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-horizon-fixtures-20261011/.artifacts/e13-horizon-fixtures/target",
+          "CARGO_INCREMENTAL": "0",
+          "CARGO_PROFILE_DEV_DEBUG": "0",
+          "CARGO_PROFILE_TEST_DEBUG": "0",
+          "CARGO_BUILD_JOBS": "2",
+          "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/Users/doughnut/.local/bin:/Users/doughnut/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/opt/homebrew/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/quarto/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/doughnut/.codex/tmp/arg0/codex-arg0HiNZ1u:/Users/doughnut/.grok/bin:/Users/doughnut/.codeium/windsurf/bin:/Users/doughnut/.opencode/bin:/Users/doughnut/.antigravity/antigravity/bin:/Users/doughnut/.lmstudio/bin:/Users/doughnut/bin:/Users/doughnut/.dotnet/tools:/Users/doughnut/.local/pac-cli:/Users/doughnut/.local/bin:/Users/doughnut/scripts:/opt/homebrew/sbin:/Users/doughnut/.orbstack/bin:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS:/Users/doughnut/.local/bin:/Users/doughnut/.orbstack/bin"
+        },
+        "oracle": "All46 frozen native fixture bindings with17repair controls and actual traces; no production/helper/fixture edits; original contracts and counts preserved"
+      },
+      {
+        "argv": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "careops-ed",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "env": {
+          "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+          "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+          "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+          "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-horizon-fixtures-20261011/.artifacts/e13-horizon-fixtures/target",
+          "CARGO_INCREMENTAL": "0",
+          "CARGO_PROFILE_DEV_DEBUG": "0",
+          "CARGO_PROFILE_TEST_DEBUG": "0",
+          "CARGO_BUILD_JOBS": "2",
+          "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/Users/doughnut/.local/bin:/Users/doughnut/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/opt/homebrew/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/quarto/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/doughnut/.codex/tmp/arg0/codex-arg0HiNZ1u:/Users/doughnut/.grok/bin:/Users/doughnut/.codeium/windsurf/bin:/Users/doughnut/.opencode/bin:/Users/doughnut/.antigravity/antigravity/bin:/Users/doughnut/.lmstudio/bin:/Users/doughnut/bin:/Users/doughnut/.dotnet/tools:/Users/doughnut/.local/pac-cli:/Users/doughnut/.local/bin:/Users/doughnut/scripts:/opt/homebrew/sbin:/Users/doughnut/.orbstack/bin:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS:/Users/doughnut/.local/bin:/Users/doughnut/.orbstack/bin"
+        },
+        "oracle": "All46 frozen native fixture bindings with17repair controls and actual traces; no production/helper/fixture edits; original contracts and counts preserved"
+      },
+      {
+        "argv": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+          "--edition",
+          "2021",
+          "--check",
+          "crates/careops-ed/tests/e13_native_fixture_join.rs"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "All46 frozen native fixture bindings with17repair controls and actual traces; no production/helper/fixture edits; original contracts and counts preserved"
+      }
+    ],
+    "prerequisite_receipts": {
+      "E1.3.exits": {
+        "status": "accepted",
+        "reviewer": "root combined113native and independent GPT-6.1-sol",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/e1.3-exits-completion-20261011/acceptance.json": "168141bf49b1ea7c92650da6cd7630b40e8c730ce3aeb6ac54b29d3fef0f5df5"
+        }
+      }
+    }
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "ede7e318d02958c427d1381ab9a3cae6318ccd41a151f3b3b4fe74020afea119",
+    "conductor/design/ed/e1-horizon-parallel-join.md": "dab0abd374bb25e3b099f1f8b238914494c4bc5e3089a47e4577313419ed5196",
+    "conductor/design/ed/e1-terminal-acceptance-contract.md": "405764be13de93f792e9d369f6e5070f7eb0c150a9437291639cbc5298348ef0",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}

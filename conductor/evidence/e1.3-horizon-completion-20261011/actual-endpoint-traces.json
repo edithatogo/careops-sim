@@ -1,0 +1,4646 @@
+{
+  "endpoints_empty": {
+    "version": 1,
+    "patients": [],
+    "offers": [],
+    "counts": {
+      "arrived": 0,
+      "discharged": 0,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 50,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 50,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 50,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 50,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 50,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 50,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      }
+    ]
+  },
+  "endpoints_one_discharge": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_one_discharge",
+          "mode": "synthetic",
+          "acuity": 3,
+          "known_acuity": 3,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_one_discharge:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_one_discharge:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_one_discharge:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "discharge"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 11,
+          "observed_occupancy_ticks": 10
+        },
+        "boarding": null,
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": "discharged",
+        "terminal_tick": 11,
+        "completed_los_ticks": 10,
+        "observed_elapsed_ticks": 10,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": null
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 1,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 10,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_1_discharge_no_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_1_discharge_no_diagnostics",
+          "mode": "synthetic",
+          "acuity": 1,
+          "known_acuity": 1,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_1_discharge_no_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_1_discharge_no_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_1_discharge_no_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "discharge"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 11,
+          "observed_occupancy_ticks": 10
+        },
+        "boarding": null,
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": "discharged",
+        "terminal_tick": 11,
+        "completed_los_ticks": 10,
+        "observed_elapsed_ticks": 10,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": null
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 1,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 10,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_1_discharge_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_1_discharge_diagnostics",
+          "mode": "synthetic",
+          "acuity": 1,
+          "known_acuity": 1,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_1_discharge_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_1_discharge_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_1_discharge_diagnostics:diagnostics:0",
+              "kind": "diagnostics",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 10,
+              "observed_work_ticks": 4,
+              "sampled_duration_ticks": 4,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 4
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_1_discharge_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 10,
+              "start_tick": 10,
+              "completion_tick": 15,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 15,
+          "provisional_intent": "discharge"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 15,
+          "observed_occupancy_ticks": 14
+        },
+        "boarding": null,
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": "discharged",
+        "terminal_tick": 15,
+        "completed_los_ticks": 14,
+        "observed_elapsed_ticks": 14,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": null
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 1,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 4,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 14,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_1_admission_no_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_1_admission_no_diagnostics",
+          "mode": "synthetic",
+          "acuity": 1,
+          "known_acuity": 1,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_1_admission_no_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_1_admission_no_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_1_admission_no_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "admission"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 15,
+          "observed_occupancy_ticks": 14
+        },
+        "boarding": {
+          "start_tick": 11,
+          "end_tick": 13,
+          "observed_ticks": 2
+        },
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_1_admission_no_diagnostics",
+          "patient_id": "patient-endpoints_acuity_1_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 13,
+          "transfer_duration_ticks": 2
+        },
+        "pending_transfer": {
+          "start_tick": 13,
+          "end_tick": 13,
+          "observed_ticks": 0
+        },
+        "transfer": {
+          "task_id": "patient-endpoints_acuity_1_admission_no_diagnostics:transfer",
+          "resource_id": "resource.transfer",
+          "task_class_id": "task.transfer",
+          "queue_entry_tick": 13,
+          "start_tick": 13,
+          "completion_tick": 15,
+          "cancelled_tick": null,
+          "required_work_ticks": 2,
+          "observed_work_ticks": 2
+        },
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": {
+          "transferred": {
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_1_admission_no_diagnostics"
+          }
+        },
+        "terminal_tick": 15,
+        "completed_los_ticks": 14,
+        "observed_elapsed_ticks": 14,
+        "boarding_time_ticks": 4,
+        "observed_boarding_ticks": 4
+      }
+    ],
+    "offers": [
+      {
+        "offer": {
+          "offer_id": "offer-endpoints_acuity_1_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "patient_id": "patient-endpoints_acuity_1_admission_no_diagnostics",
+          "available_tick": 13,
+          "withdrawn_tick": 21,
+          "transfer_duration_ticks": 2
+        },
+        "status": "consumed",
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_1_admission_no_diagnostics",
+          "patient_id": "patient-endpoints_acuity_1_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 13,
+          "transfer_duration_ticks": 2
+        }
+      }
+    ],
+    "counts": {
+      "arrived": 1,
+      "discharged": 0,
+      "transferred": 1,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 14,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_1_admission_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_1_admission_diagnostics",
+          "mode": "synthetic",
+          "acuity": 1,
+          "known_acuity": 1,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_1_admission_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_1_admission_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_1_admission_diagnostics:diagnostics:0",
+              "kind": "diagnostics",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 10,
+              "observed_work_ticks": 4,
+              "sampled_duration_ticks": 4,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 4
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_1_admission_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 10,
+              "start_tick": 10,
+              "completion_tick": 15,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 15,
+          "provisional_intent": "admission"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 19,
+          "observed_occupancy_ticks": 18
+        },
+        "boarding": {
+          "start_tick": 15,
+          "end_tick": 17,
+          "observed_ticks": 2
+        },
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_1_admission_diagnostics",
+          "patient_id": "patient-endpoints_acuity_1_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 17,
+          "transfer_duration_ticks": 2
+        },
+        "pending_transfer": {
+          "start_tick": 17,
+          "end_tick": 17,
+          "observed_ticks": 0
+        },
+        "transfer": {
+          "task_id": "patient-endpoints_acuity_1_admission_diagnostics:transfer",
+          "resource_id": "resource.transfer",
+          "task_class_id": "task.transfer",
+          "queue_entry_tick": 17,
+          "start_tick": 17,
+          "completion_tick": 19,
+          "cancelled_tick": null,
+          "required_work_ticks": 2,
+          "observed_work_ticks": 2
+        },
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": {
+          "transferred": {
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_1_admission_diagnostics"
+          }
+        },
+        "terminal_tick": 19,
+        "completed_los_ticks": 18,
+        "observed_elapsed_ticks": 18,
+        "boarding_time_ticks": 4,
+        "observed_boarding_ticks": 4
+      }
+    ],
+    "offers": [
+      {
+        "offer": {
+          "offer_id": "offer-endpoints_acuity_1_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "patient_id": "patient-endpoints_acuity_1_admission_diagnostics",
+          "available_tick": 17,
+          "withdrawn_tick": 25,
+          "transfer_duration_ticks": 2
+        },
+        "status": "consumed",
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_1_admission_diagnostics",
+          "patient_id": "patient-endpoints_acuity_1_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 17,
+          "transfer_duration_ticks": 2
+        }
+      }
+    ],
+    "counts": {
+      "arrived": 1,
+      "discharged": 0,
+      "transferred": 1,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 4,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 18,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_2_discharge_no_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_2_discharge_no_diagnostics",
+          "mode": "synthetic",
+          "acuity": 2,
+          "known_acuity": 2,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_2_discharge_no_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_2_discharge_no_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_2_discharge_no_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "discharge"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 11,
+          "observed_occupancy_ticks": 10
+        },
+        "boarding": null,
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": "discharged",
+        "terminal_tick": 11,
+        "completed_los_ticks": 10,
+        "observed_elapsed_ticks": 10,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": null
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 1,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 10,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_2_discharge_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_2_discharge_diagnostics",
+          "mode": "synthetic",
+          "acuity": 2,
+          "known_acuity": 2,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_2_discharge_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_2_discharge_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_2_discharge_diagnostics:diagnostics:0",
+              "kind": "diagnostics",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 10,
+              "observed_work_ticks": 4,
+              "sampled_duration_ticks": 4,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 4
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_2_discharge_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 10,
+              "start_tick": 10,
+              "completion_tick": 15,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 15,
+          "provisional_intent": "discharge"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 15,
+          "observed_occupancy_ticks": 14
+        },
+        "boarding": null,
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": "discharged",
+        "terminal_tick": 15,
+        "completed_los_ticks": 14,
+        "observed_elapsed_ticks": 14,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": null
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 1,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 4,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 14,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_2_admission_no_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_2_admission_no_diagnostics",
+          "mode": "synthetic",
+          "acuity": 2,
+          "known_acuity": 2,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_2_admission_no_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_2_admission_no_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_2_admission_no_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "admission"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 15,
+          "observed_occupancy_ticks": 14
+        },
+        "boarding": {
+          "start_tick": 11,
+          "end_tick": 13,
+          "observed_ticks": 2
+        },
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_2_admission_no_diagnostics",
+          "patient_id": "patient-endpoints_acuity_2_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 13,
+          "transfer_duration_ticks": 2
+        },
+        "pending_transfer": {
+          "start_tick": 13,
+          "end_tick": 13,
+          "observed_ticks": 0
+        },
+        "transfer": {
+          "task_id": "patient-endpoints_acuity_2_admission_no_diagnostics:transfer",
+          "resource_id": "resource.transfer",
+          "task_class_id": "task.transfer",
+          "queue_entry_tick": 13,
+          "start_tick": 13,
+          "completion_tick": 15,
+          "cancelled_tick": null,
+          "required_work_ticks": 2,
+          "observed_work_ticks": 2
+        },
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": {
+          "transferred": {
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_2_admission_no_diagnostics"
+          }
+        },
+        "terminal_tick": 15,
+        "completed_los_ticks": 14,
+        "observed_elapsed_ticks": 14,
+        "boarding_time_ticks": 4,
+        "observed_boarding_ticks": 4
+      }
+    ],
+    "offers": [
+      {
+        "offer": {
+          "offer_id": "offer-endpoints_acuity_2_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "patient_id": "patient-endpoints_acuity_2_admission_no_diagnostics",
+          "available_tick": 13,
+          "withdrawn_tick": 21,
+          "transfer_duration_ticks": 2
+        },
+        "status": "consumed",
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_2_admission_no_diagnostics",
+          "patient_id": "patient-endpoints_acuity_2_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 13,
+          "transfer_duration_ticks": 2
+        }
+      }
+    ],
+    "counts": {
+      "arrived": 1,
+      "discharged": 0,
+      "transferred": 1,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 14,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_2_admission_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_2_admission_diagnostics",
+          "mode": "synthetic",
+          "acuity": 2,
+          "known_acuity": 2,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_2_admission_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_2_admission_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_2_admission_diagnostics:diagnostics:0",
+              "kind": "diagnostics",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 10,
+              "observed_work_ticks": 4,
+              "sampled_duration_ticks": 4,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 4
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_2_admission_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 10,
+              "start_tick": 10,
+              "completion_tick": 15,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 15,
+          "provisional_intent": "admission"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 19,
+          "observed_occupancy_ticks": 18
+        },
+        "boarding": {
+          "start_tick": 15,
+          "end_tick": 17,
+          "observed_ticks": 2
+        },
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_2_admission_diagnostics",
+          "patient_id": "patient-endpoints_acuity_2_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 17,
+          "transfer_duration_ticks": 2
+        },
+        "pending_transfer": {
+          "start_tick": 17,
+          "end_tick": 17,
+          "observed_ticks": 0
+        },
+        "transfer": {
+          "task_id": "patient-endpoints_acuity_2_admission_diagnostics:transfer",
+          "resource_id": "resource.transfer",
+          "task_class_id": "task.transfer",
+          "queue_entry_tick": 17,
+          "start_tick": 17,
+          "completion_tick": 19,
+          "cancelled_tick": null,
+          "required_work_ticks": 2,
+          "observed_work_ticks": 2
+        },
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": {
+          "transferred": {
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_2_admission_diagnostics"
+          }
+        },
+        "terminal_tick": 19,
+        "completed_los_ticks": 18,
+        "observed_elapsed_ticks": 18,
+        "boarding_time_ticks": 4,
+        "observed_boarding_ticks": 4
+      }
+    ],
+    "offers": [
+      {
+        "offer": {
+          "offer_id": "offer-endpoints_acuity_2_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "patient_id": "patient-endpoints_acuity_2_admission_diagnostics",
+          "available_tick": 17,
+          "withdrawn_tick": 25,
+          "transfer_duration_ticks": 2
+        },
+        "status": "consumed",
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_2_admission_diagnostics",
+          "patient_id": "patient-endpoints_acuity_2_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 17,
+          "transfer_duration_ticks": 2
+        }
+      }
+    ],
+    "counts": {
+      "arrived": 1,
+      "discharged": 0,
+      "transferred": 1,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 4,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 18,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_3_discharge_no_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_3_discharge_no_diagnostics",
+          "mode": "synthetic",
+          "acuity": 3,
+          "known_acuity": 3,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_3_discharge_no_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_3_discharge_no_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_3_discharge_no_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "discharge"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 11,
+          "observed_occupancy_ticks": 10
+        },
+        "boarding": null,
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": "discharged",
+        "terminal_tick": 11,
+        "completed_los_ticks": 10,
+        "observed_elapsed_ticks": 10,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": null
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 1,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 10,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_3_discharge_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_3_discharge_diagnostics",
+          "mode": "synthetic",
+          "acuity": 3,
+          "known_acuity": 3,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_3_discharge_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_3_discharge_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_3_discharge_diagnostics:diagnostics:0",
+              "kind": "diagnostics",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 10,
+              "observed_work_ticks": 4,
+              "sampled_duration_ticks": 4,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 4
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_3_discharge_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 10,
+              "start_tick": 10,
+              "completion_tick": 15,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 15,
+          "provisional_intent": "discharge"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 15,
+          "observed_occupancy_ticks": 14
+        },
+        "boarding": null,
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": "discharged",
+        "terminal_tick": 15,
+        "completed_los_ticks": 14,
+        "observed_elapsed_ticks": 14,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": null
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 1,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 4,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 14,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_3_admission_no_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_3_admission_no_diagnostics",
+          "mode": "synthetic",
+          "acuity": 3,
+          "known_acuity": 3,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_3_admission_no_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_3_admission_no_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_3_admission_no_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "admission"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 15,
+          "observed_occupancy_ticks": 14
+        },
+        "boarding": {
+          "start_tick": 11,
+          "end_tick": 13,
+          "observed_ticks": 2
+        },
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_3_admission_no_diagnostics",
+          "patient_id": "patient-endpoints_acuity_3_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 13,
+          "transfer_duration_ticks": 2
+        },
+        "pending_transfer": {
+          "start_tick": 13,
+          "end_tick": 13,
+          "observed_ticks": 0
+        },
+        "transfer": {
+          "task_id": "patient-endpoints_acuity_3_admission_no_diagnostics:transfer",
+          "resource_id": "resource.transfer",
+          "task_class_id": "task.transfer",
+          "queue_entry_tick": 13,
+          "start_tick": 13,
+          "completion_tick": 15,
+          "cancelled_tick": null,
+          "required_work_ticks": 2,
+          "observed_work_ticks": 2
+        },
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": {
+          "transferred": {
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_3_admission_no_diagnostics"
+          }
+        },
+        "terminal_tick": 15,
+        "completed_los_ticks": 14,
+        "observed_elapsed_ticks": 14,
+        "boarding_time_ticks": 4,
+        "observed_boarding_ticks": 4
+      }
+    ],
+    "offers": [
+      {
+        "offer": {
+          "offer_id": "offer-endpoints_acuity_3_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "patient_id": "patient-endpoints_acuity_3_admission_no_diagnostics",
+          "available_tick": 13,
+          "withdrawn_tick": 21,
+          "transfer_duration_ticks": 2
+        },
+        "status": "consumed",
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_3_admission_no_diagnostics",
+          "patient_id": "patient-endpoints_acuity_3_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 13,
+          "transfer_duration_ticks": 2
+        }
+      }
+    ],
+    "counts": {
+      "arrived": 1,
+      "discharged": 0,
+      "transferred": 1,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 14,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_3_admission_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_3_admission_diagnostics",
+          "mode": "synthetic",
+          "acuity": 3,
+          "known_acuity": 3,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_3_admission_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_3_admission_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_3_admission_diagnostics:diagnostics:0",
+              "kind": "diagnostics",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 10,
+              "observed_work_ticks": 4,
+              "sampled_duration_ticks": 4,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 4
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_3_admission_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 10,
+              "start_tick": 10,
+              "completion_tick": 15,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 15,
+          "provisional_intent": "admission"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 19,
+          "observed_occupancy_ticks": 18
+        },
+        "boarding": {
+          "start_tick": 15,
+          "end_tick": 17,
+          "observed_ticks": 2
+        },
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_3_admission_diagnostics",
+          "patient_id": "patient-endpoints_acuity_3_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 17,
+          "transfer_duration_ticks": 2
+        },
+        "pending_transfer": {
+          "start_tick": 17,
+          "end_tick": 17,
+          "observed_ticks": 0
+        },
+        "transfer": {
+          "task_id": "patient-endpoints_acuity_3_admission_diagnostics:transfer",
+          "resource_id": "resource.transfer",
+          "task_class_id": "task.transfer",
+          "queue_entry_tick": 17,
+          "start_tick": 17,
+          "completion_tick": 19,
+          "cancelled_tick": null,
+          "required_work_ticks": 2,
+          "observed_work_ticks": 2
+        },
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": {
+          "transferred": {
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_3_admission_diagnostics"
+          }
+        },
+        "terminal_tick": 19,
+        "completed_los_ticks": 18,
+        "observed_elapsed_ticks": 18,
+        "boarding_time_ticks": 4,
+        "observed_boarding_ticks": 4
+      }
+    ],
+    "offers": [
+      {
+        "offer": {
+          "offer_id": "offer-endpoints_acuity_3_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "patient_id": "patient-endpoints_acuity_3_admission_diagnostics",
+          "available_tick": 17,
+          "withdrawn_tick": 25,
+          "transfer_duration_ticks": 2
+        },
+        "status": "consumed",
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_3_admission_diagnostics",
+          "patient_id": "patient-endpoints_acuity_3_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 17,
+          "transfer_duration_ticks": 2
+        }
+      }
+    ],
+    "counts": {
+      "arrived": 1,
+      "discharged": 0,
+      "transferred": 1,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 4,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 18,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_4_discharge_no_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_4_discharge_no_diagnostics",
+          "mode": "synthetic",
+          "acuity": 4,
+          "known_acuity": 4,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_4_discharge_no_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_4_discharge_no_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_4_discharge_no_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "discharge"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 11,
+          "observed_occupancy_ticks": 10
+        },
+        "boarding": null,
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": "discharged",
+        "terminal_tick": 11,
+        "completed_los_ticks": 10,
+        "observed_elapsed_ticks": 10,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": null
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 1,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 10,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_4_discharge_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_4_discharge_diagnostics",
+          "mode": "synthetic",
+          "acuity": 4,
+          "known_acuity": 4,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_4_discharge_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_4_discharge_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_4_discharge_diagnostics:diagnostics:0",
+              "kind": "diagnostics",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 10,
+              "observed_work_ticks": 4,
+              "sampled_duration_ticks": 4,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 4
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_4_discharge_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 10,
+              "start_tick": 10,
+              "completion_tick": 15,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 15,
+          "provisional_intent": "discharge"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 15,
+          "observed_occupancy_ticks": 14
+        },
+        "boarding": null,
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": "discharged",
+        "terminal_tick": 15,
+        "completed_los_ticks": 14,
+        "observed_elapsed_ticks": 14,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": null
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 1,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 4,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 14,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_4_admission_no_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_4_admission_no_diagnostics",
+          "mode": "synthetic",
+          "acuity": 4,
+          "known_acuity": 4,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_4_admission_no_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_4_admission_no_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_4_admission_no_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "admission"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 15,
+          "observed_occupancy_ticks": 14
+        },
+        "boarding": {
+          "start_tick": 11,
+          "end_tick": 13,
+          "observed_ticks": 2
+        },
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_4_admission_no_diagnostics",
+          "patient_id": "patient-endpoints_acuity_4_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 13,
+          "transfer_duration_ticks": 2
+        },
+        "pending_transfer": {
+          "start_tick": 13,
+          "end_tick": 13,
+          "observed_ticks": 0
+        },
+        "transfer": {
+          "task_id": "patient-endpoints_acuity_4_admission_no_diagnostics:transfer",
+          "resource_id": "resource.transfer",
+          "task_class_id": "task.transfer",
+          "queue_entry_tick": 13,
+          "start_tick": 13,
+          "completion_tick": 15,
+          "cancelled_tick": null,
+          "required_work_ticks": 2,
+          "observed_work_ticks": 2
+        },
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": {
+          "transferred": {
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_4_admission_no_diagnostics"
+          }
+        },
+        "terminal_tick": 15,
+        "completed_los_ticks": 14,
+        "observed_elapsed_ticks": 14,
+        "boarding_time_ticks": 4,
+        "observed_boarding_ticks": 4
+      }
+    ],
+    "offers": [
+      {
+        "offer": {
+          "offer_id": "offer-endpoints_acuity_4_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "patient_id": "patient-endpoints_acuity_4_admission_no_diagnostics",
+          "available_tick": 13,
+          "withdrawn_tick": 21,
+          "transfer_duration_ticks": 2
+        },
+        "status": "consumed",
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_4_admission_no_diagnostics",
+          "patient_id": "patient-endpoints_acuity_4_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 13,
+          "transfer_duration_ticks": 2
+        }
+      }
+    ],
+    "counts": {
+      "arrived": 1,
+      "discharged": 0,
+      "transferred": 1,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 14,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_4_admission_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_4_admission_diagnostics",
+          "mode": "synthetic",
+          "acuity": 4,
+          "known_acuity": 4,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_4_admission_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_4_admission_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_4_admission_diagnostics:diagnostics:0",
+              "kind": "diagnostics",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 10,
+              "observed_work_ticks": 4,
+              "sampled_duration_ticks": 4,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 4
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_4_admission_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 10,
+              "start_tick": 10,
+              "completion_tick": 15,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 15,
+          "provisional_intent": "admission"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 19,
+          "observed_occupancy_ticks": 18
+        },
+        "boarding": {
+          "start_tick": 15,
+          "end_tick": 17,
+          "observed_ticks": 2
+        },
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_4_admission_diagnostics",
+          "patient_id": "patient-endpoints_acuity_4_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 17,
+          "transfer_duration_ticks": 2
+        },
+        "pending_transfer": {
+          "start_tick": 17,
+          "end_tick": 17,
+          "observed_ticks": 0
+        },
+        "transfer": {
+          "task_id": "patient-endpoints_acuity_4_admission_diagnostics:transfer",
+          "resource_id": "resource.transfer",
+          "task_class_id": "task.transfer",
+          "queue_entry_tick": 17,
+          "start_tick": 17,
+          "completion_tick": 19,
+          "cancelled_tick": null,
+          "required_work_ticks": 2,
+          "observed_work_ticks": 2
+        },
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": {
+          "transferred": {
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_4_admission_diagnostics"
+          }
+        },
+        "terminal_tick": 19,
+        "completed_los_ticks": 18,
+        "observed_elapsed_ticks": 18,
+        "boarding_time_ticks": 4,
+        "observed_boarding_ticks": 4
+      }
+    ],
+    "offers": [
+      {
+        "offer": {
+          "offer_id": "offer-endpoints_acuity_4_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "patient_id": "patient-endpoints_acuity_4_admission_diagnostics",
+          "available_tick": 17,
+          "withdrawn_tick": 25,
+          "transfer_duration_ticks": 2
+        },
+        "status": "consumed",
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_4_admission_diagnostics",
+          "patient_id": "patient-endpoints_acuity_4_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 17,
+          "transfer_duration_ticks": 2
+        }
+      }
+    ],
+    "counts": {
+      "arrived": 1,
+      "discharged": 0,
+      "transferred": 1,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 4,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 18,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_5_discharge_no_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_5_discharge_no_diagnostics",
+          "mode": "synthetic",
+          "acuity": 5,
+          "known_acuity": 5,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_5_discharge_no_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_5_discharge_no_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_5_discharge_no_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "discharge"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 11,
+          "observed_occupancy_ticks": 10
+        },
+        "boarding": null,
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": "discharged",
+        "terminal_tick": 11,
+        "completed_los_ticks": 10,
+        "observed_elapsed_ticks": 10,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": null
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 1,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 10,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_5_discharge_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_5_discharge_diagnostics",
+          "mode": "synthetic",
+          "acuity": 5,
+          "known_acuity": 5,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_5_discharge_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_5_discharge_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_5_discharge_diagnostics:diagnostics:0",
+              "kind": "diagnostics",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 10,
+              "observed_work_ticks": 4,
+              "sampled_duration_ticks": 4,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 4
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_5_discharge_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 10,
+              "start_tick": 10,
+              "completion_tick": 15,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 15,
+          "provisional_intent": "discharge"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 15,
+          "observed_occupancy_ticks": 14
+        },
+        "boarding": null,
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": "discharged",
+        "terminal_tick": 15,
+        "completed_los_ticks": 14,
+        "observed_elapsed_ticks": 14,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": null
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 1,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 4,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 14,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_5_admission_no_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_5_admission_no_diagnostics",
+          "mode": "synthetic",
+          "acuity": 5,
+          "known_acuity": 5,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_5_admission_no_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_5_admission_no_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_5_admission_no_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "admission"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 15,
+          "observed_occupancy_ticks": 14
+        },
+        "boarding": {
+          "start_tick": 11,
+          "end_tick": 13,
+          "observed_ticks": 2
+        },
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_5_admission_no_diagnostics",
+          "patient_id": "patient-endpoints_acuity_5_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 13,
+          "transfer_duration_ticks": 2
+        },
+        "pending_transfer": {
+          "start_tick": 13,
+          "end_tick": 13,
+          "observed_ticks": 0
+        },
+        "transfer": {
+          "task_id": "patient-endpoints_acuity_5_admission_no_diagnostics:transfer",
+          "resource_id": "resource.transfer",
+          "task_class_id": "task.transfer",
+          "queue_entry_tick": 13,
+          "start_tick": 13,
+          "completion_tick": 15,
+          "cancelled_tick": null,
+          "required_work_ticks": 2,
+          "observed_work_ticks": 2
+        },
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": {
+          "transferred": {
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_5_admission_no_diagnostics"
+          }
+        },
+        "terminal_tick": 15,
+        "completed_los_ticks": 14,
+        "observed_elapsed_ticks": 14,
+        "boarding_time_ticks": 4,
+        "observed_boarding_ticks": 4
+      }
+    ],
+    "offers": [
+      {
+        "offer": {
+          "offer_id": "offer-endpoints_acuity_5_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "patient_id": "patient-endpoints_acuity_5_admission_no_diagnostics",
+          "available_tick": 13,
+          "withdrawn_tick": 21,
+          "transfer_duration_ticks": 2
+        },
+        "status": "consumed",
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_5_admission_no_diagnostics",
+          "patient_id": "patient-endpoints_acuity_5_admission_no_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 13,
+          "transfer_duration_ticks": 2
+        }
+      }
+    ],
+    "counts": {
+      "arrived": 1,
+      "discharged": 0,
+      "transferred": 1,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 14,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_acuity_5_admission_diagnostics": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_acuity_5_admission_diagnostics",
+          "mode": "synthetic",
+          "acuity": 5,
+          "known_acuity": 5,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_acuity_5_admission_diagnostics:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_5_admission_diagnostics:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_5_admission_diagnostics:diagnostics:0",
+              "kind": "diagnostics",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 10,
+              "observed_work_ticks": 4,
+              "sampled_duration_ticks": 4,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 4
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_acuity_5_admission_diagnostics:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 10,
+              "start_tick": 10,
+              "completion_tick": 15,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 15,
+          "provisional_intent": "admission"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": 19,
+          "observed_occupancy_ticks": 18
+        },
+        "boarding": {
+          "start_tick": 15,
+          "end_tick": 17,
+          "observed_ticks": 2
+        },
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_5_admission_diagnostics",
+          "patient_id": "patient-endpoints_acuity_5_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 17,
+          "transfer_duration_ticks": 2
+        },
+        "pending_transfer": {
+          "start_tick": 17,
+          "end_tick": 17,
+          "observed_ticks": 0
+        },
+        "transfer": {
+          "task_id": "patient-endpoints_acuity_5_admission_diagnostics:transfer",
+          "resource_id": "resource.transfer",
+          "task_class_id": "task.transfer",
+          "queue_entry_tick": 17,
+          "start_tick": 17,
+          "completion_tick": 19,
+          "cancelled_tick": null,
+          "required_work_ticks": 2,
+          "observed_work_ticks": 2
+        },
+        "care": [],
+        "endpoint_state": "terminal",
+        "unfinished_reason": null,
+        "realized_outcome": {
+          "transferred": {
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_5_admission_diagnostics"
+          }
+        },
+        "terminal_tick": 19,
+        "completed_los_ticks": 18,
+        "observed_elapsed_ticks": 18,
+        "boarding_time_ticks": 4,
+        "observed_boarding_ticks": 4
+      }
+    ],
+    "offers": [
+      {
+        "offer": {
+          "offer_id": "offer-endpoints_acuity_5_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "patient_id": "patient-endpoints_acuity_5_admission_diagnostics",
+          "available_tick": 17,
+          "withdrawn_tick": 25,
+          "transfer_duration_ticks": 2
+        },
+        "status": "consumed",
+        "allocation": {
+          "offer_id": "offer-endpoints_acuity_5_admission_diagnostics",
+          "patient_id": "patient-endpoints_acuity_5_admission_diagnostics",
+          "destination": "destination.synthetic",
+          "allocated_tick": 17,
+          "transfer_duration_ticks": 2
+        }
+      }
+    ],
+    "counts": {
+      "arrived": 1,
+      "discharged": 0,
+      "transferred": 1,
+      "abandoned": 0,
+      "unfinished": 0
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 4,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 18,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  },
+  "endpoints_admission_no_offer": {
+    "version": 1,
+    "patients": [
+      {
+        "pathway": {
+          "patient_id": "patient-endpoints_admission_no_offer",
+          "mode": "synthetic",
+          "acuity": 3,
+          "known_acuity": 3,
+          "arrival_tick": 1,
+          "episodes": [
+            {
+              "task_id": "patient-endpoints_admission_no_offer:triage",
+              "kind": "triage",
+              "episode_index": 0,
+              "queue_entry_tick": 1,
+              "start_tick": 1,
+              "completion_tick": 3,
+              "observed_work_ticks": 2,
+              "sampled_duration_ticks": 2,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 2
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_admission_no_offer:assessment",
+              "kind": "assessment",
+              "episode_index": 0,
+              "queue_entry_tick": 3,
+              "start_tick": 3,
+              "completion_tick": 6,
+              "observed_work_ticks": 3,
+              "sampled_duration_ticks": 3,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 3
+                  }
+                }
+              }
+            },
+            {
+              "task_id": "patient-endpoints_admission_no_offer:treatment",
+              "kind": "treatment",
+              "episode_index": 0,
+              "queue_entry_tick": 6,
+              "start_tick": 6,
+              "completion_tick": 11,
+              "observed_work_ticks": 5,
+              "sampled_duration_ticks": 5,
+              "service": {
+                "version": 1,
+                "provenance": {
+                  "class": "synthetic",
+                  "notes": "fixed fixture service"
+                },
+                "law": {
+                  "fixed": {
+                    "duration_ticks": 5
+                  }
+                }
+              }
+            }
+          ],
+          "state": "treatment_complete"
+        },
+        "decision": {
+          "policy_version": 1,
+          "provenance": {
+            "class": "synthetic",
+            "notes": "fixture decision policy"
+          },
+          "observed_tick": 11,
+          "provisional_intent": "admission"
+        },
+        "space": {
+          "resource_id": "resource.edspace",
+          "queue_entry_tick": 1,
+          "acquired_tick": 1,
+          "released_tick": null,
+          "observed_occupancy_ticks": 29
+        },
+        "boarding": {
+          "start_tick": 11,
+          "end_tick": null,
+          "observed_ticks": 19
+        },
+        "allocation": null,
+        "pending_transfer": null,
+        "transfer": null,
+        "care": [],
+        "endpoint_state": "boarding",
+        "unfinished_reason": "awaiting_offer_allocation",
+        "realized_outcome": null,
+        "terminal_tick": null,
+        "completed_los_ticks": null,
+        "observed_elapsed_ticks": 29,
+        "boarding_time_ticks": null,
+        "observed_boarding_ticks": 19
+      }
+    ],
+    "offers": [],
+    "counts": {
+      "arrived": 1,
+      "discharged": 0,
+      "transferred": 0,
+      "abandoned": 0,
+      "unfinished": 1
+    },
+    "resources": [
+      {
+        "resource_id": "resource.assessment",
+        "capacity": 5,
+        "busy_ticks": 3,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.diagnostics",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.edspace",
+        "capacity": 5,
+        "busy_ticks": 29,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 1,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.transfer",
+        "capacity": 5,
+        "busy_ticks": 0,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 0
+      },
+      {
+        "resource_id": "resource.treatment",
+        "capacity": 5,
+        "busy_ticks": 5,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      },
+      {
+        "resource_id": "resource.triage",
+        "capacity": 5,
+        "busy_ticks": 2,
+        "capacity_ticks": 150,
+        "busy_at_horizon": 0,
+        "queued_at_horizon": 0,
+        "peak_busy": 1
+      }
+    ]
+  }
+}

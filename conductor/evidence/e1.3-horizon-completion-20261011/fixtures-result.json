@@ -1,0 +1,77 @@
+{
+  "packet_id": "E1.3.horizon.fixtures",
+  "base_commit": "42d2cf2304b8f35b65a11705865764ffeda29151",
+  "source_path": "crates/careops-ed/tests/e13_native_fixture_join.rs",
+  "source_sha256": "5a5d43f7f2fc312960c46e6391ca5008dfbfd80ef6daa2ad5545c09105835717",
+  "source_commit": null,
+  "result": "ready_for_review",
+  "test_summary": {
+    "package_test_binaries_passed": true,
+    "owned_fixture_tests": 3,
+    "total_careops_ed_tests": 116,
+    "all_46_fixture_bindings_asserted": true,
+    "stable_actual_trace_rows": "23 endpoint fixture actual results; invalid cases retain actual error classification; 6 E0 extreme rows"
+  },
+  "corrections": [
+    "Attempt 5 only: expose accepted shared helper module publicly to prevent private-module dead_code warnings under strict Clippy; replace filter_map(bool.then(...)) with equivalent ordered filter+map. No fixture, expected-value, runtime, or helper changes."
+  ],
+  "prior_failure_preserved": {
+    "attempt4_clippy_exit": 101,
+    "log": ".artifacts/mvp/E1.3.horizon.fixtures/logs/attempt4-clippy.log",
+    "reason": "strict Clippy identified filter_map_bool_then and private helper dead_code warnings"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-horizon-fixtures-20261011",
+      "toolchain": "Rust 1.99.0",
+      "exit_status": 0,
+      "log": ".artifacts/mvp/E1.3.horizon.fixtures/logs/attempt5-1.log",
+      "log_sha256": "001685c4d08df028567933fd1ef143f1f2eb34afb6cc8f0823f7e26d621a97b2"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-horizon-fixtures-20261011",
+      "toolchain": "Rust 1.99.0",
+      "exit_status": 0,
+      "log": ".artifacts/mvp/E1.3.horizon.fixtures/logs/attempt5-2.log",
+      "log_sha256": "212a1b0efc51a2c4f52763af9f29e9e4fb977b24acedbdb293e43e612595ef8e"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/tests/e13_native_fixture_join.rs"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-horizon-fixtures-20261011",
+      "toolchain": "Rust 1.99.0",
+      "exit_status": 0,
+      "log": ".artifacts/mvp/E1.3.horizon.fixtures/logs/attempt5-3.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "limitations": [
+    "Native aggregate API is absent; aggregates are independently reduced from actual native rows per contract. E1.4 manual trace reconciliation remains coordinator-owned."
+  ],
+  "scope": "Only owned test source changed; packet-owned logs/result retained."
+}

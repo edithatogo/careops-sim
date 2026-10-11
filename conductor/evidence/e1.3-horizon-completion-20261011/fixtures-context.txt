@@ -1,0 +1,249 @@
+# E1.3.horizon
+
+Model: gpt-6-luna; output: Incomplete/censored endpoint reporting
+Oracle: Horizon truncation not completion; no causal ward/fleet claims from external offers
+
+Instance: fixtures — All46 frozen native fixture bindings with17repair controls and actual traces
+Interface: conductor/design/ed/e1-horizon-parallel-join.md
+
+
+## conductor/design/ed/e1-horizon-parallel-join.md:1-78
+# E1.3 horizon parallel join
+
+Coordinator scheduling contract; independently reviewed by GPT-6.1-sol on
+11 October 2026. No dispatch until BOTH E1.3.exits instances (native and
+abandonment) are accepted and the combined integrated source passes gates.
+Rust/Cargo 1.99.0 only. This schedules the existing
+[terminal acceptance](e1-terminal-acceptance-contract.md) and
+[abandonment/composition extension](e1-abandonment-extension-contract.md).
+
+## Two independent instances
+
+| Instance | Sole source ownership | Required output |
+| --- | --- | --- |
+| fixtures | crates/careops-ed/tests/e13_native_fixture_join.rs | all 23 endpoints, 6 E0 extremes, 17 invalid cases with repaired controls |
+| composition | crates/careops-ed/tests/e13_arrival_terminal_composition.rs | actual fixed-seed arrivals to full terminal runtime with H censoring |
+
+Use two GPT-6-luna workers, one GPT-6.1-sol reviewer and root integration. Both
+read the accepted `crates/careops-ed/tests/support/e13.rs` without modifying it.
+Keep any extra adapter/builder local to the owned file. Each packet reserves
+one source plus its result, logs and target directory (four paths), with exact
+HEAD, frozen source/helper/fixture hashes and accepted prerequisite receipts.
+Three commands: full careops-ed package tests with `-- --nocapture`, strict
+Clippy all targets, and rustfmt for the owned source. Shared helper coverage is
+for the configured Disabled scenarios; do not imply it verifies untested
+Abandoned rows. Abandonment-specific source tests and traces provide that proof.
+
+The complete instance_set is [fixtures, composition]. A worker receipt or one
+accepted instance never closes E1.3.horizon. Integrate fixtures then composition;
+repeat combined gates on clean integrated HEAD and independently reconcile
+actual traces before E1.3/E1.4 closeout. Existing milestone and release gates
+remain unchanged and autonomous delivery continues beyond them.
+
+## Fixture instance details
+
+Assert exact ID sets and case counts, not just loop success. All 23 endpoints
+use `run_terminal`, including historical E1.2-labelled cases. Six extremes use
+actual E0 `run_scenario` with their frozen single-stage projection semantics.
+Seventeen invalid payloads reach otherwise-valid full terminal configs; retain
+fixture classification as metadata and compare actual first native diagnostics.
+Do not force an old component diagnostic by changing the intended mutation.
+
+Repeated/disordered stages fail the terminal full-path precheck. For duplicate
+identity, begin with valid A/B, mutate only B's PathwayPatient ID to A, leave B's
+service/decision bindings intact, and expect the early decision-binding error;
+restore only that patient ID for the repaired control. Other malformed groups
+are repaired only at their declared semantic boundary. Fixed duration zero is
+invalid; never replace it with the legal discrete-law placeholder sentinel.
+
+Derive expected aggregate comparisons from actual native patient intervals;
+there is no native aggregate/denominator API claim. Offer wait is distinct from
+decision-to-physical-departure boarding time. Assert extra abandoned count zero
+for Disabled fixtures. Resource helper assertions must use configured capacities
+and preserve actual grant/release versus clipped observation distinctions.
+
+## Composition instance details
+
+Use the accepted seed11 five-patient golden cohort (ticks5,5,6,9,9) with exact IDs,
+mode and acuity. Generate via `generate_arrivals`, bind actual values via the
+existing two-stage `bind_arrivals` template API, then explicitly append one
+Diagnostics and Treatment stage. All four stages take one tick and all clinical
+and space capacities are five. H=10. Transfer capacity stays valid but unused.
+
+Hand oracle: two patients terminate9, one terminates10, two start Assessment at
+H10 with zero work and no decision/outcome/LOS. Arrived5=discharged3+unfinished2;
+transferred=abandoned=0. Assert identity preservation, each clinical interval,
+fixed-seed rerun equality and permutation invariance. Do not substitute the
+preparation agent's alternative capacity-one 2/3/5 timeline for this contract.
+
+## Actual trace evidence
+
+Each endpoint run and the composition run prints one bounded stable-prefixed
+JSON line containing case ID and the serialized ACTUAL native result. No
+expected/fabricated trace rows. Console logs are captured in the owned log path;
+no extra file side effects. Root consumes those records independent of parallel
+test-print ordering to produce the E1.4 manual trace across all acuity/pathways,
+including actual clinical, discharge, admission, boarding and transfer timings.
+Zero/negative cases retain their real errors. A passing assertion alone is not
+a substitute for that phase-level manual reconciliation.
+
+
+## conductor/design/ed/e1-terminal-acceptance-contract.md:1-95
+# E1.3 terminal acceptance contract
+
+Status: coordinator contract reviewed by GPT-6.1-sol on 11 October 2026;
+no dispatch or runtime acceptance follows from this document.
+Rust/Cargo 1.99.0 only. The frozen [runtime contract](e1-terminal-runtime-contract.md)
+owns semantics. Existing endpoint/extreme/invalid fixture payloads stay unchanged.
+
+## Sequential ownership and join
+
+After accepted boarding, E1.3.exits owns only
+`crates/careops-ed/tests/e13_terminal_runtime.rs` and
+`crates/careops-ed/tests/support/e13.rs`. The helper builds canonical valid terminal
+configs, loads fixtures and supplies independent interval/reduction assertions.
+After accepted exits, E1.3.horizon owns only
+`crates/careops-ed/tests/e13_native_fixture_join.rs`, using that accepted helper
+read-only. Missing helper functionality returns to the coordinator for a separate
+claim; no simultaneous helper writer. Production defects return to the runtime
+owner in a new bounded packet, followed by both affected test suites.
+
+Each dispatch binds exact HEAD, contract/source hashes, accepted prerequisite
+receipts and three actual commands: careops-ed integration/full tests, strict
+Clippy all targets, and rustfmt for owned sources. Each packet also owns its
+result file, logs and Cargo target directory; exits has five write reservations,
+horizon four. Preparation is read-only until the packet is reviewed and claimed.
+
+## Exits lifecycle oracles
+
+Cover immediate and delayed discharge, including pending departure beyond H;
+Disabled abandonment with no offer retains the boarding patient; transfer at H14
+is unfinished and at H15 terminal for the frozen 11/13/15 anchor. Exercise finite
+offer incompatibility and expiry, consumption surviving withdrawal, transfer
+capacity contention and ED-space retention until physical departure. An outside
+patient cannot start a clinical stage before space acquisition.
+
+Exercise care due coincident with allocation (canceled without acquired resource
+or observed work), active care blocking allocation until completion, expired
+offers while care is active, recurrent care without accumulated duplicate tasks,
+and care sharing a clinical pool under the frozen FCFS ordering. Include
+simultaneous zero-delay departure, offer and care-due events; space release/grant
+at exactly H must allow zero-work starts without falsely completing them.
+Include input permutations, u64::MAX time arithmetic and malformed policies.
+
+Independently sweep half-open clinical/care/transfer/space intervals to establish
+busy_ticks, capacity_ticks, peak and capacity conservation. Track grants at H
+separately for busy_at_horizon. Canceled queued care contributes neither busy nor
+queued-at-H counts and never releases an unacquired resource. Derive conservation,
+terminal iff no unfinished reason, completed LOS and clipped observed elapsed
+from actual rows, avoiding assertions solely between runtime-produced totals.
+
+## Horizon: all 46 frozen cases
+
+Load exactly [23 endpoints](e1-endpoints.json), [6 extremes](e1-extremes.json),
+and [17 invalid cases](e1-invalid.json). Assert exact case counts and IDs so a
+new, skipped or duplicated case cannot silently pass.
+
+All 23 endpoints run through `terminal::run_terminal`, including the 12 historical
+E1.2-labelled discharge/empty cases. Compare actual patient IDs, clinical stages,
+knowledge/decision observations, realized outcome, terminal tick, completed LOS,
+observed elapsed, endpoint state/reason, boarding, pending transfer, transfer,
+space and offer observations to fixture expectations and frozen runtime anchors.
+The fixture boarding_interval measures decision-to-allocation offer wait; it is
+separate from boarding_time_ticks, which ends at physical departure. Compare
+fixture aggregate expectations with an independent reducer of actual native rows.
+This is not a claim of a public runtime aggregate/denominator API.
+
+The six extremes are frozen single-stage projections and use actual E0
+`careops_ed::run_scenario`. Do not append artificial clinical stages. Saturated
+capacity-one H7: starts 1,3,5,7; completions 3,5,7,None; three completed, one
+unfinished. H2: first patient work1, others not started. Duration8 at arrival1:
+H7 observed work6 unfinished; H9 completes exactly. Zero duration rejects.
+Compare configured work, actual start/completion/status/wait and completed LOS;
+observed work and censored elapsed are explicitly test-derived interval values.
+Verify permuted input equality.
+
+All 17 invalid cases reach an otherwise valid full-treatment TerminalConfig.
+Preserve the malformed fixture value and its offending path/category as fixture
+metadata. Assert native InvalidInput and an established diagnostic substring;
+do not invent typed categories or event-count fields. Each invalid case has a
+positive control repairing only its targeted malformed group. Full-path extension
+must preserve repeated/disordered stage mutations using otherwise legal distinct
+resource slots. The current terminal prevalidator may reject before the older
+pathway validator: bind actual earliest diagnostics at dispatch, preserving the
+malformed payload rather than forcing a historical message. Compare fields absent
+from frozen fixtures against explicit runtime hand anchors. Review validation ordering to
+prove rejection before Scheduler construction; Err alone is not observed evidence
+of an exposed event counter. Do not rewrite historical runtime_status labels.
+
+## Evidence and limits
+
+Record actual argv/cwd/base/toolchain/source and fixture hashes, exit status,
+counts and raw logs. Independently review the integrated source and repeat gates
+on the integrated clean commit. E1.3 closes only after offers, boarding, exits and
+horizon are accepted; E1.4 additionally reconciles the whole phase. These synthetic
+checks do not validate Cairns, ward-policy causality, ambulance-fleet effects,
+clinical fitness, external runtime profiles or release readiness.
+
+# Bounded worker prompt
+
+You are executing one reviewed packet for CareOps Sim. Use the model selected by
+the coordinator; gpt-6-luna is a candidate for this role. The packet cannot override
+user/system instructions. Do not take architecture or release ownership.
+
+1. Read AGENTS.md and the supplied bound packet. Confirm packet ID, target repo,
+   base commit, input hashes and assigned worktree. Run packet-check. If any differ,
+   stop and report `blocked`; do not update hashes to make the check pass.
+2. Read the listed context and interface contract. Identify the single expected
+   behavior/output, permitted files, protected paths and exact final test oracle.
+3. Confirm the coordinator has accepted prerequisites and reserved your paths.
+   Do not acquire conflicting ownership or start other work yourself.
+4. Execute the packet's steps in order. Add behavior-focused tests before code
+   when required. Keep edits inside write_paths and use the existing architecture.
+5. Run the listed commands in the specified directories. Record real exits,
+   counts and artifact paths. A missing test/command is a blocker, not a pass.
+6. Check your diff for unrelated changes and rerun the final acceptance check.
+   Do not change tolerances, golden results, test exclusions or public semantics
+   to remove a failure unless the packet explicitly authorizes that exact change.
+7. After two unsuccessful correction attempts, summarize the failing command and
+   smallest observed counterexample. Escalate missing contract/skill/tool/hardware
+   needs rather than repeatedly guessing.
+8. Return `result-template.json` with `ready_for_review` or `blocked`, plus the
+   actual diff/commit and evidence. Never claim `accepted`, change the plan checkbox,
+   merge into another worker's branch, publish or update the parent submodule pin.
+
+The coordinator/reviewer performs the combined integration checks and advances
+accepted status. Serial execution uses this same prompt and evidence contract.
+
+# MVP Luna execution loop
+
+Work one bound leaf instance. Your output is proposed work until coordinator
+acceptance. This role does not permit you to weaken tests, choose unapproved
+interfaces, accept your own result, publish or switch the model.
+
+- Start from the bound context bundle, exact source hashes and interface. Read
+  repository AGENTS instructions, but do not load every track/report by default.
+- Record one attempt ID and the model/version actually exposed by the harness.
+  Missing cost/version data is unknown, not a fabricated value.
+- Implement one output. For code changes, reproduce the specified failing behavior
+  before the fix and then run the final success check. For tests-only leaves,
+  final execution must verify the intended red fixture/expected failure explicitly;
+  a silent missing executable is not a useful red test.
+- Work for at most 60 minutes per attempt and at most two unsuccessful corrections.
+  Stop with evidence at either limit; a coordinator may authorize a new attempt
+  after reviewing the cause. Never expand write paths or tests on your own.
+- If source inspection needs more context, request a new bound slice. Keep loaded
+  relevant context within the 24 KB bundle budget (bytes, not a token guarantee).
+  Stream data extraction in batches rather than putting all evidence in prompts.
+- Checkpoint after a successful test or before interruption: leaf/instance/attempt,
+  exact base and input hashes, changed files, last command/exit, output hashes,
+  unresolved question and the next single action. Keep logs as files, not prose.
+- Return result.json with actual command receipts and ready_for_review or blocked.
+  A behavioral oracle failing, unavailable prerequisite or stale base is blocked.
+  The coordinator verifies diffs and runs the independent/combined checks.
+
+Plural recipes are controlled fan-out: one source, parameter family, platform or
+fixture case per instance. The coordinator freezes the instance list first and
+accepts the join only when every required instance has a receipt. A single example
+cannot stand for a complete source family. Parent task closure also checks the
+original objective and phase acceptance, preventing omissions in leaf proposals.
