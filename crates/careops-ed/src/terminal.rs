@@ -55,9 +55,10 @@ pub struct TerminalPolicy {
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(rename_all = "snake_case")]
+#[serde(rename_all = "snake_case", deny_unknown_fields)]
 pub enum AbandonmentPolicy {
     Disabled,
+    BeforeFirstCare { patience_ticks: u64 },
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -143,6 +144,7 @@ pub enum EndpointState {
 #[serde(rename_all = "snake_case")]
 pub enum RealizedOutcome {
     Discharged,
+    Abandoned,
     Transferred {
         destination: String,
         offer_id: String,
@@ -168,6 +170,7 @@ pub struct TerminalCounts {
     pub arrived: u64,
     pub discharged: u64,
     pub transferred: u64,
+    pub abandoned: u64,
     pub unfinished: u64,
 }
 
@@ -193,6 +196,12 @@ fn validate(config: &TerminalConfig) -> Result<(), PathwayError> {
     let invalid = |message: &str| Err(PathwayError::InvalidInput(message.to_owned()));
     if config.version != 1 || config.policy.version != 1 {
         return invalid("terminal config and policy versions must be 1");
+    }
+    if matches!(
+        config.policy.abandonment,
+        AbandonmentPolicy::BeforeFirstCare { patience_ticks: 0 }
+    ) {
+        return invalid("abandonment patience must be positive");
     }
     if config.pathway.patients.len() > MAX_PATIENTS
         || config.offers.len() > MAX_OFFERS
@@ -411,6 +420,12 @@ fn validate(config: &TerminalConfig) -> Result<(), PathwayError> {
         .and_then(|n| n.checked_add(admission_count))
         .and_then(|n| n.checked_add(discharge_count))
         .and_then(|n| n.checked_add((config.offers.len() as u128).checked_mul(2)?))
+        .and_then(|n| {
+            n.checked_add(match config.policy.abandonment {
+                AbandonmentPolicy::Disabled => 0,
+                AbandonmentPolicy::BeforeFirstCare { .. } => config.pathway.patients.len() as u128,
+            })
+        })
         .ok_or_else(|| {
             PathwayError::InvalidInput("terminal scheduler event bound overflow".into())
         })?;

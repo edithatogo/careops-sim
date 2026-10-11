@@ -23,6 +23,7 @@ const TERMINAL_CARE_DUE_EVENT: u32 = 101;
 const TERMINAL_CARE_COMPLETE_EVENT: u32 = 102;
 const TERMINAL_TRANSFER_COMPLETE_EVENT: u32 = 103;
 const TERMINAL_OFFER_BOUNDARY_EVENT: u32 = 104;
+const TERMINAL_ABANDONMENT_EVENT: u32 = 105;
 const SERVICE_DOMAIN_INDEX: u64 = 0x4341_5245_4F50_5353;
 const MAX_PATIENTS: usize = 100_000;
 const MAX_PROFILE_ROWS: usize = 1_024;
@@ -192,6 +193,7 @@ struct TerminalPatientRuntime {
     terminal_tick: Option<u64>,
     outcome: Option<crate::terminal::RealizedOutcome>,
     discharge_pending: bool,
+    abandonment_deadline: Option<u64>,
 }
 
 struct TerminalRuntime {
@@ -398,6 +400,27 @@ fn run_pathway_internal(
             entity: Some(EntityId::new(index as u64, 0)),
             kind: EventKind::custom(ARRIVAL_EVENT),
         });
+        if let Some(terminal) = terminal_config {
+            if let crate::terminal::AbandonmentPolicy::BeforeFirstCare { patience_ticks } =
+                terminal.policy.abandonment
+            {
+                let deadline = u128::from(patient.arrival_tick) + u128::from(patience_ticks);
+                if deadline <= u128::from(config.horizon_ticks) {
+                    count_terminal_event(&mut scheduled_event_count)?;
+                    terminal_runtime
+                        .as_mut()
+                        .ok_or_else(|| PathwayError::Runtime("terminal runtime is missing".into()))?
+                        .patients[index]
+                        .abandonment_deadline = Some(deadline as u64);
+                    scheduler.schedule(ScheduleRequest {
+                        at: SimTime::from_ticks(deadline),
+                        priority: 0,
+                        entity: Some(EntityId::new(index as u64, 0)),
+                        kind: EventKind::custom(TERMINAL_ABANDONMENT_EVENT),
+                    });
+                }
+            }
+        }
     }
     if let (Some(_terminal), Some(runtime)) = (terminal_config, terminal_runtime.as_ref()) {
         for boundary in runtime.offer_book.boundary_ticks() {
@@ -424,6 +447,7 @@ fn run_pathway_internal(
         if let (Some(runtime), Some(_)) = (terminal_runtime.as_mut(), terminal_config) {
             runtime.advance_metrics(now, &resources);
         }
+        let mut abandonment_candidates = Vec::new();
         while let Some(preview) = scheduler.peek_next() {
             if preview.at.ticks() != tick {
                 break;
@@ -449,7 +473,9 @@ fn run_pathway_internal(
             let patient = patients.get(patient_index).ok_or_else(|| {
                 PathwayError::Runtime("scheduler event has an unknown patient".into())
             })?;
-            if code == ARRIVAL_EVENT {
+            if code == TERMINAL_ABANDONMENT_EVENT {
+                abandonment_candidates.push(patient_index);
+            } else if code == ARRIVAL_EVENT {
                 if let (Some(runtime), Some(terminal)) =
                     (terminal_runtime.as_mut(), terminal_config)
                 {
@@ -613,34 +639,59 @@ fn run_pathway_internal(
             }
         }
         if let (Some(runtime), Some(terminal)) = (terminal_runtime.as_mut(), terminal_config) {
-            grant_waiting_spaces(
-                now,
-                &terminal.policy.ed_space_resource_id,
-                &mut runtime.space_waiting,
-                &mut runtime.patients,
-                &mut results,
-                &mut resources,
-                &sampling,
-            )?;
-            allocate_terminal_offers(
+            grant_terminal_phase(
                 now,
                 runtime,
                 terminal,
-                &mut resources,
-                &mut scheduler,
-                config.horizon_ticks,
-            )?;
-            grant_terminal_work(
-                tick,
-                config.horizon_ticks,
+                true,
                 &patients,
                 &mut results,
                 &mut resources,
                 &mut scheduler,
-                runtime,
-                terminal,
+                config.horizon_ticks,
+                &sampling,
                 &mut scheduled_event_count,
             )?;
+            let eligible = abandonment_candidates
+                .into_iter()
+                .filter(|patient_index| {
+                    let state = &runtime.patients[*patient_index];
+                    state.terminal_tick.is_none()
+                        && state.abandonment_deadline == Some(now)
+                        && state.decision.is_none()
+                        && state.space_queue_tick.is_some()
+                        && results[*patient_index]
+                            .episodes
+                            .first()
+                            .is_none_or(|episode| episode.start_tick.is_none())
+                })
+                .collect::<Vec<_>>();
+            for patient_index in eligible.iter().copied() {
+                cancel_waiting_patient(
+                    now,
+                    patient_index,
+                    &patients,
+                    runtime,
+                    &mut results,
+                    &mut resources,
+                    terminal,
+                )?;
+            }
+            if !eligible.is_empty() {
+                grant_terminal_phase(
+                    now,
+                    runtime,
+                    terminal,
+                    false,
+                    &patients,
+                    &mut results,
+                    &mut resources,
+                    &mut scheduler,
+                    config.horizon_ticks,
+                    &sampling,
+                    &mut scheduled_event_count,
+                )?;
+            }
         } else {
             grant_waiting(
                 tick,
@@ -694,6 +745,7 @@ fn build_terminal_result(
     let mut patients = Vec::with_capacity(pathways.len());
     let mut discharged = 0u64;
     let mut transferred = 0u64;
+    let mut abandoned = 0u64;
     for (index, pathway) in pathways.into_iter().enumerate() {
         let state = &mut runtime.patients[index];
         if let Some(episode) = state.transfer.as_mut() {
@@ -839,6 +891,7 @@ fn build_terminal_result(
         match state.outcome {
             Some(crate::terminal::RealizedOutcome::Discharged) => discharged += 1,
             Some(crate::terminal::RealizedOutcome::Transferred { .. }) => transferred += 1,
+            Some(crate::terminal::RealizedOutcome::Abandoned) => abandoned += 1,
             None => {}
         }
         patients.push(crate::terminal::TerminalPatientResult {
@@ -886,7 +939,8 @@ fn build_terminal_result(
         .map_err(|_| PathwayError::Runtime("patient count overflow".into()))?;
     let unfinished = arrived
         .saturating_sub(discharged)
-        .saturating_sub(transferred);
+        .saturating_sub(transferred)
+        .saturating_sub(abandoned);
     Ok(crate::terminal::TerminalRunResult {
         version: 1,
         patients,
@@ -895,6 +949,7 @@ fn build_terminal_result(
             arrived,
             discharged,
             transferred,
+            abandoned,
             unfinished,
         },
         resources: resource_usage,
@@ -932,6 +987,97 @@ fn count_terminal_event(count: &mut u64) -> Result<(), PathwayError> {
             "terminal scheduler event limit exceeded".into(),
         ));
     }
+    Ok(())
+}
+
+#[allow(clippy::too_many_arguments)]
+fn grant_terminal_phase(
+    now: u64,
+    runtime: &mut TerminalRuntime,
+    terminal: &crate::terminal::TerminalConfig,
+    allocate_offers: bool,
+    patients: &[PathwayPatient],
+    pathways: &mut [PathwayResult],
+    resources: &mut BTreeMap<String, ResourceRuntime>,
+    scheduler: &mut Scheduler,
+    horizon: u64,
+    sampling: &SamplingContext<'_>,
+    event_count: &mut u64,
+) -> Result<(), PathwayError> {
+    grant_waiting_spaces(
+        now,
+        &terminal.policy.ed_space_resource_id,
+        &mut runtime.space_waiting,
+        &mut runtime.patients,
+        pathways,
+        resources,
+        sampling,
+    )?;
+    if allocate_offers {
+        allocate_terminal_offers(now, runtime, terminal, resources, scheduler, horizon)?;
+    }
+    grant_terminal_work(
+        u128::from(now),
+        horizon,
+        patients,
+        pathways,
+        resources,
+        scheduler,
+        runtime,
+        terminal,
+        event_count,
+    )
+}
+
+fn cancel_waiting_patient(
+    now: u64,
+    patient_index: usize,
+    patients: &[PathwayPatient],
+    runtime: &mut TerminalRuntime,
+    pathways: &mut [PathwayResult],
+    resources: &mut BTreeMap<String, ResourceRuntime>,
+    terminal: &crate::terminal::TerminalConfig,
+) -> Result<(), PathwayError> {
+    let state = &mut runtime.patients[patient_index];
+    if state.terminal_tick.is_some() || state.abandonment_deadline != Some(now) {
+        return Err(PathwayError::Runtime(
+            "abandonment candidate is not waiting at its deadline".into(),
+        ));
+    }
+    if let Some(queue_tick) = state.space_queue_tick {
+        runtime.space_waiting.remove(&(queue_tick, patient_index));
+    }
+    if let Some(triage) = pathways[patient_index]
+        .episodes
+        .first()
+        .filter(|episode| episode.start_tick.is_none())
+    {
+        let triage_resource = &patients[patient_index].stages[0].resource_id;
+        let resource = resources
+            .get_mut(triage_resource)
+            .ok_or_else(|| PathwayError::Runtime("triage resource disappeared".into()))?;
+        resource
+            .waiting
+            .remove(&(triage.queue_entry_tick, patient_index, 0, 0));
+    }
+    if state.space_start.is_some() {
+        if state.space_end.is_some() {
+            return Err(PathwayError::Runtime(
+                "abandonment released ED space more than once".into(),
+            ));
+        }
+        state.space_end = Some(now);
+        let space = resources
+            .get_mut(&terminal.policy.ed_space_resource_id)
+            .ok_or_else(|| PathwayError::Runtime("space resource disappeared".into()))?;
+        space.busy = space
+            .busy
+            .checked_sub(1)
+            .ok_or_else(|| PathwayError::Runtime("space resource underflow".into()))?;
+    }
+    state.terminal_tick = Some(now);
+    state.outcome = Some(crate::terminal::RealizedOutcome::Abandoned);
+    state.abandonment_deadline = None;
     Ok(())
 }
 
@@ -2210,6 +2356,405 @@ mod tests {
         cfg
     }
 
+    fn append_terminal_patient(
+        cfg: &mut crate::terminal::TerminalConfig,
+        patient_id: &str,
+        arrival_tick: u64,
+        intent: crate::disposition::DispositionIntent,
+    ) {
+        let mut patient = cfg.pathway.patients[0].clone();
+        patient.patient_id = patient_id.into();
+        patient.arrival_tick = arrival_tick;
+        cfg.pathway.patients.push(patient);
+        let bindings = cfg
+            .services
+            .iter()
+            .filter(|binding| binding.patient_id == "p1")
+            .map(|binding| {
+                let mut binding = binding.clone();
+                binding.patient_id = patient_id.into();
+                binding
+            })
+            .collect::<Vec<_>>();
+        cfg.services.extend(bindings);
+        cfg.decisions.push(crate::disposition::DispositionBinding {
+            patient_id: patient_id.into(),
+            latent_intent: intent,
+        });
+        if intent == crate::disposition::DispositionIntent::Admission {
+            cfg.admissions.push(crate::terminal::AdmissionDestination {
+                patient_id: patient_id.into(),
+                destination: "med".into(),
+            });
+        }
+    }
+
+    fn set_terminal_resource_capacity(
+        cfg: &mut crate::terminal::TerminalConfig,
+        resource_id: &str,
+        capacity: u64,
+    ) {
+        let resource = cfg
+            .pathway
+            .capacity_location
+            .resource_buckets
+            .iter_mut()
+            .find(|resource| resource.resource_id == resource_id)
+            .unwrap();
+        resource.physical_count = Some(capacity);
+        resource.open_count = Some(capacity);
+        resource.staffed_count = Some(capacity);
+    }
+
+    fn make_abandonment_candidate(cfg: &mut crate::terminal::TerminalConfig, patience_ticks: u64) {
+        cfg.offers.clear();
+        cfg.policy.abandonment =
+            crate::terminal::AbandonmentPolicy::BeforeFirstCare { patience_ticks };
+    }
+
+    #[test]
+    fn abandonment_policy_is_explicit_and_disabled_stays_unchanged() {
+        let positive = crate::terminal::AbandonmentPolicy::BeforeFirstCare { patience_ticks: 7 };
+        let json = serde_json::to_string(&positive).unwrap();
+        assert_eq!(json, r#"{"before_first_care":{"patience_ticks":7}}"#);
+        assert_eq!(
+            serde_json::from_str::<crate::terminal::AbandonmentPolicy>(&json).unwrap(),
+            positive
+        );
+        assert!(serde_json::from_str::<crate::terminal::AbandonmentPolicy>(
+            r#"{"before_first_care":{"patience_ticks":7,"unexpected":1}}"#
+        )
+        .is_err());
+        let disabled = crate::terminal::run_terminal(&terminal_fixture(
+            crate::disposition::DispositionIntent::Discharge,
+            false,
+            30,
+        ))
+        .unwrap();
+        assert_eq!(disabled.counts.abandoned, 0);
+        assert_eq!(disabled.patients[0].terminal_tick, Some(11));
+        let mut zero =
+            terminal_fixture(crate::disposition::DispositionIntent::Discharge, false, 30);
+        zero.policy.abandonment =
+            crate::terminal::AbandonmentPolicy::BeforeFirstCare { patience_ticks: 0 };
+        assert!(matches!(
+            crate::terminal::run_terminal(&zero),
+            Err(PathwayError::InvalidInput(message)) if message.contains("patience must be positive")
+        ));
+    }
+
+    #[test]
+    fn abandonment_outside_space_removes_queue_without_acquiring_or_releasing() {
+        let mut cfg = terminal_pair(20);
+        cfg.decisions[1].latent_intent = crate::disposition::DispositionIntent::Discharge;
+        cfg.admissions.retain(|item| item.patient_id == "p1");
+        make_abandonment_candidate(&mut cfg, 1);
+        set_terminal_resource_capacity(&mut cfg, "resource.space", 1);
+        set_terminal_resource_capacity(&mut cfg, "resource.synthetic", 1);
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        println!(
+            "E13_ABANDON_OUTSIDE_TRACE {}",
+            serde_json::to_string(&result).unwrap()
+        );
+        let patient = result
+            .patients
+            .iter()
+            .find(|patient| patient.pathway.patient_id == "p2")
+            .unwrap();
+        assert_eq!(
+            patient.realized_outcome,
+            Some(crate::terminal::RealizedOutcome::Abandoned)
+        );
+        assert_eq!(patient.terminal_tick, Some(2));
+        assert_eq!(patient.completed_los_ticks, Some(1));
+        assert_eq!(patient.space.acquired_tick, None);
+        assert_eq!(patient.space.released_tick, None);
+        assert_eq!(patient.space.observed_occupancy_ticks, 0);
+        assert!(patient.pathway.episodes.is_empty());
+        assert_eq!(result.counts.abandoned, 1);
+        let space = result
+            .resources
+            .iter()
+            .find(|r| r.resource_id == "resource.space")
+            .unwrap();
+        assert_eq!(space.queued_at_horizon, 0);
+        assert_eq!(space.busy_ticks, 19);
+        assert_eq!(space.busy_at_horizon, 1);
+    }
+
+    #[test]
+    fn abandonment_cancels_queued_triage_releases_space_and_regrants_at_same_tick() {
+        let mut cfg = terminal_pair(3);
+        cfg.decisions[1].latent_intent = crate::disposition::DispositionIntent::Discharge;
+        cfg.admissions.retain(|item| item.patient_id == "p1");
+        append_terminal_patient(
+            &mut cfg,
+            "p3",
+            2,
+            crate::disposition::DispositionIntent::Discharge,
+        );
+        make_abandonment_candidate(&mut cfg, 1);
+        set_terminal_resource_capacity(&mut cfg, "resource.space", 2);
+        set_terminal_resource_capacity(&mut cfg, "resource.synthetic", 1);
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        println!(
+            "E13_ABANDON_QUEUED_TRACE {}",
+            serde_json::to_string(&result).unwrap()
+        );
+        let p2 = result
+            .patients
+            .iter()
+            .find(|p| p.pathway.patient_id == "p2")
+            .unwrap();
+        let p3 = result
+            .patients
+            .iter()
+            .find(|p| p.pathway.patient_id == "p3")
+            .unwrap();
+        let triage = &p2.pathway.episodes[0];
+        assert_eq!(triage.queue_entry_tick, 1);
+        assert_eq!(triage.start_tick, None);
+        assert_eq!(triage.completion_tick, None);
+        assert_eq!(triage.observed_work_ticks, 0);
+        assert_eq!(p2.space.acquired_tick, Some(1));
+        assert_eq!(p2.space.released_tick, Some(2));
+        assert_eq!(p2.space.observed_occupancy_ticks, 1);
+        assert_eq!(p2.terminal_tick, Some(2));
+        assert_eq!(p3.space.acquired_tick, Some(2));
+        assert_eq!(p3.pathway.episodes[0].queue_entry_tick, 2);
+        assert_eq!(p3.pathway.episodes[0].start_tick, Some(3));
+        assert_eq!(p3.pathway.episodes[0].observed_work_ticks, 0);
+        let triage_pool = result
+            .resources
+            .iter()
+            .find(|r| r.resource_id == "resource.synthetic")
+            .unwrap();
+        assert_eq!(triage_pool.queued_at_horizon, 0);
+        let space = result
+            .resources
+            .iter()
+            .find(|r| r.resource_id == "resource.space")
+            .unwrap();
+        assert_eq!(space.busy_ticks, 4);
+        assert_eq!(space.busy_at_horizon, 2);
+        assert_eq!(space.peak_busy, 2);
+        assert_eq!(space.capacity_ticks, 6);
+    }
+
+    #[test]
+    fn abandonment_removes_triage_from_its_actual_pool_after_input_permutation() {
+        let mut cfg = terminal_pair(6);
+        cfg.pathway.patients[0].stages[0].duration_ticks = 4;
+        cfg.services
+            .iter_mut()
+            .find(|binding| binding.patient_id == "p1" && binding.stage_index == 0)
+            .unwrap()
+            .service
+            .law = ServiceLaw::Fixed { duration_ticks: 4 };
+        cfg.pathway.patients[1].arrival_tick = 2;
+        append_terminal_patient(
+            &mut cfg,
+            "p3",
+            4,
+            crate::disposition::DispositionIntent::Discharge,
+        );
+        let mut triage_pool = cfg
+            .pathway
+            .capacity_location
+            .resource_buckets
+            .iter()
+            .find(|resource| resource.resource_id == "resource.synthetic")
+            .unwrap()
+            .clone();
+        triage_pool.resource_id = "resource.triage.alt".into();
+        cfg.pathway
+            .capacity_location
+            .resource_buckets
+            .push(triage_pool);
+        cfg.pathway
+            .patients
+            .iter_mut()
+            .find(|patient| patient.patient_id == "p3")
+            .unwrap()
+            .stages[0]
+            .resource_id = "resource.triage.alt".into();
+        cfg.decisions[1].latent_intent = crate::disposition::DispositionIntent::Discharge;
+        cfg.admissions.retain(|item| item.patient_id == "p1");
+        make_abandonment_candidate(&mut cfg, 1);
+        set_terminal_resource_capacity(&mut cfg, "resource.synthetic", 1);
+        set_terminal_resource_capacity(&mut cfg, "resource.triage.alt", 1);
+        cfg.pathway.patients = vec![
+            cfg.pathway.patients[0].clone(),
+            cfg.pathway
+                .patients
+                .iter()
+                .find(|patient| patient.patient_id == "p3")
+                .unwrap()
+                .clone(),
+            cfg.pathway
+                .patients
+                .iter()
+                .find(|patient| patient.patient_id == "p2")
+                .unwrap()
+                .clone(),
+        ];
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        let p2 = result
+            .patients
+            .iter()
+            .find(|p| p.pathway.patient_id == "p2")
+            .unwrap();
+        assert_eq!(p2.terminal_tick, Some(3));
+        assert_eq!(p2.pathway.episodes[0].queue_entry_tick, 2);
+        assert_eq!(p2.pathway.episodes[0].start_tick, None);
+        let synthetic = result
+            .resources
+            .iter()
+            .find(|r| r.resource_id == "resource.synthetic")
+            .unwrap();
+        assert_eq!(synthetic.queued_at_horizon, 0);
+        assert_eq!(synthetic.busy_at_horizon, 0);
+    }
+
+    #[test]
+    fn triage_start_at_deadline_wins_even_when_it_is_the_horizon() {
+        let mut cfg = terminal_pair(3);
+        cfg.decisions[1].latent_intent = crate::disposition::DispositionIntent::Discharge;
+        cfg.admissions.retain(|item| item.patient_id == "p1");
+        make_abandonment_candidate(&mut cfg, 2);
+        set_terminal_resource_capacity(&mut cfg, "resource.space", 2);
+        set_terminal_resource_capacity(&mut cfg, "resource.synthetic", 1);
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        let p2 = result
+            .patients
+            .iter()
+            .find(|p| p.pathway.patient_id == "p2")
+            .unwrap();
+        assert_eq!(p2.pathway.episodes[0].start_tick, Some(3));
+        assert_eq!(p2.pathway.episodes[0].observed_work_ticks, 0);
+        assert_eq!(p2.realized_outcome, None);
+        assert_eq!(p2.terminal_tick, None);
+        assert_eq!(result.counts.abandoned, 0);
+        assert_eq!(result.counts.unfinished, 2);
+    }
+
+    #[test]
+    fn simultaneous_expired_waiters_use_pre_cancellation_snapshot_and_are_permutation_stable() {
+        let mut cfg = terminal_pair(20);
+        append_terminal_patient(
+            &mut cfg,
+            "p3",
+            1,
+            crate::disposition::DispositionIntent::Admission,
+        );
+        make_abandonment_candidate(&mut cfg, 1);
+        set_terminal_resource_capacity(&mut cfg, "resource.space", 2);
+        set_terminal_resource_capacity(&mut cfg, "resource.synthetic", 1);
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        assert_eq!(result.counts.abandoned, 2);
+        let p2 = result
+            .patients
+            .iter()
+            .find(|p| p.pathway.patient_id == "p2")
+            .unwrap();
+        let p3 = result
+            .patients
+            .iter()
+            .find(|p| p.pathway.patient_id == "p3")
+            .unwrap();
+        assert_eq!(p2.terminal_tick, Some(2));
+        assert_eq!(p2.space.acquired_tick, Some(1));
+        assert_eq!(p2.space.released_tick, Some(2));
+        assert_eq!(p3.terminal_tick, Some(2));
+        assert_eq!(p3.space.acquired_tick, None);
+        let mut permuted = cfg;
+        permuted.pathway.patients.reverse();
+        permuted.services.reverse();
+        permuted.decisions.reverse();
+        permuted.admissions.reverse();
+        permuted.offers.reverse();
+        permuted
+            .pathway
+            .capacity_location
+            .resource_buckets
+            .reverse();
+        assert_eq!(result, crate::terminal::run_terminal(&permuted).unwrap());
+        assert_eq!(result.counts.arrived, 3);
+        assert_eq!(
+            result.counts.arrived,
+            result.counts.discharged
+                + result.counts.transferred
+                + result.counts.abandoned
+                + result.counts.unfinished
+        );
+    }
+
+    #[test]
+    fn first_triage_start_permanently_disables_abandonment_during_later_states() {
+        let mut cfg = terminal_fixture(crate::disposition::DispositionIntent::Admission, false, 30);
+        make_abandonment_candidate(&mut cfg, 12);
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        let patient = &result.patients[0];
+        assert_eq!(patient.pathway.episodes[0].start_tick, Some(1));
+        assert_eq!(patient.decision.as_ref().unwrap().observed_tick, 11);
+        assert_eq!(
+            patient.endpoint_state,
+            crate::terminal::EndpointState::Boarding
+        );
+        assert_eq!(patient.realized_outcome, None);
+        assert_eq!(patient.terminal_tick, None);
+        assert_eq!(result.counts.abandoned, 0);
+    }
+
+    #[test]
+    fn abandonment_at_horizon_realizes_but_future_and_overflow_deadlines_are_censored() {
+        let mut at_horizon = terminal_pair(2);
+        at_horizon.decisions[1].latent_intent = crate::disposition::DispositionIntent::Discharge;
+        at_horizon.admissions.retain(|item| item.patient_id == "p1");
+        make_abandonment_candidate(&mut at_horizon, 1);
+        set_terminal_resource_capacity(&mut at_horizon, "resource.space", 2);
+        set_terminal_resource_capacity(&mut at_horizon, "resource.synthetic", 1);
+        let result = crate::terminal::run_terminal(&at_horizon).unwrap();
+        let p2 = result
+            .patients
+            .iter()
+            .find(|p| p.pathway.patient_id == "p2")
+            .unwrap();
+        assert_eq!(p2.terminal_tick, Some(2));
+        assert_eq!(p2.completed_los_ticks, Some(1));
+        assert_eq!(p2.space.released_tick, Some(2));
+        assert_eq!(result.counts.abandoned, 1);
+        let mut future = at_horizon.clone();
+        future.pathway.horizon_ticks = 2;
+        future.policy.abandonment =
+            crate::terminal::AbandonmentPolicy::BeforeFirstCare { patience_ticks: 2 };
+        let future_result = crate::terminal::run_terminal(&future).unwrap();
+        let future_p2 = future_result
+            .patients
+            .iter()
+            .find(|p| p.pathway.patient_id == "p2")
+            .unwrap();
+        assert_eq!(future_p2.terminal_tick, None);
+        assert_eq!(future_result.counts.abandoned, 0);
+        assert_eq!(future_p2.space.released_tick, None);
+
+        let mut overflow = terminal_pair(u64::MAX);
+        overflow.decisions[1].latent_intent = crate::disposition::DispositionIntent::Discharge;
+        overflow.admissions.retain(|item| item.patient_id == "p1");
+        make_abandonment_candidate(&mut overflow, 2);
+        for patient in &mut overflow.pathway.patients {
+            patient.arrival_tick = u64::MAX - 1;
+        }
+        set_terminal_resource_capacity(&mut overflow, "resource.space", 2);
+        set_terminal_resource_capacity(&mut overflow, "resource.synthetic", 1);
+        let overflow_result = crate::terminal::run_terminal(&overflow).unwrap();
+        assert_eq!(overflow_result.counts.abandoned, 0);
+        assert!(overflow_result
+            .patients
+            .iter()
+            .all(|p| p.terminal_tick.is_none()));
+    }
+
     #[test]
     fn terminal_admission_uses_live_transfer_and_retains_space_until_departure() {
         let result = crate::terminal::run_terminal(&terminal_fixture(
@@ -2235,6 +2780,7 @@ mod tests {
                 arrived: 1,
                 discharged: 0,
                 transferred: 1,
+                abandoned: 0,
                 unfinished: 0,
             }
         );
