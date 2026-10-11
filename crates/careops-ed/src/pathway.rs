@@ -18,12 +18,18 @@ use crate::{validate_capacity_work, CapacityLocationProfile, PatientWorkItem, Pr
 
 const ARRIVAL_EVENT: u32 = 1;
 const COMPLETION_EVENT_BASE: u32 = 2;
+const TERMINAL_DISCHARGE_EVENT: u32 = 100;
+const TERMINAL_CARE_DUE_EVENT: u32 = 101;
+const TERMINAL_CARE_COMPLETE_EVENT: u32 = 102;
+const TERMINAL_TRANSFER_COMPLETE_EVENT: u32 = 103;
+const TERMINAL_OFFER_BOUNDARY_EVENT: u32 = 104;
 const SERVICE_DOMAIN_INDEX: u64 = 0x4341_5245_4F50_5353;
 const MAX_PATIENTS: usize = 100_000;
 const MAX_PROFILE_ROWS: usize = 1_024;
 const MAX_DIAGNOSTICS: usize = 16;
 const MAX_STAGES: usize = 19;
 const MAX_DRAWS: usize = 128;
+const MAX_TERMINAL_SCHEDULED_EVENTS: u64 = 4_400_000;
 
 #[derive(Clone, Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -162,13 +168,105 @@ impl Error for PathwayError {}
 struct ResourceRuntime {
     capacity: u64,
     busy: u64,
-    waiting: BTreeSet<(u64, usize, usize)>,
+    waiting: BTreeSet<(u64, usize, u8, usize)>,
 }
 
 struct SamplingContext<'a> {
     seed: u64,
     patients: &'a [PathwayPatient],
     services: &'a [Vec<ServiceSpec>],
+}
+
+#[derive(Default)]
+struct TerminalPatientRuntime {
+    decision: Option<crate::disposition::DecisionObservation>,
+    destination: Option<String>,
+    space_queue_tick: Option<u64>,
+    space_start: Option<u64>,
+    space_end: Option<u64>,
+    boarding_start: Option<u64>,
+    allocation: Option<crate::offers::OfferAllocation>,
+    transfer: Option<crate::terminal::TerminalWorkEpisode>,
+    care: Vec<crate::terminal::TerminalWorkEpisode>,
+    care_active: bool,
+    terminal_tick: Option<u64>,
+    outcome: Option<crate::terminal::RealizedOutcome>,
+    discharge_pending: bool,
+}
+
+struct TerminalRuntime {
+    patients: Vec<TerminalPatientRuntime>,
+    patient_indices: HashMap<String, usize>,
+    patient_ids: Vec<String>,
+    space_waiting: BTreeSet<(u64, usize)>,
+    offer_book: crate::offers::OfferBook,
+    destination_by_patient: HashMap<String, String>,
+    intent_by_patient: HashMap<String, crate::disposition::DispositionIntent>,
+    last_metric_tick: u64,
+    busy_ticks: BTreeMap<String, u128>,
+    peak_busy: BTreeMap<String, u64>,
+}
+
+impl TerminalRuntime {
+    fn new(
+        config: &crate::terminal::TerminalConfig,
+        patients: &[PathwayPatient],
+    ) -> Result<Self, PathwayError> {
+        let patient_indices: HashMap<String, usize> = patients
+            .iter()
+            .enumerate()
+            .map(|(index, patient)| (patient.patient_id.clone(), index))
+            .collect();
+        let mut destination_by_patient = HashMap::new();
+        for item in &config.admissions {
+            destination_by_patient.insert(item.patient_id.clone(), item.destination.clone());
+        }
+        let intent_by_patient = config
+            .decisions
+            .iter()
+            .map(|decision| (decision.patient_id.clone(), decision.latent_intent))
+            .collect();
+        let mut runtime_patients: Vec<TerminalPatientRuntime> = (0..patients.len())
+            .map(|_| TerminalPatientRuntime::default())
+            .collect();
+        for (patient_id, destination) in &destination_by_patient {
+            if let Some(index) = patient_indices.get(patient_id) {
+                runtime_patients[*index].destination = Some(destination.clone());
+            }
+        }
+        Ok(Self {
+            patients: runtime_patients,
+            patient_indices,
+            patient_ids: patients
+                .iter()
+                .map(|patient| patient.patient_id.clone())
+                .collect(),
+            space_waiting: BTreeSet::new(),
+            offer_book: crate::offers::OfferBook::new(&config.offer_policy, &config.offers)?,
+            destination_by_patient,
+            intent_by_patient,
+            last_metric_tick: 0,
+            busy_ticks: BTreeMap::new(),
+            peak_busy: BTreeMap::new(),
+        })
+    }
+
+    fn advance_metrics(&mut self, tick: u64, resources: &BTreeMap<String, ResourceRuntime>) {
+        let elapsed = u128::from(tick.saturating_sub(self.last_metric_tick));
+        if elapsed > 0 {
+            for (id, resource) in resources {
+                *self.busy_ticks.entry(id.clone()).or_default() +=
+                    u128::from(resource.busy) * elapsed;
+            }
+            self.last_metric_tick = tick;
+        }
+        for (id, resource) in resources {
+            self.peak_busy
+                .entry(id.clone())
+                .and_modify(|peak| *peak = (*peak).max(resource.busy))
+                .or_insert(resource.busy);
+        }
+    }
 }
 
 /// Run the legacy supplied-duration path. Every stage duration remains a fixed service.
@@ -202,6 +300,34 @@ pub fn run_pathway_with_services(
     seed: u64,
     bindings: &[ServiceBinding],
 ) -> Result<Vec<PathwayResult>, PathwayError> {
+    Ok(run_pathway_internal(config, seed, bindings, None)?.pathways)
+}
+
+pub(crate) fn run_terminal_live(
+    terminal: &crate::terminal::TerminalConfig,
+) -> Result<crate::terminal::TerminalRunResult, PathwayError> {
+    let output = run_pathway_internal(
+        &terminal.pathway,
+        terminal.seed,
+        &terminal.services,
+        Some(terminal),
+    )?;
+    output
+        .terminal
+        .ok_or_else(|| PathwayError::Runtime("terminal runtime output is missing".into()))
+}
+
+struct SharedOutput {
+    pathways: Vec<PathwayResult>,
+    terminal: Option<crate::terminal::TerminalRunResult>,
+}
+
+fn run_pathway_internal(
+    config: &PathwayConfig,
+    seed: u64,
+    bindings: &[ServiceBinding],
+    terminal_config: Option<&crate::terminal::TerminalConfig>,
+) -> Result<SharedOutput, PathwayError> {
     validate_config(config, true)?;
     let service_map = validate_service_bindings(config, bindings)?;
 
@@ -256,8 +382,16 @@ pub fn run_pathway_with_services(
         );
     }
 
+    let mut terminal_runtime = terminal_config
+        .map(|terminal| TerminalRuntime::new(terminal, &patients))
+        .transpose()?;
+    let mut scheduled_event_count = 0u64;
+
     let mut scheduler = Scheduler::new();
     for (index, patient) in patients.iter().enumerate() {
+        if terminal_config.is_some() {
+            count_terminal_event(&mut scheduled_event_count)?;
+        }
         scheduler.schedule(ScheduleRequest {
             at: SimTime::from_ticks(u128::from(patient.arrival_tick)),
             priority: 0,
@@ -265,11 +399,30 @@ pub fn run_pathway_with_services(
             kind: EventKind::custom(ARRIVAL_EVENT),
         });
     }
+    if let (Some(_terminal), Some(runtime)) = (terminal_config, terminal_runtime.as_ref()) {
+        for boundary in runtime.offer_book.boundary_ticks() {
+            if boundary > config.horizon_ticks {
+                continue;
+            }
+            count_terminal_event(&mut scheduled_event_count)?;
+            scheduler.schedule(ScheduleRequest {
+                at: SimTime::from_ticks(u128::from(boundary)),
+                priority: 0,
+                entity: None,
+                kind: EventKind::custom(TERMINAL_OFFER_BOUNDARY_EVENT),
+            });
+        }
+    }
 
     while let Some(next) = scheduler.peek_next() {
         let tick = next.at.ticks();
         if tick > u128::from(config.horizon_ticks) {
             break;
+        }
+        let now = u64::try_from(tick)
+            .map_err(|_| PathwayError::Runtime("event tick exceeds pathway range".into()))?;
+        if let (Some(runtime), Some(_)) = (terminal_runtime.as_mut(), terminal_config) {
+            runtime.advance_metrics(now, &resources);
         }
         while let Some(preview) = scheduler.peek_next() {
             if preview.at.ticks() != tick {
@@ -283,28 +436,90 @@ pub fn run_pathway_with_services(
                     ))
                 }
             };
-            let patient_index = event
-                .entity
-                .ok_or_else(|| {
-                    PathwayError::Runtime("scheduler event has no patient entity".into())
-                })?
-                .index as usize;
+            let code = event.kind.code();
+            if code == TERMINAL_OFFER_BOUNDARY_EVENT {
+                continue;
+            }
+            let patient_index = event.entity.map(|entity| entity.index as usize);
+            let Some(patient_index) = patient_index else {
+                return Err(PathwayError::Runtime(
+                    "scheduler event has no patient entity".into(),
+                ));
+            };
             let patient = patients.get(patient_index).ok_or_else(|| {
                 PathwayError::Runtime("scheduler event has an unknown patient".into())
             })?;
-            let now = u64::try_from(tick)
-                .map_err(|_| PathwayError::Runtime("event tick exceeds pathway range".into()))?;
-            let code = event.kind.code();
             if code == ARRIVAL_EVENT {
-                enqueue_stage(
+                if let (Some(runtime), Some(terminal)) =
+                    (terminal_runtime.as_mut(), terminal_config)
+                {
+                    runtime.space_waiting.insert((now, patient_index));
+                    runtime.patients[patient_index].space_queue_tick = Some(now);
+                    let _ = terminal;
+                } else {
+                    enqueue_stage(
+                        patient_index,
+                        0,
+                        now,
+                        &sampling,
+                        &mut results,
+                        &mut resources,
+                    )?;
+                }
+            } else if code == TERMINAL_DISCHARGE_EVENT {
+                terminal_departure(
                     patient_index,
-                    0,
                     now,
-                    &sampling,
-                    &mut results,
+                    crate::terminal::RealizedOutcome::Discharged,
+                    terminal_runtime.as_mut().ok_or_else(|| {
+                        PathwayError::Runtime("discharge event outside terminal mode".into())
+                    })?,
+                    &mut resources,
+                    terminal_config
+                        .ok_or_else(|| PathwayError::Runtime("terminal config missing".into()))?,
+                )?;
+            } else if code == TERMINAL_CARE_DUE_EVENT {
+                enqueue_boarder_care(
+                    patient_index,
+                    now,
+                    terminal_runtime.as_mut().ok_or_else(|| {
+                        PathwayError::Runtime("care event outside terminal mode".into())
+                    })?,
+                    terminal_config
+                        .ok_or_else(|| PathwayError::Runtime("terminal config missing".into()))?,
                     &mut resources,
                 )?;
-            } else if code >= COMPLETION_EVENT_BASE {
+            } else if code == TERMINAL_CARE_COMPLETE_EVENT {
+                complete_terminal_work(
+                    patient_index,
+                    now,
+                    true,
+                    terminal_runtime.as_mut().ok_or_else(|| {
+                        PathwayError::Runtime("care event outside terminal mode".into())
+                    })?,
+                    &mut resources,
+                    &mut scheduler,
+                    config.horizon_ticks,
+                    terminal_config
+                        .ok_or_else(|| PathwayError::Runtime("terminal config missing".into()))?,
+                    &mut scheduled_event_count,
+                )?;
+            } else if code == TERMINAL_TRANSFER_COMPLETE_EVENT {
+                complete_terminal_work(
+                    patient_index,
+                    now,
+                    false,
+                    terminal_runtime.as_mut().ok_or_else(|| {
+                        PathwayError::Runtime("transfer event outside terminal mode".into())
+                    })?,
+                    &mut resources,
+                    &mut scheduler,
+                    config.horizon_ticks,
+                    terminal_config
+                        .ok_or_else(|| PathwayError::Runtime("terminal config missing".into()))?,
+                    &mut scheduled_event_count,
+                )?;
+            } else if (COMPLETION_EVENT_BASE..TERMINAL_DISCHARGE_EVENT).contains(&code) {
                 let stage_index = usize::try_from(code - COMPLETION_EVENT_BASE)
                     .map_err(|_| PathwayError::Runtime("completion stage index overflow".into()))?;
                 let stage = patient.stages.get(stage_index).ok_or_else(|| {
@@ -347,19 +562,95 @@ pub fn run_pathway_with_services(
                             ))
                         }
                     };
+                    if stage.kind == StageKind::Treatment {
+                        if let (Some(runtime), Some(terminal)) =
+                            (terminal_runtime.as_mut(), terminal_config)
+                        {
+                            let intent = *runtime
+                                .intent_by_patient
+                                .get(&patient.patient_id)
+                                .ok_or_else(|| {
+                                    PathwayError::Runtime("validated decision disappeared".into())
+                                })?;
+                            runtime.patients[patient_index].decision =
+                                Some(crate::disposition::DecisionObservation {
+                                    policy_version: terminal.decision_policy.version,
+                                    provenance: terminal.decision_policy.provenance.clone(),
+                                    observed_tick: now,
+                                    provisional_intent: intent,
+                                });
+                            if intent == crate::disposition::DispositionIntent::Admission {
+                                runtime.patients[patient_index].boarding_start = Some(now);
+                                if let Some(care) = &terminal.policy.boarder_care {
+                                    schedule_terminal_event(
+                                        &mut scheduler,
+                                        now,
+                                        care.interval_ticks,
+                                        config.horizon_ticks,
+                                        patient_index,
+                                        TERMINAL_CARE_DUE_EVENT,
+                                        &mut scheduled_event_count,
+                                    )?;
+                                }
+                            } else {
+                                runtime.patients[patient_index].discharge_pending =
+                                    terminal.policy.discharge_delay_ticks > 0;
+                                schedule_terminal_event(
+                                    &mut scheduler,
+                                    now,
+                                    terminal.policy.discharge_delay_ticks,
+                                    config.horizon_ticks,
+                                    patient_index,
+                                    TERMINAL_DISCHARGE_EVENT,
+                                    &mut scheduled_event_count,
+                                )?;
+                            }
+                        }
+                    }
                 }
             } else {
                 return Err(PathwayError::Runtime("unknown scheduler event kind".into()));
             }
         }
-        grant_waiting(
-            tick,
-            config.horizon_ticks,
-            &patients,
-            &mut results,
-            &mut resources,
-            &mut scheduler,
-        )?;
+        if let (Some(runtime), Some(terminal)) = (terminal_runtime.as_mut(), terminal_config) {
+            grant_waiting_spaces(
+                now,
+                &terminal.policy.ed_space_resource_id,
+                &mut runtime.space_waiting,
+                &mut runtime.patients,
+                &mut results,
+                &mut resources,
+                &sampling,
+            )?;
+            allocate_terminal_offers(
+                now,
+                runtime,
+                terminal,
+                &mut resources,
+                &mut scheduler,
+                config.horizon_ticks,
+            )?;
+            grant_terminal_work(
+                tick,
+                config.horizon_ticks,
+                &patients,
+                &mut results,
+                &mut resources,
+                &mut scheduler,
+                runtime,
+                terminal,
+                &mut scheduled_event_count,
+            )?;
+        } else {
+            grant_waiting(
+                tick,
+                config.horizon_ticks,
+                &patients,
+                &mut results,
+                &mut resources,
+                &mut scheduler,
+            )?;
+        }
     }
 
     for result in &mut results {
@@ -377,7 +668,625 @@ pub fn run_pathway_with_services(
             }
         }
     }
-    Ok(results)
+    let (pathways, terminal) = match (terminal_config, terminal_runtime.take()) {
+        (Some(terminal_config), Some(mut runtime)) => {
+            runtime.advance_metrics(config.horizon_ticks, &resources);
+            let terminal = build_terminal_result(terminal_config, results, runtime, resources)?;
+            let pathways = terminal
+                .patients
+                .iter()
+                .map(|patient| patient.pathway.clone())
+                .collect();
+            (pathways, Some(terminal))
+        }
+        _ => (results, None),
+    };
+    Ok(SharedOutput { pathways, terminal })
+}
+
+fn build_terminal_result(
+    config: &crate::terminal::TerminalConfig,
+    pathways: Vec<PathwayResult>,
+    mut runtime: TerminalRuntime,
+    resources: BTreeMap<String, ResourceRuntime>,
+) -> Result<crate::terminal::TerminalRunResult, PathwayError> {
+    let horizon = config.pathway.horizon_ticks;
+    let mut patients = Vec::with_capacity(pathways.len());
+    let mut discharged = 0u64;
+    let mut transferred = 0u64;
+    for (index, pathway) in pathways.into_iter().enumerate() {
+        let state = &mut runtime.patients[index];
+        if let Some(episode) = state.transfer.as_mut() {
+            if let Some(start) = episode.start_tick {
+                episode.observed_work_ticks = episode
+                    .completion_tick
+                    .map(|end| end.saturating_sub(start))
+                    .unwrap_or_else(|| {
+                        horizon
+                            .saturating_sub(start)
+                            .min(episode.required_work_ticks)
+                    });
+            }
+        }
+        for episode in &mut state.care {
+            if let Some(start) = episode.start_tick {
+                episode.observed_work_ticks = episode
+                    .completion_tick
+                    .map(|end| end.saturating_sub(start))
+                    .unwrap_or_else(|| {
+                        horizon
+                            .saturating_sub(start)
+                            .min(episode.required_work_ticks)
+                    });
+            }
+        }
+        let arrival = pathway.arrival_tick;
+        let decision_tick = state
+            .decision
+            .as_ref()
+            .map(|decision| decision.observed_tick);
+        let space = crate::terminal::SpaceEpisode {
+            resource_id: config.policy.ed_space_resource_id.clone(),
+            queue_entry_tick: arrival,
+            acquired_tick: state.space_start,
+            released_tick: state.space_end,
+            observed_occupancy_ticks: state.space_start.map_or(0, |start| {
+                state.space_end.unwrap_or(horizon).saturating_sub(start)
+            }),
+        };
+        let boarding = state
+            .boarding_start
+            .map(|start| crate::terminal::ObservedInterval {
+                start_tick: start,
+                end_tick: state
+                    .allocation
+                    .as_ref()
+                    .map(|allocation| allocation.allocated_tick),
+                observed_ticks: state
+                    .allocation
+                    .as_ref()
+                    .map(|allocation| allocation.allocated_tick.saturating_sub(start))
+                    .unwrap_or_else(|| horizon.saturating_sub(start)),
+            });
+        let pending_transfer = state.allocation.as_ref().map(|allocation| {
+            let start = allocation.allocated_tick;
+            let end = state
+                .transfer
+                .as_ref()
+                .and_then(|episode| episode.start_tick);
+            crate::terminal::ObservedInterval {
+                start_tick: start,
+                end_tick: end,
+                observed_ticks: end
+                    .map(|end| end.saturating_sub(start))
+                    .unwrap_or_else(|| horizon.saturating_sub(start)),
+            }
+        });
+        let endpoint_state = if state.terminal_tick.is_some() {
+            crate::terminal::EndpointState::Terminal
+        } else if state.space_start.is_none() {
+            crate::terminal::EndpointState::WaitingForSpace
+        } else if state.decision.is_none() {
+            crate::terminal::EndpointState::Clinical
+        } else if state.discharge_pending {
+            crate::terminal::EndpointState::DischargePending
+        } else if state.allocation.is_none() {
+            crate::terminal::EndpointState::Boarding
+        } else if state
+            .transfer
+            .as_ref()
+            .is_some_and(|episode| episode.start_tick.is_none())
+        {
+            crate::terminal::EndpointState::PendingTransfer
+        } else {
+            crate::terminal::EndpointState::InTransfer
+        };
+        let unfinished_reason = if state.terminal_tick.is_some() {
+            None
+        } else if state.space_start.is_none() {
+            Some(crate::terminal::UnfinishedReason::WaitingForSpace)
+        } else if let Some(episode) = pathway
+            .episodes
+            .last()
+            .filter(|episode| episode.completion_tick.is_none())
+        {
+            Some(if episode.start_tick.is_some() {
+                crate::terminal::UnfinishedReason::ClinicalActive {
+                    stage: episode.kind,
+                }
+            } else {
+                crate::terminal::UnfinishedReason::ClinicalQueued {
+                    stage: episode.kind,
+                }
+            })
+        } else if state.discharge_pending {
+            Some(crate::terminal::UnfinishedReason::DischargePending)
+        } else if state.allocation.is_some() {
+            if state
+                .transfer
+                .as_ref()
+                .is_some_and(|episode| episode.start_tick.is_some())
+            {
+                Some(crate::terminal::UnfinishedReason::TransferActive)
+            } else {
+                Some(crate::terminal::UnfinishedReason::TransferQueued)
+            }
+        } else if state.care_active {
+            Some(crate::terminal::UnfinishedReason::BoarderCareActive)
+        } else if state.care.iter().any(|episode| {
+            episode.start_tick.is_none()
+                && episode.completion_tick.is_none()
+                && episode.cancelled_tick.is_none()
+        }) {
+            Some(crate::terminal::UnfinishedReason::BoarderCareQueued)
+        } else {
+            Some(crate::terminal::UnfinishedReason::AwaitingOfferAllocation)
+        };
+        let departure = state.terminal_tick;
+        let observed_end = departure.unwrap_or(horizon).min(horizon);
+        let observed_elapsed_ticks = observed_end.saturating_sub(arrival);
+        let boarding_time_ticks = match (&state.outcome, decision_tick, departure) {
+            (
+                Some(crate::terminal::RealizedOutcome::Transferred { .. }),
+                Some(start),
+                Some(end),
+            ) => Some(end.saturating_sub(start)),
+            _ => None,
+        };
+        let observed_boarding_ticks = decision_tick
+            .filter(|_| state.boarding_start.is_some())
+            .map(|start| observed_end.saturating_sub(start));
+        match state.outcome {
+            Some(crate::terminal::RealizedOutcome::Discharged) => discharged += 1,
+            Some(crate::terminal::RealizedOutcome::Transferred { .. }) => transferred += 1,
+            None => {}
+        }
+        patients.push(crate::terminal::TerminalPatientResult {
+            pathway,
+            decision: state.decision.clone(),
+            space,
+            boarding,
+            allocation: state.allocation.clone(),
+            pending_transfer,
+            transfer: state.transfer.clone(),
+            care: state.care.clone(),
+            endpoint_state,
+            unfinished_reason,
+            realized_outcome: state.outcome.clone(),
+            terminal_tick: state.terminal_tick,
+            completed_los_ticks: state.terminal_tick.map(|end| end.saturating_sub(arrival)),
+            observed_elapsed_ticks,
+            boarding_time_ticks,
+            observed_boarding_ticks,
+        });
+    }
+    let mut resource_usage = Vec::with_capacity(resources.len());
+    for (resource_id, resource) in resources {
+        let mut queued_at_horizon = resource.waiting.len() as u64;
+        if resource_id == config.policy.ed_space_resource_id {
+            queued_at_horizon =
+                queued_at_horizon.saturating_add(runtime.space_waiting.len() as u64);
+        }
+        resource_usage.push(crate::terminal::ResourceUsage {
+            resource_id: resource_id.clone(),
+            capacity: resource.capacity,
+            busy_ticks: runtime.busy_ticks.get(&resource_id).copied().unwrap_or(0),
+            capacity_ticks: u128::from(resource.capacity) * u128::from(horizon),
+            busy_at_horizon: resource.busy,
+            queued_at_horizon,
+            peak_busy: runtime
+                .peak_busy
+                .get(&resource_id)
+                .copied()
+                .unwrap_or(resource.busy),
+        });
+    }
+    let offers = runtime.offer_book.snapshot(horizon)?;
+    let arrived = u64::try_from(patients.len())
+        .map_err(|_| PathwayError::Runtime("patient count overflow".into()))?;
+    let unfinished = arrived
+        .saturating_sub(discharged)
+        .saturating_sub(transferred);
+    Ok(crate::terminal::TerminalRunResult {
+        version: 1,
+        patients,
+        offers,
+        counts: crate::terminal::TerminalCounts {
+            arrived,
+            discharged,
+            transferred,
+            unfinished,
+        },
+        resources: resource_usage,
+    })
+}
+
+fn schedule_terminal_event(
+    scheduler: &mut Scheduler,
+    now: u64,
+    duration: u64,
+    horizon: u64,
+    patient_index: usize,
+    event_code: u32,
+    event_count: &mut u64,
+) -> Result<(), PathwayError> {
+    let at = u128::from(now) + u128::from(duration);
+    if at <= u128::from(horizon) {
+        count_terminal_event(event_count)?;
+        scheduler.schedule(ScheduleRequest {
+            at: SimTime::from_ticks(at),
+            priority: 0,
+            entity: Some(EntityId::new(patient_index as u64, 0)),
+            kind: EventKind::custom(event_code),
+        });
+    }
+    Ok(())
+}
+
+fn count_terminal_event(count: &mut u64) -> Result<(), PathwayError> {
+    *count = count
+        .checked_add(1)
+        .ok_or_else(|| PathwayError::InvalidInput("terminal event count overflow".into()))?;
+    if *count > MAX_TERMINAL_SCHEDULED_EVENTS {
+        return Err(PathwayError::InvalidInput(
+            "terminal scheduler event limit exceeded".into(),
+        ));
+    }
+    Ok(())
+}
+
+fn grant_waiting_spaces(
+    now: u64,
+    space_resource_id: &str,
+    waiting: &mut BTreeSet<(u64, usize)>,
+    terminal_patients: &mut [TerminalPatientRuntime],
+    pathways: &mut [PathwayResult],
+    resources: &mut BTreeMap<String, ResourceRuntime>,
+    sampling: &SamplingContext<'_>,
+) -> Result<(), PathwayError> {
+    loop {
+        let has_capacity = resources
+            .get(space_resource_id)
+            .is_some_and(|resource| resource.busy < resource.capacity);
+        if !has_capacity || waiting.is_empty() {
+            break;
+        }
+        let (_, patient_index) = waiting
+            .pop_first()
+            .ok_or_else(|| PathwayError::Runtime("space queue entry disappeared".into()))?;
+        if terminal_patients[patient_index].space_start.is_some() {
+            return Err(PathwayError::Runtime(
+                "space acquired more than once".into(),
+            ));
+        }
+        terminal_patients[patient_index].space_start = Some(now);
+        resources
+            .get_mut(space_resource_id)
+            .ok_or_else(|| PathwayError::Runtime("space resource disappeared".into()))?
+            .busy += 1;
+        enqueue_stage(patient_index, 0, now, sampling, pathways, resources)?;
+    }
+    Ok(())
+}
+
+fn enqueue_boarder_care(
+    patient_index: usize,
+    now: u64,
+    runtime: &mut TerminalRuntime,
+    terminal: &crate::terminal::TerminalConfig,
+    resources: &mut BTreeMap<String, ResourceRuntime>,
+) -> Result<(), PathwayError> {
+    let state = &mut runtime.patients[patient_index];
+    if state.decision.as_ref().map(|item| item.provisional_intent)
+        != Some(crate::disposition::DispositionIntent::Admission)
+        || state.allocation.is_some()
+        || state.care_active
+    {
+        return Ok(());
+    }
+    let Some(policy) = terminal.policy.boarder_care.as_ref() else {
+        return Ok(());
+    };
+    let index = state.care.len();
+    let task_id = format!(
+        "{}:boarder-care:{index}",
+        runtime.patient_ids[patient_index]
+    );
+    state.care.push(crate::terminal::TerminalWorkEpisode {
+        task_id,
+        resource_id: policy.resource_id.clone(),
+        task_class_id: policy.task_class_id.clone(),
+        queue_entry_tick: now,
+        start_tick: None,
+        completion_tick: None,
+        cancelled_tick: None,
+        required_work_ticks: policy.duration_ticks,
+        observed_work_ticks: 0,
+    });
+    resources
+        .get_mut(&policy.resource_id)
+        .ok_or_else(|| PathwayError::Runtime("care resource disappeared".into()))?
+        .waiting
+        .insert((now, patient_index, 1, index));
+    Ok(())
+}
+
+fn allocate_terminal_offers(
+    now: u64,
+    runtime: &mut TerminalRuntime,
+    terminal: &crate::terminal::TerminalConfig,
+    resources: &mut BTreeMap<String, ResourceRuntime>,
+    scheduler: &mut Scheduler,
+    horizon: u64,
+) -> Result<(), PathwayError> {
+    let mut waiting = Vec::new();
+    for (index, state) in runtime.patients.iter().enumerate() {
+        if state.boarding_start.is_some() && state.allocation.is_none() && !state.care_active {
+            waiting.push(crate::offers::AdmissionRequest {
+                patient_id: runtime.patient_ids[index].clone(),
+                destination: state
+                    .destination
+                    .clone()
+                    .or_else(|| {
+                        runtime
+                            .destination_by_patient
+                            .get(&runtime.patient_ids[index])
+                            .cloned()
+                    })
+                    .ok_or_else(|| {
+                        PathwayError::Runtime("admission destination disappeared".into())
+                    })?,
+                ready_tick: state.boarding_start.unwrap_or(now),
+            });
+        }
+    }
+    let allocations = runtime.offer_book.allocate(now, &waiting)?;
+    for allocation in allocations {
+        let patient_index = runtime
+            .patient_indices
+            .get(&allocation.patient_id)
+            .copied()
+            .ok_or_else(|| PathwayError::Runtime("offer allocated to unknown patient".into()))?;
+        let state = &mut runtime.patients[patient_index];
+        state.allocation = Some(allocation.clone());
+        state.destination = Some(allocation.destination.clone());
+        for (care_index, care) in state.care.iter_mut().enumerate() {
+            if care.start_tick.is_none() && care.completion_tick.is_none() {
+                if let Some(resource) = resources.get_mut(&care.resource_id) {
+                    resource
+                        .waiting
+                        .remove(&(care.queue_entry_tick, patient_index, 1, care_index));
+                }
+                care.cancelled_tick = Some(now);
+            }
+        }
+        let transfer = crate::terminal::TerminalWorkEpisode {
+            task_id: format!("{}:transfer", allocation.patient_id),
+            resource_id: terminal.policy.transfer_resource_id.clone(),
+            task_class_id: terminal.policy.transfer_task_class_id.clone(),
+            queue_entry_tick: now,
+            start_tick: None,
+            completion_tick: None,
+            cancelled_tick: None,
+            required_work_ticks: allocation.transfer_duration_ticks,
+            observed_work_ticks: 0,
+        };
+        state.transfer = Some(transfer);
+        resources
+            .get_mut(&terminal.policy.transfer_resource_id)
+            .ok_or_else(|| PathwayError::Runtime("transfer resource disappeared".into()))?
+            .waiting
+            .insert((now, patient_index, 2, 0));
+    }
+    let _ = scheduler;
+    let _ = horizon;
+    Ok(())
+}
+
+#[allow(clippy::too_many_arguments)] // Explicit shared scheduler state is kept visible at the grant barrier.
+fn grant_terminal_work(
+    now: u128,
+    horizon: u64,
+    patients: &[PathwayPatient],
+    pathways: &mut [PathwayResult],
+    resources: &mut BTreeMap<String, ResourceRuntime>,
+    scheduler: &mut Scheduler,
+    runtime: &mut TerminalRuntime,
+    terminal: &crate::terminal::TerminalConfig,
+    event_count: &mut u64,
+) -> Result<(), PathwayError> {
+    for (resource_id, resource) in resources.iter_mut() {
+        while resource.busy < resource.capacity && !resource.waiting.is_empty() {
+            let (queue_tick, patient_index, work_kind, index) = resource
+                .waiting
+                .pop_first()
+                .ok_or_else(|| PathwayError::Runtime("work queue entry disappeared".into()))?;
+            let start = u64::try_from(now)
+                .map_err(|_| PathwayError::Runtime("work start exceeds tick range".into()))?;
+            let (duration, event_code) = match work_kind {
+                0 => {
+                    let stage = patients[patient_index]
+                        .stages
+                        .get(index)
+                        .ok_or_else(|| PathwayError::Runtime("stage queue index invalid".into()))?;
+                    let episode = pathways[patient_index].episodes.last_mut().ok_or_else(|| {
+                        PathwayError::Runtime("stage queue has no episode".into())
+                    })?;
+                    if episode.kind != stage.kind || episode.start_tick.is_some() {
+                        return Err(PathwayError::Runtime(
+                            "clinical queue state mismatch".into(),
+                        ));
+                    }
+                    episode.start_tick = Some(start);
+                    pathways[patient_index].state = PathwayState::Active(stage.kind);
+                    (
+                        episode.sampled_duration_ticks,
+                        COMPLETION_EVENT_BASE + index as u32,
+                    )
+                }
+                1 => {
+                    let duration = {
+                        let episode = runtime.patients[patient_index]
+                            .care
+                            .get_mut(index)
+                            .ok_or_else(|| {
+                                PathwayError::Runtime("care queue index invalid".into())
+                            })?;
+                        if episode.start_tick.is_some() || episode.cancelled_tick.is_some() {
+                            return Err(PathwayError::Runtime("care queue state mismatch".into()));
+                        }
+                        episode.start_tick = Some(start);
+                        episode.required_work_ticks
+                    };
+                    runtime.patients[patient_index].care_active = true;
+                    (duration, TERMINAL_CARE_COMPLETE_EVENT)
+                }
+                2 => {
+                    let episode = runtime.patients[patient_index]
+                        .transfer
+                        .as_mut()
+                        .ok_or_else(|| {
+                            PathwayError::Runtime("transfer queue index invalid".into())
+                        })?;
+                    if episode.start_tick.is_some() {
+                        return Err(PathwayError::Runtime(
+                            "transfer queue state mismatch".into(),
+                        ));
+                    }
+                    episode.start_tick = Some(start);
+                    (
+                        episode.required_work_ticks,
+                        TERMINAL_TRANSFER_COMPLETE_EVENT,
+                    )
+                }
+                _ => return Err(PathwayError::Runtime("unknown work kind".into())),
+            };
+            resource.busy += 1;
+            if resource.busy > resource.capacity {
+                return Err(PathwayError::Runtime("resource capacity exceeded".into()));
+            }
+            let completion = now + u128::from(duration);
+            if completion <= u128::from(horizon) {
+                count_terminal_event(event_count)?;
+                scheduler.schedule(ScheduleRequest {
+                    at: SimTime::from_ticks(completion),
+                    priority: 0,
+                    entity: Some(EntityId::new(patient_index as u64, 0)),
+                    kind: EventKind::custom(event_code),
+                });
+            }
+            let _ = (queue_tick, resource_id, terminal);
+        }
+    }
+    Ok(())
+}
+
+#[allow(clippy::too_many_arguments)] // Completion updates the same scheduler, pool and lifecycle state.
+fn complete_terminal_work(
+    patient_index: usize,
+    now: u64,
+    is_care: bool,
+    runtime: &mut TerminalRuntime,
+    resources: &mut BTreeMap<String, ResourceRuntime>,
+    scheduler: &mut Scheduler,
+    horizon: u64,
+    terminal: &crate::terminal::TerminalConfig,
+    event_count: &mut u64,
+) -> Result<(), PathwayError> {
+    if is_care {
+        let state = &mut runtime.patients[patient_index];
+        let episode = state
+            .care
+            .iter_mut()
+            .rev()
+            .find(|episode| episode.start_tick.is_some() && episode.completion_tick.is_none())
+            .ok_or_else(|| PathwayError::Runtime("care completion has no active episode".into()))?;
+        episode.completion_tick = Some(now);
+        episode.observed_work_ticks = episode.required_work_ticks;
+        let resource = resources
+            .get_mut(&episode.resource_id)
+            .ok_or_else(|| PathwayError::Runtime("care resource disappeared".into()))?;
+        resource.busy = resource
+            .busy
+            .checked_sub(1)
+            .ok_or_else(|| PathwayError::Runtime("care resource underflow".into()))?;
+        state.care_active = false;
+        if state.allocation.is_none() && state.boarding_start.is_some() {
+            if let Some(policy) = terminal.policy.boarder_care.as_ref() {
+                schedule_terminal_event(
+                    scheduler,
+                    now,
+                    policy.interval_ticks,
+                    horizon,
+                    patient_index,
+                    TERMINAL_CARE_DUE_EVENT,
+                    event_count,
+                )?;
+            }
+        }
+    } else {
+        let state = &mut runtime.patients[patient_index];
+        let episode = state
+            .transfer
+            .as_mut()
+            .ok_or_else(|| PathwayError::Runtime("transfer completion has no episode".into()))?;
+        episode.completion_tick = Some(now);
+        episode.observed_work_ticks = episode.required_work_ticks;
+        let resource_id = episode.resource_id.clone();
+        let resource = resources
+            .get_mut(&resource_id)
+            .ok_or_else(|| PathwayError::Runtime("transfer resource disappeared".into()))?;
+        resource.busy = resource
+            .busy
+            .checked_sub(1)
+            .ok_or_else(|| PathwayError::Runtime("transfer resource underflow".into()))?;
+        let allocation = state
+            .allocation
+            .as_ref()
+            .ok_or_else(|| PathwayError::Runtime("transfer completed without allocation".into()))?;
+        terminal_departure(
+            patient_index,
+            now,
+            crate::terminal::RealizedOutcome::Transferred {
+                destination: allocation.destination.clone(),
+                offer_id: allocation.offer_id.clone(),
+            },
+            runtime,
+            resources,
+            terminal,
+        )?;
+    }
+    Ok(())
+}
+
+fn terminal_departure(
+    patient_index: usize,
+    now: u64,
+    outcome: crate::terminal::RealizedOutcome,
+    runtime: &mut TerminalRuntime,
+    resources: &mut BTreeMap<String, ResourceRuntime>,
+    terminal: &crate::terminal::TerminalConfig,
+) -> Result<(), PathwayError> {
+    let state = &mut runtime.patients[patient_index];
+    if state.terminal_tick.is_some() {
+        return Err(PathwayError::Runtime(
+            "patient departed more than once".into(),
+        ));
+    }
+    state.terminal_tick = Some(now);
+    state.outcome = Some(outcome);
+    state.discharge_pending = false;
+    if state.space_start.is_some() {
+        state.space_end = Some(now);
+        let space = resources
+            .get_mut(&terminal.policy.ed_space_resource_id)
+            .ok_or_else(|| PathwayError::Runtime("space resource disappeared".into()))?;
+        space.busy = space
+            .busy
+            .checked_sub(1)
+            .ok_or_else(|| PathwayError::Runtime("space resource underflow".into()))?;
+    }
+    Ok(())
 }
 
 fn enqueue_stage(
@@ -422,7 +1331,9 @@ fn enqueue_stage(
     let resource = resources
         .get_mut(&stage.resource_id)
         .ok_or_else(|| PathwayError::Runtime("validated resource disappeared".into()))?;
-    resource.waiting.insert((tick, patient_index, stage_index));
+    resource
+        .waiting
+        .insert((tick, patient_index, 0, stage_index));
     Ok(())
 }
 
@@ -436,10 +1347,15 @@ fn grant_waiting(
 ) -> Result<(), PathwayError> {
     for resource in resources.values_mut() {
         while resource.busy < resource.capacity && !resource.waiting.is_empty() {
-            let (_, patient_index, stage_index) =
+            let (_, patient_index, work_kind, stage_index) =
                 resource.waiting.pop_first().ok_or_else(|| {
                     PathwayError::Runtime("queued work disappeared while granting".into())
                 })?;
+            if work_kind != 0 {
+                return Err(PathwayError::Runtime(
+                    "legacy grant found terminal work".into(),
+                ));
+            }
             let patient = &patients[patient_index];
             let stage = &patient.stages[stage_index];
             let start = u64::try_from(now)
@@ -475,7 +1391,7 @@ fn grant_waiting(
     Ok(())
 }
 
-fn validate_config(
+pub(crate) fn validate_config(
     config: &PathwayConfig,
     allow_discrete_sentinel: bool,
 ) -> Result<(), PathwayError> {
@@ -643,7 +1559,7 @@ fn validate_config(
     Ok(())
 }
 
-fn validate_service_bindings(
+pub(crate) fn validate_service_bindings(
     config: &PathwayConfig,
     bindings: &[ServiceBinding],
 ) -> Result<HashMap<(String, usize), ServiceSpec>, PathwayError> {
@@ -1145,6 +2061,594 @@ mod tests {
         assert_eq!(interval(&result[0], 0), (Some(1), None, 9));
         assert_eq!(result[0].episodes.len(), 1);
         assert_eq!(result[0].state, PathwayState::Active(StageKind::Triage));
+    }
+
+    fn terminal_fixture(
+        intent: crate::disposition::DispositionIntent,
+        offer: bool,
+        horizon_ticks: u64,
+    ) -> crate::terminal::TerminalConfig {
+        let mut patient = patient("p1", 1, 3);
+        patient
+            .stages
+            .push(stage(StageKind::Treatment, "resource.treatment", 5));
+        let mut pathway = config(vec![patient], horizon_ticks);
+        for id in ["resource.treatment", "resource.space", "resource.transfer"] {
+            let mut resource = pathway.capacity_location.resource_buckets[0].clone();
+            resource.resource_id = id.into();
+            pathway.capacity_location.resource_buckets.push(resource);
+        }
+        let services = pathway.patients[0]
+            .stages
+            .iter()
+            .enumerate()
+            .map(|(stage_index, stage)| ServiceBinding {
+                patient_id: "p1".into(),
+                stage_index,
+                service: ServiceSpec {
+                    version: 1,
+                    provenance: ServiceProvenance {
+                        class: "synthetic".into(),
+                        notes: "fixture service".into(),
+                    },
+                    law: ServiceLaw::Fixed {
+                        duration_ticks: stage.duration_ticks,
+                    },
+                },
+            })
+            .collect();
+        crate::terminal::TerminalConfig {
+            version: 1,
+            pathway,
+            seed: 7,
+            services,
+            decision_policy: crate::disposition::DecisionPolicy {
+                version: 1,
+                provenance: ServiceProvenance {
+                    class: "synthetic".into(),
+                    notes: "fixture decision".into(),
+                },
+                reveal_at: crate::disposition::DecisionReveal::TreatmentCompletion,
+            },
+            decisions: vec![crate::disposition::DispositionBinding {
+                patient_id: "p1".into(),
+                latent_intent: intent,
+            }],
+            admissions: (intent == crate::disposition::DispositionIntent::Admission)
+                .then(|| crate::terminal::AdmissionDestination {
+                    patient_id: "p1".into(),
+                    destination: "med".into(),
+                })
+                .into_iter()
+                .collect(),
+            offer_policy: crate::offers::OfferPolicy {
+                version: 1,
+                provenance: ServiceProvenance {
+                    class: "synthetic".into(),
+                    notes: "fixture offers".into(),
+                },
+            },
+            offers: if offer {
+                vec![crate::offers::BedOffer {
+                    offer_id: "offer1".into(),
+                    destination: "med".into(),
+                    patient_id: None,
+                    available_tick: 13,
+                    withdrawn_tick: 21,
+                    transfer_duration_ticks: 2,
+                }]
+            } else {
+                Vec::new()
+            },
+            policy: crate::terminal::TerminalPolicy {
+                version: 1,
+                provenance: ServiceProvenance {
+                    class: "synthetic".into(),
+                    notes: "fixture terminal policy".into(),
+                },
+                ed_space_resource_id: "resource.space".into(),
+                transfer_resource_id: "resource.transfer".into(),
+                transfer_task_class_id: "task.synthetic".into(),
+                discharge_delay_ticks: 0,
+                abandonment: crate::terminal::AbandonmentPolicy::Disabled,
+                boarder_care: None,
+            },
+        }
+    }
+
+    fn terminal_pair(horizon_ticks: u64) -> crate::terminal::TerminalConfig {
+        use crate::disposition::{DispositionBinding, DispositionIntent};
+        use crate::offers::BedOffer;
+        let mut cfg = terminal_fixture(DispositionIntent::Admission, true, horizon_ticks);
+        let mut second = cfg.pathway.patients[0].clone();
+        second.patient_id = "p2".into();
+        second.arrival_tick = 1;
+        cfg.pathway.patients.push(second.clone());
+        let mut second_services = cfg
+            .services
+            .iter()
+            .map(|binding| {
+                let mut binding = binding.clone();
+                binding.patient_id = "p2".into();
+                binding
+            })
+            .collect::<Vec<_>>();
+        cfg.services.append(&mut second_services);
+        cfg.decisions.push(DispositionBinding {
+            patient_id: "p2".into(),
+            latent_intent: DispositionIntent::Admission,
+        });
+        cfg.admissions.push(crate::terminal::AdmissionDestination {
+            patient_id: "p2".into(),
+            destination: "med".into(),
+        });
+        cfg.offers = vec![
+            BedOffer {
+                offer_id: "offer1".into(),
+                destination: "med".into(),
+                patient_id: None,
+                available_tick: 13,
+                withdrawn_tick: 30,
+                transfer_duration_ticks: 2,
+            },
+            BedOffer {
+                offer_id: "offer2".into(),
+                destination: "med".into(),
+                patient_id: None,
+                available_tick: 13,
+                withdrawn_tick: 30,
+                transfer_duration_ticks: 2,
+            },
+        ];
+        for resource in &mut cfg.pathway.capacity_location.resource_buckets {
+            if resource.resource_id != "resource.transfer" {
+                resource.physical_count = Some(2);
+                resource.open_count = Some(2);
+                resource.staffed_count = Some(2);
+            }
+        }
+        cfg
+    }
+
+    #[test]
+    fn terminal_admission_uses_live_transfer_and_retains_space_until_departure() {
+        let result = crate::terminal::run_terminal(&terminal_fixture(
+            crate::disposition::DispositionIntent::Admission,
+            true,
+            30,
+        ))
+        .unwrap();
+        let patient = &result.patients[0];
+        assert_eq!(patient.decision.as_ref().unwrap().observed_tick, 11);
+        assert_eq!(patient.boarding.as_ref().unwrap().end_tick, Some(13));
+        assert_eq!(patient.boarding.as_ref().unwrap().observed_ticks, 2);
+        assert_eq!(patient.transfer.as_ref().unwrap().start_tick, Some(13));
+        assert_eq!(patient.transfer.as_ref().unwrap().completion_tick, Some(15));
+        assert_eq!(patient.space.acquired_tick, Some(1));
+        assert_eq!(patient.space.released_tick, Some(15));
+        assert_eq!(patient.space.observed_occupancy_ticks, 14);
+        assert_eq!(patient.boarding_time_ticks, Some(4));
+        assert_eq!(patient.completed_los_ticks, Some(14));
+        assert_eq!(
+            result.counts,
+            crate::terminal::TerminalCounts {
+                arrived: 1,
+                discharged: 0,
+                transferred: 1,
+                unfinished: 0,
+            }
+        );
+    }
+
+    #[test]
+    fn terminal_discharge_and_no_offer_are_distinct_realized_and_censored_states() {
+        let discharge = crate::terminal::run_terminal(&terminal_fixture(
+            crate::disposition::DispositionIntent::Discharge,
+            false,
+            30,
+        ))
+        .unwrap();
+        assert_eq!(discharge.patients[0].terminal_tick, Some(11));
+        assert_eq!(discharge.patients[0].completed_los_ticks, Some(10));
+        assert_eq!(discharge.counts.discharged, 1);
+
+        let boarding = crate::terminal::run_terminal(&terminal_fixture(
+            crate::disposition::DispositionIntent::Admission,
+            false,
+            30,
+        ))
+        .unwrap();
+        let patient = &boarding.patients[0];
+        assert_eq!(
+            patient.endpoint_state,
+            crate::terminal::EndpointState::Boarding
+        );
+        assert_eq!(
+            patient.unfinished_reason,
+            Some(crate::terminal::UnfinishedReason::AwaitingOfferAllocation)
+        );
+        assert_eq!(patient.boarding.as_ref().unwrap().observed_ticks, 19);
+        assert_eq!(patient.space.observed_occupancy_ticks, 29);
+        assert_eq!(patient.terminal_tick, None);
+        assert_eq!(patient.completed_los_ticks, None);
+        assert_eq!(boarding.counts.unfinished, 1);
+    }
+
+    #[test]
+    fn terminal_exact_horizon_censors_transfer_and_releases_space_only_on_departure() {
+        let result = crate::terminal::run_terminal(&terminal_fixture(
+            crate::disposition::DispositionIntent::Admission,
+            true,
+            14,
+        ))
+        .unwrap();
+        let patient = &result.patients[0];
+        assert_eq!(patient.transfer.as_ref().unwrap().start_tick, Some(13));
+        assert_eq!(patient.transfer.as_ref().unwrap().observed_work_ticks, 1);
+        assert_eq!(patient.transfer.as_ref().unwrap().completion_tick, None);
+        assert_eq!(patient.space.released_tick, None);
+        assert_eq!(patient.space.observed_occupancy_ticks, 13);
+        assert_eq!(patient.completed_los_ticks, None);
+        let transfer = result
+            .resources
+            .iter()
+            .find(|r| r.resource_id == "resource.transfer")
+            .unwrap();
+        assert_eq!(transfer.busy_ticks, 1);
+        assert_eq!(transfer.busy_at_horizon, 1);
+        assert_eq!(transfer.queued_at_horizon, 0);
+        assert_eq!(transfer.capacity_ticks, 14);
+        let space = result
+            .resources
+            .iter()
+            .find(|r| r.resource_id == "resource.space")
+            .unwrap();
+        assert_eq!(space.busy_ticks, 13);
+        assert_eq!(space.busy_at_horizon, 1);
+        assert_eq!(space.capacity_ticks, 14);
+    }
+
+    #[test]
+    fn terminal_due_care_is_cancelled_before_same_tick_offer_work_grants() {
+        let mut cfg = terminal_fixture(crate::disposition::DispositionIntent::Admission, true, 20);
+        cfg.policy.boarder_care = Some(crate::terminal::BoarderCarePolicy {
+            resource_id: "resource.assessment".into(),
+            task_class_id: "task.synthetic".into(),
+            interval_ticks: 2,
+            duration_ticks: 3,
+        });
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        let care = &result.patients[0].care[0];
+        assert_eq!(care.queue_entry_tick, 13);
+        assert_eq!(care.cancelled_tick, Some(13));
+        assert_eq!(care.start_tick, None);
+        assert_eq!(care.observed_work_ticks, 0);
+        assert_eq!(
+            result.patients[0].transfer.as_ref().unwrap().start_tick,
+            Some(13)
+        );
+        assert_eq!(
+            result
+                .resources
+                .iter()
+                .find(|r| r.resource_id == "resource.assessment")
+                .unwrap()
+                .queued_at_horizon,
+            0
+        );
+    }
+
+    #[test]
+    fn terminal_active_care_cannot_be_matched_and_offer_expires() {
+        let mut cfg = terminal_fixture(crate::disposition::DispositionIntent::Admission, true, 20);
+        cfg.offers[0].available_tick = 14;
+        cfg.offers[0].withdrawn_tick = 15;
+        cfg.policy.boarder_care = Some(crate::terminal::BoarderCarePolicy {
+            resource_id: "resource.assessment".into(),
+            task_class_id: "task.synthetic".into(),
+            interval_ticks: 2,
+            duration_ticks: 3,
+        });
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        assert_eq!(result.patients[0].care[0].start_tick, Some(13));
+        assert_eq!(result.patients[0].care[0].completion_tick, Some(16));
+        assert_eq!(result.patients[0].care.len(), 2);
+        assert_eq!(result.patients[0].care[1].queue_entry_tick, 18);
+        assert_eq!(result.patients[0].care[1].start_tick, Some(18));
+        assert_eq!(result.patients[0].care[1].completion_tick, None);
+        assert_eq!(result.patients[0].care[1].observed_work_ticks, 2);
+        assert_eq!(result.patients[0].allocation, None);
+        assert_eq!(result.offers[0].status, crate::offers::OfferStatus::Expired);
+    }
+
+    #[test]
+    fn terminal_care_repeats_through_shared_clinical_resource_queue() {
+        let mut cfg = terminal_pair(20);
+        cfg.pathway.patients[1].arrival_tick = 11;
+        cfg.decisions[1].latent_intent = crate::disposition::DispositionIntent::Discharge;
+        cfg.admissions
+            .retain(|admission| admission.patient_id == "p1");
+        cfg.offers.clear();
+        cfg.policy.boarder_care = Some(crate::terminal::BoarderCarePolicy {
+            resource_id: "resource.assessment".into(),
+            task_class_id: "task.synthetic".into(),
+            interval_ticks: 2,
+            duration_ticks: 3,
+        });
+        for resource in &mut cfg.pathway.capacity_location.resource_buckets {
+            let capacity = if resource.resource_id == "resource.assessment" {
+                1
+            } else {
+                2
+            };
+            resource.physical_count = Some(capacity);
+            resource.open_count = Some(capacity);
+            resource.staffed_count = Some(capacity);
+        }
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        let p1 = result
+            .patients
+            .iter()
+            .find(|p| p.pathway.patient_id == "p1")
+            .unwrap();
+        let p2 = result
+            .patients
+            .iter()
+            .find(|p| p.pathway.patient_id == "p2")
+            .unwrap();
+        assert_eq!(p1.care[0].start_tick, Some(13));
+        assert_eq!(p1.care[0].completion_tick, Some(16));
+        assert_eq!(p2.pathway.episodes[1].queue_entry_tick, 13);
+        assert_eq!(p2.pathway.episodes[1].start_tick, Some(16));
+        assert_eq!(p2.pathway.episodes[1].completion_tick, Some(19));
+        assert_eq!(p1.care[1].queue_entry_tick, 18);
+        assert_eq!(p1.care[1].start_tick, Some(19));
+        assert_eq!(p1.care[1].observed_work_ticks, 1);
+        assert_eq!(p1.care[1].completion_tick, None);
+    }
+
+    #[test]
+    fn terminal_validation_rejects_care_budget_alias_and_missing_destination_before_run() {
+        let valid = terminal_fixture(crate::disposition::DispositionIntent::Admission, true, 20);
+        let mut over_budget = valid.clone();
+        over_budget.pathway.horizon_ticks = 1_000_001;
+        over_budget.policy.boarder_care = Some(crate::terminal::BoarderCarePolicy {
+            resource_id: "resource.assessment".into(),
+            task_class_id: "task.synthetic".into(),
+            interval_ticks: 1,
+            duration_ticks: 1,
+        });
+        assert!(matches!(
+            crate::terminal::run_terminal(&over_budget),
+            Err(PathwayError::InvalidInput(message)) if message.contains("care episode limit")
+        ));
+        let mut alias = valid.clone();
+        alias.policy.ed_space_resource_id = alias.policy.transfer_resource_id.clone();
+        assert!(matches!(
+            crate::terminal::run_terminal(&alias),
+            Err(PathwayError::InvalidInput(message)) if message.contains("invalid or aliased")
+        ));
+        let mut missing_destination = valid.clone();
+        missing_destination.admissions.clear();
+        assert!(matches!(
+            crate::terminal::run_terminal(&missing_destination),
+            Err(PathwayError::InvalidInput(message)) if message.contains("explicit destination")
+        ));
+        assert!(crate::terminal::run_terminal(&valid).is_ok());
+    }
+
+    #[test]
+    fn terminal_transfer_pool_is_fcfs_and_input_permutations_are_stable() {
+        let cfg = terminal_pair(25);
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        let by_id: HashMap<_, _> = result
+            .patients
+            .iter()
+            .map(|p| (p.pathway.patient_id.as_str(), p))
+            .collect();
+        assert_eq!(by_id["p1"].transfer.as_ref().unwrap().start_tick, Some(13));
+        assert_eq!(
+            by_id["p1"].transfer.as_ref().unwrap().completion_tick,
+            Some(15)
+        );
+        assert_eq!(by_id["p2"].transfer.as_ref().unwrap().start_tick, Some(15));
+        assert_eq!(
+            by_id["p2"].transfer.as_ref().unwrap().completion_tick,
+            Some(17)
+        );
+        let mut permuted = cfg;
+        permuted.pathway.patients.reverse();
+        permuted.services.reverse();
+        permuted.decisions.reverse();
+        permuted.admissions.reverse();
+        permuted.offers.reverse();
+        permuted
+            .pathway
+            .capacity_location
+            .resource_buckets
+            .reverse();
+        assert_eq!(result, crate::terminal::run_terminal(&permuted).unwrap());
+    }
+
+    #[test]
+    fn terminal_space_is_acquired_before_triage_and_held_through_departure() {
+        let mut cfg = terminal_pair(30);
+        for resource in &mut cfg.pathway.capacity_location.resource_buckets {
+            let capacity = if resource.resource_id == "resource.space" {
+                1
+            } else {
+                2
+            };
+            resource.physical_count = Some(capacity);
+            resource.open_count = Some(capacity);
+            resource.staffed_count = Some(capacity);
+        }
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        let by_id: HashMap<_, _> = result
+            .patients
+            .iter()
+            .map(|p| (p.pathway.patient_id.as_str(), p))
+            .collect();
+        assert_eq!(by_id["p1"].space.acquired_tick, Some(1));
+        assert_eq!(by_id["p1"].space.released_tick, Some(15));
+        assert_eq!(by_id["p2"].space.queue_entry_tick, 1);
+        assert_eq!(by_id["p2"].space.acquired_tick, Some(15));
+        assert_eq!(by_id["p2"].pathway.episodes[0].start_tick, Some(15));
+        assert_eq!(by_id["p2"].terminal_tick, Some(27));
+    }
+
+    #[test]
+    fn terminal_departure_at_horizon_releases_space_and_grants_zero_work() {
+        let mut cfg = terminal_pair(15);
+        for resource in &mut cfg.pathway.capacity_location.resource_buckets {
+            let capacity = if resource.resource_id == "resource.space" {
+                1
+            } else {
+                2
+            };
+            resource.physical_count = Some(capacity);
+            resource.open_count = Some(capacity);
+            resource.staffed_count = Some(capacity);
+        }
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        let by_id: HashMap<_, _> = result
+            .patients
+            .iter()
+            .map(|p| (p.pathway.patient_id.as_str(), p))
+            .collect();
+        assert_eq!(by_id["p1"].terminal_tick, Some(15));
+        assert_eq!(by_id["p2"].space.acquired_tick, Some(15));
+        assert_eq!(by_id["p2"].pathway.episodes[0].start_tick, Some(15));
+        assert_eq!(by_id["p2"].pathway.episodes[0].observed_work_ticks, 0);
+        assert_eq!(by_id["p2"].terminal_tick, None);
+        let space = result
+            .resources
+            .iter()
+            .find(|r| r.resource_id == "resource.space")
+            .unwrap();
+        assert_eq!(space.busy_at_horizon, 1);
+        assert_eq!(space.busy_ticks, 14);
+    }
+
+    #[test]
+    fn terminal_resource_metrics_match_independent_interval_sweep() {
+        let result = crate::terminal::run_terminal(&terminal_pair(30)).unwrap();
+        let mut intervals: HashMap<&str, Vec<(u64, u64)>> = HashMap::new();
+        for patient in &result.patients {
+            intervals.entry("resource.space").or_default().push((
+                patient.space.acquired_tick.unwrap(),
+                patient.space.released_tick.unwrap(),
+            ));
+            for episode in &patient.pathway.episodes {
+                let resource = match episode.kind {
+                    StageKind::Triage => "resource.synthetic",
+                    StageKind::Assessment => "resource.assessment",
+                    StageKind::Diagnostics => "resource.diagnostics",
+                    StageKind::Treatment => "resource.treatment",
+                };
+                intervals.entry(resource).or_default().push((
+                    episode.start_tick.unwrap(),
+                    episode.completion_tick.unwrap(),
+                ));
+            }
+            let transfer = patient.transfer.as_ref().unwrap();
+            intervals.entry("resource.transfer").or_default().push((
+                transfer.start_tick.unwrap(),
+                transfer.completion_tick.unwrap(),
+            ));
+        }
+        for usage in &result.resources {
+            let spans = intervals
+                .get(usage.resource_id.as_str())
+                .cloned()
+                .unwrap_or_default();
+            let mut events = Vec::new();
+            for (start, end) in &spans {
+                events.push((*start, 1_i64));
+                events.push((*end, -1_i64));
+            }
+            events.sort_by_key(|(tick, delta)| (*tick, *delta));
+            let mut busy = 0_i64;
+            let mut peak = 0_u64;
+            let mut previous = 0_u64;
+            let mut busy_ticks = 0_u128;
+            for (tick, delta) in events {
+                busy_ticks += u128::from(busy as u64) * u128::from(tick - previous);
+                busy += delta;
+                peak = peak.max(busy as u64);
+                previous = tick;
+            }
+            let busy_at_horizon = spans.iter().filter(|(_, end)| *end > 30).count() as u64;
+            assert_eq!(usage.busy_ticks, busy_ticks, "{}", usage.resource_id);
+            assert_eq!(usage.peak_busy, peak, "{}", usage.resource_id);
+            assert_eq!(
+                usage.busy_at_horizon, busy_at_horizon,
+                "{}",
+                usage.resource_id
+            );
+            assert_eq!(usage.capacity_ticks, u128::from(usage.capacity) * 30);
+            assert!(usage.busy_at_horizon <= usage.capacity);
+            assert!(usage.peak_busy <= usage.capacity);
+        }
+    }
+
+    #[test]
+    fn terminal_u64_max_service_duration_uses_wide_completion_arithmetic() {
+        let mut cfg = terminal_fixture(crate::disposition::DispositionIntent::Discharge, false, 20);
+        cfg.pathway.patients[0].stages[0].duration_ticks = u64::MAX;
+        cfg.services[0].service.law = ServiceLaw::Fixed {
+            duration_ticks: u64::MAX,
+        };
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        assert_eq!(
+            result.patients[0].pathway.episodes[0].observed_work_ticks,
+            19
+        );
+        assert_eq!(result.patients[0].terminal_tick, None);
+        assert_eq!(
+            result.patients[0].endpoint_state,
+            crate::terminal::EndpointState::Clinical
+        );
+    }
+
+    #[test]
+    fn terminal_u64_max_horizon_accumulates_metrics_without_overflow() {
+        let mut cfg = terminal_fixture(
+            crate::disposition::DispositionIntent::Discharge,
+            false,
+            u64::MAX,
+        );
+        cfg.pathway.patients[0].arrival_tick = 0;
+        cfg.pathway.patients[0].stages[0].duration_ticks = u64::MAX;
+        cfg.services[0].service.law = ServiceLaw::Fixed {
+            duration_ticks: u64::MAX,
+        };
+        let result = crate::terminal::run_terminal(&cfg).unwrap();
+        assert_eq!(
+            result.patients[0].pathway.episodes[0].observed_work_ticks,
+            u64::MAX
+        );
+        assert_eq!(result.patients[0].terminal_tick, None);
+        let triage = result
+            .resources
+            .iter()
+            .find(|r| r.resource_id == "resource.synthetic")
+            .unwrap();
+        assert_eq!(triage.busy_ticks, u128::from(u64::MAX));
+        assert_eq!(triage.capacity_ticks, u128::from(u64::MAX));
+        assert_eq!(triage.busy_at_horizon, 0);
+    }
+
+    #[test]
+    fn terminal_scheduled_event_counter_rejects_first_event_past_bound() {
+        let mut count = MAX_TERMINAL_SCHEDULED_EVENTS - 1;
+        assert!(count_terminal_event(&mut count).is_ok());
+        assert_eq!(count, MAX_TERMINAL_SCHEDULED_EVENTS);
+        assert!(matches!(
+            count_terminal_event(&mut count),
+            Err(PathwayError::InvalidInput(message)) if message.contains("event limit")
+        ));
+        assert_eq!(count, MAX_TERMINAL_SCHEDULED_EVENTS + 1);
     }
 
     #[test]
