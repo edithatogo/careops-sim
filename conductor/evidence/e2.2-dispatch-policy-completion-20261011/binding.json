@@ -1,0 +1,94 @@
+{
+  "reviewer": "root and GPT-6.1-sol reviewed pure policy contract; coordinator dispatch only",
+  "reservation_id": "1a30d079509542a4906aa8c87e3327b9",
+  "instance_id": "policy",
+  "instance_set": [
+    "policy"
+  ],
+  "instance_scope": "Pure validated snapshot selection only. Fixed Rust API and bounded bitset eligibility from reviewed contract; no events/claims/RNG/runtime binding. Add compile_fail doctest for private validated constructor, derive specified traits on category enum, and preserve inputs.",
+  "interface_contract": "conductor/design/ed/e2-dispatch-policy-contract.md",
+  "context_slices": [
+    {
+      "path": "conductor/design/ed/e2-dispatch-policy-contract.md",
+      "start": 1,
+      "end": 154
+    },
+    {
+      "path": "crates/careops-ed/src/lib.rs",
+      "start": 1,
+      "end": 22
+    },
+    {
+      "path": "crates/careops-ed/Cargo.toml",
+      "start": 1,
+      "end": 13
+    },
+    {
+      "path": ".artifacts/e22-dispatch/record_gate.py",
+      "start": 1,
+      "end": 75
+    }
+  ],
+  "input_paths": [
+    "conductor/design/ed/e2-dispatch-policy-contract.md",
+    "crates/careops-ed/Cargo.toml",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "conductor/evidence/e2.1-space-completion-20261011/acceptance.json",
+    ".artifacts/e22-dispatch/record_gate.py"
+  ],
+  "write_paths": [
+    "crates/careops-ed/src/dispatch.rs",
+    "crates/careops-ed/src/lib.rs",
+    "crates/careops-ed/tests/e22_dispatch_policy.rs",
+    ".artifacts/mvp/E2.2.dispatch.policy/result.json",
+    ".artifacts/mvp/E2.2.dispatch.policy/logs"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-dispatch/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Native careops-ed regression, policy oracles and private-constructor compile-fail doctest pass with nonzero test count"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-dispatch/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict package all-target Clippy passes"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-dispatch/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace rustfmt check passes; no broad formatting edits"
+    }
+  ],
+  "prerequisite_receipts": {
+    "E2.1.space": {
+      "status": "accepted",
+      "reviewer": "root and GPT-6.1-sol",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/e2.1-space-completion-20261011/acceptance.json": "438e3161764fd3ab336e03bfb2fbf745ab8ed02dfaeb8281281ba95c153c0823"
+      }
+    }
+  },
+  "reviewed_recipe_sha256": "cdf9a63d12f6a0e32c255ccd071382feaf43a6cc99152bd5a0106e53e049b86a"
+}

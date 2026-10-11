@@ -1,0 +1,86 @@
+{
+  "packet_id": "E2.2.dispatch.policy",
+  "status": "ready_for_review",
+  "attempt": "attempt-2",
+  "authorization": "Root authorized a fresh bounded correction attempt after reviewing the E0716 reproducer; same frozen packet and lease, no rebind.",
+  "base_commit": "5b3d0da62e7775a0179ef7d55f3b8470590a2e1b",
+  "head_commit": "5b3d0da62e7775a0179ef7d55f3b8470590a2e1b",
+  "working_directory": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
+  "changed_source_paths": [
+    "crates/careops-ed/src/dispatch.rs",
+    "crates/careops-ed/src/lib.rs",
+    "crates/careops-ed/tests/e22_dispatch_policy.rs"
+  ],
+  "source_hashes": {
+    "crates/careops-ed/src/dispatch.rs": "33fdcb6cf09c600ca1c6bfe5092c97f21990e86e7d61f9813b6b337ba232c109",
+    "crates/careops-ed/src/lib.rs": "b46b82ffceb02f18b037e7ce1f8fb689ad9483e9bd2edc76c142664e0b39b07a",
+    "crates/careops-ed/tests/e22_dispatch_policy.rs": "2c91418a9057b69fec22795bac63a2084743c76498b61522b7679ab30a8bdc78"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-dispatch/record_gate.py",
+        "tests"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.dispatch.policy/logs/tests-1791713999411187000-2081-result.json",
+      "log": ".artifacts/mvp/E2.2.dispatch.policy/logs/tests-1791713999411187000-2081.log",
+      "test_suites_passed": 135,
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-dispatch/record_gate.py",
+        "clippy"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.dispatch.policy/logs/clippy-1791714024417504000-2530-result.json",
+      "log": ".artifacts/mvp/E2.2.dispatch.policy/logs/clippy-1791714024417504000-2530.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-dispatch/record_gate.py",
+        "format"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.dispatch.policy/logs/format-1791714043806751000-2778-result.json",
+      "log": ".artifacts/mvp/E2.2.dispatch.policy/logs/format-1791714043806751000-2778.log"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E2.2.dispatch.policy/diff-check.private.log"
+    }
+  ],
+  "prior_attempts": [
+    {
+      "attempt": "attempt-1",
+      "outcome": "stopped after two failed correction rounds per instruction; compile failures preserved under .artifacts/mvp/E2.2.dispatch.policy/logs/ and private wrapper logs. Root later authorized attempt-2."
+    },
+    {
+      "attempt": "attempt-2-initial",
+      "outcome": "native tests and Clippy passed; format initially failed only on module declaration order. That receipt is preserved."
+    }
+  ],
+  "review_gaps": [
+    "The tests do not directly assert the requests outer-cardinality error path.",
+    "The tests do not directly assert staff identity, duplicate staff identity, staff zone, or staff skills diagnostics."
+  ],
+  "scope": "Pure validated snapshot selector only. No event/RNG/claim mutation, runtime adapter, E2.2 runtime/MVP acceptance, clinical acceptance, or release acceptance is claimed.",
+  "commit": null
+}

@@ -1,0 +1,38 @@
+{
+  "task": "E2.2.dispatch.integrated-qualification",
+  "base": "1dd97ec583eb4321162db0669531f643e4227229",
+  "worker_commit": "fd8f7ea",
+  "source_hashes": {
+    "crates/careops-ed/src/dispatch.rs": "9493a5d0df6f6687f288d0337a9ccb31bcf32dcd2f698675f043a7779ffab79e",
+    "crates/careops-ed/src/lib.rs": "b46b82ffceb02f18b037e7ce1f8fb689ad9483e9bd2edc76c142664e0b39b07a",
+    "crates/careops-ed/tests/e22_dispatch_policy.rs": "480b8d0d2df526ce592af82362d88957310df7b48bb143943b8d7ff1ab37b8a1"
+  },
+  "driver_sha256": "6929e9e67838139ab9ae5645cc9a9ac4a096e662b3f7ce927e3c62e929bc5fb7",
+  "commands": [
+    [
+      "python3",
+      "-B",
+      ".artifacts/e22-policy-qualification/record_gate.py",
+      "tests"
+    ],
+    [
+      "python3",
+      "-B",
+      ".artifacts/e22-policy-qualification/record_gate.py",
+      "clippy"
+    ],
+    [
+      "python3",
+      "-B",
+      ".artifacts/e22-policy-qualification/record_gate.py",
+      "format"
+    ]
+  ],
+  "scope": "Integrated pure policy qualification only; runtime/E2 acceptance open",
+  "paths": [
+    "conductor/evidence/e2.2-dispatch-policy-completion-20261011",
+    "conductor/current-state.json",
+    "conductor/index.md",
+    ".artifacts/e22-policy-qualification"
+  ]
+}

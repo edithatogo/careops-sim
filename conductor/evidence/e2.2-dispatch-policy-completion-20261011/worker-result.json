@@ -1,0 +1,81 @@
+{
+  "packet_id": "E2.2.dispatch.policy",
+  "status": "ready_for_review",
+  "attempt": "attempt-4",
+  "authorization": "Root authorized a final test-only repair for missing original-index validation witnesses under the same lease and frozen packet. dispatch.rs and lib.rs hashes were confirmed unchanged from attempt 3.",
+  "base_commit": "5b3d0da62e7775a0179ef7d55f3b8470590a2e1b",
+  "head_commit": "5b3d0da62e7775a0179ef7d55f3b8470590a2e1b",
+  "working_directory": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
+  "changed_source_paths": [
+    "crates/careops-ed/src/dispatch.rs",
+    "crates/careops-ed/src/lib.rs",
+    "crates/careops-ed/tests/e22_dispatch_policy.rs"
+  ],
+  "attempt4_change": "Tests only: add a valid break followed by a zero-length break expecting CalendarInterval at staff[0].breaks[1], and a valid break followed by an out-of-shift break expecting BreakOutsideShift at staff[0].breaks[1].",
+  "source_hashes": {
+    "crates/careops-ed/src/dispatch.rs": "9493a5d0df6f6687f288d0337a9ccb31bcf32dcd2f698675f043a7779ffab79e",
+    "crates/careops-ed/src/lib.rs": "b46b82ffceb02f18b037e7ce1f8fb689ad9483e9bd2edc76c142664e0b39b07a",
+    "crates/careops-ed/tests/e22_dispatch_policy.rs": "480b8d0d2df526ce592af82362d88957310df7b48bb143943b8d7ff1ab37b8a1"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-dispatch/record_gate.py",
+        "tests"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.dispatch.policy/logs/tests-1791714578296202000-7720-result.json",
+      "log": ".artifacts/mvp/E2.2.dispatch.policy/logs/tests-1791714578296202000-7720.log",
+      "test_suites_passed": 143,
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-dispatch/record_gate.py",
+        "clippy"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.dispatch.policy/logs/clippy-1791714582492375000-7757-result.json",
+      "log": ".artifacts/mvp/E2.2.dispatch.policy/logs/clippy-1791714582492375000-7757.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-dispatch/record_gate.py",
+        "format"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.dispatch.policy/logs/format-1791714583347860000-7776-result.json",
+      "log": ".artifacts/mvp/E2.2.dispatch.policy/logs/format-1791714583347860000-7776.log"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E2.2.dispatch.policy/logs/attempt4-diff-check.log"
+    }
+  ],
+  "preservation": {
+    "attempt2_result_copy": ".artifacts/mvp/E2.2.dispatch.policy/logs/attempt2-frozen-result.json",
+    "attempt3_frozen_result": ".artifacts/mvp/E2.2.dispatch.policy/logs/attempt3-frozen-result.json",
+    "attempt3_frozen_result_sha256": "83b68c5cc95cfd948adca68b4a513b689398d90bee3385b97fc4b484c2607170",
+    "earlier_attempt_logs": "Preserved under .artifacts/mvp/E2.2.dispatch.policy/logs and adjacent private wrapper logs.",
+    "prior_out_of_logs_diff_check_log": ".artifacts/mvp/E2.2.dispatch.policy/diff-check.private.log was retained."
+  },
+  "review_gaps": [],
+  "scope": "Pure validated snapshot selector only. Native gate passes do not establish E2.2 runtime/MVP acceptance, clinical acceptance, or release acceptance.",
+  "commit": null
+}

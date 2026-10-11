@@ -1,0 +1,88 @@
+{
+  "status": "accepted_native_pure_policy",
+  "packet_id": "E2.2.dispatch.policy",
+  "worker_base": "5b3d0da62e7775a0179ef7d55f3b8470590a2e1b",
+  "worker_commit": "fd8f7ea715e3ceca7b5a82ba07c75d2b076e3859",
+  "integrated_source_commit": "1dd97ec583eb4321162db0669531f643e4227229",
+  "reviewer": "root and GPT-6.1-sol",
+  "source_hashes": {
+    "crates/careops-ed/src/dispatch.rs": "9493a5d0df6f6687f288d0337a9ccb31bcf32dcd2f698675f043a7779ffab79e",
+    "crates/careops-ed/src/lib.rs": "b46b82ffceb02f18b037e7ce1f8fb689ad9483e9bd2edc76c142664e0b39b07a",
+    "crates/careops-ed/tests/e22_dispatch_policy.rs": "480b8d0d2df526ce592af82362d88957310df7b48bb143943b8d7ff1ab37b8a1"
+  },
+  "integrated_tests_passed": 143,
+  "new_policy_tests": 25,
+  "private_constructor_compile_fail_doctests": 1,
+  "rust_toolchain": "1.99.0",
+  "integrated_gates": [
+    {
+      "gate": "clippy",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+      "head": "1dd97ec583eb4321162db0669531f643e4227229",
+      "exit_code": 0,
+      "log": ".artifacts/e22-policy-qualification/logs/clippy-1791715928363195000-10370.log",
+      "log_sha256": "290d165dc7a838c5aeec284d3f5efb826eccb362ab1058c0c7d1cef61f6b6676",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    },
+    {
+      "gate": "format",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+      "head": "1dd97ec583eb4321162db0669531f643e4227229",
+      "exit_code": 0,
+      "log": ".artifacts/e22-policy-qualification/logs/format-1791715940717490000-10368.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    },
+    {
+      "gate": "tests",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+      "head": "1dd97ec583eb4321162db0669531f643e4227229",
+      "exit_code": 0,
+      "log": ".artifacts/e22-policy-qualification/logs/tests-1791715881680679000-9934.log",
+      "log_sha256": "198dd8576f17e726ff272e69ea92ca80c3aef616330fa9b860675e9ef23d1ee6",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    }
+  ],
+  "diagnostic_clarification_commit": "8593a6f2c2733b42fd3b6140829bf12f9024eabd",
+  "limitations": [
+    "Pure snapshot validation and selection only. No claims, events, clock or RNG mutation.",
+    "32 staff,24 interruption,32 space native bindings and single-Flow integration remain open.",
+    "Engine gate, checkpoint V2 and consumer join remain open.",
+    "No E2.2 phase, E2.3 MVP, empirical, clinical, hosted or release acceptance.",
+    "Worker auxiliary ignored logs outside declared logs and expired lease recovery disclosed in evidence-history.json."
+  ],
+  "at": "2026-10-11T10:53:05.433760+00:00"
+}

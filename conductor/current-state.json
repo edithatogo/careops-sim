@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T10:20:51.574466+00:00",
+  "updated_at": "2026-10-11T10:53:05.433760+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "Two Luna implementations running: parent pure dispatch policy and isolated Kairos grant gate. Review/freeze each; prepare V2 checkpoint contract and consumer join next, then single-runtime E2 native bindings. Continue full delivery.",
+  "next_action": "Pure dispatch policy accepted; continue active Kairos gate worker and review full ADR oracles. Freeze runtime then bind explicit checkpoint V2 and calibration consumer join; update parent pin before single-Flow E2 fixture binding. Continue full delivery.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1416,13 +1416,15 @@
     "native_binding": "unbound"
   },
   "e22_dispatch": {
-    "status": "running",
+    "status": "accepted_native_pure_policy",
     "packet": "E2.2.dispatch.policy",
     "worker": "e22_dispatch",
     "requested_model": "gpt-6-luna",
     "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
     "base": "5b3d0da62e7775a0179ef7d55f3b8470590a2e1b",
-    "scope": "Pure policy native implementation; composed runtime binding remains open"
+    "scope": "Pure policy native implementation; composed runtime binding remains open",
+    "source_commit": "1dd97ec583eb4321162db0669531f643e4227229",
+    "evidence": "conductor/evidence/e2.2-dispatch-policy-completion-20261011/acceptance.json"
   },
   "e22_engine_gate": {
     "status": "running",
