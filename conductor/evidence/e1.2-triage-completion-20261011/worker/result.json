@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "packet_id": "E1.2.triage.native",
+  "status": "ready_for_review",
+  "base_commit": "5b3b0256a7db66785a4f769ce342213cd13c2996",
+  "source_commit": "46feb9f608ece6e640d8b8c348fd5573583278a0",
+  "source_path": "crates/careops-ed/src/pathway.rs",
+  "source_sha256": "87434525cc6854652dfab3ea9120110e9e0ef96ac415f504b6e414bf03f42d08",
+  "rust_toolchain": "1.99.0; packet-pinned Rustup cargo/rustc/rustdoc and PATH",
+  "summary": {
+    "native_pathway_tests": "13 passed, 0 failed",
+    "strict_clippy": "passed with -D warnings",
+    "rustfmt_check": "passed",
+    "behavior": "Kairos batched ticks; deterministic FCFS/resource ordering; acuity visible only after triage; exact-horizon starts/completions; queue/active censoring; capacity and identifier validation; generated-arrival template adapter"
+  },
+  "commands": [
+    {
+      "command": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "pathway::"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.2.triage.native/logs/tests-bound-final2.log",
+      "log_sha256": "bba9432444cd0eab74a3c15ee34f7a1dab571e42746eb8f6ab7f562cf4253025"
+    },
+    {
+      "command": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.2.triage.native/logs/clippy-bound-final2.log",
+      "log_sha256": "b72b9de1e572de30657fbe81fe8b17c64ebe17c571e556534ac6b3c936a69fbd"
+    },
+    {
+      "command": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/src/pathway.rs"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.2.triage.native/logs/rustfmt-bound-final2.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "pathway::"
+      ],
+      "cwd": ".",
+      "exit_code": 101,
+      "log": ".artifacts/mvp/E1.2.triage.native/logs/tests-initial.log",
+      "log_sha256": "75e0e4969313b7aee5abe05036b6f053883a56890070c9b42fe4393284c355a6",
+      "note": "Initial test-first run: 6 passed and 2 fixtures failed because their raised capacities exceeded physical counts; corrected fixtures and later reran green."
+    },
+    {
+      "command": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "exit_code": 101,
+      "log": ".artifacts/mvp/E1.2.triage.native/logs/clippy-run1.log",
+      "log_sha256": "624b63506efc32fce22b14926488899d342d2e492fa1ed1b4b954163f7db6bba",
+      "note": "Clippy identified while-let loop and test type complexity; corrected without lint suppression."
+    },
+    {
+      "command": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "pathway::"
+      ],
+      "cwd": ".",
+      "exit_code": 101,
+      "log": ".artifacts/mvp/E1.2.triage.native/logs/tests-bounds-final.log",
+      "log_sha256": "d69ea48c68fe461e8466d21affe5e06a5c5ea41f5fc32980d19364031cb282a6",
+      "note": "Additional limit coverage initially used a mode without a corresponding exact template; corrected test input and reran green."
+    },
+    {
+      "command": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "exit_code": 101,
+      "log": ".artifacts/mvp/E1.2.triage.native/logs/clippy-limits-final.log",
+      "log_sha256": "fcae45bcff855d57142dc31798a79ffc1d168bc41f2520a0ac1b74111e5709e2",
+      "note": "Clippy requested slice::from_ref instead of cloning a one-element template slice; corrected and reran green."
+    }
+  ],
+  "review_note": "Coordinator authorized one additional bounded correction after independent review identified untested declared limit branches. Contract and write scope unchanged.",
+  "scope": "Only crates/careops-ed/src/pathway.rs is committed. Result and command logs remain at the packet-reserved artifacts path.",
+  "log_hashes": {
+    "clippy-bound-final2.log": "b72b9de1e572de30657fbe81fe8b17c64ebe17c571e556534ac6b3c936a69fbd",
+    "clippy-final.log": "7e9e98a7bb2614118760b25835205e7e3d76e7f8c46449b9c7bd91de48116ee2",
+    "clippy-limits-final.log": "fcae45bcff855d57142dc31798a79ffc1d168bc41f2520a0ac1b74111e5709e2",
+    "clippy-run1.log": "624b63506efc32fce22b14926488899d342d2e492fa1ed1b4b954163f7db6bba",
+    "clippy-run2.log": "34e4f07e50a054a65253420a4f8594efea61a824c519d050c9ec11de442acfad",
+    "clippy-run3.log": "b8ac7e02811f19203a656a2d7b0cc00504839b326d356bd7fc71630758588af7",
+    "rustfmt-bound-final2.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rustfmt-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rustfmt-run1.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rustfmt-run2.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rustfmt-run3.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests-bound-final2.log": "bba9432444cd0eab74a3c15ee34f7a1dab571e42746eb8f6ab7f562cf4253025",
+    "tests-bounds-final.log": "d69ea48c68fe461e8466d21affe5e06a5c5ea41f5fc32980d19364031cb282a6",
+    "tests-final.log": "5c887a4cf389f16afbd6389e4b9a8fe099b9e2f405a8c457c9c3cf79ddc4e579",
+    "tests-initial.log": "75e0e4969313b7aee5abe05036b6f053883a56890070c9b42fe4393284c355a6",
+    "tests-limits-final.log": "7c019ceebb1e5e4d478afcb7f9679399dd4a0aa8f7a85cd2ee6399f8b0eedba6",
+    "tests-run2.log": "ee90b6ccab9a3290759c15fb888e2a75b694717c982d35b675f64ba8a8c4ab67",
+    "tests-run3.log": "f40136ef0f6526247b17ffa350db99225b487298745e7e0fa2ec66014dfa9d11"
+  }
+}

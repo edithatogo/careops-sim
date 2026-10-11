@@ -3,7 +3,7 @@
   "updated_at": "2026-10-11T01:40:22.817557+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E1",
-  "next_action": "User authorizes autonomous E1.2 continuation: freeze triage contract, implement/review triage then diagnostics then disposition; heartbeat careops-e1-2-autonomous-continuation resumes only when no active worker.",
+  "next_action": "E1.2.triage accepted; dispatch reviewed diagnostics contract on Rust1.99, then parallel disposition/native fixture-component workers. Autonomous E1.2 heartbeat active; do not duplicate live workers.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1272,5 +1272,10 @@
     "source_commit": "c27588e46921e8436a67034a54418abe1a188e5f",
     "evidence": "conductor/evidence/e1.2-arrivals-completion-20261011/acceptance.json",
     "next_leaf": "E1.2.triage"
+  },
+  "e1_triage_acceptance": {
+    "source_commit": "82924227f999cdba45c6b1c7c15698b37b0f484e",
+    "evidence": "conductor/evidence/e1.2-triage-completion-20261011/acceptance.json",
+    "next_leaf": "E1.2.diagnostics"
   }
 }

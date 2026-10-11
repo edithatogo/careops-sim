@@ -1,0 +1,113 @@
+{
+  "reviewer": "root coordinator; independent e1_next_planner and e1_endpoint_preparation contract review",
+  "reservation_id": "527b4f49ce774b269d01e83892e72eca",
+  "instance_id": "native",
+  "instance_set": [
+    "native"
+  ],
+  "instance_scope": "Native triage and assessment runtime and tests; preserve E0 and arrivals",
+  "reviewed_recipe_sha256": "6215bb1104ad4327e9f2c7ee454d5a06e157a0aa06bfffc65b9a6c472aa8f0f6",
+  "interface_contract": "conductor/design/ed/e1-triage-contract.md",
+  "context_slices": [
+    {
+      "path": "conductor/design/ed/e1-triage-contract.md",
+      "start": 1,
+      "end": 37
+    },
+    {
+      "path": "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md",
+      "start": 1,
+      "end": 24
+    }
+  ],
+  "input_paths": [
+    "conductor/design/ed/e1-triage-contract.md",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/careops-ed/Cargo.toml",
+    "crates/careops-ed/src/lib.rs",
+    "crates/careops-ed/src/arrivals.rs"
+  ],
+  "write_paths": [
+    "crates/careops-ed/src/pathway.rs",
+    ".artifacts/mvp/E1.2.triage.native/result.json",
+    ".artifacts/mvp/E1.2.triage.native/logs",
+    ".artifacts/e12-triage/target"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "pathway::"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-triage-20261011/.artifacts/e12-triage/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2",
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/Users/doughnut/.local/bin:/Users/doughnut/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/opt/homebrew/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/quarto/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/doughnut/.codex/tmp/arg0/codex-arg0HiNZ1u:/Users/doughnut/.grok/bin:/Users/doughnut/.codeium/windsurf/bin:/Users/doughnut/.opencode/bin:/Users/doughnut/.antigravity/antigravity/bin:/Users/doughnut/.lmstudio/bin:/Users/doughnut/bin:/Users/doughnut/.dotnet/tools:/Users/doughnut/.local/pac-cli:/Users/doughnut/.local/bin:/Users/doughnut/scripts:/opt/homebrew/sbin:/Users/doughnut/.orbstack/bin:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS:/Users/doughnut/.local/bin:/Users/doughnut/.orbstack/bin"
+      },
+      "oracle": "All native triage/assessment contract tests pass including exact vectors and negative limits"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-triage-20261011/.artifacts/e12-triage/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2",
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/Users/doughnut/.local/bin:/Users/doughnut/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/opt/homebrew/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/quarto/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/doughnut/.codex/tmp/arg0/codex-arg0HiNZ1u:/Users/doughnut/.grok/bin:/Users/doughnut/.codeium/windsurf/bin:/Users/doughnut/.opencode/bin:/Users/doughnut/.antigravity/antigravity/bin:/Users/doughnut/.lmstudio/bin:/Users/doughnut/bin:/Users/doughnut/.dotnet/tools:/Users/doughnut/.local/pac-cli:/Users/doughnut/.local/bin:/Users/doughnut/scripts:/opt/homebrew/sbin:/Users/doughnut/.orbstack/bin:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS:/Users/doughnut/.local/bin:/Users/doughnut/.orbstack/bin"
+      },
+      "oracle": "No clippy warnings"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/src/pathway.rs"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Formatting passes without source mutation"
+    }
+  ],
+  "prerequisite_receipts": {
+    "E1.2.arrivals": {
+      "status": "accepted",
+      "reviewer": "root plus independent e1_next_planner",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/e1.2-arrivals-completion-20261011/acceptance.json": "a5c606712052fb73dd778de0ef70abed7f54b76c4b81a285ef4aac729878fe93"
+      }
+    }
+  }
+}
