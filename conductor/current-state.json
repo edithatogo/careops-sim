@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T11:08:06.374962+00:00",
+  "updated_at": "2026-10-11T13:29:08.975373+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "Dispatch reviewed deferredruntime2fb908c packet inisolatedKairos; portableV2stopped2failureceiling (fixtureticks10vs10000) withclaimreleased. Root+Sol+Luna auditcompleteproofs beforeboundedrecovery. Thenqualify/join portableanddeferredruntime,V3persistence/consumers,parentpin,E2adapter/bindings.",
+  "next_action": "Accept deferred-allocation runtime after worker gates and independent review; portable V2 accepted at 7c41305 with clean Rust 1.99 qualification. Bind explicit native V3, then explicit wire V3, then complete routed view/coherent join; parallel consumer packets follow. Integrate dependencies before parent pin and full E2 adapter/bindings.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1442,7 +1442,7 @@
     "evidence": "conductor/evidence/e2.2-engine-grant-gate-runtime-20261011/acceptance.json"
   },
   "e22_checkpoint_v2": {
-    "status": "native_wire_preview_coherent_accepted_portable_pending",
+    "status": "native_wire_preview_coherent_portable_accepted_parent_pin_pending",
     "contract_commit": "9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea",
     "design": "conductor/design/ed/e2-checkpoint-v2-preparation.md",
     "packet_sha256": "98b01b266a5d21c5423e7b7cf1ae393ab25767cc39673c95b888d11adfc51992",
@@ -1492,11 +1492,15 @@
       "acceptance": "conductor/evidence/e2.2-checkpoint-consumers-completion-20261011/acceptance.json"
     },
     "portable": {
-      "status": "stopped_two_failed_gates_pending_reviewed_recovery",
+      "status": "accepted_after_reviewed_recovery",
       "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-portable-20261011",
       "worker": "/root/e22_checkpoint_native",
       "packet_sha256": "3c223a6080fca70cbd94fd8e00df29f9de9ad8efec40d6d70556d77a2a566d3b",
-      "dispatch_evidence": "conductor/evidence/e2.2-checkpoint-portable-dispatch-20261011/dispatch-ledger.json"
+      "dispatch_evidence": "conductor/evidence/e2.2-checkpoint-portable-dispatch-20261011/dispatch-ledger.json",
+      "worker_attempt_status": "stopped_two_failed_gates_pending_reviewed_recovery",
+      "source_commit": "7c41305f9c0ee13b88fa908868c61978e8f5d4dc",
+      "accepted_worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-portable-recovery-20261011",
+      "acceptance": "conductor/evidence/e2.2-checkpoint-portable-completion-20261011/acceptance.json"
     }
   },
   "e22_adapter_ordering_review": {
@@ -1511,10 +1515,15 @@
     "owner_commit": "2fb908cae59f2e21285fb0d5ace437a9e2cb11f6"
   },
   "e22_deferred_runtime": {
-    "status": "reviewed_ready_for_dispatch",
+    "status": "worker_implementing_before_gates",
     "worker": "/root/e22_checkpoint_native",
     "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-deferred-allocation-runtime-20261011",
     "packet_sha256": "2ec9a9f3011124c75ca740f2e0c8e077977a3605bfb27e061f22f86965336d30",
     "dispatch_evidence": "conductor/evidence/e2.2-deferred-allocation-runtime-dispatch-20261011/dispatch-ledger.json"
+  },
+  "e22_portable_acceptance": {
+    "status": "accepted_local_source_clean_qualification",
+    "commit": "7c41305f9c0ee13b88fa908868c61978e8f5d4dc",
+    "evidence": "conductor/evidence/e2.2-checkpoint-portable-completion-20261011/acceptance.json"
   }
 }

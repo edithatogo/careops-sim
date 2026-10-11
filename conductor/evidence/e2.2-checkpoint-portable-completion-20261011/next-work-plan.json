@@ -1,0 +1,14 @@
+{
+  "reviewer": "/root/e14_closeout_next",
+  "decision": "explicitnative then explicitwire then routedview/coherent join; freeze each accepted interface before dispatch",
+  "native_paths": [
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs"
+  ],
+  "native_boundary": "Complete common state and explicit V3 capture/restore; old routed APIs fail closed on Deferred until routing join. No stripped projection or placeholder wire methods.",
+  "next": "Bind native packet only after deferred runtime accepted; explicit wire then routing/view/coherent compilation join; disjoint preview/coherent/portable consumer packets afterwards.",
+  "parallelism": "Runtime implementation overlaps portable acceptance and planner review. Native and wire contracts are serial. Consumer writes may parallelize after routing interface freezes.",
+  "authority": "Preparation only; resolve exact base, inputs, APIs, paths and commands at dispatch."
+}

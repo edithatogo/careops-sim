@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.checkpoint-portable",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "a27713ec5c8e903ecb8a9730d0cb4f105e8a7b83",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Route portable C2 composite checkpoints through complete native V1/V2 images with fixed legacy-byte parity and real fresh-process gated continuation.",
+  "context_paths": [
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/context.md"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "conductor/design/des/ADR-e2-flow-checkpoint-v2.md": "f1aa471f94e77dfa8fed9b58c5b37d94c0a41bc1cbba80b9a5bd5ae5a8c6c46f",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "3a36ed9a7f8e58105c26d68f201960be631e7b8cbd452963ec6e7b3bf0053259",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "a03a2618d8956bcde62f659a453d93f36565fd6fca11739872b0ad8a275553c2",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f6622ccf102a122bc6869617f2e9bd60a464892d7a99b0ab9cf74af5e4dc5b94",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "611bedc892b6d06d24c5e2d266165e31caa9e57228ec0e7d3400720639b93466",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs": "7cb096480fc28a5802d77fec7f896797380fd4421a229c6a53389e5fbd31d3ec",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/context.md": "f772e85dee62e0f613d8ad2b7422df05cbabdc73bf5541f5cb944d8a78ce6cf4",
+    ".artifacts/e22-checkpoint-portable/record_gate.py": "2173e2445a348859edbe88e8e6790a20fa2ff9091345240d4d276b79cd149f94",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/manifest.json": "b289a81f04d81d7921b688653e988eea59d801b0dc5247e50ade7bcf9ca044da",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/macro-zero-ready-12653-1791723120061545000.c2": "f335b8aeabf302214a54f90ca46dfc1bd22cfb47b317c4e8a0677061704d0421",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/micro-zero-ready-12653-1791723120088041000.c2": "67422a57a9b5b265b41296825d5871a78433a82d12faa91d8d4013d4965b3cc0",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/multi-graph-mixed-frozen-pending-12653-1791723120559939000.c2": "7f5221cc9ceb0b365fcb9eb406fb005f78294ad9fb0c83d6e3c128cde2f1be8b",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/service-restart-pending-cut-sample20-12653-1791723120536841000.c2": "f52bbbc6fba5d7f0df966e2bd8ed8a2cba6a37af49575d876954d1103bfb2147",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/service-restart-sample20-12653-1791723120488326000.c2": "cf659e54c34433554064a8812e0bd021a56148ab055781bfd7c24bd51a600913",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/service-suspend-pending-cut-sample20-12653-1791723120510812000.c2": "650a6194092c8444d719a44cab77fbaaa8913792a88399c86e856cffa1544886",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/service-suspend-sample20-12653-1791723120469144000.c2": "76c88aea3c91f8ea3c54afe0f011a9dddf6e331caee7bb11e493195799b99fc2",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/submitted-active-12653-1791723120447281000.c2": "925378362fb828e1c4a4247f6bac08ec8a19fb25618ee01758b9c6614a32e0cc",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/submitted-pending-12653-1791723120423411000.c2": "6ae384b17d1322996cd121e588ee806bb240c4f80a8435d369d665a785a98441",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/transit-arrived-queued-12653-1791723120400313000.c2": "e8f4bb61b4eebbf51867a778f2da9e139f38f09da379023c1cdd17d4ac388e0c",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/transit-control-command-pending-12653-1791723120370781000.c2": "799f2d6711f7054357b7ad5c60c9885c10f3bb049a396d81df2dd6d691957b15",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/transit-moving-mid-edge-12653-1791723120235262000.c2": "d98b7b22567b8348d97a7dc3a1804492456a3f1b8b6ecf81e63a9759a2f5be39",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/transit-paused-at-end-12653-1791723120345623000.c2": "35e5146fdd61f191da55f2253495c50e96c0704f58e86576983a504333135c42",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/transit-paused-mid-edge-12653-1791723120292899000.c2": "02feba95ec3baadc96e1b0f1cd4443d7a681bdf28a4aa03851528f80ac18ae94",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/transit-paused-mid-edge-native-activity-12653-1791723120316460000.c2": "f649252b16b3ed4fcd32d05409eb0abab579d01cd570e6840ee6026dc30d5211",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/transit-paused-ready-12653-1791723120266447000.c2": "6131687faa8c27042484ad0fb5810162550babe2b2cb3080a131f7d714682fd5",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/transit-ready-12653-1791723120110099000.c2": "37d78f67bdd3b55cdc4b6ddbca30dcb392dd642afd344adf2728b31d413a0332",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/transit-rejected-progress-retry-12653-1791723120195466000.c2": "4d219323237f07394a87ec75caf515910600b37fa87052473202ac414d4cd877",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline/transit-rejected-start-retry-12653-1791723120142089000.c2": "9552feb83ca964eb4d610f753680885f22c3dae28e064dcdb4f3256acbf32572",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "9fcc232fb14403e91c43fc7cd7640210ce2d33b61468527b307d573e4906af81"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/result.json",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "crates/kairo-ecs-des",
+    "crates/kairo-ecs-core",
+    "crates/kairo-ecs-state",
+    "crates/kairo-ecs-abm",
+    "crates/kairo-ecs-calibration/Cargo.toml",
+    "crates/kairo-ecs-calibration/src/lib.rs",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs",
+    "crates/kairo-ecs-calibration/src/shadow_native.rs",
+    "crates/kairo-ecs-calibration/src/c5_native.rs",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v2.md",
+    ".artifacts/e22-checkpoint-portable/record_gate.py",
+    ".artifacts/mvp/E2.2.engine.checkpoint-portable/legacy-baseline"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.checkpoint-wire",
+    "E2.2.engine.checkpoint-preview",
+    "E2.2.engine.checkpoint-coherent"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-flow-checkpoint-v2.md",
+  "steps": [
+    "Verify packet/input hashes, claim, read bounded context and targeted source.",
+    "Report exactAPI and real V2cut mapping before implementation.",
+    "Implement2ownedfiles preserving19frozenenvelope goldens and all required meaningful process/negative tests.",
+    "Run3immutable Rust1.99 gates; stop after2failed gate executions total.",
+    "Freeze validJSON result/sourcehashes/allevidence; no commit before root review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-portable/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Full calibration Flow suite and all4requirednamedtests pass with original19envelopegoldens and V2freshprocess witnesses."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-portable/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict calibration all-target Flow Clippy zero warnings."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-portable/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Rust1.99 targeted format check exactly2ownedsourcefiles."
+    }
+  ],
+  "acceptance": [
+    "All19legacy full-envelope literal hashes unchanged, directV1 innerFlow parity, all oldprocess cases retained.",
+    "Three realgated V2freshprocess families exactrecapture/fullsuffix/literaltiming conserved.",
+    "MalformedV2innersections resealedouter fail correctboundary beforecodecs, validpositivecontrol.",
+    "Protectedsource unchanged and artifactscontained; no claimofparentE2/release acceptance."
+  ],
+  "result_path": ".artifacts/mvp/E2.2.engine.checkpoint-portable/result.json",
+  "stop_conditions": [
+    "Input/base/claim drift",
+    "Missing or ambiguous actualAPI/oracle",
+    "Out-of-scope edit required",
+    "Two failed gate executions total across all wrappers"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root and GPT-6.1-sol",
+    "accepted_combined_commit": "a27713ec5c8e903ecb8a9730d0cb4f105e8a7b83",
+    "reason_not_mvp_prepare": "Kairos downstream portable adapter child of E2.2; parent E2.2.fidelity recipe is parent-repository work and depends on native adapter not yet integrated. This bounded packet follows accepted native/wire/consumer owner ADR; no parentleaf acceptance."
+  }
+}

@@ -84,3 +84,5 @@ Native coherent-cut adapter acceptance: [Rust 1.99 evidence](evidence/e2.2-check
 V2 wire support accepted: [Rust 1.99 evidence](evidence/e2.2-checkpoint-wire-completion-20261011/README.md). Combined consumer qualification and portable routing remain open.
 
 Combined checkpoint consumers accepted: [Rust 1.99 and legacy envelope evidence](evidence/e2.2-checkpoint-consumers-completion-20261011/README.md). Portable V2 routing is next.
+
+Portable V2 checkpoint acceptance: [local Rust 1.99 evidence](evidence/e2.2-checkpoint-portable-completion-20261011/README.md). Deferred allocation and V3 persistence remain open before parent integration.

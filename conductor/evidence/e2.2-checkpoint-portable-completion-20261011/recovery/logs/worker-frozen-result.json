@@ -1,0 +1,49 @@
+{
+  "packet": "E2.2.engine.checkpoint-portable",
+  "packet_sha256": "3c223a6080fca70cbd94fd8e00df29f9de9ad8efec40d6d70556d77a2a566d3b",
+  "status": "INCOMPLETE",
+  "stopped_at": "two_failed_gate_execution_limit",
+  "base_commit": "a27713ec5c8e903ecb8a9730d0cb4f105e8a7b83",
+  "source_sha256": {
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "67e749e378b7b7cc39adc801c9d23b7eeffb1d9047c3400c44b17e9798685384",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "75113c4b1a19b67f07259e98f06ba9eb5e3bf24486632d7e25f07b13aa2699ca"
+  },
+  "gate_receipts": [
+    {
+      "gate": "tests",
+      "execution": 1,
+      "exit_code": 101,
+      "receipt": "logs/tests-1791724185428784000-20612-result.json",
+      "raw_log": "logs/tests-1791724185428784000-20612.log",
+      "failure": "Compile failure: five test references called nonexistent FlowCheckpointV2::commands(). Corrected to iterate the public commands field."
+    },
+    {
+      "gate": "tests",
+      "execution": 2,
+      "exit_code": 101,
+      "receipt": "logs/tests-1791724274112690000-23076-result.json",
+      "raw_log": "logs/tests-1791724274112690000-23076.log",
+      "summary": "216 passed, 2 failed, 3 ignored. Both portable_v2_gated_process_continuation and portable_v2_malformed_inner_sections_reject_before_codecs failed in wait_for_cut because actual time was 10000 ticks while fixture expected 10."
+    },
+    {
+      "gate": "clippy",
+      "status": "NOT_RUN"
+    },
+    {
+      "gate": "format",
+      "status": "NOT_RUN"
+    }
+  ],
+  "implemented_scope": [
+    "version-aware portable checkpoint capture/encode/decode/restore routing",
+    "legacy V1 golden envelope digest parity fixture",
+    "three gated V2 fresh-process continuation cases",
+    "malformed inner V2 and codec counter checks"
+  ],
+  "known_incomplete": [
+    "gated process fixture time-unit mismatch blocks new gated V2 tests",
+    "clippy and format immutable wrappers not executed after stop ceiling",
+    "full packet acceptance not established"
+  ],
+  "workflow_note": "Harness stdout was captured privately; no claim token was copied into evidence. Both failed gate executions and raw logs were retained. No commit was made."
+}
