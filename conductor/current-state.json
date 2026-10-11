@@ -3,7 +3,7 @@
   "updated_at": "2026-10-11T13:56:20.047333+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "Finish combined portable/runtime baseline qualification at e308b72f, then bind and dispatch explicit native V3 from reviewed owner contract. Follow with explicit wire V3, routed view/coherent join, parallel consumers, parent pin and full ED adapter/bindings; continue all remaining delivery phases.",
+  "next_action": "Implement reviewed explicit native V3 at qualified f96c3a8 baseline; then explicit wire V3, routed complete view/coherent join, three parallel consumers, combined qualification, parent pin and full ED adapter/bindings. Continue remaining delivery phases.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1301,14 +1301,17 @@
     "status": "active",
     "automation_id": "careops-autonomous-delivery-continuation",
     "scope": "Continue through successive delivery tasks/phases; no milestone-only goal completion",
-    "current_leaf": "E2.2.engine.checkpoint-wire",
+    "current_leaf": "E2.2.engine.checkpoint-v3-native",
     "next_chain": [
-      "E2.2 V2 wire and disjoint preview consumers",
-      "E2.2 portable consumers and combined qualification",
-      "E2.2 parent runtime joins",
+      "explicit native V3",
+      "explicit wire V3",
+      "routed full-view/coherent join",
+      "three parallel V3 consumers",
+      "combined qualification and parent pin",
+      "full ED adapter and 88 native bindings",
       "E2.3",
       "E2.4",
-      "later delivery phases"
+      "remaining delivery phases"
     ],
     "boundaries": "Evidence-gated dispatch, Rust1.99.0, no publication or unsupported-hardware claims; no hooks installed"
   },
@@ -1538,5 +1541,15 @@
     "owner_commit": "85bbcb4f5e0331d94dc5f36323d1d1f2d7b05814",
     "acceptance": "conductor/evidence/e2.2-native-v3-contract-20261011/acceptance.json",
     "implementation_gate": "Deferred runtime acceptance and separately reviewed bound packet"
+  },
+  "e22_v3_baseline": {
+    "status": "accepted_local_combined_baseline",
+    "head": "f96c3a86eb816ac244a53171933edcc5c9ad6a11",
+    "acceptance": "conductor/evidence/e2.2-v3-baseline-completion-20261012/acceptance.json"
+  },
+  "e22_native_v3": {
+    "status": "authorized_for_dispatch",
+    "worker": "/root/e22_checkpoint_native",
+    "dispatch": "conductor/evidence/e2.2-native-v3-dispatch-20261012/dispatch-ledger.json"
   }
 }

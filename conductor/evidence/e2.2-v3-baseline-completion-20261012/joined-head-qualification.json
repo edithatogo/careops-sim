@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "record_type": "exact_head_combined_qualification",
+  "head": "f96c3a86eb816ac244a53171933edcc5c9ad6a11",
+  "accepted_adr_join_commit": "f96c3a86eb816ac244a53171933edcc5c9ad6a11",
+  "accepted_adr_commit": "2fb908cae59f2e21285fb0d5ace437a9e2cb11f6",
+  "accepted_adr_path": "conductor/design/des/ADR-e2-deferred-allocation.md",
+  "accepted_adr_sha256": "7099e0f33d3dac667b6b7eac15160ca3e20806ef60522f7489d80be17cda0c17",
+  "driver_sha256": "fda4e9b38eadd09472c9e943d08f7a2ddad061d50ceaee935236a840952a796c",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "01f5404bfb66354fed401adf1778be2f01e28b29a4733f16f2c8420d88134681",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "2000eff2bccc64b2df70cc7a1089c0f580c909d21b7c8ea2da0d600202ceae73",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "611bedc892b6d06d24c5e2d266165e31caa9e57228ec0e7d3400720639b93466",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs": "8fc2f1ee4e65051af53779b4ece42b933aa7d6cfbdf53ef7475a0b78a8c2b76d",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54",
+    "crates/kairo-ecs-calibration/src/shadow_native.rs": "7e2b9918c239289b934e44069599c3f221bc15ed8e81b199230b850d9c907336",
+    "crates/kairo-ecs-calibration/src/c5_native.rs": "5ad19caed6e89d4575d2558dfab43f38188e49821bec67d0c3b5f893dd95349b",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "a4b2b4061ecd8ddf3ee6d56ab706c3d32602a0a84834a63fdeb08e7ff7fa494b",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs": "7cb096480fc28a5802d77fec7f896797380fd4421a229c6a53389e5fbd31d3ec",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "67e749e378b7b7cc39adc801c9d23b7eeffb1d9047c3400c44b17e9798685384",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs": "3bd3ed92cef5bac3beee3c890c04f3e68a504f3209253164c69d7b1045b41467",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "9399a60cbe07a3627d5dde6eac2d5e035a59e17e5ad5e80fa99fe27ca930e183"
+  },
+  "gates": {
+    "tests": {
+      "status": "passed",
+      "exit_code": 0,
+      "receipt": ".artifacts/e22-v3-integration/logs/tests-1791727702206970000-52821-result.json",
+      "receipt_sha256": "e6d099beb50e1236006a8293d19db3a56e382f6a471674fc12666108f6caa94d",
+      "log": ".artifacts/e22-v3-integration/logs/tests-1791727702206970000-52821.log",
+      "log_sha256": "3134df38ad80d119550247a5d6d574f482f9f8410b145ba6d077c30ccf9fdbaa",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-core",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow",
+        "--",
+        "--test-threads=1"
+      ],
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "suite_summaries": 65,
+      "counts": {
+        "passed": 808,
+        "failed": 0,
+        "ignored": 6
+      }
+    },
+    "clippy": {
+      "status": "passed",
+      "exit_code": 0,
+      "receipt": ".artifacts/e22-v3-integration/logs/clippy-1791727729370236000-53222-result.json",
+      "receipt_sha256": "465c4aabee0929bb4326705a33edab000448c99996461b64ba1ed73876a460f3",
+      "log": ".artifacts/e22-v3-integration/logs/clippy-1791727729370236000-53222.log",
+      "log_sha256": "8a10254974bbd1a52574924f2ba6e2e78269a27b8d61c996e00c4498f15edb56",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-core",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    },
+    "format": {
+      "status": "passed",
+      "exit_code": 0,
+      "receipt": ".artifacts/e22-v3-integration/logs/format-1791727739594430000-53254-result.json",
+      "receipt_sha256": "00c2a09aef44c3d1cb9806b18389fff9ccd8e41543f05591fe4d4366d67b8b0e",
+      "log": ".artifacts/e22-v3-integration/logs/format-1791727739594430000-53254.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "--config",
+        "skip_children=true",
+        "crates/kairo-ecs-des/src/flow.rs",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs",
+        "crates/kairo-ecs-calibration/src/shadow_native.rs",
+        "crates/kairo-ecs-calibration/src/c5_native.rs",
+        "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs",
+        "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs"
+      ],
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    }
+  },
+  "prior_authority": {
+    "path": ".artifacts/e22-v3-integration/authority.json",
+    "sha256": "c0eb4d3ea4df817cdcf72e64267489d44567ca8d68905ef47c7ad1c016acc9c5",
+    "unchanged": true
+  },
+  "prior_result": {
+    "path": ".artifacts/e22-v3-integration/result.json",
+    "sha256": "65a06b4c21798789d3ed8c2b056f8d32127338c9762e8b1ab77478b1e9e343fb",
+    "unchanged": true
+  },
+  "supplemental_authority": {
+    "path": ".artifacts/e22-v3-integration/authority-accepted-adr-join-supplement.json",
+    "sha256": "43cb2e4f267682b2c6638ef6c36a160b7acfa50fd071481db3e43e227adacdf1"
+  },
+  "scope": "Accepted ADR join and exact-HEAD regression qualification only; no runtime/test source edits, no parent pin, no push."
+}
