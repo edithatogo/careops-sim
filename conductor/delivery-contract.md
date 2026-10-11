@@ -85,7 +85,11 @@ generic plugin framework or accelerated backend in anticipation of future use.
 
 The local Git repository, pinned initialized submodules, five Conductor tracks,
 ownership/test/handoff records, research intake and planning/task harness exist.
-The parent Rust application/build bootstrap and hosted CI are not yet implemented;
-E0/D1/D2 own these. GitHub creation stays at D2 after its buildable/local-check gate.
-Thus repository planning/bootstrap setup is ready to continue, but full development
-readiness, the MVP and v1 must still earn their runtime acceptance.
+Parent bootstrap and hosted setup have since earned
+[scoped D2 acceptance](evidence/d2.5-phase-acceptance-20261003.md), with an
+[executed gate ledger](evidence/d2.5-executed-gates-20261003.json) and
+[hosted required-check proof](evidence/d2.2-hosted-required-proof-20261003.md).
+The existing GitHub repository must be reused. Those 2026-10-03 records are
+historical evidence under their recorded toolchain, not current-head Rust 1.99
+qualification. The MVP, native v1, D4 release and publication gates still require
+their own runtime and operational acceptance; setup acceptance does not close them.

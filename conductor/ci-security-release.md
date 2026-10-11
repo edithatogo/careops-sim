@@ -14,8 +14,13 @@ now because retroactive cleanup is costly.
 fixture; D1 has a tested tool lock/bootstrap; source/licence/data boundaries are
 clear; local required checks pass; a reviewed minimal CI workflow is ready to run.
 At that point hosted CI, backups and review history justify the remote, before
-sustained Q1/C1/E1 implementation. The parent has no remote today; do not create a
-placeholder now or defer it until the finished library.
+sustained Q1/C1/E1 implementation. This gate was completed for the parent:
+[repository creation](evidence/d2.2-repository-created-20261003.md) and
+[scoped D2 acceptance](evidence/d2.5-phase-acceptance-20261003.md) record the
+existing `edithatogo/careops-sim` repository. Local origin readback on 2026-10-11
+matches that repository. Do not recreate it or reopen resolved setup choices.
+These historical receipts do not establish current-head hosted or release checks.
+The setup rules below remain applicable if a genuinely new repository is needed.
 
 Resolve owner/name/visibility at the gate from current user context; ask only for
 missing choices. Check for an existing matching repository first. Prefer private
