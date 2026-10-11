@@ -1,0 +1,29 @@
+{
+  "id": "focused-runtime-before-final-qualification",
+  "title": "Qualify complex fixtures with a captured focused runtime check first",
+  "topics": [
+    "runtime fixtures",
+    "qualification",
+    "development checks",
+    "retry budgets"
+  ],
+  "procedure": "For a new event-driven fixture, bind and independently review a focused runtime command and its required nonzero test names before final qualification. Capture every development execution and apply its prospective failure ceiling. Require the focused behavior to pass before the full immutable test/lint/format gates. Preserve all earlier failed attempts without relabelling final failures as development. A focused pass proves only the named behavior; it is not full integration acceptance. This native V3 recovery is one observed case, not evidence of general speed or model superiority.",
+  "evidence": [
+    {
+      "path": "conductor/evidence/e2.2-native-v3-completion-20261012/archive/native-recovery/result.json",
+      "sha256": "d63c4d2258bf5c0ce6d3362124204be0e19214cfb8e6c5428e9d5756ca6c0fd8"
+    },
+    {
+      "path": "conductor/evidence/e2.2-native-v3-completion-20261012/archive/fixture-recovery/logs/focused-1791732676330908000-85234-result.json",
+      "sha256": "f4789e9c712b9f839d7ac4f7282281a32b368dd259066ed2a239741ac44cc95c"
+    },
+    {
+      "path": "conductor/evidence/e2.2-native-v3-completion-20261012/archive/fixture-recovery/logs/focused-1791732834186493000-85997-result.json",
+      "sha256": "b64c866a0fcd8f947fceeea4e643653343ef94209917eb97e9638f29612e44c8"
+    },
+    {
+      "path": "conductor/evidence/e2.2-native-v3-completion-20261012/acceptance.json",
+      "sha256": "d451764094f9facd3df7582e5fdd549a23d51471b871ed63b2cf4d2c55b5c083"
+    }
+  ]
+}

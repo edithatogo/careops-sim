@@ -1,0 +1,30 @@
+{
+  "id": "stored-state-versus-clock-derived-noop-views",
+  "title": "Separate stored state from time-derived views in no-op event assertions",
+  "topics": [
+    "simulation",
+    "no-op events",
+    "clock",
+    "work progress",
+    "fixture semantics"
+  ],
+  "procedure": "Before asserting that a dispatched no-op preserves a public state view, inspect whether that view derives values from the current simulation clock. Snapshot the authoritative stored fields to prove nonmutation, assert the expected time-derived public values at the new tick, and preserve identity, allocation, revision and continuation checks. A stale completion may remain a live scheduled event while its lease/revision makes it a behavioral no-op; do not assume preemption cancelled it. Keep exact event identity and final completion oracles. This procedure does not authorize changes to runtime semantics.",
+  "evidence": [
+    {
+      "path": "conductor/evidence/e2.2-native-v3-completion-20261012/archive/fixture-recovery/logs/progress-repair.json",
+      "sha256": "b9aa7cc066be9b225bd4c762c40d770215bceab199ea940c4e16775268cd97e1"
+    },
+    {
+      "path": "conductor/evidence/e2.2-native-v3-completion-20261012/archive/fixture-recovery/logs/focused-1791732676330908000-85234-result.json",
+      "sha256": "f4789e9c712b9f839d7ac4f7282281a32b368dd259066ed2a239741ac44cc95c"
+    },
+    {
+      "path": "conductor/evidence/e2.2-native-v3-completion-20261012/archive/fixture-recovery/logs/focused-1791732834186493000-85997-result.json",
+      "sha256": "b64c866a0fcd8f947fceeea4e643653343ef94209917eb97e9638f29612e44c8"
+    },
+    {
+      "path": "conductor/evidence/e2.2-native-v3-completion-20261012/acceptance.json",
+      "sha256": "d451764094f9facd3df7582e5fdd549a23d51471b871ed63b2cf4d2c55b5c083"
+    }
+  ]
+}
