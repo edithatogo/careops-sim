@@ -12,6 +12,8 @@ pub mod disposition;
 pub mod offers;
 #[doc(hidden)]
 pub mod pathway;
+#[doc(hidden)]
+pub mod terminal;
 
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::error::Error;
