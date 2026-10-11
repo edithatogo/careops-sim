@@ -1,0 +1,73 @@
+{
+  "packet_id": "E1.1.extremes.fixtures",
+  "instance_id": "fixtures",
+  "status": "ready_for_review",
+  "base_commit": "c86cc87782efada7a214ae2213a99a6bbfdd1285",
+  "source_commit": "95b2b2ef4e792d7cf686ddf776e8cb123c7a94e1",
+  "changed_source_paths": [
+    "conductor/design/ed/e1-extremes.json",
+    "tests/test_e11_extremes.py"
+  ],
+  "scope": "synthetic specification and independent arithmetic/mutation tests only; no runtime or clinical acceptance",
+  "toolchain": {
+    "rust": "1.99.0 observed; unused by Python fixture checks",
+    "python": "interpreter version not recorded"
+  },
+  "seed": "not applicable; deterministic analytic fixtures",
+  "input_hashes": {
+    "conductor/design/ed/e1-fixture-contract.md": "6d9e08b74133644363f622b7e02943608f31740688643f6b32559944056a2c99",
+    "conductor/decisions/ADR-0010-e1-test-first-acceptance.md": "a4daa353eeafac4954044b21f4ac11c34336fa59e25aba1188a877e5e4780380",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md": "99d6f3bcaecc57037a955b33a977e45e9b6c1c1ba35557870abaf70fef6bc863",
+    ".artifacts/mvp/E1.1.extremes.fixtures/context.md": "dd4a1d73794fb4f6e98f8c2d85e7c1ac143456dc455ea3acdfeba5976d08a057"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "packet-check",
+        ".artifacts/packets/E1.1.extremes.fixtures.json"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "evidence": "Pre-write packet-check returned errors=[] and authority=Validation only; coordinator dispatch remains the authority."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e11_extremes.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "tests_run": 4,
+      "mutations_rejected": 8,
+      "log": ".artifacts/mvp/E1.1.extremes.fixtures/logs/unittest.log",
+      "log_sha256": "a44b8c04af55ec8d440803db23b0b679978e34577501b4a30732ea1e7bac582a"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.1.extremes.fixtures/logs/diff-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "source_hashes": {
+    "conductor/design/ed/e1-extremes.json": "cb3d7d8ad33972228ac54f4c0874e3a117791ae331320477496162a1502bf795",
+    "tests/test_e11_extremes.py": "8179339c333fb35f0cdb98300c84ded66fdbb8a34e8a1e5a2f405ff6dacd063a"
+  },
+  "runtime_status": "unbound",
+  "unresolved": "E1.2 must bind each fixture to native pathway runtime before E1.1/E1.4 acceptance."
+}

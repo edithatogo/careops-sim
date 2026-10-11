@@ -1,0 +1,66 @@
+{
+  "status": "accepted",
+  "scope": "E1.1 behavior-first fixture specifications only, following ADR-0010/E0.1 precedent",
+  "integrated_source_commit": "2988174c9af39bd8fd16535cc293c0696b254e7e",
+  "kairos_pin": "6d733f489225da4bf6ceec2673b02369c7918bbe",
+  "families": {
+    "endpoints": {
+      "status": "accepted_specification_only",
+      "instance_set": [
+        "fixtures"
+      ],
+      "worker_model_requested": "gpt-6-luna",
+      "source_hashes": {
+        "conductor/design/ed/e1-endpoints.json": "06fa8868cae80ca266ed7bda28b0af17f8f471ae20aa498d2a1cdd137fb345a2",
+        "tests/test_e11_endpoints.py": "dc84f95eb9ab9815a23d65ceedeb3461f1dd85b9e1314c142574ae9a91565128"
+      },
+      "case_count": 23,
+      "reviewer": "e1_extreme_preparation"
+    },
+    "extremes": {
+      "status": "accepted_specification_only",
+      "instance_set": [
+        "fixtures"
+      ],
+      "worker_model_requested": "gpt-6-luna",
+      "source_hashes": {
+        "conductor/design/ed/e1-extremes.json": "cb3d7d8ad33972228ac54f4c0874e3a117791ae331320477496162a1502bf795",
+        "tests/test_e11_extremes.py": "8179339c333fb35f0cdb98300c84ded66fdbb8a34e8a1e5a2f405ff6dacd063a"
+      },
+      "case_count": 6,
+      "reviewer": "e1_endpoint_preparation"
+    },
+    "invalid": {
+      "status": "accepted_specification_only",
+      "instance_set": [
+        "fixtures"
+      ],
+      "worker_model_requested": "gpt-6-luna",
+      "source_hashes": {
+        "conductor/design/ed/e1-invalid.json": "c1b397830a33747c99947561d58cbb600ae3725829f2d87817f749a10239162a",
+        "tests/test_e11_invalid.py": "7928aba39a1564d6f1ddc7af2b42d98c5e403836948ab20e6a496ca6f5977ceb"
+      },
+      "case_count": 17,
+      "reviewer": "e1_endpoint_preparation"
+    }
+  },
+  "case_count": 46,
+  "fixture_tests": 12,
+  "existing_native_tests": 28,
+  "rustc": "1.99.0",
+  "runtime_pathway_acceptance": false,
+  "clinical_acceptance": false,
+  "hosted_checks": "not run; local parent has no remote",
+  "review_notes": [
+    "Endpoints boarding-without-offer now explicitly extends to horizon; terminal upper bound and per-case ownership checked.",
+    "Invalid family corrected invented unused-resource rejection to true count inconsistencies; zero-open/zero-staffed and bool rejection added.",
+    "Extremes first start at horizon allowed with zero observed work; first-care means triage/first-stage start, not assessment.",
+    "Invalid null physical-count fixture is explicit; null open/staffed not separate frozen cases.",
+    "Initial native offline failure retained; locked network retry passed without lock change."
+  ],
+  "continuation": {
+    "automation_id": "careops-e1-bounded-continuation",
+    "next_leaf": "E1.2.arrivals",
+    "guard": "fresh exact acceptance/ownership/packet readback; single dispatch; no later leaf chain"
+  }
+}

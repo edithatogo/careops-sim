@@ -57,3 +57,6 @@ The [Luna MVP workpack](execution/mvp/README.md) covers all 82 MVP parent tasks 
 bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind reviewed
 context/commands just before dispatch. No autonomous execution or model
 qualification is claimed.
+
+E1.1 fixture specifications accepted on 11 October 2026: [evidence](evidence/e1.1-completion-20261011/README.md).
+Next is bounded E1.2.arrivals; native pathway/MVP acceptance remains open.

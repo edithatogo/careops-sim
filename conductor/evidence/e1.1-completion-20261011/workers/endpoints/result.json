@@ -1,0 +1,119 @@
+{
+  "acceptance_results": [
+    {
+      "criterion": "23 required cases: empty, one-patient, acuity 1..5 x discharge/admission x diagnostics absent/present, and no-offer admission",
+      "status": "pass"
+    },
+    {
+      "criterion": "Independent expected arithmetic, fixed timeline anchors, stable IDs, endpoint uniqueness/conservation, and mutation rejection",
+      "status": "pass"
+    },
+    {
+      "criterion": "Native pathway runtime conformance",
+      "status": "unbound; not tested or claimed"
+    },
+    {
+      "criterion": "No-offer admission exposes boarding from decision through horizon with no transfer/outcome",
+      "status": "pass"
+    },
+    {
+      "criterion": "Expected terminal timestamps do not exceed horizon; grid cases have exactly one patient and owner E1.2 discharge/E1.3 admission",
+      "status": "pass"
+    }
+  ],
+  "attempt_id": "E1.1.endpoints.fixtures-20261011-a1",
+  "base_commit": "c86cc87782efada7a214ae2213a99a6bbfdd1285",
+  "changed_paths": [
+    "conductor/design/ed/e1-endpoints.json",
+    "tests/test_e11_endpoints.py"
+  ],
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e11_endpoints.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": ".artifacts/mvp/E1.1.endpoints.fixtures/logs/endpoints-unittest.log",
+      "log_sha256": "97ea40444d0aea0b4c6400a28ad0f5aa41b5477b203a2dae33b385d969f26936",
+      "scope": "fixture specification and independent arithmetic only",
+      "tests": 5
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": ".artifacts/mvp/E1.1.endpoints.fixtures/logs/diff-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e11_endpoints.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": ".artifacts/mvp/E1.1.endpoints.fixtures/logs/endpoints-unittest-correction.log",
+      "log_sha256": "97ea40444d0aea0b4c6400a28ad0f5aa41b5477b203a2dae33b385d969f26936",
+      "scope": "corrected fixture oracle including boarding interval, horizon and owner assertions",
+      "tests": 5
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": ".artifacts/mvp/E1.1.endpoints.fixtures/logs/diff-check-correction.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "input_sha256": {
+    ".artifacts/mvp/E1.1.endpoints.fixtures/context.md": "3b20284dcff5cb4f20076946cbce10a84d951d260340c239ada8fecd7352180b",
+    "conductor/decisions/ADR-0010-e1-test-first-acceptance.md": "a4daa353eeafac4954044b21f4ac11c34336fa59e25aba1188a877e5e4780380",
+    "conductor/design/ed/e1-fixture-contract.md": "6d9e08b74133644363f622b7e02943608f31740688643f6b32559944056a2c99",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md": "99d6f3bcaecc57037a955b33a977e45e9b6c1c1ba35557870abaf70fef6bc863"
+  },
+  "next_action": "Coordinator reviews scope/evidence and runs integration checks",
+  "output_sha256": {
+    ".artifacts/mvp/E1.1.endpoints.fixtures/logs/diff-check-correction.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/mvp/E1.1.endpoints.fixtures/logs/diff-check.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/mvp/E1.1.endpoints.fixtures/logs/endpoints-unittest-correction.log": "97ea40444d0aea0b4c6400a28ad0f5aa41b5477b203a2dae33b385d969f26936",
+    ".artifacts/mvp/E1.1.endpoints.fixtures/logs/endpoints-unittest.log": "97ea40444d0aea0b4c6400a28ad0f5aa41b5477b203a2dae33b385d969f26936",
+    "conductor/design/ed/e1-endpoints.json": "06fa8868cae80ca266ed7bda28b0af17f8f471ae20aa498d2a1cdd137fb345a2",
+    "tests/test_e11_endpoints.py": "dc84f95eb9ab9815a23d65ceedeb3461f1dd85b9e1314c142574ae9a91565128"
+  },
+  "packet_id": "E1.1.endpoints.fixtures",
+  "result_commit_or_patch": "Initial fixture commit b16a00764ad315931cce197ec0164234bd24e38a plus scoped correction commit returned in completion receipt.",
+  "schema_version": 1,
+  "status": "ready_for_review",
+  "target_repo": ".",
+  "unresolved_issues": [
+    "Native E1.2/E1.3 binding and conformance remain pending.",
+    "Local checkout has uninitialized submodules; no native runtime or submodule test was run."
+  ],
+  "worker_model": "gpt-6-luna candidate; served model unverified"
+}

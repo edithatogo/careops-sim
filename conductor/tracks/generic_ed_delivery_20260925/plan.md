@@ -53,7 +53,7 @@ Manual check: fresh checkout produces the declared one-patient outcome.
 
 Entry: D2, Q4, C1/C2 reviewed implementation; no C6 dependency yet.
 
-- [ ] E1.1 Write pathway tests for empty run, one patient, each acuity/pathway,
+- [x] E1.1 Write pathway tests for empty run, one patient, each acuity/pathway,
   saturated arrival demand, zero/long service, impossible resource config and
   endpoint count conservation. Define explicit metrics and expected intervals.
 - [ ] E1.2 Implement seeded time-varying arrivals, triage/assessment/diagnostics/
@@ -231,3 +231,10 @@ are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
 commands and reviewer acceptance before dispatch. Parent tasks close only after
 all leaf instances and the original phase acceptance pass. Post-MVP tasks are
 outside this workpack. No Luna execution or qualification is implied by coverage.
+
+## E1.1 acceptance — 11 October 2026
+
+[E1.1 evidence](../../evidence/e1.1-completion-20261011/README.md) accepts the
+behavior-first fixture specification under ADR-0010. Native binding of all46
+cases remains mandatory in E1.2/E1.3 and before E1.4 acceptance. No E1 runtime,
+MVP, clinical or release acceptance follows from this checkbox.

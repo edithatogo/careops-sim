@@ -3,7 +3,7 @@
   "updated_at": "2026-10-11T01:40:22.817557+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E1",
-  "next_action": "C5 accepted at Kairos6d733f4 (Rust1.99 only). Next prepare/review E1.1 generic ED pathway fixture leaf; respect MVP recipe dispatch and ownership gates. C6 waits for ED E2; no release/clinical/MVP acceptance.",
+  "next_action": "E1.1 fixture specifications accepted; prepare/review and dispatch only E1.2.arrivals on Rust1.99.0. Native pathway binding remains open; guarded continuation prevents duplicate writers.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -126,7 +126,11 @@
     "conductor/tracks/generic_ed_delivery_20260925/spec.md",
     "conductor/tracks/generic_ed_delivery_20260925/plan.md",
     "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md",
-    "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md"
+    "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+    "conductor/design/ed/e1-fixture-contract.md",
+    "conductor/design/ed/e1-arrivals-contract.md",
+    "conductor/decisions/ADR-0010-e1-test-first-acceptance.md",
+    "conductor/evidence/e1.1-completion-20261011/README.md"
   ],
   "submodule_pins": {
     "libs/kairos": "6d733f489225da4bf6ceec2673b02369c7918bbe",
@@ -1250,5 +1254,13 @@
     ],
     "learning": "Three independently reviewed repository-local advisory lessons; prior broad output-scope outcome corrected append-only",
     "next_task": "E1.1"
+  },
+  "e1_fixture_acceptance": {
+    "source_commit": "2988174c9af39bd8fd16535cc293c0696b254e7e",
+    "evidence": "conductor/evidence/e1.1-completion-20261011/acceptance.json",
+    "cases": 46,
+    "scope": "specifications only",
+    "runtime_status": "unbound",
+    "next_leaf": "E1.2.arrivals"
   }
 }

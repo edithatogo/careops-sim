@@ -1,0 +1,68 @@
+{
+  "reviewer": "root coordinator; independent e1_next_planner gpt-6.1-sol",
+  "reservation_id": "058887c8b4014641b82f2d9e4c85be22",
+  "instance_id": "fixtures",
+  "instance_scope": "Implement complete extremes family of behavior-first fixtures and independent mutation-sensitive oracle tests; no native runtime acceptance",
+  "instance_set": [
+    "fixtures"
+  ],
+  "reviewed_recipe_sha256": "4eb9bf42fea97da7123f118c24338d207e3787b9e1fbf1da589a70c24b3f3043",
+  "interface_contract": "conductor/design/ed/e1-fixture-contract.md; conductor/decisions/ADR-0010-e1-test-first-acceptance.md",
+  "context_slices": [
+    {
+      "path": "conductor/design/ed/e1-fixture-contract.md",
+      "start": 1,
+      "end": 82
+    },
+    {
+      "path": "conductor/decisions/ADR-0010-e1-test-first-acceptance.md",
+      "start": 1,
+      "end": 25
+    },
+    {
+      "path": "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md",
+      "start": 1,
+      "end": 24
+    }
+  ],
+  "input_paths": [
+    "conductor/design/ed/e1-fixture-contract.md",
+    "conductor/decisions/ADR-0010-e1-test-first-acceptance.md"
+  ],
+  "write_paths": [
+    "conductor/design/ed/e1-extremes.json",
+    "tests/test_e11_extremes.py",
+    ".artifacts/mvp/E1.1.extremes.fixtures/result.json",
+    ".artifacts/mvp/E1.1.extremes.fixtures/logs"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e11_extremes.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All frozen family cases and independent mutation probes pass; validates specification only"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "No whitespace errors"
+    }
+  ],
+  "prerequisite_receipts": {}
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "packet_id": "E1.1.invalid.fixtures",
+  "attempt_id": "attempt-20261011-01",
+  "target_repo": ".",
+  "base_commit": "c86cc87782efada7a214ae2213a99a6bbfdd1285",
+  "worker_model": "gpt-6-luna candidate; served model identity not independently exposed",
+  "status": "ready_for_review",
+  "result_commit_or_patch": "8d8d6f701ad9cba7c8cd881069ec3a9ba305a70d",
+  "changed_paths": [
+    "conductor/design/ed/e1-invalid.json",
+    "tests/test_e11_invalid.py"
+  ],
+  "case_count": 17,
+  "independent_fixture_mutation_probes": 19,
+  "integer_type_boundary_probes": 7,
+  "case_repair_validity_checks": 17,
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e11_invalid.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "summary": "3 tests passed; 17 frozen cases, 19 negative mutation probes, 7 bool/type-boundary probes, and all 17 case-specific repairs classify as valid.",
+      "log": ".artifacts/mvp/E1.1.invalid.fixtures/logs/unittest.log",
+      "log_sha256": "492b999cf1e1414c5f7c0e01a74fea8250d65b289f44f8b792789aa451e47f66",
+      "python": "3.11.6"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "summary": "No whitespace errors.",
+      "log": ".artifacts/mvp/E1.1.invalid.fixtures/logs/diff-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "packet-check",
+        ".artifacts/packets/E1.1.invalid.fixtures.json"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "summary": "Packet validated.",
+      "result": "errors=[]"
+    }
+  ],
+  "acceptance_results": [
+    "All 17 required invalid specifications carry exact input payloads, category/path, reject-before-scheduling outcome, invariants, purpose and E1.2 owner.",
+    "The independent semantic oracle checks each case has the expected violation and that correcting that violation makes the input valid.",
+    "The validator tests are fixture specification only; they do not prove native rejection, transactional behavior, partial-state absence, E1.2/E1.3 runtime conformance or clinical acceptance."
+  ],
+  "review_corrections": [
+    "Capacity consistency compares physical/open/staffed counts within a resource; separate zero-open, zero-staffed, open-over-physical and staffed-over-open cases are explicit.",
+    "Task inventory and eligibility/class/zone declarations are explicit in base inputs; every base input is independently checked valid."
+  ],
+  "unresolved_issues": [
+    "Native validator binding and negative-path/atomicity proof remain E1.2/E1.3 runtime debt; E1.4 must read back all cases against native execution."
+  ],
+  "next_action": "Coordinator independently reviews scope/evidence and binds runtime validation to E1.2/E1.3.",
+  "environment": {
+    "python": "3.11.6",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "rust_toolchain": "Rust 1.99.0 only; no Rust command run"
+  },
+  "input_hashes": {
+    "conductor/design/ed/e1-fixture-contract.md": "6d9e08b74133644363f622b7e02943608f31740688643f6b32559944056a2c99",
+    "conductor/decisions/ADR-0010-e1-test-first-acceptance.md": "a4daa353eeafac4954044b21f4ac11c34336fa59e25aba1188a877e5e4780380",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md": "99d6f3bcaecc57037a955b33a977e45e9b6c1c1ba35557870abaf70fef6bc863",
+    ".artifacts/mvp/E1.1.invalid.fixtures/context.md": "3062df4e84a4d0bbdbfe83ef913a205fa5ae4698cb05bd17fcb6ab530f41ca81"
+  }
+}

@@ -103,3 +103,6 @@ legacy CLI,1/2/4 worker parity and cooperative/kill resume. Fixed confirmation
 remains MC-indeterminate; C-05 ED holdout/C6, clinical, public API and release
 claims remain open. Next preparation candidate is E1.1; completed C5 is not
 authority to bypass ED/MVP dispatch gates. Prior scope/CI failures are retained.
+
+E1.1 fixture specifications accepted on 11 October 2026: [evidence](../evidence/e1.1-completion-20261011/README.md).
+Next is bounded E1.2.arrivals; native pathway/MVP acceptance remains open.

@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "packet_id": "E1.1.invalid.fixtures",
+  "task_id": "E1.1",
+  "target_repo": ".",
+  "base_commit": "c86cc87782efada7a214ae2213a99a6bbfdd1285",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Implement complete invalid family of behavior-first fixtures and independent mutation-sensitive oracle tests; no native runtime acceptance",
+  "context_paths": [
+    ".artifacts/mvp/E1.1.invalid.fixtures/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/ed/e1-fixture-contract.md": "6d9e08b74133644363f622b7e02943608f31740688643f6b32559944056a2c99",
+    "conductor/decisions/ADR-0010-e1-test-first-acceptance.md": "a4daa353eeafac4954044b21f4ac11c34336fa59e25aba1188a877e5e4780380",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md": "99d6f3bcaecc57037a955b33a977e45e9b6c1c1ba35557870abaf70fef6bc863",
+    ".artifacts/mvp/E1.1.invalid.fixtures/context.md": "3062df4e84a4d0bbdbfe83ef913a205fa5ae4698cb05bd17fcb6ab530f41ca81"
+  },
+  "write_paths": [
+    "conductor/design/ed/e1-invalid.json",
+    "tests/test_e11_invalid.py",
+    ".artifacts/mvp/E1.1.invalid.fixtures/result.json",
+    ".artifacts/mvp/E1.1.invalid.fixtures/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "C1.4.closeout",
+    "C2.4.closeout",
+    "D2.5.closeout",
+    "E0.4.closeout",
+    "P4.4.closeout",
+    "Q4.5.closeout"
+  ],
+  "interface_contract": "conductor/design/ed/e1-fixture-contract.md; conductor/decisions/ADR-0010-e1-test-first-acceptance.md",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e11_invalid.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All frozen family cases and independent mutation probes pass; validates specification only"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "No whitespace errors"
+    }
+  ],
+  "acceptance": [
+    "Unsupported combinations fail early without partial state",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/E1.1.invalid.fixtures/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root coordinator; independent e1_next_planner gpt-6.1-sol",
+    "reservation_id": "a49935e38e1e4d3fbd418c5261507f3a",
+    "instance_id": "fixtures",
+    "instance_scope": "Implement complete invalid family of behavior-first fixtures and independent mutation-sensitive oracle tests; no native runtime acceptance",
+    "instance_set": [
+      "fixtures"
+    ],
+    "reviewed_recipe_sha256": "2733ab284ed14a1766262251328cf011ff684a06378be335b300549a77f96792",
+    "interface_contract": "conductor/design/ed/e1-fixture-contract.md; conductor/decisions/ADR-0010-e1-test-first-acceptance.md",
+    "context_slices": [
+      {
+        "path": "conductor/design/ed/e1-fixture-contract.md",
+        "start": 1,
+        "end": 82
+      },
+      {
+        "path": "conductor/decisions/ADR-0010-e1-test-first-acceptance.md",
+        "start": 1,
+        "end": 25
+      },
+      {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md",
+        "start": 1,
+        "end": 24
+      }
+    ],
+    "input_paths": [
+      "conductor/design/ed/e1-fixture-contract.md",
+      "conductor/decisions/ADR-0010-e1-test-first-acceptance.md"
+    ],
+    "write_paths": [
+      "conductor/design/ed/e1-invalid.json",
+      "tests/test_e11_invalid.py",
+      ".artifacts/mvp/E1.1.invalid.fixtures/result.json",
+      ".artifacts/mvp/E1.1.invalid.fixtures/logs"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "python3",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_e11_invalid.py",
+          "-v"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "All frozen family cases and independent mutation probes pass; validates specification only"
+      },
+      {
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "No whitespace errors"
+      }
+    ],
+    "prerequisite_receipts": {}
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "ede7e318d02958c427d1381ab9a3cae6318ccd41a151f3b3b4fe74020afea119",
+    "conductor/design/ed/e1-fixture-contract.md": "6d9e08b74133644363f622b7e02943608f31740688643f6b32559944056a2c99",
+    "conductor/decisions/ADR-0010-e1-test-first-acceptance.md": "a4daa353eeafac4954044b21f4ac11c34336fa59e25aba1188a877e5e4780380",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md": "99d6f3bcaecc57037a955b33a977e45e9b6c1c1ba35557870abaf70fef6bc863",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}
