@@ -7,9 +7,9 @@
 #[doc(hidden)]
 pub mod arrivals;
 #[doc(hidden)]
-pub mod pathway;
-#[doc(hidden)]
 pub mod disposition;
+#[doc(hidden)]
+pub mod pathway;
 
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::error::Error;
