@@ -7,6 +7,8 @@
 #[doc(hidden)]
 pub mod arrivals;
 #[doc(hidden)]
+pub mod dispatch;
+#[doc(hidden)]
 pub mod disposition;
 #[doc(hidden)]
 pub mod offers;
