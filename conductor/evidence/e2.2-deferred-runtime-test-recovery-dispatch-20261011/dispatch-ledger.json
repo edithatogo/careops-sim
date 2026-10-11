@@ -1,0 +1,17 @@
+{
+  "status": "dispatched_test_repair_only_pending_review",
+  "worker": "/root/e22_dispatch",
+  "model_candidate": "gpt-6-luna",
+  "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-deferred-allocation-test-recovery-20261011",
+  "base": "2fb908cae59f2e21285fb0d5ace437a9e2cb11f6",
+  "packet_sha256": "e01e1565d5e116005b41a3d45adbdd515f0a393446bc95d71eb70d36d2845ec7",
+  "source_edit_authority": "Only integration test after verified four-file patch bootstrap; three production files immutable",
+  "gates": "All three Rust1.99 gates remain pending; stop for review before execution",
+  "recovery_history": [
+    "Original worker stopped and released after two compile failures; no tests executed.",
+    "Root created isolated recovery, corrected compile/name/tick/error-contract and private retry witnesses, then released.",
+    "Dirty recovery could not be re-claimed: harness rejected as designed. Root created clean test recovery worktree and prepared validated bootstrap packet; original dirty recovery preserved.",
+    "Initial packet validation found unprepared status and protected support-prefix overlap; final packet corrected both before dispatch."
+  ],
+  "next": "Review repaired test plus frozen production, run three gates, commit and clean qualification; then bind explicit native V3."
+}

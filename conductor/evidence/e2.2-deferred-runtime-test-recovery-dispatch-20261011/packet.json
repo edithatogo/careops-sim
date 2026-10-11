@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.deferred-allocation-runtime.test-recovery",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "2fb908cae59f2e21285fb0d5ace437a9e2cb11f6",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "objective": "Repair reviewed runtime integration oracles only; preserve frozen production changes and all required behavior.",
+  "context_paths": [
+    ".artifacts/e22-deferred-runtime/recovery-test-context.txt"
+  ],
+  "input_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "08fc5f9bd7fe77bd4f0b27cd0b6d6f8d5de9a9f20925ff1794b04cc9d03995c4",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "9fcc232fb14403e91c43fc7cd7640210ce2d33b61468527b307d573e4906af81",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f6622ccf102a122bc6869617f2e9bd60a464892d7a99b0ab9cf74af5e4dc5b94",
+    "conductor/design/des/ADR-e2-deferred-allocation.md": "7099e0f33d3dac667b6b7eac15160ca3e20806ef60522f7489d80be17cda0c17",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v2.md": "f1aa471f94e77dfa8fed9b58c5b37d94c0a41bc1cbba80b9a5bd5ae5a8c6c46f",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "611bedc892b6d06d24c5e2d266165e31caa9e57228ec0e7d3400720639b93466",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/e22-deferred-runtime/record_gate.py": "cc6002a5025715c56be6b427fe20c60811384bf31bbf40f04217ad4eb0777a2d",
+    ".artifacts/e22-deferred-runtime/recovery-test-context.txt": "dd533764d36094b88dc570e27c065fd48c60aec85c797ef244b352fb34f2206e",
+    ".artifacts/e22-deferred-runtime/recovery-authority.json": "f7a37a0650c3ba4aff9062509379778ecfce1ede2567082a5f15c760dc0e150c"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs",
+    ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/result.json",
+    ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs",
+    ".artifacts/e22-deferred-runtime/test-repair-lease.private.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/src/lib.rs",
+    "crates/kairo-ecs-calibration",
+    "crates/kairo-ecs-core",
+    "crates/kairo-ecs-state",
+    "crates/kairo-ecs-abm",
+    "conductor/design/des/ADR-e2-deferred-allocation.md",
+    ".artifacts/e22-deferred-runtime/record_gate.py"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.checkpoint-consumers",
+    "E2.2.engine.deferred-allocation-design"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-deferred-allocation.md",
+  "steps": [
+    "Verify clean base and packet inputs. Acquire lease. Then copy exactly four reviewed inherited patch files from inherited_patch_source, verifying all inherited_patch_hashes. Only integration test may change after this bootstrap.",
+    "Edit only the integration test to implement every reviewed remaining_test_repairs item relevant to it. Native private retry witness is already strengthened and frozen.",
+    "Use actual native callback and event identities; do not weaken exact oracles. Format only integration test with Rust1.99.",
+    "Stop for independent review before any gate or commit; report changed paths and source hashes."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-deferred-runtime/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "FullDESsuite with6named runtimeoracles passes."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-deferred-runtime/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strictall-targetDESClippyzero warnings."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-deferred-runtime/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Rust1.99targeted4sourcefmtpass."
+    }
+  ],
+  "acceptance": [
+    "Allrequirednativebehavior/counter/cache/halting oracles andEagerparity pass onRust1.99.",
+    "LegacyV1/V2/routedcapture failclosed beforecodecs onDeferredstate; wire/publicDTOformatsunchanged.",
+    "Scope runtimeonly; V3persistence/consumer/fullE2 remainsopen."
+  ],
+  "result_path": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/result.json",
+  "stop_conditions": [
+    "Any frozen production or other input hash drift",
+    "Need to modify production or driver",
+    "Ambiguous timing or missing API",
+    "Before executing gates or commit"
+  ],
+  "size_exception": "Seven lease paths include three immutable inherited dirty production files, one editable integration test, result/logs/support. Actual source edit authority is only the integration test. Clean-base worktree contains reviewed imported recovery patch.",
+  "status": "prepared",
+  "coordinator_binding": {
+    "reviewer": "root and GPT-6.1-sol",
+    "reason_not_mvp_prepare": "Reviewed Kairos engine dependency for parentE2.2 closedadmission contract; parentfidelity recipe targetsparent and cannot dispatchengineowner APIs."
+  },
+  "frozen_production_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "01f5404bfb66354fed401adf1778be2f01e28b29a4733f16f2c8420d88134681",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "2000eff2bccc64b2df70cc7a1089c0f580c909d21b7c8ea2da0d600202ceae73"
+  },
+  "verification_dispatch": "All three immutable gates remain root-owned; worker must not run them before review.",
+  "inherited_patch_source": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-deferred-allocation-runtime-recovery-20261011",
+  "inherited_patch_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "01f5404bfb66354fed401adf1778be2f01e28b29a4733f16f2c8420d88134681",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "2000eff2bccc64b2df70cc7a1089c0f580c909d21b7c8ea2da0d600202ceae73",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs": "a99f9374d456bde713a1f4b2692025c5ee14f045730006cbc0f4c3c8196a51c2"
+  },
+  "handoff_note": "Previous dirty recovery worktree preserved without active lease. New clean test recovery worktree avoids adopting a dirty checkout. Worker claims before importing the reviewed patch."
+}
