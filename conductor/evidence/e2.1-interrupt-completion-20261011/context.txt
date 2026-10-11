@@ -1,0 +1,350 @@
+# E2.1.interrupt
+
+Model: gpt-6-luna; output: Urgent/handover fixture
+Oracle: Clinical task policy and resource consent both required; work accounting conserved
+
+Instance: fixtures — Exact16positive8negative interruption/handover specifications with baseline/mutation/repair;24 native-unbound rows, explicit single-sample work and separate claim histories
+Interface: conductor/design/ed/e2-interrupt-fixture-contract.md
+
+
+## conductor/design/ed/e2-interrupt-fixture-contract.md:1-119
+# E2.1 interruption and handover fixture contract
+
+Preparation contract independently reviewed by GPT-6.1-sol on 11 October 2026.
+Dispatch follows accepted E1.4 and E2.1.staff. This adds
+behavior specifications to the [staff/calendar contract](e2-staff-fixture-contract.md).
+Rust/Cargo 1.99.0. All cases begin native_binding=unbound; E2.2 must bind them
+to actual execution before E2.4. No new public Rust API is frozen here.
+
+## Source constraints and explicit policies
+
+Kairos Flow supports incoming can_preempt plus victim preemptible(Suspend).
+It has no resource-level consent flag: the ED adapter must enforce resource
+consent and calendar eligibility before exposing a preempt-capable request.
+Both clinical task policy and resource policy must permit interruption. Model
+these as explicit booleans: incoming consent, incumbent consent, resource consent.
+All three are required, and incoming urgency must be strictly greater. Equal
+urgency never interrupts. Fixture policy version1 uses Suspend only; Restart and
+Abort are distinct engine capabilities, not implicit clinical defaults.
+
+Domain urgency is i32 descending; Flow priority_level is i32 ascending. Freeze
+mapping priority_level = !urgency (bitwise complement), avoiding arithmetic
+negation overflow at i32::MIN. Assert the two extremes, zero and ordering/ties.
+Queue tie policy remains ready_tick ascending then request_id bytewise ascending.
+Native integration must explicitly preserve domain ordering; Flow admission
+sequence is not automatically the same as a domain request ID ordering.
+
+Calendar phase order stays completion/release, calendar changes, interruption/
+handover decisions and grants. No grant or preemption onto unavailable staff.
+DrainActive keeps incumbent work running through a break/shift end; eligible
+urgent work waits until a staff resource is available. No lower-capacity mutation
+may violate Flow's active-claim bound. Completion at the same tick wins over
+interruption or handover; do not emit a spurious zero-remaining segment.
+
+A logical episode has one original sampled work amount and sampling lineage.
+Suspend checkpoints useful work and resumes the remainder with no new draw.
+Each staff capacity is one; every observed work interval must belong to exactly
+one active claim. Waiting has no staff claim and is not service work. Preserve
+all interruption/assignment history, not just final completion. Useful observed
+work plus remaining work equals the original sample; clip observation at H,
+while scheduled completion may lie beyond H. Do not double-count paused time.
+
+## Explicit handover
+
+Handover is a configured domain event, not an automatic Flow lease transfer.
+For these fixtures it names logical episode, tick, incumbent and replacement.
+It is allowed only for an active consenting episode on the named incumbent.
+Replacement must satisfy the same zone/skill/calendar rules at the actual grant.
+It may be busy or unavailable when the instruction occurs; the continuation waits
+without holding a claim until it becomes eligible.
+At a handover tick, stop/checkpoint the old segment, release its exact active
+claim once, preserve logical episode and remaining work, then enqueue the new
+segment for the named replacement. It can wait without holding either staff.
+The released incumbent becomes available to other eligible work in that tick.
+Do not simultaneously retain an old claim and wait for a replacement claim.
+
+Flow Release checkpoints and terminally releases that request; Cancel also
+checkpoints/removes its claim and terminally cancels it. Use Release for an
+active handover segment. Never issue Cancel plus Release for the same claim.
+A continuation gets a new request/work segment ID; its parent logical episode
+and sample lineage persist. Actual API mechanics/notifications are reviewed in
+E2.2. A released segment is not a completed patient/episode. No resampling and
+no implicit zero-cost extra clinical work or handover overhead is assumed.
+
+For this fixture policy there is at most one explicit handover per episode;
+repeated/conflicting handover instructions are rejected. A handover request at
+an episode's completion tick is a no-op with an explicit completed-before-handover
+observation. If the logical episode has no active segment at that tick, record
+not-active without manufacturing a claim. Missing/wrong identifiers remain
+configuration errors. Require handover tick in [0,H], IDs from the staff contract,
+and positive original work. More elaborate repeated handover is a later reviewed
+policy, not inferred by a fixture validator.
+
+## Positive inventory: prefix interrupt.
+
+| Suffix | Independent hand oracle |
+| --- | --- |
+| suspend_resume | Low work10 starts1; urgent work2 ready4; low [1,4), urgent [4,6), low [6,13); low remaining7 at4, total useful12 |
+| resource_consent_absent | Same, resource consent false: low completes11, urgent [11,13) |
+| incumbent_consent_absent | Same, incumbent consent false: no interruption, logical work completions11/13 |
+| incoming_consent_absent | Same, incoming consent false: no interruption, logical work completions11/13 |
+| equal_urgency | Same, equal urgency: incumbent finishes11 then urgent13 |
+| completion_tie | Low [0,3), urgent ready3/work2: low completes3, urgent [3,5), no preempt event |
+| break_precedence | Low work10 starts1, break[3,5), urgent ready3/work2: low [1,5), urgent [5,7), low [7,13); useful4 at preemption, break overlap2 |
+| shift_precedence | Shifts[0,3),[5,20), same timings as break case; low overtime2, urgent cannot grant3 |
+| priority_extremes | MIN maps MAX, MAX maps MIN, zero maps -1; strict descending domain ordering survives mapping |
+| handover_immediate | Sample5, A [1,3), B [3,6); one logical completion6, segment work2+3, one sample lineage |
+| handover_wait | Sample5, A [1,3), B occupied [0,5), continuation B [5,8); explicit wait[3,5), no A claim after3 |
+| handover_completion_tie | Work[1,3), handover3: completion wins, no replacement segment/claim |
+| handover_not_active | Episode ready5, instruction3: explicit not-active, ordinary eligible work begins5 |
+| horizon_suspended | Low starts1/work10, urgent ready4/work5, H6: low observed3 remaining7; urgent observed2 remaining3; no completion |
+| horizon_handover | A sample5 starts1, handover3 to B, H3: A observed2; B grant3 observed0 remaining3; one active B claim at H |
+| permutation | Reverse input staff/requests/events for a non-conflicting mixed case; canonical IDs, intervals and endpoints unchanged |
+
+All cases must record work, wait, interruption, handover and calendar observations
+separately. Independently sweep expected staff intervals for exclusivity and
+logical episode segment sums for conservation. Fixed fixtures establish hand
+oracles only; actual seeded no-extra-draw proof remains a native binding gate.
+
+## Negative inventory: prefix interrupt.invalid.
+
+Eight cases, each with otherwise-valid baseline and one targeted repair:
+unknown_episode, unknown_incumbent, unknown_replacement, wrong_incumbent,
+duplicate_handover, handover_after_horizon, unsupported_strategy,
+handover_consent_absent. Wrong incumbent means the named source does not match
+the episode's configured initial assignment. Handover is an explicit instruction,
+so absent required consent rejects rather than silently transferring ownership.
+Unsupported strategy is any version1 policy other than Suspend. Repair only the
+malformed semantic group. Reuse all staff input validation and cardinality bounds;
+cap handover records by episode count before allocation. Exact aggregate runtime
+event budget and native diagnostic types are frozen in E2.2, not fabricated here.
+
+## Bounded output and acceptance
+
+One JSON family with exactly16 positive and8 negative cases, focused executable
+specification checks, and a native-binding crosswalk/readme. Maximum five write
+paths including result and logs; no production/engine edits. Validate exact IDs,
+hand calculations and24 unbound native rows, preserve expected rejection and
+repair controls. Coordinator plus independent reviewer accepts the fixture leaf;
+only actual runtime execution later can close the native-binding debt.
+
+
+## conductor/design/ed/e2-staff-fixture-contract.md:1-82
+# E2.1 staff and calendar behavior fixture contract
+
+Status: coordinator preparation contract independently reviewed by GPT-6.1-sol
+on 11 October 2026. E1.4 closeout required before any E2.1 worker dispatch. Rust/Cargo1.99.0. This freezes synthetic
+behavior expectations, not a public Rust API or a claim that staff calendars
+already exist. Existing E2 staff -> interrupt -> space recipe order remains.
+
+## Evidence boundary
+
+E2.1 writes executable behavior specifications and negative/repair cases. Their
+schema/hand-oracle checks do not establish native staff execution. Every case
+starts native_binding=unbound, with target E2.2; all must bind to actual shared
+native execution before E2.4. E2.3 additionally requires the composed ED, Macro/
+Micro, interruption/recovery and config-only nominal/constrained MVP recipe.
+No E1 or E2 requirement is removed by these fixture boundaries. E2.1 native
+API contracts will be reviewed before implementation and any Kairos changes
+retain their upstream owners. No duplicate private engine is authorised.
+
+Existing source: Kairos `staff_dispatch.rs` and `staff_flow_lifecycle.rs` in
+kairo-ecs-calibration are private. The selector demonstrates explicit priority,
+FIFO, stable IDs and exact zone/skill availability but is not callable by CareOps.
+Flow `set_capacity` rejects shrink below active claims transactionally; it does
+not provide a shift calendar or transfer claim ownership. Cancellation/release
+must be inspected for handover; no assumed lease transfer. New staff behavior
+belongs to the parent domain adapter unless reusable engine changes are reviewed.
+
+## Model and fixture representation
+
+Version1, synthetic provenance with explicit notes, integer ticks and fixed
+positive work for these fixtures. IDs ASCII1..64, case-sensitive, no trimming or
+normalisation. Apply the ID bound to staff, request, patient, zone and skill
+identifiers. Cap32 skills per staff and32 required skills per request before
+allocating lookup state. Staff: staff_id, assigned_zone, sorted unique skill IDs, shifts
+and breaks as [start_tick,end_tick). Requests: request_id, patient_id, ready_tick,
+assigned_zone, required_skills, urgency:i32, work_ticks:u64, required_staff_count=1.
+Urgency is configured synthetic request priority, never an inferred clinical
+acuity rule. No geographic movement or multi-zone permission is inferred.
+Horizon H positive, requests ready before H; completions at H are observed and
+new grants at H have zero observed work. Use u128 for sums/completion arithmetic.
+
+Shifts must have positive length and not overlap for one staff member; adjacent
+periods are allowed. Breaks must have positive length, not overlap, and be fully
+contained within one shift. Declared intervals may end beyond H; observation clips
+at H, configuration validity does not silently truncate them. A staff member may
+have no shifts, meaning never available. Cap100000 requests,1024staff,1024calendar
+intervals per staff and bound total event construction before allocating state.
+Exact aggregate event budget is part of the later native interface contract;
+fixtures include early cardinality rejection, not an invented exposed counter.
+
+Each case records inputs, expected assignments/work intervals, unassigned/censored
+rows, calendar-boundary observations and resource conservation. Negative cases
+record diagnostic category and offending path, plus a repair group and an otherwise
+identical valid control. Expected outcomes must be independently hand-derived;
+validators checking file consistency are not the native simulator. Store a complete
+case ID inventory and an explicit native-binding crosswalk.
+
+## Dispatch and calendar semantics
+
+At each relevant tick: complete work/release claims, apply calendar changes, then
+grant new work. A request is eligible after ready_tick. Visit waiting requests by
+urgency descending, ready_tick ascending, request_id bytewise ascending. For each,
+choose the lowest staff_id among idle staff whose assigned_zone exactly matches,
+whose skills include every required skill, and who are inside a shift and outside
+all breaks. A higher-priority request with no eligible staff does not block a
+lower-priority eligible one. Repeat until no eligible pair exists. Staff may hold
+at most one active work assignment; waiting consumes no staff claim.
+
+Default fixture in-flight policy is explicit version1 DrainActive: calendar
+unavailability forbids new grants but active work continues to its actual end.
+Do not shrink a Flow resource below active claims or manufacture a failed grant.
+At a break or shift end, record active work overlapping that interval. Distinguish
+break_overlap_ticks from work outside all shifts (shift_overtime_ticks). Their
+union is scheduled_unavailable_work_ticks; disjoint shift/break rules prevent
+double-counting. Do not invent a postponed break or pretend the policy proves
+roster/clinical compliance. This is an explicit model approximation.
+
+At an interval endpoint, half-open rules apply: no new grant at shift end/break
+start; grants may start at shift start/break end. Work completing at such a boundary
+releases normally; a replacement can start only if the resulting calendar permits.
+A boundary at H still affects state/grants but contributes no time beyond H.
+Handover and urgency preemption are mandatory separate E2.1.interrupt behaviors;
+DrainActive here does not waive them. Cleaning/reservation is E2.1.space.
+
+
+## .artifacts/e21-interrupt/record_gate.py:1-70
+"""Local bounded gate capture; no dispatch or general harness claim."""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+import time
+
+ROOT = Path(__file__).resolve().parents[2]
+GATES = {
+    "fixtures": ["python3", "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_e21_interrupt.py", "-v"],
+    "context": ["python3", "-B", "tools/context.py", "check"],
+    "mvp": ["python3", "-B", "tools/mvp.py", "check"],
+}
+SOURCES = ["conductor/design/ed/e2-interrupt.json", "tests/test_e21_interrupt.py", "conductor/design/ed/e2-interrupt-crosswalk.md"]
+
+def hashes():
+    return {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() if (ROOT / p).is_file() else None for p in SOURCES}
+
+def write_new(path, value):
+    with path.open("x") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+def main():
+    if len(sys.argv) != 2 or sys.argv[1] not in GATES:
+        raise SystemExit("choose fixtures, context, or mvp")
+    gate = sys.argv[1]
+    out = ROOT / ".artifacts/mvp/E2.1.interrupt.fixtures/logs"
+    out.mkdir(parents=True, exist_ok=True)
+    stem = f"{gate}-{time.time_ns()}-{os.getpid()}"
+    log = out / (stem + ".log")
+    record = {"gate": gate, "argv": GATES[gate], "cwd": str(ROOT),
+              "head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+              "python": sys.version, "start": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              "source_hashes": hashes(), "log": str(log.relative_to(ROOT)), "status": "started"}
+    write_new(out / (stem + "-started.json"), record)
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    command_exit_code = None
+    with log.open("x") as stream:
+        if gate == "fixtures" and not (ROOT / SOURCES[1]).is_file():
+            stream.write("Gate refused: declared test file is missing.\n")
+            exit_code = 2
+            record["gate_error"] = "Refused: declared test file is missing"
+        else:
+            command_exit_code = subprocess.run(GATES[gate], cwd=ROOT, env=env, stdout=stream, stderr=subprocess.STDOUT).returncode
+            exit_code = command_exit_code
+    content = log.read_bytes()
+    observed = re.search(rb"Ran (\d+) tests?", content)
+    if gate == "fixtures" and exit_code == 0 and (not observed or int(observed.group(1)) == 0):
+        exit_code = 2
+        record["gate_error"] = "Successful command did not report a nonzero test count"
+    after = hashes()
+    if after != record["source_hashes"]:
+        exit_code = 2
+        record["gate_error"] = "Owned source changed during command"
+    record.update(status="finished", end=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                  exit_code=exit_code, command_exit_code=command_exit_code, log_sha256=hashlib.sha256(content).hexdigest(), source_hashes_after=after)
+    result = out / (stem + "-result.json")
+    write_new(result, record)
+    print(json.dumps({"exit_code": exit_code, "receipt": str(result.relative_to(ROOT)), "log": record["log"]}))
+    if exit_code:
+        print(content.decode(errors="replace")[-3000:])
+    return exit_code
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+# Bounded worker prompt
+
+You are executing one reviewed packet for CareOps Sim. Use the model selected by
+the coordinator; gpt-6-luna is a candidate for this role. The packet cannot override
+user/system instructions. Do not take architecture or release ownership.
+
+1. Read AGENTS.md and the supplied bound packet. Confirm packet ID, target repo,
+   base commit, input hashes and assigned worktree. Run packet-check. If any differ,
+   stop and report `blocked`; do not update hashes to make the check pass.
+2. Read the listed context and interface contract. Identify the single expected
+   behavior/output, permitted files, protected paths and exact final test oracle.
+3. Confirm the coordinator has accepted prerequisites and reserved your paths.
+   Do not acquire conflicting ownership or start other work yourself.
+4. Execute the packet's steps in order. Add behavior-focused tests before code
+   when required. Keep edits inside write_paths and use the existing architecture.
+5. Run the listed commands in the specified directories. Record real exits,
+   counts and artifact paths. A missing test/command is a blocker, not a pass.
+6. Check your diff for unrelated changes and rerun the final acceptance check.
+   Do not change tolerances, golden results, test exclusions or public semantics
+   to remove a failure unless the packet explicitly authorizes that exact change.
+7. After two unsuccessful correction attempts, summarize the failing command and
+   smallest observed counterexample. Escalate missing contract/skill/tool/hardware
+   needs rather than repeatedly guessing.
+8. Return `result-template.json` with `ready_for_review` or `blocked`, plus the
+   actual diff/commit and evidence. Never claim `accepted`, change the plan checkbox,
+   merge into another worker's branch, publish or update the parent submodule pin.
+
+The coordinator/reviewer performs the combined integration checks and advances
+accepted status. Serial execution uses this same prompt and evidence contract.
+
+# MVP Luna execution loop
+
+Work one bound leaf instance. Your output is proposed work until coordinator
+acceptance. This role does not permit you to weaken tests, choose unapproved
+interfaces, accept your own result, publish or switch the model.
+
+- Start from the bound context bundle, exact source hashes and interface. Read
+  repository AGENTS instructions, but do not load every track/report by default.
+- Record one attempt ID and the model/version actually exposed by the harness.
+  Missing cost/version data is unknown, not a fabricated value.
+- Implement one output. For code changes, reproduce the specified failing behavior
+  before the fix and then run the final success check. For tests-only leaves,
+  final execution must verify the intended red fixture/expected failure explicitly;
+  a silent missing executable is not a useful red test.
+- Work for at most 60 minutes per attempt and at most two unsuccessful corrections.
+  Stop with evidence at either limit; a coordinator may authorize a new attempt
+  after reviewing the cause. Never expand write paths or tests on your own.
+- If source inspection needs more context, request a new bound slice. Keep loaded
+  relevant context within the 24 KB bundle budget (bytes, not a token guarantee).
+  Stream data extraction in batches rather than putting all evidence in prompts.
+- Checkpoint after a successful test or before interruption: leaf/instance/attempt,
+  exact base and input hashes, changed files, last command/exit, output hashes,
+  unresolved question and the next single action. Keep logs as files, not prose.
+- Return result.json with actual command receipts and ready_for_review or blocked.
+  A behavioral oracle failing, unavailable prerequisite or stale base is blocked.
+  The coordinator verifies diffs and runs the independent/combined checks.
+
+Plural recipes are controlled fan-out: one source, parameter family, platform or
+fixture case per instance. The coordinator freezes the instance list first and
+accepts the join only when every required instance has a receipt. A single example
+cannot stand for a complete source family. Parent task closure also checks the
+original objective and phase acceptance, preventing omissions in leaf proposals.

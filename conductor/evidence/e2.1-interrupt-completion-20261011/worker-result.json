@@ -1,0 +1,625 @@
+{
+  "attempt_summary": {
+    "context": {
+      "failed": 0,
+      "passed": 4
+    },
+    "corrections_after_first_failed_run": 1,
+    "failed_attempts_preserved": [
+      {
+        "reason": "initial independent conservation assertions failed; subsequent correction passed",
+        "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791709687993959000-72155-result.json"
+      },
+      {
+        "reason": "authorized validator correction test control referenced an empty urgent_requests list; root authorized tiny correction, rerun passed",
+        "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791710532432699000-76829-result.json"
+      }
+    ],
+    "fixtures": {
+      "failed": 2,
+      "passed": 5
+    },
+    "latest_three_gates_all_passed": true,
+    "mvp": {
+      "failed": 0,
+      "passed": 4
+    },
+    "root_authorized_review_corrections": 2,
+    "total_gate_attempts": 15
+  },
+  "base_commit": "66d3d7eace2023a671116cf56cfa875e6f3820ef",
+  "bound_packet_input_hashes": {
+    ".artifacts/e21-interrupt/record_gate.py": "32b758c5e798e73dfbd57ac25f2da4eef4b85f37d24836b4b5777a7b2772d116",
+    ".artifacts/mvp/E2.1.interrupt.fixtures/context.md": "6e8a5b7282e263bffd516957180d43c2d0a29da48a13f2c24a2d118a4d2f4b06",
+    "conductor/design/ed/e2-interrupt-fixture-contract.md": "4f633c4395f5e7be1c8154d3c294174211223457ba5de72e4deddf9922d9e2ad",
+    "conductor/design/ed/e2-staff-fixture-contract.md": "6769291979dcca76133672dbfdb42a22265ac3852247f96d65a4ee2a46c40a81",
+    "conductor/evidence/e2.1-staff-completion-20261011/acceptance.json": "0e1cec270b8e27838b864efad4ed2bb4f4c3b9d30961b3b70e149137b4114f2c",
+    "rust-toolchain.toml": "bd56168b72794297e8f07cd1ca1357cba26ad1cee0d05e1ab38a1cb8c8ad3b28",
+    "tests/test_e21_staff.py": "4ffecb16a4349541a202f5a6378a466dcdd840d31321de9b3d3309c84389071a"
+  },
+  "focused_fixture_tests": {
+    "command": "python3 -B .artifacts/e21-interrupt/record_gate.py fixtures",
+    "count": 9,
+    "final_exit_code": 0
+  },
+  "integration_commit": null,
+  "limitations": [
+    "Fixture specification and hand-authored checks only. Native binding remains E2.2 work.",
+    "Independent review approved the frozen source hashes before receipt creation."
+  ],
+  "model_metadata": {
+    "requested": "gpt-6-luna (packet candidate)",
+    "served": "unknown"
+  },
+  "native_binding": {
+    "status": "unbound",
+    "target": "E2.2"
+  },
+  "packet_id": "E2.1.interrupt.fixtures",
+  "precommit_scopecheck": {
+    "commit_hash": "recorded in coordinator closeout; receipt frozen before commit",
+    "git_diff_cached_check": "pass",
+    "lease_check": "pass",
+    "scope_receipt_path_is_untracked_artifact": true,
+    "staged_source_paths": [
+      "conductor/design/ed/e2-interrupt.json",
+      "tests/test_e21_interrupt.py",
+      "conductor/design/ed/e2-interrupt-crosswalk.md"
+    ],
+    "status": "pass",
+    "unstaged_source_delta_after_frozen_review": "only authorized trailing blank line removal in tests/test_e21_interrupt.py"
+  },
+  "schema_version": 1,
+  "scope": "Synthetic interruption and handover fixture specification only; no native runtime execution or clinical acceptance claim.",
+  "source_hashes": {
+    "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+    "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+    "tests/test_e21_interrupt.py": "0638ff8905d2a471d7751ec030e1959f3f5a11e99eddeb683703f571998d1530"
+  },
+  "status": "ready_for_commit",
+  "task_id": "E2.1",
+  "toolchain": {
+    "python": "3.11.6",
+    "rust": "not used"
+  },
+  "verification_attempts": [
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e21_interrupt.py",
+        "-v"
+      ],
+      "exit_code": 1,
+      "finished_at": "2026-10-11T09:08:08.092839+00:00",
+      "gate": "fixtures",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791709687993959000-72155.log",
+      "log_sha256": "895ff242f89a6d8660d11bda3919959aa8b695f89a5ec3eeba26636fda5d3311",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791709687993959000-72155-result.json",
+      "receipt_sha256": "2bd0807f3ae28449e1239c8c2951f5ab8e231cc2f996606e1c85cbde59a56656",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "a076de207eac099c6cb0b5b7bb86e3fbca2ee58eb02fa394ea85b9bc97aa68c4",
+        "conductor/design/ed/e2-interrupt.json": "1120cb553a0ab9a11c50c33ffd005bdeb10bd5aad64c2a5dd3415b72b83ab5d7",
+        "tests/test_e21_interrupt.py": "11c6f42d7dd8110a615cf147e3077f12ccd70edebcbeec614c0630be9d1b3b61"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "a076de207eac099c6cb0b5b7bb86e3fbca2ee58eb02fa394ea85b9bc97aa68c4",
+        "conductor/design/ed/e2-interrupt.json": "1120cb553a0ab9a11c50c33ffd005bdeb10bd5aad64c2a5dd3415b72b83ab5d7",
+        "tests/test_e21_interrupt.py": "11c6f42d7dd8110a615cf147e3077f12ccd70edebcbeec614c0630be9d1b3b61"
+      },
+      "started_at": "2026-10-11T09:08:08.017083+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "fixtures"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e21_interrupt.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:11:01.729161+00:00",
+      "gate": "fixtures",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791709861624550000-74625.log",
+      "log_sha256": "8e21fe0c404c1012bddd6d790908f4b8527c17e916735f4c14bc334b8b6212c7",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791709861624550000-74625-result.json",
+      "receipt_sha256": "18949201a921e1fdf06908daf2cbbef03f1b29244437f56a1ce31538ed76743e",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "a076de207eac099c6cb0b5b7bb86e3fbca2ee58eb02fa394ea85b9bc97aa68c4",
+        "conductor/design/ed/e2-interrupt.json": "337691a24c649547a95dafad903fc1e80f971b2fb22033c4f023c9e209f15aff",
+        "tests/test_e21_interrupt.py": "0368038ead587298599b95346c257b42045d9dec36dcbd743d3cad9e32bd3802"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "a076de207eac099c6cb0b5b7bb86e3fbca2ee58eb02fa394ea85b9bc97aa68c4",
+        "conductor/design/ed/e2-interrupt.json": "337691a24c649547a95dafad903fc1e80f971b2fb22033c4f023c9e209f15aff",
+        "tests/test_e21_interrupt.py": "0368038ead587298599b95346c257b42045d9dec36dcbd743d3cad9e32bd3802"
+      },
+      "started_at": "2026-10-11T09:11:01.662951+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "fixtures"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "tools/context.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:11:09.237390+00:00",
+      "gate": "context",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/context-1791709868983812000-74685.log",
+      "log_sha256": "efc6594cdee899a5a0d740aa2444fcaa051b25fc7fabaabd659e3b06fbc0cfbd",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/context-1791709868983812000-74685-result.json",
+      "receipt_sha256": "78c1ca233e449f5aca7933686ca005ddc642a3cf67bb67a1d105b8dc404bf6e0",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "a076de207eac099c6cb0b5b7bb86e3fbca2ee58eb02fa394ea85b9bc97aa68c4",
+        "conductor/design/ed/e2-interrupt.json": "337691a24c649547a95dafad903fc1e80f971b2fb22033c4f023c9e209f15aff",
+        "tests/test_e21_interrupt.py": "0368038ead587298599b95346c257b42045d9dec36dcbd743d3cad9e32bd3802"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "a076de207eac099c6cb0b5b7bb86e3fbca2ee58eb02fa394ea85b9bc97aa68c4",
+        "conductor/design/ed/e2-interrupt.json": "337691a24c649547a95dafad903fc1e80f971b2fb22033c4f023c9e209f15aff",
+        "tests/test_e21_interrupt.py": "0368038ead587298599b95346c257b42045d9dec36dcbd743d3cad9e32bd3802"
+      },
+      "started_at": "2026-10-11T09:11:09.003882+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "context"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "tools/mvp.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:11:09.943445+00:00",
+      "gate": "mvp",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/mvp-1791709869852154000-74704.log",
+      "log_sha256": "3c7b9a3062f62964126c8db247833e935b8557a4baeffb7a30525cbe5f410966",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/mvp-1791709869852154000-74704-result.json",
+      "receipt_sha256": "b450c0dab0c927cbed14645283cba4389ba50962def25e4ac44d1552807b76d0",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "a076de207eac099c6cb0b5b7bb86e3fbca2ee58eb02fa394ea85b9bc97aa68c4",
+        "conductor/design/ed/e2-interrupt.json": "337691a24c649547a95dafad903fc1e80f971b2fb22033c4f023c9e209f15aff",
+        "tests/test_e21_interrupt.py": "0368038ead587298599b95346c257b42045d9dec36dcbd743d3cad9e32bd3802"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "a076de207eac099c6cb0b5b7bb86e3fbca2ee58eb02fa394ea85b9bc97aa68c4",
+        "conductor/design/ed/e2-interrupt.json": "337691a24c649547a95dafad903fc1e80f971b2fb22033c4f023c9e209f15aff",
+        "tests/test_e21_interrupt.py": "0368038ead587298599b95346c257b42045d9dec36dcbd743d3cad9e32bd3802"
+      },
+      "started_at": "2026-10-11T09:11:09.876641+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "mvp"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e21_interrupt.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:19:02.377938+00:00",
+      "gate": "fixtures",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791710342277175000-76169.log",
+      "log_sha256": "4c999b9f9a819789e850d6deb24401e458707e49145ca8991e4c360223b2d1d0",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791710342277175000-76169-result.json",
+      "receipt_sha256": "9736b41e166ac1624658f4a1ff43127e6e17235a287a47846f993a727d93eee6",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "46976e6ff93b88b627210143d6df3f66ac76fc9cd5202b83ecf227386c87a6ec"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "46976e6ff93b88b627210143d6df3f66ac76fc9cd5202b83ecf227386c87a6ec"
+      },
+      "started_at": "2026-10-11T09:19:02.295384+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "fixtures"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e21_interrupt.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:19:33.469546+00:00",
+      "gate": "fixtures",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791710373342082000-76343.log",
+      "log_sha256": "b87eb9dcf1efbba9647b2c85f3d5ae0270a0711471248a25ef1b3b2c9c1d251f",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791710373342082000-76343-result.json",
+      "receipt_sha256": "d899154129aaa739d8d71ffc40c0599ade6b7f76f55f7f17202c129a62670300",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "da01fbf68a27d92aa934ce351fc6d6983c3cd4f78d237dfe38c9f10185b8ef2d"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "da01fbf68a27d92aa934ce351fc6d6983c3cd4f78d237dfe38c9f10185b8ef2d"
+      },
+      "started_at": "2026-10-11T09:19:33.361153+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "fixtures"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "tools/context.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:19:34.315100+00:00",
+      "gate": "context",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/context-1791710374048204000-76370.log",
+      "log_sha256": "efc6594cdee899a5a0d740aa2444fcaa051b25fc7fabaabd659e3b06fbc0cfbd",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/context-1791710374048204000-76370-result.json",
+      "receipt_sha256": "8b776333c94d239d266ecf371ed90756fa55ab87c172b9bd83a8028581f51ad2",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "da01fbf68a27d92aa934ce351fc6d6983c3cd4f78d237dfe38c9f10185b8ef2d"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "da01fbf68a27d92aa934ce351fc6d6983c3cd4f78d237dfe38c9f10185b8ef2d"
+      },
+      "started_at": "2026-10-11T09:19:34.068959+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "context"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "tools/mvp.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:19:35.043331+00:00",
+      "gate": "mvp",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/mvp-1791710374925104000-76394.log",
+      "log_sha256": "3c7b9a3062f62964126c8db247833e935b8557a4baeffb7a30525cbe5f410966",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/mvp-1791710374925104000-76394-result.json",
+      "receipt_sha256": "0ff2ee38dfd3f01aa723a3c71bf29175c524c9ae1e7a887808976f410cde1628",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "da01fbf68a27d92aa934ce351fc6d6983c3cd4f78d237dfe38c9f10185b8ef2d"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "da01fbf68a27d92aa934ce351fc6d6983c3cd4f78d237dfe38c9f10185b8ef2d"
+      },
+      "started_at": "2026-10-11T09:19:34.946231+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "mvp"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e21_interrupt.py",
+        "-v"
+      ],
+      "exit_code": 1,
+      "finished_at": "2026-10-11T09:22:12.564244+00:00",
+      "gate": "fixtures",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791710532432699000-76829.log",
+      "log_sha256": "15575b65027712b733da31ca474532e626e5a0ccaf212aec6dc69bb701d20ac5",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791710532432699000-76829-result.json",
+      "receipt_sha256": "7df548108bcf283a1f3d6d4fd26dadd843effafe93815c53ad23453cc88a5f31",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "710e0cc9cc8fe57714cb8829dbe552d5d2958fced94231fd7ec63d6a6d79512a"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "710e0cc9cc8fe57714cb8829dbe552d5d2958fced94231fd7ec63d6a6d79512a"
+      },
+      "started_at": "2026-10-11T09:22:12.459915+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "fixtures"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e21_interrupt.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:23:12.215906+00:00",
+      "gate": "fixtures",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791710591987526000-77245.log",
+      "log_sha256": "b65d3e4ef698c86072cab0784e49e8274cdda52cba2f6cb6abd55503a4a8104b",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791710591987526000-77245-result.json",
+      "receipt_sha256": "47a2d80e7559a69c99aed6a17a61d087c61b93012e121e43ebd713198c0edce2",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "f7cd910331ce0201237e6a55b31ffe8fb964dd8781f1bb41c9fb7cc84cd4df5c"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "f7cd910331ce0201237e6a55b31ffe8fb964dd8781f1bb41c9fb7cc84cd4df5c"
+      },
+      "started_at": "2026-10-11T09:23:12.068933+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "fixtures"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "tools/context.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:23:22.833664+00:00",
+      "gate": "context",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/context-1791710602250830000-77566.log",
+      "log_sha256": "efc6594cdee899a5a0d740aa2444fcaa051b25fc7fabaabd659e3b06fbc0cfbd",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/context-1791710602250830000-77566-result.json",
+      "receipt_sha256": "4e7c0a9529667030f7d0be2839d3de577f408009d83dd9b769f088d061281759",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "f7cd910331ce0201237e6a55b31ffe8fb964dd8781f1bb41c9fb7cc84cd4df5c"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "f7cd910331ce0201237e6a55b31ffe8fb964dd8781f1bb41c9fb7cc84cd4df5c"
+      },
+      "started_at": "2026-10-11T09:23:22.291289+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "context"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "tools/mvp.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:23:32.101866+00:00",
+      "gate": "mvp",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/mvp-1791710612011413000-77718.log",
+      "log_sha256": "3c7b9a3062f62964126c8db247833e935b8557a4baeffb7a30525cbe5f410966",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/mvp-1791710612011413000-77718-result.json",
+      "receipt_sha256": "14ae9af46bc0be006e7f5eb818c3ba9140091d3be16f030e16e84c042c0f56b7",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "f7cd910331ce0201237e6a55b31ffe8fb964dd8781f1bb41c9fb7cc84cd4df5c"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "f7cd910331ce0201237e6a55b31ffe8fb964dd8781f1bb41c9fb7cc84cd4df5c"
+      },
+      "started_at": "2026-10-11T09:23:32.034021+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "mvp"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e21_interrupt.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:26:21.968434+00:00",
+      "gate": "fixtures",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791710781863227000-78487.log",
+      "log_sha256": "2d63c461989730b0f1d240b74579dff26ceca265f9e93785c500235540344c06",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/fixtures-1791710781863227000-78487-result.json",
+      "receipt_sha256": "2fdf8ef73229a8add29ac070f44a95c32cf0a13bde50cdc18a58dc08db0142b3",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "0638ff8905d2a471d7751ec030e1959f3f5a11e99eddeb683703f571998d1530"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "0638ff8905d2a471d7751ec030e1959f3f5a11e99eddeb683703f571998d1530"
+      },
+      "started_at": "2026-10-11T09:26:21.883555+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "fixtures"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "tools/context.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:26:28.839363+00:00",
+      "gate": "context",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/context-1791710788596329000-78520.log",
+      "log_sha256": "efc6594cdee899a5a0d740aa2444fcaa051b25fc7fabaabd659e3b06fbc0cfbd",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/context-1791710788596329000-78520-result.json",
+      "receipt_sha256": "95a2bd4b23e4ee2c24fc8fc3671905d1d14b64db2574273d833dc2574b850f9f",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "0638ff8905d2a471d7751ec030e1959f3f5a11e99eddeb683703f571998d1530"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "0638ff8905d2a471d7751ec030e1959f3f5a11e99eddeb683703f571998d1530"
+      },
+      "started_at": "2026-10-11T09:26:28.612356+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "context"
+      ]
+    },
+    {
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-interrupt-20261011",
+      "executed_command": [
+        "python3",
+        "-B",
+        "tools/mvp.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-10-11T09:26:35.983472+00:00",
+      "gate": "mvp",
+      "log": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/mvp-1791710795889962000-78705.log",
+      "log_sha256": "3c7b9a3062f62964126c8db247833e935b8557a4baeffb7a30525cbe5f410966",
+      "receipt": ".artifacts/mvp/E2.1.interrupt.fixtures/logs/mvp-1791710795889962000-78705-result.json",
+      "receipt_sha256": "d668da9ab42b0ce4f5aebf8d32dd660703b0a51359294a916537de27f24c0443",
+      "source_hashes_after_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "0638ff8905d2a471d7751ec030e1959f3f5a11e99eddeb683703f571998d1530"
+      },
+      "source_hashes_at_attempt": {
+        "conductor/design/ed/e2-interrupt-crosswalk.md": "2013faeb6ebcf92a14fcd7010a511f1c65c0360cb610cc54af31cc3facf70a37",
+        "conductor/design/ed/e2-interrupt.json": "8d6ceb22b63f0a4c09c311b52c84dab97f086a5d96b3b38d8bef1e3555b02b6d",
+        "tests/test_e21_interrupt.py": "0638ff8905d2a471d7751ec030e1959f3f5a11e99eddeb683703f571998d1530"
+      },
+      "started_at": "2026-10-11T09:26:35.912145+00:00",
+      "wrapper_command": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "mvp"
+      ]
+    }
+  ],
+  "worker_commit": null
+}

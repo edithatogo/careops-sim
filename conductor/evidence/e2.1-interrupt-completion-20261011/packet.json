@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.1.interrupt.fixtures",
+  "task_id": "E2.1",
+  "target_repo": ".",
+  "base_commit": "66d3d7eace2023a671116cf56cfa875e6f3820ef",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Exact16positive8negative interruption/handover specifications with baseline/mutation/repair;24 native-unbound rows, explicit single-sample work and separate claim histories",
+  "context_paths": [
+    ".artifacts/mvp/E2.1.interrupt.fixtures/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/ed/e2-interrupt-fixture-contract.md": "4f633c4395f5e7be1c8154d3c294174211223457ba5de72e4deddf9922d9e2ad",
+    "conductor/design/ed/e2-staff-fixture-contract.md": "6769291979dcca76133672dbfdb42a22265ac3852247f96d65a4ee2a46c40a81",
+    ".artifacts/e21-interrupt/record_gate.py": "32b758c5e798e73dfbd57ac25f2da4eef4b85f37d24836b4b5777a7b2772d116",
+    "tests/test_e21_staff.py": "4ffecb16a4349541a202f5a6378a466dcdd840d31321de9b3d3309c84389071a",
+    "conductor/evidence/e2.1-staff-completion-20261011/acceptance.json": "0e1cec270b8e27838b864efad4ed2bb4f4c3b9d30961b3b70e149137b4114f2c",
+    "rust-toolchain.toml": "bd56168b72794297e8f07cd1ca1357cba26ad1cee0d05e1ab38a1cb8c8ad3b28",
+    ".artifacts/mvp/E2.1.interrupt.fixtures/context.md": "6e8a5b7282e263bffd516957180d43c2d0a29da48a13f2c24a2d118a4d2f4b06"
+  },
+  "write_paths": [
+    "conductor/design/ed/e2-interrupt.json",
+    "tests/test_e21_interrupt.py",
+    "conductor/design/ed/e2-interrupt-crosswalk.md",
+    ".artifacts/mvp/E2.1.interrupt.fixtures/result.json",
+    ".artifacts/mvp/E2.1.interrupt.fixtures/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "E2.1.staff"
+  ],
+  "interface_contract": "conductor/design/ed/e2-interrupt-fixture-contract.md",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "fixtures"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Nonzero focused checks;24exactcases; consent/calendar/work/claim and !i32oracles; allnativebindingsunbound"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "context"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All evidence links/context valid"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e21-interrupt/record_gate.py",
+        "mvp"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Recipe dependencies and integrity unchanged"
+    }
+  ],
+  "acceptance": [
+    "Clinical task policy and resource consent both required; work accounting conserved",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/E2.1.interrupt.fixtures/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root with GPT-6.1-sol contract review; local gate capture independently reviewed before dispatch",
+    "reservation_id": "66915386305d475090e722c9f81e025d",
+    "instance_id": "fixtures",
+    "instance_set": [
+      "fixtures"
+    ],
+    "instance_scope": "Exact16positive8negative interruption/handover specifications with baseline/mutation/repair;24 native-unbound rows, explicit single-sample work and separate claim histories",
+    "interface_contract": "conductor/design/ed/e2-interrupt-fixture-contract.md",
+    "context_slices": [
+      {
+        "path": "conductor/design/ed/e2-interrupt-fixture-contract.md",
+        "start": 1,
+        "end": 119
+      },
+      {
+        "path": "conductor/design/ed/e2-staff-fixture-contract.md",
+        "start": 1,
+        "end": 82
+      },
+      {
+        "path": ".artifacts/e21-interrupt/record_gate.py",
+        "start": 1,
+        "end": 70
+      }
+    ],
+    "input_paths": [
+      "conductor/design/ed/e2-interrupt-fixture-contract.md",
+      "conductor/design/ed/e2-staff-fixture-contract.md",
+      "tests/test_e21_staff.py",
+      "conductor/evidence/e2.1-staff-completion-20261011/acceptance.json",
+      ".artifacts/e21-interrupt/record_gate.py",
+      "rust-toolchain.toml"
+    ],
+    "write_paths": [
+      "conductor/design/ed/e2-interrupt.json",
+      "tests/test_e21_interrupt.py",
+      "conductor/design/ed/e2-interrupt-crosswalk.md",
+      ".artifacts/mvp/E2.1.interrupt.fixtures/result.json",
+      ".artifacts/mvp/E2.1.interrupt.fixtures/logs"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "python3",
+          "-B",
+          ".artifacts/e21-interrupt/record_gate.py",
+          "fixtures"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Nonzero focused checks;24exactcases; consent/calendar/work/claim and !i32oracles; allnativebindingsunbound"
+      },
+      {
+        "argv": [
+          "python3",
+          "-B",
+          ".artifacts/e21-interrupt/record_gate.py",
+          "context"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "All evidence links/context valid"
+      },
+      {
+        "argv": [
+          "python3",
+          "-B",
+          ".artifacts/e21-interrupt/record_gate.py",
+          "mvp"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Recipe dependencies and integrity unchanged"
+      }
+    ],
+    "prerequisite_receipts": {
+      "E2.1.staff": {
+        "status": "accepted",
+        "reviewer": "root and GPT-6.1-sol",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/e2.1-staff-completion-20261011/acceptance.json": "0e1cec270b8e27838b864efad4ed2bb4f4c3b9d30961b3b70e149137b4114f2c"
+        }
+      }
+    },
+    "reviewed_recipe_sha256": "01c37e849e0c623acf144fb2d8d429a860f1ebaf8af80ca5a2bd54bfc098d380"
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "ede7e318d02958c427d1381ab9a3cae6318ccd41a151f3b3b4fe74020afea119",
+    "conductor/design/ed/e2-interrupt-fixture-contract.md": "4f633c4395f5e7be1c8154d3c294174211223457ba5de72e4deddf9922d9e2ad",
+    "conductor/design/ed/e2-staff-fixture-contract.md": "6769291979dcca76133672dbfdb42a22265ac3852247f96d65a4ee2a46c40a81",
+    ".artifacts/e21-interrupt/record_gate.py": "32b758c5e798e73dfbd57ac25f2da4eef4b85f37d24836b4b5777a7b2772d116",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}

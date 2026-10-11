@@ -66,5 +66,6 @@ E1.3 offers and boarding accepted: [boarding evidence](evidence/e1.3-boarding-co
 Exits including optional abandonment accepted: [joined evidence](evidence/e1.3-exits-completion-20261011/README.md).
 Parallel horizon fixture/composition qualification and E1.4 manual audit accepted: [E1 phase closeout](evidence/e1.4-closeout-20261011/README.md).
 E2.1 staff/calendar specifications accepted: [evidence](evidence/e2.1-staff-completion-20261011/acceptance.json).
-Interruption/handover specifications are running; native E2 runtime and MVP remain open.
+Interruption/handover specifications accepted: [evidence](evidence/e2.1-interrupt-completion-20261011/acceptance.json).
+Space/cleaning/reservation specifications are next; native E2 runtime and MVP remain open.
 The user has renewed autonomous continuation across task and phase boundaries; MVP and subsequent delivery gates remain open.

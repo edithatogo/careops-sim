@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T08:57:03.215674+00:00",
+  "updated_at": "2026-10-11T09:30:24.137916+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "E2.1.staff32specifications accepted after114 combined Pythonchecks; dispatch E2.1.interrupt24specifications then space32. Prepare reviewed Track03 resource grant-gate +checkpoint compatibility and parent single-FlowRuntime migration contract before E2.2. Continue full delivery.",
+  "next_action": "E2.1 staff and interruption specifications accepted. Dispatch the 32 space specifications next, using a reviewed representative case before expansion. Then prepare owner-approved E2.2 gate/checkpoint and single-runtime integration packets; continue full delivery.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1301,10 +1301,8 @@
     "status": "active",
     "automation_id": "careops-autonomous-delivery-continuation",
     "scope": "Continue through successive delivery tasks/phases; no milestone-only goal completion",
-    "current_leaf": "E2.1.interrupt",
+    "current_leaf": "E2.1.space",
     "next_chain": [
-      "E2.1.staff",
-      "E2.1.interrupt",
       "E2.1.space",
       "E2.2",
       "E2.3",
@@ -1369,7 +1367,7 @@
     "ordering": "Pending disable blocks every same-tick allocation; explicit enable follows parent admission phase; no general tick-batching API required for frozen oracles"
   },
   "e21_interrupt_dispatch": {
-    "status": "running_specifications_native_unbound",
+    "status": "accepted_specifications_native_unbound",
     "packet": "E2.1.interrupt.fixtures",
     "base": "66d3d7eace2023a671116cf56cfa875e6f3820ef",
     "worker": "e21_interrupt",
@@ -1378,5 +1376,10 @@
     "reviewer": "root and GPT-6.1-sol",
     "gate_capture_sha256": "32b758c5e798e73dfbd57ac25f2da4eef4b85f37d24836b4b5777a7b2772d116",
     "native_binding": "unbound until E2.2"
+  },
+  "e21_interrupt_acceptance": {
+    "evidence": "conductor/evidence/e2.1-interrupt-completion-20261011/acceptance.json",
+    "source_commit": "7f8a2cc4a60e24423fc8e2bdad4fedfba63c0b26",
+    "native_binding": "unbound"
   }
 }
