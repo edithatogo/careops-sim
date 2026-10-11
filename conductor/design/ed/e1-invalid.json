@@ -1,0 +1,908 @@
+{
+  "fixture_version": 1,
+  "family": "invalid",
+  "provenance": "synthetic_test_only",
+  "time_unit": "tick",
+  "runtime_status": "unbound",
+  "cases": [
+    {
+      "case_id": "invalid.acuity_invalid",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 6,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "acuity_invalid",
+        "offending_path": "acuity",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Synthetic acuity must be an integer from 1 through 5."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for acuity_invalid; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.arrival_at_horizon",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 10,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "arrival_out_of_range",
+        "offending_path": "arrival_tick",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Arrivals must be in the half-open interval [0, horizon)."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for arrival_at_horizon; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.capacity_inconsistent",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 2,
+            "open_count": 3,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "capacity_inconsistent",
+        "offending_path": "resources.triage.open_count",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Staffed count cannot exceed open count, and open count cannot exceed physical count."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for capacity_inconsistent; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.capacity_open_zero",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 0,
+            "staffed_count": 0,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "task": "triage_task",
+            "required_class": "nurse",
+            "zone": "ed",
+            "duration": 2
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "capacity_invalid",
+        "offending_path": "resources.triage.open_count",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Resource physical, open and staffed counts must be positive integers."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for capacity_open_zero; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.capacity_staffed_over_open",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 3,
+            "open_count": 2,
+            "staffed_count": 3,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "task": "triage_task",
+            "required_class": "nurse",
+            "zone": "ed",
+            "duration": 2
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "capacity_inconsistent",
+        "offending_path": "resources.triage.staffed_count",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Staffed count cannot exceed open count, and open count cannot exceed physical count."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for capacity_staffed_over_open; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.capacity_staffed_zero",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 0,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "task": "triage_task",
+            "required_class": "nurse",
+            "zone": "ed",
+            "duration": 2
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "capacity_invalid",
+        "offending_path": "resources.triage.staffed_count",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Resource physical, open and staffed counts must be positive integers."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for capacity_staffed_zero; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.capacity_unknown",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": null,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "capacity_invalid",
+        "offending_path": "resources.triage.physical_count",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Resource physical, open and staffed counts must be positive integers."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for capacity_unknown; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.capacity_zero",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 0,
+            "open_count": 0,
+            "staffed_count": 0,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "capacity_invalid",
+        "offending_path": "resources.triage.physical_count",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Resource physical, open and staffed counts must be positive integers."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for capacity_zero; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.duration_nonpositive",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 0,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "duration_invalid",
+        "offending_path": "stages[0].duration",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Stage work durations must be positive."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for duration_nonpositive; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.eligibility_missing",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": []
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "eligibility_missing",
+        "offending_path": "stages[0].resource",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "The task must declare an eligible resource matching its required class and zone."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for eligibility_missing; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.horizon_nonpositive",
+      "inputs": {
+        "horizon": 0,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "time_domain_invalid",
+        "offending_path": "horizon",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Horizon must be a positive integer."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for horizon_nonpositive; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.patient_id_duplicate",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "patient_ids": [
+          "p1",
+          "p1"
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "patient_identity_invalid",
+        "offending_path": "patient_ids",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Patient identifiers must be unique and stable."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for patient_id_duplicate; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.resource_class_incompatible",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "porter",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "resource_class_incompatible",
+        "offending_path": "stages[0].required_class",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "The selected resource class must satisfy the stage requirement."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for resource_class_incompatible; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.resource_unresolved",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "missing",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "resource_unresolved",
+        "offending_path": "stages[0].resource",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Every stage resource reference must resolve."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for resource_unresolved; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.stage_disordered",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "assessment",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          },
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "stage_sequence_invalid",
+        "offending_path": "stages",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Finite pathway stages must follow triage, assessment, optional diagnostics, treatment order."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for stage_disordered; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.stage_repeated",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          },
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "triage_task",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "stage_sequence_invalid",
+        "offending_path": "stages",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Finite pathway stages cannot repeat."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for stage_repeated; rejects before mutable pathway execution."
+    },
+    {
+      "case_id": "invalid.task_unresolved",
+      "inputs": {
+        "horizon": 10,
+        "patient_id": "p1",
+        "arrival_tick": 1,
+        "acuity": 3,
+        "resources": {
+          "triage": {
+            "class": "nurse",
+            "physical_count": 1,
+            "open_count": 1,
+            "staffed_count": 1,
+            "zone": "ed"
+          }
+        },
+        "stages": [
+          {
+            "name": "triage",
+            "resource": "triage",
+            "required_class": "nurse",
+            "duration": 2,
+            "task": "missing",
+            "zone": "ed"
+          }
+        ],
+        "tasks": {
+          "triage_task": {
+            "required_class": "nurse",
+            "zone": "ed",
+            "eligible_resources": [
+              "triage"
+            ]
+          }
+        },
+        "patient_ids": [
+          "p1"
+        ]
+      },
+      "expected": {
+        "validation": "reject_before_scheduling",
+        "diagnostic_category": "task_unresolved",
+        "offending_path": "stages[0].task",
+        "invariants": [
+          "no_events_scheduled",
+          "no_patient_state_created"
+        ],
+        "detail": "Every stage task reference must resolve."
+      },
+      "runtime_owner": "E1.2",
+      "purpose": "Synthetic invalid-input oracle for task_unresolved; rejects before mutable pathway execution."
+    }
+  ]
+}
