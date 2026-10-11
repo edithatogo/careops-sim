@@ -1,5 +1,5 @@
 {
-  "status": "exits_join_accepted_horizon_preparation",
+  "status": "horizon_parallel_dispatch_authorized",
   "coordinator": "root",
   "current_leaf": "E1.3.horizon",
   "contract": "conductor/design/ed/e1-offers-contract.md",
@@ -94,6 +94,46 @@
   "exits_native_acceptance": "conductor/evidence/e1.3-exits-native-20261011/acceptance.json",
   "exits_acceptance": "conductor/evidence/e1.3-exits-completion-20261011/acceptance.json",
   "horizon_required_instances": [
+    "fixtures",
+    "composition"
+  ],
+  "horizon_dispatches": [
+    {
+      "instance": "fixtures",
+      "owner": "e1_extreme_preparation",
+      "model": "gpt-6-luna",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-horizon-fixtures-20261011",
+      "base_commit": "42d2cf2304b8f35b65a11705865764ffeda29151",
+      "packet": ".artifacts/packets/E1.3.horizon.fixtures.json",
+      "source_paths": [
+        "crates/careops-ed/tests/e13_native_fixture_join.rs"
+      ],
+      "instance_set": [
+        "fixtures",
+        "composition"
+      ],
+      "checks": "full package with actual traces, strict Clippy, owned rustfmt; Rust1.99.0",
+      "status": "dispatch_authorized"
+    },
+    {
+      "instance": "composition",
+      "owner": "e1_endpoint_preparation",
+      "model": "gpt-6-luna",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-horizon-composition-20261011",
+      "base_commit": "42d2cf2304b8f35b65a11705865764ffeda29151",
+      "packet": ".artifacts/packets/E1.3.horizon.composition.json",
+      "source_paths": [
+        "crates/careops-ed/tests/e13_arrival_terminal_composition.rs"
+      ],
+      "instance_set": [
+        "fixtures",
+        "composition"
+      ],
+      "checks": "full package with actual traces, strict Clippy, owned rustfmt; Rust1.99.0",
+      "status": "dispatch_authorized"
+    }
+  ],
+  "horizon_integration_order": [
     "fixtures",
     "composition"
   ]
