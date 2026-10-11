@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "authority": "User explicitly commissioned C5 and three GPT-6-luna workers, Rust1.99 only",
+  "coordinator": "root",
+  "packets": [
+    {
+      "schema_version": 1,
+      "packet_id": "C5.study.v1",
+      "task_id": "C5.2",
+      "target_repo": ".",
+      "base_commit": "b9184fab525571d60301449282b8757598b5789a",
+      "objective": "Implement ADR-0022 study leaf with behavior fixtures",
+      "context_paths": [
+        "conductor/design/calibration/ADR-0022-c5-study-runner.md",
+        "AGENTS.md"
+      ],
+      "input_hashes": {
+        "conductor/design/calibration/ADR-0022-c5-study-runner.md": "b240f81674eb66dfe6d73557b138f0ff25ad9d08effe2162aba84ab9c226216c",
+        "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35"
+      },
+      "write_paths": [
+        "crates/kairo-ecs-calibration/src/c5_study.rs",
+        "crates/kairo-ecs-calibration/src/c5_study_tests.rs",
+        ".artifacts/c5-study"
+      ],
+      "protected_paths": [
+        ".git",
+        "Cargo.lock",
+        "Cargo.toml",
+        "crates/kairo-ecs-calibration/src/lib.rs"
+      ],
+      "leaf_dependencies": [
+        "C3 accepted",
+        "C4 accepted",
+        "ADR-0022 reviewed"
+      ],
+      "interface_contract": "conductor/design/calibration/ADR-0022-c5-study-runner.md",
+      "steps": [
+        "Validate exact base and contract",
+        "Add focused behavior fixtures; implement contract",
+        "Record scope and actual command outputs; one commit and release"
+      ],
+      "verification": [
+        {
+          "argv": [
+            "cargo",
+            "test",
+            "--locked",
+            "-p",
+            "kairo-ecs-calibration",
+            "c5_study",
+            "--features",
+            "flow"
+          ],
+          "cwd": ".",
+          "expected_exit": 0,
+          "oracle": "ADR-0022 focused behavior oracles; blocked join stays unverified"
+        },
+        {
+          "argv": [
+            "git",
+            "diff",
+            "--check"
+          ],
+          "cwd": ".",
+          "expected_exit": 0,
+          "oracle": "No whitespace errors"
+        }
+      ],
+      "acceptance": [
+        "Independent coordinator review required",
+        "No self acceptance or task checkbox mutation"
+      ],
+      "result_path": ".artifacts/c5-study/result.json",
+      "stop_conditions": [
+        "Input/base drift",
+        "Out of scope edit",
+        "Undefined interface or failing shared prerequisite"
+      ],
+      "status": "prepared",
+      "model_candidate": "gpt-6-luna",
+      "context_budget_bytes": 24000,
+      "size_exception": "CLI has four source paths plus generated logs; local target cache lives inside its artifact path",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c5-study-20261011",
+      "toolchain": "1.99.0",
+      "runtime_env": {
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c5-study-20261011/.artifacts/c5-study/target"
+      }
+    },
+    {
+      "schema_version": 1,
+      "packet_id": "C5.workers.v1",
+      "task_id": "C5.4",
+      "target_repo": ".",
+      "base_commit": "b9184fab525571d60301449282b8757598b5789a",
+      "objective": "Implement ADR-0022 workers leaf with behavior fixtures",
+      "context_paths": [
+        "conductor/design/calibration/ADR-0022-c5-study-runner.md",
+        "AGENTS.md"
+      ],
+      "input_hashes": {
+        "conductor/design/calibration/ADR-0022-c5-study-runner.md": "b240f81674eb66dfe6d73557b138f0ff25ad9d08effe2162aba84ab9c226216c",
+        "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35"
+      },
+      "write_paths": [
+        "crates/kairo-ecs-cli/src/c5_workers.rs",
+        ".artifacts/c5-workers"
+      ],
+      "protected_paths": [
+        ".git",
+        "Cargo.lock",
+        "Cargo.toml",
+        "crates/kairo-ecs-calibration/src/lib.rs"
+      ],
+      "leaf_dependencies": [
+        "C3 accepted",
+        "C4 accepted",
+        "ADR-0022 reviewed"
+      ],
+      "interface_contract": "conductor/design/calibration/ADR-0022-c5-study-runner.md",
+      "steps": [
+        "Validate exact base and contract",
+        "Add focused behavior fixtures; implement contract",
+        "Record scope and actual command outputs; one commit and release"
+      ],
+      "verification": [
+        {
+          "argv": [
+            "cargo",
+            "test",
+            "--locked",
+            "-p",
+            "kairo-ecs-cli",
+            "c5_workers"
+          ],
+          "cwd": ".",
+          "expected_exit": 0,
+          "oracle": "ADR-0022 focused behavior oracles; blocked join stays unverified"
+        },
+        {
+          "argv": [
+            "git",
+            "diff",
+            "--check"
+          ],
+          "cwd": ".",
+          "expected_exit": 0,
+          "oracle": "No whitespace errors"
+        }
+      ],
+      "acceptance": [
+        "Independent coordinator review required",
+        "No self acceptance or task checkbox mutation"
+      ],
+      "result_path": ".artifacts/c5-workers/result.json",
+      "stop_conditions": [
+        "Input/base drift",
+        "Out of scope edit",
+        "Undefined interface or failing shared prerequisite"
+      ],
+      "status": "prepared",
+      "model_candidate": "gpt-6-luna",
+      "context_budget_bytes": 24000,
+      "size_exception": "CLI has four source paths plus generated logs; local target cache lives inside its artifact path",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c5-workers-20261011",
+      "toolchain": "1.99.0",
+      "runtime_env": {
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c5-workers-20261011/.artifacts/c5-workers/target"
+      }
+    },
+    {
+      "schema_version": 1,
+      "packet_id": "C5.cli.v1",
+      "task_id": "C5.3",
+      "target_repo": ".",
+      "base_commit": "b9184fab525571d60301449282b8757598b5789a",
+      "objective": "Implement ADR-0022 cli leaf with behavior fixtures",
+      "context_paths": [
+        "conductor/design/calibration/ADR-0022-c5-study-runner.md",
+        "AGENTS.md"
+      ],
+      "input_hashes": {
+        "conductor/design/calibration/ADR-0022-c5-study-runner.md": "b240f81674eb66dfe6d73557b138f0ff25ad9d08effe2162aba84ab9c226216c",
+        "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35"
+      },
+      "write_paths": [
+        "crates/kairo-ecs-cli/src/main.rs",
+        "crates/kairo-ecs-cli/src/scenario.rs",
+        "crates/kairo-ecs-cli/src/c5_cli.rs",
+        "crates/kairo-ecs-cli/tests/c5_cli.rs",
+        ".artifacts/c5-cli"
+      ],
+      "protected_paths": [
+        ".git",
+        "Cargo.lock",
+        "Cargo.toml",
+        "crates/kairo-ecs-calibration/src/lib.rs"
+      ],
+      "leaf_dependencies": [
+        "C3 accepted",
+        "C4 accepted",
+        "ADR-0022 reviewed"
+      ],
+      "interface_contract": "conductor/design/calibration/ADR-0022-c5-study-runner.md",
+      "steps": [
+        "Validate exact base and contract",
+        "Add focused behavior fixtures; implement contract",
+        "Record scope and actual command outputs; one commit and release"
+      ],
+      "verification": [
+        {
+          "argv": [
+            "cargo",
+            "test",
+            "--locked",
+            "-p",
+            "kairo-ecs-cli",
+            "c5"
+          ],
+          "cwd": ".",
+          "expected_exit": 0,
+          "oracle": "ADR-0022 focused behavior oracles; blocked join stays unverified"
+        },
+        {
+          "argv": [
+            "git",
+            "diff",
+            "--check"
+          ],
+          "cwd": ".",
+          "expected_exit": 0,
+          "oracle": "No whitespace errors"
+        }
+      ],
+      "acceptance": [
+        "Independent coordinator review required",
+        "No self acceptance or task checkbox mutation"
+      ],
+      "result_path": ".artifacts/c5-cli/result.json",
+      "stop_conditions": [
+        "Input/base drift",
+        "Out of scope edit",
+        "Undefined interface or failing shared prerequisite"
+      ],
+      "status": "prepared",
+      "model_candidate": "gpt-6-luna",
+      "context_budget_bytes": 24000,
+      "size_exception": "CLI has four source paths plus generated logs; local target cache lives inside its artifact path",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c5-cli-20261011",
+      "toolchain": "1.99.0",
+      "runtime_env": {
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c5-cli-20261011/.artifacts/c5-cli/target"
+      }
+    }
+  ],
+  "learning_applied": "reserve-nested-test-artifacts; targeted generated output paths and per-worker caches reserved",
+  "status": "implementation_in_progress; no phase acceptance"
+}
