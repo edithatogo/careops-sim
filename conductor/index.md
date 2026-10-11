@@ -100,3 +100,5 @@ Public Flow preview source dispatched after reviewed API design: [bounded packet
 Public Flow preview source qualification accepted at the reviewed Kairos head: [evidence archive](evidence/e2.2-public-flow-preview-completion-20261012/README.md). The parent pin remains unchanged pending queue-order/ABM contracts and native work, versioned persistence, and joined consumer qualification.
 
 Native DES stable queue ordering and ABM arrival handoff accepted at the joined Kairos head: [Rust 1.99 evidence](evidence/e2.2-native-order-handoff-completion-20261012/README.md). Flow V4 and Transit V2 owner contracts are committed; native persistence packets are in review. Persistence, joined consumers, parent pin and ED integration remain open.
+
+Native Flow V4 and Transit V2 persistence workers dispatched in parallel: [reviewed packets](evidence/e2.2-native-persistence-dispatch-20261012/README.md). Native source qualification is pending; each wire stage follows its own accepted predecessor.

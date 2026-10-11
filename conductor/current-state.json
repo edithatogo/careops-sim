@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T20:22:43.893418+00:00",
+  "updated_at": "2026-10-11T20:28:57.708538+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "Native DES stable queue ordering and ABM arrival handoff are accepted at ef20ae54b73dc47d59250c9b073c063311704413. Flow V4 and Transit V2 contracts are committed at e170d712204d80f76eb600af9f3744f3f7f0af31; review and dispatch disjoint native persistence packets, then wire/routing and joined consumer qualification. Parent pin remains unchanged until those gates pass, followed by one Flow ED adapter, all 88 fixture bindings and remaining delivery phases.",
+  "next_action": "Two Luna workers implement native DES Flow V4 and ABM Transit V2 persistence in separate claimed worktrees at e170d712204d80f76eb600af9f3744f3f7f0af31. Root integrates; GPT-6.1-sol reviews frozen changes and prepares wire successors. Advance each wire stage after its own native acceptance; joined consumers, parent pin, one Flow ED adapter and 88 fixture bindings follow accepted prerequisites. Stop any failed gate for bounded root review; preserve all failures.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1732,7 +1732,7 @@
     "boundary": "Persistence, parent pin, ED integration, clinical/empirical acceptance and release remain open."
   },
   "e22_persistence_contracts": {
-    "status": "accepted_owner_contracts_only_native_packets_in_review",
+    "status": "accepted_owner_contracts_native_source_dispatched",
     "head": "e170d712204d80f76eb600af9f3744f3f7f0af31",
     "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-native-persistence-contracts-20261012",
     "contracts": [
@@ -1740,5 +1740,53 @@
       "conductor/design/des/ADR-e2-transit-context-v2.md"
     ],
     "next": "Separate native DES and ABM workers; wire follows native acceptance within each crate; joined consumers follow accepted interfaces."
+  },
+  "e22_native_persistence_dispatch": {
+    "status": "parallel_native_persistence_source_dispatched_not_accepted",
+    "evidence": "conductor/evidence/e2.2-native-persistence-dispatch-20261012/dispatch.json",
+    "workers": {
+      "DES": {
+        "status": "source_dispatched_not_accepted",
+        "worker": "/root/e22_dispatch",
+        "requested_model": "gpt-6-luna",
+        "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012",
+        "base_commit": "e170d712204d80f76eb600af9f3744f3f7f0af31",
+        "packet": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/.artifacts/e22-flow-v4-native-20261012/dispatch/packet.json",
+        "packet_sha256": "ede80272026dfa42a0bcf225f0f49c89f3eed2ef9e3c64364855e57ded851b5a",
+        "driver_sha256": "09ac057601e8725513af9e0eae7570fb481c7a06f7f49f65761728894bc4d30b",
+        "write_paths": [
+          "crates/kairo-ecs-des/src/flow.rs",
+          "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+          "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs",
+          "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs",
+          ".artifacts/e22-flow-v4-native-20261012/dispatch/logs"
+        ],
+        "result_path": ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/result.json",
+        "review": "Root and GPT-6.1-sol approved exact packet before source dispatch",
+        "failure_policy": "Stop each failed gate for root review; three failed development gates maximum; no automatic retries",
+        "commit_policy": "No commit before frozen root and independent source review"
+      },
+      "ABM": {
+        "status": "source_dispatched_not_accepted",
+        "worker": "/root/v3_portable_consumer",
+        "requested_model": "gpt-6-luna",
+        "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012",
+        "base_commit": "e170d712204d80f76eb600af9f3744f3f7f0af31",
+        "packet": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/.artifacts/e22-transit-context-v2-native-20261012/dispatch/packet.json",
+        "packet_sha256": "c365b992632e10a1345a67e984f189597582618de62a1670b80c14b8ef88ce11",
+        "driver_sha256": "113e8ae078625af80b978e256806b9cfa94a9b7bf18908bd7286638fb6b04493",
+        "write_paths": [
+          "crates/kairo-ecs-abm/src/flow_adapter.rs",
+          "crates/kairo-ecs-abm/src/lib.rs",
+          "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs",
+          ".artifacts/e22-transit-context-v2-native-20261012/result.json",
+          ".artifacts/e22-transit-context-v2-native-20261012/logs"
+        ],
+        "result_path": ".artifacts/e22-transit-context-v2-native-20261012/result.json",
+        "review": "Root and GPT-6.1-sol approved exact packet before source dispatch",
+        "failure_policy": "Stop each failed gate for root review; three failed development gates maximum; no automatic retries",
+        "commit_policy": "No commit before frozen root and independent source review"
+      }
+    }
   }
 }

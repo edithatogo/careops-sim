@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.transit-context-v2.native-20261012",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "e170d712204d80f76eb600af9f3744f3f7f0af31",
+  "objective": "Implement and qualify the reviewed native TransitContext V2 typed DTO/capture/restore contract only.",
+  "context_paths": [
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/context.txt"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "CONTRIBUTING.md": "2d9160e4bdbf723f654536bf9c439ff41f79a893130ad499d66e015e26bff622",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "README.md": "900dd6ad75ee2fd9a16082ff7781ff3168f11a68fbbd5286248944e4b779943c",
+    "conductor/contracts/conformance-contract.md": "16272c7d1b72f7c5ffa8c7f1e377898aadd47be4da6d2b0153fe6d962ed3b29f",
+    "conductor/contracts/core-contract.md": "44b5742da39b522cdb44ecd6c942d0c00335c8d7b7992afb7c02c7e8ed0d9ed4",
+    "conductor/design/des/ADR-e2-transit-arrival-handoff.md": "2476485c4b8d6c6d00c831978a72be0aa5463dee55d1e174c0a30508bcabb61e",
+    "conductor/design/des/ADR-e2-transit-context-v2.md": "95561b9c5809cc3d54c0cde10be629136415aed269ccdeb650462d9897bad3d2",
+    "conductor/design/des/e2-transit-arrival-handoff-native.md": "5bdb924b6e7e71990f043d40859ae071ad0f42c9db893fe6b419b248f6a2d712",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/handoff.md": "6761badd0cc011acdb2619a8074fdf1d4f205924d235dae2a7c68218692c1cb9",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/plan.md": "b0f8f58f53d1b4c2ab8935237bbc9a2a457dbc307f3205a816f932fefc6f357e",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/spec.md": "c0f7dae80e0cbdf0809c0d57ed5aac53dc23d0b009869b665805bee3424eaf25",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/test-matrix.md": "89f0640af05271950437731db876c4c3370154aa7baaa7139bf3ed0d67e2e675",
+    "crates/kairo-ecs-abm/Cargo.toml": "af495c37b2c3dfa6b40d85863933adf647feec0691a5bd26a01e22f1285714cd",
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "8479e54d6bca19f5d71eeab7a1623198968cad6bb0006d7dd9933e537b3f5384",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v1.rs": "8de74a6d9da9f347ce631d774216be325b93031b6a47e76a3b388e962fdbcaa8",
+    "crates/kairo-ecs-des/Cargo.toml": "9f5a852926de2bb795da29f203d2101bbedc5f712f65197c5d5812fe011df816",
+    "crates/kairo-ecs-des/src/flow.rs": "0da9e026e0875960f69333bc3bbcca53a30290969511d71f9582a8f6ae515d92",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4c84d368bdd2a90b2a46a1e5cab70f3b963cff0729a8699eb1475104b53249ae",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/context.txt": "74e5a09b34536e2c256903310bdcac07944d8cd815edee6705f4d27a34fbefb8",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/record_gate.py": "113e8ae078625af80b978e256806b9cfa94a9b7bf18908bd7286638fb6b04493"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-abm/src/flow_adapter.rs",
+    "crates/kairo-ecs-abm/src/lib.rs",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs",
+    ".artifacts/e22-transit-context-v2-native-20261012/result.json",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs"
+  ],
+  "protected_paths": [
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/context.txt",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/packet.json",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/record_gate.py",
+    "AGENTS.md",
+    "CONTRIBUTING.md",
+    "Cargo.lock",
+    "Cargo.toml",
+    "README.md",
+    "conductor/contracts/conformance-contract.md",
+    "conductor/contracts/core-contract.md",
+    "conductor/design/des/ADR-e2-transit-arrival-handoff.md",
+    "conductor/design/des/ADR-e2-transit-context-v2.md",
+    "conductor/design/des/e2-transit-arrival-handoff-native.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/handoff.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/plan.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/spec.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/test-matrix.md",
+    "crates/kairo-ecs-abm/Cargo.toml",
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v1.rs",
+    "crates/kairo-ecs-des/Cargo.toml",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "rust-toolchain.toml"
+  ],
+  "leaf_dependencies": [
+    "accepted-native-arrival-handoff",
+    "accepted-joined-native-order-handoff"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-transit-context-v2.md;conductor/design/des/ADR-e2-transit-arrival-handoff.md",
+  "steps": [
+    "Verify exact base/source hashes, absent new test path, bound inputs, durable native archive acceptance, joined native result and root dispatch authority before editing.",
+    "Implement only the typed native V2 DTO/action/witness and native capture/restore API in the two ABM Rust sources.",
+    "Add actual native DTO capture/restore proofs in the new ABM integration test. Preserve V1 and do not add wire/codec methods.",
+    "Format owned Rust files before the exact ordered packet gates; any failure stops for root review. Do not retry or repair until root publishes a fresh GO authority matching the failed receipt list."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-transit-context-v2-native-20261012/dispatch/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Pinned Rust/Cargo 1.99 strict all-target Clippy passes for kairo-ecs-abm at unchanged source hashes."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-transit-context-v2-native-20261012/dispatch/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Full kairo-ecs-abm package tests pass with all ten exact TransitContext V2 native names and unchanged V1 tests."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-transit-context-v2-native-20261012/dispatch/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Rustfmt check passes on exactly the three owned Rust paths."
+    }
+  ],
+  "acceptance": [
+    "Typed DTO fields and action/witness variants match the committed ADR exactly.",
+    "Native restore enforces the ADR validation order, current Handoff work binding, historical issued event and ticket joins, bounds and phase rules.",
+    "All ten named native V2 proofs pass; full existing ABM/V1 behavior passes; no wire or codec changes are made.",
+    "Ready_for_review requires three ordered successful gates at unchanged final source hashes."
+  ],
+  "result_path": ".artifacts/e22-transit-context-v2-native-20261012/result.json",
+  "stop_conditions": [
+    "Any HEAD/input/source hash, artifact claim, or root authority drift.",
+    "Any edit beyond the three owned Rust paths.",
+    "Any wire, manifest, codec, V1 layout, DES, calibration, consumer or parent change.",
+    "Missing owner API, semantic mismatch with ADR, unavailable Rust/Cargo 1.99, or any gate failure. A failed gate stops execution for root review; corrections require a fresh root GO authority bound to all failed receipt paths. Preserve all attempts and stop at three failures; no automatic retry."
+  ],
+  "development_failure_limit": 3,
+  "status": "prepared",
+  "size_exception": "Three owned Rust paths plus a separate result and gate logs are required for the native DTO, consumer proofs, and three source gates.",
+  "base_source_hashes": {
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "d0fde5e47b64ae60cb31b2d1904e2f691dd3775139123d5e3f1f74f2a121dbfe",
+    "crates/kairo-ecs-abm/src/lib.rs": "0f96b341a9a138c942840e8a43cf1e75a3ef0268646328484085a887caa52c0e"
+  },
+  "initially_absent_owned_paths": [
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs"
+  ],
+  "external_evidence": {
+    "parent_acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-native-order-handoff-completion-20261012/acceptance.json",
+    "parent_acceptance_sha256": "9d5175eb905e524a6fa87689558c9d5b136090e44f03fddf46a236f4842eadc3",
+    "joined_native_result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-native-order-handoff-qualification-20261012/.artifacts/e22-combined-native-qualification-20261012/result.json",
+    "joined_native_result_sha256": "ae8285021fa7c9ee3adc3e23b587048d58f946db66a21f214f5b391b927b42c6",
+    "joined_native_head": "ef20ae54b73dc47d59250c9b073c063311704413",
+    "accepted_source_commit": "0b004141b5a727ae601d2315cebb6c3732e6fac4",
+    "parent_pin": "6d733f489225da4bf6ceec2673b02369c7918bbe"
+  },
+  "result_contract": {
+    "status": "ready_for_review only when readiness passes; otherwise in_progress",
+    "initial_owned_path_verification": "worker records exact two baseline hashes and confirms the new test file is absent before editing",
+    "base_source_hashes": "exact packet baseline for existing flow_adapter.rs and lib.rs",
+    "owned_source_hashes": "current/final hashes for all three owned Rust paths",
+    "required_test_names": "immutable ten-name native V2 list",
+    "required_success_names": "observed successful required names from terminal tests receipt",
+    "required_success_count": "observed count; zero until tests receipt",
+    "failed_development_attempts": "all failed terminal raw result receipt paths; corrections require root-published GO authority exactly binding the complete failed receipt list",
+    "gate_readiness": "latest Clippy, tests, format receipts all pass in order with matching final source hashes; each terminal receipt binds its started receipt hash and exact immutable argv/cwd/HEAD/toolchain/source set"
+  },
+  "dispatch_authority_path": "/tmp/careops-e22-transit-v2-native-dispatch-authority-20261012.json",
+  "dispatch_authority_contract": {
+    "writer": "root only; worker must not create or edit this file",
+    "required_fields": {
+      "status": "GO",
+      "packet_sha256": "exact current packet bytes",
+      "driver_sha256": "exact current record_gate.py bytes",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012",
+      "base_commit": "e170d712204d80f76eb600af9f3744f3f7f0af31"
+    },
+    "repair_fields": {
+      "repair_authorized": "true only on explicit root GO after a failed gate",
+      "repair_authorized_after_failures": "exact ordered/complete failed terminal receipt paths; empty before any failures"
+    }
+  }
+}
