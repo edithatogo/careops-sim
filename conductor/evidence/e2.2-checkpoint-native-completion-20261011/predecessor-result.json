@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.checkpoint-native",
+  "task_id": "E2.2",
+  "status": "INCOMPLETE",
+  "stopped_at": "stopped_at_correction_limit",
+  "base_commit": "9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea",
+  "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-native-20261011",
+  "source_hashes_at_closeout": {
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "20d31b2d47c31812530b94b31a67bbc4169a4159f4b271b6b6b5864bb8c4b24d",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "b1352148b653b29f1473545d96ff5d4cb67074bf3d89451ce4257ec77d030899",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs": "8c7c79d5e83750ed41f02cd526af6555fda8926db04b6574b6d17de88d757f9d"
+  },
+  "test_receipts": [
+    {
+      "round": "test_first_expected_missing_api",
+      "receipt": ".artifacts/mvp/E2.2.engine.checkpoint-native/logs/tests-1791717376496620000-28362-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.checkpoint-native/logs/tests-1791717376496620000-28362.log",
+      "exit_code": 101,
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "f7db241ad68e7bb2e66ce55eae9d34866ae7b8added624bac421fcd2355db226",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": null,
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs": "a12771a12fa09447ac8d23e91f9bbf526a1f0ef1e864b27cb15bff3e3cbad5da"
+      },
+      "finding": "Expected compile failure: V2 API and DTO were not implemented yet."
+    },
+    {
+      "round": "correction_round_1",
+      "receipt": ".artifacts/mvp/E2.2.engine.checkpoint-native/logs/tests-1791717860069915000-34769-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.checkpoint-native/logs/tests-1791717860069915000-34769.log",
+      "exit_code": 101,
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "2fef3a2e99015ae535a765f80c75c370b4ba7369f6cf80e06b1dbc77822507a9",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "07f39752b6e619125d7fbfaaeaf6ff051e3dc71917ec8df2827d27dfea913634",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs": "a12771a12fa09447ac8d23e91f9bbf526a1f0ef1e864b27cb15bff3e3cbad5da"
+      },
+      "finding": "V2 restore rejected the disabled plus future-enable image because the test join incorrectly required scheduler entity Some(resource). Runtime command convention is entity None; code and test assumption were subsequently changed."
+    },
+    {
+      "round": "correction_round_2_stopped",
+      "receipt": ".artifacts/mvp/E2.2.engine.checkpoint-native/logs/tests-1791718324674084000-40551-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.checkpoint-native/logs/tests-1791718324674084000-40551.log",
+      "exit_code": 101,
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "a26766ea2d32d970d4a94d9d4f6d1fd8125d15194f5654fba9292ec929b56645",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "fc330b9af5d79bc8b09fc0649cd375ab1336fa6b939495166c363fab40f8c306",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs": "099324884879a9140f9c6e8a81da992ee85a15357e7f06626648a29027120c01"
+      },
+      "finding": "V2 suite compiled; 4 of 6 V2 tests passed. legacy_and_v2_native_images_continue_a_common_pending_command_identically failed at line 60 because acquire(resource).submit() omitted a required owner. restored_completion_first_tick_keeps_pending_disable_boundary failed at line 222 because it searched the post-cut tail for a completion already dispatched before capture."
+    },
+    {
+      "round": "repair_attempt_2_test_round_1",
+      "receipt": ".artifacts/mvp/E2.2.engine.checkpoint-native/logs/tests-1791718957365273000-52428-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.checkpoint-native/logs/tests-1791718957365273000-52428.log",
+      "exit_code": 101,
+      "finding": "Package tests compiled. Eight of nine flow_checkpoint_v2 integration tests passed; Suspend continuation failed because run_for(6) crossed the intended cut and low work was Active. The test was changed to stop at the exact saved Disable6 EventId."
+    },
+    {
+      "round": "repair_attempt_2_test_round_2_stopped",
+      "receipt": ".artifacts/mvp/E2.2.engine.checkpoint-native/logs/tests-1791719202070259000-53917-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.checkpoint-native/logs/tests-1791719202070259000-53917.log",
+      "exit_code": 101,
+      "finding": "Library tests: 154 passed, 1 failed, 1 ignored. Private capture-cache test expected stale resource removal to produce InvalidState but assertion failed. Correction limit reached; no further source changes or gates."
+    }
+  ],
+  "partial_test_observations": {
+    "repair_attempt_2_test_round_1": "Full package gate exited 101; 8/9 V2 integration tests passed. The V2 fixture failure was corrected before round 2.",
+    "repair_attempt_2_test_round_2": "Full package gate exited 101 in library tests before integration test execution: 154 passed, 1 failed, 1 ignored. Current private stale-flag cache test failure is recorded in the raw log.",
+    "interpretation": "No complete passing test gate. Clippy and immutable format gates were not run. Source was cargo-formatted before the recorded round-2 gate; no final three-gate same-hash qualification."
+  },
+  "missing_oracles_and_gates": [
+    "Diagnose and repair the private stale grant-cache test only under a new reviewed attempt; current test expects InvalidState after removing a resource while its grant flag remains registered.",
+    "Execute the changed Suspend exact-EventId fixture and all newly added malformed/limit tests after a permitted attempt resumes.",
+    "Complete duplicate-boundary, stale-resource, wrong-event-kind/entity, Remove-conflict, command/registration/key/component/sparse/payload limit, and real codec-control evidence under passing receipts.",
+    "Run the full DES package test gate, strict all-target Clippy, and immutable format gate on identical frozen source hashes.",
+    "Obtain root/Sol review; no acceptance, V2 wire, consumer, full E2, or commit claim is made."
+  ],
+  "workflow_deviation": "Attempt 1 had one early harness heartbeat response that exposed its token in tool output; the token was excluded from evidence. In repair attempt 2, harness stdout/stderr stayed private and only operation labels/numeric return codes were emitted. The second failed test gate reached the authorized correction limit; source work stopped.",
+  "commit": null,
+  "clippy_receipt": null,
+  "format_receipt": null,
+  "review_status": "Awaiting root/Sol review; incomplete and no acceptance claim."
+}

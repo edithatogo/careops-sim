@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.checkpoint-native",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Native lossless V2 DTO/capture/restore and version-aware view/routing through one complete validation pipeline; V1 unchanged; wire/consumer join deferred.",
+  "context_paths": [
+    ".artifacts/mvp/E2.2.engine.checkpoint-native/context.md"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "conductor/design/des/ADR-e2-flow-checkpoint-v2.md": "f1aa471f94e77dfa8fed9b58c5b37d94c0a41bc1cbba80b9a5bd5ae5a8c6c46f",
+    "conductor/design/des/ADR-e2-resource-grant-gate.md": "db6931d18513043814fc7088697b41235ecda582db0b983e210fbe061f2e3742",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "f7db241ad68e7bb2e66ce55eae9d34866ae7b8added624bac421fcd2355db226",
+    "crates/kairo-ecs-des/src/flow.rs": "08fc5f9bd7fe77bd4f0b27cd0b6d6f8d5de9a9f20925ff1794b04cc9d03995c4",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "4b10feb7d505bfdd4810e96d507c5ffa1bac20fd8d3d773e2bf802449a75bb31",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/e22-checkpoint-native/record_gate.py": "19522e9a884788bdba5dc589b0aab9400d061a7700bd74c936d223d2e95d3a12",
+    ".artifacts/mvp/E2.2.engine.checkpoint-native/context.md": "1f8c6554bb07b68b07ed02fc34fc73d4926852d389f0ad4658fe613e198138f1"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs",
+    ".artifacts/mvp/E2.2.engine.checkpoint-native/result.json",
+    ".artifacts/mvp/E2.2.engine.checkpoint-native/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "crates/kairo-ecs-core",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "Cargo.toml",
+    "Cargo.lock"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.grant-gate"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-flow-checkpoint-v2.md",
+  "steps": [
+    "Verify binding/lease and readboundedcontext.",
+    "Report early DTO/Parts/helper and testshapecheckpoint; testsbeforeimplementation.",
+    "Implement native contract with allnativeoracles; no wire or consumer stubs.",
+    "Record allthreegates onfrozenhashes; root/Sol review beforecommit."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-native/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "AllDES package including declarednonzero V2native suite, legacyV1wire and gate regressions."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-native/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strictalltarget DESClippy zero warnings."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-native/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Exact3owned Rust paths formatted without recursivechildren."
+    }
+  ],
+  "acceptance": [
+    "Complete nativeV2 ADR and negative/preflight oracles; existingV1behavior/bytes preserved.",
+    "Fresh independentroot/Sol review; V2wire/consumers/parentbinding remainopen."
+  ],
+  "result_path": ".artifacts/mvp/E2.2.engine.checkpoint-native/result.json",
+  "stop_conditions": [
+    "Base/inputdrift except expectedownedoutputs afterdispatch",
+    "Undefinedinterface or outofscopeedit needed",
+    "Two unsuccessful correction rounds",
+    "Requiredoracle unavailable"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root and GPT-6.1-sol internalTrack03/Track22",
+    "reservation_id": "f363b341fec44532b2a7c463e3da5e72",
+    "qualified_runtime_commit": "9cd9361",
+    "reason_not_mvp_prepare": "Kairos engine prerequisite uses itsown reviewedownerADR and boundedpacket; not an executableparentMVP recipe."
+  }
+}

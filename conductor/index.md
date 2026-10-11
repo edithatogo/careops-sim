@@ -74,3 +74,5 @@ The user has renewed autonomous continuation across task and phase boundaries; M
 E2.2 pure dispatch policy accepted: [native evidence](evidence/e2.2-dispatch-policy-completion-20261011/acceptance.json). Engine/checkpoint/consumer join and E2 native runtime binding remain open.
 
 E2 engine grant-gate runtime qualified: [evidence](evidence/e2.2-engine-grant-gate-runtime-20261011/acceptance.json). Checkpoint V2, consumers and parent native binding remain open.
+
+Native V2 checkpoint acceptance: [local Rust 1.99 evidence](evidence/e2.2-checkpoint-native-completion-20261011/README.md). Wire and consumer qualification remain open.

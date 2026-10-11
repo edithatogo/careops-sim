@@ -1,0 +1,17 @@
+{
+  "reviewer": "GPT-6.1-sol /root/e14_closeout_next",
+  "decision": "pass native-only",
+  "reviewed_result_sha256": "d0c6ca60cabd8e25a79afac99f9d1ac7521fad5995751c8b9efc02cf2d8b6668",
+  "findings_resolved": [
+    "Borrowed count preflight before allocation",
+    "Legacy unsorted resource vectors accepted with canonical flags",
+    "Capture bounds before cache allocation and scheduler snapshot reuse",
+    "Bounded Remove conflict set"
+  ],
+  "assessment": "Shared Parts retain all native state; V1 DTO and wire unchanged; borrowed iterator does not allocate. Continuation, completion-first, Suspend progress, halt, routing, malformed joins/cache and limits controls are meaningful. Thread-local codec counters include positive control. Final receipts match stable source and raw hashes; 320 tests, including 11 V2 integration and 2 private cache tests. Protected flow/wire/manifests unchanged.",
+  "scope_exclusions": [
+    "V2 wire",
+    "calibration consumers",
+    "parent pin and E2 bindings"
+  ]
+}
