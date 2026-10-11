@@ -1,0 +1,3700 @@
+{
+  "schema_version": 1,
+  "suite_id": "E2.1.interrupt.fixtures",
+  "provenance": "synthetic specification; no patient data",
+  "horizon_convention": "integer ticks; half-open intervals; observation clipped at H",
+  "native_binding": {
+    "status": "unbound",
+    "target": "E2.2"
+  },
+  "policy": {
+    "version": 1,
+    "preemption": "Suspend",
+    "priority_mapping": "flow_priority = !urgency (i32 bitwise complement)",
+    "handover_claim_action": "Release exactly once; continuation has new segment ID and same episode/sample lineage",
+    "consent_required": [
+      "incoming_consent",
+      "incumbent_consent",
+      "resource_consent"
+    ],
+    "calendar_order": [
+      "completion_release",
+      "calendar_changes",
+      "interrupt_handover_decisions",
+      "grants"
+    ],
+    "resource_capacity": 1,
+    "sample_once": true,
+    "in_flight_calendar_policy": "DrainActive; active work continues through break/shift end"
+  },
+  "case_ids": [
+    "interrupt.suspend_resume",
+    "interrupt.resource_consent_absent",
+    "interrupt.incumbent_consent_absent",
+    "interrupt.incoming_consent_absent",
+    "interrupt.equal_urgency",
+    "interrupt.completion_tie",
+    "interrupt.break_precedence",
+    "interrupt.shift_precedence",
+    "interrupt.priority_extremes",
+    "interrupt.handover_immediate",
+    "interrupt.handover_wait",
+    "interrupt.handover_completion_tie",
+    "interrupt.handover_not_active",
+    "interrupt.horizon_suspended",
+    "interrupt.horizon_handover",
+    "interrupt.permutation",
+    "interrupt.invalid.unknown_episode",
+    "interrupt.invalid.unknown_incumbent",
+    "interrupt.invalid.unknown_replacement",
+    "interrupt.invalid.wrong_incumbent",
+    "interrupt.invalid.duplicate_handover",
+    "interrupt.invalid.handover_after_horizon",
+    "interrupt.invalid.unsupported_strategy",
+    "interrupt.invalid.handover_consent_absent"
+  ],
+  "cases": [
+    {
+      "case_id": "interrupt.suspend_resume",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "Low [1,4), urgent [4,6), low resumes [6,13); useful work plus remaining stays 10; one sample lineage.",
+      "horizon": 20,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "low",
+            "initial_staff_id": "a",
+            "original_work_ticks": 10,
+            "urgency": 1,
+            "sample_lineage": "sample-low",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-low",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "urgent",
+            "initial_staff_id": "a",
+            "original_work_ticks": 2,
+            "urgency": 2,
+            "sample_lineage": "sample-urgent",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 4,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-urgent",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [
+          {
+            "episode_id": "urgent",
+            "ready_tick": 4,
+            "incoming_consent": true,
+            "urgency": 2,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-urgent",
+            "request_id": "request-urgent",
+            "work_ticks": 2
+          }
+        ],
+        "events": [],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "low",
+            "segment_id": "low-1",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 4,
+            "useful_work_ticks": 3,
+            "remaining_work_at_end": 7,
+            "claim_state": "suspended",
+            "sample_lineage": "sample-low",
+            "claim_history": [
+              "Granted",
+              "Suspended"
+            ]
+          },
+          {
+            "episode_id": "urgent",
+            "segment_id": "urgent-1",
+            "staff_id": "a",
+            "start_tick": 4,
+            "end_tick": 6,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-urgent",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "low",
+            "segment_id": "low-2",
+            "staff_id": "a",
+            "start_tick": 6,
+            "end_tick": 13,
+            "useful_work_ticks": 7,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-low",
+            "claim_history": [
+              "Resumed",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [
+          {
+            "episode_id": "low",
+            "start_tick": 4,
+            "end_tick": 6,
+            "reason": "suspended_remainder",
+            "staff_id": null,
+            "holds_staff_claim": false
+          }
+        ],
+        "interruptions": [
+          {
+            "episode_id": "low",
+            "tick": 4,
+            "strategy": "Suspend",
+            "remaining_work_ticks": 7,
+            "claim_action": "Suspend",
+            "explicit_release": false
+          }
+        ],
+        "handovers": [],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "low",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "urgent",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "allowed",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.resource_consent_absent",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "resource_consent=false prohibits interruption; incumbent completes at 11 before urgent work.",
+      "horizon": 20,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 10,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": false,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "urgent",
+            "initial_staff_id": "a",
+            "original_work_ticks": 2,
+            "urgency": 2,
+            "sample_lineage": "sample-urgent",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 4,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-urgent",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [
+          {
+            "episode_id": "urgent",
+            "ready_tick": 4,
+            "incoming_consent": true,
+            "urgency": 2,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-urgent",
+            "request_id": "request-urgent",
+            "work_ticks": 2
+          }
+        ],
+        "events": [],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-1",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 11,
+            "useful_work_ticks": 10,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "urgent",
+            "segment_id": "urgent-1",
+            "staff_id": "a",
+            "start_tick": 11,
+            "end_tick": 13,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-urgent",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [
+          {
+            "episode_id": "urgent",
+            "start_tick": 4,
+            "end_tick": 11,
+            "reason": "queued",
+            "staff_id": null,
+            "holds_staff_claim": false
+          }
+        ],
+        "interruptions": [],
+        "handovers": [],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "ep",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "urgent",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "resource_consent_denied",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.incumbent_consent_absent",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "incumbent_consent=false prohibits interruption; incumbent completes at 11 before urgent work.",
+      "horizon": 20,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 10,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": false,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "urgent",
+            "initial_staff_id": "a",
+            "original_work_ticks": 2,
+            "urgency": 2,
+            "sample_lineage": "sample-urgent",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 4,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-urgent",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [
+          {
+            "episode_id": "urgent",
+            "ready_tick": 4,
+            "incoming_consent": true,
+            "urgency": 2,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-urgent",
+            "request_id": "request-urgent",
+            "work_ticks": 2
+          }
+        ],
+        "events": [],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-1",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 11,
+            "useful_work_ticks": 10,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "urgent",
+            "segment_id": "urgent-1",
+            "staff_id": "a",
+            "start_tick": 11,
+            "end_tick": 13,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-urgent",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [
+          {
+            "episode_id": "urgent",
+            "start_tick": 4,
+            "end_tick": 11,
+            "reason": "queued",
+            "staff_id": null,
+            "holds_staff_claim": false
+          }
+        ],
+        "interruptions": [],
+        "handovers": [],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "ep",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "urgent",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "incumbent_consent_denied",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.incoming_consent_absent",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "incoming_consent=false prohibits interruption; incumbent completes at 11 before urgent work.",
+      "horizon": 20,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 10,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "urgent",
+            "initial_staff_id": "a",
+            "original_work_ticks": 2,
+            "urgency": 2,
+            "sample_lineage": "sample-urgent",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 4,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-urgent",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [
+          {
+            "episode_id": "urgent",
+            "ready_tick": 4,
+            "incoming_consent": false,
+            "urgency": 2,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-urgent",
+            "request_id": "request-urgent",
+            "work_ticks": 2
+          }
+        ],
+        "events": [],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-1",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 11,
+            "useful_work_ticks": 10,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "urgent",
+            "segment_id": "urgent-1",
+            "staff_id": "a",
+            "start_tick": 11,
+            "end_tick": 13,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-urgent",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [
+          {
+            "episode_id": "urgent",
+            "start_tick": 4,
+            "end_tick": 11,
+            "reason": "queued",
+            "staff_id": null,
+            "holds_staff_claim": false
+          }
+        ],
+        "interruptions": [],
+        "handovers": [],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "ep",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "urgent",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "incoming_consent_denied",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.equal_urgency",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "Equal urgency never preempts; completion order is 11 then 13.",
+      "horizon": 20,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 10,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "urgent",
+            "initial_staff_id": "a",
+            "original_work_ticks": 2,
+            "urgency": 1,
+            "sample_lineage": "sample-urgent",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 4,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-urgent",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [
+          {
+            "episode_id": "urgent",
+            "ready_tick": 4,
+            "incoming_consent": true,
+            "urgency": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-urgent",
+            "request_id": "request-urgent",
+            "work_ticks": 2
+          }
+        ],
+        "events": [],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-1",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 11,
+            "useful_work_ticks": 10,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "urgent",
+            "segment_id": "urgent-1",
+            "staff_id": "a",
+            "start_tick": 11,
+            "end_tick": 13,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-urgent",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [
+          {
+            "episode_id": "urgent",
+            "start_tick": 4,
+            "end_tick": 11,
+            "reason": "queued",
+            "staff_id": null,
+            "holds_staff_claim": false
+          }
+        ],
+        "interruptions": [],
+        "handovers": [],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "ep",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "urgent",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "equal_urgency",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.completion_tie",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "Completion at ready tick wins; no zero-remaining interruption.",
+      "horizon": 10,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "low",
+            "initial_staff_id": "a",
+            "original_work_ticks": 3,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 0,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-low",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "urgent",
+            "initial_staff_id": "a",
+            "original_work_ticks": 2,
+            "urgency": 2,
+            "sample_lineage": "sample-urgent",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 3,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-urgent",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [
+          {
+            "episode_id": "urgent",
+            "ready_tick": 3,
+            "incoming_consent": true,
+            "urgency": 2,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-urgent",
+            "request_id": "request-urgent",
+            "work_ticks": 2
+          }
+        ],
+        "events": [],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "low",
+            "segment_id": "low-1",
+            "staff_id": "a",
+            "start_tick": 0,
+            "end_tick": 3,
+            "useful_work_ticks": 3,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "urgent",
+            "segment_id": "urgent-1",
+            "staff_id": "a",
+            "start_tick": 3,
+            "end_tick": 5,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-urgent",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [],
+        "interruptions": [],
+        "handovers": [],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "low",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "urgent",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "allowed",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.break_precedence",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "Urgent waits while low remains active through break; useful 2 at preemption, break overlap 2.",
+      "horizon": 20,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": [
+              [
+                3,
+                5
+              ]
+            ]
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "low",
+            "initial_staff_id": "a",
+            "original_work_ticks": 10,
+            "urgency": 1,
+            "sample_lineage": "sample-low",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-low",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "urgent",
+            "initial_staff_id": "a",
+            "original_work_ticks": 2,
+            "urgency": 2,
+            "sample_lineage": "sample-urgent",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 3,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-urgent",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [
+          {
+            "episode_id": "urgent",
+            "ready_tick": 3,
+            "incoming_consent": true,
+            "urgency": 2,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-urgent",
+            "request_id": "request-urgent",
+            "work_ticks": 2
+          }
+        ],
+        "events": [],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "low",
+            "segment_id": "low-1",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 5,
+            "useful_work_ticks": 4,
+            "remaining_work_at_end": 6,
+            "claim_state": "suspended",
+            "sample_lineage": "sample-low",
+            "claim_history": [
+              "Granted",
+              "Suspended"
+            ]
+          },
+          {
+            "episode_id": "urgent",
+            "segment_id": "urgent-1",
+            "staff_id": "a",
+            "start_tick": 5,
+            "end_tick": 7,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-urgent",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "low",
+            "segment_id": "low-2",
+            "staff_id": "a",
+            "start_tick": 7,
+            "end_tick": 13,
+            "useful_work_ticks": 6,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-low",
+            "claim_history": [
+              "Resumed",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [
+          {
+            "episode_id": "urgent",
+            "start_tick": 3,
+            "end_tick": 5,
+            "reason": "queued",
+            "staff_id": null,
+            "holds_staff_claim": false
+          },
+          {
+            "episode_id": "low",
+            "start_tick": 5,
+            "end_tick": 7,
+            "reason": "suspended_remainder",
+            "staff_id": null,
+            "holds_staff_claim": false
+          }
+        ],
+        "interruptions": [
+          {
+            "episode_id": "low",
+            "tick": 5,
+            "strategy": "Suspend",
+            "remaining_work_ticks": 6,
+            "claim_action": "Suspend",
+            "explicit_release": false
+          }
+        ],
+        "handovers": [],
+        "calendar_observations": [
+          {
+            "staff_id": "a",
+            "kind": "break",
+            "interval": [
+              3,
+              5
+            ],
+            "overlap_with_low_ticks": 2,
+            "break_overlap_ticks": 2,
+            "shift_overtime_ticks": 0,
+            "scheduled_unavailable_work_ticks": 2
+          }
+        ],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "low",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "urgent",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "allowed",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.shift_precedence",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "No grant into shift gap; DrainActive work in gap is 2 overtime ticks; no capacity shrink.",
+      "horizon": 20,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                3
+              ],
+              [
+                5,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "low",
+            "initial_staff_id": "a",
+            "original_work_ticks": 10,
+            "urgency": 1,
+            "sample_lineage": "sample-low",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-low",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "urgent",
+            "initial_staff_id": "a",
+            "original_work_ticks": 2,
+            "urgency": 2,
+            "sample_lineage": "sample-urgent",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 3,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-urgent",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [
+          {
+            "episode_id": "urgent",
+            "ready_tick": 3,
+            "incoming_consent": true,
+            "urgency": 2,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-urgent",
+            "request_id": "request-urgent",
+            "work_ticks": 2
+          }
+        ],
+        "events": [],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "low",
+            "segment_id": "low-1",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 5,
+            "useful_work_ticks": 4,
+            "remaining_work_at_end": 6,
+            "claim_state": "suspended",
+            "sample_lineage": "sample-low",
+            "claim_history": [
+              "Granted",
+              "Suspended"
+            ]
+          },
+          {
+            "episode_id": "urgent",
+            "segment_id": "urgent-1",
+            "staff_id": "a",
+            "start_tick": 5,
+            "end_tick": 7,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-urgent",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "low",
+            "segment_id": "low-2",
+            "staff_id": "a",
+            "start_tick": 7,
+            "end_tick": 13,
+            "useful_work_ticks": 6,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-low",
+            "claim_history": [
+              "Resumed",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [
+          {
+            "episode_id": "urgent",
+            "start_tick": 3,
+            "end_tick": 5,
+            "reason": "queued",
+            "staff_id": null,
+            "holds_staff_claim": false
+          },
+          {
+            "episode_id": "low",
+            "start_tick": 5,
+            "end_tick": 7,
+            "reason": "suspended_remainder",
+            "staff_id": null,
+            "holds_staff_claim": false
+          }
+        ],
+        "interruptions": [
+          {
+            "episode_id": "low",
+            "tick": 5,
+            "strategy": "Suspend",
+            "remaining_work_ticks": 6,
+            "claim_action": "Suspend",
+            "explicit_release": false
+          }
+        ],
+        "handovers": [],
+        "calendar_observations": [
+          {
+            "staff_id": "a",
+            "kind": "shift_gap",
+            "interval": [
+              3,
+              5
+            ],
+            "overlap_with_low_ticks": 2,
+            "break_overlap_ticks": 0,
+            "shift_overtime_ticks": 2,
+            "scheduled_unavailable_work_ticks": 2
+          }
+        ],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "low",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "urgent",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "allowed",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.priority_extremes",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "Bitwise complement maps i32 extremes and zero without negation overflow; descending domain urgency becomes ascending priority.",
+      "horizon": 5,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "max",
+            "initial_staff_id": "a",
+            "original_work_ticks": 1,
+            "urgency": 2147483647,
+            "sample_lineage": "sample-max",
+            "ready_tick": 0,
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-max",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "zero",
+            "initial_staff_id": "a",
+            "original_work_ticks": 1,
+            "urgency": 0,
+            "sample_lineage": "sample-zero",
+            "ready_tick": 0,
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-zero",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "min",
+            "initial_staff_id": "a",
+            "original_work_ticks": 1,
+            "urgency": -2147483648,
+            "sample_lineage": "sample-min",
+            "ready_tick": 0,
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-min",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [
+          {
+            "episode_id": "max",
+            "ready_tick": 0,
+            "urgency": 2147483647,
+            "incoming_consent": true,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-max",
+            "request_id": "request-max",
+            "work_ticks": 1
+          },
+          {
+            "episode_id": "zero",
+            "ready_tick": 0,
+            "urgency": 0,
+            "incoming_consent": true,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-zero",
+            "request_id": "request-zero",
+            "work_ticks": 1
+          },
+          {
+            "episode_id": "min",
+            "ready_tick": 0,
+            "urgency": -2147483648,
+            "incoming_consent": true,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-min",
+            "request_id": "request-min",
+            "work_ticks": 1
+          }
+        ],
+        "events": [],
+        "strategy": "Suspend",
+        "priority_mapping": {
+          "i32_min": {
+            "urgency": -2147483648,
+            "flow_priority": 2147483647
+          },
+          "zero": {
+            "urgency": 0,
+            "flow_priority": -1
+          },
+          "i32_max": {
+            "urgency": 2147483647,
+            "flow_priority": -2147483648
+          }
+        },
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "max",
+            "segment_id": "max-1",
+            "staff_id": "a",
+            "start_tick": 0,
+            "end_tick": 1,
+            "useful_work_ticks": 1,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-max",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "zero",
+            "segment_id": "zero-1",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 2,
+            "useful_work_ticks": 1,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-zero",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "min",
+            "segment_id": "min-1",
+            "staff_id": "a",
+            "start_tick": 2,
+            "end_tick": 3,
+            "useful_work_ticks": 1,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-min",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [
+          {
+            "episode_id": "zero",
+            "start_tick": 0,
+            "end_tick": 1,
+            "reason": "queued",
+            "staff_id": null,
+            "holds_staff_claim": false
+          },
+          {
+            "episode_id": "min",
+            "start_tick": 0,
+            "end_tick": 2,
+            "reason": "queued",
+            "staff_id": null,
+            "holds_staff_claim": false
+          }
+        ],
+        "interruptions": [],
+        "handovers": [],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "max",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "zero",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "min",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "not_applicable",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.handover_immediate",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "Release old claim once; continuation uses new segment ID, same episode/sample, completes at 6.",
+      "horizon": 10,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-A",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 3,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 3,
+            "claim_state": "released",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Released"
+            ]
+          },
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-B",
+            "staff_id": "b",
+            "start_tick": 3,
+            "end_tick": 6,
+            "useful_work_ticks": 3,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [],
+        "interruptions": [],
+        "handovers": [
+          {
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "old_claim_action": "Release",
+            "new_segment_id": "ep-B",
+            "wait_interval": null,
+            "sample_lineage": "sample-ep",
+            "outcome": "applied"
+          }
+        ],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "ep",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "not_applicable",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.handover_wait",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "A releases at 3; busy replacement clears at 5; continuation waits without either staff claim.",
+      "horizon": 12,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "busy",
+            "initial_staff_id": "b",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-busy",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 0,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-busy",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-A",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 3,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 3,
+            "claim_state": "released",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Released"
+            ]
+          },
+          {
+            "episode_id": "busy",
+            "segment_id": "busy-B",
+            "staff_id": "b",
+            "start_tick": 0,
+            "end_tick": 5,
+            "useful_work_ticks": 5,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-busy",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-B",
+            "staff_id": "b",
+            "start_tick": 5,
+            "end_tick": 8,
+            "useful_work_ticks": 3,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [
+          {
+            "episode_id": "ep",
+            "start_tick": 3,
+            "end_tick": 5,
+            "reason": "handover_continuation",
+            "staff_id": "b",
+            "holds_staff_claim": false
+          }
+        ],
+        "interruptions": [],
+        "handovers": [
+          {
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "old_claim_action": "Release",
+            "new_segment_id": "ep-B",
+            "wait_interval": [
+              3,
+              5
+            ],
+            "sample_lineage": "sample-ep",
+            "outcome": "applied"
+          }
+        ],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "ep",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "busy",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "not_applicable",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.handover_completion_tie",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "Completion wins at handover tick; no replacement segment or claim.",
+      "horizon": 8,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 2,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-A",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 3,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [],
+        "interruptions": [],
+        "handovers": [
+          {
+            "episode_id": "ep",
+            "tick": 3,
+            "outcome": "completed_before_handover",
+            "replacement_segment_created": false,
+            "claim_action": "none"
+          }
+        ],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "ep",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "not_applicable",
+        "handover_noops": [
+          "completed_before_handover"
+        ],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.handover_not_active",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "Episode is not active at tick 3; ordinary work begins at ready tick 5.",
+      "horizon": 10,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 5,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-A",
+            "staff_id": "a",
+            "start_tick": 5,
+            "end_tick": 10,
+            "useful_work_ticks": 5,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [],
+        "interruptions": [],
+        "handovers": [
+          {
+            "episode_id": "ep",
+            "tick": 3,
+            "outcome": "not_active",
+            "replacement_segment_created": false,
+            "claim_action": "none"
+          }
+        ],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "ep",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "not_applicable",
+        "handover_noops": [
+          "not_active"
+        ],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.horizon_suspended",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "Clip at H=6: low has 3 useful/7 remaining; urgent has 2 useful/3 remaining; neither completes.",
+      "horizon": 6,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "low",
+            "initial_staff_id": "a",
+            "original_work_ticks": 10,
+            "urgency": 1,
+            "sample_lineage": "sample-low",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-low",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "urgent",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 2,
+            "sample_lineage": "sample-urgent",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 4,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-urgent",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [
+          {
+            "episode_id": "urgent",
+            "ready_tick": 4,
+            "incoming_consent": true,
+            "urgency": 2,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "required_staff_count": 1,
+            "patient_id": "patient-urgent",
+            "request_id": "request-urgent",
+            "work_ticks": 5
+          }
+        ],
+        "events": [],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "low",
+            "segment_id": "low-1",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 4,
+            "useful_work_ticks": 3,
+            "remaining_work_at_end": 7,
+            "claim_state": "suspended",
+            "sample_lineage": "sample-low",
+            "claim_history": [
+              "Granted",
+              "Suspended"
+            ],
+            "scheduled_end_tick": 11
+          },
+          {
+            "episode_id": "urgent",
+            "segment_id": "urgent-1",
+            "staff_id": "a",
+            "start_tick": 4,
+            "end_tick": 6,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 3,
+            "claim_state": "active",
+            "sample_lineage": "sample-urgent",
+            "claim_history": [
+              "Granted",
+              "ActiveAtHorizon"
+            ],
+            "scheduled_end_tick": 9
+          }
+        ],
+        "wait_intervals": [
+          {
+            "episode_id": "low",
+            "start_tick": 4,
+            "end_tick": 6,
+            "reason": "suspended_remainder",
+            "staff_id": null,
+            "holds_staff_claim": false
+          }
+        ],
+        "interruptions": [
+          {
+            "episode_id": "low",
+            "tick": 4,
+            "strategy": "Suspend",
+            "remaining_work_ticks": 7,
+            "claim_action": "Suspend",
+            "explicit_release": false
+          }
+        ],
+        "handovers": [],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "low",
+            "state": "suspended",
+            "remaining_work_ticks": 7
+          },
+          {
+            "episode_id": "urgent",
+            "state": "active_at_horizon",
+            "remaining_work_ticks": 3
+          }
+        ],
+        "consent_outcome": "allowed",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.horizon_handover",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "At H, release A and grant B; zero observed work, 3 remaining, B active at horizon.",
+      "horizon": 3,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-A",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 3,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 3,
+            "claim_state": "released",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Released"
+            ]
+          },
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-B",
+            "staff_id": "b",
+            "start_tick": 3,
+            "end_tick": 3,
+            "useful_work_ticks": 0,
+            "remaining_work_at_end": 3,
+            "claim_state": "active",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "ActiveAtHorizon"
+            ],
+            "scheduled_end_tick": 6
+          }
+        ],
+        "wait_intervals": [],
+        "interruptions": [],
+        "handovers": [
+          {
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "old_claim_action": "Release",
+            "new_segment_id": "ep-B",
+            "sample_lineage": "sample-ep",
+            "outcome": "applied"
+          }
+        ],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "ep",
+            "state": "active_at_horizon",
+            "remaining_work_ticks": 3
+          }
+        ],
+        "consent_outcome": "not_applicable",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      }
+    },
+    {
+      "case_id": "interrupt.permutation",
+      "kind": "positive",
+      "provenance": "synthetic hand-derived specification",
+      "notes": "Reverse staff, episodes and events; canonical IDs, intervals and endpoints remain unchanged.",
+      "horizon": 10,
+      "inputs": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "c",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "d",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "ready_tick": 1,
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "ep2",
+            "initial_staff_id": "c",
+            "original_work_ticks": 4,
+            "urgency": 1,
+            "sample_lineage": "sample-ep2",
+            "ready_tick": 1,
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep2",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          },
+          {
+            "kind": "handover",
+            "episode_id": "ep2",
+            "tick": 2,
+            "incumbent_staff_id": "c",
+            "replacement_staff_id": "d",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "expected": {
+        "work_intervals": [
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-A",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 3,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 3,
+            "claim_state": "released",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Released"
+            ]
+          },
+          {
+            "episode_id": "ep2",
+            "segment_id": "ep2-C",
+            "staff_id": "c",
+            "start_tick": 1,
+            "end_tick": 2,
+            "useful_work_ticks": 1,
+            "remaining_work_at_end": 3,
+            "claim_state": "released",
+            "sample_lineage": "sample-ep2",
+            "claim_history": [
+              "Granted",
+              "Released"
+            ]
+          },
+          {
+            "episode_id": "ep2",
+            "segment_id": "ep2-D",
+            "staff_id": "d",
+            "start_tick": 2,
+            "end_tick": 5,
+            "useful_work_ticks": 3,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep2",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-B",
+            "staff_id": "b",
+            "start_tick": 3,
+            "end_tick": 6,
+            "useful_work_ticks": 3,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [],
+        "interruptions": [],
+        "handovers": [
+          {
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "old_claim_action": "Release",
+            "new_segment_id": "ep-B",
+            "wait_interval": null,
+            "sample_lineage": "sample-ep",
+            "outcome": "applied"
+          },
+          {
+            "episode_id": "ep2",
+            "tick": 2,
+            "incumbent_staff_id": "c",
+            "replacement_staff_id": "d",
+            "old_claim_action": "Release",
+            "new_segment_id": "ep2-D",
+            "wait_interval": null,
+            "sample_lineage": "sample-ep2",
+            "outcome": "applied"
+          }
+        ],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "ep",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "ep2",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "not_applicable",
+        "handover_noops": [],
+        "travel_intervals": []
+      },
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      },
+      "permuted_input": {
+        "staff": [
+          {
+            "staff_id": "d",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "c",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep2",
+            "initial_staff_id": "c",
+            "original_work_ticks": 4,
+            "urgency": 1,
+            "sample_lineage": "sample-ep2",
+            "ready_tick": 1,
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep2",
+            "required_staff_count": 1
+          },
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "ready_tick": 1,
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep2",
+            "tick": 2,
+            "incumbent_staff_id": "c",
+            "replacement_staff_id": "d",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          },
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "permutation_oracle": {
+        "work_intervals": [
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-A",
+            "staff_id": "a",
+            "start_tick": 1,
+            "end_tick": 3,
+            "useful_work_ticks": 2,
+            "remaining_work_at_end": 3,
+            "claim_state": "released",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Released"
+            ]
+          },
+          {
+            "episode_id": "ep2",
+            "segment_id": "ep2-C",
+            "staff_id": "c",
+            "start_tick": 1,
+            "end_tick": 2,
+            "useful_work_ticks": 1,
+            "remaining_work_at_end": 3,
+            "claim_state": "released",
+            "sample_lineage": "sample-ep2",
+            "claim_history": [
+              "Granted",
+              "Released"
+            ]
+          },
+          {
+            "episode_id": "ep2",
+            "segment_id": "ep2-D",
+            "staff_id": "d",
+            "start_tick": 2,
+            "end_tick": 5,
+            "useful_work_ticks": 3,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep2",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          },
+          {
+            "episode_id": "ep",
+            "segment_id": "ep-B",
+            "staff_id": "b",
+            "start_tick": 3,
+            "end_tick": 6,
+            "useful_work_ticks": 3,
+            "remaining_work_at_end": 0,
+            "claim_state": "completed",
+            "sample_lineage": "sample-ep",
+            "claim_history": [
+              "Granted",
+              "Completed"
+            ]
+          }
+        ],
+        "wait_intervals": [],
+        "interruptions": [],
+        "handovers": [
+          {
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "old_claim_action": "Release",
+            "new_segment_id": "ep-B",
+            "wait_interval": null,
+            "sample_lineage": "sample-ep",
+            "outcome": "applied"
+          },
+          {
+            "episode_id": "ep2",
+            "tick": 2,
+            "incumbent_staff_id": "c",
+            "replacement_staff_id": "d",
+            "old_claim_action": "Release",
+            "new_segment_id": "ep2-D",
+            "wait_interval": null,
+            "sample_lineage": "sample-ep2",
+            "outcome": "applied"
+          }
+        ],
+        "calendar_observations": [],
+        "unassigned_episodes": [],
+        "final_states": [
+          {
+            "episode_id": "ep",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          },
+          {
+            "episode_id": "ep2",
+            "state": "completed",
+            "remaining_work_ticks": 0
+          }
+        ],
+        "consent_outcome": "not_applicable",
+        "handover_noops": [],
+        "travel_intervals": []
+      }
+    },
+    {
+      "case_id": "interrupt.invalid.unknown_episode",
+      "kind": "negative",
+      "baseline": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "mutation": {
+        "path": "events[0].episode_id",
+        "value": "missing"
+      },
+      "expected_rejection": {
+        "category": "unknown_episode",
+        "path": "events[0].episode_id"
+      },
+      "targeted_repair": {
+        "path": "events[0].episode_id",
+        "value": "ep"
+      },
+      "control_id": "interrupt.handover_immediate",
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      },
+      "baseline_horizon": 10
+    },
+    {
+      "case_id": "interrupt.invalid.unknown_incumbent",
+      "kind": "negative",
+      "baseline": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "mutation": {
+        "path": "events[0].incumbent_staff_id",
+        "value": "missing"
+      },
+      "expected_rejection": {
+        "category": "unknown_staff",
+        "path": "events[0].incumbent_staff_id"
+      },
+      "targeted_repair": {
+        "path": "events[0].incumbent_staff_id",
+        "value": "a"
+      },
+      "control_id": "interrupt.handover_immediate",
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      },
+      "baseline_horizon": 10
+    },
+    {
+      "case_id": "interrupt.invalid.unknown_replacement",
+      "kind": "negative",
+      "baseline": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "mutation": {
+        "path": "events[0].replacement_staff_id",
+        "value": "missing"
+      },
+      "expected_rejection": {
+        "category": "unknown_staff",
+        "path": "events[0].replacement_staff_id"
+      },
+      "targeted_repair": {
+        "path": "events[0].replacement_staff_id",
+        "value": "b"
+      },
+      "control_id": "interrupt.handover_immediate",
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      },
+      "baseline_horizon": 10
+    },
+    {
+      "case_id": "interrupt.invalid.wrong_incumbent",
+      "kind": "negative",
+      "baseline": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "mutation": {
+        "path": "events[0].incumbent_staff_id",
+        "value": "b"
+      },
+      "expected_rejection": {
+        "category": "wrong_incumbent",
+        "path": "events[0].incumbent_staff_id"
+      },
+      "targeted_repair": {
+        "path": "events[0].incumbent_staff_id",
+        "value": "a"
+      },
+      "control_id": "interrupt.handover_immediate",
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      },
+      "baseline_horizon": 10
+    },
+    {
+      "case_id": "interrupt.invalid.duplicate_handover",
+      "kind": "negative",
+      "baseline": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "mutation": {
+        "path": "events[1]",
+        "operation": "duplicate"
+      },
+      "expected_rejection": {
+        "category": "duplicate_handover",
+        "path": "events[1]"
+      },
+      "targeted_repair": {
+        "path": "events[1]",
+        "operation": "remove"
+      },
+      "control_id": "interrupt.handover_immediate",
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      },
+      "baseline_horizon": 10
+    },
+    {
+      "case_id": "interrupt.invalid.handover_after_horizon",
+      "kind": "negative",
+      "baseline": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "mutation": {
+        "path": "events[0].tick",
+        "value": 11
+      },
+      "expected_rejection": {
+        "category": "handover_tick",
+        "path": "events[0].tick"
+      },
+      "targeted_repair": {
+        "path": "events[0].tick",
+        "value": 3
+      },
+      "control_id": "interrupt.handover_immediate",
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      },
+      "baseline_horizon": 10
+    },
+    {
+      "case_id": "interrupt.invalid.unsupported_strategy",
+      "kind": "negative",
+      "baseline": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "mutation": {
+        "path": "strategy",
+        "value": "Restart"
+      },
+      "expected_rejection": {
+        "category": "unsupported_strategy",
+        "path": "strategy"
+      },
+      "targeted_repair": {
+        "path": "strategy",
+        "value": "Suspend"
+      },
+      "control_id": "interrupt.handover_immediate",
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      },
+      "baseline_horizon": 10
+    },
+    {
+      "case_id": "interrupt.invalid.handover_consent_absent",
+      "kind": "negative",
+      "baseline": {
+        "staff": [
+          {
+            "staff_id": "a",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          },
+          {
+            "staff_id": "b",
+            "assigned_zone": "z",
+            "skills": [
+              "care"
+            ],
+            "shifts": [
+              [
+                0,
+                20
+              ]
+            ],
+            "breaks": []
+          }
+        ],
+        "episodes": [
+          {
+            "episode_id": "ep",
+            "initial_staff_id": "a",
+            "original_work_ticks": 5,
+            "urgency": 1,
+            "sample_lineage": "sample-ep",
+            "incumbent_consent": true,
+            "resource_consent": true,
+            "ready_tick": 1,
+            "assigned_zone": "z",
+            "required_skills": [
+              "care"
+            ],
+            "patient_id": "patient-ep",
+            "required_staff_count": 1
+          }
+        ],
+        "urgent_requests": [],
+        "events": [
+          {
+            "kind": "handover",
+            "episode_id": "ep",
+            "tick": 3,
+            "incumbent_staff_id": "a",
+            "replacement_staff_id": "b",
+            "replacement_eligible_zone": true,
+            "replacement_eligible_skills": true
+          }
+        ],
+        "strategy": "Suspend",
+        "in_flight_policy": "DrainActive"
+      },
+      "mutation": {
+        "path": "episodes[0].incumbent_consent",
+        "value": false
+      },
+      "expected_rejection": {
+        "category": "handover_consent",
+        "path": "events[0]"
+      },
+      "targeted_repair": {
+        "path": "episodes[0].incumbent_consent",
+        "value": true
+      },
+      "control_id": "interrupt.handover_immediate",
+      "native_binding": {
+        "status": "unbound",
+        "target": "E2.2"
+      },
+      "baseline_horizon": 10
+    }
+  ]
+}
