@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.deferred-allocation-runtime",
+  "status": "INCOMPLETE",
+  "stop_reason": "stopped_at_two_failed_gate_executions",
+  "base_commit": "2fb908cae59f2e21285fb0d5ace437a9e2cb11f6",
+  "toolchain": "Rust 1.99.0",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "15297e3175da4be0e65f4c4304678eb87b934f668f36eb54d93eb8418713e5c3",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "01f5404bfb66354fed401adf1778be2f01e28b29a4733f16f2c8420d88134681",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "2000eff2bccc64b2df70cc7a1089c0f580c909d21b7c8ea2da0d600202ceae73",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs": "ebe3b6d67af549ad3c613d3725a2273c8b07ae310a84fa44ef0c2d532b46a025"
+  },
+  "pre_gate_format": {
+    "command": "rustup run 1.99.0 rustfmt --edition 2021 --config skip_children=true <four owned Rust files>",
+    "exit_code": 0
+  },
+  "gate_receipts": [
+    {
+      "gate": "tests",
+      "attempt": 1,
+      "exit_code": 101,
+      "receipt": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/tests-1791725438532534000-35447-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/tests-1791725438532534000-35447.log",
+      "failure": "Compile failure: private full-command map assertions require PartialEq on Command."
+    },
+    {
+      "gate": "tests",
+      "attempt": 2,
+      "exit_code": 101,
+      "receipt": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/tests-1791725515179954000-35868-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/tests-1791725515179954000-35868.log",
+      "failure": "Compile failure: eager_resource is not in scope in two restore assertions; unused WorkProgress import warning."
+    }
+  ],
+  "gates_not_run": [
+    "clippy",
+    "format"
+  ],
+  "test_outcome": "No test binary ran; both tests wrapper executions stopped at compilation.",
+  "implementation_scope": "Runtime-only deferred allocation and transactional flush; no V3 DTO, wire, consumer or parent pin changes.",
+  "workflow_note": "Gate stdout/stderr remained in private raw logs. Harness stdout was captured privately; no lease token was written to result or logs.",
+  "remaining_work": [
+    "Correct the restore fixture local resource binding and unused import.",
+    "Rerun qualification only under a newly reviewed bounded authorization.",
+    "Complete tests, clippy and format gates."
+  ]
+}

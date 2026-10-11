@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.deferred-allocation-runtime.test-recovery",
+  "status": "ready_for_review",
+  "base_commit": "2fb908cae59f2e21285fb0d5ace437a9e2cb11f6",
+  "qualification": "local Rust 1.99.0 tests, strict clippy, and formatting gates passed; not committed",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "01f5404bfb66354fed401adf1778be2f01e28b29a4733f16f2c8420d88134681",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "2000eff2bccc64b2df70cc7a1089c0f580c909d21b7c8ea2da0d600202ceae73",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs": "3bd3ed92cef5bac3beee3c890c04f3e68a504f3209253164c69d7b1045b41467"
+  },
+  "gates": {
+    "tests": {
+      "status": "passed",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/tests-1791726598802677000-41096-result.json",
+      "receipt_sha256": "f35d6164e35354b2c67c644600647e8aa05e42b39b4ca7da9c28bb1a74c7c880",
+      "raw_log": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/tests-1791726598802677000-41096.log",
+      "raw_log_sha256": "1d48dddd247b59282fa18d3d6864076a84e512de3b87c2287a52d3870437ae1f",
+      "toolchain": "rustc 1.99.0 (b940084d7 2026-09-28); cargo 1.99.0 (5f94df478 2026-08-27)",
+      "suite_summaries": 35,
+      "counts": {
+        "passed": 347,
+        "failed": 0,
+        "ignored": 1
+      }
+    },
+    "clippy": {
+      "status": "passed",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/clippy-1791726647250905000-42481-result.json",
+      "receipt_sha256": "83d68ce426cd7d15a794cf038ee3e2cadcc667ca48162b524ae8b5a7fb3a31f7",
+      "raw_log": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/clippy-1791726647250905000-42481.log",
+      "raw_log_sha256": "ae1f37345593a188b49b5e14601e6e7e4b5532e9402d2a140b908901af49e8fc",
+      "toolchain": "rustc 1.99.0 (b940084d7 2026-09-28); cargo 1.99.0 (5f94df478 2026-08-27)"
+    },
+    "format": {
+      "status": "passed",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/format-1791726659951173000-43009-result.json",
+      "receipt_sha256": "d5e7a610125b317596d8207a544eb568060ea2e72650f4a8b1e9d57f6e605df1",
+      "raw_log": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/format-1791726659951173000-43009.log",
+      "raw_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "toolchain": "rustc 1.99.0 (b940084d7 2026-09-28); cargo 1.99.0 (5f94df478 2026-08-27)"
+    }
+  },
+  "attempt_note": "Authorized test-only correction changed tick-four trigger observation from EventId/RequestId comparison to has_transition(..., Granted). No production edits; no gate retries after this successful qualification."
+}

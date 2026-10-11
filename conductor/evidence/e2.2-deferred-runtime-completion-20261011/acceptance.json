@@ -1,0 +1,70 @@
+{
+  "status": "accepted_deferred_allocation_runtime_only",
+  "source_commit": "9b5a8a4d43f30b80ecc3b27b5a7e58a2cbde74ba",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "01f5404bfb66354fed401adf1778be2f01e28b29a4733f16f2c8420d88134681",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "2000eff2bccc64b2df70cc7a1089c0f580c909d21b7c8ea2da0d600202ceae73",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs": "3bd3ed92cef5bac3beee3c890c04f3e68a504f3209253164c69d7b1045b41467"
+  },
+  "rust": "1.99.0",
+  "tests_passed": 347,
+  "tests_ignored": 1,
+  "clean_gates": {
+    "tests": {
+      "status": "passed",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/tests-1791726815113788000-44735-result.json",
+      "receipt_sha256": "357c5e19deb2586f2bade9f61e4ea49ade1e665bb98ddd8bce6667b4bd37d99c",
+      "raw_log": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/tests-1791726815113788000-44735.log",
+      "raw_log_sha256": "74729404d7345742badd24946353f5af03d23f103fd420feed07a46b89442975",
+      "toolchain": "rustc 1.99.0 (b940084d7 2026-09-28); cargo 1.99.0 (5f94df478 2026-08-27)",
+      "suite_summaries": 35,
+      "counts": {
+        "passed": 347,
+        "failed": 0,
+        "ignored": 1
+      }
+    },
+    "clippy": {
+      "status": "passed",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/clippy-1791726829404469000-44847-result.json",
+      "receipt_sha256": "a1439bd71b32cc8762ab4f8fb8c9a93bb4534efdad83ece3d7202d41775802c7",
+      "raw_log": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/clippy-1791726829404469000-44847.log",
+      "raw_log_sha256": "40108eb5c2e432741fc7f36afdf5c793ec02b19e7b1ce5e51bdd2ba377bd26cb",
+      "toolchain": "rustc 1.99.0 (b940084d7 2026-09-28); cargo 1.99.0 (5f94df478 2026-08-27)"
+    },
+    "format": {
+      "status": "passed",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/format-1791726838868414000-44888-result.json",
+      "receipt_sha256": "9cdcbac0259afa4617b34373cc1897292b1bd6e99221128d6102a9e9a2f358d4",
+      "raw_log": ".artifacts/mvp/E2.2.engine.deferred-allocation-runtime/logs/format-1791726838868414000-44888.log",
+      "raw_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "toolchain": "rustc 1.99.0 (b940084d7 2026-09-28); cargo 1.99.0 (5f94df478 2026-08-27)"
+    }
+  },
+  "preserved_failed_worker_gates": 2,
+  "reviewers": [
+    "root",
+    "/root/e14_closeout_next"
+  ],
+  "behavior": [
+    "Persistent per-resource Deferred mode and explicit transactional flush",
+    "Existing Eager behavior and legacy native/wire regressions pass",
+    "Calendar gate/flush interaction, remove conflicts, generations, horizon and atomic rejection/halt",
+    "Actual completion-created, logical and fixed readiness across both completion orders; exact six lifecycle tuples",
+    "Equal urgency A/Z logical cohort merge across both completion orders and presentation orders",
+    "Legacy capture rejects unrepresentable Deferred state before codecs"
+  ],
+  "remaining": [
+    "combined baseline qualification",
+    "explicit native V3",
+    "explicit wire V3",
+    "complete routed view/coherent join",
+    "V3 consumer qualification",
+    "parent pin and full ED adapter/bindings",
+    "remaining full delivery programme"
+  ]
+}
