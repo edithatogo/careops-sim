@@ -1,0 +1,46 @@
+{
+  "status": "parallel_direct_wire_source_dispatched_not_accepted",
+  "lanes": [
+    {
+      "lane": "des",
+      "worker": "GPT-6-luna",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012",
+      "base_commit": "02529ec07ef35b09a7eadf8d4a4e3727d6379780",
+      "source_status": "dispatched",
+      "gate_status": "HOLD pending frozen source review",
+      "write_paths": [
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v4.rs",
+        ".artifacts/e22-flow-v4-direct-wire-20261012/dispatch/logs/"
+      ],
+      "packet.json_sha256": "b0be7fd6c47f9f9f99b8289cb5869480401f5dfb5bb3689ed09bcdb586221d00",
+      "record_gate.py_sha256": "7756801e7b8cda1fe875bebada014de06dffd151cab1a785c907e44e354106a5",
+      "context.md_sha256": "1c12f41341f44a3935495165a187f8d6beb96d20b32de60229ad7a59a49db608"
+    },
+    {
+      "lane": "abm",
+      "worker": "GPT-6-luna",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012",
+      "base_commit": "bbc472177876649b4c58e3f5972715c7855f1410",
+      "source_status": "dispatched",
+      "gate_status": "HOLD pending frozen source review",
+      "write_paths": [
+        "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs",
+        "crates/kairo-ecs-abm/src/flow_adapter.rs",
+        "crates/kairo-ecs-abm/src/lib.rs",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs",
+        ".artifacts/e22-transit-v2-direct-wire-20261012/result.json",
+        ".artifacts/e22-transit-v2-direct-wire-20261012/logs/"
+      ],
+      "packet.json_sha256": "306f6907bbeecf8bcff89af7c17e13760e167cb4892fcfaed88fedeb417400cf",
+      "record_gate.py_sha256": "38506d58dab27a9e3e9b829e8ccaac7fd77d9ba65acc47d6c27f39f4190cc632",
+      "context.txt_sha256": "04be982637a0cd0b08e9e07f9cc96e92d96d2c6044496ed56604b4d0e939e799"
+    }
+  ],
+  "coordinator": "root",
+  "reviewer_and_next_work": "GPT-6.1-sol next_delivery_orchestrator",
+  "toolchain": "Rust/Cargo 1.99.0",
+  "failure_policy": "Each failure stops for explicit root review; maximum three per reviewed packet, all prior native failure evidence retained separately.",
+  "next": "DES Image/Ref routing follows accepted direct wire; ABM schema2 codec included in its own wire lane; joined consumers await accepted prerequisites.",
+  "parent_pin": "6d733f489225da4bf6ceec2673b02369c7918bbe"
+}

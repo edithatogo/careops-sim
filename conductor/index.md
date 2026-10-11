@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [Parallel direct wire dispatch](evidence/e2.2-direct-wire-dispatch-20261012/README.md)
+
 - [Transit V2 native acceptance and parallel wire successor](evidence/e2.2-transit-v2-native-completion-20261012/README.md)
 
 - [Flow V4 native acceptance and immediate wire successor](evidence/e2.2-flow-v4-native-completion-20261012/README.md)
