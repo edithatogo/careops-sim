@@ -1,5 +1,5 @@
 {
-  "status": "offers_accepted_boarding_ready_to_dispatch",
+  "status": "boarding_dispatch_authorized",
   "coordinator": "root",
   "current_leaf": "E1.3.boarding",
   "contract": "conductor/design/ed/e1-offers-contract.md",
@@ -33,5 +33,21 @@
   },
   "next_contract": "conductor/design/ed/e1-terminal-runtime-contract.md",
   "next_owner": "e1_endpoint_preparation after offers acceptance",
-  "offers_acceptance": "conductor/evidence/e1.3-offers-completion-20261011/acceptance.json"
+  "offers_acceptance": "conductor/evidence/e1.3-offers-completion-20261011/acceptance.json",
+  "boarding_dispatch": {
+    "owner": "e1_endpoint_preparation",
+    "model": "gpt-6-luna",
+    "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-boarding-20261011",
+    "base_commit": "3e9aefbb45398ef1da0fffa8d804e82128d2c265",
+    "packet": ".artifacts/packets/E1.3.boarding.native.json",
+    "contract": "conductor/design/ed/e1-terminal-runtime-contract.md",
+    "source_paths": [
+      "crates/careops-ed/src/pathway.rs",
+      "crates/careops-ed/src/terminal.rs"
+    ],
+    "instance_set": [
+      "native"
+    ],
+    "checks": "full native suite, strict Clippy, rustfmt; exact Rust1.99.0"
+  }
 }
