@@ -101,7 +101,11 @@ its original break index. Outer cardinality paths are `requests` and `staff`; th
 uses `staff[i]`. Skill errors use `requests[i].required_skills` or
 `staff[i].skills`. Calendar validation order is: inspect original shift intervals,
 then normalized shift overlap; inspect original break intervals, then normalized
-break overlap; finally break containment. An invalid interval reports its
+break overlap; finally break containment in original input order. When multiple
+breaks fail containment, report the first original array index. This clarification
+was reviewed by the coordinator and GPT-6.1-sol during native implementation;
+the dispatched packet keeps its original immutable contract hash.
+An invalid interval reports its
 original `staff[i].shifts[j]` or `staff[i].breaks[j]` path.
 
 ## Selection
