@@ -96,3 +96,5 @@ Common V3 routing accepted after separately reviewed lint repair: [Rust1.99 evid
 V3 consumers accepted at the joined Kairos head: [E2.2 V3 consumer evidence](evidence/e2.2-v3-consumer-completion-20261012/README.md). Public Flow preview review precedes the parent pin and later ED adapter work.
 
 Public Flow preview source dispatched after reviewed API design: [bounded packet](evidence/e2.2-public-preview-dispatch-20261012/README.md). Runtime qualification and ED integration remain pending.
+
+Public Flow preview source qualification accepted at the reviewed Kairos head: [evidence archive](evidence/e2.2-public-flow-preview-completion-20261012/README.md). The parent pin remains unchanged pending queue-order/ABM contracts and native work, versioned persistence, and joined consumer qualification.

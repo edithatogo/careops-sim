@@ -1,0 +1,175 @@
+{
+  "archive_claim": "held for independent review; helper does not commit or release",
+  "boundary": "Public Flow preview source qualification only. Parent pin remains unchanged pending queue-order and ABM contracts/native work, versioned persistence, then joined consumer qualification; after those reviewed gates, proceed to the parent pin and one Flow ED adapter with 88 fixture bindings and remaining phases.",
+  "final_gates": [
+    {
+      "exit_code": 0,
+      "gate": "tests",
+      "log_sha256": "c9b6855e4f7056b0424d735a9a647b007b020bb774f65367df14076904705e55",
+      "receipt_sha256": "d5f489677be1c0c29d70e6b9022c01ba0676faed26281dec586135f3002dd0ca"
+    },
+    {
+      "exit_code": 0,
+      "gate": "clippy",
+      "log_sha256": "983a425c22d6d2ec7512c57d1711167fe4127186bd6dc6238f6428acb31984c2",
+      "receipt_sha256": "31be5f1573a7dc7637703e25b2f999775cffcc2a30539104cec09f5ffdb75bc6"
+    },
+    {
+      "exit_code": 0,
+      "gate": "format",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt_sha256": "0d56444ba97d77ba38efc04e16457427b7d9eb727df0575e7b594a3cd4d55e40"
+    }
+  ],
+  "final_packet_sha256": "95e2433b4b59c99a7d8b4b71ed8a3519216e0a09b77862a34da2094acb4adbbe",
+  "frozen_sources": {
+    "conductor/design/des/e2-flow-preview-v1.md": "56c4a0ebc341ad7b12f07a030066c3e043049046499795e62016eb5c1eda2f0d",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "f3fdf40867f53d6ed19bc5366e4936f150d260ad998e67ad6a622c40854942f0",
+    "crates/kairo-ecs-calibration/src/c5_native.rs": "f9e7582048e4524720ba24aff482cd5dc95efc9b3e6b435b99639a4b254444dc",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "3e721b6ec2e5766c7120b94ef5f4d9a61e3fae32c3d404a22e6a55b1175826b0",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs": "9015a4d1218f377189ce612025a6fd5566149ac188a13273733da3de7aa279e4",
+    "crates/kairo-ecs-calibration/src/shadow_native.rs": "fe09331841d07431938fb5f807d995c9fd001c11823600e21933e15fe12528a1",
+    "crates/kairo-ecs-des/src/flow.rs": "440c8d4c262e17abe4e1a371fe8cbd96f0be598f20164faf3bb24a7652a854bb",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "1ea4f8e7d700eea5fe710bbe338afd4d470879b6cade52201ae7e26a338a5629",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f1527c04bcd278027324347d7dd52c3e3eed4773457ffca4de5a2cf21fb87232",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "d52a67bd480b27dced3a38cfd82bd85288abad511e3d2ceecebd17afe9f0000b",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs": "907135874fdf24dbdf20bcde520146371faed066426a6ed447a52bf789275d00",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "49fac22c2df77dd920ff773b02395abdbbdbc1c2ee135d234dba9c8ea3d0a910",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs": "b935e7b17091540757ea8cafe6f0b9632ed27392dfacf796f31cee9cce14f758",
+    "crates/kairo-ecs-des/tests/flow_preview_v1.rs": "b339d4d9f0c1a6d4ae1909f0a4ceaee6755bdfb6575313a1913b0471dbe1f111"
+  },
+  "kairos_accepted_source_head": "5c57dc807cf6a6524d174adbb88502a92cbf5673",
+  "legacy_goldens_verified": 19,
+  "parent_base": "ebca26da62c53265c49679a3c5fc5a2180aaa5ad",
+  "parent_kairos_pin_unchanged": "6d733f489225da4bf6ceec2673b02369c7918bbe",
+  "prior_v3_consumer_acceptance_reference": {
+    "acceptance_sha256": "077a7b8bf239ba00a400a22fc81b3a29dbd7e1ff70e4a83867ff53a8a706e89d",
+    "manifest_sha256": "661ef0097e9f7c89b540b5bae2878f4227af01036766d29f65bd154851be436c",
+    "note": "Referenced in place; historical 293-file archive is not recopied.",
+    "path": "conductor/evidence/e2.2-v3-consumer-completion-20261012"
+  },
+  "process_evidence": {
+    "actual_child_cases": 26,
+    "all_raw_inputs_and_decoded_traces_verified": true,
+    "v3_child_cases": [
+      "portable-v3-currenttick-flush",
+      "portable-v3-mixed-tick6-trigger-first",
+      "portable-v3-mixed-tick6-urgent-first",
+      "portable-v3-preflush-budget-halt"
+    ]
+  },
+  "required_suites_verified": [
+    "flow_checkpoint_v2",
+    "flow_checkpoint_wire_v2",
+    "flow_resource_grant_gate_v1",
+    "kairo_ecs_abm-",
+    "kairo_ecs_calibration-",
+    "kairo_ecs_core-",
+    "kairo_ecs_des-"
+  ],
+  "required_test_names_verified": [
+    "c5_native::tests::preview_v3_capture_limit_error_without_legacy_fallback",
+    "c5_native::tests::preview_v3_deferred_pending_flush_without_advancement",
+    "c5_native::tests::preview_v3_disabled_queue_has_no_invented_completion",
+    "c5_native::tests::preview_v3_halted_live_tick_and_repeat_step_error",
+    "c5_native_preview_limit_error_propagates_without_v1_fallback",
+    "c5_native_preview_preserves_pending_disable_and_completion",
+    "coherent_v2_observed_arrival_requires_queued_submit_join",
+    "coherent_v2_requires_observed_domain_frontier",
+    "coherent_v2_transit_and_control_join_rejects_independent_mutations",
+    "coherent_v3_arrived_pending_submit_join",
+    "coherent_v3_observed_frontier_required",
+    "coherent_v3_transit_control_and_owned_field_mutations",
+    "deferred_calendar_gate_blocks_flush",
+    "deferred_completion_created_readiness_precedes_resume",
+    "deferred_flush_admission_rejections_are_atomic",
+    "deferred_legacy_capture_rejects_before_codecs",
+    "deferred_precommit_halt_preserves_pending_flush",
+    "deferred_submit_and_release_wait_for_explicit_flush",
+    "flow_preview_budget_halted",
+    "flow_preview_cancelled_head_preserves_logical_state",
+    "flow_preview_deferred_disabled_flush",
+    "flow_preview_empty",
+    "flow_preview_horizon",
+    "flow_preview_live_stale_completion",
+    "flow_preview_ordered_live_head",
+    "full_owner_image_restores_in_a_new_process_and_matches_uninterrupted_suffix",
+    "native_preview_disabled_queue_has_no_next_event_or_completion",
+    "native_preview_handles_v2_pending_disable_and_horizon_without_advancing",
+    "native_v3_bounds_reject_before_codecs",
+    "native_v3_capture_cache_corruption_rejects_before_codecs",
+    "native_v3_current_tick_flush_restores_and_readmits",
+    "native_v3_legacy_capture_rejects_deferred_before_codecs",
+    "native_v3_legacy_normalization_preserves_v1_v2_behavior",
+    "native_v3_malformed_modes_and_flush_joins_reject_before_codecs",
+    "native_v3_mixed_interior_cut_preserves_continuation",
+    "native_v3_preflush_halt_preserves_pending_state",
+    "native_v3_roundtrip_preserves_complete_deferred_state",
+    "nested_queue_and_allocation_order_corruption_is_rejected_by_nonowning_scan",
+    "portable_v1_full_envelope_golden_parity",
+    "portable_v2_gated_process_continuation",
+    "portable_v2_malformed_inner_sections_reject_before_codecs",
+    "portable_v3_current_tick_flush_fresh_process_continuation",
+    "portable_v3_halted_envelope_fresh_process_preserves_state",
+    "portable_v3_malformed_inner_resealed_outer_rejects_precodec",
+    "portable_v3_mixed_interior_cuts_fresh_process_continuation",
+    "routing_v3_capture_cache_corruption_rejects_before_codecs",
+    "routing_v3_capture_truth_table",
+    "routing_v3_complete_command_iterator_all_versions",
+    "routing_v3_deferred_current_tick_restore_complete_suffix",
+    "routing_v3_invalid_modes_flush_joins_fail_precodec_without_mutation",
+    "routing_v3_known_magic_dispatch_no_fallback",
+    "routing_v3_legacy_limits_errors_restart_and_wire_parity",
+    "shadow_native::tests::preview_v3_capture_limit_error_without_legacy_fallback",
+    "shadow_native::tests::preview_v3_deferred_pending_flush_without_advancement",
+    "shadow_native::tests::preview_v3_disabled_queue_has_no_invented_completion",
+    "shadow_native::tests::preview_v3_halted_live_tick_and_repeat_step_error",
+    "v3_canonical_mode_resource_coverage_and_nested_order_errors",
+    "v3_exact_wire_record_collection_and_pending_limits",
+    "v3_header_primitive_truncation_and_error_precedence",
+    "v3_measurement_precedes_canonical_validation_and_output_allocation",
+    "v3_registration_component_key_payload_limits_and_overflow",
+    "v3_scan_rejects_bad_last_mode_and_trailing_before_ownership",
+    "v3_structural_tags_0_through_13_roundtrip_wire_only",
+    "wire_v3_mixed_interior_cut_both_completion_orders_restore_suffix",
+    "wire_v3_preflush_budget_halt_wire_roundtrip_and_repeat_halt",
+    "wire_v3_rich_mixed_modes_queues_allocations_restore_suffix",
+    "wire_v3_started_now_flush_roundtrip_and_same_tick_readmission",
+    "wire_v3_structural_flush_bad_scheduler_joins_fail_native_precodec"
+  ],
+  "schema_version": 1,
+  "source_packet_sha256": "96db02015be6240d97cc3d8c66225fcf881414a996461ad948fcb195b37268cf",
+  "source_stage_gates": [
+    {
+      "exit_code": 101,
+      "gate": "clippy",
+      "log_sha256": "7052d41b3b0bc43608a407e0ecdcc1c22858721d0edd88d0b38be397412f495b",
+      "receipt_sha256": "e6ea0b61b6bf6b670a07b9a3213cdc76e84989322bcc3df72ba7033f49b3ad96"
+    },
+    {
+      "exit_code": 0,
+      "gate": "clippy",
+      "log_sha256": "5d41512b8a42819ce81dfec1539b151a23089519824945896241bf5a3976e332",
+      "receipt_sha256": "64fae8562f6afac37b586259cf920c1afe59745ab6a1f075241dbae9178bf0b7"
+    },
+    {
+      "exit_code": 0,
+      "gate": "focused",
+      "log_sha256": "e28143600183d55e8a304c4b113cd27f766b7da419e04d0737da45e7d2b58e46",
+      "receipt_sha256": "99e191988dba78a62e15d5c2f94b21e3ff19e4a0e98c6784728e0e62fbae21a3"
+    },
+    {
+      "exit_code": 0,
+      "gate": "format",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt_sha256": "eca0650a91a27bf0d4750cebc5809980dbff2a64105310ae8c1189aea39f8fd6"
+    }
+  ],
+  "status": "accepted_public_flow_preview_only",
+  "test_log_totals_derived": {
+    "failed": 0,
+    "ignored": 6,
+    "passed": 858,
+    "summaries": 69
+  }
+}
