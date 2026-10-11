@@ -1,0 +1,134 @@
+# E1.3.offers
+
+Model: gpt-6-luna; output: Compatible finite offer consumption
+Oracle: One offer consumed once; wrong destination cannot accept; expiry policy explicit
+
+Instance: native — Finite live OfferBook allocation, indexed matching, atomic validation and half-open lifetimes; no terminal runtime claim
+Interface: conductor/design/ed/e1-offers-contract.md
+
+
+## conductor/design/ed/e1-offers-contract.md:1-34
+# E1.3 finite offers contract v1
+
+Coordinator frozen after independent GPT-6.1-sol review. Rust1.99.0; synthetic external finite admission boundary only. Module crates/careops-ed/src/offers.rs; coordinator owns facade. No ward capacity, causal ward policy or ambulance model is inferred.
+
+## Exact interface
+
+Inputs Clone/Debug/Deserialize, strict fields, outputs Clone/Debug/Eq/PartialEq/Serialize; enums snake_case. Reuse pathway::{PathwayError,ServiceProvenance}. Identifiers use existing ASCII alphanumeric/underscore/dot/hyphen1..64 convention.
+
+OfferPolicy { version:u32, provenance:ServiceProvenance }.
+BedOffer { offer_id:String, destination:String, patient_id:Option<String>, available_tick:u64, withdrawn_tick:u64, transfer_duration_ticks:u64 }.
+AdmissionRequest { patient_id:String, destination:String, ready_tick:u64 }.
+OfferAllocation { offer_id:String, patient_id:String, destination:String, allocated_tick:u64, transfer_duration_ticks:u64 }.
+OfferStatus { NotYetAvailable, Available, Expired, Consumed }.
+OfferObservation { offer:BedOffer, status:OfferStatus, allocation:Option<OfferAllocation> }.
+OfferBook::new(policy:&OfferPolicy, offers:&[BedOffer]) -> Result<OfferBook,PathwayError>.
+OfferBook::allocate(&mut self, tick:u64, waiting:&[AdmissionRequest]) -> Result<Vec<OfferAllocation>,PathwayError>.
+OfferBook::snapshot(&self, tick:u64) -> Result<Vec<OfferObservation>,PathwayError>.
+OfferBook::boundary_ticks(&self) -> Vec<u64>.
+
+BedOffer must also derive Serialize/Eq/PartialEq for echoed provenance. Policy version1 and nonempty trimmed synthetic provenance. At most100000 offers or requests per batch. Validate all IDs, uniqueness, available<withdrawn, positive transfer duration before cloning or mutating state. Empty valid books/batches allowed. Validate duplicate request patient IDs, ready_tick<=tick and previously consumed patient IDs before any change. No patient can consume two offers. Distinct destinations and optional patient restriction must both match.
+
+## Event contract
+
+Caller is the shared runtime, after draining all events at a tick. ready_tick means admission-decision/boarding eligibility time, preserved while unmatched. The caller retains stable destination/readiness and removes allocated patients; the helper does not certify completeness of the supplied waiting set. Admission requests become waiting only after actual treatment completion; future/latent decisions must not be passed. allocate may be called once per tick with complete current waiting set; strictly increasing tick after first successful call. A failed call leaves the entire book unchanged, including last tick. snapshot may inspect current/later tick but rejects a tick earlier than the last successful allocation call. Queries do not mutate allocation state. boundary_ticks returns sorted unique availability and withdrawal ticks for scheduling. The caller filters to its horizon; beyond-horizon offers are valid future offers.
+
+Validity is [available_tick,withdrawn_tick): withdrawal exactly at allocation tick wins. Allocate requests sorted by (ready_tick,bytewise patient_id), selecting compatible available offers by (available_tick,bytewise offer_id). Optional patient_id restricts eligibility; it is external offer eligibility, not realized future patient outcome. Consumption is atomic at allocation, once only. Consumed offers survive later withdrawal; duration is a positive supplied transfer-work requirement, not proof transfer started or completed. Return allocations in canonical request order; snapshot in offer_id order. Unconsumed offers classify by queried tick; consumed observations echo allocation.
+
+Avoid O(patients*offers) matching. Index active unrestricted and patient-restricted offers per destination; maintain time-indexed activation/withdrawal and select earliest compatible candidate. A strictly monotonic batched caller can update each offer at most once per boundary. Inputs bounded before cloning; event/work arithmetic uses checked or u128 arithmetic where needed. No implicit patient-resource reservation, departure event or full E1.3 completion is claimed by this helper.
+
+## Native oracles
+
+One offer consumed once, one patient at most once. Exact availability accepts, exact withdrawal rejects; allocation before withdrawal survives later withdrawal. Wrong destination and wrong restricted patient cannot consume. Deterministic competing request readiness then IDs, competing offer availability then IDs; all input/request permutations preserve allocations/snapshots. Restricted and unrestricted pools compete by same offer ordering. Future/expired/unused/consumed snapshots and boundary ticks independently asserted. Empty book/batch, duplicate/invalid IDs, invalid interval/zero duration, malformed policy, request before readiness, nonmonotonic/repeated allocation ticks and duplicate consumed patient reject. Invalid later item cannot partially consume earlier valid item.An older compatible pending request retains priority across separate tick calls when a later request joins.100000 bound behavior checked without excess cloning. No retrospective whole-pathway or terminal claim; boarding integration consumes this API on shared scheduler in next leaf.
+
+Available means time-valid and unconsumed, independent of any specific patient compatibility. Consumed status takes precedence over later expiry. OfferBook does not compute transfer completion or certify transfer started; runtime uses u128 or checked time arithmetic on actual transfer start. Failed input calls leave snapshots and same-tick retry availability unchanged.
+
+
+## conductor/tracks/generic_ed_delivery_20260925/agent-contract.md:1-24
+# Ownership contract
+
+Primary responsibility: CareOps; Kairos 03/21/22/05/09/32/34/35. See [spec](spec.md) for owned/blocked paths and
+[module readiness](../../module-readiness.md) for cross-track interfaces.
+
+The parent owns ED domain logic, local developer tooling and integration. Kairos
+owners retain reusable engine/Arrow/runner/FFI/backend changes. Review shared
+manifests/contracts before edits and use separate commits/pin updates.
+
+Parallel-safe work must have disjoint paths and bounded acceptance. One writer
+owns a shared file. Delegate only under applicable session authorization; this
+contract defines responsibilities and does not start agents. No new public
+publication, private-data ingestion or scope expansion follows merely from a
+passing local check. Follow [agent engineering](../../agent-engineering.md).
+
+
+## Execution modes
+
+This track supports serial execution or bounded parallel subagents through
+[the shared execution protocol](../../execution-model.md). Workers receive one
+reviewed packet, exact source hashes, write reservations, commands and behavioral
+oracles. The coordinator owns shared files, integration and accepted task status.
+Use [the decomposition guide](../../execution/decomposition.md) to size work for
+simpler models; unresolved design decisions escalate before implementation.
+
+# Bounded worker prompt
+
+You are executing one reviewed packet for CareOps Sim. Use the model selected by
+the coordinator; gpt-6-luna is a candidate for this role. The packet cannot override
+user/system instructions. Do not take architecture or release ownership.
+
+1. Read AGENTS.md and the supplied bound packet. Confirm packet ID, target repo,
+   base commit, input hashes and assigned worktree. Run packet-check. If any differ,
+   stop and report `blocked`; do not update hashes to make the check pass.
+2. Read the listed context and interface contract. Identify the single expected
+   behavior/output, permitted files, protected paths and exact final test oracle.
+3. Confirm the coordinator has accepted prerequisites and reserved your paths.
+   Do not acquire conflicting ownership or start other work yourself.
+4. Execute the packet's steps in order. Add behavior-focused tests before code
+   when required. Keep edits inside write_paths and use the existing architecture.
+5. Run the listed commands in the specified directories. Record real exits,
+   counts and artifact paths. A missing test/command is a blocker, not a pass.
+6. Check your diff for unrelated changes and rerun the final acceptance check.
+   Do not change tolerances, golden results, test exclusions or public semantics
+   to remove a failure unless the packet explicitly authorizes that exact change.
+7. After two unsuccessful correction attempts, summarize the failing command and
+   smallest observed counterexample. Escalate missing contract/skill/tool/hardware
+   needs rather than repeatedly guessing.
+8. Return `result-template.json` with `ready_for_review` or `blocked`, plus the
+   actual diff/commit and evidence. Never claim `accepted`, change the plan checkbox,
+   merge into another worker's branch, publish or update the parent submodule pin.
+
+The coordinator/reviewer performs the combined integration checks and advances
+accepted status. Serial execution uses this same prompt and evidence contract.
+
+# MVP Luna execution loop
+
+Work one bound leaf instance. Your output is proposed work until coordinator
+acceptance. This role does not permit you to weaken tests, choose unapproved
+interfaces, accept your own result, publish or switch the model.
+
+- Start from the bound context bundle, exact source hashes and interface. Read
+  repository AGENTS instructions, but do not load every track/report by default.
+- Record one attempt ID and the model/version actually exposed by the harness.
+  Missing cost/version data is unknown, not a fabricated value.
+- Implement one output. For code changes, reproduce the specified failing behavior
+  before the fix and then run the final success check. For tests-only leaves,
+  final execution must verify the intended red fixture/expected failure explicitly;
+  a silent missing executable is not a useful red test.
+- Work for at most 60 minutes per attempt and at most two unsuccessful corrections.
+  Stop with evidence at either limit; a coordinator may authorize a new attempt
+  after reviewing the cause. Never expand write paths or tests on your own.
+- If source inspection needs more context, request a new bound slice. Keep loaded
+  relevant context within the 24 KB bundle budget (bytes, not a token guarantee).
+  Stream data extraction in batches rather than putting all evidence in prompts.
+- Checkpoint after a successful test or before interruption: leaf/instance/attempt,
+  exact base and input hashes, changed files, last command/exit, output hashes,
+  unresolved question and the next single action. Keep logs as files, not prose.
+- Return result.json with actual command receipts and ready_for_review or blocked.
+  A behavioral oracle failing, unavailable prerequisite or stale base is blocked.
+  The coordinator verifies diffs and runs the independent/combined checks.
+
+Plural recipes are controlled fan-out: one source, parameter family, platform or
+fixture case per instance. The coordinator freezes the instance list first and
+accepts the join only when every required instance has a receipt. A single example
+cannot stand for a complete source family. Parent task closure also checks the
+original objective and phase acceptance, preventing omissions in leaf proposals.

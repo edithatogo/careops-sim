@@ -1,0 +1,9 @@
+# E1.3.offers acceptance — 11 October 2026
+
+Finite OfferBook helper accepted at integrated source `6f9ed3c`, worker `e78390a`. [Acceptance](acceptance.json) records exact hashes. Rust/Cargo1.99.0 combined suite: **80 native tests**, including **13 offer tests**; strict Clippy and rustfmt passed. GPT-6.1-sol independently reviewed final offer source hash155f2359…04de7f7. Root verified worker logs and ran exact-head checks on clean integrated source.
+
+Offers use destination and optional patient eligibility, half-open lifetimes, canonical request/offer ordering and once-only consumption. Matching indexes avoid a patient-by-offer scan; invalid batches cannot partially mutate state. Tests include exact availability/expiry, future/unused/consumed snapshots, immutable boundary ticks, old request priority across ticks, equal-ready patient-ID ties, permutations, failed-call retry and100000-element limits. Allocation is not actual transfer or a terminal outcome.
+
+Only explicit packet/context/result and named command logs were archived; private leases/build trees are excluded. Earlier red compilation, unused-import Clippy and formatting failures remain visible. Additional tie-break test was coordinator-authorized before final qualification. The worker wrote one context scratch file outside declared outputs, reported it, verified its generated origin and removed that exact file with coordinator authority; the deviation is retained in its receipt.
+
+The shared live terminal runtime contract is frozen and E1.3.boarding is next. It will interleave real clinical work, boarding care, resource-constrained transfer and physical departure on one scheduler, retain ED space until departure and report truthful censoring. E1.3 parent, E1.4 and subsequent delivery gates remain open. The broader user-authorized continuation heartbeat remains active across all task/phase boundaries.
