@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T08:29:28.213892+00:00",
+  "updated_at": "2026-10-11T08:45:27.481889+00:00",
   "active_track": "generic_ed_delivery_20260925",
-  "active_phase": "E1",
-  "next_action": "E1.3 horizon accepted at af3dd4a with117 native tests. Dispatch E1.4 evidence and independent phase closeout, then E2.1 staff fixtures without stopping at milestone.",
+  "active_phase": "E2",
+  "next_action": "E1 closed with117 native Rust1.99 tests and12 fixture specification checks. Dispatch E2.1.staff32case fixture specification under reviewed contract, then interrupt24cases and space; all remain native-unbound until reviewed single-runtime E2.2 integration. Continue full delivery beyond E2.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -130,7 +130,10 @@
     "conductor/design/ed/e1-fixture-contract.md",
     "conductor/design/ed/e1-arrivals-contract.md",
     "conductor/decisions/ADR-0010-e1-test-first-acceptance.md",
-    "conductor/evidence/e1.1-completion-20261011/README.md"
+    "conductor/evidence/e1.1-completion-20261011/README.md",
+    "conductor/design/ed/e2-staff-fixture-contract.md",
+    "conductor/design/ed/e2-interrupt-fixture-contract.md",
+    "conductor/evidence/e1.4-closeout-20261011/README.md"
   ],
   "submodule_pins": {
     "libs/kairos": "6d733f489225da4bf6ceec2673b02369c7918bbe",
@@ -1298,13 +1301,15 @@
     "status": "active",
     "automation_id": "careops-autonomous-delivery-continuation",
     "scope": "Continue through successive delivery tasks/phases; no milestone-only goal completion",
-    "current_leaf": "E1.4.evidence",
+    "current_leaf": "E2.1.staff",
     "next_chain": [
-      "E1.3.boarding",
-      "E1.3.exits",
-      "E1.3.horizon",
-      "E1.4",
-      "E2"
+      "E2.1.staff",
+      "E2.1.interrupt",
+      "E2.1.space",
+      "E2.2",
+      "E2.3",
+      "E2.4",
+      "later delivery phases"
     ],
     "boundaries": "Evidence-gated dispatch, Rust1.99.0, no publication or unsupported-hardware claims; no hooks installed"
   },
@@ -1332,5 +1337,10 @@
     "source_commit": "af3dd4a2e0d152ba4e3eda2caf185c3adeaf7181",
     "evidence": "conductor/evidence/e1.3-horizon-completion-20261011",
     "all_instances_accepted": true
+  },
+  "e1_phase_acceptance": {
+    "evidence": "conductor/evidence/e1.4-closeout-20261011/acceptance.json",
+    "native_source": "af3dd4a2e0d152ba4e3eda2caf185c3adeaf7181",
+    "scope": "Generic synthetic native patient pathway, terminal policies and horizon conformance"
   }
 }

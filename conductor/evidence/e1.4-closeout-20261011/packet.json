@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "packet_id": "E1.4.closeout.phase",
+  "task_id": "E1.4",
+  "target_repo": ".",
+  "base_commit": "91f5b0570cc1e1bd25a4798dfaff0426689cdddb",
+  "model_role": "proposal_or_review",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Independent E1phase acceptance readback; coordinator alone updatesplan/catalog/state after approval",
+  "context_paths": [
+    ".artifacts/mvp/E1.4.closeout.phase/context.md"
+  ],
+  "input_hashes": {
+    "conductor/evidence/e1.4-evidence-20261011/README.md": "c1438b21d3d36f373e857ee5fdc2a5f881220e073ae3d287ade9e47302f543aa",
+    "conductor/evidence/e1.4-evidence-20261011/acceptance.json": "09adfdde2dddb994744449017a3e23cd24ab325d135a808f6d00c3519da80216",
+    "conductor/evidence/e1.4-evidence-20261011/manual-trace-readback.md": "0af63006ae0091b53c0297a40b5bb4b9c322e2b1d98e946a168e37d8dba907ca",
+    "conductor/tracks/generic_ed_delivery_20260925/plan.md": "74ecbb16a8852e2845111378f1689bbac6246396f117e5d741e83e5d2c5b0575",
+    "conductor/evidence/e1.4-evidence-20261011/fixture-runtime-crosswalk.json": "65025300b3178fa53130887c89782cd678279eb48c5555c2c82c3a82533a19ba",
+    "conductor/evidence/e1.4-evidence-20261011/manifest.json": "9911612aef0950c6559815cd8b76e094313e0ed496ff5abc6c63cd58b31b1364",
+    "conductor/evidence/e1.3-horizon-completion-20261011/acceptance.json": "777c5701c2bcd6a44072821615adab86855c42ed49cfbe7f99b6b551ac506a11",
+    ".artifacts/mvp/E1.4.closeout.phase/context.md": "4b4e72e51b2195cd207b98f8b57b6388f225e1264bc650b0c068d37889ff65a6"
+  },
+  "write_paths": [
+    "conductor/evidence/e1.4-closeout-20261011/independent-review.json",
+    ".artifacts/mvp/E1.4.closeout.phase/result.json",
+    ".artifacts/mvp/E1.4.closeout.phase/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "E1.4.evidence"
+  ],
+  "interface_contract": "conductor/design/ed/e1-horizon-parallel-join.md",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Planning/context/MVP integrity; not additional native qualification"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Planning/context/MVP integrity; not additional native qualification"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Planning/context/MVP integrity; not additional native qualification"
+    }
+  ],
+  "acceptance": [
+    "Independent readback agrees with evidence and upstream gates; only coordinator updates checkbox/catalog/pin",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/E1.4.closeout.phase/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root; independent GPT-6.1-sol phase readback",
+    "reservation_id": "c22d74814c594a4fb46d81bf104388c2",
+    "instance_id": "phase",
+    "instance_set": [
+      "phase"
+    ],
+    "instance_scope": "Independent E1phase acceptance readback; coordinator alone updatesplan/catalog/state after approval",
+    "interface_contract": "conductor/design/ed/e1-horizon-parallel-join.md",
+    "context_slices": [
+      {
+        "path": "conductor/evidence/e1.4-evidence-20261011/README.md",
+        "start": 1,
+        "end": 13
+      },
+      {
+        "path": "conductor/evidence/e1.4-evidence-20261011/acceptance.json",
+        "start": 1,
+        "end": 30
+      },
+      {
+        "path": "conductor/evidence/e1.4-evidence-20261011/manual-trace-readback.md",
+        "start": 1,
+        "end": 54
+      },
+      {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "start": 49,
+        "end": 70
+      }
+    ],
+    "input_paths": [
+      "conductor/evidence/e1.4-evidence-20261011/README.md",
+      "conductor/evidence/e1.4-evidence-20261011/acceptance.json",
+      "conductor/evidence/e1.4-evidence-20261011/manual-trace-readback.md",
+      "conductor/evidence/e1.4-evidence-20261011/fixture-runtime-crosswalk.json",
+      "conductor/evidence/e1.4-evidence-20261011/manifest.json",
+      "conductor/evidence/e1.3-horizon-completion-20261011/acceptance.json"
+    ],
+    "write_paths": [
+      "conductor/evidence/e1.4-closeout-20261011/independent-review.json",
+      ".artifacts/mvp/E1.4.closeout.phase/result.json",
+      ".artifacts/mvp/E1.4.closeout.phase/logs"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "python3",
+          "tools/context.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Planning/context/MVP integrity; not additional native qualification"
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/tasks.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Planning/context/MVP integrity; not additional native qualification"
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/mvp.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Planning/context/MVP integrity; not additional native qualification"
+      }
+    ],
+    "prerequisite_receipts": {
+      "E1.4.evidence": {
+        "status": "accepted",
+        "reviewer": "root and GPT-6.1-sol",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/e1.4-evidence-20261011/acceptance.json": "09adfdde2dddb994744449017a3e23cd24ab325d135a808f6d00c3519da80216"
+        }
+      }
+    },
+    "reviewed_recipe_sha256": "aa1f14f80e26a397259e8da862a8474c0a620a62e985544f03b75406cc43f582"
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "ede7e318d02958c427d1381ab9a3cae6318ccd41a151f3b3b4fe74020afea119",
+    "conductor/evidence/e1.4-evidence-20261011/README.md": "c1438b21d3d36f373e857ee5fdc2a5f881220e073ae3d287ade9e47302f543aa",
+    "conductor/evidence/e1.4-evidence-20261011/acceptance.json": "09adfdde2dddb994744449017a3e23cd24ab325d135a808f6d00c3519da80216",
+    "conductor/evidence/e1.4-evidence-20261011/manual-trace-readback.md": "0af63006ae0091b53c0297a40b5bb4b9c322e2b1d98e946a168e37d8dba907ca",
+    "conductor/tracks/generic_ed_delivery_20260925/plan.md": "74ecbb16a8852e2845111378f1689bbac6246396f117e5d741e83e5d2c5b0575",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}
