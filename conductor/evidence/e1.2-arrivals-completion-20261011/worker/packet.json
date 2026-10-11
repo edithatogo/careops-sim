@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "packet_id": "E1.2.arrivals.native",
+  "task_id": "E1.2",
+  "target_repo": ".",
+  "base_commit": "cc41718b61be1808bebb827c16b3f5408d8f41d2",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Implement native bounded count-conditioned seeded arrival generator and unit tests only; no pathway or P4 loader",
+  "context_paths": [
+    ".artifacts/mvp/E1.2.arrivals.native/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/ed/e1-arrivals-contract.md": "948f11605327fe5a65dc1e72b67238319dfc9e6f2050e2e6484da570c8a5a5a2",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md": "99d6f3bcaecc57037a955b33a977e45e9b6c1c1ba35557870abaf70fef6bc863",
+    "Cargo.toml": "ea8549f39166ff09cdf63b7d3f2ef4226ecbe929a61f061dcfb3be988ab3df48",
+    "Cargo.lock": "7584401156344be95139f6a5db70a7be57a10155aae688f901c66bbd2f4adad6",
+    "crates/careops-ed/Cargo.toml": "19674824de350de9d11a40c4ef970bfc259ad62bc3b76b3a80b6e578b3b94abd",
+    "crates/careops-ed/src/lib.rs": "099bbcf6a369d32485c5a9f42e6d86a770a969daafb291850a808131f9fb6f22",
+    ".artifacts/mvp/E1.2.arrivals.native/context.md": "fd625e7ba7a63349d84839df9d9aef1f4dbc52878444082386f777646a4f8d0c"
+  },
+  "write_paths": [
+    "crates/careops-ed/src/arrivals.rs",
+    ".artifacts/mvp/E1.2.arrivals.native/result.json",
+    ".artifacts/mvp/E1.2.arrivals.native/logs",
+    ".artifacts/e12-arrivals/target"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "E1.1.invalid"
+  ],
+  "interface_contract": "conductor/design/ed/e1-arrivals-contract.md",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "arrivals::"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-arrivals-20261011/.artifacts/e12-arrivals/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "oracle": "All native arrival contract tests pass including exact vectors and negative limits"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-arrivals-20261011/.artifacts/e12-arrivals/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "oracle": "No clippy warnings"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/src/arrivals.rs"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Formatting passes without source mutation"
+    }
+  ],
+  "acceptance": [
+    "IDs and sequence stable; configured demand model and dependence match P contract",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/E1.2.arrivals.native/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root coordinator + independent GPT-6.1-sol planner guard at53dd51a",
+    "reservation_id": "e9f4c20c7b6543ef8063fdc3eca19142",
+    "instance_id": "native",
+    "instance_set": [
+      "native"
+    ],
+    "instance_scope": "Implement native bounded count-conditioned seeded arrival generator and unit tests only; no pathway or P4 loader",
+    "reviewed_recipe_sha256": "dca26f102882abd0312dbbcc372914f20d6011e064ed70e55df091e16bc9bfab",
+    "interface_contract": "conductor/design/ed/e1-arrivals-contract.md",
+    "context_slices": [
+      {
+        "path": "conductor/design/ed/e1-arrivals-contract.md",
+        "start": 1,
+        "end": 82
+      },
+      {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md",
+        "start": 1,
+        "end": 24
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-rng/src/lib.rs",
+        "start": 1,
+        "end": 105
+      }
+    ],
+    "input_paths": [
+      "conductor/design/ed/e1-arrivals-contract.md",
+      "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md",
+      "Cargo.toml",
+      "Cargo.lock",
+      "crates/careops-ed/Cargo.toml",
+      "crates/careops-ed/src/lib.rs"
+    ],
+    "write_paths": [
+      "crates/careops-ed/src/arrivals.rs",
+      ".artifacts/mvp/E1.2.arrivals.native/result.json",
+      ".artifacts/mvp/E1.2.arrivals.native/logs",
+      ".artifacts/e12-arrivals/target"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+          "test",
+          "--locked",
+          "-p",
+          "careops-ed",
+          "arrivals::"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "env": {
+          "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+          "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+          "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+          "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-arrivals-20261011/.artifacts/e12-arrivals/target",
+          "CARGO_INCREMENTAL": "0",
+          "CARGO_PROFILE_DEV_DEBUG": "0",
+          "CARGO_PROFILE_TEST_DEBUG": "0",
+          "CARGO_BUILD_JOBS": "2"
+        },
+        "oracle": "All native arrival contract tests pass including exact vectors and negative limits"
+      },
+      {
+        "argv": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "careops-ed",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "env": {
+          "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+          "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+          "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+          "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-arrivals-20261011/.artifacts/e12-arrivals/target",
+          "CARGO_INCREMENTAL": "0",
+          "CARGO_PROFILE_DEV_DEBUG": "0",
+          "CARGO_PROFILE_TEST_DEBUG": "0",
+          "CARGO_BUILD_JOBS": "2"
+        },
+        "oracle": "No clippy warnings"
+      },
+      {
+        "argv": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+          "--edition",
+          "2021",
+          "--check",
+          "crates/careops-ed/src/arrivals.rs"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Formatting passes without source mutation"
+      }
+    ],
+    "prerequisite_receipts": {}
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "ede7e318d02958c427d1381ab9a3cae6318ccd41a151f3b3b4fe74020afea119",
+    "conductor/design/ed/e1-arrivals-contract.md": "948f11605327fe5a65dc1e72b67238319dfc9e6f2050e2e6484da570c8a5a5a2",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md": "99d6f3bcaecc57037a955b33a977e45e9b6c1c1ba35557870abaf70fef6bc863",
+    "libs/kairos/crates/kairo-ecs-rng/src/lib.rs": "68397e53959221c17a9705da1dd6e23a8221df9825e879222cdd9b154029a991",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}

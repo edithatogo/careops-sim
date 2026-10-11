@@ -238,3 +238,7 @@ outside this workpack. No Luna execution or qualification is implied by coverage
 behavior-first fixture specification under ADR-0010. Native binding of all46
 cases remains mandatory in E1.2/E1.3 and before E1.4 acceptance. No E1 runtime,
 MVP, clinical or release acceptance follows from this checkbox.
+
+## E1.2.arrivals leaf acceptance — 11 October 2026
+
+Native arrivals accepted at `c27588e` on Rust 1.99.0: 36 native tests, 12 fixture tests, strict Clippy and rustfmt passed. [Evidence](../../evidence/e1.2-arrivals-completion-20261011/README.md). E1.2 remains unchecked; triage, later stages and all 46 composite runtime bindings remain open. Next: prepare triage contract; no automatic dispatch.

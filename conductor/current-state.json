@@ -3,7 +3,7 @@
   "updated_at": "2026-10-11T01:40:22.817557+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E1",
-  "next_action": "E1.1 accepted and GPT-6.1-sol guard passed at53dd51a. Coordinator preparing E1.2.arrivals native packet; do not duplicate dispatch. Rust1.99.0 only.",
+  "next_action": "E1.2.arrivals accepted locally on Rust 1.99.0. Prepare and review E1.2.triage contract; no automatic dispatch. E1.2 parent and composite runtime bindings remain open.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1264,10 +1264,13 @@
     "next_leaf": "E1.2.arrivals"
   },
   "e1_arrivals_dispatch": {
-    "status": "preparing",
+    "status": "completed_and_accepted",
     "leaf": "E1.2.arrivals",
     "guard_head": "53dd51a",
     "contract": "conductor/design/ed/e1-arrivals-contract.md",
-    "scope": "only arrivals; no automatic triage dispatch"
+    "scope": "only arrivals; no automatic triage dispatch",
+    "source_commit": "c27588e46921e8436a67034a54418abe1a188e5f",
+    "evidence": "conductor/evidence/e1.2-arrivals-completion-20261011/acceptance.json",
+    "next_leaf": "E1.2.triage"
   }
 }

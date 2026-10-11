@@ -1,0 +1,196 @@
+{
+  "packet_id": "E1.2.arrivals.native",
+  "instance_id": "native",
+  "status": "ready_for_review",
+  "base_commit": "cc41718b61be1808bebb827c16b3f5408d8f41d2",
+  "source_commit": "a4237736301fd0912a8501246c1b6b362b62fe6b",
+  "changed_source_paths": [
+    "crates/careops-ed/src/arrivals.rs"
+  ],
+  "scope": "bounded seeded count-conditioned synthetic arrivals generator and unit tests; no P4 loader or pathway integration",
+  "toolchain": "Rust 1.99.0 (b940084d7; Homebrew rustc build label observed). Rustup 1.99.0 cargo-clippy selected by corrected PATH.",
+  "input_hashes": {
+    "conductor/design/ed/e1-arrivals-contract.md": "948f11605327fe5a65dc1e72b67238319dfc9e6f2050e2e6484da570c8a5a5a2",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md": "99d6f3bcaecc57037a955b33a977e45e9b6c1c1ba35557870abaf70fef6bc863",
+    "Cargo.toml": "ea8549f39166ff09cdf63b7d3f2ef4226ecbe929a61f061dcfb3be988ab3df48",
+    "Cargo.lock": "7584401156344be95139f6a5db70a7be57a10155aae688f901c66bbd2f4adad6",
+    "crates/careops-ed/Cargo.toml": "19674824de350de9d11a40c4ef970bfc259ad62bc3b76b3a80b6e578b3b94abd",
+    "crates/careops-ed/src/lib.rs": "099bbcf6a369d32485c5a9f42e6d86a770a969daafb291850a808131f9fb6f22",
+    ".artifacts/mvp/E1.2.arrivals.native/context.md": "fd625e7ba7a63349d84839df9d9aef1f4dbc52878444082386f777646a4f8d0c",
+    "libs/kairos/crates/kairo-ecs-rng/src/lib.rs": "68397e53959221c17a9705da1dd6e23a8221df9825e879222cdd9b154029a991"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "packet-check",
+        ".artifacts/packets/E1.2.arrivals.native.json"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "evidence": "Pre-write packet-check returned errors=[]; no log file was retained."
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "arrivals::"
+      ],
+      "cwd": ".",
+      "environment": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-arrivals-20261011/.artifacts/e12-arrivals/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "exit_code": null,
+      "outcome": "Tests-first compile failure observed; wrapper used zsh read-only variable `status`, so exit receipt was not persisted. Log retains the unresolved-symbol compile output.",
+      "log": ".artifacts/mvp/E1.2.arrivals.native/logs/tests-red.log",
+      "log_sha256": "9889fbb6642e35ac531e720213d8a531008f5ad819220e503e16f2996c58542b"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "arrivals::"
+      ],
+      "cwd": ".",
+      "environment": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-arrivals-20261011/.artifacts/e12-arrivals/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2",
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin//Users/doughnut/.local/bin:/Users/doughnut/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/opt/homebrew/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/quarto/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/doughnut/.codex/tmp/arg0/codex-arg0HiNZ1u:/Users/doughnut/.grok/bin:/Users/doughnut/.codeium/windsurf/bin:/Users/doughnut/.opencode/bin:/Users/doughnut/.antigravity/antigravity/bin:/Users/doughnut/.lmstudio/bin:/Users/doughnut/bin:/Users/doughnut/.dotnet/tools:/Users/doughnut/.local/pac-cli:/Users/doughnut/.local/bin:/Users/doughnut/scripts:/opt/homebrew/sbin:/Users/doughnut/.orbstack/bin:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS:/Users/doughnut/.local/bin:/Users/doughnut/.orbstack/bin"
+      },
+      "exit_code": 0,
+      "tests_run": 8,
+      "tests_failed": 0,
+      "log": ".artifacts/mvp/E1.2.arrivals.native/logs/tests-final.log",
+      "log_sha256": "b1d296c53da521a9a372075f4c683118b2bb0c4a1a08f3720c95263c8cf844ee"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "environment": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-arrivals-20261011/.artifacts/e12-arrivals/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "exit_code": 101,
+      "outcome": "Initial failure: absolute cargo selected Homebrew cargo-clippy from PATH and hit E0514 metadata mismatch.",
+      "log": ".artifacts/mvp/E1.2.arrivals.native/logs/clippy.log",
+      "log_sha256": "6eb5511f0267371b46697dfcf7b6c77d7ba2343fb713b18c73e00526d3baba30"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "environment": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-arrivals-20261011/.artifacts/e12-arrivals/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2",
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin//Users/doughnut/.local/bin:/Users/doughnut/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/opt/homebrew/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/quarto/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/doughnut/.codex/tmp/arg0/codex-arg0HiNZ1u:/Users/doughnut/.grok/bin:/Users/doughnut/.codeium/windsurf/bin:/Users/doughnut/.opencode/bin:/Users/doughnut/.antigravity/antigravity/bin:/Users/doughnut/.lmstudio/bin:/Users/doughnut/bin:/Users/doughnut/.dotnet/tools:/Users/doughnut/.local/pac-cli:/Users/doughnut/.local/bin:/Users/doughnut/scripts:/opt/homebrew/sbin:/Users/doughnut/.orbstack/bin:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS:/Users/doughnut/.local/bin:/Users/doughnut/.orbstack/bin"
+      },
+      "exit_code": 101,
+      "outcome": "Corrected rustup cargo-clippy ran. Strict clippy blocked by existing clippy::unnecessary_map_or at crates/careops-ed/src/lib.rs:494, outside reserved paths. Coordinator will fix in separate claim.",
+      "log": ".artifacts/mvp/E1.2.arrivals.native/logs/clippy-corrected.log",
+      "log_sha256": "347d92ed9e67f8fdcef6dca3bc5f0c215313895a9cdec8eaacd65208441cecf8"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "crates/careops-ed/src/arrivals.rs"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "outcome": "Formatted owned source file."
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/src/arrivals.rs"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.2.arrivals.native/logs/rustfmt-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clean"
+      ],
+      "cwd": ".",
+      "environment": {
+        "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-arrivals-20261011/.artifacts/e12-arrivals/target",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_PROFILE_DEV_DEBUG": "0",
+        "CARGO_PROFILE_TEST_DEBUG": "0",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "exit_code": 0,
+      "outcome": "Removed only the reserved task-owned target directory (396 files, 77.6 MiB) to clear stale artifacts before the corrected toolchain run."
+    }
+  ],
+  "source_hashes": {
+    "crates/careops-ed/src/arrivals.rs": "139ec1e37c5be167bf703d866bf2886ae9af0ed75040b953ad9bd77af456b0bd"
+  },
+  "native_arrival_tests": {
+    "passed": 8,
+    "failed": 0,
+    "coverage": "canonical golden seed/draw/tick/ID vector; empty and width one; adjacent bins; sorted permutation; exact mode/acuity counts; seed-stable ID set; exact 32/4096/100000 limits and one-above rejections; every ArrivalError; serde shape; unbiased threshold and bounded exhaustion; no partial return"
+  },
+  "unresolved": "Strict all-target clippy is blocked by the existing lib.rs:494 lint outside this packet. Arrival work is not accepted until coordinator baseline fix and integrated reruns."
+}
