@@ -1,0 +1,20 @@
+{
+  "status": "imported_reviewed_one_line_repair",
+  "packet_sha256": "a1540f3a708bdc9afe5e910bd2318617d66d0caa9baf6a1bfaebe1b0dbf86cfe",
+  "reviewer": "/root/e14_closeout_next",
+  "review": "Exact bound recovery packet independently approved before import.",
+  "base": "f96c3a86eb816ac244a53171933edcc5c9ad6a11",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "2d12ab08567dff553d26048edc54ab3c0470d2f959f82cf49d3a3c6c147a36a4",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "c9c6edcf1b04f8cfbc76902ded00aad65aa8fa1ef7299978ebc23a0f44c3084d",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs": "e3f3fc674fde3b74b9602c91e2b41092adeed3b617bdb3a226492fb4d632fc25",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "e6cb5cfb7aa8d127cf25a74cddc4c3574f712f1db917d6d77e319bb15df0ad29"
+  },
+  "repair": {
+    "path": "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs",
+    "before": "let (key, event) = *valid_flushes.iter().next().unwrap();",
+    "after": "let (&key, &event) = valid_flushes.iter().next().unwrap();"
+  },
+  "format_edit_exit": 0,
+  "qualification_pass": false
+}

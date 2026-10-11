@@ -1,0 +1,61 @@
+{
+  "base_commit": "f96c3a86eb816ac244a53171933edcc5c9ad6a11",
+  "next_step": "Reviewed recovery required before any further source edits or gates.",
+  "packet_sha256": "1c5580338dd9b86ea6dd0d4f02053675c5c400af1c1301e44d0b40911a44c1a8",
+  "schema_version": 1,
+  "scope": {
+    "claims_native_v3_complete": false,
+    "claims_wire_or_consumer_integration": false,
+    "commit_created": false,
+    "source_paths_with_changes": [
+      "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+      "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+      "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs",
+      "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs"
+    ],
+    "wire_sha256": "611bedc892b6d06d24c5e2d266165e31caa9e57228ec0e7d3400720639b93466",
+    "wire_unchanged_at_closeout": true
+  },
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "2d12ab08567dff553d26048edc54ab3c0470d2f959f82cf49d3a3c6c147a36a4",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "c9c6edcf1b04f8cfbc76902ded00aad65aa8fa1ef7299978ebc23a0f44c3084d",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs": "fa2b3d9e89db3aef010c7fd457d8934d4e7df10aaec0af56b583077805e48ea8",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "e6cb5cfb7aa8d127cf25a74cddc4c3574f712f1db917d6d77e319bb15df0ad29"
+  },
+  "status": "INCOMPLETE",
+  "stopped_at": "two_failed_gate_executions",
+  "task_id": "E2.2.engine.checkpoint-v3-native",
+  "verification": {
+    "allowed_failed_gate_executions": 2,
+    "failed_gate_executions": 2,
+    "gates_not_run": [
+      "clippy",
+      "format"
+    ],
+    "native_v3_tests_executed": false,
+    "passes": 0,
+    "receipts": [
+      {
+        "captured_stderr": ".artifacts/mvp/E2.2.engine.checkpoint-v3-native/logs/private/tests-gate1.stderr.private.txt",
+        "captured_stdout": ".artifacts/mvp/E2.2.engine.checkpoint-v3-native/logs/private/tests-gate1.stdout.private.txt",
+        "exit_code": 101,
+        "failure": "Compile error: integration test referenced private kairo_ecs_des::EventId at two sites.",
+        "gate": "tests",
+        "raw_log_file": ".artifacts/mvp/E2.2.engine.checkpoint-v3-native/logs/tests-1791730942229754000-68781.log",
+        "receipt_id": "tests-1791730942229754000-68781",
+        "result_file": ".artifacts/mvp/E2.2.engine.checkpoint-v3-native/logs/tests-1791730942229754000-68781-result.json"
+      },
+      {
+        "captured_stderr": ".artifacts/mvp/E2.2.engine.checkpoint-v3-native/logs/private/tests-gate2.stderr.private.txt",
+        "captured_stdout": ".artifacts/mvp/E2.2.engine.checkpoint-v3-native/logs/private/tests-gate2.stdout.private.txt",
+        "exit_code": 101,
+        "failure": "Compile error: v3.rs:384 incorrectly dereferenced the tuple returned by valid_flushes.iter().next().",
+        "gate": "tests_retry",
+        "raw_log_file": ".artifacts/mvp/E2.2.engine.checkpoint-v3-native/logs/tests-1791731108353695000-70322.log",
+        "receipt_id": "tests-1791731108353695000-70322",
+        "result_file": ".artifacts/mvp/E2.2.engine.checkpoint-v3-native/logs/tests-1791731108353695000-70322-result.json"
+      }
+    ]
+  },
+  "workflow_note": "An initial rustfmt invocation recursively changed formatting in protected checkpoint/wire.rs. The raw formatting diff and incident note were preserved under logs/private; root reviewed the diff as formatting-only and authorized restoring that file to exact HEAD. It was restored and the claim scope check then passed. No semantic wire changes were made."
+}

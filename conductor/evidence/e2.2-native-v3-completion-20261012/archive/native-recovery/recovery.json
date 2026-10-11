@@ -1,0 +1,35 @@
+{
+  "status": "prepared_pending_packet_review",
+  "source_attempt": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-v3-native-20261011",
+  "source_result_sha256": "204b6ded611ca451e15cebe853a54d9ddef4c70e289781cd3eb8e2a5297efbcd",
+  "old_failed_qualification_executions": 2,
+  "old_runtime_tests_reached": false,
+  "frozen_sources": {
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": {
+      "path": ".artifacts/e22-v3-native-recovery-20261012/frozen-inputs/checkpoint.rs",
+      "sha256": "2d12ab08567dff553d26048edc54ab3c0470d2f959f82cf49d3a3c6c147a36a4"
+    },
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": {
+      "path": ".artifacts/e22-v3-native-recovery-20261012/frozen-inputs/v2.rs",
+      "sha256": "c9c6edcf1b04f8cfbc76902ded00aad65aa8fa1ef7299978ebc23a0f44c3084d"
+    },
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs": {
+      "path": ".artifacts/e22-v3-native-recovery-20261012/frozen-inputs/v3.rs",
+      "sha256": "fa2b3d9e89db3aef010c7fd457d8934d4e7df10aaec0af56b583077805e48ea8"
+    },
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": {
+      "path": ".artifacts/e22-v3-native-recovery-20261012/frozen-inputs/flow_checkpoint_v3.rs",
+      "sha256": "e6cb5cfb7aa8d127cf25a74cddc4c3574f712f1db917d6d77e319bb15df0ad29"
+    }
+  },
+  "initial_repair": {
+    "path": "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs",
+    "before": "let (key, event) = *valid_flushes.iter().next().unwrap();",
+    "after": "let (&key, &event) = valid_flushes.iter().next().unwrap();"
+  },
+  "development_failure_ceiling": 3,
+  "qualification_failure_ceiling": 2,
+  "reviewer": "/root/e14_closeout_next",
+  "review": "Prospective recovery plan approved; exact bound packet review pending.",
+  "source_authority": "Accepted native V3 contract unchanged; no widening."
+}

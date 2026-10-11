@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.checkpoint-v3-native-recovery-20261012",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "f96c3a86eb816ac244a53171933edcc5c9ad6a11",
+  "model_role": "coordinator",
+  "model_candidate": "current-coordinator",
+  "objective": "Recover and qualify the reviewed explicit native V3 source; preserve original two failed compile receipts and all contract oracles.",
+  "context_paths": [
+    ".artifacts/e22-v3-native-recovery-20261012/context.txt"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md": "facc5bbc03c64c425b7683bd99f73d505109d637692350623ceb5a9aa9c3b7fd",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    "conductor/design/des/ADR-e2-deferred-allocation.md": "7099e0f33d3dac667b6b7eac15160ca3e20806ef60522f7489d80be17cda0c17",
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "01f5404bfb66354fed401adf1778be2f01e28b29a4733f16f2c8420d88134681",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "2000eff2bccc64b2df70cc7a1089c0f580c909d21b7c8ea2da0d600202ceae73",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "611bedc892b6d06d24c5e2d266165e31caa9e57228ec0e7d3400720639b93466",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs": "8fc2f1ee4e65051af53779b4ece42b933aa7d6cfbdf53ef7475a0b78a8c2b76d",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs": "3bd3ed92cef5bac3beee3c890c04f3e68a504f3209253164c69d7b1045b41467",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "67e749e378b7b7cc39adc801c9d23b7eeffb1d9047c3400c44b17e9798685384",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "9399a60cbe07a3627d5dde6eac2d5e035a59e17e5ad5e80fa99fe27ca930e183",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/e22-v3-native-recovery-20261012/context.txt": "84f51732d5e981a36bcdf8b4982a0e0caf6e608db411a2224d9134eb12ac6f9d",
+    ".artifacts/e22-v3-native-recovery-20261012/record_gate.py": "bc3208b41f93bbe6e899e08da62aaa809bf98146dd94ed3ea3bf37ad9683aa86",
+    ".artifacts/e22-v3-native-recovery-20261012/recovery.json": "143128b5d8bb23909191da40ece2da569ccd55487fa110806b78625c33cb3592",
+    ".artifacts/e22-v3-native-recovery-20261012/frozen-inputs/checkpoint.rs": "2d12ab08567dff553d26048edc54ab3c0470d2f959f82cf49d3a3c6c147a36a4",
+    ".artifacts/e22-v3-native-recovery-20261012/frozen-inputs/v2.rs": "c9c6edcf1b04f8cfbc76902ded00aad65aa8fa1ef7299978ebc23a0f44c3084d",
+    ".artifacts/e22-v3-native-recovery-20261012/frozen-inputs/v3.rs": "fa2b3d9e89db3aef010c7fd457d8934d4e7df10aaec0af56b583077805e48ea8",
+    ".artifacts/e22-v3-native-recovery-20261012/frozen-inputs/flow_checkpoint_v3.rs": "e6cb5cfb7aa8d127cf25a74cddc4c3574f712f1db917d6d77e319bb15df0ad29"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs",
+    ".artifacts/e22-v3-native-recovery-20261012/result.json",
+    ".artifacts/e22-v3-native-recovery-20261012/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "conductor",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs",
+    "crates/kairo-ecs-calibration",
+    "crates/kairo-ecs-core",
+    "crates/kairo-ecs-abm",
+    "crates/kairo-ecs-state",
+    ".artifacts/e22-v3-native-recovery-20261012/record_gate.py",
+    ".artifacts/e22-v3-native-recovery-20261012/frozen-inputs",
+    ".artifacts/e22-v3-native-recovery-20261012/prior-attempt"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.deferred-allocation-runtime",
+    "E2.2.engine.checkpoint-portable",
+    "E2.2.engine.native-v3-contract",
+    "E2.2.engine.v3-baseline-integration"
+  ],
+  "interface_contract": "conductor/design/des/e2-flow-checkpoint-v3-native.md",
+  "steps": [
+    "Verify clean f96c3a8 base, stopped/released prior writer and exact frozen-input hashes; obtain reviewed packet and path claim.",
+    "Import exact four frozen source files and apply reviewed tuple destructuring repair.",
+    "Run captured DEVELOPMENT compilation before deeper review; at most three failed development executions; retain all results.",
+    "Repair only bounded compiler or contract defects with independent review; never weaken oracles.",
+    "Run immutable full tests, Clippy and owned-path formatting; at most two failed final qualification executions.",
+    "Independent evidence/source review before single scoped commit and immediate claim release."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-v3-native-recovery-20261012/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Full core/DES/ABM/calibration-flow tests plus nine exact native V3 families and existing required regressions pass."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-v3-native-recovery-20261012/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target core/DES/ABM/calibration-flow Clippy has no warnings."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-v3-native-recovery-20261012/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Four owned Rust files pass Rust1.99 formatting."
+    }
+  ],
+  "acceptance": [
+    "All owner-contract acceptance families are nonvacuous and pass, including full state, actual interior cut, halt, precodec bounds/joins/cache negatives, legacy parity and current-tick readmission.",
+    "Complete Parts V3 retains modes/Flush and existing contexts/restart state without projection; old image/ref/wire remains unchanged.",
+    "Scope is explicit native persistence only; wire/routing/consumers/parent integration and ED recovery remain open."
+  ],
+  "result_path": ".artifacts/e22-v3-native-recovery-20261012/result.json",
+  "stop_conditions": [
+    "Input/base drift, source ownership conflict, out-of-scope edit or weakened oracle",
+    "Three failed development compile executions OR two failed final qualification executions; preserve all evidence and stop",
+    "Before commit until independent source/evidence acceptance"
+  ],
+  "size_exception": "Six owned paths: four inseparable shared checkpoint source/test paths plus result and logs. Reviewed native owner contract explicitly identifies this bounded exception; one writer and three gates.",
+  "status": "prepared",
+  "reason_not_mvp_prepare": "Kairos-owned engine prerequisite to parent E2.2.fidelity; parent recipe is preparation context, not engine execution authority.",
+  "dispatch_condition": "Root and Sol review this exact recovery packet before import or checks.",
+  "accepted_provenance": {
+    "runtime": "9b5a8a4d43f30b80ecc3b27b5a7e58a2cbde74ba",
+    "runtime_join": "ae1e803553ae439700d0aa2edaea95756828d45a",
+    "portable": "7c41305f9c0ee13b88fa908868c61978e8f5d4dc",
+    "native_contract": "85bbcb4f5e0331d94dc5f36323d1d1f2d7b05814",
+    "deferred_ADR": "2fb908cae59f2e21285fb0d5ace437a9e2cb11f6"
+  },
+  "development_verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-v3-native-recovery-20261012/record_gate.py",
+        "compile"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Compilation only: all four package test targets compile; no runtime or final acceptance claim."
+    }
+  ]
+}

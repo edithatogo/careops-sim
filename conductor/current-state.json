@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T13:56:20.047333+00:00",
+  "updated_at": "2026-10-11T15:40:35.479441+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "Implement reviewed explicit native V3 at qualified f96c3a8 baseline; then explicit wire V3, routed complete view/coherent join, three parallel consumers, combined qualification, parent pin and full ED adapter/bindings. Continue remaining delivery phases.",
+  "next_action": "Prepare and dispatch reviewed explicit wire V3 core plus disjoint public fixture draft at a90df67; qualify core before fixture compilation, then combined wire qualification, routing, three consumers, parent pin and full ED adapter/bindings. Continue remaining delivery phases.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -133,7 +133,8 @@
     "conductor/evidence/e1.1-completion-20261011/README.md",
     "conductor/design/ed/e2-staff-fixture-contract.md",
     "conductor/design/ed/e2-interrupt-fixture-contract.md",
-    "conductor/evidence/e1.4-closeout-20261011/README.md"
+    "conductor/evidence/e1.4-closeout-20261011/README.md",
+    "conductor/evidence/e2.2-native-v3-completion-20261012/README.md"
   ],
   "submodule_pins": {
     "libs/kairos": "6d733f489225da4bf6ceec2673b02369c7918bbe",
@@ -1548,14 +1549,23 @@
     "acceptance": "conductor/evidence/e2.2-v3-baseline-completion-20261012/acceptance.json"
   },
   "e22_native_v3": {
-    "status": "authorized_for_dispatch",
+    "status": "accepted_explicit_native_v3_only",
     "worker": "/root/e22_checkpoint_native",
-    "dispatch": "conductor/evidence/e2.2-native-v3-dispatch-20261012/dispatch-ledger.json"
+    "dispatch": "conductor/evidence/e2.2-native-v3-dispatch-20261012/dispatch-ledger.json",
+    "accepted_commit": "0813991b6dddb11635b790a9eb065651b85dd238",
+    "accepted_worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-fixture-recovery-20261012",
+    "acceptance": "conductor/evidence/e2.2-native-v3-completion-20261012/acceptance.json",
+    "retained_failure_counts": {
+      "worker_compile": 2,
+      "root_recovery_runtime_final": 2,
+      "fixture_development_runtime": 1
+    }
   },
   "e22_wire_v3_contract": {
     "status": "accepted_owner_contract_only",
     "commit": "c6b298c075fad4790b2b9e55b9c3a7770b0cbfa6",
     "acceptance": "conductor/evidence/e2.2-wire-v3-contract-20261012/acceptance.json",
-    "implementation_gate": "Accepted native V3 and reviewed bound wire packet"
+    "implementation_gate": "Native V3 accepted; exact core/public packet review and path claims pending.",
+    "preparation_base": "a90df67a132a2e75f112d09ef00df639f954fd67"
   }
 }
