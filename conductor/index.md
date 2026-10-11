@@ -98,3 +98,5 @@ V3 consumers accepted at the joined Kairos head: [E2.2 V3 consumer evidence](evi
 Public Flow preview source dispatched after reviewed API design: [bounded packet](evidence/e2.2-public-preview-dispatch-20261012/README.md). Runtime qualification and ED integration remain pending.
 
 Public Flow preview source qualification accepted at the reviewed Kairos head: [evidence archive](evidence/e2.2-public-flow-preview-completion-20261012/README.md). The parent pin remains unchanged pending queue-order/ABM contracts and native work, versioned persistence, and joined consumer qualification.
+
+Native DES stable queue ordering and ABM arrival handoff accepted at the joined Kairos head: [Rust 1.99 evidence](evidence/e2.2-native-order-handoff-completion-20261012/README.md). Flow V4 and Transit V2 owner contracts are committed; native persistence packets are in review. Persistence, joined consumers, parent pin and ED integration remain open.

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T15:48:48.362645+00:00",
+  "updated_at": "2026-10-11T20:22:43.893418+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "Public Flow preview source qualification only. Parent pin remains unchanged pending queue-order and ABM contracts/native work, versioned persistence, then joined consumer qualification; after those reviewed gates, proceed to the parent pin and one Flow ED adapter with 88 fixture bindings and remaining phases.",
+  "next_action": "Native DES stable queue ordering and ABM arrival handoff are accepted at ef20ae54b73dc47d59250c9b073c063311704413. Flow V4 and Transit V2 contracts are committed at e170d712204d80f76eb600af9f3744f3f7f0af31; review and dispatch disjoint native persistence packets, then wire/routing and joined consumer qualification. Parent pin remains unchanged until those gates pass, followed by one Flow ED adapter, all 88 fixture bindings and remaining delivery phases.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1709,5 +1709,36 @@
     "head": "5c57dc807cf6a6524d174adbb88502a92cbf5673",
     "evidence": "conductor/evidence/e2.2-public-flow-preview-completion-20261012/acceptance.json",
     "parent_pin_unchanged": "6d733f489225da4bf6ceec2673b02369c7918bbe"
+  },
+  "e22_native_order_handoff": {
+    "status": "accepted_native_des_queue_order_and_abm_arrival_handoff_only",
+    "head": "ef20ae54b73dc47d59250c9b073c063311704413",
+    "evidence": "conductor/evidence/e2.2-native-order-handoff-completion-20261012/acceptance.json",
+    "acceptance_sha256": "9d5175eb905e524a6fa87689558c9d5b136090e44f03fddf46a236f4842eadc3",
+    "manifest_sha256": "ef975960f4397d60b2a4c4890268c99987224b85e4d353db30c67143efc86678",
+    "rust": "1.99.0",
+    "tests": {
+      "passed": 876,
+      "failed": 0,
+      "ignored": 6,
+      "suite_summaries": 71
+    },
+    "required_proofs": 87,
+    "child_process_cases": 26,
+    "decoded_v3_proofs": 4,
+    "literal_legacy_envelopes": 19,
+    "historical_source_gate_attempts_preserved": 20,
+    "parent_pin_unchanged": "6d733f489225da4bf6ceec2673b02369c7918bbe",
+    "boundary": "Persistence, parent pin, ED integration, clinical/empirical acceptance and release remain open."
+  },
+  "e22_persistence_contracts": {
+    "status": "accepted_owner_contracts_only_native_packets_in_review",
+    "head": "e170d712204d80f76eb600af9f3744f3f7f0af31",
+    "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-native-persistence-contracts-20261012",
+    "contracts": [
+      "conductor/design/des/ADR-e2-flow-checkpoint-v4-native.md",
+      "conductor/design/des/ADR-e2-transit-context-v2.md"
+    ],
+    "next": "Separate native DES and ABM workers; wire follows native acceptance within each crate; joined consumers follow accepted interfaces."
   }
 }
