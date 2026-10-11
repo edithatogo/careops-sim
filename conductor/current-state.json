@@ -3,7 +3,7 @@
   "updated_at": "2026-10-11T11:08:06.374962+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "Native checkpoint V2 accepted at329549d on Rust1.99. Prepare reviewed disjoint V2 wire and preview-consumer packets; portable consumers follow accepted wire. Then combined qualification, parent pin and single-Flow E2 bindings.",
+  "next_action": "Wire and preview workers dispatched on disjoint native329549d checkouts. Review and qualify each; coherent-cut adapter can follow preview while wire runs. Portable routing depends on wire+adapter, then combined qualification, parent pin and E2 bindings.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1303,7 +1303,6 @@
     "scope": "Continue through successive delivery tasks/phases; no milestone-only goal completion",
     "current_leaf": "E2.2.engine.checkpoint-wire",
     "next_chain": [
-      "E2.2.engine.checkpoint-native",
       "E2.2 V2 wire and disjoint preview consumers",
       "E2.2 portable consumers and combined qualification",
       "E2.2 parent runtime joins",
@@ -1445,12 +1444,29 @@
   "e22_checkpoint_v2": {
     "status": "native_accepted_wire_and_consumers_pending",
     "contract_commit": "9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea",
-    "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-native-20261011",
     "design": "conductor/design/ed/e2-checkpoint-v2-preparation.md",
-    "worker": "/root/e22_checkpoint_native",
     "packet_sha256": "98b01b266a5d21c5423e7b7cf1ae393ab25767cc39673c95b888d11adfc51992",
     "dispatch_evidence": "conductor/evidence/e2.2-checkpoint-native-dispatch-20261011/dispatch-ledger.json",
     "native_commit": "329549d1ce636e052072d64d0a99baf7b55b0cc4",
-    "native_evidence": "conductor/evidence/e2.2-checkpoint-native-completion-20261011/acceptance.json"
+    "native_evidence": "conductor/evidence/e2.2-checkpoint-native-completion-20261011/acceptance.json",
+    "native_worker_history": {
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-native-20261011",
+      "worker": "/root/e22_checkpoint_native"
+    },
+    "accepted_native_worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-native-recovery-20261011",
+    "preview": {
+      "status": "worker_dispatched",
+      "worker": "/root/e22_dispatch",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-preview-20261011",
+      "packet_sha256": "d0563b6059f848b5ae53b0155e01215df8c62f51a53804ec00e0b095842a482b",
+      "dispatch_evidence": "conductor/evidence/e2.2-checkpoint-parallel-dispatch-20261011/preview/dispatch-ledger.json"
+    },
+    "wire": {
+      "status": "worker_dispatched",
+      "worker": "/root/e22_checkpoint_native",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-wire-20261011",
+      "packet_sha256": "640c7a04aa8144f21f175a2b07b60e8422cdd9f37034715a02ccde03999ff1a9",
+      "dispatch_evidence": "conductor/evidence/e2.2-checkpoint-parallel-dispatch-20261011/wire/dispatch-ledger.json"
+    }
   }
 }

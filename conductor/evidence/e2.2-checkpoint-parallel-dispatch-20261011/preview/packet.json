@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.checkpoint-preview",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "329549d1ce636e052072d64d0a99baf7b55b0cc4",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Route shadow and C5 next-event preview through the accepted V1/V2 checkpoint image view, preserving gates, errors, clocks and existing behavior; qualify required local preview oracles only.",
+  "context_paths": [
+    ".artifacts/mvp/E2.2.engine.checkpoint-preview/context.md"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "conductor/design/des/ADR-e2-flow-checkpoint-v2.md": "f1aa471f94e77dfa8fed9b58c5b37d94c0a41bc1cbba80b9a5bd5ae5a8c6c46f",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "9fcc232fb14403e91c43fc7cd7640210ce2d33b61468527b307d573e4906af81",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f6622ccf102a122bc6869617f2e9bd60a464892d7a99b0ab9cf74af5e4dc5b94",
+    "crates/kairo-ecs-des/src/flow.rs": "08fc5f9bd7fe77bd4f0b27cd0b6d6f8d5de9a9f20925ff1794b04cc9d03995c4",
+    "crates/kairo-ecs-calibration/src/shadow_native.rs": "837dea007c15ec9b37d4a226fe4e7c22bbcc032acfd215ac243dfe91c46e1245",
+    "crates/kairo-ecs-calibration/src/c5_native.rs": "cb1ff11876db06786a8334df6843e7ce7ce6131e238c971a44e4051033d1acdb",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/mvp/E2.2.engine.checkpoint-preview/context.md": "8297244c81a8194e02a955667c2d0e108ce2615ad3a1e2fb545d275a6c056197",
+    ".artifacts/e22-checkpoint-preview/record_gate.py": "2a94aa38e7efe07c42bc164e9f8880d3f55a4c2539af7b42854450d1204e412c"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/shadow_native.rs",
+    "crates/kairo-ecs-calibration/src/c5_native.rs",
+    ".artifacts/mvp/E2.2.engine.checkpoint-preview/result.json",
+    ".artifacts/mvp/E2.2.engine.checkpoint-preview/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "crates/kairo-ecs-des",
+    "crates/kairo-ecs-core",
+    "crates/kairo-ecs-state",
+    "crates/kairo-ecs-calibration/Cargo.toml",
+    "crates/kairo-ecs-calibration/src/lib.rs",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "crates/kairo-ecs-calibration/src/flow_bridge",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v2.md",
+    ".artifacts/e22-checkpoint-preview/record_gate.py"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.checkpoint-native"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-flow-checkpoint-v2.md",
+  "steps": [
+    "Verify fresh worker claim and exact native base/API/source hashes; read only bounded context and preserve prior evidence.",
+    "Send root an early checkpoint with exact API edits and one shadow/C5 oracle approach before broad test expansion.",
+    "Implement only two owned preview paths and focused in-module tests, including V2 gates, horizon/clock, disabled queue, limit failure and no-mutation controls.",
+    "Run only the three immutable 1.99 gates in order; retain receipts/logs and stop after two unsuccessful correction rounds.",
+    "Freeze source hashes and evidence for root review; do not commit before explicit approval."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-preview/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Calibration feature-flow package tests pass and report all four named nonzero preview oracles."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-preview/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target calibration Clippy with flow feature has zero warnings."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-preview/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Rustfmt check passes on exactly the two owned source files."
+    }
+  ],
+  "acceptance": [
+    "Shadow and C5 preview use the accepted lossless scheduler view, propagate capture failures without V1 fallback, and satisfy required preview/no-mutation oracles.",
+    "Existing gated/ungated behavior and protected paths remain unchanged; local seam evidence only, with root review required before any commit."
+  ],
+  "result_path": ".artifacts/mvp/E2.2.engine.checkpoint-preview/result.json",
+  "stop_conditions": [
+    "Native/API/source hash drift or claim mismatch",
+    "A contract ambiguity or protected-path change is needed",
+    "Two unsuccessful correction rounds",
+    "Any required named oracle cannot be implemented or verified"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root and GPT-6.1-sol",
+    "accepted_native_commit": "329549d1ce636e052072d64d0a99baf7b55b0cc4",
+    "parent_prep_sha256": "a02a71b4baa71ca893540253e914f109e249ae6e4c1ce13ec37cc090e173e89a",
+    "reason_not_mvp_prepare": "Kairos calibration consumer packet follows an accepted engine-owner ADR and requires a bounded downstream checkout."
+  }
+}

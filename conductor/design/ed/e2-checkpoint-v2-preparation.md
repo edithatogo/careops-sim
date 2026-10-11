@@ -4,7 +4,9 @@ Status: coordinator preparation, internally reviewed with GPT-6.1-sol.
 Runtime source `382b333fdc18bcbdf8bbf231fc633a79ab6ec86a` is qualified at
 Kairos `9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea` (reviewed V2 ADR included).
 Parent runtime evidence is accepted in `c586d06`; native V2 implementation was
-dispatched in `84e6bed` and remains unaccepted. The parent pin remains
+dispatched in `84e6bed` and accepted at native `329549d1ce636e052072d64d0a99baf7b55b0cc4`
+with parent evidence `33137515`. Native clean-commit qualification passed 320
+tests, strict Clippy and formatting on Rust 1.99. Wire and consumers remain open. The parent pin remains
 `6d733f489225da4bf6ceec2673b02369c7918bbe`. Rust/Cargo 1.99.0 only.
 This preparation does not authorize future workers. Bind their packets to the
 accepted native source and reviewed `ADR-e2-flow-checkpoint-v2.md` at dispatch.
@@ -152,3 +154,21 @@ kairo-ecs-calibration --features flow --all-targets -- -D warnings`; and
 files. The flow feature is required to compile these consumers. The recorder
 must require nonzero named shadow and C5 preview tests and protect all other
 source. These are planned commands, not executed results.
+
+## Consumer join scheduling refinement
+
+The coherent-cut adapter depends on the accepted native borrowed view, not V2
+wire. After preview work frees a worker slot, it may run alongside wire work.
+Its atomic source ownership is `flow_bridge/checkpoint_wire.rs`, `flow_bridge.rs`
+and `c2_portable_checkpoint.rs` under `crates/kairo-ecs-calibration/src`.
+The two existing portable production callers and seven inline test callers must
+compile in the same commit: existing V1 images pass `FlowCheckpointRef::V1`.
+Add meaningful direct V2 coherent-cut witnesses; V1 wrappers alone do not qualify
+V2 gate/transit state. Preserve full command variants and existing rejection rules.
+
+Then the portable routing packet owns `c2_portable_checkpoint.rs` and its
+`process_tests.rs`, depending on both accepted wire and the frozen adapter.
+It proves ungated V1 byte parity and gated V2 restored transit continuation.
+Never dispatch these packets concurrently on the shared portable source path.
+These are preparation boundaries; reviewed packets and source hashes are still
+required before dispatch.

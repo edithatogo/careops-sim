@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.checkpoint-wire",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "329549d1ce636e052072d64d0a99baf7b55b0cc4",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Complete bounded V2 wire scan/measure/encode/decode and lossless image routing; preserve V1 bytes and accepted native semantics.",
+  "context_paths": [
+    ".artifacts/mvp/E2.2.engine.checkpoint-wire/context.md"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "conductor/design/des/ADR-e2-flow-checkpoint-v2.md": "f1aa471f94e77dfa8fed9b58c5b37d94c0a41bc1cbba80b9a5bd5ae5a8c6c46f",
+    "conductor/design/des/ADR-e2-resource-grant-gate.md": "db6931d18513043814fc7088697b41235ecda582db0b983e210fbe061f2e3742",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "9fcc232fb14403e91c43fc7cd7640210ce2d33b61468527b307d573e4906af81",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f6622ccf102a122bc6869617f2e9bd60a464892d7a99b0ab9cf74af5e4dc5b94",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "4b10feb7d505bfdd4810e96d507c5ffa1bac20fd8d3d773e2bf802449a75bb31",
+    "crates/kairo-ecs-des/src/flow.rs": "08fc5f9bd7fe77bd4f0b27cd0b6d6f8d5de9a9f20925ff1794b04cc9d03995c4",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v1.rs": "8ecf46774fcc5e8d41dfd821b11605e4e6b18381aed60623677c345258ce02b8",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs": "8fc2f1ee4e65051af53779b4ece42b933aa7d6cfbdf53ef7475a0b78a8c2b76d",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/e22-checkpoint-wire/record_gate.py": "a907aee38e634cde18a4948d8eab53086560677328fde8574846fac867754716",
+    ".artifacts/mvp/E2.2.engine.checkpoint-wire/context.md": "c9ec1cd4bc596850ba5226ce77667535bc64221114346d126399930f3fb903b6"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs",
+    ".artifacts/mvp/E2.2.engine.checkpoint-wire/result.json",
+    ".artifacts/mvp/E2.2.engine.checkpoint-wire/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "crates/kairo-ecs-core",
+    "crates/kairo-ecs-state",
+    "crates/kairo-ecs-abm",
+    "crates/kairo-ecs-calibration",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v1.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.checkpoint-native"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-flow-checkpoint-v2.md",
+  "steps": [
+    "Verify exact packet/base/input hashes and root writer reservation before edits.",
+    "Present scan/measure/owning-decode architecture and three representative test families for early root review; retain missing-API failure.",
+    "Implement every reviewed wire oracle within the three owned sources; no native or consumer edits.",
+    "Run the three wrappers on frozen hashes, preserve failures and return result for root/Sol review; no self acceptance or commit."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-wire/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Full DES package, declared nonzero V2 wire suite, V1 exact bytes and native/gate continuation regressions."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-wire/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Pinned Rust 1.99 strict DES all-target Clippy, no warnings."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-wire/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Exactly three owned Rust source paths; recursive child formatting skipped."
+    }
+  ],
+  "acceptance": [
+    "Whole-payload non-owning V2 scan precedes DTO ownership; canonical measured encoding and lossless routed/restored continuation are proven.",
+    "V1 bytes/API/layout and accepted native behavior unchanged; all limits and malformed/continuation oracles executed.",
+    "Independent root/Sol acceptance only; consumer, parent pin/E2 binding, hosted and release gates remain open."
+  ],
+  "result_path": ".artifacts/mvp/E2.2.engine.checkpoint-wire/result.json",
+  "stop_conditions": [
+    "Base/input drift except expected owned source outputs after authorized dispatch.",
+    "Undefined interface, missing oracle/toolchain or need for protected-path edits.",
+    "Two unsuccessful correction rounds: stop and report preserved receipts before further changes."
+  ],
+  "coordinator_binding": {
+    "reviewer": "root and GPT-6.1-sol internal Track03/Track22",
+    "preparation_only": true,
+    "qualified_native_commit": "329549d1ce636e052072d64d0a99baf7b55b0cc4",
+    "native_parent_acceptance_commit": "33137515ecc76f2f2553a8634d9003f326f64e35",
+    "reservation_note": "Preparation claim released after validation; root reserves future writer paths at dispatch.",
+    "reason_not_mvp_prepare": "Reviewed Kairos owner ADR prerequisite; custom bounded engine packet, not an executable parent MVP recipe."
+  }
+}

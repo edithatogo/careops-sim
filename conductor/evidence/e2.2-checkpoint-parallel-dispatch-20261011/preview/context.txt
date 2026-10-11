@@ -1,0 +1,102 @@
+# E2.2 checkpoint preview consumer packet context
+
+Status: preparation only, bound to accepted native runtime commit
+329549d1ce636e052072d64d0a99baf7b55b0cc4 and reviewed ADR. Not runtime
+acceptance or authority to commit. Rust/Cargo 1.99.0 only.
+
+## Contract and ownership
+
+Owner contract: conductor/design/des/ADR-e2-flow-checkpoint-v2.md.
+Parent consumer preparation: conductor/design/ed/e2-checkpoint-v2-preparation.md
+from parent checkout c2-implementation-20261006, SHA-256
+3bd919381b46da4535e42cd8239b30ee09a3fd5d08910574051fac103667fa81.
+Native runtime is accepted; wire and other consumer joins remain separate.
+Native APIs are FlowRuntime::capture_checkpoint_image,
+FlowCheckpointImage::as_ref, and FlowCheckpointRef::scheduler. The borrowed
+view retains V1 or V2 and does not project/restore V2 as V1. Propagate capture
+failures; never fallback to legacy V1 capture. Preserve existing ungated
+behavior, C5 study/RNG behavior and shadow budget/hook behavior.
+
+Native API source hashes at packet preparation:
+- crates/kairo-ecs-des/src/flow/checkpoint.rs:
+  9fcc232fb14403e91c43fc7cd7640210ce2d33b61468527b307d573e4906af81
+- crates/kairo-ecs-des/src/flow/checkpoint/v2.rs:
+  f6622ccf102a122bc6869617f2e9bd60a464892d7a99b0ab9cf74af5e4dc5b94
+- crates/kairo-ecs-des/src/flow.rs:
+  08fc5f9bd7fe77bd4f0b27cd0b6d6f8d5de9a9f20925ff1794b04cc9d03995c4
+
+Exactly two source paths may change:
+- crates/kairo-ecs-calibration/src/shadow_native.rs
+- crates/kairo-ecs-calibration/src/c5_native.rs
+
+Tests belong in those modules. Other source, manifests, lockfiles, parent pins
+and plans are outside scope. Four worker write paths: the two source files plus
+.artifacts/mvp/E2.2.engine.checkpoint-preview/result.json and its logs directory.
+Preparation context, packet and gate driver are immutable.
+
+## Existing code seams
+
+shadow_native.rs NativeFlowAdapter::next_tick currently uses V1 capture and
+scans live scheduler entries. Route it through the version-aware image and
+scheduler view, preserving ShadowError::Adapter error propagation. Reuse the
+existing Model/World, c3.native codec registration, inputs() tick-zero anchor,
+duration-five work and adapter assertions. Do not change baseline model behavior
+relied on by existing tests.
+
+c5_native.rs free_run currently captures V1 in its event loop. Extract a private
+preview helper used by that real loop, accepting runtime, codecs and limits and
+returning the earliest live scheduler tick or None through the version-aware
+image view. The C5 seam does not add gate inputs/configuration to tasks. Reuse
+the existing c5.free codec/work-registration pattern; tests must invoke the
+same helper as production.
+
+## Required preview oracles
+
+1. native_preview_handles_v2_pending_disable_and_horizon_without_advancing:
+   resource disabled at tick 0, waiting work submitted at 0 with duration 5,
+   enable at 3. Preview and actual execution reach grant at 3 and completion at
+   8. For horizon 6, stop before event 8; work is active/unfinished and Flow
+   time remains at the last dispatched event (3). Do not step to 6 or invent
+   a progress sample there.
+2. native_preview_disabled_queue_has_no_next_event_or_completion: with a
+   never-enabled queued request, dispatch both Disable0 and Submit0 events until
+   no live scheduler entries remain. Then preview returns None, the request is
+   still Waiting and no completion is fabricated.
+3. c5_native_preview_preserves_pending_disable_and_completion: active work
+   completion at 5 with disable at 2 and re-enable at 7. Legacy V1 capture
+   rejects pending gate state. Production preview helper returns 2 and, after
+   dispatch of disable, 5. Calling the helper must not mutate Flow time,
+   dispatched-event count, claims/resource state or work progress. It takes no
+   RNG, so cannot consume study RNG. Dispatch continues normally and work
+   completes at 5.
+4. c5_native_preview_limit_error_propagates_without_v1_fallback: with a
+   gate-pending runtime use FlowCheckpointLimits { max_commands: 0, ..Default::default() }.
+   The helper returns the capture error and must not retry legacy V1 capture.
+
+All four named preview tests must be present, nonzero and observed passing in
+test output. Include meaningful state comparisons around preview. No C5
+user-task/config gate feature is claimed or implemented.
+
+## Gates and bounded workflow
+
+Only these immutable wrappers are authorized from checkout root:
+- python3 -B .artifacts/e22-checkpoint-preview/record_gate.py tests
+- python3 -B .artifacts/e22-checkpoint-preview/record_gate.py clippy
+- python3 -B .artifacts/e22-checkpoint-preview/record_gate.py format
+
+They use pinned Rust/Cargo 1.99.0 and run calibration feature-flow package
+tests, strict all-target Clippy with flow and warnings denied, and rustfmt check
+on exactly the two owned files. Preserve every receipt/log and keep build target
+under owned logs. The driver verifies frozen native source hashes and refuses
+the test gate unless all four named oracles are reported passing. Capture all
+lease harness stdout/stderr privately; never print token-bearing JSON or
+exception text. Check claim before every write and gate; heartbeat TTL 3600
+before expiry; do not recover an expired claim. Stop after two failed correction
+rounds and report the exact reproducer. Send the early test/API checkpoint to
+root before broad test expansion; root reviews before commit. No push.
+
+## Evidence boundary
+
+Local package gates qualify only this preview seam. They do not establish C5
+gate admission, native runtime qualification, parent consumer join, full E2,
+MVP, empirical, clinical, platform, hosted or release acceptance.
