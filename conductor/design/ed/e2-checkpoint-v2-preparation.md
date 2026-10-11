@@ -1,12 +1,13 @@
 # E2 checkpoint V2 preparation and consumer join
 
-Status: coordinator preparation, reviewed in principle with GPT-6.1-sol.
-This is not implementation authority or a claim of runtime/checkpoint acceptance.
-Source baseline: Kairos `63cd1cd5a53c59e255fce4db09bea2e219254c90`, whose
-reviewed resource-grant ADR extends parent pin
+Status: coordinator preparation, internally reviewed with GPT-6.1-sol.
+Runtime source `382b333fdc18bcbdf8bbf231fc633a79ab6ec86a` is qualified at
+Kairos `9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea` (reviewed V2 ADR included).
+Parent runtime evidence is accepted in `c586d06`; native V2 implementation was
+dispatched in `84e6bed` and remains unaccepted. The parent pin remains
 `6d733f489225da4bf6ceec2673b02369c7918bbe`. Rust/Cargo 1.99.0 only.
-The active runtime worker owns flow.rs and flow/checkpoint.rs. Freeze and review
-its actual types before a separate Kairos owner ADR and executable packet.
+This preparation does not authorize future workers. Bind their packets to the
+accepted native source and reviewed `ADR-e2-flow-checkpoint-v2.md` at dispatch.
 
 ## Required delivery
 
@@ -21,7 +22,7 @@ Keep every V1 DTO, method, wire magic, tag and golden byte unchanged. V1 capture
 continues to reject disabled resources or pending gate state. No new FlowError
 variant or V1 nested dispatch/error tag is needed.
 
-Proposed explicit APIs (names require the next owner ADR):
+Explicit APIs frozen by the reviewed Kairos owner ADR:
 
 - FlowCheckpointV2 and FlowCommandV2.
 - FlowRuntime::capture_checkpoint_v2, restore_checkpoint_v2 and
@@ -31,7 +32,7 @@ Proposed explicit APIs (names require the next owner ADR):
   version-aware view over common fields and complete command variants.
 
 V2 contains every common V1 field without loss. Its command enum includes all
-legacy commands and ResourceGrantEnabled(ResourceId, bool). Canonical flag rows are sorted by ResourceId, unique and
+legacy commands and GrantEnabled(ResourceId, bool). Canonical flag rows are sorted by ResourceId, unique and
 cover exactly the live resources; V2 has no implicit missing flags. Derive the pending index from full command rows and their live scheduler entries;
 do not serialize redundant boundary rows. Command row keys supply EventId; the
 scheduler supplies tick and priority; the command supplies resource and enabled.
@@ -114,3 +115,40 @@ toggle; capture before/after a same-tick gate and after a precommit budget halt;
 restored versus uninterrupted full histories; malformed joins/resources/versions/
 tags/limits; and unchanged legacy V1 bytes/readback. Native package checks alone
 do not establish hosted/platform, empirical, clinical or release acceptance.
+
+## Next disjoint consumer packet
+
+After native V2 acceptance, wire implementation can run alongside a calibration
+preview packet owning only `crates/kairo-ecs-calibration/src/shadow_native.rs`
+and `crates/kairo-ecs-calibration/src/c5_native.rs`, plus its result and logs.
+Put focused unit tests in those files. Freeze exact native API/source hashes
+before dispatch; neither worker owns the native checkpoint implementation.
+Portable checkpoint and coherent-cut byte consumers wait for accepted V2 wire.
+
+Use `capture_checkpoint_image(...).as_ref().scheduler()` in the actual preview
+paths, propagating errors. Shadow's adapter accepts a gate-configured model.
+C5 free_run currently creates an ungated runtime: changing its capture call does
+not add gate configuration to C5 task inputs. Extract a private preview helper
+used by the real C5 loop and qualify that same helper with gated runtime state.
+Do not claim C5 task/config gate admission from this seam qualification.
+
+Required witnesses:
+
+- Shadow: disable at 0, waiting work at 0 with duration 5, enable at 3;
+  previews and actual execution reach grant 3 and completion 8. At horizon 6,
+  work remains active and unfinished. Stop before event 8; do not force the
+  authoritative event clock to 6 or invent a progress sample at that tick.
+- C5 helper: pending disable 2 / enable 7 with active completion 5. V1 capture
+  rejects pending state; the helper previews 2 without mutating time, dispatch
+  count, claims or RNG. After step 2 it previews 5; active work drains at 5.
+- Never-enabled queued work has no next event and no invented completion.
+- Capture failure from malformed or over-budget state propagates without fallback.
+- Preserve existing ungated C5 studies and shadow budget/hook behavior.
+
+Three future gates use the pinned Rust 1.99 binaries: `cargo test --locked -p
+kairo-ecs-calibration --features flow`; `cargo clippy --locked -p
+kairo-ecs-calibration --features flow --all-targets -- -D warnings`; and
+`rustfmt --edition 2021 --check --config skip_children=true` on the two owned
+files. The flow feature is required to compile these consumers. The recorder
+must require nonzero named shadow and C5 preview tests and protect all other
+source. These are planned commands, not executed results.
