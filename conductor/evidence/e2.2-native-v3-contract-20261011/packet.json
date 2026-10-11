@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.native-v3-contract",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "2fb908cae59f2e21285fb0d5ace437a9e2cb11f6",
+  "model_role": "worker",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Write reviewed explicit native V3 owner contract with complete state, bounded normalization and legacy parity; no implementation dispatch.",
+  "context_paths": [
+    ".artifacts/e22-native-v3-contract/context.txt"
+  ],
+  "input_hashes": {
+    "conductor/design/des/ADR-e2-deferred-allocation.md": "7099e0f33d3dac667b6b7eac15160ca3e20806ef60522f7489d80be17cda0c17",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v2.md": "f1aa471f94e77dfa8fed9b58c5b37d94c0a41bc1cbba80b9a5bd5ae5a8c6c46f",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    ".artifacts/e22-native-v3-contract/context.txt": "440fac148043edd8f50142320a20ac052b12b99c839197a014666f8948eba805"
+  },
+  "write_paths": [
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md",
+    ".artifacts/e22-native-v3-contract/result.json",
+    ".artifacts/e22-native-v3-contract/logs",
+    ".artifacts/e22-native-v3-contract/worker-lease.private.json"
+  ],
+  "protected_paths": [
+    "crates",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "conductor/design/des/ADR-e2-deferred-allocation.md"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.deferred-allocation-design"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-deferred-allocation.md",
+  "steps": [
+    "Verify clean base and hashes, claim exact paths.",
+    "Author only native V3 contract per bounded context and actual signatures.",
+    "Run document check; return result for root review, no commit."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-c",
+        "from pathlib import Path; p=Path('conductor/design/des/e2-flow-checkpoint-v3-native.md'); s=p.read_text(); assert 0 < len(s.encode()) <= 24000; assert all(x in s for x in ['FlowCheckpointV3', 'FlowCommandV3', 'allocation_modes', 'max_pending_operations', 'V1', 'V2', '1.99'])"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Contract exists as bounded UTF8 with required named types and legacy/limit policy; semantic acceptance remains independent review."
+    }
+  ],
+  "acceptance": [
+    "Exact reviewed staged API and full-state invariants documented.",
+    "Allocation-free V1/V2 preflight and legacy parity explicit.",
+    "Runtime acceptance and exact implementation packet binding still required."
+  ],
+  "result_path": ".artifacts/e22-native-v3-contract/result.json",
+  "stop_conditions": [
+    "Input/base/lease drift",
+    "Need code or out-of-scope edits",
+    "Ambiguous API or invariant",
+    "Before commit"
+  ],
+  "status": "prepared"
+}
