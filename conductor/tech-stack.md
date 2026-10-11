@@ -46,3 +46,12 @@ The [spatial capability plan](spatial-visualization.md) records capture/CAD → 
 floor-plan package → PixiJS visualization and Kairos simulation, connected through
 WebSocket state sync. Early native development uses synthetic graphs; full capture/
 CAD adapters are separately qualified later. The backend remains authoritative.
+
+## Parent E1 development toolchain — 11 October 2026
+
+The user's Rust1.99-only instruction governs current parent development: all
+parent packages now declare rust-version1.99 and use exact rust-toolchain1.99.0.
+Earlier1.76/beta descriptions above are historical compatibility evidence, not
+current parent verification targets. Kairos dependency source is unchanged.
+E1 arrivals adds only the already pinned local kairo-ecs-rng dependency; no
+registry version upgrade or older-toolchain test is commissioned.

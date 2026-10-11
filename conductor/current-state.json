@@ -3,7 +3,7 @@
   "updated_at": "2026-10-11T01:40:22.817557+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E1",
-  "next_action": "E1.1 fixture specifications accepted; prepare/review and dispatch only E1.2.arrivals on Rust1.99.0. Native pathway binding remains open; guarded continuation prevents duplicate writers.",
+  "next_action": "E1.1 accepted and GPT-6.1-sol guard passed at53dd51a. Coordinator preparing E1.2.arrivals native packet; do not duplicate dispatch. Rust1.99.0 only.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1262,5 +1262,12 @@
     "scope": "specifications only",
     "runtime_status": "unbound",
     "next_leaf": "E1.2.arrivals"
+  },
+  "e1_arrivals_dispatch": {
+    "status": "preparing",
+    "leaf": "E1.2.arrivals",
+    "guard_head": "53dd51a",
+    "contract": "conductor/design/ed/e1-arrivals-contract.md",
+    "scope": "only arrivals; no automatic triage dispatch"
   }
 }

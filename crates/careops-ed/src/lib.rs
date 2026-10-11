@@ -4,6 +4,9 @@
 //! items. This crate does not encode clinical pathways or empirically validate
 //! an ED profile.
 
+#[doc(hidden)]
+pub mod arrivals;
+
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::error::Error;
 use std::fmt::{Display, Formatter};
