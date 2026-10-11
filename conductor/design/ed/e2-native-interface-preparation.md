@@ -154,20 +154,33 @@ can read a newly embedded Flow V2 image.
 
 1. After E2.1 acceptance, root obtains Track03 owner ADR/public contract review
    and records downstream Track22/calibration dependencies in the owner handoff.
-2. One isolated Track03 writer implements the grant gate and focused native
+2. After space acceptance, freeze the pure parent dispatch policy contract and
+   implement `E2.2.dispatch` alongside the Track03 gate. Its recipe depends on
+   space acceptance, not the checkpoint join. Candidate parent ownership is
+   `crates/careops-ed/src/dispatch.rs`,
+   `crates/careops-ed/tests/e22_dispatch_policy.rs`, and the single experimental
+   module declaration in `crates/careops-ed/src/lib.rs`, plus result/log paths.
+   Reserve lib.rs exclusively. The policy takes explicit current time and
+   borrowed validated request/staff snapshots, applies eligibility and
+   urgency/readiness/ASCII-ID ties, and returns a selected request/staff pair.
+   It creates no events, claims or RNG draws and is not a second runtime.
+   Native Rust policy tests qualify this projection only; all composed
+   staff/interruption/space bindings and E2.2 phase acceptance remain open.
+3. One isolated Track03 writer implements the grant gate and focused native
    collision tests. It owns flow.rs and its declared test paths. During this
    intermediate work, legacy V1 capture must already fail closed for disabled
    state or pending gate commands. Focused success freezes a dependency interface;
    combined gate API acceptance waits for the checkpoint and consumer join.
-3. Once runtime types are frozen, a checkpoint writer implements V2 and compatible
+4. Once runtime types are frozen, a checkpoint writer implements V2 and compatible
    V1 behavior. Runtime/checkpoint changes are serialized while they share types;
    disjoint review and consumer preparation can proceed in parallel.
-4. A separately owned calibration packet updates coherent-cut and portable image
+5. A separately owned calibration packet updates coherent-cut and portable image
    consumers. No unreviewed conversion that drops gate state is allowed.
-5. Independently qualify combined Kairos under Rust 1.99, commit there, then
-   update the parent pin under a separate claim. Bind parent E2.2 dispatch,
-   fidelity, claims and limits packets to actual accepted APIs.
-6. Integrate the single-runtime parent adapter, preserve E1, then run E2.3 composed
+6. Independently qualify combined Kairos under Rust 1.99, commit there, then
+   update the parent pin under a separate claim. Bind parent E2.2 fidelity,
+   claims and limits packets and the policy-to-runtime integration to actual
+   accepted APIs.
+7. Integrate the single-runtime parent adapter, preserve E1, then run E2.3 composed
    MVP and E2.4 acceptance. Continue later delivery phases; this document closes
    no plan checkbox, empirical/clinical gate or release gate.
 
