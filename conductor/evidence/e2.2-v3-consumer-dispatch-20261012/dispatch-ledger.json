@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "base_commit": "4222b721c942f813d4e61c2609140ba890224fac",
+  "accepted_routing_commit": "f4f28deb5cc103075716ad34f5d44068f621e441",
+  "source_equivalence": "No crates/manifests/toolchain diff from accepted repaired routing; added reviewed consumer docs only.",
+  "workers": {
+    "preview": {
+      "worker": "/root/e22_dispatch",
+      "model": "gpt-6-luna",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-preview-consumer-20261012",
+      "packet": ".artifacts/e22-v3-preview-consumer-qualified-20261012/packet.json",
+      "packet_sha256": "4488bc8a1394a43ee2f91939b887e531704d68706c010127ca0aa52e57adf354",
+      "owned_paths": [
+        "crates/kairo-ecs-calibration/src/shadow_native.rs",
+        "crates/kairo-ecs-calibration/src/c5_native.rs",
+        ".artifacts/e22-v3-preview-consumer-qualified-20261012/result.json",
+        ".artifacts/e22-v3-preview-consumer-qualified-20261012/logs"
+      ],
+      "status": "reviewed_authorized_for_fresh_claim",
+      "required_tests": [
+        "preview_v3_deferred_pending_flush_without_advancement",
+        "preview_v3_disabled_queue_has_no_invented_completion",
+        "preview_v3_halted_live_tick_and_repeat_step_error",
+        "preview_v3_capture_limit_error_without_legacy_fallback"
+      ]
+    },
+    "coherent": {
+      "worker": "/root/v3_coherent_consumer",
+      "model": "gpt-6-luna",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-coherent-consumer-20261012",
+      "packet": ".artifacts/e22-v3-coherent-consumer-qualified-20261012/packet.json",
+      "packet_sha256": "a023860233bd5e2b75271da0105f7ebfa772829a1b40e115921f25cb20524589",
+      "owned_paths": [
+        "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        ".artifacts/e22-v3-coherent-consumer-qualified-20261012/result.json",
+        ".artifacts/e22-v3-coherent-consumer-qualified-20261012/logs"
+      ],
+      "status": "reviewed_authorized_for_fresh_claim",
+      "required_tests": [
+        "coherent_v3_transit_control_and_owned_field_mutations",
+        "coherent_v3_arrived_pending_submit_join",
+        "coherent_v3_observed_frontier_required"
+      ]
+    },
+    "portable": {
+      "worker": "/root/v3_portable_consumer",
+      "model": "gpt-6-luna",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-portable-consumer-20261012",
+      "packet": ".artifacts/e22-v3-portable-consumer-qualified-20261012/packet.json",
+      "packet_sha256": "6bc669d65313f943e89a05e833c08eaf875c9c164924b8e2af1ba4a3e6797b26",
+      "owned_paths": [
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs",
+        ".artifacts/e22-v3-portable-consumer-qualified-20261012/result.json",
+        ".artifacts/e22-v3-portable-consumer-qualified-20261012/logs"
+      ],
+      "status": "reviewed_authorized_for_fresh_claim",
+      "required_tests": [
+        "portable_v3_mixed_interior_cuts_fresh_process_continuation",
+        "portable_v3_current_tick_flush_fresh_process_continuation",
+        "portable_v3_halted_envelope_fresh_process_preserves_state",
+        "portable_v3_malformed_inner_resealed_outer_rejects_precodec"
+      ]
+    }
+  },
+  "join": "Root reviews source commits, joins all three, fresh clean-head fullfourpackage tests/Clippy/format beforeconsumeracceptance/parentpin.",
+  "development": "TargetedcalibrationstrictClippycompile, focusedruntime,ownedformat;3failedDEVELOPMENTceiling;preserveallreceipts.",
+  "preserved_preparation": "Earlier04e411b and3853423 packets archived as superseded, never dispatched."
+}

@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.consumer.v3-coherent-source-rebound-20261012",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "385342303be5a50235cf6c9e016785d91323c474",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "objective": "Prove actual V3 coherent consumer behavior under reviewed contract; source-stage only.",
+  "context_paths": [
+    ".artifacts/e22-v3-coherent-consumer-rebound-20261012/context.txt"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md": "facc5bbc03c64c425b7683bd99f73d505109d637692350623ceb5a9aa9c3b7fd",
+    "conductor/design/des/e2-flow-checkpoint-v3-wire.md": "c74fc89530cd35681825cce87e781cd62bd8759a88b3a001bb03ea32da0aab6f",
+    "conductor/design/des/ADR-e2-deferred-allocation.md": "7099e0f33d3dac667b6b7eac15160ca3e20806ef60522f7489d80be17cda0c17",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "6d89948166dd27c39427bb130df172b65f2535e066c2401fe08503641d1da051",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f1527c04bcd278027324347d7dd52c3e3eed4773457ffca4de5a2cf21fb87232",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs": "3c3215c4d9d7618e4933ac0ef354d05f9ef1a36fe53b34ac43d8768b1cf8679f",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "d52a67bd480b27dced3a38cfd82bd85288abad511e3d2ceecebd17afe9f0000b",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "49fac22c2df77dd920ff773b02395abdbbdbc1c2ee135d234dba9c8ea3d0a910",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "d66edb4fdb022be34c38baf09b3d6c26a10214be84a07373565278bd2ad69b44",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    "crates/kairo-ecs-des/Cargo.toml": "9f5a852926de2bb795da29f203d2101bbedc5f712f65197c5d5812fe011df816",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs": "9015a4d1218f377189ce612025a6fd5566149ac188a13273733da3de7aa279e4",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs": "b935e7b17091540757ea8cafe6f0b9632ed27392dfacf796f31cee9cce14f758",
+    "conductor/design/des/e2-flow-checkpoint-v3-routing.md": "222d0b3a477d9b14768dc962877a5167fe5fe2249d6c849dbf84f702eb2806a7",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/handoff.md": "d7e2e6a9fa89317f031fe7b2ecaf11871323e332b859af6f11522c4e08a6049e",
+    "conductor/tracks/22-experiment-runner-scenario-management/handoff.md": "04e5ea2a8c41be73b56ddc6cd20bb107f73f9b1dba4f4b9162c252ce1ea39084",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "a4b2b4061ecd8ddf3ee6d56ab706c3d32602a0a84834a63fdeb08e7ff7fa494b",
+    "conductor/design/des/e2-flow-checkpoint-v3-consumers.md": "ecefa863626495b21a6cf6506010812361a887fb8550172b9a142281ac64a3e3",
+    "crates/kairo-ecs-calibration/Cargo.toml": "203ecea6d7a0c233fb08fc9563a47d0ba400d380e9ef7bc00d34b5f62cef19a1",
+    ".artifacts/e22-v3-coherent-consumer-rebound-20261012/context.txt": "28f788c9dd814bd20e75b74e88091ba04ec17adc631ea2864b1162db54a7a9bb",
+    ".artifacts/e22-v3-coherent-consumer-rebound-20261012/record_gate.py": "ae98be92d616b4b1306e2693bff6ca2bf15d44da7f0fcf607b3f38a3acea5615"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    ".artifacts/e22-v3-coherent-consumer-rebound-20261012/result.json",
+    ".artifacts/e22-v3-coherent-consumer-rebound-20261012/logs"
+  ],
+  "protected_paths": [
+    "AGENTS.md",
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md",
+    "conductor/design/des/e2-flow-checkpoint-v3-wire.md",
+    "conductor/design/des/ADR-e2-deferred-allocation.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "crates/kairo-ecs-des/Cargo.toml",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs",
+    "conductor/design/des/e2-flow-checkpoint-v3-routing.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/handoff.md",
+    "conductor/tracks/22-experiment-runner-scenario-management/handoff.md",
+    "conductor/design/des/e2-flow-checkpoint-v3-consumers.md",
+    "crates/kairo-ecs-calibration/Cargo.toml",
+    ".artifacts/e22-v3-coherent-consumer-rebound-20261012/context.txt",
+    ".artifacts/e22-v3-coherent-consumer-rebound-20261012/record_gate.py",
+    ".git",
+    "crates/kairo-ecs-core",
+    "crates/kairo-ecs-des",
+    "crates/kairo-ecs-abm",
+    "crates/kairo-ecs-state",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.v3-routing-accepted",
+    "E2.2.consumer.contract-reviewed"
+  ],
+  "interface_contract": "conductor/design/des/e2-flow-checkpoint-v3-consumers.md",
+  "steps": [
+    "Verify root dispatch, clean base and all bound hashes; fresh narrow claim.",
+    "Report early actual fixture/API construction; implement owned tests only.",
+    "Captured targeted strict lint-compile, focused required families, owned format; max3failedDEVELOPMENT executions.",
+    "Freeze source/evidence; stop for independent review before any commit.",
+    "After explicit review commit once and release; combined qualification remains root work."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-v3-coherent-consumer-rebound-20261012/record_gate.py",
+        "compile"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Calibration Flow all-target strict lint-compile passes against frozen dependencies."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-v3-coherent-consumer-rebound-20261012/record_gate.py",
+        "focused"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All lane required families pass meaningful actual runtime and negative controls."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-v3-coherent-consumer-rebound-20261012/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Only owned files checked with Rust1.99 skip_children formatting."
+    }
+  ],
+  "acceptance": [
+    "Exact owned test scope and actual runtime oracles; all required families pass.",
+    "Frozen source/receipts and protected inputs reviewed independently before source commit.",
+    "No consumer acceptance until root combined clean-head final qualification."
+  ],
+  "result_path": ".artifacts/e22-v3-coherent-consumer-rebound-20261012/result.json",
+  "stop_conditions": [
+    "Base/input/claim drift, shared source need or undefined semantics.",
+    "Three failed DEVELOPMENT executions total; preserve evidence.",
+    "Stop before commit for independent review; no full four-package tests/Clippy."
+  ],
+  "status": "prepared",
+  "reason_not_mvp_prepare": "Kairos-owned prerequisite to parent E2.2.fidelity; parentrecipe is preparation only.",
+  "dispatch_condition": "Routing final acceptance and root/independent exact packet GO; fresh narrow claim.",
+  "development_verification": [],
+  "size_exception": "One or two owned Rust paths plus dedicated result/logs; complete contract fits24000bytes.",
+  "required_test_names": [
+    "coherent_v3_transit_control_and_owned_field_mutations",
+    "coherent_v3_arrived_pending_submit_join",
+    "coherent_v3_observed_frontier_required"
+  ]
+}
