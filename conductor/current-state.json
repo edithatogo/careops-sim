@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T10:09:31.902659+00:00",
+  "updated_at": "2026-10-11T10:12:27.776552+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "E2.1 specifications accepted after129combinedPythonchecks. Prepare reviewed E2.2.dispatch packet and Track03 resource grant gate packet for parallel implementation; checkpoint/consumer join and all native bindings remain open. Continue full delivery.",
+  "next_action": "E2.2.dispatch worker running. Prepare and dispatch separate Kairos Track03 grant gate alongside it; checkpoint and consumer join follow frozen engine interface. Continue full delivery.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1414,5 +1414,14 @@
     "combined_python_tests": 129,
     "evidence": "conductor/evidence/e2.1-space-completion-20261011/acceptance.json",
     "native_binding": "unbound"
+  },
+  "e22_dispatch": {
+    "status": "running",
+    "packet": "E2.2.dispatch.policy",
+    "worker": "e22_dispatch",
+    "requested_model": "gpt-6-luna",
+    "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
+    "base": "5b3d0da62e7775a0179ef7d55f3b8470590a2e1b",
+    "scope": "Pure policy native implementation; composed runtime binding remains open"
   }
 }
