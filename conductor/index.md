@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [Flow V4 native acceptance and immediate wire successor](evidence/e2.2-flow-v4-native-completion-20261012/README.md)
+
 - [Serial/parallel and smaller-model execution](execution-model.md)
 - [Worker packet decomposition](execution/decomposition.md)
 - [Resume state](current-state.json) — `python3 tools/context.py resume`

@@ -1,0 +1,13 @@
+    Checking kairo-ecs-des v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-des)
+error[E0277]: `kairo_ecs_des::FlowRuntime` doesn't implement `std::fmt::Debug`
+   --> crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs:167:75
+    |
+167 |     let error = FlowRuntime::restore_checkpoint_v4(image, codecs, limits).unwrap_err();
+    |                                                                           ^^^^^^^^^^ the trait `std::fmt::Debug` is not implemented for `kairo_ecs_des::FlowRuntime`
+    |
+note: required by a bound in `std::result::Result::<T, E>::unwrap_err`
+   --> /rustc/b940084d7eb6a299eb4bfeb8e34901bc051e7ac4/library/core/src/result.rs:1323:4
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `kairo-ecs-des` (test "flow_checkpoint_v4_native") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

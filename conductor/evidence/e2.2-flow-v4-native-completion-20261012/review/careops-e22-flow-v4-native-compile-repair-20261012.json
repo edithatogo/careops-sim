@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "root_reviewed_bounded_compile_repair",
+  "packet_sha256": "ede80272026dfa42a0bcf225f0f49c89f3eed2ef9e3c64364855e57ded851b5a",
+  "failed_receipt": ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751517345596000-32169-result.json",
+  "failed_log_sha256": "d535b312a3c1045c8cc7b31c2c764e775d76296356a8478ff5b9f92961c70d9d",
+  "scope": [
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs"
+  ],
+  "changes": [
+    "Restore existing private three-argument capture_checkpoint_parts wrapper with legacy stable-key guard behavior; separate V4-only validated metadata helper without modifying protected V2 unit callers",
+    "Use private named row aliases or metadata structs for the two reported complex return types, preserving DTO/API and runtime behavior",
+    "Inspect every call site of changed private helper before freeze; preserve all existing assertions and protected source hashes"
+  ],
+  "gate_policy": "Format and freeze for root/Sol bounded repair review before restarting exact original Clippy/tests/format; no lint suppression or extra gate",
+  "failure_budget": {
+    "used": 1,
+    "maximum": 3,
+    "reset": false
+  },
+  "created_at": "2026-10-11T20:46:20.793904+00:00"
+}

@@ -1,0 +1,43 @@
+{
+  "status": "accepted_flow_v4_native_source_only",
+  "accepted_commit": "a178a46b2399c48b00755c13e8c209ad63dd5685",
+  "gate_base_commit": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f"
+  },
+  "final_result_sha256": "d973b9d50bec8f6177f42abcea89671d20ba33f781caa949270fbdffac4eb6ad",
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "tests": {
+    "passed": 403,
+    "failed": 0,
+    "ignored": 1,
+    "suites": 41
+  },
+  "required_success_names": [
+    "v4_admission_order_roundtrip_and_legacy_versions",
+    "v4_stable_pending_queued_roundtrip_preserves_effective_order",
+    "v4_active_suspended_resume_preserves_key_and_enqueue_sequence",
+    "v4_removed_resource_terminal_keys_roundtrip",
+    "v4_mixed_modes_have_canonical_complete_rows",
+    "v4_malformed_metadata_rejects_before_codecs",
+    "v4_capture_corrupt_sidecar_fails_before_codec_without_mutation",
+    "v4_key_row_and_checked_total_limits_preflight_before_decode",
+    "v4_checked_key_byte_sum_rejects_overflow",
+    "v4_admission_default_rebuild_preserves_existing_payload"
+  ],
+  "reviewers": [
+    "root",
+    "next_delivery_orchestrator GPT-6.1-sol"
+  ],
+  "review": "Native API, validation and ten substantive proofs reviewed; final ordered gates verified at identical source hashes. Capture and restore preserve existing directional key accounting.",
+  "retained_failed_attempts": 5,
+  "boundary": "Native DES Flow V4 only. Wire, Image routing, ABM V2, joined consumers, parent pin, ED and release acceptance remain open.",
+  "parent_pin": "6d733f489225da4bf6ceec2673b02369c7918bbe",
+  "next": "Bind direct Flow V4 wire owner contract and dispatch two-path implementation; continue ABM arrival-frontier repair independently."
+}

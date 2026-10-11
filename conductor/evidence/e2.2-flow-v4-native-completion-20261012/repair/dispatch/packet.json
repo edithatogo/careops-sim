@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "packet_id": "e22-flow-v4-native-repair-20261012",
+  "task_id": "E2.2.FlowV4.native.fixture-repair",
+  "target_repo": ".",
+  "base_commit": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b",
+  "objective": "Repair only service_completion_suffix return type complexity using a private type alias; preserve all runtime assertions and production bytes.",
+  "context_paths": [
+    ".artifacts/e22-flow-v4-native-repair-20261012/dispatch/context.txt"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v4-native.md": "1d98ed01a0310bade6a7acc799cae639d58357def75818244cd84e86c1672f80",
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "e3d40821939831ccaef9acf4cfc11ffbc4ae1ab2abb0d02f1d49bba35b800adf",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/packet.json": "ede80272026dfa42a0bcf225f0f49c89f3eed2ef9e3c64364855e57ded851b5a",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/record_gate.py": "09ac057601e8725513af9e0eae7570fb481c7a06f7f49f65761728894bc4d30b",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/context.md": "1e45eb85bc983a03ee9412b2f0c8b7c3a46b5bb07cea6d8cff04a86921ba1114",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/result.json": "e7e8564f9b4af02673272f07fd6782e477d907c3f41f8069a9599497631cc17f",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751517345596000-32169-started.json": "c36bb61203c73d4f1912c3a3758beae74be93308b3300c452780c9dfd52a2f4b",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751517345596000-32169-result.json": "a1ae6cfef96a38122d958dd8dfbd5f6793e58c7fbf1f19203190d48b02adf494",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751517345596000-32169.log": "d535b312a3c1045c8cc7b31c2c764e775d76296356a8478ff5b9f92961c70d9d",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751933913609000-33330-started.json": "b17a383ec9f3350090bd5f45726bc77da757c1dcecd5584e639cc113a989589a",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751933913609000-33330-result.json": "68b48ceea54ee2f2c788afaed22a2baec02a6f5d2628d9b9b612769282f8ebe9",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751933913609000-33330.log": "b6fccc58b0fb0d69040136fbe35f8a39b9b7d71a01ce51c2a3b32dc37ec29bff",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751993200635000-33792-started.json": "88848af15afa4217f3e42bf5f8da7f3a470e50d5c8275a7f02ff37f7ba02dcd3",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751993200635000-33792-result.json": "1200c16edca167e44b8f0cb606e7e1a7e4121da90247b61fb34b1fc7f8ee05f9",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751993200635000-33792.log": "c61981a70ad6a772c4fdf643769734ff411e6ddfdc9d277473c4c874cda1047e",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/frozen-stop-inventory.json": "3d5342035d6f3a601b3493d7c7cbe6712bcb60848b43aa18fbd8fc7797f15cda",
+    ".artifacts/e22-flow-v4-native-repair-20261012/dispatch/record_gate.py": "0c6346138b105d93d537713d49a77ec817d2cb67127bc9db177a108f71350d56",
+    ".artifacts/e22-flow-v4-native-repair-20261012/dispatch/context.txt": "e0d2be7f2d56d837f8b85e405a6866bb7f470b2c4954d189a52a4e8cd05d1fc4"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs",
+    ".artifacts/e22-flow-v4-native-repair-20261012/result.json",
+    ".artifacts/e22-flow-v4-native-repair-20261012/logs/"
+  ],
+  "protected_paths": [
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/packet.json",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/record_gate.py",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/context.md",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/result.json",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751517345596000-32169-started.json",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751517345596000-32169-result.json",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751517345596000-32169.log",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751933913609000-33330-started.json",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751933913609000-33330-result.json",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751933913609000-33330.log",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751993200635000-33792-started.json",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751993200635000-33792-result.json",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751993200635000-33792.log",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/frozen-stop-inventory.json"
+  ],
+  "leaf_dependencies": [
+    "accepted-native-arrival-handoff",
+    "accepted-joined-native-order-handoff"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-flow-checkpoint-v4-native.md",
+  "steps": [
+    "Replace only four default-then-field limit assignments by equivalent struct-update initializers: exact.max_key_bytes128; no_requests.max_requests0; no_resources.max_resources0; payload_exact.max_payload_bytes8. Preserve every assertion and other mutation.",
+    "Format only owned test first, independently review frozen exact diff, then ordered Clippy/full package tests/all gate-source format.",
+    "Stop each failure for root review; maximum three fresh failures. Preserve original three failed executions independently.",
+    "Freeze result/receipt hashes before independent source acceptance and scoped commit."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-flow-v4-native-repair-20261012/dispatch/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Pinned strict DES package gate at identical 4 source hashes; ten exact native proofs in tests; production protected."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-flow-v4-native-repair-20261012/dispatch/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Pinned strict DES package gate at identical 4 source hashes; ten exact native proofs in tests; production protected."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-flow-v4-native-repair-20261012/dispatch/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Pinned rustfmt check all 4 gate source paths, only test source-owned."
+    }
+  ],
+  "acceptance": [
+    "Typed DTO fields and action/witness variants match the committed ADR exactly.",
+    "Native restore enforces the ADR validation order, current Handoff work binding, historical issued event and ticket joins, bounds and phase rules.",
+    "All ten named native V2 proofs pass; full existing ABM/V1 behavior passes; no wire or codec changes are made.",
+    "Ready_for_review requires three ordered successful gates at unchanged final source hashes."
+  ],
+  "result_path": ".artifacts/e22-flow-v4-native-repair-20261012/result.json",
+  "stop_conditions": [
+    "Any base/input/production/history or root authority drift.",
+    "Any source edit outside single owned test; only exact alias repair (ABM) or four initializers (DES) permitted.",
+    "Any failed gate stops for root review; preserve raw receipt. Three fresh failures maximum independently of original preserved three.",
+    "No source commit before frozen independent review; no wire/routing/consumer/parent pin authority."
+  ],
+  "development_failure_limit": 3,
+  "status": "prepared",
+  "size_exception": "One existing test source plus result/logs; all 4 source paths hash-bound and format-checked, production protected.",
+  "base_source_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "e3d40821939831ccaef9acf4cfc11ffbc4ae1ab2abb0d02f1d49bba35b800adf"
+  },
+  "initially_absent_owned_paths": [],
+  "external_evidence": {
+    "parent_acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-native-order-handoff-completion-20261012/acceptance.json",
+    "parent_acceptance_sha256": "9d5175eb905e524a6fa87689558c9d5b136090e44f03fddf46a236f4842eadc3",
+    "joined_native_result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-native-order-handoff-qualification-20261012/.artifacts/e22-combined-native-qualification-20261012/result.json",
+    "joined_native_result_sha256": "ae8285021fa7c9ee3adc3e23b587048d58f946db66a21f214f5b391b927b42c6",
+    "joined_native_head": "ef20ae54b73dc47d59250c9b073c063311704413",
+    "accepted_source_commit": "0b004141b5a727ae601d2315cebb6c3732e6fac4",
+    "parent_pin": "6d733f489225da4bf6ceec2673b02369c7918bbe"
+  },
+  "result_contract": {
+    "status": "ready_for_review only when readiness passes; stopped_failure_ceiling at three fresh failures; otherwise stopped_for_root_review or in_progress before failure",
+    "initial_owned_path_verification": "All 4 existing snapshot source hashes; no absent source paths.",
+    "base_source_hashes": "Exact packet preservation snapshot hashes for every gate source.",
+    "owned_source_hashes": "All 4 current gate source hashes; protected production exactly baseline.",
+    "required_test_names": "Exact ten required native names in required_success_names.",
+    "required_success_names": "observed successful required names from terminal tests receipt",
+    "required_success_count": "observed count; zero until tests receipt",
+    "failed_development_attempts": "all failed terminal raw result receipt paths; corrections require root-published GO authority exactly binding the complete failed receipt list",
+    "gate_readiness": "latest Clippy, tests, format receipts all pass in order with matching final source hashes; each terminal receipt binds its started receipt hash and exact immutable argv/cwd/HEAD/toolchain/source set"
+  },
+  "dispatch_authority_path": "/tmp/careops-e22-flow-v4-native-repair-20261012-dispatch-authority.json",
+  "dispatch_authority_contract": {
+    "writer": "root only; worker must not create or edit this file",
+    "required_fields": {
+      "status": "GO",
+      "packet_sha256": "exact current packet bytes",
+      "driver_sha256": "exact current record_gate.py bytes",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012",
+      "base_commit": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b"
+    },
+    "repair_fields": {
+      "repair_authorized": "true only on explicit root GO after a failed gate",
+      "repair_authorized_after_failures": "exact ordered/complete failed terminal receipt paths; empty before any failures"
+    }
+  },
+  "protected_production_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737"
+  },
+  "historical_evidence_hashes": {
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/packet.json": "ede80272026dfa42a0bcf225f0f49c89f3eed2ef9e3c64364855e57ded851b5a",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/record_gate.py": "09ac057601e8725513af9e0eae7570fb481c7a06f7f49f65761728894bc4d30b",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/context.md": "1e45eb85bc983a03ee9412b2f0c8b7c3a46b5bb07cea6d8cff04a86921ba1114",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/result.json": "e7e8564f9b4af02673272f07fd6782e477d907c3f41f8069a9599497631cc17f",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751517345596000-32169-started.json": "c36bb61203c73d4f1912c3a3758beae74be93308b3300c452780c9dfd52a2f4b",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751517345596000-32169-result.json": "a1ae6cfef96a38122d958dd8dfbd5f6793e58c7fbf1f19203190d48b02adf494",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751517345596000-32169.log": "d535b312a3c1045c8cc7b31c2c764e775d76296356a8478ff5b9f92961c70d9d",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751933913609000-33330-started.json": "b17a383ec9f3350090bd5f45726bc77da757c1dcecd5584e639cc113a989589a",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751933913609000-33330-result.json": "68b48ceea54ee2f2c788afaed22a2baec02a6f5d2628d9b9b612769282f8ebe9",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751933913609000-33330.log": "b6fccc58b0fb0d69040136fbe35f8a39b9b7d71a01ce51c2a3b32dc37ec29bff",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751993200635000-33792-started.json": "88848af15afa4217f3e42bf5f8da7f3a470e50d5c8275a7f02ff37f7ba02dcd3",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751993200635000-33792-result.json": "1200c16edca167e44b8f0cb606e7e1a7e4121da90247b61fb34b1fc7f8ee05f9",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/clippy-1791751993200635000-33792.log": "c61981a70ad6a772c4fdf643769734ff411e6ddfdc9d277473c4c874cda1047e",
+    ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/frozen-stop-inventory.json": "3d5342035d6f3a601b3493d7c7cbe6712bcb60848b43aa18fbd8fc7797f15cda"
+  },
+  "preserved_original_failed_executions": 3,
+  "repair_scope": "Replace only four default-then-field limit assignments by equivalent struct-update initializers: exact.max_key_bytes128; no_requests.max_requests0; no_resources.max_resources0; payload_exact.max_payload_bytes8. Preserve every assertion and other mutation.",
+  "context_bytes": 15939,
+  "gate_source_paths": [
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs"
+  ],
+  "source_write_paths": [
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs"
+  ],
+  "required_success_names": [
+    "v4_admission_order_roundtrip_and_legacy_versions",
+    "v4_stable_pending_queued_roundtrip_preserves_effective_order",
+    "v4_active_suspended_resume_preserves_key_and_enqueue_sequence",
+    "v4_removed_resource_terminal_keys_roundtrip",
+    "v4_mixed_modes_have_canonical_complete_rows",
+    "v4_malformed_metadata_rejects_before_codecs",
+    "v4_capture_corrupt_sidecar_fails_before_codec_without_mutation",
+    "v4_key_row_and_checked_total_limits_preflight_before_decode",
+    "v4_checked_key_byte_sum_rejects_overflow",
+    "v4_admission_default_rebuild_preserves_existing_payload"
+  ]
+}

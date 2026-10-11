@@ -1,0 +1,428 @@
+{
+  "status": "ready_for_review",
+  "qualification": false,
+  "base_commit": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b",
+  "head": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b",
+  "initial_owned_path_verification": {
+    "verified": true,
+    "existing_source_hashes": {
+      "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+      "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+      "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+      "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "e3d40821939831ccaef9acf4cfc11ffbc4ae1ab2abb0d02f1d49bba35b800adf"
+    },
+    "absent_paths": []
+  },
+  "base_source_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "e3d40821939831ccaef9acf4cfc11ffbc4ae1ab2abb0d02f1d49bba35b800adf"
+  },
+  "owned_source_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f"
+  },
+  "failed_development_attempts": [
+    ".artifacts/e22-flow-v4-native-repair-20261012/logs/tests-1791752465904005000-40512-result.json",
+    ".artifacts/e22-flow-v4-native-repair-20261012/logs/tests-1791752605720881000-44301-result.json"
+  ],
+  "historical_unqualified_candidate": {
+    "result_path": ".artifacts/e22-flow-v4-native-20261012/dispatch/logs/result.json",
+    "result_sha256": "e7e8564f9b4af02673272f07fd6782e477d907c3f41f8069a9599497631cc17f",
+    "preserved_failure_count": 3,
+    "statement": "Three prior failed Clippy receipts remain preserved and are not erased by this separate test-only repair."
+  },
+  "repair_scope": "Only the four authorized struct-update initializers in flow_checkpoint_v4_native.rs; no gate run authorized yet.",
+  "format_only_record": ".artifacts/e22-flow-v4-native-repair-20261012/logs/format-only.json",
+  "format_only_record_sha256": "e1d9690e2c13251296b3e77ebcf9f7fa654d6cdf55fe60f79b29f603247be7e5",
+  "gates": [
+    {
+      "gate": "clippy",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012",
+      "head": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b",
+      "packet_sha256": "783441464e364760d49f3ce860471dc068d88c5d83d974ce7001b12e3ad20d1b",
+      "start": "2026-10-11T21:00:48.084996+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "2eb6422c004b92113ce2c95cdcb5a9326033eaaf0bcb3eae954fd2b0ab598c91"
+      },
+      "log": ".artifacts/e22-flow-v4-native-repair-20261012/logs/clippy-1791752448057025000-40268.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/clippy-1791752448057025000-40268-started.json",
+      "end": "2026-10-11T21:00:59.744753+00:00",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "gate_error": null,
+      "log_sha256": "935372a831ecd59747bb681ad3e54ae0e06f41a53ae9f177e71124e8675425cf",
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "2eb6422c004b92113ce2c95cdcb5a9326033eaaf0bcb3eae954fd2b0ab598c91"
+      },
+      "started_receipt_sha256": "d68a6589989c219cddee72b4da18df87fd6580bcf8ac8f5424cc237c6a208c71",
+      "required_success_names_observed": null,
+      "required_success_count_observed": null,
+      "receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/clippy-1791752448057025000-40268-result.json",
+      "receipt_sha256": "51a0056a339ad18dab47dc7005c3e9354ed694506026ff9587d39216c3dc9b93"
+    },
+    {
+      "gate": "tests",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012",
+      "head": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b",
+      "packet_sha256": "783441464e364760d49f3ce860471dc068d88c5d83d974ce7001b12e3ad20d1b",
+      "start": "2026-10-11T21:01:05.946989+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "2eb6422c004b92113ce2c95cdcb5a9326033eaaf0bcb3eae954fd2b0ab598c91"
+      },
+      "log": ".artifacts/e22-flow-v4-native-repair-20261012/logs/tests-1791752465904005000-40512.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/tests-1791752465904005000-40512-started.json",
+      "end": "2026-10-11T21:01:33.623956+00:00",
+      "exit_code": 101,
+      "command_exit_code": 101,
+      "gate_error": null,
+      "log_sha256": "b0f6545302c5e6374f0e08d8b6349ac82a9c12a12cd39a8b585db9a3a524e867",
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "2eb6422c004b92113ce2c95cdcb5a9326033eaaf0bcb3eae954fd2b0ab598c91"
+      },
+      "started_receipt_sha256": "073cf6178f6cf34962f71831a39f46bd868cdeaa6f9b518eec3e9ac53974a361",
+      "required_success_names_observed": [
+        "v4_admission_order_roundtrip_and_legacy_versions",
+        "v4_stable_pending_queued_roundtrip_preserves_effective_order",
+        "v4_active_suspended_resume_preserves_key_and_enqueue_sequence",
+        "v4_removed_resource_terminal_keys_roundtrip",
+        "v4_mixed_modes_have_canonical_complete_rows",
+        "v4_malformed_metadata_rejects_before_codecs",
+        "v4_capture_corrupt_sidecar_fails_before_codec_without_mutation",
+        "v4_checked_key_byte_sum_rejects_overflow",
+        "v4_admission_default_rebuild_preserves_existing_payload"
+      ],
+      "required_success_count_observed": 9,
+      "receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/tests-1791752465904005000-40512-result.json",
+      "receipt_sha256": "3517dd05ebf56256c900d9369b5411a4fd756379b02da19661ff1149d2757b0a"
+    },
+    {
+      "gate": "clippy",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012",
+      "head": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b",
+      "packet_sha256": "783441464e364760d49f3ce860471dc068d88c5d83d974ce7001b12e3ad20d1b",
+      "start": "2026-10-11T21:03:22.029978+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "a74f9bce4d8da2e02ad64f5b7c459ed23dbced6b01cd938ce3e1b8b29e8aa114"
+      },
+      "log": ".artifacts/e22-flow-v4-native-repair-20261012/logs/clippy-1791752602007231000-44223.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/clippy-1791752602007231000-44223-started.json",
+      "end": "2026-10-11T21:03:22.420510+00:00",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "gate_error": null,
+      "log_sha256": "f5141ab51265b0faaf9b69fbc69a61b875c7a1a4bbac4333cc11a0c412f837ab",
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "a74f9bce4d8da2e02ad64f5b7c459ed23dbced6b01cd938ce3e1b8b29e8aa114"
+      },
+      "started_receipt_sha256": "5895524dd9a7cf4be149c57d18d02cb664fc635d7129a2e02392da1d024efc3b",
+      "required_success_names_observed": null,
+      "required_success_count_observed": null,
+      "receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/clippy-1791752602007231000-44223-result.json",
+      "receipt_sha256": "f23273eebe226f7c4ad59860ac1b2790a2b8a176138a77943254076c5b6edf01"
+    },
+    {
+      "gate": "tests",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012",
+      "head": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b",
+      "packet_sha256": "783441464e364760d49f3ce860471dc068d88c5d83d974ce7001b12e3ad20d1b",
+      "start": "2026-10-11T21:03:25.751083+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "a74f9bce4d8da2e02ad64f5b7c459ed23dbced6b01cd938ce3e1b8b29e8aa114"
+      },
+      "log": ".artifacts/e22-flow-v4-native-repair-20261012/logs/tests-1791752605720881000-44301.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/tests-1791752605720881000-44301-started.json",
+      "end": "2026-10-11T21:03:28.149189+00:00",
+      "exit_code": 101,
+      "command_exit_code": 101,
+      "gate_error": null,
+      "log_sha256": "c4c0fa309f6d7f2bed157d72b37da6b90e917233ae51a328dc47ee50092ef03b",
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "a74f9bce4d8da2e02ad64f5b7c459ed23dbced6b01cd938ce3e1b8b29e8aa114"
+      },
+      "started_receipt_sha256": "41f359d2e876edbb49f2a1603a0e67f064b45dc309ef57f17c1792f046365347",
+      "required_success_names_observed": [
+        "v4_admission_order_roundtrip_and_legacy_versions",
+        "v4_stable_pending_queued_roundtrip_preserves_effective_order",
+        "v4_active_suspended_resume_preserves_key_and_enqueue_sequence",
+        "v4_removed_resource_terminal_keys_roundtrip",
+        "v4_mixed_modes_have_canonical_complete_rows",
+        "v4_malformed_metadata_rejects_before_codecs",
+        "v4_capture_corrupt_sidecar_fails_before_codec_without_mutation",
+        "v4_checked_key_byte_sum_rejects_overflow",
+        "v4_admission_default_rebuild_preserves_existing_payload"
+      ],
+      "required_success_count_observed": 9,
+      "receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/tests-1791752605720881000-44301-result.json",
+      "receipt_sha256": "d7e3d0ce7fc2563f1549a4d88ec7c24b35609b2a94e489c1074ff461ce65acdd"
+    },
+    {
+      "gate": "clippy",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012",
+      "head": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b",
+      "packet_sha256": "783441464e364760d49f3ce860471dc068d88c5d83d974ce7001b12e3ad20d1b",
+      "start": "2026-10-11T21:05:49.085318+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f"
+      },
+      "log": ".artifacts/e22-flow-v4-native-repair-20261012/logs/clippy-1791752749068418000-45389.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/clippy-1791752749068418000-45389-started.json",
+      "end": "2026-10-11T21:05:50.118972+00:00",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "gate_error": null,
+      "log_sha256": "027e79d6dcc7ed75bf28ada00c497907dd8af9a034de668b7b46c75e2c6752c1",
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f"
+      },
+      "started_receipt_sha256": "4da1d4a716b3b4a13ae64249f349909dddde4a50787685e72c687139a5eb7255",
+      "required_success_names_observed": null,
+      "required_success_count_observed": null,
+      "receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/clippy-1791752749068418000-45389-result.json",
+      "receipt_sha256": "c227ce86a822515f99a4b1d9b3dc4d75659fd33d2c0c4d1a8a655e94f436471d"
+    },
+    {
+      "gate": "tests",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012",
+      "head": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b",
+      "packet_sha256": "783441464e364760d49f3ce860471dc068d88c5d83d974ce7001b12e3ad20d1b",
+      "start": "2026-10-11T21:05:57.294233+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f"
+      },
+      "log": ".artifacts/e22-flow-v4-native-repair-20261012/logs/tests-1791752757249992000-45439.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/tests-1791752757249992000-45439-started.json",
+      "end": "2026-10-11T21:06:10.420623+00:00",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "gate_error": null,
+      "log_sha256": "8984e103eb1dbb90ffcf878b3075f482a0ef9b4f196fe74972ce98305ddff00f",
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f"
+      },
+      "started_receipt_sha256": "0bb7f5b230c12ec6260ec7a91c480a60e80310b506b627ecb5ceaa6ff832c42e",
+      "required_success_names_observed": [
+        "v4_admission_order_roundtrip_and_legacy_versions",
+        "v4_stable_pending_queued_roundtrip_preserves_effective_order",
+        "v4_active_suspended_resume_preserves_key_and_enqueue_sequence",
+        "v4_removed_resource_terminal_keys_roundtrip",
+        "v4_mixed_modes_have_canonical_complete_rows",
+        "v4_malformed_metadata_rejects_before_codecs",
+        "v4_capture_corrupt_sidecar_fails_before_codec_without_mutation",
+        "v4_key_row_and_checked_total_limits_preflight_before_decode",
+        "v4_checked_key_byte_sum_rejects_overflow",
+        "v4_admission_default_rebuild_preserves_existing_payload"
+      ],
+      "required_success_count_observed": 10,
+      "receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/tests-1791752757249992000-45439-result.json",
+      "receipt_sha256": "926d1cb8f6dfae25a758c15798077af7a49a4e59ec1728520a6072fc1fef631f"
+    },
+    {
+      "gate": "format",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "--config",
+        "skip_children=true",
+        "crates/kairo-ecs-des/src/flow.rs",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012",
+      "head": "fc77d2a2f67e839fd7915737bff62d7f5e066d5b",
+      "packet_sha256": "783441464e364760d49f3ce860471dc068d88c5d83d974ce7001b12e3ad20d1b",
+      "start": "2026-10-11T21:06:16.340485+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f"
+      },
+      "log": ".artifacts/e22-flow-v4-native-repair-20261012/logs/format-1791752776305826000-45639.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/format-1791752776305826000-45639-started.json",
+      "end": "2026-10-11T21:06:16.520069+00:00",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "gate_error": null,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "4a99028ac60255061cf8115133528f16bc0e521ac05e51f757d8f92da2bd4a74",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f"
+      },
+      "started_receipt_sha256": "5bf977d0c6e8d230272587e6c39ff638f1a242e58f4fb38501bd335a4c8f3dee",
+      "required_success_names_observed": null,
+      "required_success_count_observed": null,
+      "receipt_path": ".artifacts/e22-flow-v4-native-repair-20261012/logs/format-1791752776305826000-45639-result.json",
+      "receipt_sha256": "542ec9fb4cd34da4ef8fba80ce5c7aa511120e7503d75460db51c30d09de2399"
+    }
+  ],
+  "repair_summary": "Under root-authorized test-only repair, capture budget uses the explicitly measured runtime and codec registration key lengths (3 + 3), while restore budget uses the serialized 15-byte registration strings. The 128-byte stable key and one-under controls remain unchanged; no production edits. Two test failures are preserved; gates are held for review.",
+  "required_test_names": [
+    "v4_admission_order_roundtrip_and_legacy_versions",
+    "v4_stable_pending_queued_roundtrip_preserves_effective_order",
+    "v4_active_suspended_resume_preserves_key_and_enqueue_sequence",
+    "v4_removed_resource_terminal_keys_roundtrip",
+    "v4_mixed_modes_have_canonical_complete_rows",
+    "v4_malformed_metadata_rejects_before_codecs",
+    "v4_capture_corrupt_sidecar_fails_before_codec_without_mutation",
+    "v4_key_row_and_checked_total_limits_preflight_before_decode",
+    "v4_checked_key_byte_sum_rejects_overflow",
+    "v4_admission_default_rebuild_preserves_existing_payload"
+  ],
+  "required_success_names": [
+    "v4_admission_order_roundtrip_and_legacy_versions",
+    "v4_stable_pending_queued_roundtrip_preserves_effective_order",
+    "v4_active_suspended_resume_preserves_key_and_enqueue_sequence",
+    "v4_removed_resource_terminal_keys_roundtrip",
+    "v4_mixed_modes_have_canonical_complete_rows",
+    "v4_malformed_metadata_rejects_before_codecs",
+    "v4_capture_corrupt_sidecar_fails_before_codec_without_mutation",
+    "v4_key_row_and_checked_total_limits_preflight_before_decode",
+    "v4_checked_key_byte_sum_rejects_overflow",
+    "v4_admission_default_rebuild_preserves_existing_payload"
+  ],
+  "required_success_count": 10,
+  "prior_result_snapshot": ".artifacts/e22-flow-v4-native-repair-20261012/logs/result-after-second-test-failure.json",
+  "prior_result_snapshot_sha256": "b718b5545421ed01126dd11dbb56bcdc37e50c5c85ec014d4f48d3a06c617046",
+  "latest_format_only_record": ".artifacts/e22-flow-v4-native-repair-20261012/logs/format-only-after-second-test-failure.json",
+  "latest_format_only_record_sha256": "45359c5b6092c1cd4474c666d772dc4338aefa3dfdab5ff67d4267309281ed1a"
+}

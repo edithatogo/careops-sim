@@ -1,0 +1,56 @@
+    Checking kairo-ecs-des v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-des)
+error: field assignment outside of initializer for an instance created with Default::default()
+   --> crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs:709:5
+    |
+709 |     exact.max_key_bytes = 128;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: consider initializing the variable with `kairo_ecs_des::FlowCheckpointLimits { max_key_bytes: 128, ..Default::default() }` and removing relevant reassignments
+   --> crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs:708:5
+    |
+708 |     let mut exact = FlowCheckpointLimits::default();
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#field_reassign_with_default
+    = note: `-D clippy::field-reassign-with-default` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::field_reassign_with_default)]`
+
+error: field assignment outside of initializer for an instance created with Default::default()
+   --> crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs:728:5
+    |
+728 |     no_requests.max_requests = 0;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: consider initializing the variable with `kairo_ecs_des::FlowCheckpointLimits { max_requests: 0, ..Default::default() }` and removing relevant reassignments
+   --> crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs:727:5
+    |
+727 |     let mut no_requests = FlowCheckpointLimits::default();
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#field_reassign_with_default
+
+error: field assignment outside of initializer for an instance created with Default::default()
+   --> crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs:740:5
+    |
+740 |     no_resources.max_resources = 0;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: consider initializing the variable with `kairo_ecs_des::FlowCheckpointLimits { max_resources: 0, ..Default::default() }` and removing relevant reassignments
+   --> crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs:739:5
+    |
+739 |     let mut no_resources = FlowCheckpointLimits::default();
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#field_reassign_with_default
+
+error: field assignment outside of initializer for an instance created with Default::default()
+   --> crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs:842:5
+    |
+842 |     payload_exact.max_payload_bytes = 8;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: consider initializing the variable with `kairo_ecs_des::FlowCheckpointLimits { max_payload_bytes: 8, ..Default::default() }` and removing relevant reassignments
+   --> crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs:841:5
+    |
+841 |     let mut payload_exact = FlowCheckpointLimits::default();
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#field_reassign_with_default
+
+error: could not compile `kairo-ecs-des` (test "flow_checkpoint_v4_native") due to 4 previous errors
