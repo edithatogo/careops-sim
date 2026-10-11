@@ -1,0 +1,20 @@
+    Checking kairo-ecs-abm v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-abm)
+error: very complex type used. Consider factoring parts into `type` definitions
+   --> crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs:428:6
+    |
+428 |   ) -> Vec<(
+    |  ______^
+429 | |     (u64, u32),
+430 | |     SimTime,
+431 | |     RequestState,
+...   |
+434 | |     kairo_ecs_des::ResourceSnapshot,
+435 | | )> {
+    | |__^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#type_complexity
+    = note: `-D clippy::type-complexity` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::type_complexity)]`
+
+error: could not compile `kairo-ecs-abm` (test "transit_context_checkpoint_v2_native") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

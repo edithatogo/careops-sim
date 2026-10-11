@@ -1,0 +1,20 @@
+    Checking kairo-ecs-abm v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-abm)
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs:891:36
+    |
+891 |     wrong_reference.service_work = EntityId::new(u64::MAX);
+    |                                    ^^^^^^^^^^^^^---------- argument #2 of type `u32` is missing
+    |
+note: associated function defined here
+   --> crates/kairo-ecs-types/src/lib.rs:155:18
+    |
+155 |     pub const fn new(index: u64, generation: u32) -> Self {
+    |                  ^^^
+help: provide the argument
+    |
+891 |     wrong_reference.service_work = EntityId::new(u64::MAX, /* u32 */);
+    |                                                          +++++++++++
+
+For more information about this error, try `rustc --explain E0061`.
+error: could not compile `kairo-ecs-abm` (test "transit_context_checkpoint_v2_native") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

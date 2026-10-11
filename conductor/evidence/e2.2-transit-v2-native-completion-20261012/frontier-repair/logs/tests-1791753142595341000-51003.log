@@ -1,0 +1,119 @@
+   Compiling kairo-ecs-types v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-types)
+   Compiling thiserror v2.0.20
+   Compiling kairo-ecs-state v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-state)
+   Compiling kairo-ecs-rng v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-rng)
+   Compiling kairo-ecs-core v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-core)
+   Compiling kairo-ecs-des v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-des)
+   Compiling kairo-ecs-abm v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-abm)
+    Finished `test` profile [unoptimized] target(s) in 8.27s
+     Running unittests src/lib.rs (.artifacts/e22-transit-v2-frontier-repair-20261012/logs/target/debug/deps/kairo_ecs_abm-30cc3b573fbba096)
+
+running 23 tests
+test flow_adapter::tests::actual_flow_pause_resume_retains_route_and_submits_one_arrival_acquire ... ok
+test flow_adapter::tests::preconsume_budget_preserves_actual_private_stream_state_and_behavior ... ok
+test flow_adapter::tests::rejected_arrival_batch_keeps_transit_context_and_existing_request_unchanged ... ok
+test flow_adapter::tests::rejected_start_and_progress_recover_to_one_arrival_acquire ... ok
+test flow_adapter::tests::same_tick_alien_domain_event_cannot_start_before_bound_start_id ... ok
+test spatial::tests::canonical_graph_identity_can_be_borrowed_without_changing_owned_api ... ok
+test spatial::tests::dense_zero_cost_layers_choose_the_lexicographic_shortest_route ... ok
+test spatial::tests::progress_image_restores_boundary_zero_tick_and_completed_cursors_directly ... ok
+test spatial::tests::route_image_preserves_profile_tie_winner_and_enforces_all_capture_limits ... ok
+test spatial::tests::route_image_roundtrips_exact_plan_and_rejects_geometry_changes ... ok
+test spatial::tests::route_restore_preflights_trusted_graph_identity_and_size_before_routing ... ok
+test spatial::tests::transit_progress_checkpoint_restores_edge_elapsed_and_remaining_duration ... ok
+test spatial::tests::transit_progress_consumes_zero_duration_edges_at_the_boundary ... ok
+test spatial::tests::transit_progress_over_advance_rejects_without_losing_checkpoint_state ... ok
+test spatial::tests::transit_progress_rejects_out_of_range_restored_cursor ... ok
+test spatial::tests::zero_cycle_does_not_override_a_late_full_sequence_tie_break ... ok
+test tests::behavior_decision_can_despawn_agent ... ok
+test tests::behavior_simulation_replays_entity_rng ... ok
+test tests::behavior_simulation_respects_event_budget ... ok
+test tests::behavior_simulation_updates_in_scheduler_order ... ok
+test tests::despawned_agent_future_events_do_not_update_behavior ... ok
+test tests::schedule_and_step ... ok
+test tests::spawn_and_attach ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/abm_behavior_update_v1.rs (.artifacts/e22-transit-v2-frontier-repair-20261012/logs/target/debug/deps/abm_behavior_update_v1-bf6fe438571a338d)
+
+running 2 tests
+test abm_behavior_update_v1_replays_entity_rng_streams ... ok
+test abm_behavior_update_v1_runs_updates_in_scheduler_order ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/abm_integration.rs (.artifacts/e22-transit-v2-frontier-repair-20261012/logs/target/debug/deps/abm_integration-7c6960f1d4c1c67a)
+
+running 3 tests
+test agent_with_components ... ok
+test multi_agent_scheduling ... ok
+test schedule_and_dispatch ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/flow_adapter_v1.rs (.artifacts/e22-transit-v2-frontier-repair-20261012/logs/target/debug/deps/flow_adapter_v1-65e54f13171fdd3a)
+
+running 7 tests
+test behavior_commands_use_real_task_leases_and_never_acquire_the_carrier ... ok
+test entity_stream_draw_positions_ignore_cross_actor_order_and_pause_boundaries ... ok
+test preconsume_budget_failure_preserves_behavior_draw_position_and_pending_head ... ok
+test recycled_actor_generation_has_fresh_stream_and_old_handle_is_stale ... ok
+test registration_type_kind_and_unique_carrier_failures_are_atomic ... ok
+test rejected_callback_batches_keep_one_state_change_and_one_draw_without_replay ... ok
+test shared_behavior_observes_authoritative_des_time_and_buffered_peer_lifetime ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/transit_arrival_handoff_native.rs (.artifacts/e22-transit-v2-frontier-repair-20261012/logs/target/debug/deps/transit_arrival_handoff_native-1883ff3f07853b8c)
+
+running 7 tests
+test transit_handoff_budget_halt_pending ... ok
+test transit_handoff_identity_and_error_receipts ... ok
+test transit_handoff_legacy_and_v1_guard ... ok
+test transit_handoff_no_resource_start_arrival ... ok
+test transit_handoff_pause_resume_same_clock ... ok
+test transit_handoff_resume_frontier_empty_commit ... ok
+test transit_handoff_service_admits_once ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/transit_context_checkpoint_v1.rs (.artifacts/e22-transit-v2-frontier-repair-20261012/logs/target/debug/deps/transit_context_checkpoint_v1-7924c0410a6a3287)
+
+running 11 tests
+test arrived_context_rebinds_a_retained_already_dispatched_event_id ... ok
+test arrived_context_roundtrips_completed_cursor_and_arrival_ticket ... ok
+test capture_rejects_wrong_lineage_and_limits_without_changing_source ... ok
+test import_binds_service_owner_carrier_row_and_domain_kind ... ok
+test import_rejects_bad_cursor_and_unresolved_work_without_source_mutation ... ok
+test import_rejects_schema_and_unapproved_geometry ... ok
+test import_rejects_transit_state_field_contradictions ... ok
+test moving_context_roundtrips_scheduled_event_before_pause ... ok
+test paused_mid_edge_context_roundtrips_exact_cursor_and_runtime ... ok
+test ready_zero_route_and_paused_at_end_are_valid ... ok
+test wire_v1_roundtrips_exactly_and_preflights_corruption_and_limits ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/transit_context_checkpoint_v2_native.rs (.artifacts/e22-transit-v2-frontier-repair-20261012/logs/target/debug/deps/transit_context_checkpoint_v2_native-1f3976961471174e)
+
+running 10 tests
+test transit_checkpoint_v2_native_acquire_historical_refs_and_v1_bytes ... ok
+test transit_checkpoint_v2_native_arrived_admitted_suppression ... ok
+test transit_checkpoint_v2_native_arrived_unadmitted ... ok
+test transit_checkpoint_v2_native_bounds_versions_and_atomic_restore ... ok
+test transit_checkpoint_v2_native_frontier_resume_live_domain_noop ... ok
+test transit_checkpoint_v2_native_historical_only_handoff_binding_rejected ... ok
+test transit_checkpoint_v2_native_moving_restore_suffix ... ok
+test transit_checkpoint_v2_native_paused_retained_and_consumed_event ... ok
+test transit_checkpoint_v2_native_ready_and_scheduled_start ... ok
+test transit_checkpoint_v2_native_resumed_ready_later_due ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+   Doc-tests kairo_ecs_abm
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

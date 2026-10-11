@@ -1,0 +1,42 @@
+{
+  "status": "accepted_transit_v2_native_source_only",
+  "accepted_commit": "6ef40266a6c5adb32362e7ceac136e0612c1b2c1",
+  "gate_base_commit": "df45d372aff04a642d5eb84f65e27dbd4972e8f1",
+  "source_hashes": {
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "0a59f15cbc2154298dd9071ef00ccddbdc65d2e08843f1624bc99eb227dc423d",
+    "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263"
+  },
+  "final_result_sha256": "63ca2ab62373380a5fa17f464fabb4a11d23eb79eb482acaaa8425809969cabc",
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "tests": {
+    "passed": 63,
+    "failed": 0,
+    "ignored": 0,
+    "suites": 8
+  },
+  "required_success_names": [
+    "transit_checkpoint_v2_native_ready_and_scheduled_start",
+    "transit_checkpoint_v2_native_resumed_ready_later_due",
+    "transit_checkpoint_v2_native_moving_restore_suffix",
+    "transit_checkpoint_v2_native_paused_retained_and_consumed_event",
+    "transit_checkpoint_v2_native_arrived_unadmitted",
+    "transit_checkpoint_v2_native_arrived_admitted_suppression",
+    "transit_checkpoint_v2_native_frontier_resume_live_domain_noop",
+    "transit_checkpoint_v2_native_historical_only_handoff_binding_rejected",
+    "transit_checkpoint_v2_native_acquire_historical_refs_and_v1_bytes",
+    "transit_checkpoint_v2_native_bounds_versions_and_atomic_restore"
+  ],
+  "reviewers": [
+    "root",
+    "next_delivery_orchestrator GPT-6.1-sol"
+  ],
+  "review": "Typed native V2, shape/reference validation and ten substantive proofs accepted. Successful arrival records last_advanced_at at actual arrival; delayed Resume5 covers Handoff and legacy Acquire. Ready historical Acquire retains real completed request evidence. Invalid-ticket control uses actual callback bound.",
+  "retained_failed_attempts": 4,
+  "boundary": "Native ABM Transit V2 only. Direct wire and schema2 codec, joined DES/ABM consumers, parent pin, ED and release remain open. Existing V1 ordinary tests pass; bug-cut timestamps are deliberately corrected, not asserted byte-identical.",
+  "parent_pin": "6d733f489225da4bf6ceec2673b02369c7918bbe",
+  "next": "Bind direct Transit V2 wire owner contract and dispatch four-path implementation parallel to DES direct V4 wire."
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "status": "root_reviewed_fixture_completion_within_existing_packet",
+  "packet_sha256": "c365b992632e10a1345a67e984f189597582618de62a1670b80c14b8ef88ce11",
+  "owned_path": "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs",
+  "reviewers": [
+    "root",
+    "/root/next_delivery_orchestrator"
+  ],
+  "required_extensions": [
+    "Remove the unused mut fixture binding reported by first Clippy gate",
+    "For both retained and consumed paused-event cuts, restore, resume actual source and restored runtimes and compare full transit DTO plus bounded dispatch suffix and service state",
+    "For arrived/admitted cut, drive source and restored pending submission through actual grant and completion; compare work progress, request/lease state, exact timing and retained arrival witness; assert both observers remain suppressed",
+    "For Resume-arrival stale Domain event, compare complete TransitContext DTO and relevant service state before and after dispatch; account for legitimate global scheduler consumption rather than demanding unchanged global scheduler",
+    "Test native segment count, graph bytes, mode bytes and total estimate boundaries separately: exact valid bound succeeds and one below rejects; isolate malformed option-pair and non-None command-ticket cases; isolate wrong reference and valid-shape invalid retained ticket joins",
+    "Keep existing ten required named families and all earlier assertions; preserve V1 behavior and distinguish existing golden evidence from simple magic/roundtrip assertions"
+  ],
+  "source_changes": "Test file only for this supplement. Report any production defect before correction authority.",
+  "verification": "After source review improvements and owned formatting, rerun exact original ordered Clippy/tests/format at unchanged sources; no extra gate commands",
+  "failure_budget": {
+    "total": 3,
+    "already_used": 1,
+    "reset": false
+  },
+  "preserved_failed_receipt": ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791750950987417000-29906-result.json",
+  "created_at": "2026-10-11T20:38:43.660877+00:00"
+}

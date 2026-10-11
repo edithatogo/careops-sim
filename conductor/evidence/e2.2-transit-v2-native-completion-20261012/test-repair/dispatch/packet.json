@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "packet_id": "e22-transit-context-v2-native-repair-20261012",
+  "task_id": "E2.2.TransitV2.native.fixture-repair",
+  "target_repo": ".",
+  "base_commit": "c2de4e20ff1d315bc90beba4f71e5a9bbb2feeaf",
+  "objective": "Repair only service_completion_suffix return type complexity using a private type alias; preserve all runtime assertions and production bytes.",
+  "context_paths": [
+    ".artifacts/e22-transit-context-v2-native-repair-20261012/dispatch/context.txt"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "conductor/design/des/ADR-e2-transit-context-v2.md": "95561b9c5809cc3d54c0cde10be629136415aed269ccdeb650462d9897bad3d2",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "8d1e92b5b1f81ec65a597f3f8b00a54c1a55ce3182e6273ecb8127d18f0b08ec",
+    "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "ace270279a0095a853d1dba00fe7ef5153db7288fa6d7560c09ccb918651fee2",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/packet.json": "c365b992632e10a1345a67e984f189597582618de62a1670b80c14b8ef88ce11",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/record_gate.py": "113e8ae078625af80b978e256806b9cfa94a9b7bf18908bd7286638fb6b04493",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/context.txt": "74e5a09b34536e2c256903310bdcac07944d8cd815edee6705f4d27a34fbefb8",
+    ".artifacts/e22-transit-context-v2-native-20261012/result.json": "8bedffa02dff7874d1f841d4facbf4b332fe9ccdae2e6f527e710dd5fa9ac283",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791750950987417000-29906-started.json": "f8f8e41a32a3d726fb4b6cb84bf936e82df331bdf1141d327079a9c72d6f906a",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791750950987417000-29906-result.json": "edd65ce4ad39e1f8100ec0ef481b1a5eff10405ceefeac38e34bdce3d1aca6bb",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791750950987417000-29906.log": "f75b3a80716f0b7661f8db0962a603bb1d37c6a26a084ebb84c443b7b034be88",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751456319405000-31989-started.json": "6d834d766c6ba777b390156eebf258aaf5a0a460308d29b17be65e61a2f6f2e5",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751456319405000-31989-result.json": "28e42deb46fad8f7de45f3a8e59b7257d2b571c511478f3966c75d852983a38b",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751456319405000-31989.log": "b9775f875b31263e77c0b27d51a6be7a9dbfd4c5f4e5c368a48534ccd3de710e",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751687507627000-32842-started.json": "65d913e50b7048289cd3f1851512960ae13ba7e2d69f8bd7ec94bcca9f82af2b",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751687507627000-32842-result.json": "ac5eb63da27788ea2926802db2940b0db966dea68aee8b9eabb4d6ce0fbdf9a1",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751687507627000-32842.log": "7e019bf5900fd0cabeb1f5f3863f9b9ab20b1d92dbb36eea4e027938a6d9d581",
+    ".artifacts/e22-transit-context-v2-native-repair-20261012/dispatch/record_gate.py": "72271c92cb08edbf3ebbc16a1b4817a7d9cd844c4bd59a6d65cb21717592cbca",
+    ".artifacts/e22-transit-context-v2-native-repair-20261012/dispatch/context.txt": "a0fe2e13b660aef6588e5d88a71ddc9544ff9fcb74244b464c9e642dacb552f5"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs",
+    ".artifacts/e22-transit-context-v2-native-repair-20261012/result.json",
+    ".artifacts/e22-transit-context-v2-native-repair-20261012/logs/"
+  ],
+  "protected_paths": [
+    "crates/kairo-ecs-abm/src/flow_adapter.rs",
+    "crates/kairo-ecs-abm/src/lib.rs",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/packet.json",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/record_gate.py",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/context.txt",
+    ".artifacts/e22-transit-context-v2-native-20261012/result.json",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791750950987417000-29906-started.json",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791750950987417000-29906-result.json",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791750950987417000-29906.log",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751456319405000-31989-started.json",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751456319405000-31989-result.json",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751456319405000-31989.log",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751687507627000-32842-started.json",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751687507627000-32842-result.json",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751687507627000-32842.log"
+  ],
+  "leaf_dependencies": [
+    "accepted-native-arrival-handoff",
+    "accepted-joined-native-order-handoff"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-transit-context-v2.md;conductor/design/des/ADR-e2-transit-arrival-handoff.md",
+  "steps": [
+    "Add private ServiceCompletionSnapshot tuple alias and substitute only service_completion_suffix return type. Preserve tuple fields, helper body and all assertions.",
+    "Format only owned test first, independently review frozen exact diff, then ordered Clippy/full package tests/all gate-source format.",
+    "Stop each failure for root review; maximum three fresh failures. Preserve original three failed executions independently.",
+    "Freeze result/receipt hashes before independent source acceptance and scoped commit."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-transit-context-v2-native-repair-20261012/dispatch/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Pinned strict ABM package gate at identical 3 source hashes; ten exact native proofs in tests; production protected."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-transit-context-v2-native-repair-20261012/dispatch/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Pinned strict ABM package gate at identical 3 source hashes; ten exact native proofs in tests; production protected."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-transit-context-v2-native-repair-20261012/dispatch/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Pinned rustfmt check all 3 gate source paths, only test source-owned."
+    }
+  ],
+  "acceptance": [
+    "Typed DTO fields and action/witness variants match the committed ADR exactly.",
+    "Native restore enforces the ADR validation order, current Handoff work binding, historical issued event and ticket joins, bounds and phase rules.",
+    "All ten named native V2 proofs pass; full existing ABM/V1 behavior passes; no wire or codec changes are made.",
+    "Ready_for_review requires three ordered successful gates at unchanged final source hashes."
+  ],
+  "result_path": ".artifacts/e22-transit-context-v2-native-repair-20261012/result.json",
+  "stop_conditions": [
+    "Any base/input/production/history or root authority drift.",
+    "Any source edit outside single owned test; only exact alias repair (ABM) or four initializers (DES) permitted.",
+    "Any failed gate stops for root review; preserve raw receipt. Three fresh failures maximum independently of original preserved three.",
+    "No source commit before frozen independent review; no wire/routing/consumer/parent pin authority."
+  ],
+  "development_failure_limit": 3,
+  "status": "prepared",
+  "size_exception": "One existing test source plus result/logs; all 3 source paths hash-bound and format-checked, production protected.",
+  "base_source_hashes": {
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "8d1e92b5b1f81ec65a597f3f8b00a54c1a55ce3182e6273ecb8127d18f0b08ec",
+    "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "ace270279a0095a853d1dba00fe7ef5153db7288fa6d7560c09ccb918651fee2"
+  },
+  "initially_absent_owned_paths": [],
+  "external_evidence": {
+    "parent_acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-native-order-handoff-completion-20261012/acceptance.json",
+    "parent_acceptance_sha256": "9d5175eb905e524a6fa87689558c9d5b136090e44f03fddf46a236f4842eadc3",
+    "joined_native_result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-native-order-handoff-qualification-20261012/.artifacts/e22-combined-native-qualification-20261012/result.json",
+    "joined_native_result_sha256": "ae8285021fa7c9ee3adc3e23b587048d58f946db66a21f214f5b391b927b42c6",
+    "joined_native_head": "ef20ae54b73dc47d59250c9b073c063311704413",
+    "accepted_source_commit": "0b004141b5a727ae601d2315cebb6c3732e6fac4",
+    "parent_pin": "6d733f489225da4bf6ceec2673b02369c7918bbe"
+  },
+  "result_contract": {
+    "status": "ready_for_review only when readiness passes; stopped_failure_ceiling at three fresh failures; otherwise stopped_for_root_review or in_progress before failure",
+    "initial_owned_path_verification": "All 3 existing snapshot source hashes; no absent source paths.",
+    "base_source_hashes": "Exact packet preservation snapshot hashes for every gate source.",
+    "owned_source_hashes": "All 3 current gate source hashes; protected production exactly baseline.",
+    "required_test_names": "Exact ten required native names in required_success_names.",
+    "required_success_names": "observed successful required names from terminal tests receipt",
+    "required_success_count": "observed count; zero until tests receipt",
+    "failed_development_attempts": "all failed terminal raw result receipt paths; corrections require root-published GO authority exactly binding the complete failed receipt list",
+    "gate_readiness": "latest Clippy, tests, format receipts all pass in order with matching final source hashes; each terminal receipt binds its started receipt hash and exact immutable argv/cwd/HEAD/toolchain/source set"
+  },
+  "dispatch_authority_path": "/tmp/careops-e22-transit-context-v2-native-repair-20261012-dispatch-authority.json",
+  "dispatch_authority_contract": {
+    "writer": "root only; worker must not create or edit this file",
+    "required_fields": {
+      "status": "GO",
+      "packet_sha256": "exact current packet bytes",
+      "driver_sha256": "exact current record_gate.py bytes",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012",
+      "base_commit": "c2de4e20ff1d315bc90beba4f71e5a9bbb2feeaf"
+    },
+    "repair_fields": {
+      "repair_authorized": "true only on explicit root GO after a failed gate",
+      "repair_authorized_after_failures": "exact ordered/complete failed terminal receipt paths; empty before any failures"
+    }
+  },
+  "protected_production_hashes": {
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "8d1e92b5b1f81ec65a597f3f8b00a54c1a55ce3182e6273ecb8127d18f0b08ec",
+    "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490"
+  },
+  "historical_evidence_hashes": {
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/packet.json": "c365b992632e10a1345a67e984f189597582618de62a1670b80c14b8ef88ce11",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/record_gate.py": "113e8ae078625af80b978e256806b9cfa94a9b7bf18908bd7286638fb6b04493",
+    ".artifacts/e22-transit-context-v2-native-20261012/dispatch/context.txt": "74e5a09b34536e2c256903310bdcac07944d8cd815edee6705f4d27a34fbefb8",
+    ".artifacts/e22-transit-context-v2-native-20261012/result.json": "8bedffa02dff7874d1f841d4facbf4b332fe9ccdae2e6f527e710dd5fa9ac283",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791750950987417000-29906-started.json": "f8f8e41a32a3d726fb4b6cb84bf936e82df331bdf1141d327079a9c72d6f906a",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791750950987417000-29906-result.json": "edd65ce4ad39e1f8100ec0ef481b1a5eff10405ceefeac38e34bdce3d1aca6bb",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791750950987417000-29906.log": "f75b3a80716f0b7661f8db0962a603bb1d37c6a26a084ebb84c443b7b034be88",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751456319405000-31989-started.json": "6d834d766c6ba777b390156eebf258aaf5a0a460308d29b17be65e61a2f6f2e5",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751456319405000-31989-result.json": "28e42deb46fad8f7de45f3a8e59b7257d2b571c511478f3966c75d852983a38b",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751456319405000-31989.log": "b9775f875b31263e77c0b27d51a6be7a9dbfd4c5f4e5c368a48534ccd3de710e",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751687507627000-32842-started.json": "65d913e50b7048289cd3f1851512960ae13ba7e2d69f8bd7ec94bcca9f82af2b",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751687507627000-32842-result.json": "ac5eb63da27788ea2926802db2940b0db966dea68aee8b9eabb4d6ce0fbdf9a1",
+    ".artifacts/e22-transit-context-v2-native-20261012/logs/clippy-1791751687507627000-32842.log": "7e019bf5900fd0cabeb1f5f3863f9b9ab20b1d92dbb36eea4e027938a6d9d581",
+    "/tmp/careops-e22-transit-v2-native-original-result-20261012.json": "7ec6f3771a4e96ad9d55647b1d76726fc553148282b7d554e83137d5a6360787",
+    "/tmp/careops-e22-transit-v2-native-failure-history-20261012.json": "f113eb5dc6f5a144d23bc7b8ae01469679ba9cb5dddd8bc7cb4c87ae345d1620",
+    "/tmp/careops-e22-transit-v2-native-proof-supplement-20261012.json": "2e743d7daad9a03a9e04328ba989a08f225bcbd4e53f0fc102fe557e51d53ae3",
+    "/tmp/careops-e22-transit-v2-native-proof-supplement2-20261012.json": "0b9c6e80628e41175c5783b816c63298be0b3f5561559cc4b153b8fde9ef28f6"
+  },
+  "preserved_original_failed_executions": 3,
+  "repair_scope": "Add private ServiceCompletionSnapshot tuple alias and substitute only service_completion_suffix return type. Preserve tuple fields, helper body and all assertions.",
+  "context_bytes": 20178,
+  "gate_source_paths": [
+    "crates/kairo-ecs-abm/src/flow_adapter.rs",
+    "crates/kairo-ecs-abm/src/lib.rs",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs"
+  ],
+  "source_write_paths": [
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs"
+  ],
+  "required_success_names": [
+    "transit_checkpoint_v2_native_ready_and_scheduled_start",
+    "transit_checkpoint_v2_native_resumed_ready_later_due",
+    "transit_checkpoint_v2_native_moving_restore_suffix",
+    "transit_checkpoint_v2_native_paused_retained_and_consumed_event",
+    "transit_checkpoint_v2_native_arrived_unadmitted",
+    "transit_checkpoint_v2_native_arrived_admitted_suppression",
+    "transit_checkpoint_v2_native_frontier_resume_live_domain_noop",
+    "transit_checkpoint_v2_native_historical_only_handoff_binding_rejected",
+    "transit_checkpoint_v2_native_acquire_historical_refs_and_v1_bytes",
+    "transit_checkpoint_v2_native_bounds_versions_and_atomic_restore"
+  ]
+}

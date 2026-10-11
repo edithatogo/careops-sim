@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "packet_id": "e22-transit-v2-frontier-repair-20261012",
+  "packet_sha256": "a387900ef1715f1f26af2dfff9064183699cd461e0987756c27355c2f8c167cb",
+  "base_commit": "df45d372aff04a642d5eb84f65e27dbd4972e8f1",
+  "head": "df45d372aff04a642d5eb84f65e27dbd4972e8f1",
+  "status": "ready_for_review",
+  "qualification": false,
+  "initial_owned_path_verification": {
+    "verified": true,
+    "existing_source_hashes": {
+      "crates/kairo-ecs-abm/src/flow_adapter.rs": "8d1e92b5b1f81ec65a597f3f8b00a54c1a55ce3182e6273ecb8127d18f0b08ec",
+      "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+      "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "08afca61be0e7b89c4ece1574ddb1adea8b22a12e0aaf9838be4b304796e8824"
+    },
+    "absent_paths": []
+  },
+  "base_source_hashes": {
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "8d1e92b5b1f81ec65a597f3f8b00a54c1a55ce3182e6273ecb8127d18f0b08ec",
+    "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "08afca61be0e7b89c4ece1574ddb1adea8b22a12e0aaf9838be4b304796e8824"
+  },
+  "owned_source_hashes": {
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "0a59f15cbc2154298dd9071ef00ccddbdc65d2e08843f1624bc99eb227dc423d",
+    "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263"
+  },
+  "required_test_names": [
+    "transit_checkpoint_v2_native_ready_and_scheduled_start",
+    "transit_checkpoint_v2_native_resumed_ready_later_due",
+    "transit_checkpoint_v2_native_moving_restore_suffix",
+    "transit_checkpoint_v2_native_paused_retained_and_consumed_event",
+    "transit_checkpoint_v2_native_arrived_unadmitted",
+    "transit_checkpoint_v2_native_arrived_admitted_suppression",
+    "transit_checkpoint_v2_native_frontier_resume_live_domain_noop",
+    "transit_checkpoint_v2_native_historical_only_handoff_binding_rejected",
+    "transit_checkpoint_v2_native_acquire_historical_refs_and_v1_bytes",
+    "transit_checkpoint_v2_native_bounds_versions_and_atomic_restore"
+  ],
+  "required_success_names": [
+    "transit_checkpoint_v2_native_ready_and_scheduled_start",
+    "transit_checkpoint_v2_native_resumed_ready_later_due",
+    "transit_checkpoint_v2_native_moving_restore_suffix",
+    "transit_checkpoint_v2_native_paused_retained_and_consumed_event",
+    "transit_checkpoint_v2_native_arrived_unadmitted",
+    "transit_checkpoint_v2_native_arrived_admitted_suppression",
+    "transit_checkpoint_v2_native_frontier_resume_live_domain_noop",
+    "transit_checkpoint_v2_native_historical_only_handoff_binding_rejected",
+    "transit_checkpoint_v2_native_acquire_historical_refs_and_v1_bytes",
+    "transit_checkpoint_v2_native_bounds_versions_and_atomic_restore"
+  ],
+  "required_success_count": 10,
+  "failed_development_attempts": [],
+  "gates": [
+    {
+      "gate": "clippy",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-abm",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012",
+      "head": "df45d372aff04a642d5eb84f65e27dbd4972e8f1",
+      "packet_sha256": "a387900ef1715f1f26af2dfff9064183699cd461e0987756c27355c2f8c167cb",
+      "start": "2026-10-11T21:12:07.100033+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0a59f15cbc2154298dd9071ef00ccddbdc65d2e08843f1624bc99eb227dc423d",
+        "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263"
+      },
+      "log": ".artifacts/e22-transit-v2-frontier-repair-20261012/logs/clippy-1791753127056397000-50777.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-transit-v2-frontier-repair-20261012/logs/clippy-1791753127056397000-50777-started.json",
+      "end": "2026-10-11T21:12:15.652185+00:00",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "gate_error": null,
+      "log_sha256": "3c5a89efaf273d29d4975e4a1631012b4dc29ff722810fbd48143b55f3b89e0d",
+      "source_hashes_after": {
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0a59f15cbc2154298dd9071ef00ccddbdc65d2e08843f1624bc99eb227dc423d",
+        "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263"
+      },
+      "started_receipt_sha256": "0f85ccbe50b60819c12971c92d200af412e1a953a941b0cea8e600f2b0a2f45b",
+      "required_success_names_observed": null,
+      "required_success_count_observed": null,
+      "receipt_path": ".artifacts/e22-transit-v2-frontier-repair-20261012/logs/clippy-1791753127056397000-50777-result.json",
+      "receipt_sha256": "778432433a390fa6bfe385e2643cf4c81d0bbeb326a11f15c0fcda23281a315c"
+    },
+    {
+      "gate": "tests",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-abm",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012",
+      "head": "df45d372aff04a642d5eb84f65e27dbd4972e8f1",
+      "packet_sha256": "a387900ef1715f1f26af2dfff9064183699cd461e0987756c27355c2f8c167cb",
+      "start": "2026-10-11T21:12:22.640456+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0a59f15cbc2154298dd9071ef00ccddbdc65d2e08843f1624bc99eb227dc423d",
+        "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263"
+      },
+      "log": ".artifacts/e22-transit-v2-frontier-repair-20261012/logs/tests-1791753142595341000-51003.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-transit-v2-frontier-repair-20261012/logs/tests-1791753142595341000-51003-started.json",
+      "end": "2026-10-11T21:12:33.591514+00:00",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "gate_error": null,
+      "log_sha256": "89b324a02bb89ce8a599a03ca0c4d43bed6c3e16ec2d4e6e58eef6ff80d758ce",
+      "source_hashes_after": {
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0a59f15cbc2154298dd9071ef00ccddbdc65d2e08843f1624bc99eb227dc423d",
+        "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263"
+      },
+      "started_receipt_sha256": "7ede96ee2c891660cd2ba13bf386d9dbb921cf3ebd0f755e1930398ae4ba5b5d",
+      "required_success_names_observed": [
+        "transit_checkpoint_v2_native_ready_and_scheduled_start",
+        "transit_checkpoint_v2_native_resumed_ready_later_due",
+        "transit_checkpoint_v2_native_moving_restore_suffix",
+        "transit_checkpoint_v2_native_paused_retained_and_consumed_event",
+        "transit_checkpoint_v2_native_arrived_unadmitted",
+        "transit_checkpoint_v2_native_arrived_admitted_suppression",
+        "transit_checkpoint_v2_native_frontier_resume_live_domain_noop",
+        "transit_checkpoint_v2_native_historical_only_handoff_binding_rejected",
+        "transit_checkpoint_v2_native_acquire_historical_refs_and_v1_bytes",
+        "transit_checkpoint_v2_native_bounds_versions_and_atomic_restore"
+      ],
+      "required_success_count_observed": 10,
+      "receipt_path": ".artifacts/e22-transit-v2-frontier-repair-20261012/logs/tests-1791753142595341000-51003-result.json",
+      "receipt_sha256": "d5b6dc1c040f1fe3321f06f6f4837cf93b8d2b73abf163b6114ee193726e2f91"
+    },
+    {
+      "gate": "format",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "--config",
+        "skip_children=true",
+        "crates/kairo-ecs-abm/src/flow_adapter.rs",
+        "crates/kairo-ecs-abm/src/lib.rs",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012",
+      "head": "df45d372aff04a642d5eb84f65e27dbd4972e8f1",
+      "packet_sha256": "a387900ef1715f1f26af2dfff9064183699cd461e0987756c27355c2f8c167cb",
+      "start": "2026-10-11T21:12:37.372908+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0a59f15cbc2154298dd9071ef00ccddbdc65d2e08843f1624bc99eb227dc423d",
+        "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263"
+      },
+      "log": ".artifacts/e22-transit-v2-frontier-repair-20261012/logs/format-1791753157314973000-51303.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-transit-v2-frontier-repair-20261012/logs/format-1791753157314973000-51303-started.json",
+      "end": "2026-10-11T21:12:37.458409+00:00",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "gate_error": null,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_hashes_after": {
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0a59f15cbc2154298dd9071ef00ccddbdc65d2e08843f1624bc99eb227dc423d",
+        "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263"
+      },
+      "started_receipt_sha256": "2bae8cdc1be08fa02bdeb70a21ef34a0453c3765458e731a8ba85cc12f6065cf",
+      "required_success_names_observed": null,
+      "required_success_count_observed": null,
+      "receipt_path": ".artifacts/e22-transit-v2-frontier-repair-20261012/logs/format-1791753157314973000-51303-result.json",
+      "receipt_sha256": "001d056739d3853b7094eca1a1d7ee09930f77f12529ae2ce797fc5e1bc810ce"
+    }
+  ]
+}

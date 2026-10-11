@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [Transit V2 native acceptance and parallel wire successor](evidence/e2.2-transit-v2-native-completion-20261012/README.md)
+
 - [Flow V4 native acceptance and immediate wire successor](evidence/e2.2-flow-v4-native-completion-20261012/README.md)
 
 - [Serial/parallel and smaller-model execution](execution-model.md)
