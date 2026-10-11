@@ -1,0 +1,28 @@
+{
+  "status": "preparing_dispatch",
+  "coordinator": "root",
+  "current_leaf": "E1.3.offers",
+  "contract": "conductor/design/ed/e1-offers-contract.md",
+  "review": "GPT-6.1-sol next planner and GPT-6-luna offer implementer read-only proposal review",
+  "workers": [
+    {
+      "agent": "e1_extreme_preparation",
+      "role": "offers implementation after packet bind",
+      "model": "gpt-6-luna"
+    },
+    {
+      "agent": "e1_endpoint_preparation",
+      "role": "boarding shared-runtime contract preparation",
+      "model": "gpt-6-luna"
+    },
+    {
+      "agent": "e1_next_planner",
+      "role": "next-work contract and acceptance review",
+      "model": "gpt-6.1-sol"
+    }
+  ],
+  "continuation": "After each accepted leaf bind and dispatch dependency-ready successor; after phase closeout advance through delivery graph. Do not declare full goal complete at E1.3 or E2.",
+  "scope_update": "Renewed user instruction supersedes historical E1.2 heartbeat and next-work no-launch boundary; prior acceptance remains unchanged",
+  "automation_id": "careops-autonomous-delivery-continuation",
+  "rust_version": "1.99.0"
+}
