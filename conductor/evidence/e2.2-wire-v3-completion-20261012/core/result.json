@@ -1,0 +1,402 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.wire-v3-core-20261012",
+  "status": "ready_for_review",
+  "recorded_at": "2026-10-11T16:07:01.687956+00:00",
+  "base_commit": "a90df67a132a2e75f112d09ef00df639f954fd67",
+  "native_accepted_commit": "0813991b6dddb11635b790a9eb065651b85dd238",
+  "commit": null,
+  "packet_sha256": "e128e7c65321af3d7c4b7079e178e05cd9884e1f75c62825cab92eb6e9f12510",
+  "changed_paths": [
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs"
+  ],
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "58a51aef8c6a65342f3f445bb8d6c0f24d56da7d6dbebfee8f17e1b726315ace"
+  },
+  "protected_inputs_unchanged": true,
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md": "facc5bbc03c64c425b7683bd99f73d505109d637692350623ceb5a9aa9c3b7fd",
+    "conductor/design/des/e2-flow-checkpoint-v3-wire.md": "c74fc89530cd35681825cce87e781cd62bd8759a88b3a001bb03ea32da0aab6f",
+    "conductor/design/des/ADR-e2-deferred-allocation.md": "7099e0f33d3dac667b6b7eac15160ca3e20806ef60522f7489d80be17cda0c17",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "06e1d6a0131214feb39dd1061b804882af069bf436b5e9ae4acef9638286c709",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "c9c6edcf1b04f8cfbc76902ded00aad65aa8fa1ef7299978ebc23a0f44c3084d",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs": "3c3215c4d9d7618e4933ac0ef354d05f9ef1a36fe53b34ac43d8768b1cf8679f",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "611bedc892b6d06d24c5e2d266165e31caa9e57228ec0e7d3400720639b93466",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "72602d4499de5027c0e86dc828f12a474d7ee6aeead0590ac83703da4814b7d1",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "9399a60cbe07a3627d5dde6eac2d5e035a59e17e5ad5e80fa99fe27ca930e183",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/e22-wire-v3-core-20261012/context.txt": "46bac8a570a3634ebf95d543c0672c97c6ab94006a72cc7a33f06d9d60b3fa60",
+    ".artifacts/e22-wire-v3-core-20261012/record_gate.py": "53306d3504980761184e84b723298893e25f6051b9e2207571807c711cf879bb"
+  },
+  "summary": "Genuine explicit complete FlowCheckpointV3 wire APIs, complete nonowning scan before ownership, complete measurement before canonical/output allocation, checked native and aggregate limits, exact mode coverage, seven private proof families. Legacy source preserved byte-for-byte.",
+  "proof_shape": {
+    "rich_fixture": "Real Deferred capacity2 resource, two Active and two Queued requests, Eager resource and zero-duration completion notification, registered stable continuation, nonempty context/restart/factory payloads, pending gates and Flush commands. Native restore/recapture plus bounded uninterrupted suffix equivalence before mutations.",
+    "structural_tags": "Separate WIRE ONLY synthetic complete command DTO for tags0..13, Pause/Resume, flag false/true, Eager/Deferred; no runtime acceptance claim.",
+    "phase_counters": "Thread-local V3 owned decode, canonical validation and output allocation entry counters with valid positive controls; malformed final mode/trailing reject with owned count0; late payload/byte reject with canonical/output count0.",
+    "bounds": "Exact and cap+1 encode/decode controls for every positive scalar/aggregate collection cap, independent resource flags/modes, four-kind pending, world free/live, actor-domain, queue/allocation/deadline/preempting nested caps, nested callback registrations, component/sparse/key/payload/restart/factory, huge aggregate overflow versus small count cap.",
+    "native_boundary": "Complete structurally decoded Flush joins rejected natively before codec for kind/entity/resource/mode/pending Remove; valid restore invokes codecs."
+  },
+  "verification": [
+    {
+      "gate": "clippy",
+      "classification": "final",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "receipt": ".artifacts/e22-wire-v3-core-20261012/logs/clippy-1791734737035524000-4967-result.json",
+      "receipt_sha256": "4a5dbdb190d0fd247ebb84908b30ff55daa1d52d27067463c23ed49b75de2173",
+      "log": ".artifacts/e22-wire-v3-core-20261012/logs/clippy-1791734737035524000-4967.log",
+      "log_sha256": "a73fa1ac84bc4846b7d5dee1792cec333876748b9adb7313b61f2602848f396b",
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "58a51aef8c6a65342f3f445bb8d6c0f24d56da7d6dbebfee8f17e1b726315ace"
+      },
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "58a51aef8c6a65342f3f445bb8d6c0f24d56da7d6dbebfee8f17e1b726315ace"
+      },
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-core",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-wire-v3-core-20261012",
+      "head": "a90df67a132a2e75f112d09ef00df639f954fd67",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    },
+    {
+      "gate": "compile",
+      "classification": "development",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "receipt": ".artifacts/e22-wire-v3-core-20261012/logs/compile-1791734195055195000-99372-result.json",
+      "receipt_sha256": "01338215b875118df1bda4a50b0847d19bf3bbdd7b4308de8e3d1eb687a34d70",
+      "log": ".artifacts/e22-wire-v3-core-20261012/logs/compile-1791734195055195000-99372.log",
+      "log_sha256": "041f8f0b0d13e57451f86c0f0003def84b33c64e9253463d3f5a458eeb1bfb6b",
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "cae74b8d14552577c20d1776022594eb0e4192460327de23ee6bed0ec7470691"
+      },
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "cae74b8d14552577c20d1776022594eb0e4192460327de23ee6bed0ec7470691"
+      },
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--no-run",
+        "--locked",
+        "-p",
+        "kairo-ecs-core",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-wire-v3-core-20261012",
+      "head": "a90df67a132a2e75f112d09ef00df639f954fd67",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    },
+    {
+      "gate": "focused",
+      "classification": "development",
+      "exit_code": 101,
+      "command_exit_code": 101,
+      "receipt": ".artifacts/e22-wire-v3-core-20261012/logs/focused-1791734267333768000-600-result.json",
+      "receipt_sha256": "576e527ed55b00e62218c563e6a3d9430188ce1716cfb9036818a6503cd7593f",
+      "log": ".artifacts/e22-wire-v3-core-20261012/logs/focused-1791734267333768000-600.log",
+      "log_sha256": "7f64ae90c460307d0106b11b630d79e67c16ccb57a84baaa6010ae80b9a34b5c",
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "b20b4f4436bbe0164bef16277a5c7d16ca778239c106014f83a8c25702daefa8"
+      },
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "b20b4f4436bbe0164bef16277a5c7d16ca778239c106014f83a8c25702daefa8"
+      },
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "wire_v3_tests",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-wire-v3-core-20261012",
+      "head": "a90df67a132a2e75f112d09ef00df639f954fd67",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    },
+    {
+      "gate": "focused",
+      "classification": "development",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "receipt": ".artifacts/e22-wire-v3-core-20261012/logs/focused-1791734434637005000-2514-result.json",
+      "receipt_sha256": "026399dce1c62b40741b9ad39b3e2945e9012ad91070e1a074f1a20c5f479511",
+      "log": ".artifacts/e22-wire-v3-core-20261012/logs/focused-1791734434637005000-2514.log",
+      "log_sha256": "1d8698be7e0e9479e7be031b4d91110c593cc898cbac1b69d6c136fd85f6d0d2",
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "ecd355e60dccc98c8fb8492a93096399158b0fa479561f0bf1655b2517d727c9"
+      },
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "ecd355e60dccc98c8fb8492a93096399158b0fa479561f0bf1655b2517d727c9"
+      },
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "wire_v3_tests",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-wire-v3-core-20261012",
+      "head": "a90df67a132a2e75f112d09ef00df639f954fd67",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    },
+    {
+      "gate": "focused",
+      "classification": "development",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "receipt": ".artifacts/e22-wire-v3-core-20261012/logs/focused-1791734505043457000-3110-result.json",
+      "receipt_sha256": "1e86eacdf02ab2c5737a8b842c085561f6a18365c844684236b28336c8c7e38e",
+      "log": ".artifacts/e22-wire-v3-core-20261012/logs/focused-1791734505043457000-3110.log",
+      "log_sha256": "387dd6912be46c270570ef2f5b2ce7c3714cceaab522ae3c3bf9defa6e67df93",
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "58a51aef8c6a65342f3f445bb8d6c0f24d56da7d6dbebfee8f17e1b726315ace"
+      },
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "58a51aef8c6a65342f3f445bb8d6c0f24d56da7d6dbebfee8f17e1b726315ace"
+      },
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "wire_v3_tests",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-wire-v3-core-20261012",
+      "head": "a90df67a132a2e75f112d09ef00df639f954fd67",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    },
+    {
+      "gate": "format",
+      "classification": "final",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "receipt": ".artifacts/e22-wire-v3-core-20261012/logs/format-1791734775608590000-5138-result.json",
+      "receipt_sha256": "9901c8fbb2a14aaf1b690d3821e0b5fd5a657ea147bed3acb6ce5d1d2e01f561",
+      "log": ".artifacts/e22-wire-v3-core-20261012/logs/format-1791734775608590000-5138.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "58a51aef8c6a65342f3f445bb8d6c0f24d56da7d6dbebfee8f17e1b726315ace"
+      },
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "58a51aef8c6a65342f3f445bb8d6c0f24d56da7d6dbebfee8f17e1b726315ace"
+      },
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "--config",
+        "skip_children=true",
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-wire-v3-core-20261012",
+      "head": "a90df67a132a2e75f112d09ef00df639f954fd67",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    },
+    {
+      "gate": "tests",
+      "classification": "final",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "receipt": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-result.json",
+      "receipt_sha256": "7cf85ba800bc27d84a0b77a7c94111fba1d8b88902d40fc2c2206d5d6a4d6c09",
+      "log": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301.log",
+      "log_sha256": "fad300c4b3c6b22f23519d4770b86d5d944a2c7873076c1195986915c16efdaf",
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "58a51aef8c6a65342f3f445bb8d6c0f24d56da7d6dbebfee8f17e1b726315ace"
+      },
+      "source_hashes_after": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "58a51aef8c6a65342f3f445bb8d6c0f24d56da7d6dbebfee8f17e1b726315ace"
+      },
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-core",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-wire-v3-core-20261012",
+      "head": "a90df67a132a2e75f112d09ef00df639f954fd67",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    }
+  ],
+  "counts": {
+    "development_failed_executions": 1,
+    "final_failed_executions": 0,
+    "focused_required_private_families": 7,
+    "native_v3_required_tests": 9,
+    "full_test_summaries": 66,
+    "full_tests_passed": 824,
+    "full_tests_failed": 0,
+    "full_tests_ignored": 6,
+    "process_envelopes": 22,
+    "legacy_golden_envelopes": 19
+  },
+  "process_artifacts": [
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/gated-matrix/service-arrival-disabled-pending-submit-4671-1791734698538628000.c2",
+      "sha256": "752d588b41ed90a9a6643405b96e8bad9cf37d93b8bd1cd20a951240b6865a51"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/gated-matrix/service-suspend-pending-enable-gate-4671-1791734698558250000.c2",
+      "sha256": "53fc54bcbb1beab56ee8614c66d66e78863496eea166ca2e63117ec780e7c9c0"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/gated-matrix/transit-moving-control-future-gate-4671-1791734698512549000.c2",
+      "sha256": "04ad0e8eba73484e50858d5f2ea9c797cb75a7418ec7e08d51d199962c6d53ef"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/macro-zero-ready-4671-1791734697914557000.c2",
+      "sha256": "f335b8aeabf302214a54f90ca46dfc1bd22cfb47b317c4e8a0677061704d0421"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/micro-zero-ready-4671-1791734697957595000.c2",
+      "sha256": "67422a57a9b5b265b41296825d5871a78433a82d12faa91d8d4013d4965b3cc0"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/multi-graph-mixed-frozen-pending-4671-1791734698439387000.c2",
+      "sha256": "7f5221cc9ceb0b365fcb9eb406fb005f78294ad9fb0c83d6e3c128cde2f1be8b"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/service-restart-pending-cut-sample20-4671-1791734698413847000.c2",
+      "sha256": "f52bbbc6fba5d7f0df966e2bd8ed8a2cba6a37af49575d876954d1103bfb2147"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/service-restart-sample20-4671-1791734698363475000.c2",
+      "sha256": "cf659e54c34433554064a8812e0bd021a56148ab055781bfd7c24bd51a600913"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/service-suspend-pending-cut-sample20-4671-1791734698388042000.c2",
+      "sha256": "650a6194092c8444d719a44cab77fbaaa8913792a88399c86e856cffa1544886"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/service-suspend-sample20-4671-1791734698339281000.c2",
+      "sha256": "76c88aea3c91f8ea3c54afe0f011a9dddf6e331caee7bb11e493195799b99fc2"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/submitted-active-4671-1791734698319986000.c2",
+      "sha256": "925378362fb828e1c4a4247f6bac08ec8a19fb25618ee01758b9c6614a32e0cc"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/submitted-pending-4671-1791734698298179000.c2",
+      "sha256": "6ae384b17d1322996cd121e588ee806bb240c4f80a8435d369d665a785a98441"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/transit-arrived-queued-4671-1791734698276165000.c2",
+      "sha256": "e8f4bb61b4eebbf51867a778f2da9e139f38f09da379023c1cdd17d4ac388e0c"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/transit-control-command-pending-4671-1791734698252162000.c2",
+      "sha256": "799f2d6711f7054357b7ad5c60c9885c10f3bb049a396d81df2dd6d691957b15"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/transit-moving-mid-edge-4671-1791734698103235000.c2",
+      "sha256": "d98b7b22567b8348d97a7dc3a1804492456a3f1b8b6ecf81e63a9759a2f5be39"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/transit-paused-at-end-4671-1791734698201884000.c2",
+      "sha256": "35e5146fdd61f191da55f2253495c50e96c0704f58e86576983a504333135c42"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/transit-paused-mid-edge-4671-1791734698148595000.c2",
+      "sha256": "02feba95ec3baadc96e1b0f1cd4443d7a681bdf28a4aa03851528f80ac18ae94"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/transit-paused-mid-edge-native-activity-4671-1791734698172690000.c2",
+      "sha256": "f649252b16b3ed4fcd32d05409eb0abab579d01cd570e6840ee6026dc30d5211"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/transit-paused-ready-4671-1791734698124450000.c2",
+      "sha256": "6131687faa8c27042484ad0fb5810162550babe2b2cb3080a131f7d714682fd5"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/transit-ready-4671-1791734697987768000.c2",
+      "sha256": "37d78f67bdd3b55cdc4b6ddbca30dcb392dd642afd344adf2728b31d413a0332"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/transit-rejected-progress-retry-4671-1791734698065573000.c2",
+      "sha256": "4d219323237f07394a87ec75caf515910600b37fa87052473202ac414d4cd877"
+    },
+    {
+      "path": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-process/legacy-matrix/transit-rejected-start-retry-4671-1791734698020209000.c2",
+      "sha256": "9552feb83ca964eb4d610f753680885f22c3dae28e064dcdb4f3256acbf32572"
+    }
+  ],
+  "determinism": {
+    "rng_seed": null,
+    "reason": "Private fixtures use fixed runtime construction and no RNG draws; source and full bounded inputs hashed in receipts."
+  },
+  "scope": "Core-only evidence; full explicit wire/public fixtures, routed V3 and consumers still require joined qualification.",
+  "unresolved_issues": [],
+  "review": "Root reviewed all final receipts, source and protected input hashes, scope, parsed totals and22 child inputs; independent Sol frozen source review GO. Single scoped core commit authorized. Whole wire acceptance remains separate."
+}

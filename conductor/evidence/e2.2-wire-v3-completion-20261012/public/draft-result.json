@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.wire-v3-fixtures-20261012",
+  "status": "draft_ready_for_review",
+  "classification": "Rust formatting/parsing only; no compilation, runtime, lint, or acceptance claim",
+  "head": "a90df67a132a2e75f112d09ef00df639f954fd67",
+  "source_path": "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v3.rs",
+  "source_sha256": "08467fc04ec2fd7038ef5c68e4987979a3a8e16b04db361d810ae95759a7c942",
+  "required_test_names": [
+    "wire_v3_rich_mixed_modes_queues_allocations_restore_suffix",
+    "wire_v3_mixed_interior_cut_both_completion_orders_restore_suffix",
+    "wire_v3_preflush_budget_halt_wire_roundtrip_and_repeat_halt",
+    "wire_v3_started_now_flush_roundtrip_and_same_tick_readmission",
+    "wire_v3_structural_flush_bad_scheduler_joins_fail_native_precodec"
+  ],
+  "review_repairs": [
+    "one bounded exact-event/tick drain helper",
+    "bounded seed loops with required-state observations",
+    "DTO queue/allocation and payload/mode/gate/Flush cardinality assertions",
+    "literal six deferred lifecycle tuples and terminal progress/request parity",
+    "past-time Flush scheduler-row native join mutation",
+    "current-tick and malformed image byte-identical decode/re-encode controls"
+  ],
+  "draft_check_attempts": [
+    {
+      "receipt": ".artifacts/e22-wire-v3-fixtures-20261012/logs/draft-1791734051721243000-result.json",
+      "exit_code": 1,
+      "log": ".artifacts/e22-wire-v3-fixtures-20261012/logs/draft-1791734051721243000.log",
+      "log_sha256": "26d981b939a8e10ac4afc16e68c2fe0bf6d4b273b9ab3ae49dd699ac338ba1ac",
+      "source_sha256": "62a35ebf9d0817d502a74d484b9343a3d764c7130dab1ec001c1e66447810f4e",
+      "source_sha256_after": "62a35ebf9d0817d502a74d484b9343a3d764c7130dab1ec001c1e66447810f4e",
+      "head": "a90df67a132a2e75f112d09ef00df639f954fd67",
+      "classification": "draft parsing/formatting only; no compile/runtime/acceptance"
+    },
+    {
+      "receipt": ".artifacts/e22-wire-v3-fixtures-20261012/logs/draft-1791734071905872000-result.json",
+      "exit_code": 0,
+      "log": ".artifacts/e22-wire-v3-fixtures-20261012/logs/draft-1791734071905872000.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_sha256": "0efd49efc2a0bfd0ae027164b682450abafd87a6e2059f718db0cf0369e464a5",
+      "source_sha256_after": "0efd49efc2a0bfd0ae027164b682450abafd87a6e2059f718db0cf0369e464a5",
+      "head": "a90df67a132a2e75f112d09ef00df639f954fd67",
+      "classification": "draft parsing/formatting only; no compile/runtime/acceptance"
+    },
+    {
+      "receipt": ".artifacts/e22-wire-v3-fixtures-20261012/logs/draft-1791734432878104000-result.json",
+      "exit_code": 0,
+      "log": ".artifacts/e22-wire-v3-fixtures-20261012/logs/draft-1791734432878104000.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_sha256": "08467fc04ec2fd7038ef5c68e4987979a3a8e16b04db361d810ae95759a7c942",
+      "source_sha256_after": "08467fc04ec2fd7038ef5c68e4987979a3a8e16b04db361d810ae95759a7c942",
+      "head": "a90df67a132a2e75f112d09ef00df639f954fd67",
+      "classification": "draft parsing/formatting only; no compile/runtime/acceptance"
+    }
+  ],
+  "prior_result_backup": ".artifacts/e22-wire-v3-fixtures-20261012/logs/draft-result-v1-frozen.json",
+  "prior_result_sha256": "291a50b15c9a4f2692c1bc00f4449cb3e9aaf3d75e7839a58c67270cb5f1812a",
+  "failed_attempts_preserved": true,
+  "protected_source_sha256": {
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "06e1d6a0131214feb39dd1061b804882af069bf436b5e9ae4acef9638286c709",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "c9c6edcf1b04f8cfbc76902ded00aad65aa8fa1ef7299978ebc23a0f44c3084d",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs": "3c3215c4d9d7618e4933ac0ef354d05f9ef1a36fe53b34ac43d8768b1cf8679f",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "611bedc892b6d06d24c5e2d266165e31caa9e57228ec0e7d3400720639b93466",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "72602d4499de5027c0e86dc828f12a474d7ee6aeead0590ac83703da4814b7d1",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54"
+  },
+  "protected_sources_match_packet": true,
+  "verification_boundary": "Immutable record_draft.py ran pinned Rust 1.99 rustfmt --check only. V3 explicit wire APIs are not present in this base and the draft was not compiled. Root review and a fresh accepted-core packet are required before any compile/runtime qualification.",
+  "generated_at_utc": "2026-10-11T16:00:47.091382+00:00"
+}

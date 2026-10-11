@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "status": "accepted_explicit_v3_wire_only",
+  "accepted_commit": "81f889f66969c27048a8d23a58b47c5a75132807",
+  "core_commit": "3eae7b741d9957d651883bda646aead18961c220",
+  "accepted_worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-wire-v3-public-qualification-20261012",
+  "toolchain": "Rust/Cargo 1.99.0",
+  "source_sha256": {
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "58a51aef8c6a65342f3f445bb8d6c0f24d56da7d6dbebfee8f17e1b726315ace",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v3.rs": "08467fc04ec2fd7038ef5c68e4987979a3a8e16b04db361d810ae95759a7c942"
+  },
+  "qualification": {
+    "core": {
+      "tests": {
+        "receipt": ".artifacts/e22-wire-v3-core-20261012/logs/tests-1791734674966378000-4301-result.json",
+        "receipt_sha256": "7cf85ba800bc27d84a0b77a7c94111fba1d8b88902d40fc2c2206d5d6a4d6c09",
+        "exit_code": 0,
+        "counts": {
+          "passed": 824,
+          "failed": 0,
+          "ignored": 6
+        },
+        "suites": 66,
+        "verified_child_process_cases": 22
+      },
+      "clippy": {
+        "receipt": ".artifacts/e22-wire-v3-core-20261012/logs/clippy-1791734737035524000-4967-result.json",
+        "receipt_sha256": "4a5dbdb190d0fd247ebb84908b30ff55daa1d52d27067463c23ed49b75de2173",
+        "exit_code": 0
+      },
+      "format": {
+        "receipt": ".artifacts/e22-wire-v3-core-20261012/logs/format-1791734775608590000-5138-result.json",
+        "receipt_sha256": "9901c8fbb2a14aaf1b690d3821e0b5fd5a657ea147bed3acb6ce5d1d2e01f561",
+        "exit_code": 0
+      }
+    },
+    "public": {
+      "tests": {
+        "receipt": ".artifacts/e22-wire-v3-public-qualification-20261012/logs/tests-1791735323655871000-7574-result.json",
+        "receipt_sha256": "80520da0ccadc4eaaf97b4009b689313048caef88353aa4ea8703b111153ff13",
+        "exit_code": 0,
+        "counts": {
+          "passed": 829,
+          "failed": 0,
+          "ignored": 6
+        },
+        "suites": 67,
+        "verified_child_process_cases": 22
+      },
+      "clippy": {
+        "receipt": ".artifacts/e22-wire-v3-public-qualification-20261012/logs/clippy-1791735371333160000-7907-result.json",
+        "receipt_sha256": "550fc33867525ef44615793065ab7b84468d98c4b5e67fd136471fb2e8408a1e",
+        "exit_code": 0
+      },
+      "format": {
+        "receipt": ".artifacts/e22-wire-v3-public-qualification-20261012/logs/format-1791735399099859000-8112-result.json",
+        "receipt_sha256": "8c00d8b9937adaa5473f3c0bc720d59cfcf6ad446c8ac22a733aa02f7defb798",
+        "exit_code": 0
+      }
+    }
+  },
+  "independent_reviews": {
+    "core": "GPT-6.1-sol frozen source approved; root receipt/protected-input review",
+    "public": "GPT-6.1-sol frozen five-family fixture approved; root runtime/receipt/protected-input review",
+    "packet": "separate GPT-6.1-sol immutable command/ownership review"
+  },
+  "preserved_failed_attempts": {
+    "core_development": 1,
+    "core_final": 0,
+    "draft_format": 1,
+    "public_development": 0,
+    "public_final": 0
+  },
+  "legacy_goldens": 19,
+  "boundary": "Explicit native and wire APIs accepted. Common routed capture/Ref/router, actual V3 consumers, parent pin, ED bindings and full delivery remain open.",
+  "next": "Accept routing owner contract and cross-track handoff, bind atomic routing implementation to this exact joined commit, then three consumer packets and combined qualification."
+}

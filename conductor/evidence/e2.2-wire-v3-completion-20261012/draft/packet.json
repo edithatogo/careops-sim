@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.wire-v3-fixtures-20261012",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "a90df67a132a2e75f112d09ef00df639f954fd67",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "objective": "Draft disjoint public V3 wire runtime fixtures against accepted nativeAPI and reviewed explicitwire contract; no runtime qualification untilcoreaccepted.",
+  "context_paths": [
+    ".artifacts/e22-wire-v3-fixtures-20261012/context.txt"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md": "facc5bbc03c64c425b7683bd99f73d505109d637692350623ceb5a9aa9c3b7fd",
+    "conductor/design/des/e2-flow-checkpoint-v3-wire.md": "c74fc89530cd35681825cce87e781cd62bd8759a88b3a001bb03ea32da0aab6f",
+    "conductor/design/des/ADR-e2-deferred-allocation.md": "7099e0f33d3dac667b6b7eac15160ca3e20806ef60522f7489d80be17cda0c17",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "06e1d6a0131214feb39dd1061b804882af069bf436b5e9ae4acef9638286c709",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "c9c6edcf1b04f8cfbc76902ded00aad65aa8fa1ef7299978ebc23a0f44c3084d",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs": "3c3215c4d9d7618e4933ac0ef354d05f9ef1a36fe53b34ac43d8768b1cf8679f",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "611bedc892b6d06d24c5e2d266165e31caa9e57228ec0e7d3400720639b93466",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "72602d4499de5027c0e86dc828f12a474d7ee6aeead0590ac83703da4814b7d1",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "9399a60cbe07a3627d5dde6eac2d5e035a59e17e5ad5e80fa99fe27ca930e183",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/e22-wire-v3-fixtures-20261012/context.txt": "e647a3d006de4b8a1b291b7759b30af4ecdee5f9986bfd08e12446ebf196fe1f",
+    ".artifacts/e22-wire-v3-fixtures-20261012/record_draft.py": "a339da78190b20e108c33795c32ec2fbc97d63aaac08aa75cca984b99da4b9bc"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v3.rs",
+    ".artifacts/e22-wire-v3-fixtures-20261012/result.json",
+    ".artifacts/e22-wire-v3-fixtures-20261012/logs"
+  ],
+  "protected_paths": [
+    "AGENTS.md",
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md",
+    "conductor/design/des/e2-flow-checkpoint-v3-wire.md",
+    "conductor/design/des/ADR-e2-deferred-allocation.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    ".artifacts/e22-wire-v3-fixtures-20261012/context.txt",
+    ".artifacts/e22-wire-v3-fixtures-20261012/record_draft.py",
+    ".git",
+    "crates/kairo-ecs-calibration",
+    "crates/kairo-ecs-core",
+    "crates/kairo-ecs-abm",
+    "crates/kairo-ecs-state"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.native-v3-accepted",
+    "E2.2.engine.wire-v3-contract"
+  ],
+  "interface_contract": "conductor/design/des/e2-flow-checkpoint-v3-wire.md",
+  "steps": [
+    "Verifyacceptednative/base/inputhashes andclaimnewtest/result/logsonly.",
+    "Draftfivepublicruntimefamilies withliteralexacteventwalks fromacceptednativefixtures.",
+    "Runonlycapturedformat/parsingcheck; noCargo command, nofakeAPI/stub/copyofcore.",
+    "Rootreview,frozenfilehash,result,releasewithoutcommit; laterfreshpacket/coreHEADrebindrequired."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-wire-v3-fixtures-20261012/record_draft.py"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "DraftRustparses/formats only; independentreviewofall5namednonvacuousruntimeoracles. No compilationorbehaviorclaim."
+    }
+  ],
+  "acceptance": [
+    "Fivepublicproofdrafts fulfillcontractshape andpreserveacceptednativeoracles.",
+    "ResultlabelsuntestedagainstwireAPI andrequirefreshacceptedcore rebind; no runtimeacceptance."
+  ],
+  "result_path": ".artifacts/e22-wire-v3-fixtures-20261012/result.json",
+  "stop_conditions": [
+    "Input/base/ownership drift, unclear API/oracle or out-of-scope need",
+    "Three failed draft format/check executions",
+    "NoCargo compilation/test/lint orcommit; freezeandreleaseafterrootdraftreview."
+  ],
+  "status": "prepared",
+  "reason_not_mvp_prepare": "Kairos-owned prerequisite to parent E2.2.fidelity; parentrecipe is preparation only.",
+  "dispatch_condition": "Root and independentSol approveexactpacket, native0813991cleanacceptance verified, cleanbase/pathclaim bound beforeimplementation. Core API acceptance gates public draft compilation."
+}

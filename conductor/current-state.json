@@ -3,7 +3,7 @@
   "updated_at": "2026-10-11T15:48:48.362645+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "Run reviewed parallel explicit wire V3 core implementation and public fixture draft; accept core before fresh fixture compilation, then joined wire qualification, routing, three consumers, parent pin and full ED bindings. Continue full delivery.",
+  "next_action": "Accept V3 routing owner contract and cross-track handoff, bind atomic routing implementation to accepted explicit-wire commit, then three consumer packets, combined pin and full ED bindings. Continue full delivery.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1569,7 +1569,7 @@
     "preparation_base": "a90df67a132a2e75f112d09ef00df639f954fd67"
   },
   "e22_wire_v3_dispatch": {
-    "status": "authorized_for_dispatch",
+    "status": "accepted_explicit_wire_join",
     "base": "a90df67a132a2e75f112d09ef00df639f954fd67",
     "evidence": "conductor/evidence/e2.2-wire-v3-parallel-dispatch-20261012/dispatch-ledger.json",
     "workers": {
@@ -1584,7 +1584,7 @@
           ".artifacts/e22-wire-v3-core-20261012/result.json",
           ".artifacts/e22-wire-v3-core-20261012/logs"
         ],
-        "status": "authorized_awaiting_launch"
+        "status": "accepted_core_commit"
       },
       "fixtures": {
         "agent": "/root/e22_dispatch",
@@ -1597,8 +1597,14 @@
           ".artifacts/e22-wire-v3-fixtures-20261012/result.json",
           ".artifacts/e22-wire-v3-fixtures-20261012/logs"
         ],
-        "status": "authorized_awaiting_launch"
+        "status": "draft_preserved_public_qualification_accepted"
       }
     }
+  },
+  "e22_wire_v3": {
+    "status": "accepted_explicit_v3_wire_only",
+    "accepted_commit": "81f889f66969c27048a8d23a58b47c5a75132807",
+    "accepted_worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-wire-v3-public-qualification-20261012",
+    "acceptance": "conductor/evidence/e2.2-wire-v3-completion-20261012/acceptance.json"
   }
 }
