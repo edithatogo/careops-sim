@@ -1,0 +1,17 @@
+{
+  "id": "resolve-test-output-paths-before-running",
+  "title": "Check actual test output paths before execution",
+  "topics": [
+    "tests",
+    "scope",
+    "artifacts",
+    "claim"
+  ],
+  "procedure": "Before launching a test command, inspect the selected tests and helper functions, resolve generated output roots against the actual checkout, and reserve every resolved path. Assert output roots remain under the intended worktree. A broad package test may execute additional writers beyond the selected leaf. Git scope checks do not discover every ignored or outside-checkout output. On a deviation, stop further writes, retain evidence, correct the path or reservation prospectively, and do not treat a later claim as retrospective authorization. This procedure is advisory and grants no authority.",
+  "evidence": [
+    {
+      "path": "conductor/evidence/c5-completion-20261011/test-output-scope-correction.md",
+      "sha256": "6f494d8e8ded3b5a209e2f9dbafbdd0eb44443e513e6783a9db3628236cf62f1"
+    }
+  ]
+}
