@@ -63,5 +63,6 @@ E1.2.arrivals accepted: [native evidence](evidence/e1.2-arrivals-completion-2026
 Triage and diagnostics accepted: [latest evidence](evidence/e1.2-diagnostics-completion-20261011/README.md).
 E1.2 accepted: [combined evidence](evidence/e1.2-completion-20261011/README.md).
 E1.3 offers and boarding accepted: [boarding evidence](evidence/e1.3-boarding-completion-20261011/README.md).
-Exit and horizon qualification continue under the reviewed terminal acceptance contract.
+Exits including optional abandonment accepted: [joined evidence](evidence/e1.3-exits-completion-20261011/README.md).
+Parallel horizon fixture/composition qualification and E1.4 manual audit remain open.
 The user has renewed autonomous continuation across task and phase boundaries; MVP and subsequent delivery gates remain open.

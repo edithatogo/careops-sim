@@ -1,0 +1,158 @@
+{
+  "base_commit": "dd2bca0d28081da6eb9fdd9f40de3773c29cb051",
+  "bootstrap": [
+    {
+      "before_submodule_init_exit": 1,
+      "command": "python3 tools/context.py resume",
+      "log": ".artifacts/mvp/E1.3.exits.abandonment/logs/bootstrap-context-resume-before-submodule-init.log"
+    },
+    {
+      "command": "git submodule update --init --reference /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/extensions/conductor extensions/conductor",
+      "result": "initialized recorded extensions/conductor commit 7a5c560a4fdf5297be58594cc37527eb12790272 with coordinator authorization"
+    },
+    {
+      "after_submodule_init_exit": 0,
+      "command": "python3 tools/context.py resume",
+      "log": ".artifacts/mvp/E1.3.exits.abandonment/logs/bootstrap-context-resume-after-submodule-init.log"
+    },
+    {
+      "command": "python3 tools/tasks.py check",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.3.exits.abandonment/logs/bootstrap-tasks-check-after-submodule-init.log"
+    }
+  ],
+  "changed_paths": [
+    "crates/careops-ed/src/pathway.rs",
+    "crates/careops-ed/src/terminal.rs"
+  ],
+  "commands": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.3.exits.abandonment/logs/final-cargo-test.log",
+      "log_sha256": "1b319ccdad7e744e5f0fc8476d2366dbee2e5a752884c76f6bd349aa4a477e17",
+      "name": "cargo test --locked -p careops-ed",
+      "toolchain": "Rust 1.99.0"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.3.exits.abandonment/logs/final-clippy.log",
+      "log_sha256": "637866265973edf8fee9bebbf84d28d529befe038fa8769dd7e1f62b0b3a1aa3",
+      "name": "cargo clippy --locked -p careops-ed --all-targets -- -D warnings",
+      "toolchain": "Rust 1.99.0"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/src/pathway.rs",
+        "crates/careops-ed/src/terminal.rs"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.3.exits.abandonment/logs/final-rustfmt-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "rustfmt --edition 2021 --check crates/careops-ed/src/pathway.rs crates/careops-ed/src/terminal.rs",
+      "toolchain": "Rust 1.99.0"
+    }
+  ],
+  "commit": null,
+  "corrections_and_attempts": [
+    {
+      "attempt": "cargo-test-1",
+      "exit_code": 101,
+      "summary": "Four new abandonment assertions exposed incorrect fixture expectations and setup; full output preserved in attempt-1-cargo-test.log."
+    },
+    {
+      "attempt": "cargo-test-2",
+      "exit_code": 0,
+      "summary": "Corrected half-open occupancy, arrival-before-horizon, deadline tie, and distinct triage-pool test setup."
+    },
+    {
+      "attempt": "final-gates",
+      "exit_code": 0,
+      "summary": "Added strict rejection of unknown fields in BeforeFirstCare and its negative serde test; all three packet gates passed on settled sources."
+    }
+  ],
+  "evidence_ready_for_review": true,
+  "limitations": [
+    "Synthetic runtime fixtures only; no clinical validity or operational acceptance claim.",
+    "Sibling E1.3.exits native instance remains a separate required join; root owns combined qualification.",
+    "Serialized trace rows are emitted by two tests; normal test harness captures successful stdout, so root must use -- --nocapture for manual trace readback.",
+    "No leaf or phase acceptance claim."
+  ],
+  "logs": [
+    {
+      "path": ".artifacts/mvp/E1.3.exits.abandonment/logs/attempt-1-cargo-test.log",
+      "sha256": "a93665e37ce831a8c1f1719f45b1f22cd8a7bead3bcae9fcbb5e3e174c8bdd53"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.exits.abandonment/logs/attempt-2-cargo-test.log",
+      "sha256": "7f6ff3a9335d5dd627e6e201657ee7ba2636581f95a25f8efb6d0bc64350a634"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.exits.abandonment/logs/final-cargo-test.log",
+      "sha256": "1b319ccdad7e744e5f0fc8476d2366dbee2e5a752884c76f6bd349aa4a477e17"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.exits.abandonment/logs/final-clippy.log",
+      "sha256": "637866265973edf8fee9bebbf84d28d529befe038fa8769dd7e1f62b0b3a1aa3"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.exits.abandonment/logs/final-rustfmt-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.exits.abandonment/logs/bootstrap-context-resume-before-submodule-init.log",
+      "sha256": "583363b289a656d023840d7a3144aa9313452e1a9d1237b823795cc5209f035d"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.exits.abandonment/logs/bootstrap-context-resume-after-submodule-init.log",
+      "sha256": "a25f561e826f50e360ebec7e458d43f1c241e52e133eba93f467bae2b3b12725"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.exits.abandonment/logs/bootstrap-tasks-check-attempt-1.log",
+      "sha256": "7f502d933e08ab53d2495da2c611315cca2f96b9564f51ec1e280004a26209ad"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.exits.abandonment/logs/bootstrap-tasks-check-after-submodule-init.log",
+      "sha256": "7f502d933e08ab53d2495da2c611315cca2f96b9564f51ec1e280004a26209ad"
+    }
+  ],
+  "non_owned_input_hashes_verified": 15,
+  "packet_id": "E1.3.exits.abandonment",
+  "schema_version": 1,
+  "source_hashes": {
+    "crates/careops-ed/src/pathway.rs": "626166def4b59c4223ea44bb2ffa16b1939499cc9d405f8415e70614452778a2",
+    "crates/careops-ed/src/terminal.rs": "349f53977db1cbaa59e8f597bc830507cadec8b3810feec3c699f533e9d90a97"
+  },
+  "status": "ready_for_review",
+  "test_counts": {
+    "failed": 0,
+    "integration": 28,
+    "lib": 74,
+    "total": 102
+  },
+  "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-abandonment-20261011"
+}

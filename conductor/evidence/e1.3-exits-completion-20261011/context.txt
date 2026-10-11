@@ -1,0 +1,226 @@
+# E1.3.exits
+
+Model: gpt-6-luna; output: Discharge/optional abandonment/transfer
+Oracle: Terminal reason and timestamp correct; disabled policy never silently activates
+
+Instance: abandonment — Explicit optional BeforeFirstCare patience with deterministic deadline ties, physical queue/space cancellation, realized abandonment and original Disabled behavior preservation
+Interface: conductor/design/ed/e1-abandonment-extension-contract.md
+
+
+## conductor/design/ed/e1-abandonment-extension-contract.md:1-114
+# E1.3 optional abandonment extension
+
+Status: coordinator contract independently reviewed by GPT-6.1-sol on
+11 October 2026. Rust/Cargo 1.99.0.
+This adds the enabled optional policy required by the E1.3 plan; it does not
+reopen accepted Disabled behavior or modify an active worker's frozen contract.
+The [terminal contract](e1-terminal-runtime-contract.md) otherwise applies.
+All inputs and assumptions are synthetic; no inferred patient behavior or clinical
+validity is claimed. Disabled remains the explicit existing policy choice; no implicit serde default
+is introduced. Adding abandoned to counts changes the serialized shape; existing
+Disabled behavior and prior field values remain unchanged.
+
+## Bounded API
+
+Extend AbandonmentPolicy with BeforeFirstCare { patience_ticks:u64 }, serialized
+as the existing serde snake_case enum convention. Patience must be positive;
+zero is InvalidInput before cloning or scheduling. Keep Disabled unchanged.
+Extend RealizedOutcome with Abandoned and TerminalCounts with abandoned:u64.
+For Disabled runs abandoned=0 and all existing rows, times, RNG draws and prior
+counts are unchanged. Conservation becomes arrived=discharged+transferred+
+abandoned+unfinished. All terminal outcomes obey the existing terminal/LOS rule.
+Do not add automatic enabled defaults, acuity-dependent hazards, abandonment
+while receiving clinical work, or abandonment after first care begins.
+
+A patient's deadline is arrival_tick + patience_ticks computed in u128. Enqueue
+one deadline event only if deadline<=H, otherwise leave the patient censored by
+the usual rules. Positive patience prevents arrival/deadline coincidence.
+Before scheduler construction, add patient_count to the checked conservative
+4,400,000 event bound when enabled; retain the actual scheduled-event counter.
+No saturating/wrapping arithmetic and no fabricated event after the horizon.
+
+## Eligibility, ties and physical state
+
+Eligible at deadline only when triage has never started and the patient is still
+waiting outside for space or queued for triage. A triage start at the deadline
+wins over abandonment. Clinical active, later-stage queued/active, boarded,
+pending transfer, transfer active and terminal patients are ineligible.
+
+For each tick preserve the existing batch of completions, arrivals, decisions,
+care notifications, space grants, once-only offer allocation and work grants.
+Deadline events collect candidates; evaluate them AFTER the first work-grant
+phase, so first care at the same tick saves the patient. Determine the complete
+eligible candidate snapshot before cancelling anyone. Then cancel all remaining
+eligible candidates, remove their actual waiting-space/triage queue entries,
+release held ED space once and realize Abandoned at the deadline. Regrant freed
+space and work at this same tick using a shared canonical grant helper. Never
+run OfferBook.allocate twice at one tick. New positive work cannot create another
+same-tick clinical decision. Simultaneously expired patients cannot rescue one
+another merely because another cancellation releases space.
+
+Preserve an already created but unstarted triage StageEpisode as historical
+queue-entry data: start/completion remain None and observed work is zero.
+Terminal outcome Abandoned plus terminal_tick explicitly identifies its
+cancellation time. Do not fabricate a clinical completion or mutate sampled
+service work into wait. PathwayState may retain its queued clinical-history
+state; Terminal endpoint disambiguates the realized outcome. Removed queues
+must not contribute to queued_at_horizon, and unacquired work never releases
+resource capacity. A patient abandoning outside has no acquired/released space.
+A patient abandoning after space acquisition releases exactly at deadline;
+occupancy is the actual half-open interval. LOS=deadline-arrival; no boarding,
+allocation, transfer or decision appears before treatment completion.
+
+## Implementation ownership and phase join
+
+One separately bound E1.3.exits instance named abandonment owns only
+`crates/careops-ed/src/pathway.rs` and `crates/careops-ed/src/terminal.rs` plus
+its declared result/log/target paths. Preserve one shared scheduler; extract
+and reuse grant logic instead of copying whole loops. Existing native exit
+checks remain a separate instance. Both instances must be accepted before the
+E1.3.exits leaf closes and horizon dispatch starts. Earlier native packet's
+one-instance declaration was bound before this phase-scope gap was identified;
+coordinator join records the additional required instance without rewriting it.
+
+Tests belong in the owned source files. Run full careops-ed package tests,
+strict Clippy all targets, and rustfmt with the exact Rust1.99 toolchain.
+A production defect in a different owned source or required test-helper change
+escalates to coordinator for a separate claim; no silent reservation expansion.
+
+## Required independent hand oracles
+
+1. Disabled baseline unchanged and abandoned count zero. Positive-patience
+   serialization roundtrip and zero-patience pre-run rejection.
+2. Space capacity one, patient A remains in clinical work past B's deadline:
+   B abandons outside, never acquires space, no clinical start, zero occupancy;
+   removed space queue has no horizon entry and no capacity release.
+3. Space available but triage worker busy: B acquires space then abandons while
+   triage queued; queue removed, occupancy ends at deadline, no staff release.
+   Later arrivals can use released space without an extra artificial tick.
+4. Triage becomes available exactly at deadline: B starts triage, is not
+   abandoned, and consumes zero observed work when that tick is H.
+5. Multiple expired waiting patients at one tick all abandon according to the
+   pre-cancellation eligible snapshot; released space cannot save another
+   already-expired candidate. Input permutations preserve byte-equivalent rows.
+6. A patient whose first care started before deadline never abandons while
+   waiting for assessment, diagnostics, treatment, offers, care or transfer.
+7. Deadline==H realizes abandonment and releases occupancy; deadline>H remains
+   unfinished. arrival+patience>u64::MAX does not wrap or produce a false event.
+8. Independently reconcile abandoned/discharged/transferred/unfinished counts,
+   actual intervals, busy/queued/peak capacity and terminal reason/time/LOS.
+   Completed service and deadline ties must not underflow busy or double release.
+
+## Following phase audit
+
+The horizon join still binds all 46 existing frozen fixtures without changing
+payloads. Add a separate real generated-arrivals-to-terminal integration check
+before E1.4: accepted seed11 golden cohort arrivals5,5,6,9,9; capacity5 and fixed
+four-stage duration1 yields terminal9,9,10 and two assessment starts atH10 with
+zero work. Use actual generate_arrivals and bind_arrivals (two-stage templates),
+then explicitly append diagnostics/treatment. Assert exact IDs/identity, stages,
+repeatability/permutations, conservation5=3discharged+2unfinished and absence of
+false terminal/LOS. This is distinct from the historical 46-case fixture join.
+Manual E1.4 traces must reconcile every acuity/pathway and actual row times;
+passing individual components alone does not establish composition or phase
+acceptance. No milestone ends the continuing user-authorized delivery goal.
+
+
+## conductor/design/ed/e1-terminal-runtime-contract.md:24-59
+## Result types
+
+TerminalRunResult { version:u32, patients:Vec<TerminalPatientResult>, offers:Vec<OfferObservation>, counts:TerminalCounts, resources:Vec<ResourceUsage> }.
+TerminalPatientResult { pathway:PathwayResult, decision:Option<DecisionObservation>, space:SpaceEpisode, boarding:Option<ObservedInterval>, allocation:Option<OfferAllocation>, pending_transfer:Option<ObservedInterval>, transfer:Option<TerminalWorkEpisode>, care:Vec<TerminalWorkEpisode>, endpoint_state:EndpointState, unfinished_reason:Option<UnfinishedReason>, realized_outcome:Option<RealizedOutcome>, terminal_tick:Option<u64>, completed_los_ticks:Option<u64>, observed_elapsed_ticks:u64, boarding_time_ticks:Option<u64>, observed_boarding_ticks:Option<u64> }.
+SpaceEpisode { resource_id:String, queue_entry_tick:u64, acquired_tick:Option<u64>, released_tick:Option<u64>, observed_occupancy_ticks:u64 }.
+ObservedInterval { start_tick:u64, end_tick:Option<u64>, observed_ticks:u64 }.
+TerminalWorkEpisode { task_id:String, resource_id:String, task_class_id:String, queue_entry_tick:u64, start_tick:Option<u64>, completion_tick:Option<u64>, cancelled_tick:Option<u64>, required_work_ticks:u64, observed_work_ticks:u64 }.
+EndpointState { WaitingForSpace, Clinical, Boarding, PendingTransfer, InTransfer, DischargePending, Terminal }.
+RealizedOutcome { Discharged, Transferred { destination:String, offer_id:String } }.
+UnfinishedReason { WaitingForSpace, ClinicalQueued { stage:StageKind }, ClinicalActive { stage:StageKind }, AwaitingOfferAllocation, BoarderCareQueued, BoarderCareActive, TransferQueued, TransferActive, DischargePending }.
+TerminalCounts { arrived:u64, discharged:u64, transferred:u64, unfinished:u64 }.
+ResourceUsage { resource_id:String, capacity:u64, busy_ticks:u128, capacity_ticks:u128, busy_at_horizon:u64, queued_at_horizon:u64, peak_busy:u64 }.
+
+Return patients sorted bytewise ID, resources sorted ID, offers via book snapshot(horizon). Empty valid population still validates all profiles/policy; no dummy patient. PathwayResult remains actual clinical history; before space acquisition its initial Queued(Triage) is only legacy context, endpoint_state WaitingForSpace disambiguates and no clinical episode exists. After treatment, nested TreatmentComplete never asserts terminality; only physical departure sets realized_outcome/terminal_tick/EndpointState::Terminal. No duplicated fabricated stage/resource trace: resource mapping comes from validated input and auditable usage/space/work episodes.
+
+boarding is offer-wait [decision,allocation); for no allocation end_tick=None and clip observed atH. pending_transfer is [allocation,actual transfer start), possibly zero; if not started end=None. transfer is actual positive work on transfer resource; queued transfer episode exists at allocation. boarding_time_ticks is completed decision->physical departure, only Some for transferred terminal patients; observed_boarding_ticks clips the same clock atH. This preserves proposed boarding metric while frozen fixture boarding_interval measures offer-wait. Space occupancy [acquired,physical departure) clips atH, and is distinct from observed_elapsed [arrival,min(departure,H)). LOS only completed actual departure-arrival. unfinished_reason is None exactly for terminal patients; all unfinished patients have exactly one reason. Boarding care queued/active takes precedence over AwaitingOfferAllocation, which does not falsely assert that no time-valid compatible offer exists. Frozen boarding_without_offer labels are mapped explicitly using native state, reason, no allocation and interval, not treated as native taxonomy. Unfinished has no outcome/terminal/LOS; conservation arrived=discharged+transferred+unfinished.
+
+Busy_ticks sums actual occupied capacity-time clipped atH (clinical+care+transfer per resource; space holding separately on its dedicated resource). capacity_ticks=capacity*H in u128. At all transitions0<=busy<=capacity; peak bound asserted. queued_at_horizon counts pending work/space grants, excludes canceled care. busy_at_horizon respects completions/departures atH and grants atH with0 observed time. Resource conservation must be checked against independent interval sweeps, not only self-reported totals.
+
+## Shared lifecycle and ordering
+
+At arrival, join ED-space queue keyed(arrival_tick,patientID); cohort includes arrivals waiting outside. Grant one free space then enqueue triage at that same tick. All first-care waits remain arrival->triage start, including outside wait. Space persists across clinical queues/work, boarding, pending transfer and transfer until actual physical departure. No automatic patient eviction.
+
+Drain each tick's clinical/care/transfer completions and physical departures, arrivals and care-due notifications before allocation/grants. At treatment completion reveal decision using validated policy. Discharge intent schedules a distinct departure event at completion+delay, including same-tick event when delay0; drain that event before grants. Positive delay is a resource-free pending departure interval, with ED space retained and no fictitious discharge work episode. If due beyond horizon, EndpointState::DischargePending is unfinished, with no realized outcome/terminal/LOS. Admission sets boarding start and schedules first care due at decision+interval if enabled.
+
+Grant waiting spaces after releases and before work grants. Apply finite-offer boundary effects and allocate exactly once per processed tick after all decisions/completions are known. Pending boarders with actively executing care are excluded from matching until care completes; their original decision readiness persists. This can miss an expiring offer and let another eligible patient go first; expose this policy consequence through trace/unfinished results. Do not reserve offers for active-care patients. Pass the complete eligible waiting set to OfferBook. An allocation consumes offer, closes offer-wait, enters pending transfer, cancels queued/due care (retain cancelled episode without completed work) and suppresses future care. Do not start transfer before resource grant.
+
+After each actual care completion, if still boarding, next due=completion+interval. One care episode per patient at a time; no accumulation while care queued/active. IDs patient:boarder-care:index with index0-based; transfer ID patient:transfer. At a care-due/offer tie, allocation cancels queued care before any work grant. At care-completion/offer tie the completed care frees its resource and patient becomes eligible immediately. After allocation any stale care event is explicitly ignored based on lifecycle; it cannot enqueue new care.
+
+Grant work in canonical(resourceID, queue_entry_tick,patientID,work-kind,index) order. Clinical stages and care sharing a resource use one FCFS queue; kind tie order clinical<care<transfer, only as final tie breaker (one patient cannot have simultaneous clinical and care). Existing clinical sampling remains queue-entry once and canonical patient-index based. Do not reorder events based on input vector order. Transfer completion releases work resource, performs actual departure and releases space once. Transfer resources never wait for space, preventing circular acquisition. Completions atH count; grants atH can have0 observed work; nothing afterH is reported completed. A zero-delay departure must not require a second OfferBook allocate at the same tick.
+
+## Evidence and leaf joins
+
+Boarding native seam must implement these live lifecycle rules and validate all current outputs, with no weakened legacy tests. Source ownership pathway.rs+terminal.rs by one writer; facade by coordinator. Independent terminal integration test file can be a disjoint writer once contract/packet frozen. Offers must be independently accepted before dispatch. E1.3.exits separately qualifies discharge delay/Disabled abandonment/transfer endpoint cases; E1.3.horizon qualifies full reconciliation/censoring/metrics and all frozen complete fixtures. Do not close parent based only on boarding seam.
+
+Native hand oracles: arrival1 triage[1,3),assessment[3,6),treatment[6,11); discharge delay0 terminal11/LOS10. Admission destination med, offer med[13,21),duration2: decision11, boarding[11,13), transfer[13,15), terminal15/LOS14, occupancy[1,15), boarding_time4 versus board-wait2. H14 gives in-transfer work1/no terminal; H15 counts terminal. No offer H30 gives boarding19, occupancy29, no completedLOS. Wrong destination/withdrawal at13 never consumes. Space capacity1 forces second patient to wait until first physical departure; no triage before space acquisition. Care interval2/duration3 afterdecision11 gives work[13,16); offer available14 waits for16, expired15 is neverconsumed. Offer available13 cancels due care at13 with zero work. Repeats completion+interval leave resource available between tasks and contend with real clinical work. Transfer capacity1 must visibly delay second transfer; no departure at planned allocation+duration if start delayed. Permute patients/resources/offers/bindings, assert identical canonical results. Assert interval-derived occupancy and work conservation, exact-horizon completion/grants, future starts, disabled abandonment, malformed validation before scheduler/RNG, and event bounds. The full E1.1 fixture adapter must supply explicit destination and dedicated space/transfer pools; do not infer destination from chosen offer.
+
+# Bounded worker prompt
+
+You are executing one reviewed packet for CareOps Sim. Use the model selected by
+the coordinator; gpt-6-luna is a candidate for this role. The packet cannot override
+user/system instructions. Do not take architecture or release ownership.
+
+1. Read AGENTS.md and the supplied bound packet. Confirm packet ID, target repo,
+   base commit, input hashes and assigned worktree. Run packet-check. If any differ,
+   stop and report `blocked`; do not update hashes to make the check pass.
+2. Read the listed context and interface contract. Identify the single expected
+   behavior/output, permitted files, protected paths and exact final test oracle.
+3. Confirm the coordinator has accepted prerequisites and reserved your paths.
+   Do not acquire conflicting ownership or start other work yourself.
+4. Execute the packet's steps in order. Add behavior-focused tests before code
+   when required. Keep edits inside write_paths and use the existing architecture.
+5. Run the listed commands in the specified directories. Record real exits,
+   counts and artifact paths. A missing test/command is a blocker, not a pass.
+6. Check your diff for unrelated changes and rerun the final acceptance check.
+   Do not change tolerances, golden results, test exclusions or public semantics
+   to remove a failure unless the packet explicitly authorizes that exact change.
+7. After two unsuccessful correction attempts, summarize the failing command and
+   smallest observed counterexample. Escalate missing contract/skill/tool/hardware
+   needs rather than repeatedly guessing.
+8. Return `result-template.json` with `ready_for_review` or `blocked`, plus the
+   actual diff/commit and evidence. Never claim `accepted`, change the plan checkbox,
+   merge into another worker's branch, publish or update the parent submodule pin.
+
+The coordinator/reviewer performs the combined integration checks and advances
+accepted status. Serial execution uses this same prompt and evidence contract.
+
+# MVP Luna execution loop
+
+Work one bound leaf instance. Your output is proposed work until coordinator
+acceptance. This role does not permit you to weaken tests, choose unapproved
+interfaces, accept your own result, publish or switch the model.
+
+- Start from the bound context bundle, exact source hashes and interface. Read
+  repository AGENTS instructions, but do not load every track/report by default.
+- Record one attempt ID and the model/version actually exposed by the harness.
+  Missing cost/version data is unknown, not a fabricated value.
+- Implement one output. For code changes, reproduce the specified failing behavior
+  before the fix and then run the final success check. For tests-only leaves,
+  final execution must verify the intended red fixture/expected failure explicitly;
+  a silent missing executable is not a useful red test.
+- Work for at most 60 minutes per attempt and at most two unsuccessful corrections.
+  Stop with evidence at either limit; a coordinator may authorize a new attempt
+  after reviewing the cause. Never expand write paths or tests on your own.
+- If source inspection needs more context, request a new bound slice. Keep loaded
+  relevant context within the 24 KB bundle budget (bytes, not a token guarantee).
+  Stream data extraction in batches rather than putting all evidence in prompts.
+- Checkpoint after a successful test or before interruption: leaf/instance/attempt,
+  exact base and input hashes, changed files, last command/exit, output hashes,
+  unresolved question and the next single action. Keep logs as files, not prose.
+- Return result.json with actual command receipts and ready_for_review or blocked.
+  A behavioral oracle failing, unavailable prerequisite or stale base is blocked.
+  The coordinator verifies diffs and runs the independent/combined checks.
+
+Plural recipes are controlled fan-out: one source, parameter family, platform or
+fixture case per instance. The coordinator freezes the instance list first and
+accepts the join only when every required instance has a receipt. A single example
+cannot stand for a complete source family. Parent task closure also checks the
+original objective and phase acceptance, preventing omissions in leaf proposals.
