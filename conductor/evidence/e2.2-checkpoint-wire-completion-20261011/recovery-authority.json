@@ -1,0 +1,28 @@
+{
+  "task": "E2.2.engine.checkpoint-wire.root-recovery",
+  "base": "329549d1ce636e052072d64d0a99baf7b55b0cc4",
+  "predecessor": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-wire-20261011",
+  "frozen_result_sha256": "a60ecaa68e064a4302c2eb5b73b57719b70eebcc2aa80dd384451be622277f5c",
+  "scope": [
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs",
+    ".artifacts/mvp/E2.2.engine.checkpoint-wire",
+    ".artifacts/e22-checkpoint-wire"
+  ],
+  "review": "Sol identified two witness path gaps; mechanical Clippy fixes safe. Root recovery approved within commissioned E2.2 scope.",
+  "changes": [
+    "Remove two unnecessary mut bindings and unused scan_option_entity; enumerate owners without semantic change",
+    "Mutate nested rows inside full rich encoded image and call public V2 decoder; exact errors and zero ownership plus baseline",
+    "Encode malformed scheduler join before decode then restore; zero codec witness and valid control"
+  ],
+  "gates": [
+    "tests",
+    "clippy",
+    "format"
+  ],
+  "stop": "At any unexpected semantic failure, reassess before edits; no automatic retry loop",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "07591c82ac5bb5056289fe3c7b1db7f8d7ca9787f5b2fe9f1924ecc7a7c56c00",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54"
+  }
+}
