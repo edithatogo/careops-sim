@@ -1,0 +1,165 @@
+{
+  "status": "ready_for_review",
+  "task": "E1.3.boarding.native",
+  "attempt_id": "e13-boarding-native-final-20261011",
+  "base_commit": "3e9aefbb45398ef1da0fffa8d804e82128d2c265",
+  "commit": null,
+  "input_hashes": {
+    "conductor/design/ed/e1-terminal-runtime-contract.md": "964504ea93088ff7049ab6c4ce21e434cc522e604c3d26f709b8669959a229ff",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md": "99d6f3bcaecc57037a955b33a977e45e9b6c1c1ba35557870abaf70fef6bc863",
+    "Cargo.toml": "ea8549f39166ff09cdf63b7d3f2ef4226ecbe929a61f061dcfb3be988ab3df48",
+    "Cargo.lock": "7584401156344be95139f6a5db70a7be57a10155aae688f901c66bbd2f4adad6",
+    "crates/careops-ed/Cargo.toml": "19674824de350de9d11a40c4ef970bfc259ad62bc3b76b3a80b6e578b3b94abd",
+    "crates/careops-ed/src/lib.rs": "f4028362ed68297b2fa7a835d71eab6a1e9db35df2c1a722a48cac4c2921ff39",
+    "crates/careops-ed/src/pathway.rs": "145da08ca7d45e6f9ee8c8eea0a0d08a11efd58f01ceb62d6aa19cf80b689ad6",
+    "crates/careops-ed/src/terminal.rs": "9c0a031134da7c8a7ce5d726756c2da5e0274f47913561e34389f3fd81ca45c3",
+    "crates/careops-ed/src/offers.rs": "155f2359502ba5ad9161920f520e9cf6ff2d34b280751c5bcebc8eb9804de7f7",
+    "crates/careops-ed/src/disposition.rs": "a9e64d30e009775596cd2ed9a23be1c44f053733196b1e7ee43da335436a9aa3",
+    "conductor/design/ed/e1-offers-contract.md": "09c344a30d07cd21b5bca3c1bef2920c346eeba9b41f72a0ebe1fda10916a0fe",
+    ".artifacts/mvp/E1.3.boarding.native/context.md": "bc2c98c5bbca82f0b72aff16051ac149636c7409c5aad13b8a08ba9d8b000781"
+  },
+  "source_hashes": {
+    "crates/careops-ed/src/pathway.rs": "6780752bd60f46b21e7804e91cb69b588294d5298167fe72a118bdb888236d75",
+    "crates/careops-ed/src/terminal.rs": "0e47f0c859208360780b7e0d4febb9f76e0cb45fc8eaa9fba6f300b335964437"
+  },
+  "changed_paths": [
+    "crates/careops-ed/src/pathway.rs",
+    "crates/careops-ed/src/terminal.rs"
+  ],
+  "tests": {
+    "terminal_focused_tests": 14,
+    "new_terminal_focused_tests": 12,
+    "package_test_groups": [
+      66,
+      3,
+      1,
+      4,
+      10,
+      3,
+      7,
+      0
+    ],
+    "package_tests_passed": 94,
+    "package_tests_failed": 0
+  },
+  "commands": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed"
+      ],
+      "cwd": ".",
+      "toolchain": "Rust 1.99.0",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.3.boarding.native/logs/cargo-test-final.log",
+      "log_sha256": "f421a5c7f7fc210b0c45a468bbb35dc9ee5e9e954e647da9a6994b1aa76b8205"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "toolchain": "Rust 1.99.0",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.3.boarding.native/logs/cargo-clippy-final.log",
+      "log_sha256": "b0cd1b7d169475e9ad7216b648f1e6e92fc5a63c69f720b1644c38b5f4546dde"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/src/pathway.rs",
+        "crates/careops-ed/src/terminal.rs"
+      ],
+      "cwd": ".",
+      "toolchain": "Rust 1.99.0",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.3.boarding.native/logs/rustfmt-check-final.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "correction_attempts": [
+    {
+      "command": "cargo test --locked -p careops-ed terminal_ --no-fail-fast",
+      "exit_code": 1,
+      "summary": "Transfer contention oracle initially expected second patient at tick 15, but ED space capacity serialized that fixture. Raised unrelated resource capacities to two to isolate transfer-pool contention; rerun passed.",
+      "log_capture": "tool output only; not persisted as a raw log."
+    },
+    {
+      "command": "cargo test --locked -p careops-ed terminal_ --no-fail-fast",
+      "exit_code": 1,
+      "summary": "u64::MAX horizon case initially expected busy_at_horizon=1 even though the service completion is processed exactly at H. Corrected expected value to zero; rerun passed.",
+      "log_capture": "tool output only; not persisted as a raw log."
+    },
+    {
+      "command": "cargo clippy --locked -p careops-ed --all-targets -- -D warnings",
+      "exit_code": 101,
+      "summary": "Found a redundant local and two too_many_arguments warnings in shared scheduler helpers. Removed redundant local, documented explicit scheduler state parameters, and reran successfully.",
+      "log": "prior-cargo-clippy.log"
+    }
+  ],
+  "scope_check": {
+    "status": "passed",
+    "owned_source_paths": [
+      "crates/careops-ed/src/pathway.rs",
+      "crates/careops-ed/src/terminal.rs"
+    ],
+    "non_owned_packet_input_hashes": "unchanged"
+  },
+  "artifact_location_note": "Initial generated logs were placed under .artifacts/e13-boarding-native/logs; final packet gates are in the packet-owned .artifacts/mvp/E1.3.boarding.native/logs. Prior generated logs were copied to packet-owned logs on coordinator authorization. Original copies were preserved; no lease file was copied or included.",
+  "limitations": [
+    "Implementation and local package gates only; integration fixture adapter and independent E1.3 exit/horizon leaf review remain separate.",
+    "No hosted CI or operational/clinical acceptance claim."
+  ],
+  "log_artifacts": [
+    {
+      "path": ".artifacts/mvp/E1.3.boarding.native/logs/cargo-clippy-attempt-2.log",
+      "sha256": "20391d10fc2abab14c72e60a777b48e5b5fa9eff08ea245fbf0b4cfdc3e33ff3"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.boarding.native/logs/cargo-clippy-final.log",
+      "sha256": "b0cd1b7d169475e9ad7216b648f1e6e92fc5a63c69f720b1644c38b5f4546dde"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.boarding.native/logs/cargo-test-attempt-2.log",
+      "sha256": "14d2917368f07b28af36856bdfb6a26b77a1bbd2b6d9bf96143aad04f3c650b5"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.boarding.native/logs/cargo-test-final.log",
+      "sha256": "f421a5c7f7fc210b0c45a468bbb35dc9ee5e9e954e647da9a6994b1aa76b8205"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.boarding.native/logs/prior-cargo-clippy.log",
+      "sha256": "ebe47d75cf99c7f6424841aa9dfb07de9863988816a72dd4d1cb567b0cfe7080"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.boarding.native/logs/prior-cargo-test.log",
+      "sha256": "10dcdeaf22584e31936bf22159291f0e8facbf0170b8a1aee1f1c797521ef3d2"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.boarding.native/logs/prior-result.json",
+      "sha256": "5fa8f15f4beba5f1b81b92c03dc93aada22d2a5b21a2a64a4b1109c7ac735e1c"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.boarding.native/logs/rustfmt-check-attempt-2.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".artifacts/mvp/E1.3.boarding.native/logs/rustfmt-check-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

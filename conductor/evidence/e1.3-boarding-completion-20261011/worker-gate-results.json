@@ -1,0 +1,48 @@
+{
+  "commands": [
+    {
+      "name": "cargo-test-final",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.3.boarding.native/logs/cargo-test-final.log"
+    },
+    {
+      "name": "cargo-clippy-final",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.3.boarding.native/logs/cargo-clippy-final.log"
+    },
+    {
+      "name": "rustfmt-check-final",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/src/pathway.rs",
+        "crates/careops-ed/src/terminal.rs"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E1.3.boarding.native/logs/rustfmt-check-final.log"
+    }
+  ]
+}
