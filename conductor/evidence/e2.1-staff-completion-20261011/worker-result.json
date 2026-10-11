@@ -1,0 +1,102 @@
+{
+  "packet_id": "E2.1.staff.fixtures",
+  "task_id": "E2.1",
+  "instance_id": "fixtures",
+  "attempt_id": "e21-staff-fixtures-20261011-01",
+  "status": "ready_for_review",
+  "base_commit": "fbca16d8c43ba005b5d3617b567587e5fc3d337e",
+  "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/e21-staff-20261011",
+  "reservation_id": "d4facb7d1f3646f194336842daf62ed8",
+  "changed_paths": [
+    "conductor/design/ed/e2-staff.json",
+    "tests/test_e21_staff.py",
+    "conductor/design/ed/e2-staff-crosswalk.md",
+    ".artifacts/mvp/E2.1.staff.fixtures/result.json",
+    ".artifacts/mvp/E2.1.staff.fixtures/logs/01.log",
+    ".artifacts/mvp/E2.1.staff.fixtures/logs/02.log",
+    ".artifacts/mvp/E2.1.staff.fixtures/logs/03.log",
+    ".artifacts/mvp/E2.1.staff.fixtures/logs/environment.log"
+  ],
+  "output_sha256": {
+    "conductor/design/ed/e2-staff.json": "6548501f7c020be3bc93028e827ac16e2d48f90c6523268cef71b3de65b8eb8a",
+    "tests/test_e21_staff.py": "4ffecb16a4349541a202f5a6378a466dcdd840d31321de9b3d3309c84389071a",
+    "conductor/design/ed/e2-staff-crosswalk.md": "3f340470247319d8bc573495bc0261c47214e740be645092151558ebd06bfc74"
+  },
+  "input_sha256": {
+    "conductor/design/ed/e2-staff-fixture-contract.md": "6769291979dcca76133672dbfdb42a22265ac3852247f96d65a4ee2a46c40a81",
+    "conductor/tracks/generic_ed_delivery_20260925/plan.md": "1d8e816638ecf38a61cbe2ce686fd63bad5ed59ab28d90d58cbfe1e7a06c468c",
+    "conductor/evidence/e1.4-closeout-20261011/acceptance.json": "d41d8674d6cf65e1c9f1585b9338a6177498ffac47b8dcabc09fea410a5752c7",
+    "rust-toolchain.toml": "bd56168b72794297e8f07cd1ca1357cba26ad1cee0d05e1ab38a1cb8c8ad3b28",
+    "Cargo.toml": "ea8549f39166ff09cdf63b7d3f2ef4226ecbe929a61f061dcfb3be988ab3df48",
+    "conductor/harness/single-maintainer.md": "683838ad45fc528a689ed51b3a0ecd67a37ec4b374b54a5fcc2f184edc37b327",
+    ".artifacts/mvp/E2.1.staff.fixtures/context.md": "5f8e7ed60ffc507441787c3d3529bcbadabe368a7c72c2ea0bea6825b69ef475"
+  },
+  "environment": {
+    "python": "3.11.6",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28) (Homebrew)",
+    "native_execution_performed": false
+  },
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e21_staff.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E2.1.staff.fixtures/logs/01.log",
+      "output_excerpt": "test_contract_field_and_cardinality_boundaries (test_e21_staff.StaffFixtureSpecTests.test_contract_field_and_cardinality_boundaries) ... ok\ntest_drain_and_horizon_accounting_distinctions (test_e21_staff.StaffFixtureSpecTests.test_drain_and_horizon_accounting_distinctions) ... ok\ntest_exact_case_inventory_and_unbound_status (test_e21_staff.StaffFixtureSpecTests.test_exact_case_inventory_and_unbound_status) ... ok\ntest_negative_baseline_mutation_and_targeted_repair (test_e21_staff.StaffFixtureSpecTests.test_negative_baseline_mutation_and_targeted_repair) ... ok\ntest_positive_hand_oracles_and_resource_conservation (test_e21_staff.StaffFixtureSpecTests.test_positive_hand_oracles_and_resource_conservation) ... ok\ntest_required_boundary_and_priority_witnesses (test_e21_staff.StaffFixtureSpecTests.test_required_boundary_and_priority_witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.012s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E2.1.staff.fixtures/logs/02.log",
+      "output_excerpt": "{\n  \"tracks\": 5,\n  \"milestones\": 34,\n  \"local_links\": 957,\n  \"errors\": []\n}\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "log": ".artifacts/mvp/E2.1.staff.fixtures/logs/03.log",
+      "output_excerpt": "PASS: 82 MVP parents; 258 bounded leaves; complete joins and context/objective hashes\n"
+    }
+  ],
+  "specification_counts": {
+    "cases": 32,
+    "positive": 20,
+    "negative": 12,
+    "negative_controls_with_valid_baseline_mutation_repair": 12,
+    "count_limit_distinct_staff_payload": 1025,
+    "unbound_for": "E2.2",
+    "focused_contract_boundary_witnesses": 1
+  },
+  "correction_history": [
+    "Focused validation first found break_outside_shift was still contained; corrected interval to [7,9) and final checks passed.",
+    "Independent Sol review led one bounded correction: patient IDs are format-checked without uniqueness; all positive and permuted input schemas validate; calendar overlap checks canonicalize interval arrays; permutation reverses multiple shifts and breaks; FIFO competitors wait together; field and cardinality boundary witnesses cover the contract.",
+    "Coordinator fix: required_staff_count now requires integer 1; focused witnesses reject True and 1.0."
+  ],
+  "unresolved": "Independent coordinator re-review and integration acceptance remain outstanding. Native binding is unbound for all cases.",
+  "commit": null,
+  "verification_summary": {
+    "all_three_packet_gates_exit_0": true,
+    "focused_test_count": 6,
+    "native_execution_performed": false
+  }
+}

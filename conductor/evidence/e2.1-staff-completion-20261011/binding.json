@@ -1,0 +1,86 @@
+{
+  "reviewer": "root; GPT-6.1-sol reviewed staff contract and E1 closeout",
+  "reservation_id": "d4facb7d1f3646f194336842daf62ed8",
+  "instance_id": "fixtures",
+  "instance_set": [
+    "fixtures"
+  ],
+  "instance_scope": "Exact20positive and12negative staff/calendar synthetic behavior specifications, baseline/target-only repairs, independent interval/eligibility/ordering oracles;32 native_binding=unbound rows for E2.2",
+  "interface_contract": "conductor/design/ed/e2-staff-fixture-contract.md",
+  "context_slices": [
+    {
+      "path": "conductor/design/ed/e2-staff-fixture-contract.md",
+      "start": 1,
+      "end": 138
+    },
+    {
+      "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+      "start": 71,
+      "end": 90
+    }
+  ],
+  "input_paths": [
+    "conductor/design/ed/e2-staff-fixture-contract.md",
+    "conductor/evidence/e1.4-closeout-20261011/acceptance.json",
+    "rust-toolchain.toml",
+    "Cargo.toml",
+    "conductor/harness/single-maintainer.md"
+  ],
+  "write_paths": [
+    "conductor/design/ed/e2-staff.json",
+    "tests/test_e21_staff.py",
+    "conductor/design/ed/e2-staff-crosswalk.md",
+    ".artifacts/mvp/E2.1.staff.fixtures/result.json",
+    ".artifacts/mvp/E2.1.staff.fixtures/logs"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e21_staff.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All32specifiedIDs;20positive independenthandoracles and12invalidbaseline/mutation/targetedrepaircontrols; actual1025staff count-limit payload; no nativeexecutionclaim"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All introduced links and context valid"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Existing leaf dependencies and recipe integrity preserved"
+    }
+  ],
+  "prerequisite_receipts": {
+    "E1.4.closeout": {
+      "status": "accepted",
+      "reviewer": "root and independent GPT-6.1-sol",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/e1.4-closeout-20261011/acceptance.json": "d41d8674d6cf65e1c9f1585b9338a6177498ffac47b8dcabc09fea410a5752c7"
+      }
+    }
+  },
+  "reviewed_recipe_sha256": "34d60a0ad40f095960624338b0e006b314b8fe7d384ecbd8bf82cf7424b0556f"
+}

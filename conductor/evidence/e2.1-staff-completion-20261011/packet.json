@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.1.staff.fixtures",
+  "task_id": "E2.1",
+  "target_repo": ".",
+  "base_commit": "fbca16d8c43ba005b5d3617b567587e5fc3d337e",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Exact20positive and12negative staff/calendar synthetic behavior specifications, baseline/target-only repairs, independent interval/eligibility/ordering oracles;32 native_binding=unbound rows for E2.2",
+  "context_paths": [
+    ".artifacts/mvp/E2.1.staff.fixtures/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/ed/e2-staff-fixture-contract.md": "6769291979dcca76133672dbfdb42a22265ac3852247f96d65a4ee2a46c40a81",
+    "conductor/tracks/generic_ed_delivery_20260925/plan.md": "1d8e816638ecf38a61cbe2ce686fd63bad5ed59ab28d90d58cbfe1e7a06c468c",
+    "conductor/evidence/e1.4-closeout-20261011/acceptance.json": "d41d8674d6cf65e1c9f1585b9338a6177498ffac47b8dcabc09fea410a5752c7",
+    "rust-toolchain.toml": "bd56168b72794297e8f07cd1ca1357cba26ad1cee0d05e1ab38a1cb8c8ad3b28",
+    "Cargo.toml": "ea8549f39166ff09cdf63b7d3f2ef4226ecbe929a61f061dcfb3be988ab3df48",
+    "conductor/harness/single-maintainer.md": "683838ad45fc528a689ed51b3a0ecd67a37ec4b374b54a5fcc2f184edc37b327",
+    ".artifacts/mvp/E2.1.staff.fixtures/context.md": "5f8e7ed60ffc507441787c3d3529bcbadabe368a7c72c2ea0bea6825b69ef475"
+  },
+  "write_paths": [
+    "conductor/design/ed/e2-staff.json",
+    "tests/test_e21_staff.py",
+    "conductor/design/ed/e2-staff-crosswalk.md",
+    ".artifacts/mvp/E2.1.staff.fixtures/result.json",
+    ".artifacts/mvp/E2.1.staff.fixtures/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "E1.4.closeout"
+  ],
+  "interface_contract": "conductor/design/ed/e2-staff-fixture-contract.md",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e21_staff.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All32specifiedIDs;20positive independenthandoracles and12invalidbaseline/mutation/targetedrepaircontrols; actual1025staff count-limit payload; no nativeexecutionclaim"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All introduced links and context valid"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Existing leaf dependencies and recipe integrity preserved"
+    }
+  ],
+  "acceptance": [
+    "Ineligible/unavailable staff cannot claim and in-flight shift policy follows shrink contract",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/E2.1.staff.fixtures/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root; GPT-6.1-sol reviewed staff contract and E1 closeout",
+    "reservation_id": "d4facb7d1f3646f194336842daf62ed8",
+    "instance_id": "fixtures",
+    "instance_set": [
+      "fixtures"
+    ],
+    "instance_scope": "Exact20positive and12negative staff/calendar synthetic behavior specifications, baseline/target-only repairs, independent interval/eligibility/ordering oracles;32 native_binding=unbound rows for E2.2",
+    "interface_contract": "conductor/design/ed/e2-staff-fixture-contract.md",
+    "context_slices": [
+      {
+        "path": "conductor/design/ed/e2-staff-fixture-contract.md",
+        "start": 1,
+        "end": 138
+      },
+      {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "start": 71,
+        "end": 90
+      }
+    ],
+    "input_paths": [
+      "conductor/design/ed/e2-staff-fixture-contract.md",
+      "conductor/evidence/e1.4-closeout-20261011/acceptance.json",
+      "rust-toolchain.toml",
+      "Cargo.toml",
+      "conductor/harness/single-maintainer.md"
+    ],
+    "write_paths": [
+      "conductor/design/ed/e2-staff.json",
+      "tests/test_e21_staff.py",
+      "conductor/design/ed/e2-staff-crosswalk.md",
+      ".artifacts/mvp/E2.1.staff.fixtures/result.json",
+      ".artifacts/mvp/E2.1.staff.fixtures/logs"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "python3",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_e21_staff.py",
+          "-v"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "All32specifiedIDs;20positive independenthandoracles and12invalidbaseline/mutation/targetedrepaircontrols; actual1025staff count-limit payload; no nativeexecutionclaim"
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/context.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "All introduced links and context valid"
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/mvp.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Existing leaf dependencies and recipe integrity preserved"
+      }
+    ],
+    "prerequisite_receipts": {
+      "E1.4.closeout": {
+        "status": "accepted",
+        "reviewer": "root and independent GPT-6.1-sol",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/e1.4-closeout-20261011/acceptance.json": "d41d8674d6cf65e1c9f1585b9338a6177498ffac47b8dcabc09fea410a5752c7"
+        }
+      }
+    },
+    "reviewed_recipe_sha256": "34d60a0ad40f095960624338b0e006b314b8fe7d384ecbd8bf82cf7424b0556f"
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "ede7e318d02958c427d1381ab9a3cae6318ccd41a151f3b3b4fe74020afea119",
+    "conductor/design/ed/e2-staff-fixture-contract.md": "6769291979dcca76133672dbfdb42a22265ac3852247f96d65a4ee2a46c40a81",
+    "conductor/tracks/generic_ed_delivery_20260925/plan.md": "1d8e816638ecf38a61cbe2ce686fd63bad5ed59ab28d90d58cbfe1e7a06c468c",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}
