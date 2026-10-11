@@ -1,0 +1,17 @@
+{
+  "id": "fail-fast-scope-before-commit",
+  "title": "Stop command chains when scope checks fail",
+  "topics": [
+    "scope",
+    "claim",
+    "commit",
+    "shell"
+  ],
+  "procedure": "Run write and integration sequences with fail-fast execution (for example set -e), inspect every scope-check result, and commit only after a successful check covering every staged path. Inspect incoming commit paths before cherry-pick. Retain failed evidence and correct scope violations explicitly; later green tests do not erase them. This procedure is advisory and grants no authority.",
+  "evidence": [
+    {
+      "path": "conductor/evidence/c5-implementation-20261011/learning/scope-incident.md",
+      "sha256": "a9a813364f56910706725ee5e811f2464a5ba0e82a2571951c477d75fa8cc4a3"
+    }
+  ]
+}
