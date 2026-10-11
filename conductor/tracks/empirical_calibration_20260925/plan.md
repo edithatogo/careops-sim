@@ -226,24 +226,24 @@ and confirm every excluded/censored/unmatched observation is visible in counts.
 
 Entry: C3/C4. Owners 21 (study/search), 22 (runner/CLI), 01 (seed contract).
 
-- [ ] C5.1 Write failing grid-search, invalid-candidate, tie-ranking, split-leakage,
+- [x] C5.1 Write failing grid-search, invalid-candidate, tie-ranking, split-leakage,
   failed-probe penalty and resume tests. Test repeated runs and 1/2/N workers
   with randomized wall-clock completion order.
   Add censoring-rate 2/7, day-versus-row bootstrap, temporal cutoff,
   paired CRN and precision-cap fixtures from the research integration ledger.
-- [ ] C5.2 Implement bounded candidate enumeration, parameter/unit constraints,
+- [x] C5.2 Implement bounded candidate enumeration, parameter/unit constraints,
   prespecified normalized objectives, common seed schedules and fixed evaluation
   budgets. Persist all attempts; rank only complete evaluation batches.
   Record ridges/bound hits and identifiability/MC-indeterminate states;
   use prespecified batched precision checks inside fixed caps, with valid stopping
   inference or a fixed confirmation sample. Keep deterministic batch decisions.
-- [ ] C5.3 Extend the existing scenario/seed manifest and CLI with trace verify,
+- [x] C5.3 Extend the existing scenario/seed manifest and CLI with trace verify,
   shadow/free replay, calibrate and compare operations. Preserve legacy inputs;
   emit full study/candidate/configuration/artifact provenance and typed failures.
-- [ ] C5.4 Integrate CPU worker execution for independent replications/candidates
+- [x] C5.4 Integrate CPU worker execution for independent replications/candidates
   through Track 22, with deterministic shard merge and crash/resume handling.
   Keep core state isolated and search decisions independent of worker order.
-- [ ] C5.5 Conductor — review and verify phase (workflow.md).
+- [x] C5.5 Conductor — review and verify phase (workflow.md).
 
 Exit: C-05 recovery portion and C-06 worker/resume equivalence. Manual check: stop
 mid-study, resume, and verify candidate ranking/counts/hashes against a complete
@@ -311,3 +311,12 @@ are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
 commands and reviewer acceptance before dispatch. Parent tasks close only after
 all leaf instances and the original phase acceptance pass. Post-MVP tasks are
 outside this workpack. No Luna execution or qualification is implied by coverage.
+
+## C5 synthetic implementation acceptance — 11 October 2026
+
+[C5 closeout](../../evidence/c5-completion-20261011/README.md) accepts C5.1–C5.5,
+C-05 recovery and C-06 study worker/resume conformance at Kairos6d733f4 on Rust1.99.
+Three Luna workers, independent source/artifact reviews, local712native+26CLI,
+two-host native qualification and64successful checks support this bounded scope.
+MC precision remains indeterminate for the small example; ED/C6, clinical, API,
+MVP and release gates remain open. Historical pending records keep their prior scope.

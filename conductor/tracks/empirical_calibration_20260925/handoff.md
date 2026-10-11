@@ -59,3 +59,12 @@ recovery, isolation, residual/feasibility and identifiability oracles pass. Fina
 hosted checks: 47 success/two conditional skips; both actual native host trees and
 checkpoint/results independently reconcile. Earlier pending C3 records retain
 historical scope. Next C5; stable API, clinical/ED, whole MVP and release remain open.
+
+## C5 acceptance handoff — 11 October 2026
+
+[C5 acceptance](../../evidence/c5-completion-20261011/README.md) binds Kairos6d733f4 and Rust1.99 to actual local/hosted
+results: bounded search, split/censor/CRN/precision fixtures, known native recovery,
+legacy CLI,1/2/4 worker parity and cooperative/kill resume. Fixed confirmation
+remains MC-indeterminate; C-05 ED holdout/C6, clinical, public API and release
+claims remain open. Next preparation candidate is E1.1; completed C5 is not
+authority to bypass ED/MVP dispatch gates. Prior scope/CI failures are retained.

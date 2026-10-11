@@ -42,8 +42,8 @@ establishes current boundaries; only the five-package test slice noted below ran
 | kairo-ecs-des | Legacy FIFO resources and trajectories | Full queue/preemption/Flow track Q0–Q5; preserve legacy API; 03 | G1 |
 | kairo-ecs-abm | Behavior loop with separate context | Shared DES/ABM runtime and minimal staff policy/transit; 03, Q4/C2 | G1 |
 | kairo-ecs-arrow | Legacy smoke bytes retained; shared temporal/lifecycle schemas and optional typed IO through kairo-ecs-arrow-io qualified for C1 | Broader sidecar/export and C4 gates remain scoped to their owners; 04 | G1 |
-| kairo-ecs-cli | Basic manifests/replay surfaces | Real ED execution, studies, interruption recovery, cancel/progress/errors and worker runs; 22, C5/E3 | G1 |
-| kairo-ecs-calibration | Private synthetic ingestion, C2 execution/checkpoint and C3 shadow implementation qualified | Study/ED integration and public API review remain; reusable Rust algorithms owned by 21 | G1 |
+| kairo-ecs-cli | Synthetic C5 study/CLI/worker recovery qualified | Real ED execution and user-facing runner cancellation/progress/error integration; 22, E3 | G1 |
+| kairo-ecs-calibration | Private synthetic ingestion, C2/C3 and C5 fitting implementation qualified | ED integration and public API review remain; reusable Rust algorithms owned by 21 | G1 |
 | kairo-ecs-bench | Existing benchmark/fixture integration | Representative ED/resource/Arrow/calibration workloads and thresholds; 12/18/31, Q5/C6/D3 | G1 |
 | kairo-ecs-debug | Trace snapshots/deltas; not proof of full ECS serialization | Readable failure traces and replay integration; full interactive time travel optional; 40 with 01/22, Q4/E3 | G1 diagnostic subset |
 | kairo-ecs-viz | Headless snapshot facade; native renderer unavailable | ED snapshot/delta adapter, backpressure and sampling contracts; 05, E5 | G2 |
@@ -247,3 +247,11 @@ recovery, isolation, residual/feasibility and identifiability oracles pass. Fina
 hosted checks: 47 success/two conditional skips; both actual native host trees and
 checkpoint/results independently reconcile. Earlier pending C3 records retain
 historical scope. Next C5; stable API, clinical/ED, whole MVP and release remain open.
+
+## C5 accepted synthetic fitting and workers — 11 October 2026
+
+[C5 closeout](evidence/c5-completion-20261011/README.md) accepts C5.1–C5.5/C-05
+recovery/C-06 worker equivalence at Kairos6d733f4, Rust1.99 only. CLI study/replay,
+bounded finite search, independent CPU workers and kill/resume conformance pass
+local and hosted gates. Next E1.1; ED/C6, stable API, clinical, MVP and release
+remain separate. Windows process recovery does not imply power-loss durability.

@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "accepted_at": "2026-10-11T01:40:22.817557+00:00",
+  "status": "accepted_synthetic_implementation_conformance",
+  "phase": "C5.1-C5.5; C-05 recovery portion and C-06 worker/resume equivalence",
+  "qualified_pin": "6d733f489225da4bf6ceec2673b02369c7918bbe",
+  "source_tree": "4ef22a12124a30af8e7bc2cd4a1b46b69ee5404c",
+  "previous_pin": "da327cf263ff6e4507f48f597c201bb269680d51",
+  "pr": "https://github.com/edithatogo/kairos/pull/245",
+  "pr_state": "open stacked draft; no merge claim",
+  "hosted_run": "https://github.com/edithatogo/kairos/actions/runs/38102163273",
+  "toolchain": "Rust/Cargo 1.99.0 only",
+  "workers": {
+    "concurrent": 3,
+    "requested_model": "gpt-6-luna",
+    "names": [
+      "c5_study",
+      "c5_workers",
+      "c5_cli"
+    ],
+    "coordinator": "root",
+    "authenticated_served_model_claim": false
+  },
+  "local": {
+    "native": {
+      "passed": 712,
+      "failed": 0,
+      "ignored": 6
+    },
+    "cli": {
+      "passed": 26,
+      "failed": 0,
+      "ignored": 0
+    },
+    "format": "pass",
+    "strict_clippy": "pass",
+    "conductor_setup_dag_clean": "pass",
+    "scope": "corrected source and declared output reservations; prior scope failures retained"
+  },
+  "hosted": {
+    "source_merge": "d0ecb1d1a29d21b40a0bb0e2334be343c58808f1",
+    "tree_matches_head": true,
+    "checks_success": 64,
+    "conditional_skips": [
+      "Q5.2 canonical native regression (Ubuntu)",
+      "Codecov OIDC upload"
+    ],
+    "failures": 0,
+    "pending": 0,
+    "native_C5_each_host": {
+      "passed": 22,
+      "failed": 0
+    },
+    "cli_each_native_host": {
+      "passed": 26,
+      "failed": 0
+    },
+    "windows_workspace": "passed; new journal-prefix and verbatim-path regressions executed; process recovery only"
+  },
+  "process_oracles": {
+    "worker_counts": [
+      1,
+      2,
+      4
+    ],
+    "bundle_files_each": 60,
+    "initial_shards": 54,
+    "final_shards": 2,
+    "cooperative_resume": "byte_identical",
+    "kill_exit": -9,
+    "kill_resume_exit": 0,
+    "kill_resume": "byte_identical",
+    "summary_sha256": "d4ac6043fc328727a86390220677dc023b7f3703692ea71fda0f34c62a0c6f8e",
+    "winner": "c000004",
+    "params": {
+      "route_ticks": 2,
+      "work_ticks": 3
+    },
+    "validation_score": 0,
+    "final_completed": 2,
+    "final_failed": 0,
+    "final_censored": 0,
+    "final_mean_error": 0,
+    "mc_indeterminate": true
+  },
+  "cross_architecture": "Summary bytes and task result objects match Linux/macOS/local; architecture-bound provenance differs. Whole bundles match within each host.",
+  "C3_preservation": "Prior accepted occupied-anchor checkpoint bytes and restored result hashes unchanged on both hosts.",
+  "reviews": {
+    "source": "independent-reviews.json",
+    "readback": "readback.json",
+    "crosswalk": "crosswalk.json"
+  },
+  "limitations": [
+    "Normalized synthetic trace and bounded finite study only; no clinical or empirical ED validity",
+    "Stable public API, integrated ED/C6, G1/G2/MVP, release and merge remain open",
+    "No general parallel speedup claim",
+    "No Windows directory-entry power-loss durability claim",
+    "No retained pre-kill snapshot independently establishes exact kill timing; reviewed driver polls for a shard and exit/resume parity are retained",
+    "Prior commit/output-scope deviations are retained and corrected; green runtime tests do not erase them"
+  ],
+  "learning": "Three independently reviewed repository-local advisory lessons; prior broad output-scope outcome corrected append-only",
+  "next_task": "E1.1"
+}

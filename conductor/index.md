@@ -28,7 +28,7 @@
 | Development readiness | [Specification](tracks/development_readiness_20260925/spec.md) | [Plan](tracks/development_readiness_20260925/plan.md) | Local audit/bootstrap implemented; remaining work planned |
 | Generic ED delivery | [Specification](tracks/generic_ed_delivery_20260925/spec.md) | [Plan](tracks/generic_ed_delivery_20260925/plan.md) | Research intake complete; delivery pending |
 | DES queues and preemption | [Specification](tracks/des_queue_preemption_20260925/spec.md) | [Plan](tracks/des_queue_preemption_20260925/plan.md) | Q0–Q5 experimental development accepted; release and ED MVP separate |
-| Empirical calibration and validation | [Specification](tracks/empirical_calibration_20260925/spec.md) | [Plan](tracks/empirical_calibration_20260925/plan.md) | In progress; C2 execution/checkpoint and C3 shadow implementation accepted; C5 study/CLI/worker and ED delivery pending |
+| Empirical calibration and validation | [Specification](tracks/empirical_calibration_20260925/spec.md) | [Plan](tracks/empirical_calibration_20260925/plan.md) | In progress; C2/C3/C5 synthetic implementation accepted; ED/C6 and release gates pending |
 
 These tracks cover parent ED delivery and changes owned by existing Kairos tracks.
 They do not declare new upstream IDs or change upstream completion records.
