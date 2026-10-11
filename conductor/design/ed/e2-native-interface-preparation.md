@@ -187,3 +187,36 @@ can read a newly embedded Flow V2 image.
 The coordinator starts the next dependency-ready packet after acceptance. The
 existing quiet continuation heartbeat supports recovery; no new hook, broad
 unattended agent, publication or external side effect is authorized here.
+
+## Observed adapter ordering barrier — 11 October 2026
+
+Source readback at parent `5b6f3fad` and accepted Kairos `a27713ec` confirms a
+remaining parent integration decision. This is preparation evidence, not a new
+engine API or permission to change the frozen E1/E2 behavior. Native gate, wire,
+preview and coherent consumers are now accepted; portable routing is running in
+a separately owned worker.
+
+The existing `run_pathway_internal` drains completions and arrivals at a tick
+before selecting waiting work. Native Flow completion can allocate or resume an
+already queued request inside its dispatch transaction. An external observer
+cannot subsequently introduce completion-created readiness ahead of that grant.
+Priorities on later submissions alone do not preserve the original behavior.
+
+Coordinator decision: preserve E1 full-result and same-tick ordering parity. Do
+not silently redefine readiness, insert a tick delay, duplicate the scheduler,
+or simulate interruption independently of native work/claims.
+
+The least-change candidate keeps unselected work in parent logical policy queues
+and submits only selected work to idle native resources after ready events have
+been observed. Flow remains the sole scheduler and claim/work owner. This avoids
+automatic grants from unselected E1 work, but native suspended requests require
+a separate proof: they can resume automatically when their preemptor completes.
+Fixed externally ready requests can be predeclared in canonical order before
+calendar enable; dynamically completion-created urgent work cannot be guessed
+when preemption can move its due time.
+
+Sol and a separate Luna reader are checking the frozen interruption cases and
+composed E2.3 requirements for the exact required collision. Freeze the parent
+protocol only after that review. If existing APIs cannot faithfully express it,
+prepare the smallest reusable engine contract with its owner rather than weaken
+the oracle or misuse calendar gates. No such extension is dispatched here.
