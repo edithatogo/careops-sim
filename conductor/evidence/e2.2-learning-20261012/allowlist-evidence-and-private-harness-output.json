@@ -1,0 +1,26 @@
+{
+  "id": "allowlist-evidence-and-private-harness-output",
+  "title": "Keep private harness output outside explicit evidence archives",
+  "topics": [
+    "archive",
+    "harness",
+    "private",
+    "evidence"
+  ],
+  "procedure": "Treat raw harness claim/check/status stdout as private operational data even when a check passes. Keep it in a separate private output directory and never copy a worker output tree wholesale. Archive an exact allowlist of safe command receipts, raw command logs, selected context/source and declared process fixtures; inspect content as well as filenames. Hash both raw and compressed bytes, exclude build caches and private metadata, and verify the archive before committing. Retain corrections and failed attempts without copying credentials. This guidance grants no publication or task authority.",
+  "supersedes": "allowlist-evidence-archive-files",
+  "evidence": [
+    {
+      "path": "conductor/evidence/e2.2-native-v3-contract-20261011/archive-correction.json",
+      "sha256": "9a857b1bdd6d9221c61abc8a8259090e0fa9b709c8c7b6c7bac4a6901a589d9c"
+    },
+    {
+      "path": "conductor/evidence/e2.2-v3-baseline-completion-20261012/manifest.json",
+      "sha256": "851e910a441bcfe76416b43bffb2f969bf1849e8120cb7d92bd27a4aaa5f4d85"
+    },
+    {
+      "path": "conductor/evidence/e2.2-wire-v3-contract-20261012/manifest.json",
+      "sha256": "c3f42126c1d283c89d3eaaf4650fe639c342dc2389822198cf4d992e08ce228f"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "check-staged-new-document-content",
+  "title": "Check the actual staged additions for new files",
+  "topics": [
+    "git",
+    "staged",
+    "new files",
+    "evidence"
+  ],
+  "procedure": "For new untracked files, ordinary git diff --check does not inspect their content. After confirming scope and staging exactly the intended paths, inspect the staged file list and run git diff --cached --check. Record the actual command and exit alongside independent content review. This is a whitespace/scope check, not behavior or acceptance proof, and grants no authority.",
+  "evidence": [
+    {
+      "path": "conductor/evidence/e2.2-wire-v3-contract-20261012/worker-result.json",
+      "sha256": "02d4bca812991b27fe325ee1cabe23b6bb1aa1e2f701199a590ef3796354a20f"
+    },
+    {
+      "path": "conductor/evidence/e2.2-wire-v3-contract-20261012/acceptance.json",
+      "sha256": "0f03daa520c8d7bb662cdd7c04f77dbe6979c30f59043a0af39c47744bf39fb2"
+    }
+  ]
+}
