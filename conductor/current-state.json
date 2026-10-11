@@ -3,7 +3,7 @@
   "updated_at": "2026-10-11T11:08:06.374962+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "Preview accepted at974bff1. Wire and coherent adapter workers active on disjoint native329549d checkouts; review/qualify independently. Portable V2 routing follows accepted wire+adapter, then combined qualification, parent pin and E2bindings.",
+  "next_action": "Wire reviewedattempt2 active with explicit remainingproof andtwofailedgatebound. Coherentadapter has reviewedtest-only Pendingrequest fix active. Independently qualify both, then joined portableV2 routing, combinedqualification,parentpin,E2bindings.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1464,18 +1464,21 @@
       "acceptance": "conductor/evidence/e2.2-checkpoint-preview-completion-20261011/acceptance.json"
     },
     "wire": {
-      "status": "worker_dispatched",
+      "status": "reviewed_attempt2_authorized",
       "worker": "/root/e22_checkpoint_native",
       "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-wire-20261011",
       "packet_sha256": "640c7a04aa8144f21f175a2b07b60e8422cdd9f37034715a02ccde03999ff1a9",
-      "dispatch_evidence": "conductor/evidence/e2.2-checkpoint-parallel-dispatch-20261011/wire/dispatch-ledger.json"
+      "dispatch_evidence": "conductor/evidence/e2.2-checkpoint-parallel-dispatch-20261011/wire/dispatch-ledger.json",
+      "attempt1_evidence": "conductor/evidence/e2.2-checkpoint-wire-continuation-20261011/attempt1-frozen-result.json",
+      "continuation": "conductor/evidence/e2.2-checkpoint-wire-continuation-20261011/attempt2-authorization.json"
     },
     "coherent": {
-      "status": "worker_dispatched",
+      "status": "reviewed_test_only_continuation_active",
       "worker": "/root/e22_dispatch",
       "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-coherent-20261011",
       "packet_sha256": "fdcc2c3ea3a931da3cbf7db2c58ae2c892cc9d51cdae68cc12d947761b3d94b2",
-      "dispatch_evidence": "conductor/evidence/e2.2-checkpoint-coherent-dispatch-20261011/dispatch-ledger.json"
+      "dispatch_evidence": "conductor/evidence/e2.2-checkpoint-coherent-dispatch-20261011/dispatch-ledger.json",
+      "repair_authority_sha256": "3ff4b3d416c51890a32d590e08d22cba747f2519bff33ba0da4a4c3761ca8bb3"
     }
   }
 }
