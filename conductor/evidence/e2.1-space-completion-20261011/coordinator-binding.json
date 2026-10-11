@@ -1,0 +1,97 @@
+{
+  "reviewer": "root coordinator recovery after independent GPT-6.1-sol semantic review",
+  "reservation_id": "c06ca2c085e343a5b0b06a7b70adf8ea",
+  "instance_id": "coordinator",
+  "instance_set": [
+    "coordinator"
+  ],
+  "instance_scope": "Complete stopped worker draft: independent structured20case oracles, declarative validation/joins and negative controls. Original five failed attempts preserved; original worker receipt absent. All32 native-unbound.",
+  "interface_contract": "conductor/design/ed/e2-space-fixture-contract.md",
+  "context_slices": [
+    {
+      "path": "conductor/design/ed/e2-space-fixture-contract.md",
+      "start": 1,
+      "end": 134
+    },
+    {
+      "path": "conductor/design/ed/e2-staff-fixture-contract.md",
+      "start": 28,
+      "end": 82
+    },
+    {
+      "path": "conductor/design/ed/e2-interrupt-fixture-contract.md",
+      "start": 35,
+      "end": 68
+    },
+    {
+      "path": ".artifacts/e21-space-coordinator/record_gate.py",
+      "start": 1,
+      "end": 70
+    }
+  ],
+  "input_paths": [
+    "conductor/design/ed/e2-space-fixture-contract.md",
+    "conductor/design/ed/e2-staff-fixture-contract.md",
+    "conductor/design/ed/e2-interrupt-fixture-contract.md",
+    "tests/test_e21_staff.py",
+    "tests/test_e21_interrupt.py",
+    "conductor/evidence/e2.1-interrupt-completion-20261011/acceptance.json",
+    "conductor/evidence/e2.1-staff-completion-20261011/acceptance.json",
+    "conductor/evidence/e1.4-closeout-20261011/acceptance.json",
+    ".artifacts/e21-space-coordinator/record_gate.py",
+    "rust-toolchain.toml"
+  ],
+  "write_paths": [
+    "conductor/design/ed/e2-space.json",
+    "tests/test_e21_space.py",
+    "conductor/design/ed/e2-space-crosswalk.md",
+    ".artifacts/mvp/E2.1.space.coordinator/result.json",
+    ".artifacts/mvp/E2.1.space.coordinator/logs"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e21-space-coordinator/record_gate.py",
+        "fixtures"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Nonzero focused checks; exactly 32 cases, independent literal timelines and lifecycle/capacity/claim conservation, valid baseline/single mutation/exact repair; all native-unbound"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e21-space-coordinator/record_gate.py",
+        "context"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Context and evidence links valid"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e21-space-coordinator/record_gate.py",
+        "mvp"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Recipe dependencies and integrity unchanged"
+    }
+  ],
+  "prerequisite_receipts": {
+    "E2.1.interrupt": {
+      "status": "accepted",
+      "reviewer": "root and GPT-6.1-sol",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/e2.1-interrupt-completion-20261011/acceptance.json": "c5d99940242f4f157c61a1930179dfffc8fe55ee9440789ab4d3bfaa1f7190ed"
+      }
+    }
+  },
+  "reviewed_recipe_sha256": "b8e01be2a02cbfb37a0663af6e555696c9f1382cefa6615e30417df8c3b51928"
+}

@@ -1,0 +1,375 @@
+# E2.1.space
+
+Model: gpt-6-luna; output: Cleaning/reservation/diagnostic/boarding tests
+Oracle: Space unavailable while occupied/cleaning/reserved; blocking cannot leak capacity
+
+Instance: coordinator — Complete stopped worker draft: independent structured20case oracles, declarative validation/joins and negative controls. Original five failed attempts preserved; original worker receipt absent. All32 native-unbound.
+Interface: conductor/design/ed/e2-space-fixture-contract.md
+
+
+## conductor/design/ed/e2-space-fixture-contract.md:1-134
+# E2.1 space, cleaning and diagnostic fixture contract
+
+Coordinator contract reviewed by GPT-6.1-sol and a bounded Luna readback.
+Dispatch only after accepted E1.4,
+E2.1.staff and E2.1.interrupt. These are synthetic behavior specifications;
+all32 cases start native_binding=unbound, targeting E2.2. Rust/Cargo1.99.0.
+Reuse the [staff](e2-staff-fixture-contract.md) and
+[interruption](e2-interrupt-fixture-contract.md) eligibility/calendar rules and
+[E1 terminal semantics](e1-terminal-runtime-contract.md). No public native API
+or new engine implementation is frozen by these fixture checks.
+
+## Separate lifecycles
+
+A named ED space has capacity1 and one lifecycle state: ready, reserved,
+occupied, dirty_waiting, or cleaning. Aggregate usable space follows the existing
+known physical/open/staffed capacity contract. Declared named units must agree
+with those counts. Do not represent an invalid static zero-capacity profile as
+valid dynamic closure; explicitly configured calendar unavailability can block
+work without altering valid static capacity. IDs follow the staff ASCII1..64
+rule. Cap1024 named spaces,100000 patients and100000 reservation attempts.
+The native aggregate event budget is reviewed in E2.2 before construction.
+
+ED occupancy begins at a real space grant and ends only at physical departure.
+An admission decision, offer allocation, staff handover or queued diagnostics
+never releases the patient's ED space. Space occupancy/reservation is separate
+from a work claim. Each work item grants one unit of one resource, including
+one named staff member where configured; no simultaneous staff-plus-space or
+staff-plus-equipment atomic request. Preserve claim and waiting history.
+
+On departure, a configured positive-duration cleaning task makes space dirty
+immediately. It stays unavailable throughout cleaner wait and cleaning. Select
+one eligible cleaner under the staff calendar/zone/skill policy. Cleaning starts
+only at the actual cleaner grant; no implicit unstaffed timer. Cleaner work obeys
+DrainActive. At cleaning completion, release cleaner claim and make space ready.
+A busy/unavailable cleaner is normal queued work, not malformed configuration.
+No patient may enter a dirty space while cleaning has not started. Initial spaces
+are ready unless the case explicitly supplies a valid initial dirty lifecycle.
+
+For diagnostic cases, reserve one diagnostic room first, then queue one named
+staff work claim. The patient retains ED space. Waiting for staff holds no staff
+claim; a held diagnostic-room reservation is explicit in output and persists
+through that work's completion. On completion release room and staff separately.
+Patients waiting for a diagnostic room hold no room claim. This fixed ordering
+is the reviewed fixture approximation; no circular or atomic acquisition is
+implied. Work, staff wait and room wait remain separate. E2.2 must integrate all
+these lifecycles into one authoritative runtime rather than simulate them twice.
+
+## Reservations
+
+A reservation attempt names ID, patient, space, start and expiry with start<expiry;
+start is within [0,H] and expiry may exceed H. At its start it succeeds only if
+the space is ready and patient-space compatibility holds. Competing attempts
+are processed by start tick then reservation ID bytewise. Losers are explicitly
+rejected with current-state reason, never queued or silently redirected. An
+occupied, dirty, cleaning or already-reserved space cannot be reserved. Overlap
+between attempts is valid input with a deterministic rejected attempt outcome.
+
+An accepted reservation blocks all other patients during [start,expiry). Its
+named eligible patient may consume it once, converting reserved to occupied.
+If unused it expires, returning ready space. After consumption its scheduled
+expiry is a stale no-op; it must never release the resulting occupancy. Expiry wins at the same tick as
+consumption; the former owner can then compete as an ordinary waiting patient.
+At one tick: finish work/physical departures and cleaning, apply calendar changes
+and reservation expiries, process reservation attempts, then grant spaces and
+eligible work. A departing space requiring cleaning becomes dirty before any new
+reservation/grant. Reserved owners consume their own compatible spaces first;
+unreserved waiting patients order by arrival tick then patient ID, choosing the
+lowest compatible ready space ID. No preemption of an existing space occupant.
+A new reservation starting at the previous expiry may win before ordinary grants;
+this finite synthetic policy does not establish general starvation freedom.
+
+## Required positive cases (prefix space.)
+
+| Suffix | Independent hand oracle |
+| --- | --- |
+| cleaning_blocks_reuse | A occupies[1,3); cleaner[3,5); B waiting1 acquires5 |
+| cleaner_wait_dirty | A departs3; cleaner holds other work[3,5); dirty wait[3,5), cleaning[5,7), B acquires7, never3 |
+| cleaning_calendar | A departs3; cleaner unavailable[3,5); same space/claim intervals as preceding case |
+| cleaning_horizon | Cleaner work[3,5) completesH5 and releases cleaner; B occupancy grant5 has observed0 and remains held atH |
+| reservation_blocks | B reservation[2,6), B not ready until7; A waiting2 gets space6 |
+| reservation_expiry_tie | B reserved[2,5), A waits2, B arrives5: expiry first, A wins ordinary FIFO at5 |
+| reservation_consumption | B reservation[2,6), B arrives3, occupies[3,7); no ready-space event at expiry6 |
+| reservation_wrong_claimant | A cannot consume B's[2,6) reservation; B arrives3 and alone acquires3 |
+| reservation_conflict | IDs rA/rB attempt same space at2; rA reserved until consumed/expired, rB rejected already_reserved with no retry/redirect, independent of input order |
+| reservation_occupied | Space occupied[1,5); attempt2 rejected occupied, no eviction or later automatic reservation |
+| reservation_dirty | Dirty[3,5), cleaning[5,7); attempts4/6 rejected dirty/cleaning; space ready7 |
+| diagnostic_serial | A/B equal-priority requests diag.A/diag.B ready3; one room and worker, A sorts first; A[3,5), B[5,7), B room wait2, ED occupancy retained |
+| diagnostic_unavailable | Valid room/staff static profile but staff calendar unavailable throughH; no diagnostic work, no downstream treatment; explicit held room and ED occupancy |
+| diagnostic_staff_wait | Room granted3, worker busy until5; staff wait[3,5), work[5,7), room held[3,7), ED space retained |
+| boarding_retention | Decisions4, offers4, one transfer worker work2: A[4,6), B[6,8); ED spaces released6/8, not4 |
+| boarding_care | Decision4; care[6,8); offer7 cannot allocate during active care, allocates8; transfer[8,10); space held to10 |
+| unused_offer | Compatible offer[2,6) with no waiting admission remains unused, expires6, no transfer or occupancy release |
+| withdrawn_offer | Offer available4 withdrawn4 is never allocated; boarder remains occupying throughH |
+| transfer_horizon | Decision4/offer4, transfer[4,8), H6: observed transfer2, ED occupancy retained, no terminal outcome or completed LOS |
+| permutation | Reverse non-conflicting staff/patient/space/offer/attempt arrays; canonical event/claim histories and outcomes unchanged |
+
+Every positive case independently sweeps space states and work claims: capacity1
+per named unit, no double occupancy, no staff claim while waiting, observed versus
+configured work kept separate, and conserved patients atH. A positive case can
+contain explicitly rejected reservation attempts without being invalid input.
+Offer withdrawal, consumption, active-care exclusion and physical transfer retain
+E1 policy; the fixtures cannot weaken accepted E1 behavior.
+
+## Required negative cases (prefix space.invalid.)
+
+Twelve IDs: duplicate_space_id, count_mismatch, zero_static_capacity,
+cleaning_nonpositive_work, unstaffed_cleaning_policy, duplicate_reservation_id,
+reservation_nonpositive_interval, reservation_unknown_space,
+reservation_unknown_patient, reservation_start_after_horizon,
+atomic_staff_space, multi_role_work. Every case has a valid baseline, one
+malformed semantic group, specification category/path, and a repair changing
+only that group. Unstaffed cleaning means an unsupported unattended-timer mode or missing
+work-policy configuration; a configured cleaner with no shifts or no currently
+eligible cleaner is valid queued work, not this input error.
+Unsupported unstaffed cleaning, atomic acquisition or multi-role
+work must reject visibly; never silently substitute an approximation. Busy
+cleaners, dynamic unavailability and competing reservation attempts belong to
+positive queued/rejected-outcome cases, not input errors. Reuse other staff and
+capacity validation without claiming new native error codes.
+
+## Report29 and acceptance boundary
+
+ST001/002: compatible, consumed-once and unused/expired offers. ST003/004: ED
+occupancy retained through physical departure and explicit recurrent care claims.
+ST005/006: ambulance arrival/triage/handover/offload/crew-release clocks and
+receiver-staff sensitivity remain mandatory composed E2.3 work, not delivered
+by these space fixtures. ST007/008: multi-person sedation/resuscitation remains
+visibly unsupported absent a reviewed dedicated non-overlapping team model.
+ST009: finite external synthetic offer streams do not establish causal ward,
+fleet or community response effects. Record each mapping/debt explicitly.
+
+One fixture JSON, one focused executable specification checker/test file and one
+crosswalk/readme; plus result/logs (five paths), at most three exact checks. All32
+native bindings stay unbound. Specification validity is not runtime qualification.
+
+
+## conductor/design/ed/e2-staff-fixture-contract.md:28-82
+
+Version1, synthetic provenance with explicit notes, integer ticks and fixed
+positive work for these fixtures. IDs ASCII1..64, case-sensitive, no trimming or
+normalisation. Apply the ID bound to staff, request, patient, zone and skill
+identifiers. Cap32 skills per staff and32 required skills per request before
+allocating lookup state. Staff: staff_id, assigned_zone, sorted unique skill IDs, shifts
+and breaks as [start_tick,end_tick). Requests: request_id, patient_id, ready_tick,
+assigned_zone, required_skills, urgency:i32, work_ticks:u64, required_staff_count=1.
+Urgency is configured synthetic request priority, never an inferred clinical
+acuity rule. No geographic movement or multi-zone permission is inferred.
+Horizon H positive, requests ready before H; completions at H are observed and
+new grants at H have zero observed work. Use u128 for sums/completion arithmetic.
+
+Shifts must have positive length and not overlap for one staff member; adjacent
+periods are allowed. Breaks must have positive length, not overlap, and be fully
+contained within one shift. Declared intervals may end beyond H; observation clips
+at H, configuration validity does not silently truncate them. A staff member may
+have no shifts, meaning never available. Cap100000 requests,1024staff,1024calendar
+intervals per staff and bound total event construction before allocating state.
+Exact aggregate event budget is part of the later native interface contract;
+fixtures include early cardinality rejection, not an invented exposed counter.
+
+Each case records inputs, expected assignments/work intervals, unassigned/censored
+rows, calendar-boundary observations and resource conservation. Negative cases
+record diagnostic category and offending path, plus a repair group and an otherwise
+identical valid control. Expected outcomes must be independently hand-derived;
+validators checking file consistency are not the native simulator. Store a complete
+case ID inventory and an explicit native-binding crosswalk.
+
+## Dispatch and calendar semantics
+
+At each relevant tick: complete work/release claims, apply calendar changes, then
+grant new work. A request is eligible after ready_tick. Visit waiting requests by
+urgency descending, ready_tick ascending, request_id bytewise ascending. For each,
+choose the lowest staff_id among idle staff whose assigned_zone exactly matches,
+whose skills include every required skill, and who are inside a shift and outside
+all breaks. A higher-priority request with no eligible staff does not block a
+lower-priority eligible one. Repeat until no eligible pair exists. Staff may hold
+at most one active work assignment; waiting consumes no staff claim.
+
+Default fixture in-flight policy is explicit version1 DrainActive: calendar
+unavailability forbids new grants but active work continues to its actual end.
+Do not shrink a Flow resource below active claims or manufacture a failed grant.
+At a break or shift end, record active work overlapping that interval. Distinguish
+break_overlap_ticks from work outside all shifts (shift_overtime_ticks). Their
+union is scheduled_unavailable_work_ticks; disjoint shift/break rules prevent
+double-counting. Do not invent a postponed break or pretend the policy proves
+roster/clinical compliance. This is an explicit model approximation.
+
+At an interval endpoint, half-open rules apply: no new grant at shift end/break
+start; grants may start at shift start/break end. Work completing at such a boundary
+releases normally; a replacement can start only if the resulting calendar permits.
+A boundary at H still affects state/grants but contributes no time beyond H.
+Handover and urgency preemption are mandatory separate E2.1.interrupt behaviors;
+DrainActive here does not waive them. Cleaning/reservation is E2.1.space.
+
+
+## conductor/design/ed/e2-interrupt-fixture-contract.md:35-68
+Suspend checkpoints useful work and resumes the remainder with no new draw.
+Each staff capacity is one; every observed work interval must belong to exactly
+one active claim. Waiting has no staff claim and is not service work. Preserve
+all interruption/assignment history, not just final completion. Useful observed
+work plus remaining work equals the original sample; clip observation at H,
+while scheduled completion may lie beyond H. Do not double-count paused time.
+
+## Explicit handover
+
+Handover is a configured domain event, not an automatic Flow lease transfer.
+For these fixtures it names logical episode, tick, incumbent and replacement.
+It is allowed only for an active consenting episode on the named incumbent.
+Replacement must satisfy the same zone/skill/calendar rules at the actual grant.
+It may be busy or unavailable when the instruction occurs; the continuation waits
+without holding a claim until it becomes eligible.
+At a handover tick, stop/checkpoint the old segment, release its exact active
+claim once, preserve logical episode and remaining work, then enqueue the new
+segment for the named replacement. It can wait without holding either staff.
+The released incumbent becomes available to other eligible work in that tick.
+Do not simultaneously retain an old claim and wait for a replacement claim.
+
+Flow Release checkpoints and terminally releases that request; Cancel also
+checkpoints/removes its claim and terminally cancels it. Use Release for an
+active handover segment. Never issue Cancel plus Release for the same claim.
+A continuation gets a new request/work segment ID; its parent logical episode
+and sample lineage persist. Actual API mechanics/notifications are reviewed in
+E2.2. A released segment is not a completed patient/episode. No resampling and
+no implicit zero-cost extra clinical work or handover overhead is assumed.
+
+For this fixture policy there is at most one explicit handover per episode;
+repeated/conflicting handover instructions are rejected. A handover request at
+an episode's completion tick is a no-op with an explicit completed-before-handover
+observation. If the logical episode has no active segment at that tick, record
+not-active without manufacturing a claim. Missing/wrong identifiers remain
+
+
+## .artifacts/e21-space-coordinator/record_gate.py:1-70
+"""Local bounded gate capture; no dispatch or general harness claim."""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+import time
+
+ROOT = Path(__file__).resolve().parents[2]
+GATES = {
+    "fixtures": ["python3", "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_e21_space.py", "-v"],
+    "context": ["python3", "-B", "tools/context.py", "check"],
+    "mvp": ["python3", "-B", "tools/mvp.py", "check"],
+}
+SOURCES = ["conductor/design/ed/e2-space.json", "tests/test_e21_space.py", "conductor/design/ed/e2-space-crosswalk.md"]
+
+def hashes():
+    return {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() if (ROOT / p).is_file() else None for p in SOURCES}
+
+def write_new(path, value):
+    with path.open("x") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+def main():
+    if len(sys.argv) != 2 or sys.argv[1] not in GATES:
+        raise SystemExit("choose fixtures, context, or mvp")
+    gate = sys.argv[1]
+    out = ROOT / ".artifacts/mvp/E2.1.space.coordinator/logs"
+    out.mkdir(parents=True, exist_ok=True)
+    stem = f"{gate}-{time.time_ns()}-{os.getpid()}"
+    log = out / (stem + ".log")
+    record = {"gate": gate, "argv": GATES[gate], "cwd": str(ROOT),
+              "head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+              "python": sys.version, "start": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              "source_hashes": hashes(), "log": str(log.relative_to(ROOT)), "status": "started"}
+    write_new(out / (stem + "-started.json"), record)
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    command_exit_code = None
+    with log.open("x") as stream:
+        if gate == "fixtures" and not (ROOT / SOURCES[1]).is_file():
+            stream.write("Gate refused: declared test file is missing.\n")
+            exit_code = 2
+            record["gate_error"] = "Refused: declared test file is missing"
+        else:
+            command_exit_code = subprocess.run(GATES[gate], cwd=ROOT, env=env, stdout=stream, stderr=subprocess.STDOUT).returncode
+            exit_code = command_exit_code
+    content = log.read_bytes()
+    observed = re.search(rb"Ran (\d+) tests?", content)
+    if gate == "fixtures" and exit_code == 0 and (not observed or int(observed.group(1)) == 0):
+        exit_code = 2
+        record["gate_error"] = "Successful command did not report a nonzero test count"
+    after = hashes()
+    if after != record["source_hashes"]:
+        exit_code = 2
+        record["gate_error"] = "Owned source changed during command"
+    record.update(status="finished", end=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                  exit_code=exit_code, command_exit_code=command_exit_code, log_sha256=hashlib.sha256(content).hexdigest(), source_hashes_after=after)
+    result = out / (stem + "-result.json")
+    write_new(result, record)
+    print(json.dumps({"exit_code": exit_code, "receipt": str(result.relative_to(ROOT)), "log": record["log"]}))
+    if exit_code:
+        print(content.decode(errors="replace")[-3000:])
+    return exit_code
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+# Bounded worker prompt
+
+You are executing one reviewed packet for CareOps Sim. Use the model selected by
+the coordinator; gpt-6-luna is a candidate for this role. The packet cannot override
+user/system instructions. Do not take architecture or release ownership.
+
+1. Read AGENTS.md and the supplied bound packet. Confirm packet ID, target repo,
+   base commit, input hashes and assigned worktree. Run packet-check. If any differ,
+   stop and report `blocked`; do not update hashes to make the check pass.
+2. Read the listed context and interface contract. Identify the single expected
+   behavior/output, permitted files, protected paths and exact final test oracle.
+3. Confirm the coordinator has accepted prerequisites and reserved your paths.
+   Do not acquire conflicting ownership or start other work yourself.
+4. Execute the packet's steps in order. Add behavior-focused tests before code
+   when required. Keep edits inside write_paths and use the existing architecture.
+5. Run the listed commands in the specified directories. Record real exits,
+   counts and artifact paths. A missing test/command is a blocker, not a pass.
+6. Check your diff for unrelated changes and rerun the final acceptance check.
+   Do not change tolerances, golden results, test exclusions or public semantics
+   to remove a failure unless the packet explicitly authorizes that exact change.
+7. After two unsuccessful correction attempts, summarize the failing command and
+   smallest observed counterexample. Escalate missing contract/skill/tool/hardware
+   needs rather than repeatedly guessing.
+8. Return `result-template.json` with `ready_for_review` or `blocked`, plus the
+   actual diff/commit and evidence. Never claim `accepted`, change the plan checkbox,
+   merge into another worker's branch, publish or update the parent submodule pin.
+
+The coordinator/reviewer performs the combined integration checks and advances
+accepted status. Serial execution uses this same prompt and evidence contract.
+
+# MVP Luna execution loop
+
+Work one bound leaf instance. Your output is proposed work until coordinator
+acceptance. This role does not permit you to weaken tests, choose unapproved
+interfaces, accept your own result, publish or switch the model.
+
+- Start from the bound context bundle, exact source hashes and interface. Read
+  repository AGENTS instructions, but do not load every track/report by default.
+- Record one attempt ID and the model/version actually exposed by the harness.
+  Missing cost/version data is unknown, not a fabricated value.
+- Implement one output. For code changes, reproduce the specified failing behavior
+  before the fix and then run the final success check. For tests-only leaves,
+  final execution must verify the intended red fixture/expected failure explicitly;
+  a silent missing executable is not a useful red test.
+- Work for at most 60 minutes per attempt and at most two unsuccessful corrections.
+  Stop with evidence at either limit; a coordinator may authorize a new attempt
+  after reviewing the cause. Never expand write paths or tests on your own.
+- If source inspection needs more context, request a new bound slice. Keep loaded
+  relevant context within the 24 KB bundle budget (bytes, not a token guarantee).
+  Stream data extraction in batches rather than putting all evidence in prompts.
+- Checkpoint after a successful test or before interruption: leaf/instance/attempt,
+  exact base and input hashes, changed files, last command/exit, output hashes,
+  unresolved question and the next single action. Keep logs as files, not prose.
+- Return result.json with actual command receipts and ready_for_review or blocked.
+  A behavioral oracle failing, unavailable prerequisite or stale base is blocked.
+  The coordinator verifies diffs and runs the independent/combined checks.
+
+Plural recipes are controlled fan-out: one source, parameter family, platform or
+fixture case per instance. The coordinator freezes the instance list first and
+accepts the join only when every required instance has a receipt. A single example
+cannot stand for a complete source family. Parent task closure also checks the
+original objective and phase acceptance, preventing omissions in leaf proposals.

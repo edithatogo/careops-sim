@@ -70,7 +70,7 @@ trace a patient through every pathway and reconcile event times with its summary
 
 ## E2 — Staff, capacity, spatial tasks and realistic operational constraints
 
-- [ ] E2.1 Write tests for shifts/breaks/skill-zone constraints, urgent preemption,
+- [x] E2.1 Write tests for shifts/breaks/skill-zone constraints, urgent preemption,
   staff handover, cleaning/reservation, blocked diagnostics and boarding capacity.
 - [ ] E2.2 Implement minimal agent dispatch, Macro/Micro route/work execution and
   phased resource claims avoiding unsupported atomic multi-resource acquisition.
