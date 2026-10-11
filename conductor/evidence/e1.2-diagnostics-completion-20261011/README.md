@@ -1,0 +1,9 @@
+# E1.2.diagnostics acceptance — 11 October 2026
+
+Accepted integrated source `c57247f` on Rust/Cargo1.99.0. [Acceptance](acceptance.json) joins native implementation and repeat-censoring correction:57 full native tests including21 pathway tests, strict Clippy and rustfmt passed. GPT-6.1-sol independently reviewed the exact final source hash and second-repeat censoring oracles.
+
+Fixed and integer-weighted discrete service laws retain explicit synthetic provenance and canonical law metadata. Sampling uses independently seeded episode streams on queue entry; queue delays and input permutations do not change samples. Native tests cover independent vectors reaching every support bucket, bounded rejection, fixed zero draws,16 accepted/17 rejected repeats, and active/queued second-repeat censoring. Legacy supplied-duration paths retain behavior; treatment completion is nonterminal.
+
+Root exact-head receipts qualify the integrated clean source. Gzip logs preserve exact raw bytes. Worker failed compilation, copied-vector/test-timeline errors and lint cleanup attempts remain archived. Bounded extra corrections were explicitly authorized; a separate correction claim added the initially missing repeat-censoring assertions. Precommit worker receipts deliberately leave source_commit null; accepted worker commits are recorded in acceptance.json. A scope-check tool response transiently exposed its lease token during native work; it was excluded from archived files and the claim was released after commit. No durable token copy or publication is claimed.
+
+E1.2 remains open until both provisional disposition and all46 native component mappings join. Endpoints remain partial: actual discharge/admission/boarding/transfer are E1.3. Continue automatically with disjoint disposition module and fixture integration test workers. Heartbeat remains active through verified E1.2 completion.

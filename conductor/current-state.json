@@ -3,7 +3,7 @@
   "updated_at": "2026-10-11T01:40:22.817557+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E1",
-  "next_action": "E1.2.triage accepted; dispatch reviewed diagnostics contract on Rust1.99, then parallel disposition/native fixture-component workers. Autonomous E1.2 heartbeat active; do not duplicate live workers.",
+  "next_action": "E1.2.diagnostics accepted; dispatch parallel E1.2.disposition native and fixture-components instances on Rust1.99. Join both before E1.2 parent closeout. Autonomous heartbeat remains active.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1277,5 +1277,14 @@
     "source_commit": "82924227f999cdba45c6b1c7c15698b37b0f484e",
     "evidence": "conductor/evidence/e1.2-triage-completion-20261011/acceptance.json",
     "next_leaf": "E1.2.diagnostics"
+  },
+  "e1_diagnostics_acceptance": {
+    "source_commit": "c57247f614a357937435c884f9df837fdaa3d385",
+    "evidence": "conductor/evidence/e1.2-diagnostics-completion-20261011/acceptance.json",
+    "next_leaf": "E1.2.disposition",
+    "required_instances": [
+      "native",
+      "fixture-components"
+    ]
   }
 }

@@ -244,3 +244,5 @@ MVP, clinical or release acceptance follows from this checkbox.
 Native arrivals accepted at `c27588e` on Rust 1.99.0: 36 native tests, 12 fixture tests, strict Clippy and rustfmt passed. [Evidence](../../evidence/e1.2-arrivals-completion-20261011/README.md). E1.2 remains unchecked; triage, later stages and all 46 composite runtime bindings remain open. Next: prepare triage contract; no automatic dispatch.
 
 E1.2.triage native accepted at `8292422`:49 tests, strict Clippy/rustfmt on Rust1.99. [Evidence](../../evidence/e1.2-triage-completion-20261011/README.md). E1.2 remains open; proceed automatically to diagnostics under current user authority.
+
+E1.2.diagnostics accepted at `c57247f`:57 native tests and strict Clippy/rustfmt on Rust1.99; includes repeat-censoring correction. [Evidence](../../evidence/e1.2-diagnostics-completion-20261011/README.md). Next parallel join: disposition native and fixture-components; E1.2 remains open.

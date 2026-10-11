@@ -1,0 +1,77 @@
+{
+  "authorized_exception": "Coordinator authorized this additional bounded coverage correction after independent review identified missing second-repeat censoring assertions; source scope is tests only and runtime semantics are unchanged.",
+  "base_commit": "f8ef08ecae2fdaaf5ba188a3401276ae5107f9c4",
+  "packet_id": "E1.2.diagnostics.repeat-censoring",
+  "packet_non_source_input_hashes": "verified by bound claim check",
+  "schema_version": 1,
+  "source_commit": null,
+  "source_paths": [
+    "crates/careops-ed/src/pathway.rs"
+  ],
+  "source_sha256": "145da08ca7d45e6f9ee8c8eea0a0d08a11efd58f01ceb62d6aa19cf80b689ad6",
+  "status": "ready_for_review",
+  "summary": "Added tests-only coverage for second diagnostic repeat censoring in queued-at-horizon and active-at-horizon cases. Both verify episode index and ID, entry/start/completion, sampled and observed work, and absence of downstream treatment.",
+  "task_id": "E1.2",
+  "verification": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "pathway::"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-diagnostics-20261011",
+      "exit_code": 0,
+      "log": {
+        "exit_code": 0,
+        "path": ".artifacts/mvp/E1.2.diagnostics.repeat-censoring/logs/tests-first.log",
+        "sha256": "0f7b957025fa55f39fd7fb53e246685fd857b06957dd3474e310560d8f423959"
+      },
+      "result": "21 passed; 0 failed; 11 filtered",
+      "toolchain": "rustc 1.99.0; cargo 1.99.0"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-diagnostics-20261011",
+      "exit_code": 0,
+      "log": {
+        "exit_code": 0,
+        "path": ".artifacts/mvp/E1.2.diagnostics.repeat-censoring/logs/clippy-final.log",
+        "sha256": "9d5c6f80a5aead2942c89a68e07d2d48bebaf3b170370f244e5c18c444b9c01b"
+      },
+      "result": "No warnings",
+      "toolchain": "rustc 1.99.0; cargo 1.99.0"
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "crates/careops-ed/src/pathway.rs"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-diagnostics-20261011",
+      "exit_code": 0,
+      "log": {
+        "exit_code": 0,
+        "path": ".artifacts/mvp/E1.2.diagnostics.repeat-censoring/logs/rustfmt-final.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result": "Formatting clean",
+      "toolchain": "rustfmt 1.99.0"
+    }
+  ],
+  "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/e12-diagnostics-20261011"
+}
