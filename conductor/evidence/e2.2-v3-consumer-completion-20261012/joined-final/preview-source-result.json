@@ -1,0 +1,155 @@
+{
+  "attempt_accounting": {
+    "historical_failed_executions_preserved": 3,
+    "note": "All three prior failed executions remain linked from the prior stopped result. All three repair gates pass at exact final source hashes.",
+    "repair_executions": 3,
+    "repair_failed_executions": 0
+  },
+  "authorized_source_change": {
+    "change": "callback_context_before expected tuple changed from (0, 1) to (11, 1)",
+    "diff_sha256": "165a8e0523f102eb2ebf04f83f3935b9698e964fdba0bd0d2ff67cacd59ce2fb",
+    "path": "crates/kairo-ecs-calibration/src/shadow_native.rs"
+  },
+  "base_commit": "3f58a66043a57e55712d3bd30dd4ccf538a6eb1f",
+  "final_receipts": [
+    ".artifacts/e22-v3-preview-consumer-repair-20261012/logs/compile-1791740829211744000-53499-result.json",
+    ".artifacts/e22-v3-preview-consumer-repair-20261012/logs/focused-1791740844459684000-53790-result.json",
+    ".artifacts/e22-v3-preview-consumer-repair-20261012/logs/format-1791740860652360000-53895-result.json"
+  ],
+  "focused_oracles": {
+    "failed": 0,
+    "ignored": 0,
+    "namespaces": [
+      "shadow_native",
+      "c5_native"
+    ],
+    "passed": 8,
+    "test_count": 8,
+    "test_names": [
+      "preview_v3_deferred_pending_flush_without_advancement",
+      "preview_v3_disabled_queue_has_no_invented_completion",
+      "preview_v3_halted_live_tick_and_repeat_step_error",
+      "preview_v3_capture_limit_error_without_legacy_fallback"
+    ]
+  },
+  "head_before_commit": "3f58a66043a57e55712d3bd30dd4ccf538a6eb1f",
+  "historical_failures": [
+    {
+      "log": ".artifacts/e22-v3-preview-consumer-qualified-20261012/logs/compile-1791740146283333000-46996.log",
+      "receipt": ".artifacts/e22-v3-preview-consumer-qualified-20261012/logs/compile-1791740146283333000-46996-result.json",
+      "receipt_sha256": "f057679d612dd1e078c8c99a0ab714b122baf45ee8cda8c9fefb6023f010cfb0"
+    },
+    {
+      "log": ".artifacts/e22-v3-preview-consumer-qualified-20261012/logs/focused-1791740594173807000-51991.log",
+      "receipt": ".artifacts/e22-v3-preview-consumer-qualified-20261012/logs/focused-1791740594173807000-51991-result.json",
+      "receipt_sha256": "6bf749620b04553aca4cb1a365c7e23b34e7ae131055241130e875c064d32d51"
+    },
+    {
+      "log": ".artifacts/e22-v3-preview-consumer-qualified-20261012/logs/format-1791740265568218000-48765.log",
+      "receipt": ".artifacts/e22-v3-preview-consumer-qualified-20261012/logs/format-1791740265568218000-48765-result.json",
+      "receipt_sha256": "753a4e983e8f9764555d4124e495f69b699b0f22600babce0d678cc964e7bca3"
+    }
+  ],
+  "limitations": [
+    "Source-stage preview evidence only; combined consumer acceptance remains root-owned.",
+    "No parent pin or final combined qualification claimed."
+  ],
+  "packet_id": "E2.2.consumer.v3-preview-repair-20261012",
+  "packet_sha256": "89149d3d3d4a0d0f3a48ab13b3bc53716b573f2e11efa1423c11e19051322617",
+  "prior_preservation_result": ".artifacts/e22-v3-preview-consumer-qualified-20261012/result.json",
+  "prior_preservation_result_sha256": "9fb4f024109862143253a71ccef952893e853d53e91e06cb01e4d83309e643c0",
+  "protected_inputs_verified": {
+    ".artifacts/e22-v3-preview-consumer-qualified-20261012/packet.json": "4488bc8a1394a43ee2f91939b887e531704d68706c010127ca0aa52e57adf354",
+    ".artifacts/e22-v3-preview-consumer-qualified-20261012/result.json": "9fb4f024109862143253a71ccef952893e853d53e91e06cb01e4d83309e643c0",
+    ".artifacts/e22-v3-preview-consumer-repair-20261012/context.txt": "186c545879e880c6585d2789c6832c407803f8e80e554fdf6ee4f7840ead6754",
+    ".artifacts/e22-v3-preview-consumer-repair-20261012/record_gate.py": "70da14a8b31769a5f31e6177462b22adf1386f3b1248e8504bcd2c2d33fe1409",
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "conductor/design/des/ADR-e2-deferred-allocation.md": "7099e0f33d3dac667b6b7eac15160ca3e20806ef60522f7489d80be17cda0c17",
+    "conductor/design/des/e2-flow-checkpoint-v3-consumers.md": "87c7e67093b8ef43ec04e45af2750680190717d766ad7606cbd0c3f24b9068ff",
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md": "facc5bbc03c64c425b7683bd99f73d505109d637692350623ceb5a9aa9c3b7fd",
+    "conductor/design/des/e2-flow-checkpoint-v3-routing.md": "222d0b3a477d9b14768dc962877a5167fe5fe2249d6c849dbf84f702eb2806a7",
+    "conductor/design/des/e2-flow-checkpoint-v3-wire.md": "c74fc89530cd35681825cce87e781cd62bd8759a88b3a001bb03ea32da0aab6f",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/handoff.md": "d7e2e6a9fa89317f031fe7b2ecaf11871323e332b859af6f11522c4e08a6049e",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    "conductor/tracks/22-experiment-runner-scenario-management/handoff.md": "18d60c72dd258d68d88c63760f948311e44eb4d133ab234f7a5da8cb6a7509f4",
+    "crates/kairo-ecs-calibration/Cargo.toml": "203ecea6d7a0c233fb08fc9563a47d0ba400d380e9ef7bc00d34b5f62cef19a1",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "d66edb4fdb022be34c38baf09b3d6c26a10214be84a07373565278bd2ad69b44",
+    "crates/kairo-ecs-calibration/src/c5_native.rs": "f9e7582048e4524720ba24aff482cd5dc95efc9b3e6b435b99639a4b254444dc",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs": "9015a4d1218f377189ce612025a6fd5566149ac188a13273733da3de7aa279e4",
+    "crates/kairo-ecs-des/Cargo.toml": "9f5a852926de2bb795da29f203d2101bbedc5f712f65197c5d5812fe011df816",
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "1ea4f8e7d700eea5fe710bbe338afd4d470879b6cade52201ae7e26a338a5629",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f1527c04bcd278027324347d7dd52c3e3eed4773457ffca4de5a2cf21fb87232",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs": "3c3215c4d9d7618e4933ac0ef354d05f9ef1a36fe53b34ac43d8768b1cf8679f",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "d52a67bd480b27dced3a38cfd82bd85288abad511e3d2ceecebd17afe9f0000b",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "49fac22c2df77dd920ff773b02395abdbbdbc1c2ee135d234dba9c8ea3d0a910",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs": "b935e7b17091540757ea8cafe6f0b9632ed27392dfacf796f31cee9cce14f758",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534"
+  },
+  "repair_gate_receipts": [
+    {
+      "exit_code": 0,
+      "gate": "compile",
+      "log": ".artifacts/e22-v3-preview-consumer-repair-20261012/logs/compile-1791740829211744000-53499.log",
+      "log_sha256": "269849e01dbff481f1f3615830df176cc784d72ad7bcc67c2927c973386f9f80",
+      "receipt": ".artifacts/e22-v3-preview-consumer-repair-20261012/logs/compile-1791740829211744000-53499-result.json",
+      "receipt_sha256": "69bd4c3399e3f68ee987284e75c81a5a0839dc254d9ee7253051fc7b3f7a77d2",
+      "source_hashes": {
+        "crates/kairo-ecs-calibration/src/c5_native.rs": "f9e7582048e4524720ba24aff482cd5dc95efc9b3e6b435b99639a4b254444dc",
+        "crates/kairo-ecs-calibration/src/shadow_native.rs": "fe09331841d07431938fb5f807d995c9fd001c11823600e21933e15fe12528a1"
+      },
+      "source_hashes_after": {
+        "crates/kairo-ecs-calibration/src/c5_native.rs": "f9e7582048e4524720ba24aff482cd5dc95efc9b3e6b435b99639a4b254444dc",
+        "crates/kairo-ecs-calibration/src/shadow_native.rs": "fe09331841d07431938fb5f807d995c9fd001c11823600e21933e15fe12528a1"
+      }
+    },
+    {
+      "exit_code": 0,
+      "gate": "focused",
+      "log": ".artifacts/e22-v3-preview-consumer-repair-20261012/logs/focused-1791740844459684000-53790.log",
+      "log_sha256": "eb99a2b8192b5a6147ec7a877a94155b408bd5c31479d6ec5a87f8a5bf2b3ec5",
+      "receipt": ".artifacts/e22-v3-preview-consumer-repair-20261012/logs/focused-1791740844459684000-53790-result.json",
+      "receipt_sha256": "4edcf5a798d577f644a39744cf6b34dc876a970a7fbd80d3e422418a11ebeedf",
+      "source_hashes": {
+        "crates/kairo-ecs-calibration/src/c5_native.rs": "f9e7582048e4524720ba24aff482cd5dc95efc9b3e6b435b99639a4b254444dc",
+        "crates/kairo-ecs-calibration/src/shadow_native.rs": "fe09331841d07431938fb5f807d995c9fd001c11823600e21933e15fe12528a1"
+      },
+      "source_hashes_after": {
+        "crates/kairo-ecs-calibration/src/c5_native.rs": "f9e7582048e4524720ba24aff482cd5dc95efc9b3e6b435b99639a4b254444dc",
+        "crates/kairo-ecs-calibration/src/shadow_native.rs": "fe09331841d07431938fb5f807d995c9fd001c11823600e21933e15fe12528a1"
+      }
+    },
+    {
+      "exit_code": 0,
+      "gate": "format",
+      "log": ".artifacts/e22-v3-preview-consumer-repair-20261012/logs/format-1791740860652360000-53895.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt": ".artifacts/e22-v3-preview-consumer-repair-20261012/logs/format-1791740860652360000-53895-result.json",
+      "receipt_sha256": "e8afba875fbbb183a5cc231931add39b9262215c6487728f3242e01741a8f53e",
+      "source_hashes": {
+        "crates/kairo-ecs-calibration/src/c5_native.rs": "f9e7582048e4524720ba24aff482cd5dc95efc9b3e6b435b99639a4b254444dc",
+        "crates/kairo-ecs-calibration/src/shadow_native.rs": "fe09331841d07431938fb5f807d995c9fd001c11823600e21933e15fe12528a1"
+      },
+      "source_hashes_after": {
+        "crates/kairo-ecs-calibration/src/c5_native.rs": "f9e7582048e4524720ba24aff482cd5dc95efc9b3e6b435b99639a4b254444dc",
+        "crates/kairo-ecs-calibration/src/shadow_native.rs": "fe09331841d07431938fb5f807d995c9fd001c11823600e21933e15fe12528a1"
+      }
+    }
+  ],
+  "schema_version": 1,
+  "source_commit": {
+    "commit": "aaab9e980b3332534fab438e95b69778cd20eeee",
+    "message": "Correct preview callback baseline oracle",
+    "source_claim_released": true,
+    "worktree_clean_after_source_commit": true
+  },
+  "source_hashes": {
+    "crates/kairo-ecs-calibration/src/c5_native.rs": "f9e7582048e4524720ba24aff482cd5dc95efc9b3e6b435b99639a4b254444dc",
+    "crates/kairo-ecs-calibration/src/shadow_native.rs": "fe09331841d07431938fb5f807d995c9fd001c11823600e21933e15fe12528a1"
+  },
+  "status": "source_committed_reviewed_not_accepted"
+}
