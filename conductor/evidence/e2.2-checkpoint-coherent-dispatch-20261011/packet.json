@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.checkpoint-coherent",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "329549d1ce636e052072d64d0a99baf7b55b0cc4",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Adapt native coherent-cut validation to the complete V1/V2 borrowed view, preserving all bridge joins and validating real gated transit observation/arrival oracles.",
+  "context_paths": [
+    ".artifacts/mvp/E2.2.engine.checkpoint-coherent/context.md"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "conductor/design/des/ADR-e2-flow-checkpoint-v2.md": "f1aa471f94e77dfa8fed9b58c5b37d94c0a41bc1cbba80b9a5bd5ae5a8c6c46f",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "9fcc232fb14403e91c43fc7cd7640210ce2d33b61468527b307d573e4906af81",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f6622ccf102a122bc6869617f2e9bd60a464892d7a99b0ab9cf74af5e4dc5b94",
+    "crates/kairo-ecs-des/src/flow.rs": "08fc5f9bd7fe77bd4f0b27cd0b6d6f8d5de9a9f20925ff1794b04cc9d03995c4",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs": "64404495fa29db52b536efa6c06192ea7d33e98700ca27c5501c7b9c683e9a13",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "df39e539e4fd8a5d98cc6ff9f80f7dcddf008ef7c4430a663f7333e30e13a29c",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "2872e931c2151ed51b5a64a5ef86cdec6a823fb5e0d84537273d0eba4c0bd47c",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/mvp/E2.2.engine.checkpoint-coherent/context.md": "d6f3396c36f690fad6e6f377a36c9c08bb1c824117e8b16c8bb1524fe70c8287",
+    ".artifacts/e22-checkpoint-coherent/record_gate.py": "1188eb6aa59328f0d98960f767826553cb843ed16a8e72000a0b878a196198a5",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs",
+    ".artifacts/mvp/E2.2.engine.checkpoint-coherent/result.json",
+    ".artifacts/mvp/E2.2.engine.checkpoint-coherent/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "crates/kairo-ecs-des",
+    "crates/kairo-ecs-core",
+    "crates/kairo-ecs-state",
+    "crates/kairo-ecs-calibration/Cargo.toml",
+    "crates/kairo-ecs-calibration/src/lib.rs",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v2.md",
+    ".artifacts/e22-checkpoint-coherent/record_gate.py",
+    "crates/kairo-ecs-calibration/src/shadow_native.rs",
+    "crates/kairo-ecs-calibration/src/c5_native.rs"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.checkpoint-native"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-flow-checkpoint-v2.md",
+  "steps": [
+    "Verify exact native dependency/API hashes and fresh worker claim.",
+    "Send early API and actual gated transit fixture checkpoint to root.",
+    "Implement only native borrowed coherent-cut view and three real V2 oracle families; preserve seven V1 tests and two V1 production callers.",
+    "Run three immutable gates; preserve every attempt and stop after two unsuccessful correction rounds.",
+    "Freeze result/source/receipts for root and Sol review before any commit."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-coherent/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Feature-flow calibration tests pass and all three named V2 coherent oracles report passing."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-coherent/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target calibration Clippy with flow feature has zero warnings."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-checkpoint-coherent/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Pinned rustfmt passes on exactly three owned source files."
+    }
+  ],
+  "acceptance": [
+    "Complete native V1/V2 borrowed command/context/scheduler joins and all named meaningful V2 tests pass; old V1 behavior preserved.",
+    "Protected native/wire/source paths unchanged; coherent adapter only, no portable V2 or wire acceptance."
+  ],
+  "result_path": ".artifacts/mvp/E2.2.engine.checkpoint-coherent/result.json",
+  "stop_conditions": [
+    "Native/API/source hash drift or claim mismatch",
+    "A contract ambiguity or protected-path change is needed",
+    "Two unsuccessful correction rounds",
+    "Any required named oracle cannot be implemented or verified"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root and GPT-6.1-sol",
+    "accepted_native_commit": "329549d1ce636e052072d64d0a99baf7b55b0cc4",
+    "reason_not_mvp_prepare": "Bound native-only downstream adapter packet follows accepted native checkpoint APIs and reviewed owner ADR."
+  }
+}

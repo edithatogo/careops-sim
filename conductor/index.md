@@ -76,3 +76,5 @@ E2.2 pure dispatch policy accepted: [native evidence](evidence/e2.2-dispatch-pol
 E2 engine grant-gate runtime qualified: [evidence](evidence/e2.2-engine-grant-gate-runtime-20261011/acceptance.json). Checkpoint V2, consumers and parent native binding remain open.
 
 Native V2 checkpoint acceptance: [local Rust 1.99 evidence](evidence/e2.2-checkpoint-native-completion-20261011/README.md). Wire and consumer qualification remain open.
+
+Version-aware preview acceptance: [Rust 1.99 local evidence](evidence/e2.2-checkpoint-preview-completion-20261011/README.md). Wire and coherent adapter remain active.
