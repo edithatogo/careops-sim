@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T10:12:27.776552+00:00",
+  "updated_at": "2026-10-11T10:20:51.574466+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "E2.2.dispatch worker running. Prepare and dispatch separate Kairos Track03 grant gate alongside it; checkpoint and consumer join follow frozen engine interface. Continue full delivery.",
+  "next_action": "Two Luna implementations running: parent pure dispatch policy and isolated Kairos grant gate. Review/freeze each; prepare V2 checkpoint contract and consumer join next, then single-runtime E2 native bindings. Continue full delivery.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1356,14 +1356,14 @@
     "native_binding": "unbound"
   },
   "e2_native_interface_preparation": {
-    "status": "contracts_reviewed_packets_required",
+    "status": "reviewed_runtime_packets_dispatched",
     "preferred_runtime": "One FlowRuntime authoritative clock; preserve E1 behavior",
     "needed_engine_seam": "resource grant eligibility gate blocks new grants/preemption/resumes but active work drains",
     "owner": "Kairos Track03 DES/ABM API owner",
     "checkpoint_issue": "Proposed explicit V2 with unchanged V1 decode/bytes; V1 capture rejects disabled or pending gate state from first runtime implementation",
     "no_dispatch_authority": true,
     "design": "conductor/design/ed/e2-native-interface-preparation.md",
-    "review": "GPT-6.1-sol reviewed preparation; owner ADR and executable packets still required",
+    "review": "Internal Track03 ADR and executable runtime packet reviewed by root and GPT-6.1-sol; no API/phase acceptance yet",
     "ordering": "Pending disable blocks every same-tick allocation; explicit enable follows parent admission phase; no general tick-batching API required for frozen oracles",
     "parallel_opportunity": "After space acceptance and contract review: parent pure dispatch policy and Track03 grant gate have disjoint repositories/paths. Composed runtime binding still waits for accepted engine/checkpoint join.",
     "gate_contract_worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e2-grant-gate-20261011",
@@ -1423,5 +1423,16 @@
     "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/e22-dispatch-20261011",
     "base": "5b3d0da62e7775a0179ef7d55f3b8470590a2e1b",
     "scope": "Pure policy native implementation; composed runtime binding remains open"
+  },
+  "e22_engine_gate": {
+    "status": "running",
+    "packet": "E2.2.engine.grant-gate",
+    "packet_sha256": "e6a9bb38a08682423aa85a2f81503c9767d4eeee481512fb672745deb6ae61d7",
+    "worker": "e22_gate_runtime",
+    "requested_model": "gpt-6-luna",
+    "reviewer": "root and GPT-6.1-sol",
+    "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e2-grant-gate-20261011",
+    "base": "63cd1cd5a53c59e255fce4db09bea2e219254c90",
+    "scope": "Runtime gate plus V1 capture rejection only; V2/consumers and parent native binding remain open"
   }
 }
