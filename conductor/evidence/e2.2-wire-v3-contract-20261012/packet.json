@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.wire-v3-contract",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "f96c3a86eb816ac244a53171933edcc5c9ad6a11",
+  "model_role": "owner-reviewer",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Write precise explicit wire V3 owner contract and future packet boundaries; no implementation.",
+  "context_paths": [
+    ".artifacts/e22-wire-v3-contract/context.txt"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md": "facc5bbc03c64c425b7683bd99f73d505109d637692350623ceb5a9aa9c3b7fd",
+    "conductor/design/des/ADR-e2-deferred-allocation.md": "7099e0f33d3dac667b6b7eac15160ca3e20806ef60522f7489d80be17cda0c17",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "611bedc892b6d06d24c5e2d266165e31caa9e57228ec0e7d3400720639b93466",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "2000eff2bccc64b2df70cc7a1089c0f580c909d21b7c8ea2da0d600202ceae73",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/e22-wire-v3-contract/context.txt": "3b2a04c45700f881fce3059c7dee22790f75f11900996d26215a9a4f43f7daa6"
+  },
+  "write_paths": [
+    "conductor/design/des/e2-flow-checkpoint-v3-wire.md",
+    ".artifacts/e22-wire-v3-contract/worker"
+  ],
+  "protected_paths": [
+    ".git",
+    "crates",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md",
+    "conductor/design/des/ADR-e2-deferred-allocation.md"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.native-v3-contract",
+    "E2.2.engine.v3-baseline-integration"
+  ],
+  "interface_contract": "conductor/design/des/e2-flow-checkpoint-v3-native.md",
+  "steps": [
+    "Verify packet/base/input hashes and acquire exact two-path claim.",
+    "Inspect actual wire seams and limits; author only bounded wire owner contract, explicit-native dependency and acceptance matrix.",
+    "Return draft and source mappings for root review before commit; no test execution or code changes."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Documentation whitespace valid; root reviews contract content and exact source fields."
+    }
+  ],
+  "acceptance": [
+    "Exact experimental explicit V3 APIs/layout/limits/error precedence and nonallocating scanner ownership boundaries reviewed.",
+    "Existing V1/V2 and current routed APIs unchanged; native implementation acceptance required before bound wire dispatch.",
+    "Behavioral matrix covers actual continuation, halt/currenttick, complete data, every budget and preownership/codec negatives, legacy byte parity."
+  ],
+  "result_path": ".artifacts/e22-wire-v3-contract/worker/result.json",
+  "stop_conditions": [
+    "Need runtime/source edit",
+    "Unclear native or wire contract",
+    "Input/base drift",
+    "Before commit pending root review"
+  ],
+  "size_exception": null,
+  "status": "prepared",
+  "reason_not_mvp_prepare": "Kairos owner contract prerequisite, not parent recipe execution."
+}
