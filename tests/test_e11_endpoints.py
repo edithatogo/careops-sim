@@ -63,7 +63,9 @@ def _calculate(case: dict) -> dict:
         outcome = None
         terminal_tick = None
         unfinished_reason = None
-        if disposition == "discharge":
+        if now > horizon:
+            unfinished_reason = "pathway_incomplete_at_horizon"
+        elif disposition == "discharge":
             terminal_tick = now
             outcome = {"kind": "discharged", "terminal_tick": terminal_tick}
         else:
@@ -72,6 +74,11 @@ def _calculate(case: dict) -> dict:
                 if item["patient_id"] == patient["patient_id"]
             ), None)
             if offer is None:
+                boarding = {
+                    "start_tick": now,
+                    "end_tick": horizon,
+                    "duration_ticks": horizon - now,
+                }
                 unfinished_reason = "boarding_without_compatible_offer"
             else:
                 boarding = {
@@ -254,7 +261,10 @@ def _validate_family(family: dict) -> None:
     }
     _require(len(grid) == 20 and observed == required, "acuity/pathway/diagnostics matrix incomplete")
     for case in grid:
+        _require(len(case["inputs"]["patients"]) == 1, "grid case must contain exactly one patient")
         patient = case["inputs"]["patients"][0]
+        expected_owner = "E1.3" if patient["provisional_disposition"] == "admission" else "E1.2"
+        _require(case["runtime_owner"] == expected_owner, "runtime owner must match terminal pathway")
         names = [stage["stage"] for stage in patient["stages"]]
         _require([s["duration_ticks"] for s in patient["stages"]] == [
             STAGE_DURATIONS[name] for name in names
@@ -288,8 +298,17 @@ def _validate_family(family: dict) -> None:
              "empty-run counts changed")
     _require(all(value is None for value in empty["metrics_ticks"].values()), "empty undefined means must be null")
     _require(all(value == 0 for value in empty["denominators"].values()), "empty denominator must be zero")
-    no_offer = by_id["endpoints_admission_no_offer"]["expected"]["patients"][0]
+    no_offer_case = by_id["endpoints_admission_no_offer"]
+    no_offer = no_offer_case["expected"]["patients"][0]
+    no_offer_start = no_offer["stage_intervals"][-1]["end_tick"]
+    _require(no_offer_case["runtime_owner"] == "E1.3", "admission endpoint must be owned by E1.3")
     _require(no_offer["provisional_disposition"] == "admission", "no-offer disposition must remain provisional admission")
+    _require(no_offer["boarding_interval"] == {
+        "start_tick": no_offer_start,
+        "end_tick": no_offer_case["inputs"]["horizon_tick"],
+        "duration_ticks": no_offer_case["inputs"]["horizon_tick"] - no_offer_start,
+    }, "no-offer boarding must remain visible through the horizon")
+    _require(no_offer["transfer_interval"] is None, "no-offer case must not start transfer")
     _require(no_offer["realized_outcome"] is None and no_offer["terminal_tick"] is None,
              "no offer must not realize admission or transfer")
     _require(no_offer["endpoint_state"] == "unfinished_at_horizon" and
@@ -297,6 +316,8 @@ def _validate_family(family: dict) -> None:
              "no-offer boarding endpoint changed")
     for case in cases:
         for row in case["expected"]["patients"]:
+            _require(row["terminal_tick"] is None or row["terminal_tick"] <= case["inputs"]["horizon_tick"],
+                     "terminal tick must not exceed horizon")
             _require((row["terminal_tick"] is not None) == (row["realized_outcome"] is not None),
                      "realized outcome and terminal endpoint must agree")
             _require((row["terminal_tick"] is not None) != (row["unfinished_reason"] is not None),
@@ -328,6 +349,7 @@ class EndpointsFixtureSpecificationTests(unittest.TestCase):
                          (0, 0, 10, 11, 10))
         self.assertEqual(row["provisional_disposition"], "discharge")
         self.assertEqual(row["realized_outcome"], {"kind": "discharged", "terminal_tick": 11})
+        self.assertEqual(case["runtime_owner"], "E1.2")
 
     def test_independent_mutations_are_rejected(self) -> None:
         mutations = {
@@ -339,6 +361,7 @@ class EndpointsFixtureSpecificationTests(unittest.TestCase):
             "runtime status": lambda d: d.__setitem__("runtime_status", "passed"),
             "nonpositive work": lambda d: d["cases"][1]["inputs"]["patients"][0]["stages"][0].__setitem__("duration_ticks", 0),
             "agent knowledge": lambda d: d["cases"][1]["inputs"]["patients"][0]["agent_knowledge"].__setitem__("triage_acuity", 5),
+            "horizon": lambda d: d["cases"][1]["inputs"].__setitem__("horizon_tick", 5),
         }
         for label, mutate in mutations.items():
             with self.subTest(mutation=label):
@@ -353,6 +376,7 @@ class EndpointsFixtureSpecificationTests(unittest.TestCase):
         self.assertEqual(case["expected"]["counts"]["arrivals"], 0)
         self.assertTrue(all(v is None for v in case["expected"]["metrics_ticks"].values()))
         self.assertTrue(all(v == 0 for v in case["expected"]["denominators"].values()))
+        self.assertEqual(case["runtime_owner"], "E1.2")
 
     def test_runtime_attachment_is_explicitly_unbound(self) -> None:
         self.assertEqual(self.family["runtime_status"], "unbound")
