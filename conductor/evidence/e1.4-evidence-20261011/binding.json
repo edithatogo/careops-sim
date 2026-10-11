@@ -1,0 +1,105 @@
+{
+  "reviewer": "root with GPT-6.1-sol independent horizon review",
+  "reservation_id": "46634743d817432b91f623887f5302c1",
+  "instance_id": "phase",
+  "instance_set": [
+    "phase"
+  ],
+  "instance_scope": "Reconcile E1 implementation evidence: exact46 native bindings, allacuity/pathway actualmanualreadback, composition andabandonment; preserve E0projection/negativeassertion evidence boundaries",
+  "interface_contract": "conductor/design/ed/e1-horizon-parallel-join.md",
+  "context_slices": [
+    {
+      "path": "conductor/design/ed/e1-horizon-parallel-join.md",
+      "start": 1,
+      "end": 78
+    },
+    {
+      "path": "conductor/evidence/e1.3-horizon-completion-20261011/README.md",
+      "start": 1,
+      "end": 11
+    },
+    {
+      "path": "conductor/evidence/e1.2-completion-20261011/README.md",
+      "start": 1,
+      "end": 15
+    },
+    {
+      "path": "conductor/evidence/e1.3-exits-completion-20261011/README.md",
+      "start": 1,
+      "end": 23
+    },
+    {
+      "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+      "start": 49,
+      "end": 70
+    }
+  ],
+  "input_paths": [
+    "conductor/design/ed/e1-endpoints.json",
+    "conductor/design/ed/e1-extremes.json",
+    "conductor/design/ed/e1-invalid.json",
+    "crates/careops-ed/tests/e13_native_fixture_join.rs",
+    "crates/careops-ed/tests/e13_arrival_terminal_composition.rs",
+    "conductor/evidence/e1.1-completion-20261011/acceptance.json",
+    "conductor/evidence/e1.2-completion-20261011/acceptance.json",
+    "conductor/evidence/e1.3-offers-completion-20261011/acceptance.json",
+    "conductor/evidence/e1.3-boarding-completion-20261011/acceptance.json",
+    "conductor/evidence/e1.3-exits-native-20261011/acceptance.json",
+    "conductor/evidence/e1.3-exits-completion-20261011/acceptance.json",
+    "conductor/evidence/e1.3-horizon-completion-20261011/acceptance.json",
+    "conductor/evidence/e1.3-horizon-completion-20261011/actual-endpoint-traces.json",
+    "conductor/evidence/e1.3-horizon-completion-20261011/actual-composition-trace.txt",
+    "conductor/evidence/e1.3-horizon-completion-20261011/native.json",
+    "conductor/evidence/e1.3-horizon-completion-20261011/native.log.gz",
+    "conductor/evidence/e1.3-horizon-completion-20261011/clippy.json",
+    "conductor/evidence/e1.3-horizon-completion-20261011/rustfmt.json",
+    "conductor/evidence/e1.3-exits-completion-20261011/actual-abandonment-traces.json"
+  ],
+  "write_paths": [
+    "conductor/evidence/e1.4-evidence-20261011/README.md",
+    "conductor/evidence/e1.4-evidence-20261011/fixture-runtime-crosswalk.json",
+    "conductor/evidence/e1.4-evidence-20261011/manual-trace-readback.md",
+    ".artifacts/mvp/E1.4.evidence.phase/result.json",
+    ".artifacts/mvp/E1.4.evidence.phase/logs"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e11_*.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "12 frozen E1 fixture specification checks pass; native117gates reused only at exactunchangedsource"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Evidence links and planning context remain valid"
+    }
+  ],
+  "prerequisite_receipts": {
+    "E1.3.horizon": {
+      "status": "accepted",
+      "reviewer": "root and GPT-6.1-sol",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/e1.3-horizon-completion-20261011/acceptance.json": "777c5701c2bcd6a44072821615adab86855c42ed49cfbe7f99b6b551ac506a11"
+      }
+    }
+  },
+  "reviewed_recipe_sha256": "e266960b72a4e1c83430109ab0385848804b0392fddd77246636970d4fa40418"
+}

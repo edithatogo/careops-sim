@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "packet_id": "E1.4.evidence.phase",
+  "task_id": "E1.4",
+  "target_repo": ".",
+  "base_commit": "80c94aa17299e506823041eab1ad34230bfdaa60",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Reconcile E1 implementation evidence: exact46 native bindings, allacuity/pathway actualmanualreadback, composition andabandonment; preserve E0projection/negativeassertion evidence boundaries",
+  "context_paths": [
+    ".artifacts/mvp/E1.4.evidence.phase/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/ed/e1-horizon-parallel-join.md": "dab0abd374bb25e3b099f1f8b238914494c4bc5e3089a47e4577313419ed5196",
+    "conductor/evidence/e1.3-horizon-completion-20261011/README.md": "4f085efc0aee6c208753fc68e003e70d32c393ce7b61d7b71576077d84b7f191",
+    "conductor/evidence/e1.2-completion-20261011/README.md": "d3f1a9d5155b5dae945dedfc3bdeda843d48f797c4ed5a142bb96600e5775274",
+    "conductor/evidence/e1.3-exits-completion-20261011/README.md": "5439eab1c4e9e961e9908ad95b5651525cb4cf20a8db42de84355cf9edcb3367",
+    "conductor/tracks/generic_ed_delivery_20260925/plan.md": "74ecbb16a8852e2845111378f1689bbac6246396f117e5d741e83e5d2c5b0575",
+    "conductor/design/ed/e1-endpoints.json": "06fa8868cae80ca266ed7bda28b0af17f8f471ae20aa498d2a1cdd137fb345a2",
+    "conductor/design/ed/e1-extremes.json": "cb3d7d8ad33972228ac54f4c0874e3a117791ae331320477496162a1502bf795",
+    "conductor/design/ed/e1-invalid.json": "c1b397830a33747c99947561d58cbb600ae3725829f2d87817f749a10239162a",
+    "crates/careops-ed/tests/e13_native_fixture_join.rs": "5a5d43f7f2fc312960c46e6391ca5008dfbfd80ef6daa2ad5545c09105835717",
+    "crates/careops-ed/tests/e13_arrival_terminal_composition.rs": "f322b515f4b7b48052e07ac05813ddc1ac2cad0fe345114d74fd97bd3ede3fb9",
+    "conductor/evidence/e1.1-completion-20261011/acceptance.json": "e36495cda5c618839ba4cb164a9c779e711aa9186f6546f42617df3da887256e",
+    "conductor/evidence/e1.2-completion-20261011/acceptance.json": "b0a022c304c276ea60dfaf4f5e554052973e71f6f0614cbd15914c6d934cfe33",
+    "conductor/evidence/e1.3-offers-completion-20261011/acceptance.json": "5ee3f8d20211f59efe658584488c44b3c38a3e490ba3c994a2e691f261707a8d",
+    "conductor/evidence/e1.3-boarding-completion-20261011/acceptance.json": "1cc6653323073245a1bf4783eb08604a85986cfded263e83dcb95b453219e0eb",
+    "conductor/evidence/e1.3-exits-native-20261011/acceptance.json": "7c0db33e92aa4e25b40878de2ed658d991350772e1334f0e8174d6c55be20fdc",
+    "conductor/evidence/e1.3-exits-completion-20261011/acceptance.json": "168141bf49b1ea7c92650da6cd7630b40e8c730ce3aeb6ac54b29d3fef0f5df5",
+    "conductor/evidence/e1.3-horizon-completion-20261011/acceptance.json": "777c5701c2bcd6a44072821615adab86855c42ed49cfbe7f99b6b551ac506a11",
+    "conductor/evidence/e1.3-horizon-completion-20261011/actual-endpoint-traces.json": "a6f765251c2d6ea856cee36ecd51c59c6ee19d49b20cc5034cee5e06ce189cab",
+    "conductor/evidence/e1.3-horizon-completion-20261011/actual-composition-trace.txt": "c34b0891f84dcab586ea82338087b089dd04ad25d2ae0c8ce37db1ec581499f5",
+    "conductor/evidence/e1.3-horizon-completion-20261011/native.json": "e37601d77e06adce5dfe34b5144f47e43fad232c3c99c868e1fc1837688dc1ac",
+    "conductor/evidence/e1.3-horizon-completion-20261011/native.log.gz": "636ccdea0d5c596dae6d8497648d322190f9dd7c279e986b63811c923ce47889",
+    "conductor/evidence/e1.3-horizon-completion-20261011/clippy.json": "468ac242d4bca0cdb9d6bb5a34c1e4bb1460f7f6c262f8da2893c4d222923599",
+    "conductor/evidence/e1.3-horizon-completion-20261011/rustfmt.json": "14f0147b3b84cdcd2c15e7e9bd9204fe05862db6e2ddedacaf8cba889e2760d2",
+    "conductor/evidence/e1.3-exits-completion-20261011/actual-abandonment-traces.json": "b23ca2e2bb81ff89f1821846f8637a8bcf1888006a83cd2c28ca7795e04f862d",
+    ".artifacts/mvp/E1.4.evidence.phase/context.md": "bdd111637f32ea381b033caf51fad994863c1c13a4e072460c5db407e81d21e1"
+  },
+  "write_paths": [
+    "conductor/evidence/e1.4-evidence-20261011/README.md",
+    "conductor/evidence/e1.4-evidence-20261011/fixture-runtime-crosswalk.json",
+    "conductor/evidence/e1.4-evidence-20261011/manual-trace-readback.md",
+    ".artifacts/mvp/E1.4.evidence.phase/result.json",
+    ".artifacts/mvp/E1.4.evidence.phase/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "E1.3.horizon"
+  ],
+  "interface_contract": "conductor/design/ed/e1-horizon-parallel-join.md",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_e11_*.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "12 frozen E1 fixture specification checks pass; native117gates reused only at exactunchangedsource"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Evidence links and planning context remain valid"
+    }
+  ],
+  "acceptance": [
+    "Every parent task has integrated output and executed gates; unresolved failures prevent acceptance",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/E1.4.evidence.phase/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root with GPT-6.1-sol independent horizon review",
+    "reservation_id": "46634743d817432b91f623887f5302c1",
+    "instance_id": "phase",
+    "instance_set": [
+      "phase"
+    ],
+    "instance_scope": "Reconcile E1 implementation evidence: exact46 native bindings, allacuity/pathway actualmanualreadback, composition andabandonment; preserve E0projection/negativeassertion evidence boundaries",
+    "interface_contract": "conductor/design/ed/e1-horizon-parallel-join.md",
+    "context_slices": [
+      {
+        "path": "conductor/design/ed/e1-horizon-parallel-join.md",
+        "start": 1,
+        "end": 78
+      },
+      {
+        "path": "conductor/evidence/e1.3-horizon-completion-20261011/README.md",
+        "start": 1,
+        "end": 11
+      },
+      {
+        "path": "conductor/evidence/e1.2-completion-20261011/README.md",
+        "start": 1,
+        "end": 15
+      },
+      {
+        "path": "conductor/evidence/e1.3-exits-completion-20261011/README.md",
+        "start": 1,
+        "end": 23
+      },
+      {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "start": 49,
+        "end": 70
+      }
+    ],
+    "input_paths": [
+      "conductor/design/ed/e1-endpoints.json",
+      "conductor/design/ed/e1-extremes.json",
+      "conductor/design/ed/e1-invalid.json",
+      "crates/careops-ed/tests/e13_native_fixture_join.rs",
+      "crates/careops-ed/tests/e13_arrival_terminal_composition.rs",
+      "conductor/evidence/e1.1-completion-20261011/acceptance.json",
+      "conductor/evidence/e1.2-completion-20261011/acceptance.json",
+      "conductor/evidence/e1.3-offers-completion-20261011/acceptance.json",
+      "conductor/evidence/e1.3-boarding-completion-20261011/acceptance.json",
+      "conductor/evidence/e1.3-exits-native-20261011/acceptance.json",
+      "conductor/evidence/e1.3-exits-completion-20261011/acceptance.json",
+      "conductor/evidence/e1.3-horizon-completion-20261011/acceptance.json",
+      "conductor/evidence/e1.3-horizon-completion-20261011/actual-endpoint-traces.json",
+      "conductor/evidence/e1.3-horizon-completion-20261011/actual-composition-trace.txt",
+      "conductor/evidence/e1.3-horizon-completion-20261011/native.json",
+      "conductor/evidence/e1.3-horizon-completion-20261011/native.log.gz",
+      "conductor/evidence/e1.3-horizon-completion-20261011/clippy.json",
+      "conductor/evidence/e1.3-horizon-completion-20261011/rustfmt.json",
+      "conductor/evidence/e1.3-exits-completion-20261011/actual-abandonment-traces.json"
+    ],
+    "write_paths": [
+      "conductor/evidence/e1.4-evidence-20261011/README.md",
+      "conductor/evidence/e1.4-evidence-20261011/fixture-runtime-crosswalk.json",
+      "conductor/evidence/e1.4-evidence-20261011/manual-trace-readback.md",
+      ".artifacts/mvp/E1.4.evidence.phase/result.json",
+      ".artifacts/mvp/E1.4.evidence.phase/logs"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "python3",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_e11_*.py",
+          "-v"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "12 frozen E1 fixture specification checks pass; native117gates reused only at exactunchangedsource"
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/context.py",
+          "check"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Evidence links and planning context remain valid"
+      }
+    ],
+    "prerequisite_receipts": {
+      "E1.3.horizon": {
+        "status": "accepted",
+        "reviewer": "root and GPT-6.1-sol",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/e1.3-horizon-completion-20261011/acceptance.json": "777c5701c2bcd6a44072821615adab86855c42ed49cfbe7f99b6b551ac506a11"
+        }
+      }
+    },
+    "reviewed_recipe_sha256": "e266960b72a4e1c83430109ab0385848804b0392fddd77246636970d4fa40418"
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "ede7e318d02958c427d1381ab9a3cae6318ccd41a151f3b3b4fe74020afea119",
+    "conductor/design/ed/e1-horizon-parallel-join.md": "dab0abd374bb25e3b099f1f8b238914494c4bc5e3089a47e4577313419ed5196",
+    "conductor/evidence/e1.3-horizon-completion-20261011/README.md": "4f085efc0aee6c208753fc68e003e70d32c393ce7b61d7b71576077d84b7f191",
+    "conductor/evidence/e1.2-completion-20261011/README.md": "d3f1a9d5155b5dae945dedfc3bdeda843d48f797c4ed5a142bb96600e5775274",
+    "conductor/evidence/e1.3-exits-completion-20261011/README.md": "5439eab1c4e9e961e9908ad95b5651525cb4cf20a8db42de84355cf9edcb3367",
+    "conductor/tracks/generic_ed_delivery_20260925/plan.md": "74ecbb16a8852e2845111378f1689bbac6246396f117e5d741e83e5d2c5b0575",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}
