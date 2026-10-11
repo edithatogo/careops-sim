@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.v3-routing-final-qualified-20261012",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "f4f28deb5cc103075716ad34f5d44068f621e441",
+  "model_role": "worker",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Qualify committed V3 routing on clean Rust1.99 source; artifact-only final gates.",
+  "context_paths": [
+    ".artifacts/e22-v3-routing-final-qualified-20261012/context.txt"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md": "facc5bbc03c64c425b7683bd99f73d505109d637692350623ceb5a9aa9c3b7fd",
+    "conductor/design/des/e2-flow-checkpoint-v3-wire.md": "c74fc89530cd35681825cce87e781cd62bd8759a88b3a001bb03ea32da0aab6f",
+    "conductor/design/des/ADR-e2-deferred-allocation.md": "7099e0f33d3dac667b6b7eac15160ca3e20806ef60522f7489d80be17cda0c17",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    "crates/kairo-ecs-des/src/flow.rs": "048cd2571bcfdd7214d78745979d5fc616ad7b076257022f492b3f3921e3c68c",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "1ea4f8e7d700eea5fe710bbe338afd4d470879b6cade52201ae7e26a338a5629",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f1527c04bcd278027324347d7dd52c3e3eed4773457ffca4de5a2cf21fb87232",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs": "3c3215c4d9d7618e4933ac0ef354d05f9ef1a36fe53b34ac43d8768b1cf8679f",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "d52a67bd480b27dced3a38cfd82bd85288abad511e3d2ceecebd17afe9f0000b",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "49fac22c2df77dd920ff773b02395abdbbdbc1c2ee135d234dba9c8ea3d0a910",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "d66edb4fdb022be34c38baf09b3d6c26a10214be84a07373565278bd2ad69b44",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    "crates/kairo-ecs-des/Cargo.toml": "9f5a852926de2bb795da29f203d2101bbedc5f712f65197c5d5812fe011df816",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs": "9015a4d1218f377189ce612025a6fd5566149ac188a13273733da3de7aa279e4",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs": "b935e7b17091540757ea8cafe6f0b9632ed27392dfacf796f31cee9cce14f758",
+    "conductor/design/des/e2-flow-checkpoint-v3-routing.md": "222d0b3a477d9b14768dc962877a5167fe5fe2249d6c849dbf84f702eb2806a7",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/handoff.md": "d7e2e6a9fa89317f031fe7b2ecaf11871323e332b859af6f11522c4e08a6049e",
+    "conductor/tracks/22-experiment-runner-scenario-management/handoff.md": "cbacadcbbcba2a78f965b0f25003255984fe1deb856623b8f3f08aa1d21cc510",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs": "907135874fdf24dbdf20bcde520146371faed066426a6ed447a52bf789275d00",
+    ".artifacts/e22-v3-routing-final-qualified-20261012/context.txt": "2d3f8d615d8bc97daa0851c58ac6df38b25e6a9058fc71357cd362bbbcab66a5",
+    ".artifacts/e22-v3-routing-final-qualified-20261012/record_gate.py": "fefc8e6b2186927da9b6b48b00904f643c0d457bcbfff593dca55b2ac92acd06",
+    ".artifacts/e22-v3-routing-final-qualified-20261012/source-result.json": "db84461bb971fecb82aab91ca4b870aea6f113066cc98e3dc5eba7ea806ec993",
+    ".artifacts/e22-v3-routing-final-qualified-20261012/first-failed-final-result.json": "7e596470248da25e06971e4aa88325803c8ab9deb7c7c35bcfb9043b6b7d752a",
+    ".artifacts/e22-v3-routing-final-qualified-20261012/second-failed-final-result.json": "b7f0e2bc19fb348a861f98c10cd7a3e8e010d492ee094c04bfa6cdba44721639"
+  },
+  "write_paths": [
+    ".artifacts/e22-v3-routing-final-qualified-20261012/result.json",
+    ".artifacts/e22-v3-routing-final-qualified-20261012/logs",
+    ".artifacts/e22-v3-routing-final-20261012/logs/target"
+  ],
+  "protected_paths": [
+    "AGENTS.md",
+    "conductor/design/des/e2-flow-checkpoint-v3-native.md",
+    "conductor/design/des/e2-flow-checkpoint-v3-wire.md",
+    "conductor/design/des/ADR-e2-deferred-allocation.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "crates/kairo-ecs-des/Cargo.toml",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs",
+    "conductor/design/des/e2-flow-checkpoint-v3-routing.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/handoff.md",
+    "conductor/tracks/22-experiment-runner-scenario-management/handoff.md",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs",
+    ".artifacts/e22-v3-routing-final-qualified-20261012/context.txt",
+    ".artifacts/e22-v3-routing-final-qualified-20261012/record_gate.py",
+    ".artifacts/e22-v3-routing-final-qualified-20261012/source-result.json",
+    ".artifacts/e22-v3-routing-final-qualified-20261012/first-failed-final-result.json",
+    ".artifacts/e22-v3-routing-final-qualified-20261012/second-failed-final-result.json",
+    ".git",
+    "crates",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml"
+  ],
+  "leaf_dependencies": [
+    "E2.2.engine.routing-source-reviewed-committed"
+  ],
+  "interface_contract": "conductor/design/des/e2-flow-checkpoint-v3-routing.md",
+  "steps": [
+    "Verify exactcleanHEAD/hashes andfreshartifactcacheclaim.",
+    "Run tests thenstrictClippy thenformat once; stopanyfailure.",
+    "Verify22processcases19goldens andfreezeallreceipts.",
+    "Releaseaftertruthfulresult; rootacceptancepending."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-v3-routing-final-qualified-20261012/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All required suites and routing families pass;22 process cases and19 old goldens verified."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-v3-routing-final-qualified-20261012/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target four-package Clippy has no warnings."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-v3-routing-final-qualified-20261012/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All eight frozen routing source paths satisfy Rust1.99 formatting."
+    }
+  ],
+  "acceptance": [
+    "All gates pass at exact clean committed source with matching before/after input hashes.",
+    "Actual22 child process cases and19 legacy golden hashes preserved.",
+    "Qualification ready for root review only; no actual V3consumer/parent/ED/release acceptance."
+  ],
+  "result_path": ".artifacts/e22-v3-routing-final-qualified-20261012/result.json",
+  "stop_conditions": [
+    "AnyHEAD/input/ownershipdrift orsourcechangeneed.",
+    "AnyfailedFINALexecution; stopandpreserve, noretry/repair.",
+    "No downstreamacceptance orpublication."
+  ],
+  "status": "prepared",
+  "reason_not_mvp_prepare": "Kairos-owned prerequisite to parent E2.2.fidelity; parentrecipe is preparation only.",
+  "dispatch_condition": "Exactpacket root+independentreview andacceptedrange-sourcecommit; newclaim.",
+  "development_verification": [],
+  "size_exception": "Artifact-only packet protects8routing paths and accepted contracts; no source writing."
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "status": "accepted_common_v3_routing_only",
+  "accepted_commit": "f4f28deb5cc103075716ad34f5d44068f621e441",
+  "source_commit": "c9091ce049a9d156c260bbc9f670f0e9bd4073e8",
+  "accepted_worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-routing-implementation-20261012",
+  "toolchain": "Rust/Cargo1.99.0",
+  "source_sha256": {
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "1ea4f8e7d700eea5fe710bbe338afd4d470879b6cade52201ae7e26a338a5629",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f1527c04bcd278027324347d7dd52c3e3eed4773457ffca4de5a2cf21fb87232",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "d52a67bd480b27dced3a38cfd82bd85288abad511e3d2ceecebd17afe9f0000b",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs": "9015a4d1218f377189ce612025a6fd5566149ac188a13273733da3de7aa279e4",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "d66edb4fdb022be34c38baf09b3d6c26a10214be84a07373565278bd2ad69b44",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs": "907135874fdf24dbdf20bcde520146371faed066426a6ed447a52bf789275d00",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "49fac22c2df77dd920ff773b02395abdbbdbc1c2ee135d234dba9c8ea3d0a910",
+    "crates/kairo-ecs-des/tests/flow_deferred_allocation_v1.rs": "b935e7b17091540757ea8cafe6f0b9632ed27392dfacf796f31cee9cce14f758"
+  },
+  "qualification": {
+    "tests": {
+      "receipt": ".artifacts/e22-v3-routing-final-qualified-20261012/logs/tests-1791739402559911000-37856-result.json",
+      "sha256": "cbd38f7e670bb2dd88615e54792015f0661fb2fd13f8b9dd1e7d2c5a05cb9ed0",
+      "exit_code": 0,
+      "counts": {
+        "passed": 836,
+        "failed": 0,
+        "ignored": 6
+      },
+      "suites": 68,
+      "verified_process_cases": 22
+    },
+    "clippy": {
+      "receipt": ".artifacts/e22-v3-routing-final-qualified-20261012/logs/clippy-1791739454491710000-38862-result.json",
+      "sha256": "c9c56a78d7ecd6973a84d90c49c4c11cc4e3895d36382fe1341eb76990f8c815",
+      "exit_code": 0
+    },
+    "format": {
+      "receipt": ".artifacts/e22-v3-routing-final-qualified-20261012/logs/format-1791739518814114000-40194-result.json",
+      "sha256": "191905dd98576f853496ef0224c6680796ad59912e755fc352e51488604bb224",
+      "exit_code": 0
+    }
+  },
+  "legacy_goldens": 19,
+  "preserved_failed_attempts": {
+    "original_final_clippy": 1,
+    "second_final_clippy": 1,
+    "second_final_format": "not_executed_after_stop"
+  },
+  "independent_review": "Root plus GPT-6.1-sol source, packets, lint repair and final evidence review",
+  "boundary": "Common V3 routing accepted. Actual V3 preview/coherent/portable consumer join, parent pin, ED88bindings and subsequent delivery remain open.",
+  "next": "Dispatch three reviewed Luna consumer lanes at accepted routing plus reviewed consumer documentation, join and qualify, then parent pin and ED bindings."
+}
