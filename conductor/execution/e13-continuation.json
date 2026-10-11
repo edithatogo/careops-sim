@@ -1,5 +1,5 @@
 {
-  "status": "boarding_accepted_exits_preparation",
+  "status": "exits_dispatch_authorized",
   "coordinator": "root",
   "current_leaf": "E1.3.exits",
   "contract": "conductor/design/ed/e1-offers-contract.md",
@@ -51,5 +51,20 @@
     "checks": "full native suite, strict Clippy, rustfmt; exact Rust1.99.0",
     "status": "accepted"
   },
-  "boarding_acceptance": "conductor/evidence/e1.3-boarding-completion-20261011/acceptance.json"
+  "boarding_acceptance": "conductor/evidence/e1.3-boarding-completion-20261011/acceptance.json",
+  "exits_dispatch": {
+    "owner": "e1_extreme_preparation",
+    "model": "gpt-6-luna",
+    "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/e13-exits-20261011",
+    "base_commit": "77b7e877fb795981897194908f611c89ff4d11f1",
+    "packet": ".artifacts/packets/E1.3.exits.native.json",
+    "source_paths": [
+      "crates/careops-ed/tests/e13_terminal_runtime.rs",
+      "crates/careops-ed/tests/support/e13.rs"
+    ],
+    "instance_set": [
+      "native"
+    ],
+    "checks": "full package tests, strictClippy, owned rustfmt; Rust1.99.0"
+  }
 }
