@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.grant-gate",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "63cd1cd5a53c59e255fce4db09bea2e219254c90",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Implement reviewed resource grant eligibility gate with staged atomicity and immediate fail-closed V1 capture; V2 and parent integration remain dependent work.",
+  "context_paths": [
+    ".artifacts/mvp/E2.2.engine.grant-gate/context.md"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "conductor/design/des/ADR-e2-resource-grant-gate.md": "db6931d18513043814fc7088697b41235ecda582db0b983e210fbe061f2e3742",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "crates/kairo-ecs-des/src/flow.rs": "0948398122fd2a66895e98f40ee56b572ce811f9ca862c3e57f1180b3c294a71",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "111e94b50e6acaa0035f0a5a90694f1021e15e5f108a2b1746d4c4acc5d59254",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "4b10feb7d505bfdd4810e96d507c5ffa1bac20fd8d3d773e2bf802449a75bb31",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    ".artifacts/e22-gate/record_gate.py": "df460c0c428ebc1b1ece41cc689b7632db5fb54afc9ea916db99da4672145922",
+    ".artifacts/mvp/E2.2.engine.grant-gate/context.md": "faf876ad9f0569d2c7f69a400c815bfc08095f407c5c309a4f03a03103fbb9f8"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/tests/flow_resource_grant_gate_v1.rs",
+    ".artifacts/mvp/E2.2.engine.grant-gate/result.json",
+    ".artifacts/mvp/E2.2.engine.grant-gate/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "crates/kairo-ecs-core",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "Cargo.toml",
+    "Cargo.lock"
+  ],
+  "leaf_dependencies": [
+    "E2.1.space"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-resource-grant-gate.md",
+  "steps": [
+    "Confirm exact base, inputs and lease before source edits.",
+    "Write focused test shapes and report staged-state early checkpoint.",
+    "Implement all reviewed ADR behavior within owned files.",
+    "Run exact wrappers, freeze result and request root review; no self acceptance."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-gate/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Full DES package including dedicated nonzero gate tests, legacy V1 wire and budget/preemption regressions."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-gate/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict DES all-target Clippy no warnings."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-gate/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Exact three owned Rust paths formatted; skip recursive child formatting."
+    }
+  ],
+  "acceptance": [
+    "Every runtime ADR oracle proven including same-tick collisions, admission atomicity, frontier and removal lifecycle.",
+    "Existing V1 wire unchanged and disabled/pending capture rejects; no-gate regressions pass.",
+    "Independent root/Sol source review; V2, consumers and parent native binding remain open."
+  ],
+  "result_path": ".artifacts/mvp/E2.2.engine.grant-gate/result.json",
+  "stop_conditions": [
+    "Input/base drift except expected owned-output changes after dispatch",
+    "Undefined interface or need for out-of-scope edits",
+    "Two unsuccessful correction rounds",
+    "Required oracle cannot be established"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root and GPT-6.1-sol internal Track03 owner review",
+    "reservation_id": "e856a12cea1b4ef2bd09801c075a51f4",
+    "parent_acceptance_commit": "5b3d0da62e7775a0179ef7d55f3b8470590a2e1b",
+    "parent_acceptance_sha256": "438e3161764fd3ab336e03bfb2fbf745ab8ed02dfaeb8281281ba95c153c0823",
+    "reason_not_mvp_prepare": "Kairos Track03 engine prerequisite has its own reviewed ADR and bounded packet; not an executable parent MVP recipe."
+  }
+}

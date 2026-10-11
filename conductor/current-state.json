@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T10:53:05.433760+00:00",
+  "updated_at": "2026-10-11T11:08:06.374962+00:00",
   "active_track": "generic_ed_delivery_20260925",
   "active_phase": "E2",
-  "next_action": "Pure dispatch policy accepted; continue active Kairos gate worker and review full ADR oracles. Freeze runtime then bind explicit checkpoint V2 and calibration consumer join; update parent pin before single-Flow E2 fixture binding. Continue full delivery.",
+  "next_action": "Engine grant runtime and pure dispatch accepted narrowly. Prepare native checkpointV2 packet at9cd9361, followed by V2wire and calibrationconsumer join; retain parentpin until combinedqualification. Then single-Flow E2 binding and further delivery.",
   "context_paths": [
     "conductor/module-readiness.md",
     "conductor/product.md",
@@ -1427,7 +1427,7 @@
     "evidence": "conductor/evidence/e2.2-dispatch-policy-completion-20261011/acceptance.json"
   },
   "e22_engine_gate": {
-    "status": "running",
+    "status": "accepted_runtime_only_pending_checkpoint_consumer_join",
     "packet": "E2.2.engine.grant-gate",
     "packet_sha256": "e6a9bb38a08682423aa85a2f81503c9767d4eeee481512fb672745deb6ae61d7",
     "worker": "e22_gate_runtime",
@@ -1435,6 +1435,15 @@
     "reviewer": "root and GPT-6.1-sol",
     "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e2-grant-gate-20261011",
     "base": "63cd1cd5a53c59e255fce4db09bea2e219254c90",
-    "scope": "Runtime gate plus V1 capture rejection only; V2/consumers and parent native binding remain open"
+    "scope": "Runtime gate plus V1 capture rejection only; V2/consumers and parent native binding remain open",
+    "source_commit": "382b333fdc18bcbdf8bbf231fc633a79ab6ec86a",
+    "qualified_commit": "9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea",
+    "evidence": "conductor/evidence/e2.2-engine-grant-gate-runtime-20261011/acceptance.json"
+  },
+  "e22_checkpoint_v2": {
+    "status": "reviewed_contract_packet_preparation",
+    "contract_commit": "9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea",
+    "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-checkpoint-native-20261011",
+    "design": "conductor/design/ed/e2-checkpoint-v2-preparation.md"
   }
 }

@@ -72,3 +72,5 @@ All88 E2.1 specifications are accepted; E2.2 native binding/runtime and MVP rema
 The user has renewed autonomous continuation across task and phase boundaries; MVP and subsequent delivery gates remain open.
 
 E2.2 pure dispatch policy accepted: [native evidence](evidence/e2.2-dispatch-policy-completion-20261011/acceptance.json). Engine/checkpoint/consumer join and E2 native runtime binding remain open.
+
+E2 engine grant-gate runtime qualified: [evidence](evidence/e2.2-engine-grant-gate-runtime-20261011/acceptance.json). Checkpoint V2, consumers and parent native binding remain open.

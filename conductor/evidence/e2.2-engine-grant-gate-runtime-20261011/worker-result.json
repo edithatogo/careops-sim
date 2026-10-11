@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.engine.grant-gate",
+  "status": "awaiting_independent_review",
+  "base_commit": "63cd1cd5a53c59e255fce4db09bea2e219254c90",
+  "coordinator_authorization": "Root authorized bounded attempt 2 after reviewing the failed oracle receipt and specifying the corrected collision and stale-identity test shapes. Root+Sol authorized bounded test-only attempt 3: add urgent READY-5 submission before Enable-5 while low work is suspended; stop exactly on Enable-H dispatch and assert active claim/start/progress; align suspended fixture at 4/6/8; add (disable=10, submit=10) collision; strengthen private GateSnapshot to compare command payloads, request/progress state, resource queues and world state. No runtime or checkpoint implementation changes were authorized.",
+  "scope": {
+    "written_source_paths": [
+      "crates/kairo-ecs-des/src/flow.rs",
+      "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+      "crates/kairo-ecs-des/tests/flow_resource_grant_gate_v1.rs"
+    ],
+    "result_path": ".artifacts/mvp/E2.2.engine.grant-gate/result.json",
+    "protected_paths_unchanged": [
+      "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+      "Cargo.toml",
+      "Cargo.lock"
+    ]
+  },
+  "source_sha256": {
+    "crates/kairo-ecs-des/src/flow.rs": "08fc5f9bd7fe77bd4f0b27cd0b6d6f8d5de9a9f20925ff1794b04cc9d03995c4",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "f7db241ad68e7bb2e66ce55eae9d34866ae7b8added624bac421fcd2355db226",
+    "crates/kairo-ecs-des/tests/flow_resource_grant_gate_v1.rs": "75086bc13cbc6cbbc84436ebb485a6ff860d1499d6d8d4c6886a9a6ee2b342c2"
+  },
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+    "python": "3.11.6"
+  },
+  "final_gates": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        ".artifacts/e22-gate/record_gate.py",
+        "tests"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e2-grant-gate-20261011",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.engine.grant-gate/logs/tests-1791716477148734000-19583-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.grant-gate/logs/tests-1791716477148734000-19583.log",
+      "source_hashes_match_frozen_sha256": true
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        ".artifacts/e22-gate/record_gate.py",
+        "clippy"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e2-grant-gate-20261011",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.engine.grant-gate/logs/clippy-1791716484730480000-19730-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.grant-gate/logs/clippy-1791716484730480000-19730.log",
+      "source_hashes_match_frozen_sha256": true
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        ".artifacts/e22-gate/record_gate.py",
+        "format"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e2-grant-gate-20261011",
+      "exit_code": 0,
+      "receipt": ".artifacts/mvp/E2.2.engine.grant-gate/logs/format-1791716489912172000-19769-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.grant-gate/logs/format-1791716489912172000-19769.log",
+      "source_hashes_match_frozen_sha256": true
+    }
+  ],
+  "preserved_failed_attempts": [
+    {
+      "gate": "tests",
+      "exit_code": 101,
+      "receipt": ".artifacts/mvp/E2.2.engine.grant-gate/logs/tests-1791714095565037000-3238-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.grant-gate/logs/tests-1791714095565037000-3238.log",
+      "note": "Expected initial compile failure before runtime API implementation."
+    },
+    {
+      "gate": "tests",
+      "exit_code": 101,
+      "receipt": ".artifacts/mvp/E2.2.engine.grant-gate/logs/tests-1791714384389225000-5702-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.grant-gate/logs/tests-1791714384389225000-5702.log",
+      "note": "Test fixture mutability typo; corrected."
+    },
+    {
+      "gate": "tests",
+      "exit_code": 101,
+      "receipt": ".artifacts/mvp/E2.2.engine.grant-gate/logs/tests-1791714400317168000-5950-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.grant-gate/logs/tests-1791714400317168000-5950.log",
+      "note": "Collision final-state assertion and cross-runtime ResourceId assumption; corrected under coordinator attempt-2 authorization."
+    },
+    {
+      "gate": "tests",
+      "exit_code": 101,
+      "receipt": ".artifacts/mvp/E2.2.engine.grant-gate/logs/tests-1791715759446214000-8693-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.grant-gate/logs/tests-1791715759446214000-8693.log",
+      "note": "Private semantic-rejection oracle scheduled Remove before gate admission, conflicting with admission contract; order corrected."
+    },
+    {
+      "gate": "clippy",
+      "exit_code": 101,
+      "receipt": ".artifacts/mvp/E2.2.engine.grant-gate/logs/clippy-1791715968219963000-10918-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.grant-gate/logs/clippy-1791715968219963000-10918.log",
+      "note": "Test snapshot tuple complexity; factored into named struct."
+    },
+    {
+      "gate": "clippy",
+      "exit_code": 101,
+      "receipt": ".artifacts/mvp/E2.2.engine.grant-gate/logs/clippy-1791715985575688000-10999-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.grant-gate/logs/clippy-1791715985575688000-10999.log",
+      "note": "Boolean assert comparison; corrected."
+    },
+    {
+      "gate": "format",
+      "exit_code": 1,
+      "receipt": ".artifacts/mvp/E2.2.engine.grant-gate/logs/format-1791716004387820000-11102-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.grant-gate/logs/format-1791716004387820000-11102.log",
+      "note": "Formatting differences; rustfmt applied only to the three owned Rust files."
+    },
+    {
+      "gate": "format",
+      "exit_code": 1,
+      "receipt": ".artifacts/mvp/E2.2.engine.grant-gate/logs/format-1791716461115435000-19527-result.json",
+      "raw_log": ".artifacts/mvp/E2.2.engine.grant-gate/logs/format-1791716461115435000-19527.log",
+      "note": "Attempt-3 test-only layout needed rustfmt; receipt preserved and formatter applied before final passing wrappers."
+    }
+  ],
+  "implemented_oracles": [
+    "Completion/disable collision including both completion-first (disable=10, submit=10) and other scheduler priority orders, including i32::MIN submission priority; no grant at tick 3, grant at tick 5.",
+    "Closed interval drains low work from 1 to 5 before urgent preemption; urgent completes at 7, suspended low work resumes and completes at 13.",
+    "Suspended work completion at tick 6 does not resume through a closed interval and resumes at tick 8.",
+    "Cancellation, release, and deadline timeout still commit while grants are disabled.",
+    "Enable with no queued work invents no lifecycle records; disabled idle resource removal and generational reuse start enabled.",
+    "V1 capture rejects pending and disabled gate states; legacy no-gate V1 capture remains accepted.",
+    "Admission identity, past-time, started-frontier, duplicate, pending-removal, scheduler-budget, and command-counter failures preserve state and next EventId against untouched controls.",
+    "Precommit same-tick transition budget halt preserves scheduler dispatch count, gate index, enabled flag, queued claims, and pending EventId.",
+    "Dispatched semantic rejection advances the started frontier while retaining the pending gate token.",
+    "Corrupted pending-index to command join fails before allocation or scheduler dispatch.",
+    "Urgent READY-5 submission is dispatched before Enable-5 while low work is already suspended; urgent receives the grant at 5 without low Resumed/Preempted transitions at 5.",
+    "Enable-H oracle stops on the actual Enable dispatch at H and verifies active request/allocation, grant and segment start at H, original duration 10, useful elapsed 0, full remaining duration, and no Completed record.",
+    "Admission rejection GateSnapshot includes complete command payload representations, request states, work progress, resource snapshots/queues, scheduler state, pending index, enabled flags, and world snapshot; next EventId behavior is compared against control runtimes."
+  ],
+  "not_run_or_not_claimed": [
+    "just ci",
+    "Checkpoint V2 implementation and downstream calibration/Track22 consumers",
+    "Parent native binding integration and operational acceptance",
+    "Hosted CI, platform qualification, performance, release, or publication"
+  ],
+  "commit": null,
+  "review": "Coordinator/root and GPT-6.1-sol independent source review pending; no self-acceptance claimed.",
+  "frozen_attempt2_result": {
+    "path": ".artifacts/mvp/E2.2.engine.grant-gate/logs/attempt2-frozen-result.json",
+    "sha256": "8a149c89d669d1a3896473ace610214ccae56c4e7706bc921118b785569e3f92",
+    "bytes": 7139
+  }
+}

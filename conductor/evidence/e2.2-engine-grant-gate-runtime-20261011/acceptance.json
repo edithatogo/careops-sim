@@ -1,0 +1,92 @@
+{
+  "status": "accepted_runtime_only_pending_checkpoint_consumer_join",
+  "worker_base": "63cd1cd5a53c59e255fce4db09bea2e219254c90",
+  "runtime_source_commit": "382b333fdc18bcbdf8bbf231fc633a79ab6ec86a",
+  "qualified_commit": "9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "08fc5f9bd7fe77bd4f0b27cd0b6d6f8d5de9a9f20925ff1794b04cc9d03995c4",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "f7db241ad68e7bb2e66ce55eae9d34866ae7b8added624bac421fcd2355db226",
+    "crates/kairo-ecs-des/tests/flow_resource_grant_gate_v1.rs": "75086bc13cbc6cbbc84436ebb485a6ff860d1499d6d8d4c6886a9a6ee2b342c2"
+  },
+  "reviewer": "root and GPT-6.1-sol",
+  "native_tests_passed": 307,
+  "dedicated_gate_integration_tests": 10,
+  "toolchain": "Rust/Cargo1.99.0",
+  "gates": [
+    {
+      "gate": "clippy",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e2-grant-gate-20261011",
+      "head": "9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea",
+      "exit_code": 0,
+      "log": ".artifacts/e22-gate-qualification/logs/clippy-1791716779475665000-21699.log",
+      "log_sha256": "19298ad452d9c2ca17a46f5bb150d9f379989b55ae6791f89b06f3dee8e9f29d",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    },
+    {
+      "gate": "format",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "--config",
+        "skip_children=true",
+        "crates/kairo-ecs-des/src/flow.rs",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+        "crates/kairo-ecs-des/tests/flow_resource_grant_gate_v1.rs"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e2-grant-gate-20261011",
+      "head": "9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea",
+      "exit_code": 0,
+      "log": ".artifacts/e22-gate-qualification/logs/format-1791716782810646000-21697.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    },
+    {
+      "gate": "tests",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e2-grant-gate-20261011",
+      "head": "9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea",
+      "exit_code": 0,
+      "log": ".artifacts/e22-gate-qualification/logs/tests-1791716709557071000-20812.log",
+      "log_sha256": "ae1ee2e7a98c25b19ebbe81eb95fa9fb0c50fbd52f095e4f6196319ca9beb88f",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      }
+    }
+  ],
+  "next_contract_commit": "f37abe9081f9989a2e85bd730b5357b789e11b22",
+  "next_contract_integrated_commit": "9cd9361aa68fc2fd38c4918d1a6fb2b26c3bc9ea",
+  "parent_pin_unchanged": "6d733f489225da4bf6ceec2673b02369c7918bbe",
+  "limitations": [
+    "No checkpointV2 implementation/consumerqualification yet; V1 rejects gate state.",
+    "No parentruntimebinding or E2phase/MVP acceptance.",
+    "No fulljustci/hosted/platform/release or clinical acceptance.",
+    "Preserved worker failures and workflow limitations in evidence-history.json."
+  ],
+  "at": "2026-10-11T11:08:06.374962+00:00"
+}
