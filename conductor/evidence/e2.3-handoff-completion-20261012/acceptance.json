@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "leaves": [
+    "E2.3.fixture",
+    "E2.3.boundary",
+    "E2.3.runner",
+    "E2.3.summary",
+    "E2.3.handoff"
+  ],
+  "status": "accepted",
+  "date": "2026-10-12",
+  "source_commit": "9d2e3963520553c869d871bf2dc196179bf3ef41",
+  "reviewer": "coordinator",
+  "contracts": [
+    "conductor/design/ed/e23-nominal-fixture-contract.md",
+    "conductor/design/ed/e23-boundary-contract.md",
+    "conductor/design/ed/e23-runner-summary-contract.md"
+  ],
+  "verification": {
+    "total_passed": 129,
+    "failed": 0,
+    "ignored": 0,
+    "clippy_clean": true,
+    "fmt_clean": true
+  },
+  "receipts": {
+    "fixture_test_suite": "crates/careops-ed/tests/e23_integrated_fixture.rs",
+    "boundary_test_suite": "crates/careops-ed/tests/e23_boundary_cases.rs",
+    "runner_summary_test_suite": "crates/careops-ed-cli/tests/e23_runner_summary.rs",
+    "nominal_scenario": "configs/scenarios/e23_nominal.json",
+    "constrained_scenario": "configs/scenarios/e23_constrained.json"
+  },
+  "handoff": {
+    "reproduction_recipe": "conductor/evidence/e2.3-handoff-completion-20261012/reproduction-recipe.md",
+    "scope_limitations": "Generic ED MVP pipeline demonstration; does not claim full v1 production completion or clinical validation."
+  }
+}
