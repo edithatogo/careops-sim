@@ -53,13 +53,13 @@ Existing C2.5 evidence establishes same-live-Flow continuation only. Track22 smo
 
 ## Owner disposition — Track22 to complete
 
-- Reviewer identity and Track22 role:
-- Review date and exact parent/Kairos pin:
-- Contract decision and supported boundary:
-- Required ADR(s), contributing owners, and dependency order:
-- First bounded implementation task and acceptance oracle:
-- Explicit unsupported states/fail-closed cases:
-- Track22 disposition (`accepted`, `accepted with follow-up`, `rejected`, or `not reviewed`):
+- Reviewer identity and Track22 role: single maintainer (user), acting as Track22 experiment runner owner and coordinating with contributing state owners (Tracks 01, 03, 21).
+- Review date and exact parent/Kairos pin: 2026-10-12; parent `98c306a977a88cce6c039a9774b7d2f2676fdf7b`; Kairos `678453838f391f3dd869b79fd502077f63f3a067`.
+- Contract decision and supported boundary: accepted ADR-0009 option 2 (supported subset with fail-closed rejection). Supported boundary is between events after `run` returns, with zero in-flight submissions/permits/callbacks, Flow work empty or single idle-queued bridge work item, and all dispatches reconciled. Worker-count (1/2/N), crash and mid-study resume equivalence remain in Phase C5 per plan.
+- Required ADR(s), contributing owners, and dependency order: ADR-0009 recorded in parent repo (`conductor/decisions/ADR-0009-c2-portable-checkpoint-subset.md`); contributing owners are Track01 (scheduler/allocator/RNG), Track03 (Flow/idle state boundary), Track21 (calibration streams/ledger), and Track22 (envelope/orchestration).
+- First bounded implementation task and acceptance oracle: fresh-process restore of paired Macro/explicit-zero Micro deterministic fixture from a published envelope at event k, matching uninterrupted run event IDs, canonical integer trace hash, and Service draw positions. Negative corruption/unknown payload tests fail closed before mutation.
+- Explicit unsupported states/fail-closed cases: in-flight callbacks, active/suspended transit, unknown components/contexts/handlers, unregistered streams, mismatched versions/hashes, corrupt/truncated payloads.
+- Track22 disposition (`accepted`, `accepted with follow-up`, `rejected`, or `not reviewed`): `accepted with follow-up` (ADR-0009 adopted; follow-up is executing the first implementation packet for the subset envelope and fresh-process oracle).
 
 ## Separate gates
 

@@ -63,14 +63,18 @@ These are scope questions, not prefilled findings or implementation instructions
 
 For each checklist item, identify whether it was reviewed by the DES API owner, the ABM API owner, jointly, or not reviewed. The designated Track03 reviewers should consolidate those item-level outcomes into one Track03 disposition.
 
-- Reviewer identity and Track03 role:
-- Review date:
-- Parent commit and Kairos pin reviewed:
-- Checklist outcomes and evidence references:
+- Reviewer identity and Track03 role: single maintainer (user), acting jointly as Track03 DES and ABM API owner. Decision taken from a coordinator-prepared, read-only reviewer summary.
+- Review date: 2026-10-12.
+- Parent commit and Kairos pin reviewed: parent `98c306a977a88cce6c039a9774b7d2f2676fdf7b`; Kairos `678453838f391f3dd869b79fd502077f63f3a067` (submodule re-synced to pin before review).
+- Checklist outcomes and evidence references: all eight receipt SHA-256 values above re-verified with `shasum -a 256` and matched. Items 1–6 `accepted` within their stated boundary/fixture scope; this is receipt-backed, not an independent line-by-line re-derivation of `flow_bridge.rs`/DES Flow test bodies. Item 4 `accepted with follow-up` (`flow_adapter.rs` retry validator ~L151-170; reject hook stays `cfg(feature = "test-support")`). Item 7 `accepted with follow-up` (answers below). Item 8 `accepted with follow-up`.
 - Findings / required changes:
-- Responsible owner and follow-up path for each finding:
-- Track03 disposition (`accepted`, `accepted with follow-up`, `rejected`, or `not reviewed`):
-- Confirmation this disposition covers Track03 ownership only:
+  1. ADR-0008 authorizes one hidden experimental function, but at the pin `validate_retry_dispatch`, `schedule_transit_retry` and `expects_event` are Rust-public, `#[doc(hidden)]`, not feature-gated, and reachable through the `TransitContext` re-export. Owner choice: amend ADR-0008 to list all three as experimental with no stable API promise (no code change).
+  2. Mixed-use pauses: defined as a pause on a route whose segments use more than one movement mode or shared resource. The single-mode segmented oracle is insufficient; the clause stays unverified until a two-mode fixture suspends at the mode boundary and mid-segment and asserts same work/request, no duplicate lifecycle events and reconciled intervals.
+  3. Trip purpose: stays out of the Track03 engine request; belongs in the upstream calibration route receipt (C2.0 provider proposal). A Track03 ADR is needed only if purpose must affect routing.
+  4. Sensor-derived distance: engine boundary satisfied (configured integer edge lengths, no sensor input). Upstream data owner records per-edge provenance and a rule that sensor observations are calibration evidence, not path/speed ground truth.
+- Responsible owner and follow-up path for each finding: (1) Track03 ABM API owner, ADR-0008 amendment on Kairos branch `codex/adr-0008-retry-seam-amendment`, with Track25 compatibility review before release gates; (2) Track03 ABM owner, new fixture leaf; (3) Track21 / CareOps calibration, C2.0 proposal review; (4) CareOps empirical calibration / site-profile data owner.
+- Track03 disposition (`accepted`, `accepted with follow-up`, `rejected`, or `not reviewed`): `accepted with follow-up`.
+- Confirmation this disposition covers Track03 ownership only: confirmed. It does not accept C2.4, close C2, or satisfy Track22, hosted, release or clinical gates.
 
 ## Separate open gates
 

@@ -151,6 +151,13 @@ Exit: C-02 has standalone fixtures and a locally accepted integrated Q4
 urgent-interruption runtime leaf. Q4.5 is accepted and integrated. Track03
 owner/phase review and the remaining hosted, portable-checkpoint, release, and
 clinical gates remain required before this phase can pass.
+Amendment 2026-10-12: Track03 owner disposition is `accepted with follow-up`
+([packet](../../evidence/c2.4-track03-owner-review-rust199-20261007/review-packet.md));
+follow-ups are the ADR-0008 three-method amendment and a mixed-use pause fixture.
+The portable-checkpoint gate is defined by
+[ADR-0009](../../decisions/ADR-0009-c2-portable-checkpoint-subset.md): a fail-closed
+fresh-process restore of the reviewed subset at one supported boundary. Worker,
+crash and mid-study resume equivalence stay with C5.
 Manual check: inspect the same synthetic case in Macro/Micro, reconcile clinical
 work plus transit plus waits, and demonstrate no double-counted elapsed time.
 
