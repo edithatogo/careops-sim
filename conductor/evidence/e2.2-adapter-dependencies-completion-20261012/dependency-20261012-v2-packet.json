@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.fidelity.dependency-20261012-v2",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "f39fb9a173d06f426507a58fee5c3934e0dcd71b",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Add only the reviewed parent workspace and careops-ed dependency edges for Kairos DES and ABM at the accepted 832dfb159981f7bd5041e636a7c4d609b2bd6e9c pin, then resolve the parent lockfile with exactly five package additions and preserve every baseline package identity/checksum. No adapter implementation, engine edits, or ED E2 acceptance.",
+  "context_paths": [
+    ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/ed/e2-flow-adapter-dependencies.md": "3bb4324fdb12b906e2e48b1a35f8463d29969cb19f35ccda4e0e473b68f39882",
+    "Cargo.toml": "ea8549f39166ff09cdf63b7d3f2ef4226ecbe929a61f061dcfb3be988ab3df48",
+    "crates/careops-ed/Cargo.toml": "19674824de350de9d11a40c4ef970bfc259ad62bc3b76b3a80b6e578b3b94abd",
+    "Cargo.lock": "7584401156344be95139f6a5db70a7be57a10155aae688f901c66bbd2f4adad6",
+    "conductor/evidence/e2.2-dispatch-policy-completion-20261011/acceptance.json": "3083d493a030541862443f0743cb3729f8bf60331cb761a8ce28fa3c42399590",
+    ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/context.md": "398804cd6ef452dcff6296d7a731ce300cd4efd62e54bf73a593e3e9e6949d05"
+  },
+  "write_paths": [
+    "Cargo.toml",
+    "crates/careops-ed/Cargo.toml",
+    "Cargo.lock",
+    ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/result.json",
+    ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "E2.2.dispatch"
+  ],
+  "interface_contract": "Owned source writes are exactly Cargo.toml, crates/careops-ed/Cargo.toml, and Cargo.lock. Add kairo-ecs-des and kairo-ecs-abm workspace path dependencies and matching workspace=true dependencies. Keep Rust 1.99.0, CARGO_HOME=/Users/doughnut/.cargo, existing parent registry package identities/checksums, exact thiserror 2.0.20 identities/checksums, and Kairos pin 832dfb159981f7bd5041e636a7c4d609b2bd6e9c. Stop on network need, any old identity/checksum change, unexpected addition, or pin drift. Output metadata/evidence under the v2 instance artifact directory.",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "metadata",
+        "--offline",
+        "--format-version",
+        "1"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "CARGO_HOME": "/Users/doughnut/.cargo",
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin"
+      },
+      "stdout_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-unlocked.json",
+      "stderr_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-unlocked.stderr.log",
+      "oracle": "Offline metadata resolves exactly the reviewed graph. Compare package name/version/source to baseline metadata, and compare the resulting lock against the parent baseline lock including source/checksum; record command receipt and output hashes."
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "metadata",
+        "--offline",
+        "--locked",
+        "--format-version",
+        "1"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "CARGO_HOME": "/Users/doughnut/.cargo",
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin"
+      },
+      "stdout_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-locked.json",
+      "stderr_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-locked.stderr.log",
+      "oracle": "Offline locked replay succeeds without changing Cargo.lock and has the same resolved graph as unlocked metadata."
+    },
+    {
+      "argv": [
+        "python3",
+        "-c",
+        "import collections,json,pathlib,subprocess,tomllib\nr=pathlib.Path('.')\nbm=json.load(open('/tmp/careops-e22-parent-before-dependencies-metadata-20261012.json'))\nam=json.load(open('.artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-locked.json'))\ndef mi(p): return (p['name'],p['version'],p.get('source'))\nbmc=collections.Counter(map(mi,bm['packages'])); amc=collections.Counter(map(mi,am['packages']))\nreg='registry+https://github.com/rust-lang/crates.io-index'\nexpected_meta=collections.Counter({('kairo-ecs-des','0.1.0',None):1,('kairo-ecs-abm','0.1.0',None):1,('kairo-ecs-state','0.0.0',None):1,('thiserror','2.0.20',reg):1,('thiserror-impl','2.0.20',reg):1})\nassert not (bmc-amc),f'baseline metadata identities removed/changed: {list((bmc-amc).items())}'\nassert amc-bmc==expected_meta,f'unexpected metadata identity additions: {list((amc-bmc).items())}'\nbase_lock=tomllib.loads(subprocess.check_output(['git','show','f39fb9a173d06f426507a58fee5c3934e0dcd71b:Cargo.lock'],text=True))\nfinal_lock=tomllib.loads((r/'Cargo.lock').read_text())\ndef li(p): return (p['name'],p['version'],p.get('source'),p.get('checksum'))\nbc=collections.Counter(map(li,base_lock['package'])); ac=collections.Counter(map(li,final_lock['package']))\nexpected_lock=collections.Counter({('kairo-ecs-des','0.1.0',None,None):1,('kairo-ecs-abm','0.1.0',None,None):1,('kairo-ecs-state','0.0.0',None,None):1,('thiserror','2.0.20',reg,'ec86235f5fcc2a73650310756d2ac5b138a5780bbbdfae3eeccec992c435ba4f'):1,('thiserror-impl','2.0.20',reg,'bc04cd3e1236dd4a98afca4569f2deb3f120e5422a4023be2cb683f8486292af'):1})\nassert not (bc-ac),f'baseline lock identities/checksums removed or changed: {list((bc-ac).items())}'\nassert ac-bc==expected_lock,f'unexpected lock identity/checksum additions: {list((ac-bc).items())}'\nrootm=tomllib.loads((r/'Cargo.toml').read_text()); edm=tomllib.loads((r/'crates/careops-ed/Cargo.toml').read_text())\nfor n in ('kairo-ecs-des','kairo-ecs-abm'): assert rootm['workspace']['dependencies'][n]['path']==f'libs/kairos/crates/{n}' and edm['dependencies'][n]['workspace'] is True\npkgs={p['id']:p for p in am['packages']}; edid=next(i for i,p in pkgs.items() if p['name']=='careops-ed' and p['version']=='0.1.0'); node=next(x for x in am['resolve']['nodes'] if x['id']==edid); edges={pkgs[d['pkg']]['name']:pkgs[d['pkg']] for d in node['deps']}\nfor n in ('kairo-ecs-des','kairo-ecs-abm'): assert n in edges and edges[n]['version']=='0.1.0' and edges[n].get('source') is None\nassert collections.Counter(map(mi,am['packages']))==collections.Counter(map(mi,json.load(open('.artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-unlocked.json'))['packages']))\npin=subprocess.check_output(['git','-C','libs/kairos','rev-parse','HEAD'],text=True).strip(); assert pin=='832dfb159981f7bd5041e636a7c4d609b2bd6e9c',pin\nprint(json.dumps({'baseline_metadata_packages':sum(bmc.values()),'final_metadata_packages':sum(amc.values()),'baseline_lock_rows':sum(bc.values()),'final_lock_rows':sum(ac.values()),'new_package_names':['kairo-ecs-des','kairo-ecs-abm','kairo-ecs-state','thiserror','thiserror-impl'],'careops_ed_edges':{n:edges[n]['id'] for n in ('kairo-ecs-des','kairo-ecs-abm')},'kairos_pin':pin},sort_keys=True))"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Metadata comparison is name/version/source only; actual Cargo.lock comparison retains every package/source/checksum from git show f39fb9a:Cargo.lock and adds exactly the three local Kairos packages plus thiserror/thiserror-impl with accepted checksums. Resolve careops-ed dependency targets through metadata package IDs (dependency name underscore normalization is irrelevant), verify exact workspace paths and workspace=true edges, and verify unchanged Kairos submodule pin."
+    }
+  ],
+  "acceptance": [
+    "One authoritative state; no duplicate transit or animation-driven time",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root",
+    "reservation_id": "root-e22-adapter-dependencies-20261012-v2",
+    "instance_id": "dependency-20261012-v2",
+    "instance_scope": "Add only the reviewed parent workspace and careops-ed dependency edges for Kairos DES and ABM at the accepted 832dfb159981f7bd5041e636a7c4d609b2bd6e9c pin, then resolve the parent lockfile with exactly five package additions and preserve every baseline package identity/checksum. No adapter implementation, engine edits, or ED E2 acceptance.",
+    "instance_set": [
+      "dependency-20261012-v2"
+    ],
+    "interface_contract": "Owned source writes are exactly Cargo.toml, crates/careops-ed/Cargo.toml, and Cargo.lock. Add kairo-ecs-des and kairo-ecs-abm workspace path dependencies and matching workspace=true dependencies. Keep Rust 1.99.0, CARGO_HOME=/Users/doughnut/.cargo, existing parent registry package identities/checksums, exact thiserror 2.0.20 identities/checksums, and Kairos pin 832dfb159981f7bd5041e636a7c4d609b2bd6e9c. Stop on network need, any old identity/checksum change, unexpected addition, or pin drift. Output metadata/evidence under the v2 instance artifact directory.",
+    "context_slices": [
+      {
+        "path": "conductor/design/ed/e2-flow-adapter-dependencies.md",
+        "start": 1,
+        "end": 11
+      },
+      {
+        "path": "Cargo.toml",
+        "start": 19,
+        "end": 25
+      },
+      {
+        "path": "crates/careops-ed/Cargo.toml",
+        "start": 1,
+        "end": 13
+      },
+      {
+        "path": "Cargo.lock",
+        "start": 172,
+        "end": 204
+      },
+      {
+        "path": "Cargo.lock",
+        "start": 310,
+        "end": 348
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-des/Cargo.toml",
+        "start": 1,
+        "end": 14
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-abm/Cargo.toml",
+        "start": 1,
+        "end": 17
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "crates/kairo-ecs-state/Cargo.toml",
+        "start": 1,
+        "end": 14
+      },
+      {
+        "repo": "libs/kairos",
+        "path": "Cargo.lock",
+        "start": 1252,
+        "end": 1270
+      },
+      {
+        "path": "conductor/evidence/e2.2-dispatch-policy-completion-20261011/acceptance.json",
+        "start": 1,
+        "end": 34
+      }
+    ],
+    "input_paths": [
+      "conductor/evidence/e2.2-dispatch-policy-completion-20261011/acceptance.json"
+    ],
+    "write_paths": [
+      "Cargo.toml",
+      "crates/careops-ed/Cargo.toml",
+      "Cargo.lock",
+      ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/result.json",
+      ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+          "metadata",
+          "--offline",
+          "--format-version",
+          "1"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "env": {
+          "CARGO_HOME": "/Users/doughnut/.cargo",
+          "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin"
+        },
+        "stdout_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-unlocked.json",
+        "stderr_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-unlocked.stderr.log",
+        "oracle": "Offline metadata resolves exactly the reviewed graph. Compare package name/version/source to baseline metadata, and compare the resulting lock against the parent baseline lock including source/checksum; record command receipt and output hashes."
+      },
+      {
+        "argv": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+          "metadata",
+          "--offline",
+          "--locked",
+          "--format-version",
+          "1"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "env": {
+          "CARGO_HOME": "/Users/doughnut/.cargo",
+          "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin"
+        },
+        "stdout_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-locked.json",
+        "stderr_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-locked.stderr.log",
+        "oracle": "Offline locked replay succeeds without changing Cargo.lock and has the same resolved graph as unlocked metadata."
+      },
+      {
+        "argv": [
+          "python3",
+          "-c",
+          "import collections,json,pathlib,subprocess,tomllib\nr=pathlib.Path('.')\nbm=json.load(open('/tmp/careops-e22-parent-before-dependencies-metadata-20261012.json'))\nam=json.load(open('.artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-locked.json'))\ndef mi(p): return (p['name'],p['version'],p.get('source'))\nbmc=collections.Counter(map(mi,bm['packages'])); amc=collections.Counter(map(mi,am['packages']))\nreg='registry+https://github.com/rust-lang/crates.io-index'\nexpected_meta=collections.Counter({('kairo-ecs-des','0.1.0',None):1,('kairo-ecs-abm','0.1.0',None):1,('kairo-ecs-state','0.0.0',None):1,('thiserror','2.0.20',reg):1,('thiserror-impl','2.0.20',reg):1})\nassert not (bmc-amc),f'baseline metadata identities removed/changed: {list((bmc-amc).items())}'\nassert amc-bmc==expected_meta,f'unexpected metadata identity additions: {list((amc-bmc).items())}'\nbase_lock=tomllib.loads(subprocess.check_output(['git','show','f39fb9a173d06f426507a58fee5c3934e0dcd71b:Cargo.lock'],text=True))\nfinal_lock=tomllib.loads((r/'Cargo.lock').read_text())\ndef li(p): return (p['name'],p['version'],p.get('source'),p.get('checksum'))\nbc=collections.Counter(map(li,base_lock['package'])); ac=collections.Counter(map(li,final_lock['package']))\nexpected_lock=collections.Counter({('kairo-ecs-des','0.1.0',None,None):1,('kairo-ecs-abm','0.1.0',None,None):1,('kairo-ecs-state','0.0.0',None,None):1,('thiserror','2.0.20',reg,'ec86235f5fcc2a73650310756d2ac5b138a5780bbbdfae3eeccec992c435ba4f'):1,('thiserror-impl','2.0.20',reg,'bc04cd3e1236dd4a98afca4569f2deb3f120e5422a4023be2cb683f8486292af'):1})\nassert not (bc-ac),f'baseline lock identities/checksums removed or changed: {list((bc-ac).items())}'\nassert ac-bc==expected_lock,f'unexpected lock identity/checksum additions: {list((ac-bc).items())}'\nrootm=tomllib.loads((r/'Cargo.toml').read_text()); edm=tomllib.loads((r/'crates/careops-ed/Cargo.toml').read_text())\nfor n in ('kairo-ecs-des','kairo-ecs-abm'): assert rootm['workspace']['dependencies'][n]['path']==f'libs/kairos/crates/{n}' and edm['dependencies'][n]['workspace'] is True\npkgs={p['id']:p for p in am['packages']}; edid=next(i for i,p in pkgs.items() if p['name']=='careops-ed' and p['version']=='0.1.0'); node=next(x for x in am['resolve']['nodes'] if x['id']==edid); edges={pkgs[d['pkg']]['name']:pkgs[d['pkg']] for d in node['deps']}\nfor n in ('kairo-ecs-des','kairo-ecs-abm'): assert n in edges and edges[n]['version']=='0.1.0' and edges[n].get('source') is None\nassert collections.Counter(map(mi,am['packages']))==collections.Counter(map(mi,json.load(open('.artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/metadata-unlocked.json'))['packages']))\npin=subprocess.check_output(['git','-C','libs/kairos','rev-parse','HEAD'],text=True).strip(); assert pin=='832dfb159981f7bd5041e636a7c4d609b2bd6e9c',pin\nprint(json.dumps({'baseline_metadata_packages':sum(bmc.values()),'final_metadata_packages':sum(amc.values()),'baseline_lock_rows':sum(bc.values()),'final_lock_rows':sum(ac.values()),'new_package_names':['kairo-ecs-des','kairo-ecs-abm','kairo-ecs-state','thiserror','thiserror-impl'],'careops_ed_edges':{n:edges[n]['id'] for n in ('kairo-ecs-des','kairo-ecs-abm')},'kairos_pin':pin},sort_keys=True))"
+        ],
+        "cwd": ".",
+        "expected_exit": 0,
+        "oracle": "Metadata comparison is name/version/source only; actual Cargo.lock comparison retains every package/source/checksum from git show f39fb9a:Cargo.lock and adds exactly the three local Kairos packages plus thiserror/thiserror-impl with accepted checksums. Resolve careops-ed dependency targets through metadata package IDs (dependency name underscore normalization is irrelevant), verify exact workspace paths and workspace=true edges, and verify unchanged Kairos submodule pin."
+      }
+    ],
+    "prerequisite_receipts": {
+      "E2.2.dispatch": {
+        "status": "accepted",
+        "reviewer": "root and GPT-6.1-sol",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/e2.2-dispatch-policy-completion-20261011/acceptance.json": "3083d493a030541862443f0743cb3729f8bf60331cb761a8ce28fa3c42399590"
+        }
+      }
+    },
+    "reviewed_recipe_sha256": "18383eeb7ab3e598e4bae13497cdc696c2aa30ac2f71c285a0542db04d7614b2"
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "ede7e318d02958c427d1381ab9a3cae6318ccd41a151f3b3b4fe74020afea119",
+    "conductor/design/ed/e2-flow-adapter-dependencies.md": "3bb4324fdb12b906e2e48b1a35f8463d29969cb19f35ccda4e0e473b68f39882",
+    "Cargo.toml": "ea8549f39166ff09cdf63b7d3f2ef4226ecbe929a61f061dcfb3be988ab3df48",
+    "crates/careops-ed/Cargo.toml": "19674824de350de9d11a40c4ef970bfc259ad62bc3b76b3a80b6e578b3b94abd",
+    "Cargo.lock": "7584401156344be95139f6a5db70a7be57a10155aae688f901c66bbd2f4adad6",
+    "libs/kairos/crates/kairo-ecs-des/Cargo.toml": "9f5a852926de2bb795da29f203d2101bbedc5f712f65197c5d5812fe011df816",
+    "libs/kairos/crates/kairo-ecs-abm/Cargo.toml": "af495c37b2c3dfa6b40d85863933adf647feec0691a5bd26a01e22f1285714cd",
+    "libs/kairos/crates/kairo-ecs-state/Cargo.toml": "42e3f87130e340e0980b752fb492acabed9da25a9c8a385dea13a059f45abf4a",
+    "libs/kairos/Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "conductor/evidence/e2.2-dispatch-policy-completion-20261011/acceptance.json": "3083d493a030541862443f0743cb3729f8bf60331cb761a8ce28fa3c42399590",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}

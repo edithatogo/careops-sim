@@ -1,0 +1,76 @@
+{
+  "status": "ready_for_independent_review_no_commit",
+  "task": "E2.2.fidelity.dependency-20261012-v2",
+  "base_head": "f39fb9a173d06f426507a58fee5c3934e0dcd71b",
+  "current_head": "f39fb9a173d06f426507a58fee5c3934e0dcd71b",
+  "changed_source_paths": [
+    "Cargo.toml",
+    "crates/careops-ed/Cargo.toml",
+    "Cargo.lock"
+  ],
+  "source_sha256": {
+    "Cargo.toml": "072c77943fc2fb13675729fd4e99151420f03243717196ba897b39b16b561255",
+    "crates/careops-ed/Cargo.toml": "8ccd56f2ef557256d9ca16f178b0663c8f15c6184b6c03e5d38a4bc096ddb5cb",
+    "Cargo.lock": "a650a174fd9e0ea3838c64842eb14a9d766374103b6bf22e2d871b70ec6a4dd3"
+  },
+  "change_summary": "Added Kairos DES and ABM workspace dependency declarations and careops-ed workspace edges. Offline lock resolution adds exactly kairo-ecs-des 0.1.0, kairo-ecs-abm 0.1.0, kairo-ecs-state 0.0.0, thiserror 2.0.20, and thiserror-impl 2.0.20; baseline package identities/checksums preserved. Cargo lock format changed v3 to v4 under Rust 1.99; root explicitly approved retaining v4 for this Rust-1.99-only project.",
+  "kairos_pin": "832dfb159981f7bd5041e636a7c4d609b2bd6e9c",
+  "toolchain": {
+    "cargo": "1.99.0",
+    "rustc": "1.99.0",
+    "CARGO_HOME": "/Users/doughnut/.cargo"
+  },
+  "verification_receipts": {
+    "identity-audit": {
+      "exit_code": 1,
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+      "head": "f39fb9a173d06f426507a58fee5c3934e0dcd71b",
+      "start_utc": "2026-10-12T04:40:41.536122+00:00",
+      "end_utc": "2026-10-12T04:40:41.645639+00:00",
+      "stdout_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/identity-audit.json",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/identity-audit.stderr.log",
+      "stderr_sha256": "5e47078c9c1b2e05d625430b321744f8eb38dc78f58ffcae4a9bae827e3acd6d",
+      "argv_summary": "packet oracle; interpreter PATH-selected (failed tomllib import)"
+    },
+    "identity-audit-retry1": {
+      "exit_code": 0,
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+      "head": "f39fb9a173d06f426507a58fee5c3934e0dcd71b",
+      "start_utc": "2026-10-12T04:41:12.610618+00:00",
+      "end_utc": "2026-10-12T04:41:12.714533+00:00",
+      "stdout_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/identity-audit-retry1.json",
+      "stdout_sha256": "bfbe3ae5e39b9245eab3b0eb713dc8cbba0318e7fa0a0a284364ba49b0107e35",
+      "stderr_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/identity-audit-retry1.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "argv_summary": "packet oracle; inherited PATH interpreter (passed; variation not preauthorized)"
+    },
+    "identity-audit-v2": {
+      "exit_code": 0,
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+      "head": "f39fb9a173d06f426507a58fee5c3934e0dcd71b",
+      "start_utc": "2026-10-12T04:42:08.960570+00:00",
+      "end_utc": "2026-10-12T04:42:09.091236+00:00",
+      "stdout_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/identity-audit-v2.json",
+      "stdout_sha256": "bfbe3ae5e39b9245eab3b0eb713dc8cbba0318e7fa0a0a284364ba49b0107e35",
+      "stderr_path": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/identity-audit-v2.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "argv_summary": "packet oracle; authorized argv[0]=/opt/homebrew/opt/python@3.15/bin/python3.15 (passed)"
+    }
+  },
+  "audit_history_disclosure": "The initial oracle attempt failed because PATH selected /usr/bin/python3 without tomllib; failure receipt retained. A successful inherited-PATH retry also exists, but its interpreter variation was not preauthorized and is disclosed as such. Root then authorized identity-audit-v2: identical oracle code and environment, only argv[0] changed to /opt/homebrew/opt/python@3.15/bin/python3.15; it passed. Packet/history were not rewritten.",
+  "packet_immutable": true,
+  "reservation_scope_correction": "Initial v1 claim omitted the separate packet output; no source write occurred under it. It was released, and the v2 claim covered both packet and artifact paths before source edits.",
+  "authorization": "Root approved Cargo.lock format v4 and the supplemental identity-audit-v2 interpreter-only command amendment.",
+  "not_performed": [
+    "tests",
+    "commit",
+    "source changes beyond the three dependency files"
+  ],
+  "ready_for_root_review": true,
+  "verification_receipt_files": {
+    "identity-audit": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/identity-audit.receipt.json",
+    "identity-audit-retry1": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/identity-audit-retry1.receipt.json",
+    "identity-audit-v2": ".artifacts/mvp/E2.2.fidelity.dependency-20261012-v2/logs/identity-audit-v2.receipt.json"
+  }
+}
