@@ -1,0 +1,143 @@
+Final joined four-package qualification at 832dfb159981f7bd5041e636a7c4d609b2bd6e9c
+Preparation only; root packet review/external authority and execution claim required. Tests -> Clippy -> format; stop ANY failed execution, no rerun. No source writes; parent pin remains separate.
+
+# Repository agent guide
+
+KairoECS is a Rust-native discrete-event and agent-based simulation library with
+multiple language bindings. Keep engine contracts, replay determinism, and
+security boundaries explicit in every change.
+
+## Start here
+
+- Read `README.md` and `CONTRIBUTING.md` for project workflow and contribution rules.
+- Read `SECURITY.md` before changing CI, dependencies, FFI, publishing, or artifact handling.
+- Use `conductor/workflow.md`, `conductor/track-map.md`, and `conductor/tracks.yaml` to find the active owner and acceptance gates.
+- Check `conductor/subagents.md` and the selected track's `spec.md`, `plan.md`, and `test-matrix.md` before changing owned paths.
+
+## Change and validation rules
+
+- Keep patches within the selected track's ownership contract; hand off before crossing owners.
+- Preserve deterministic scheduling and shared conformance contracts. Public API, ABI, schema, or fixture changes require the review steps in `CONTRIBUTING.md`.
+- Run `just ci` as the one-command Rust validation lane. It uses one coverage-instrumented workspace test pass, checks the core coverage floor, and runs formatting, lint, docs, and dependency policy checks.
+- Run `just quality-drift` for a fresh read-only GitHub settings/source readback. It writes `artifacts/quality-frontier-drift.json`; `pass`, `drift`, `pending`, and `unavailable` remain distinct, and non-pass results exit nonzero.
+- For a narrower change, run the smallest relevant validator and report skipped checks. A local pass is not evidence of a hosted Actions run or release acceptance.
+- Record command, working directory, commit, toolchain, deterministic seed/input hash where applicable, exit status, and artifact path for validation claims.
+- Keep secrets and private vulnerability details out of source and public CI artifacts. Do not publish packages, create releases, or change protected branch settings as an implicit consequence of a passing test.
+
+
+# Final joined consumer qualification: reviewed-input preparation
+
+Preparation only; do not execute before all three consumer sources have been independently accepted and their claims released.
+
+Join accepted preview, coherent Acquire and portable Handoff commits in deterministic order on the clean accepted engine union 37985780b592e22076d8ef33249ccf03c259388a. Verify each accepted result's source hashes against the joined tree, preserving seven routing/compatibility and four ABM direct-wire source hashes. The parent Kairos pin remains 6d733f489225da4bf6ceec2673b02369c7918bbe until final acceptance.
+
+Bind a new clean-head artifact-only packet: exact joined HEAD, all accepted source hashes, owner contracts, accepted results and their raw manifests. No source writes. Rust/Cargo 1.99.0 only. Final gate order: four-package full tests, four-package all-target strict Clippy, exact union-source rustfmt. Packages core, DES, ABM and calibration; feature kairo-ecs-calibration/flow; tests serialized with --test-threads=1. Capture actual versions/argv/cwd/start/end/source hashes and pair every receipt to raw logs. Stop on every failure for owner review; no inherited passing receipt substitutes for this run.
+
+The full test gate must prove all eight preview, six coherent and three portable names plus inherited suite evidence. Use the accepted portable lane's frozen proof-parser implementation (bound by its driver hash) to avoid maintaining a divergent copy. Evaluate it with the joined ROOT and the current final process artifact directory, preserving its actual 33 unique child records, four V3 decoded child-trace joins/proof-file hashes, 19 literal golden mappings and actual raw envelope hashes. Its lane-specific command runner/authority is not invoked. Bind the parser's accepted packet evidence and exact source baseline. Independently review this adaptation before execution. Route every child artifact into the final packet's claimed logs.
+
+Do not predeclare full suite counts. Parse actual raw terminal summaries and exact success names, preserve ignored tests as ignored, and verify no missing required family. Source/checksum parity is not clinical, empirical, hosted CI or release acceptance.
+
+After durable final acceptance: update parent pin in its own narrow claim; then finalize the parent one-Flow ED adapter/Handoff provenance contract. Use accepted StableKey ordering and public Handoff arrival observation instead of the stale rank-priority workaround. Preserve E1 admitted input range, seed/sample lineage and outputs. Resolve checked event-class budgets and finite closure phases from actual source before dispatch. Shared seam/migration is serial; later staff32/interruption24/space32 fixture bindings are disjoint parallel leaves. Existing quiet continuation heartbeat remains sufficient; no duplicate hooks.
+
+
+Five actual accepted predecessor bindings:
+{
+  "routing": {
+    "acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-flow-v4-routing-completion-20261012/acceptance.json",
+    "acceptance_sha256": "c55ad56db1432ddedc40772316ee392bc095b878629ae29d922e60418ee42ec7",
+    "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-flow-v4-routing-completion-20261012/result.json",
+    "final_result_sha256": "7f417e2dc180058e0a82db6a759530586a67e5d264a9bbd03c96efde2cdabea4",
+    "expected_acceptance_status": "accepted_flow_v4_routing_source_only",
+    "accepted_commit": "81eb3a7703e1524ccf19c63981a44e237691ab02"
+  },
+  "abm": {
+    "acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-transit-v2-direct-wire-completion-20261012/acceptance.json",
+    "acceptance_sha256": "93146d00a4aba0633433d6bd9e1a7c0bde62e3f44df9284c4c446f1f5d4bce8d",
+    "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-transit-v2-direct-wire-completion-20261012/result.json",
+    "final_result_sha256": "99c59f5842cd706c2282b30c2101c7f99b8326264ce4607ea841741f0cf73ddb",
+    "expected_acceptance_status": "accepted_transit_v2_direct_wire_source_only",
+    "accepted_commit": "92735f04573a2d66dee8a789827ac235f7f41034"
+  },
+  "preview": {
+    "acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v4-preview-completion-20261012/acceptance.json",
+    "acceptance_sha256": "e2f0a46f39eb6b03f90d4c74a4d062e7f376b34b53374c5f569299214f01236e",
+    "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v4-preview-completion-20261012/result.json",
+    "final_result_sha256": "5975fba8fa5e1a6c5ef41f7f14924b5e3b8c919b69ed0131b00506283ac2ba75",
+    "expected_acceptance_status": "accepted_v4_preview_source_only",
+    "accepted_commit": "07c3584f99b42382ab2d0f5b1b0d00fc66c1f0a1"
+  },
+  "coherent": {
+    "acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v4-coherent-completion-20261012/acceptance.json",
+    "acceptance_sha256": "81bbec59efd90042a52dc4b9b5dbf1c6bb68d1bd521d56111a7c1c4961d96193",
+    "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v4-coherent-completion-20261012/result.json",
+    "final_result_sha256": "fc8ba2e983a5e86aa4cb94272962297f3399681ecca3d191e573bc4ec0be1610",
+    "expected_acceptance_status": "accepted_v4_coherent_source_only",
+    "accepted_commit": "da5899a5f9402e90b455c54ba93d9cc4cb4448d1"
+  },
+  "portable": {
+    "acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v4-portable-completion-20261012/acceptance.json",
+    "acceptance_sha256": "4ea696ac47a46b9c3ee26fd5e1166373dd15b9d91c0501a60f7d810de43bd701",
+    "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v4-portable-completion-20261012/result.json",
+    "final_result_sha256": "6793acf28f1816935bd842e5640f5ddd95aef61f1d5abcddaf4b54620e055ce0",
+    "expected_acceptance_status": "accepted_v4_portable_source_only",
+    "accepted_commit": "a9f2dd80ac5a4c1f39e35046ef7119797cf404a5"
+  }
+}
+
+Frozen source union16:
+{
+  "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "33c549e872126f69a45481407533d59e51bf04c1a84fa44fd6833c100e7a6be4",
+  "crates/kairo-ecs-des/src/flow/checkpoint.rs": "78103349cae24fa76d6145eb84927d50a79cbfe856412fbfdddecc5dcd868238",
+  "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "79a605b608ee6d3b8a80ef909e9edcb54c6b6cfb13483387d8e089638ba81446",
+  "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs": "c464d4ac56d2c9e00bebf06fdce2b504e306b7625198c546c32a0dc6305096d9",
+  "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs": "f2a7c127ed71a9e0049ea8098dd43216c1fff5cf29bb2ca8a0ea12524e86e4f1",
+  "crates/kairo-ecs-des/tests/flow_preview_v1.rs": "9cf6d586a6ebc50d26bfd4c39b4fcb1899fb14209a963ffcc83e6b2e15cb8bd2",
+  "crates/kairo-ecs-des/tests/flow_queue_order_v1.rs": "77dc1bf6e187a4e068afcc5983b6640a1e92bdb52b2b39679d2e2e8fce8aa640",
+  "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+  "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+  "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+  "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "08ea01e0f8114643912a02e72d16b4c66483c7841ed80fa4b144415a6aa49030",
+  "crates/kairo-ecs-calibration/src/shadow_native.rs": "ffb64703dfbbf73a03363ee6cb7d01e625fcecf3df7e30271ce38b2b0415f7f5",
+  "crates/kairo-ecs-calibration/src/c5_native.rs": "a51b25811d9603fca370c51b5ef6e3bcc04ff07b77d56b0c637bb96fb8ef77b8",
+  "crates/kairo-ecs-calibration/src/flow_bridge.rs": "a3144c5c662337a9efd5dcf1b6d9c0062576f26be906a88e0c33da084047627e",
+  "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs": "a4621a393039d9549e8ed1806f5f61f55adccdaedc3fe66334add4e38dbe720d",
+  "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "73805aa316ecc0b67a4b39cfd50ff5d75466dc568f3ec89b91e6ed67a092b4cb"
+}
+
+Exact required success names36:
+routing_v4_empty_stable_resource_selects_before_capture
+routing_v4_all_keyed_lifetimes_and_removed_generation
+routing_v4_ref_borrowed_accessors_and_commands_complete
+routing_v4_image_direct_native_restore_suffix_equal
+routing_v4_image_wire_magic_roundtrip
+routing_v4_corrupt_source_and_limits_never_fallback
+routing_v4_legacy_minimal_selection_unchanged
+routing_v4_old_direct_capture_remains_failclosed
+queue_order_legacy_capture_fails_before_codec_for_all_key_lifetimes
+transit_v2_wire_actual_ready_moving_roundtrip
+transit_v2_wire_paused_resume_suffix
+transit_v2_wire_arrived_binding_and_suppression
+transit_v2_wire_resume_witness_live_stale_noop
+transit_v2_wire_literal_bytes_and_v1_compatibility
+transit_v2_wire_exact_total_budget_real_rebind
+transit_v2_wire_count_text_and_checked_size_limits
+transit_v2_wire_malformed_tags_truncation_and_trailing
+transit_v2_wire_owner_reference_ticket_rejection
+transit_v2_wire_codec_schema_and_remaining_budget
+preview_v4_deferred_pending_flush_shadow
+preview_v4_deferred_pending_flush_c5
+preview_v4_disabled_pending_submit_shadow
+preview_v4_disabled_pending_submit_c5
+preview_v4_repeated_halt_shadow
+preview_v4_repeated_halt_c5
+preview_v4_stale_completion_and_limits_shadow
+preview_v4_stale_completion_and_limits_c5
+coherent_v4_v2_acquire_transit_controls_owned_mutations
+coherent_v4_v2_acquire_arrived_pending_submit
+coherent_v4_v2_acquire_observed_frontier_required
+coherent_v4_v2_acquire_manifest_and_action_failclosed
+coherent_v4_v2_acquire_limits_no_fallback
+coherent_v4_legacy_acquire_v1_bytes_unchanged
+portable_v4_handoff_seven_fresh_process_cases
+portable_v4_handoff_schema2_rebind_negative_controls
+portable_v4_handoff_schema2_caps_and_no_fallback
