@@ -31,9 +31,21 @@ class D34CiTests(unittest.TestCase):
         self.assertNotIn("if:", step)
         self.assertIn("rustup toolchain install 1.99.0 --profile minimal", step)
         self.assertIn(
-            "cargo +1.99.0 build --locked --release --package careops-ed-cli",
+            "cargo build --locked --release --package careops-ed-cli",
             step,
         )
+        for binding in (
+            'rustc_path="$(rustup which rustc --toolchain 1.99.0)"',
+            'rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"',
+            'cargo_path="$(rustup which cargo --toolchain 1.99.0)"',
+            'toolchain_bin="$(dirname "$rustc_path")"',
+            'export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"',
+            'test "$(command -v rustc)" = "$rustc_path"',
+            'test "$(command -v rustdoc)" = "$rustdoc_path"',
+            'test "$(command -v cargo)" = "$cargo_path"',
+        ):
+            with self.subTest(binding=binding):
+                self.assertIn(binding, step)
         self.assertIn(
             "python3 tools/ed_benchmarks.py --binary target/release/careops-ed "
             "--output .artifacts/ci/d34/report.json",

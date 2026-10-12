@@ -1,0 +1,212 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling serde_core v1.0.229
+   Compiling kairo-ecs-types v0.0.0 (/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim/libs/kairos/crates/kairo-ecs-types)
+   Compiling libc v0.2.189
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling cfg-if v1.0.5
+   Compiling kairo-ecs-core v0.0.0 (/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim/libs/kairos/crates/kairo-ecs-core)
+   Compiling getrandom v0.3.4
+   Compiling zerocopy v0.8.59
+   Compiling autocfg v1.5.1
+   Compiling num-traits v0.2.19
+   Compiling version_check v0.9.5
+   Compiling lazy_static v1.5.1
+   Compiling bitflags v2.13.2
+   Compiling generic-array v0.14.7
+   Compiling typenum v1.20.1
+   Compiling unarray v0.1.4
+   Compiling regex-syntax v0.8.11
+   Compiling kairo-ecs-rng v0.0.0 (/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim/libs/kairos/crates/kairo-ecs-rng)
+   Compiling cpufeatures v0.2.17
+   Compiling rand_core v0.9.5
+   Compiling careops-sim v0.1.0 (/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim)
+   Compiling rand v0.9.5
+   Compiling rand_xorshift v0.4.0
+   Compiling syn v3.0.6
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling digest v0.10.7
+   Compiling sha2 v0.10.9
+   Compiling serde_derive v1.0.229
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.9.0
+   Compiling proptest v1.8.0
+   Compiling careops-ed v0.1.0 (/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim/crates/careops-ed)
+   Compiling careops-ed-cli v0.1.0 (/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim/crates/careops-ed-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.27s
+     Running unittests src/lib.rs (.artifacts/rust199-ci-foundation/target/debug/deps/careops_ed-40574a6e99769897)
+
+running 3 tests
+test tests::accepted_e01_synthetic_case_maps_to_the_e0_single_work_slice ... ok
+test tests::repeated_runs_are_identical ... ok
+test tests::processes_completion_at_the_horizon_and_leaves_late_work_unfinished ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/d34_scheduler_bounds.rs (.artifacts/rust199-ci-foundation/target/debug/deps/d34_scheduler_bounds-85d0da972aa9f6fd)
+
+running 3 tests
+test cancel_removes_a_scheduled_event_once_and_keeps_live_order ... ok
+test ed_rejects_zero_duration_work_without_claiming_graceful_cancellation ... ok
+test same_tick_work_stops_at_budget_and_continues_on_the_next_call ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/d3_display_regression.rs (.artifacts/rust199-ci-foundation/target/debug/deps/d3_display_regression-6b8f57638dd02f14)
+
+running 1 test
+test simulation_error_display_preserves_validation_context ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/d3_regressions.rs (.artifacts/rust199-ci-foundation/target/debug/deps/d3_regressions-cbd61849938bea27)
+
+running 4 tests
+test horizon_conserves_queued_and_running_work ... ok
+test seed_change_is_reported_without_inventing_stochastic_behavior ... ok
+test malformed_inputs_never_enter_the_runner ... ok
+test fifo_and_metric_accounting_match_an_independent_recurrence ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/d3_validator_mutation_regressions.rs (.artifacts/rust199-ci-foundation/target/debug/deps/d3_validator_mutation_regressions-9f4171a5fadb016b)
+
+running 10 tests
+test identifiers_must_be_nonempty_and_already_trimmed ... ok
+test profile_metadata_and_aggregate_shape_are_checked_one_field_at_a_time ... ok
+test resource_known_availability_requires_both_counts_and_no_reason ... ok
+test staff_count_status_requires_the_matching_value_and_reason ... ok
+test routes_require_resolved_locations_and_nonnegative_metre_distance ... ok
+test resource_unknown_availability_requires_null_counts_and_a_reason ... ok
+test resource_counts_enforce_positive_and_physical_boundaries ... ok
+test equipment_reason_rules_match_each_status ... ok
+test eligibility_and_required_resource_classes_are_checked_independently ... ok
+test aggregate_physical_and_availability_counts_have_distinct_status_rules ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/scenario_validation.rs (.artifacts/rust199-ci-foundation/target/debug/deps/scenario_validation-9af286ee66968bc3)
+
+running 7 tests
+test rejects_unsupported_schema_version_with_clear_diagnostic ... ok
+test rejects_unsupported_time_unit ... ok
+test rejects_zero_horizon_and_zero_work ... ok
+test rejects_bad_route_units_and_unknown_capacity ... ok
+test rejects_missing_required_inputs_and_extra_fields ... ok
+test rejects_nonpositive_capacity_and_unresolved_references ... ok
+test validates_optional_p0_equipment_status_and_reason ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (.artifacts/rust199-ci-foundation/target/debug/deps/careops_ed-1364a80537a5ef0a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (.artifacts/rust199-ci-foundation/target/debug/deps/careops_sim-29b5dc0178c2a937)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (.artifacts/rust199-ci-foundation/target/debug/deps/kairo_ecs_core-d9e663556e9b53e3)
+
+running 17 tests
+test tests::core_status_codes_match_the_ffi_contract ... ok
+test tests::cancellation_rejects_unknown_and_dispatched_events ... ok
+test tests::dispatches_by_time_priority_then_sequence ... ok
+test tests::cancelled_future_event_does_not_force_limit_after_active_events_finish ... ok
+test tests::cancellation_skips_event_without_reordering_rest ... ok
+test tests::facade_exposes_scheduler_stats_snapshot ... ok
+test tests::facade_maps_cancellation_and_limit_statuses ... ok
+test tests::facade_reports_invalid_priority_without_scheduling ... ok
+test tests::facade_schedules_steps_and_exposes_status_codes ... ok
+test tests::recording_scheduler_exposes_cancel_run_and_state ... ok
+test tests::run_for_is_bounded ... ok
+test tests::run_for_with_zero_limit_reports_limit_reached ... ok
+test tests::run_until_or_for_does_not_dispatch_past_time_limit_with_remaining_budget ... ok
+test tests::run_until_or_for_reports_limit_reached_when_event_budget_is_exhausted_first ... ok
+test tests::run_until_or_for_stops_on_bounds ... ok
+test tests::run_until_stops_at_time_limit ... ok
+test tests::scheduler_stats_track_scheduled_cancelled_dispatched_and_pending ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/conformance_fixtures.rs (.artifacts/rust199-ci-foundation/target/debug/deps/conformance_fixtures-a5ede5674839ea45)
+
+running 4 tests
+test conformance_rng_replay ... ok
+test conformance_zero_delay_guard ... ok
+test conformance_cancellation ... ok
+test conformance_deterministic_ordering ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/integration.rs (.artifacts/rust199-ci-foundation/target/debug/deps/integration-006e0b7026b4f38f)
+
+running 8 tests
+test test_empty_scheduler ... ok
+test test_cancel_then_schedule ... ok
+test test_trace_recorder ... ok
+test test_run_for_bounds ... ok
+test test_deterministic_replay ... ok
+test test_zero_delay_guard ... ok
+test test_run_until_bounds ... ok
+test test_large_event_count ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/scheduler_preview_v1.rs (.artifacts/rust199-ci-foundation/target/debug/deps/scheduler_preview_v1-6e57b9069d15c05e)
+
+running 7 tests
+test cancelled_heads_are_pruned_without_stats_or_time_changes ... ok
+test all_fields_and_copied_snapshot_match_exact_dispatch ... ok
+test cancelled_future_only_queue_is_empty_not_limit_reached ... ok
+test empty_preview_preserves_all_stats ... ok
+test preview_then_cancel_exposes_next_live_identity ... ok
+test ordering_is_time_then_priority_then_insertion_sequence ... ok
+test scheduling_can_change_preview_without_consuming_old_head ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/scheduler_properties.rs (.artifacts/rust199-ci-foundation/target/debug/deps/scheduler_properties-bc59d0c3a097fcc6)
+
+running 3 tests
+test repeated_equal_priority_events_keep_their_insertion_sequence ... ok
+test generated_events_follow_time_priority_and_insertion_order ... ok
+test generated_cancellations_remove_only_selected_events ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running unittests src/lib.rs (.artifacts/rust199-ci-foundation/target/debug/deps/kairo_ecs_rng-7405fdd4f13765b4)
+
+running 5 tests
+test tests::stream_replays_from_run_seed ... ok
+test tests::distinct_entity_inputs_diverge ... ok
+test tests::different_run_seeds_diverge ... ok
+test tests::entity_seed_is_reproducible ... ok
+test tests::entity_stream_replays_exactly ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (.artifacts/rust199-ci-foundation/target/debug/deps/kairo_ecs_types-27d34a9f4ae2d356)
+
+running 8 tests
+test tests::constructors_validate_wide_inputs ... ok
+test tests::request_construction_validates_priority_range ... ok
+test tests::handles_are_deterministically_ordered ... ok
+test tests::sim_time_checked_add_overflow_is_none ... ok
+test tests::sim_time_uses_fixed_ticks ... ok
+test tests::schedule_request_and_dispatch_are_stable_and_ordered ... ok
+test tests::step_outcome_accessors_work ... ok
+test tests::versioned_wrapper_carries_version_and_value ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

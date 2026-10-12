@@ -1,0 +1,308 @@
+{
+  "task": "rust199-foundation",
+  "status": "ready_for_review",
+  "source_commit": "f874f113763f35708eeb2f39ec61f303b18b0eae",
+  "source_paths": [
+    "Cargo.toml",
+    ".config/d33-quality-gates.json",
+    "tools/quality_support.py",
+    "tests/test_quality_support.py",
+    "conductor/decisions/ADR-0009-current-stable-rust-only.md"
+  ],
+  "source_hashes": [
+    {
+      "path": "Cargo.toml",
+      "digest_sha256": "5bf36d6e1db5f6c0ee37e21bf424d3b97aacd5eb014d611784521a98b7149343"
+    },
+    {
+      "path": ".config/d33-quality-gates.json",
+      "digest_sha256": "67056290d7f75bd0e8932c332501a0fcc1059d868b2a951ab55b0b11d8388ac5"
+    },
+    {
+      "path": "tools/quality_support.py",
+      "digest_sha256": "40224c5f142d1c2c306eebbd1b38e4e917b68a3e2ea31df8af099176839c7ab5"
+    },
+    {
+      "path": "tests/test_quality_support.py",
+      "digest_sha256": "4f26991e4b8447b1ee4e00cadcd9008b064af9e5e65497933fa71cfff9ba6110"
+    },
+    {
+      "path": "conductor/decisions/ADR-0009-current-stable-rust-only.md",
+      "digest_sha256": "b8b8994cec14039e8dae04f20b93aa688629dd8d2f31469ff42cca4801868ff2"
+    }
+  ],
+  "context_input_hashes": [
+    {
+      "path": ".config/d33-quality-gates.json",
+      "sha256": "67056290d7f75bd0e8932c332501a0fcc1059d868b2a951ab55b0b11d8388ac5"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "5bf36d6e1db5f6c0ee37e21bf424d3b97aacd5eb014d611784521a98b7149343"
+    },
+    {
+      "path": "conductor/decisions/ADR-0009-current-stable-rust-only.md",
+      "sha256": "b8b8994cec14039e8dae04f20b93aa688629dd8d2f31469ff42cca4801868ff2"
+    }
+  ],
+  "parent_kairos_pin": "2f69a3929706f4e4966e0b0a2ed5b7f6851a0b87",
+  "toolchain": {
+    "version": "1.99.0",
+    "path_precedence": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin",
+    "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+    "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+    "RUSTUP_TOOLCHAIN": "1.99.0"
+  },
+  "commands": [
+    {
+      "name": "quality_support_tests",
+      "argv": [
+        "/opt/homebrew/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_quality_support.py",
+        "-v"
+      ],
+      "cwd": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+      "exit_status": 0,
+      "log_path": "logs/1-quality-support-tests.log",
+      "log_sha256": "9c44d0aeae2b1e2850493420d6b104f95ae3a41946958d1220147a09d90a131a"
+    },
+    {
+      "name": "quality_support_check",
+      "argv": [
+        "/opt/homebrew/bin/python3",
+        "tools/quality_support.py",
+        "--root",
+        "."
+      ],
+      "cwd": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+      "exit_status": 0,
+      "log_path": "logs/2-quality-support-check.log",
+      "log_sha256": "e5c16cf08b07576286e3d4c1399a66f4aea0d48a5861a4c62355e00a2e7d82ad"
+    },
+    {
+      "name": "rust_1_99_workspace_tests",
+      "argv": [
+        "env",
+        "PATH=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/Users/doughnut/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin",
+        "RUSTUP_TOOLCHAIN=1.99.0",
+        "RUSTC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "CARGO_TARGET_DIR=.artifacts/rust199-foundation/target",
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--workspace",
+        "--locked"
+      ],
+      "cwd": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+      "exit_status": 0,
+      "log_path": "logs/3-rust-1.99-workspace-test.log",
+      "log_sha256": "493ae8d1cf61af98273a0e549953c70c53689b07c96df1082aaa7a7815191dbd"
+    }
+  ],
+  "notes": [
+    "Only Rust 1.99.0 was invoked.",
+    "No CI workflow, parent submodule source or pin, dependency/lockfile, source ED logic or task checkbox was changed.",
+    "Historical older-toolchain receipts were not rerun or rewritten."
+  ],
+  "quality_test_resolution": {
+    "tests_package_initializer_present": false,
+    "selected_command": "/opt/homebrew/bin/python3 -m unittest discover -s tests -p test_quality_support.py -v",
+    "reason": "tests is not an importable package; discovery targets only the packet test file"
+  },
+  "quality_test_summary": {
+    "passed": 21,
+    "failed": 0,
+    "skipped": 0,
+    "log_path": "logs/1-quality-support-tests.log"
+  },
+  "quality_policy_summary": {
+    "exit_status": 0,
+    "output": "Development support checks passed; semver comparison was not performed because no owner-approved stable API baseline exists.",
+    "log_path": "logs/2-quality-support-check.log"
+  },
+  "rust_workspace_summary": {
+    "toolchain": "1.99.0 only",
+    "suite_summaries": [
+      {
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s"
+      },
+      {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s"
+      },
+      {
+        "passed": 10,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 17,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 8,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s"
+      },
+      {
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s"
+      },
+      {
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 8,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      },
+      {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "raw": "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      }
+    ],
+    "total_passed": 80,
+    "total_failed": 0,
+    "total_ignored": 0,
+    "log_path": "logs/3-rust-1.99-workspace-test.log"
+  },
+  "scope_limits": {
+    "CI_workflows_changed": false,
+    "Kairos_submodule_source_or_pin_changed": false,
+    "dependencies_or_lockfile_changed": false,
+    "ED_logic_changed": false,
+    "task_checkbox_changed": false,
+    "whole_toolchain_policy_complete": false,
+    "hosted_CI_accepted": false,
+    "Miri_or_fuzz_verified": false
+  }
+}

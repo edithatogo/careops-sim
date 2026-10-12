@@ -4,10 +4,13 @@ import re
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
+
+from tools import ci_policy
 
 
 WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "ci.yml"
-LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "MSRV_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT", "POLICY_RESULT", "FUZZ_RESULT", "MIRI_RESULT")
+LANES = ("FMT_RESULT", "CLIPPY_RESULT", "TEST_RESULT", "DEFAULT_RESULT", "DOCTEST_RESULT", "CONTEXT_RESULT", "POLICY_RESULT")
 
 
 def workflow_job(workflow, name):
@@ -161,8 +164,8 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertNotEqual(inconsistent.returncode, 0)
 
     def test_native_failure_cannot_be_masked_by_log_capture(self):
-        native = WORKFLOW.read_text().split("  test:\n", 1)[1].split("  doctest:\n", 1)[0]
-        self.assertIn("set -o pipefail", native)
+        native = WORKFLOW.read_text().split("  test:\n", 1)[1].split("\n  default:\n", 1)[0]
+        self.assertIn("set -euo pipefail", native)
         result = subprocess.run(["bash", "-c", "set -o pipefail; false | tee /dev/null"], capture_output=True)
         self.assertNotEqual(result.returncode, 0)
 
@@ -313,10 +316,9 @@ class CiWorkflowTests(unittest.TestCase):
             with self.subTest(selector=selector):
                 self.assertIn(f"{selector}: ${{{{ steps.detect.outputs.{selector} }}}}", scope_job)
         self.assertIn("python3 tools/ci_scope.py --base", scope_job)
-        for job in ("fmt", "clippy", "test", "msrv", "fuzz", "miri", "doctest"):
+        for job in ("fmt", "clippy", "test", "default", "doctest"):
             with self.subTest(job=job):
-                section = workflow_job(workflow, job)
-                self.assertIn("if: needs.scope.outputs.native == 'true'", section)
+                self.assertIn("if: needs.scope.outputs.native == 'true'", workflow_job(workflow, job))
         for job in ("context", "policy"):
             section = workflow_job(workflow, job)
             self.assertIn(f"if: needs.scope.outputs.{job} == 'true'", section)
@@ -330,75 +332,25 @@ class CiWorkflowTests(unittest.TestCase):
         results[LANES.index("POLICY_RESULT")] = "skipped"
         self.assertNotEqual(run_aggregate("true", results, selectors).returncode, 0)
 
-    def test_fuzz_changes_are_in_scope_and_fuzz_is_required_fail_closed(self):
+    def test_nightly_runtime_jobs_are_removed_and_stable_fuzz_audit_remains(self):
         workflow = WORKFLOW.read_text()
-        self.assertIn("if: needs.scope.outputs.native == 'true'", workflow.split("  fuzz:\n", 1)[1].split("  miri:\n", 1)[0])
-        fuzz_job = workflow.split("  fuzz:\n", 1)[1].split("  doctest:\n", 1)[0]
-        self.assertIn("nightly-2026-10-02", fuzz_job)
-        self.assertIn("cargo-fuzz", fuzz_job)
-        self.assertIn("cargo install cargo-fuzz --version 0.13.2 --locked", fuzz_job)
-        self.assertNotIn("cargo +nightly-2026-10-02", fuzz_job)
-        self.assertIn("tee .artifacts/ci/fuzz/install.log", fuzz_job)
-        self.assertIn("tee -a .artifacts/ci/fuzz/install.log", fuzz_job)
-        self.assertIn("grep -Fx 'host: x86_64-unknown-linux-gnu'", fuzz_job)
-        self.assertIn('test "$(uname -m)" = x86_64', fuzz_job)
-        self.assertIn("--locked", fuzz_job)
-        self.assertIn("git diff --quiet -- fuzz/Cargo.lock", fuzz_job)
-        self.assertIn("RUSTUP_TOOLCHAIN: nightly-2026-10-02", fuzz_job)
-        self.assertIn('export RUSTC="$nightly_rustc"', fuzz_job)
-        self.assertIn('export RUSTDOC="$nightly_bin/rustdoc"', fuzz_job)
-        self.assertIn('export PATH="$nightly_bin:$PATH"', fuzz_job)
-        self.assertIn('export PATH="$nightly_bin:$GITHUB_WORKSPACE/.artifacts/ci/fuzz-tools/bin:$PATH"', fuzz_job)
-        self.assertIn("cargo fuzz run --sanitizer address parse_scenario_json", fuzz_job)
-        self.assertNotIn("cargo +nightly-2026-10-02 fuzz", fuzz_job)
-        self.assertIn("test -s .artifacts/ci/fuzz/fuzz.log", fuzz_job)
-        self.assertIn("fuzz/artifacts/parse_scenario_json/", fuzz_job)
-        self.assertIn("if-no-files-found: ignore", fuzz_job)
-        for flag in (
-            "-seed=20261003",
-            "-runs=100000",
-            "-max_total_time=120",
-            "-max_len=32768",
-            "-timeout=5",
-            "-rss_limit_mb=1024",
-        ):
-            with self.subTest(flag=flag):
-                self.assertIn(flag, fuzz_job)
-        self.assertNotIn("continue-on-error", fuzz_job)
-        self.assertIn("cargo deny --manifest-path fuzz/Cargo.toml", workflow)
-        self.assertIn("FUZZ_RESULT", aggregate_script())
-        self.assertIn("fuzz", workflow.split("  required:\n", 1)[1].split("    runs-on:", 1)[0])
+        active = workflow.split("  required:\n", 1)[0]
+        self.assertNotRegex(active, r"(?m)^  (?:fuzz|miri):")
+        for forbidden in ("cargo fuzz", "cargo miri", "nightly", "FUZZ_RESULT", "MIRI_RESULT", "--sanitizer address"):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden, active)
+        self.assertIn("cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check", active)
+        self.assertIn("DEFAULT_RESULT", aggregate_script())
+        self.assertIn("default", active)
+        self.assertNotIn("FUZZ_RESULT", aggregate_script())
+        self.assertNotIn("MIRI_RESULT", aggregate_script())
         self.assertEqual(run_aggregate("true", ["success"] * len(LANES)).returncode, 0)
-        for index in range(len(LANES)):
+        for index, lane in enumerate(LANES):
             results = ["success"] * len(LANES)
             results[index] = "failure"
-            with self.subTest(failed_lane=LANES[index]):
+            with self.subTest(failed_lane=lane):
                 self.assertNotEqual(run_aggregate("true", results).returncode, 0)
 
-    def test_fuzz_records_actual_address_sanitizer_binary_and_retains_proof(self):
-        workflow = WORKFLOW.read_text()
-        fuzz_job = workflow.split("  fuzz:\n", 1)[1].split("  miri:\n", 1)[0]
-        for evidence in (
-            "cargo fuzz build --sanitizer address parse_scenario_json",
-            "cargo fuzz run --sanitizer address parse_scenario_json",
-            'test -x "$fuzz_binary"',
-            'nm --defined-only "$fuzz_binary"',
-            "__asan_init$",
-            'sha256sum "$fuzz_binary"',
-            "sha256sum --check .artifacts/ci/fuzz/binary-sha256.txt",
-            "name: parser-fuzz-instrumentation",
-            "if: always()",
-            "sanitizer-symbols.log",
-            "binary-sha256.txt",
-            "build.log",
-        ):
-            with self.subTest(evidence=evidence):
-                self.assertIn(evidence, fuzz_job)
-        proof = fuzz_job.split("name: parser-fuzz-instrumentation", 1)[1]
-        self.assertIn("if-no-files-found: error", proof)
-        self.assertNotIn("private-claim", proof)
-        self.assertLess(fuzz_job.index("nm --defined-only"), fuzz_job.index("cargo fuzz run"))
-        self.assertLess(fuzz_job.index("cargo fuzz run"), fuzz_job.index("sha256sum --check"))
 
     def test_fuzz_manifest_isolated_and_license_exception_is_version_scoped(self):
         fuzz_manifest = (WORKFLOW.parents[2] / "fuzz" / "Cargo.toml").read_text()
@@ -426,39 +378,7 @@ class CiWorkflowTests(unittest.TestCase):
             with self.subTest(root_policy=root_policy):
                 self.assertIn(root_policy, fuzz_policy)
 
-    def test_miri_is_a_dated_linux_ffi_target_with_explicit_toolchain_and_logs(self):
-        workflow = WORKFLOW.read_text()
-        miri_job = workflow.split("  miri:\n", 1)[1].split("  doctest:\n", 1)[0]
-        self.assertIn("timeout-minutes: 20", miri_job)
-        self.assertIn("needs: scope", miri_job)
-        self.assertIn("if: needs.scope.outputs.native == 'true'", miri_job)
-        self.assertIn("runs-on: ubuntu-24.04", miri_job)
-        self.assertIn("nightly-2026-10-02", miri_job)
-        self.assertIn("--component miri --component rust-src", miri_job)
-        self.assertIn('test "$(uname -s)" = Linux', miri_job)
-        self.assertIn('test "$(uname -m)" = x86_64', miri_job)
-        self.assertIn("host: x86_64-unknown-linux-gnu", miri_job)
-        self.assertIn('export PATH="$nightly_bin:$PATH"', miri_job)
-        self.assertIn('export RUSTUP_TOOLCHAIN=nightly-2026-10-02', miri_job)
-        self.assertIn('export MIRI="$nightly_bin/miri"', miri_job)
-        self.assertIn('test "$(command -v rustc)" = "$nightly_rustc"', miri_job)
-        self.assertIn('test "$(command -v cargo)" = "$nightly_cargo"', miri_job)
-        self.assertIn('cargo miri setup', miri_job)
-        self.assertIn("cargo miri test --manifest-path libs/kairos/Cargo.toml -p kairo-ecs-ffi --test ffi_integration --locked", miri_job)
-        self.assertIn(".artifacts/ci/miri/setup.log", miri_job)
-        self.assertIn(".artifacts/ci/miri/test.log", miri_job)
-        self.assertIn("retention-days: 7", miri_job)
-        self.assertIn("MIRI_RESULT", workflow.split("  required:\n", 1)[1])
 
-    def test_miri_result_is_fail_closed_in_changed_scope_aggregate(self):
-        self.assertIn("MIRI_RESULT", aggregate_script())
-        self.assertEqual(run_aggregate("true", ["success"] * len(LANES)).returncode, 0)
-        for result in ("failure", "skipped", "cancelled"):
-            results = ["success"] * len(LANES)
-            results[LANES.index("MIRI_RESULT")] = result
-            with self.subTest(miri_result=result):
-                failed = run_aggregate("true", results)
-                self.assertNotEqual(failed.returncode, 0, failed.stdout + failed.stderr)
 
     def test_scope_detector_observes_tracked_inputs_and_gitlink_changes(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -529,32 +449,31 @@ class CiWorkflowTests(unittest.TestCase):
             self.assertEqual(unchanged.returncode, 0, unchanged.stdout + unchanged.stderr)
             self.assertEqual(output.read_text(), "changed=false\nnative=false\ncontext=false\npolicy=false\n")
 
-    def test_cargo_lanes_initialize_path_dependency_and_pin_evidenced_toolchain(self):
+    def test_rust_lanes_use_only_canonical_199_and_default_features(self):
         workflow = WORKFLOW.read_text()
-        cargo_jobs = workflow.split("  required:", 1)[0]
-        self.assertEqual(cargo_jobs.count("submodules: recursive"), 9)
-        # D3.4 adds the locked release build in the context job.
-        self.assertEqual(cargo_jobs.count("rustup toolchain install 1.99.0"), 7)
-        for command in ("cargo +1.99.0 fmt", "cargo +1.99.0 clippy --locked", "python3 tools/nextest_ci.py --toolchain 1.99.0", "cargo +1.99.0 test --doc"):
-            with self.subTest(command=command):
-                self.assertIn(command, cargo_jobs)
-        msrv = workflow_job(workflow, "msrv")
-        self.assertIn("rustup toolchain install 1.76.0", msrv)
-        self.assertIn("cargo test --workspace --lib --bins --tests --locked", msrv)
-        self.assertNotIn("--all-features", msrv)
+        active = workflow.split("  required:", 1)[0]
+        self.assertNotRegex(active, r"cargo\s+\+")
+        self.assertNotRegex(active, r"(?i)nightly|\bstable\b|\bbeta\b|rustup toolchain install 1\.(?:7[0-9]|8[0-8])")
+        self.assertGreaterEqual(active.count("RUSTUP_TOOLCHAIN=1.99.0"), 5)
+        self.assertIn("cargo fmt --all --check", active)
+        self.assertIn("cargo clippy --locked --workspace --all-targets --all-features -- -D warnings", active)
+        self.assertIn("cargo test --doc --workspace --all-features --locked", active)
+        default = workflow_job(workflow, "default")
+        self.assertIn("cargo test --workspace --lib --bins --tests --locked", default)
+        self.assertNotIn("--all-features", default)
+        self.assertNotIn("--no-default-features", default)
+        self.assertIn(".artifacts/ci/default/tests.log", default)
+        self.assertIn("cargo deny --manifest-path fuzz/Cargo.toml", workflow)
+        self.assertNotIn("msrv", active.lower())
 
-    def test_msrv_result_fails_when_selected_and_must_skip_when_unselected(self):
-        self.assertIn("MSRV_RESULT", aggregate_script())
+    def test_default_result_fails_when_selected_and_must_skip_when_unselected(self):
+        self.assertIn("DEFAULT_RESULT", aggregate_script())
         results = ["success"] * len(LANES)
-        results[LANES.index("MSRV_RESULT")] = "failure"
-        failed = run_aggregate("true", results)
-        self.assertNotEqual(failed.returncode, 0, failed.stdout + failed.stderr)
-        results[LANES.index("MSRV_RESULT")] = "skipped"
+        results[LANES.index("DEFAULT_RESULT")] = "failure"
         self.assertNotEqual(run_aggregate("true", results).returncode, 0)
-        self.assertEqual(
-            run_aggregate("false", ["skipped"] * len(LANES)).returncode,
-            0,
-        )
+        results[LANES.index("DEFAULT_RESULT")] = "skipped"
+        self.assertNotEqual(run_aggregate("true", results).returncode, 0)
+        self.assertEqual(run_aggregate("false", ["skipped"] * len(LANES)).returncode, 0)
 
     def test_required_lane_failure_fails_aggregate(self):
         result = run_aggregate("true", ["success", "failure"] + ["success"] * (len(LANES) - 2))
@@ -571,7 +490,7 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
 
     def test_changed_scope_fails_when_required_lane_result_is_absent(self):
-        missing = "MIRI_RESULT"
+        missing = "DEFAULT_RESULT"
         env = {
             key: value
             for key, value in os.environ.items()
@@ -597,6 +516,60 @@ class CiWorkflowTests(unittest.TestCase):
             check=False,
         )
         self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+
+
+class RustToolchainBindingTests(unittest.TestCase):
+    def setUp(self):
+        self.bin = "/toolchains/1.99.0/bin"
+        self.env = {
+            "PATH": self.bin + ":/usr/bin",
+            "RUSTUP_TOOLCHAIN": "1.99.0",
+            "RUSTC": self.bin + "/rustc",
+            "RUSTDOC": self.bin + "/rustdoc",
+        }
+
+    def test_canonical_binding_passes_and_returns_canonical_cargo(self):
+        resolved = {name: self.bin + "/" + name for name in ("rustc", "rustdoc", "cargo")}
+        def run(argv, **kwargs):
+            tool = argv[0].rsplit("/", 1)[-1]
+            output = {"rustc": "rustc 1.99.0 (test)\n", "rustdoc": "rustdoc 1.99.0 (test)\n", "cargo": "cargo 1.99.0 (test)\n"}[tool]
+            return subprocess.CompletedProcess(argv, 0, stdout=output, stderr="")
+        with mock.patch.object(ci_policy.shutil, "which", side_effect=lambda name, path=None: resolved[name]), \
+             mock.patch.object(ci_policy.subprocess, "run", side_effect=run):
+            self.assertEqual(ci_policy.validate_rust_toolchain(self.env), self.bin + "/cargo")
+
+    def test_bad_environment_fails_before_any_tool_or_cargo_subprocess(self):
+        cases = []
+        for key, value in (("RUSTUP_TOOLCHAIN", "stable"), ("RUSTUP_TOOLCHAIN", "1.88.0"),
+                           ("RUSTC", "/other/rustc"), ("RUSTDOC", "/other/rustdoc"),
+                           ("PATH", "/other:/usr/bin")):
+            bad = dict(self.env); bad[key] = value; cases.append((key, value, bad))
+        for key, value, bad in cases:
+            with self.subTest(key=key, value=value), \
+                 mock.patch.object(ci_policy.subprocess, "run") as run, \
+                 mock.patch.object(ci_policy.shutil, "which", return_value=None):
+                with self.assertRaises(RuntimeError):
+                    ci_policy.validate_rust_toolchain(bad)
+                run.assert_not_called()
+
+    def test_workflow_policy_accepts_only_bound_199_and_static_fuzz_audit(self):
+        workflow = WORKFLOW.read_text()
+        ci_policy.validate_workflow_toolchain(workflow)
+        fmt_start = workflow.index("  fmt:\n")
+        fmt_end = workflow.index("  clippy:\n", fmt_start)
+        fmt_job_without_rustdoc = workflow[fmt_start:fmt_end].replace("RUSTDOC", "")
+        missing_binding = workflow[:fmt_start] + fmt_job_without_rustdoc + workflow[fmt_end:]
+        cases = (
+            workflow.replace("cargo fmt --all --check", "cargo +stable fmt --all --check", 1),
+            workflow.replace("rustup toolchain install 1.99.0", "rustup toolchain install 1.88.0", 1),
+            workflow.replace("export PATH=\"$toolchain_bin:$PATH\" RUSTUP_TOOLCHAIN=1.99.0", "export PATH=\"$toolchain_bin:$PATH\" RUSTUP_TOOLCHAIN=nightly", 1),
+            workflow.replace("rustup which rustc --toolchain 1.99.0", "rustup which rustc --toolchain nightly", 1),
+            workflow.replace("cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check", "cargo deny check", 1),
+            missing_binding,
+        )
+        for index, candidate in enumerate(cases):
+            with self.subTest(case=index), self.assertRaises(RuntimeError):
+                ci_policy.validate_workflow_toolchain(candidate)
 
 
 if __name__ == "__main__":
