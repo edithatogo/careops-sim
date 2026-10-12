@@ -1,0 +1,666 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.consumer.flow-v4-handoff-portable-process-20261012",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "37985780b592e22076d8ef33249ccf03c259388a",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "objective": "Prove generic Flow V4 and TransitContext V2 Handoff portability through seven fresh child-process continuations.",
+  "context_paths": [
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/context.txt"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "conductor/subagents.md": "ca2271e3c774aec83f489aa070b040b07754dfdafc293f79d5e676ea0d6e9365",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    "conductor/design/des/ADR-e2-flow-v4-handoff-portable-process.md": "6eeeb66612122994034bd2e72d830a04c09b9fa2407d8e2c3f3f88fd3d0cfa5c",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "67e749e378b7b7cc39adc801c9d23b7eeffb1d9047c3400c44b17e9798685384",
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "78103349cae24fa76d6145eb84927d50a79cbfe856412fbfdddecc5dcd868238",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "33c549e872126f69a45481407533d59e51bf04c1a84fa44fd6833c100e7a6be4",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs": "3c3215c4d9d7618e4933ac0ef354d05f9ef1a36fe53b34ac43d8768b1cf8679f",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "79a605b608ee6d3b8a80ef909e9edcb54c6b6cfb13483387d8e089638ba81446",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs": "c464d4ac56d2c9e00bebf06fdce2b504e306b7625198c546c32a0dc6305096d9",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    "crates/kairo-ecs-calibration/Cargo.toml": "203ecea6d7a0c233fb08fc9563a47d0ba400d380e9ef7bc00d34b5f62cef19a1",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/context.txt": "e19512b6576f4aed00e3ccce25d3c71fdee548219c48c68f6908281b8b0ca90c",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/accepted-join.json": "7e6da61b5faaba4fddb865e2a3a5732669c40af3ca16d5566e23947041e6ea51",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/record_gate.py": "bc610885f85876e7ff596e42e82627e3687fe5fda142ece41fb9b9671e746070"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs",
+    ".artifacts/e22-handoff-portable-process-20261012/result.json",
+    ".artifacts/e22-handoff-portable-process-20261012/logs"
+  ],
+  "protected_paths": [
+    "AGENTS.md",
+    "Cargo.lock",
+    "Cargo.toml",
+    "conductor/design/des/ADR-e2-flow-v4-handoff-portable-process.md",
+    "conductor/subagents.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs",
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs",
+    "crates/kairo-ecs-calibration/Cargo.toml",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs",
+    "rust-toolchain.toml",
+    ".git",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/packet.json",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/context.txt",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/record_gate.py",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/accepted-join.json"
+  ],
+  "leaf_dependencies": [
+    "E2.2.flow-v4-routing.accepted",
+    "E2.2.transit-v2-direct-wire.accepted",
+    "E2.2.generic-handoff-portable-process.contract-reviewed"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-flow-v4-handoff-portable-process.md",
+  "steps": [
+    "Verify root join record, exact clean HEAD, all input hashes and baseline owned-file hash.",
+    "Acquire fresh narrow source claim before edits; record initial owned-path verification.",
+    "Implement only the owned process test file and preserve inherited evidence byte-for-byte.",
+    "Run immutable Clippy \u2192 calibration tests \u2192 owned-file format gates with Rust/Cargo 1.99.0; stop at any failure.",
+    "Freeze source and receipts for independent review; no source commit before root GO."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-handoff-portable-process-20261012/dispatch/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Calibration all-target strict Clippy passes on frozen owned source.",
+      "actual_argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ]
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-handoff-portable-process-20261012/dispatch/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All calibration tests, three named process/control tests, seven child cases, inherited 26 children, four V3 traces and 19 literal goldens pass.",
+      "actual_argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow",
+        "--",
+        "--test-threads=1"
+      ]
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-handoff-portable-process-20261012/dispatch/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Only the owned process_tests.rs passes pinned Rust 1.99 rustfmt check.",
+      "actual_argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "--config",
+        "skip_children=true",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs"
+      ]
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-handoff-portable-process-20261012/dispatch/record_gate.py",
+        "finalize"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Finalizer verifies exact 33 raw children, inherited 4 V3 decoded traces, preserved 26 legacy cases and all 19 literal raw envelopes before ready_for_review."
+    }
+  ],
+  "acceptance": [
+    "All three ordered gates pass against identical final source hash.",
+    "Seven fresh child records independently verify raw checkpoint, trace, exit and output hashes.",
+    "Inherited 26 child cases, four V3 trace proofs and 19 literal goldens remain unchanged.",
+    "Root performs independent review and acceptance; parent pin and ED integration remain outside this lane."
+  ],
+  "result_path": ".artifacts/e22-handoff-portable-process-20261012/result.json",
+  "stop_conditions": [
+    "Base/input/claim drift, shared source need or undefined semantics.",
+    "Three failed DEVELOPMENT executions total; preserve evidence.",
+    "Stop before commit for independent review; no full four-package tests/Clippy."
+  ],
+  "status": "prepared",
+  "reason_not_mvp_prepare": "Kairos-owned prerequisite to parent E2.2.fidelity; parentrecipe is preparation only.",
+  "dispatch_condition": "Accepted routing+TransitV2 join, root packet review, and fresh narrow source claim.",
+  "development_verification": [],
+  "size_exception": "One owned Rust test path plus result/logs; contract and bound context remain within 24 KiB.",
+  "required_test_names": [
+    "portable_v4_handoff_seven_fresh_process_cases",
+    "portable_v4_handoff_schema2_rebind_negative_controls",
+    "portable_v4_handoff_schema2_caps_and_no_fallback"
+  ],
+  "new_process_case_ids": [
+    "portable-v4-handoff-moving",
+    "portable-v4-handoff-paused-retained",
+    "portable-v4-handoff-paused-consumed",
+    "portable-v4-handoff-arrived-unadmitted",
+    "portable-v4-handoff-frontier-resume-live-domain",
+    "portable-v4-handoff-admitted-completion",
+    "portable-v4-handoff-stable-key-generation-ties"
+  ],
+  "artifact_prefix": ".artifacts/e22-handoff-portable-process-20261012",
+  "base_source_hashes": {
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "f3fdf40867f53d6ed19bc5366e4936f150d260ad998e67ad6a622c40854942f0"
+  },
+  "logs_path": ".artifacts/e22-handoff-portable-process-20261012/logs",
+  "dispatch_authority_path": ".artifacts/e22-handoff-portable-process-20261012/dispatch/dispatch-authority.json",
+  "prior_consumer_acceptance": {
+    "status": "accepted_v3_consumers_only",
+    "path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v3-consumer-completion-20261012/acceptance.json",
+    "sha256": "077a7b8bf239ba00a400a22fc81b3a29dbd7e1ff70e4a83867ff53a8a706e89d",
+    "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v3-consumer-completion-20261012/joined-final/result.json",
+    "result_sha256": "81013567d3d54f4168e3f1149f4a69749e54b4e898a761ddd447c745834ab9bb"
+  },
+  "inherited_process_case_records": [
+    {
+      "actual_trace_hex_sha256": "d430d4930452f000b4094bb7ea6f826f11373ca8d839b0f28db0ade76bd37578",
+      "case": "transit-moving-control-future-gate",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "190b198fc1fdc77bb54cac54de0162a19c4bb20a77ca0b5c1218268cd57315d5",
+      "group": "gated-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/gated-matrix/transit-moving-control-future-gate-61598-1791741837823315000.c2",
+      "input_sha256": "04ad0e8eba73484e50858d5f2ea9c797cb75a7418ec7e08d51d199962c6d53ef"
+    },
+    {
+      "actual_trace_hex_sha256": "0e43677239669d4bb078cd34ec8603ffe7e69a8cb24b06bb9e4e9621c1ae04ca",
+      "case": "service-arrival-disabled-pending-submit",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "751a0da4a592111b80ddd0e14a8ab663a52966145ba16059bb4eb72781300a68",
+      "group": "gated-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/gated-matrix/service-arrival-disabled-pending-submit-61598-1791741837864842000.c2",
+      "input_sha256": "752d588b41ed90a9a6643405b96e8bad9cf37d93b8bd1cd20a951240b6865a51"
+    },
+    {
+      "actual_trace_hex_sha256": "4f2a839ee87a2d75b28c385834e45f73774b8fd32d48c4c6f70ed47f46319040",
+      "case": "service-suspend-pending-enable-gate",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "eee1736e6bdad884fd02608b471ac3115841de37e8763798c6f2baeeb0190319",
+      "group": "gated-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/gated-matrix/service-suspend-pending-enable-gate-61598-1791741837890058000.c2",
+      "input_sha256": "53fc54bcbb1beab56ee8614c66d66e78863496eea166ca2e63117ec780e7c9c0"
+    },
+    {
+      "actual_trace_hex_sha256": "d05e706093781159ff9d04a34215237788be8473132569c16859232a5616d9bc",
+      "case": "macro-zero-ready",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "c2f74fe3c9e48f78b3ae9a9ae0b26b032e8edeb2a99f1a3962288eb191831ada",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/macro-zero-ready-61598-1791741837207851000.c2",
+      "input_sha256": "f335b8aeabf302214a54f90ca46dfc1bd22cfb47b317c4e8a0677061704d0421"
+    },
+    {
+      "actual_trace_hex_sha256": "9efd6062d8cb3296ccfd47f161a3e9e0e6f626e2c5063c0aae49c945bf33d911",
+      "case": "micro-zero-ready",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "e02f1fe8625afffbc202db5ecdc1758a099ed01010f956b4ee66c24b31009bb5",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/micro-zero-ready-61598-1791741837237295000.c2",
+      "input_sha256": "67422a57a9b5b265b41296825d5871a78433a82d12faa91d8d4013d4965b3cc0"
+    },
+    {
+      "actual_trace_hex_sha256": "c71a8717e36fc9e5a37cdeb55a2f286eb9e9d1480683270bc7f4941683f867f4",
+      "case": "transit-ready",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "d3cdf92a3039bb7d1785396ca8498bdd29aed30a4d0373d97cce0867bfc04aa8",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-ready-61598-1791741837261059000.c2",
+      "input_sha256": "37d78f67bdd3b55cdc4b6ddbca30dcb392dd642afd344adf2728b31d413a0332"
+    },
+    {
+      "actual_trace_hex_sha256": "6fffd29a0fbf4ffc438dc3def6398a145571035078bc4ba71e0a19e4ac7c56d9",
+      "case": "transit-rejected-start-retry",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "39f2b6d6519b02a14f296e52dd03229c364dba1de19a233d26496552219be7d5",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-rejected-start-retry-61598-1791741837289598000.c2",
+      "input_sha256": "9552feb83ca964eb4d610f753680885f22c3dae28e064dcdb4f3256acbf32572"
+    },
+    {
+      "actual_trace_hex_sha256": "ea1b91892c74899b83989682bbd46638ee3533532d76cf8115dd230fb8f29660",
+      "case": "transit-rejected-progress-retry",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "e36d5930aaef291d02e8e99bafc96130e76bcf63aaa71e6a0e80c8c0815098c8",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-rejected-progress-retry-61598-1791741837322467000.c2",
+      "input_sha256": "4d219323237f07394a87ec75caf515910600b37fa87052473202ac414d4cd877"
+    },
+    {
+      "actual_trace_hex_sha256": "55604b0a1512cc972a381a37374dd9389391335b6a4c99ed23bc718bf51fbefa",
+      "case": "transit-moving-mid-edge",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "a7cc3c8d180f867e37807982efa40b8f26e687653479f1095a5961ab858f421f",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-moving-mid-edge-61598-1791741837361288000.c2",
+      "input_sha256": "d98b7b22567b8348d97a7dc3a1804492456a3f1b8b6ecf81e63a9759a2f5be39"
+    },
+    {
+      "actual_trace_hex_sha256": "2eac68cc49558b1b56de2e23d05e5094b55ed0d80a6976b544125c8d244f0f9f",
+      "case": "transit-paused-ready",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "1b65cab0c104b4a9d2a0ae7b20dfd34f806be82f34f1e540a1b287a0d5c9c988",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-ready-61598-1791741837389676000.c2",
+      "input_sha256": "6131687faa8c27042484ad0fb5810162550babe2b2cb3080a131f7d714682fd5"
+    },
+    {
+      "actual_trace_hex_sha256": "46965880c9c570a7ee0b641622ed494870bec5d16dc7e118d98c9743d555a667",
+      "case": "transit-paused-mid-edge",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "da091fd774da1b8a0cad5f3612ac273ecf2e1b009783468d9224e36dc2a883a4",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-mid-edge-61598-1791741837416419000.c2",
+      "input_sha256": "02feba95ec3baadc96e1b0f1cd4443d7a681bdf28a4aa03851528f80ac18ae94"
+    },
+    {
+      "actual_trace_hex_sha256": "2add563117f05999bbf51e3c1a77e2b330375f66df5d71006de48216b2124ba3",
+      "case": "transit-paused-mid-edge-native-activity",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "4aee53047ba3742beeec52c1bd41f3ae9570fc5a0de01608b38445723d552224",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-mid-edge-native-activity-61598-1791741837445930000.c2",
+      "input_sha256": "f649252b16b3ed4fcd32d05409eb0abab579d01cd570e6840ee6026dc30d5211"
+    },
+    {
+      "actual_trace_hex_sha256": "00b21e9bf7b3c17e55e62223c0951c1f1de70a740a9144076ebf360fbd739f53",
+      "case": "transit-paused-at-end",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "8eb01ca01b79285dd5f4c8db3952bc3dcc61117ae70173d2311f19250ce5c639",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-at-end-61598-1791741837489178000.c2",
+      "input_sha256": "35e5146fdd61f191da55f2253495c50e96c0704f58e86576983a504333135c42"
+    },
+    {
+      "actual_trace_hex_sha256": "f38dc16d6862831e98d2505aae28683335f615513a31d25074aeeab2996ab84a",
+      "case": "transit-control-command-pending",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "3816e0c778b2f9e47d0987d614f0d564239e283fd7919db4bbfde2cd772ba7fe",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-control-command-pending-61598-1791741837522002000.c2",
+      "input_sha256": "799f2d6711f7054357b7ad5c60c9885c10f3bb049a396d81df2dd6d691957b15"
+    },
+    {
+      "actual_trace_hex_sha256": "53237281849a7418bad981debf304d0f5a1dc746873e27299a3a5746658e696d",
+      "case": "transit-arrived-queued",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "98e5ed168becefaefe57b6cd15eaca4bd1e3bda7c7aca46f70de4c6d9b6d2a73",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-arrived-queued-61598-1791741837575621000.c2",
+      "input_sha256": "e8f4bb61b4eebbf51867a778f2da9e139f38f09da379023c1cdd17d4ac388e0c"
+    },
+    {
+      "actual_trace_hex_sha256": "138f7c65a3a72eaef1ba5c8d0b229c2da9d45330be66cfc56b4badf2d57dd562",
+      "case": "submitted-pending",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "ce153ac093dd19351fa5ed2f9ed64c1328ca88d477af13f8045710f7e172bb5e",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/submitted-pending-61598-1791741837597163000.c2",
+      "input_sha256": "6ae384b17d1322996cd121e588ee806bb240c4f80a8435d369d665a785a98441"
+    },
+    {
+      "actual_trace_hex_sha256": "73aaf8cc9b0c0a9347e4f86a80cfd87c9297c0008894f7969cc694453a62c5ac",
+      "case": "submitted-active",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "23e2eae3beda5a99fe3cbd9210a444ae622ed2115051f3eca2c5dbbea19aa2ed",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/submitted-active-61598-1791741837615293000.c2",
+      "input_sha256": "925378362fb828e1c4a4247f6bac08ec8a19fb25618ee01758b9c6614a32e0cc"
+    },
+    {
+      "actual_trace_hex_sha256": "a885b0e756403eb861655ea20dc6ad11fdd7f9e535ced5d67b95d6a22e2daf80",
+      "case": "service-suspend-sample20",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "7173b4a6c1bbb18776cac5f17c6fd117fcef2a262e256e8ea80413bb441b4b7d",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-suspend-sample20-61598-1791741837638753000.c2",
+      "input_sha256": "76c88aea3c91f8ea3c54afe0f011a9dddf6e331caee7bb11e493195799b99fc2"
+    },
+    {
+      "actual_trace_hex_sha256": "f834188989fff32fe8b2d7c7aa6e9788c3f2cb38883964e75898bc3d2bc8e351",
+      "case": "service-restart-sample20",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "09c3b49a77671195ec0826077845ffb45a034f33e622e970b131f2ae0de8b9be",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-restart-sample20-61598-1791741837665312000.c2",
+      "input_sha256": "cf659e54c34433554064a8812e0bd021a56148ab055781bfd7c24bd51a600913"
+    },
+    {
+      "actual_trace_hex_sha256": "ccf70acb85ecf5bacdcadfb3ea7900de332e06920863c35eee43cdc6fad81a3e",
+      "case": "service-suspend-pending-cut-sample20",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "d4c361bb2a64bce67a371b792f734cc4e416ab54fda78928fddd15b16ad87bd7",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-suspend-pending-cut-sample20-61598-1791741837690562000.c2",
+      "input_sha256": "650a6194092c8444d719a44cab77fbaaa8913792a88399c86e856cffa1544886"
+    },
+    {
+      "actual_trace_hex_sha256": "7bb09803d6ffa35afc068075d7d1b2970c25cae66d908971e800d6b157a729f2",
+      "case": "service-restart-pending-cut-sample20",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "f471a63234501d424619c30a7b103e202f39a899f2ded0113b1e1867f0c081d4",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-restart-pending-cut-sample20-61598-1791741837717368000.c2",
+      "input_sha256": "f52bbbc6fba5d7f0df966e2bd8ed8a2cba6a37af49575d876954d1103bfb2147"
+    },
+    {
+      "actual_trace_hex_sha256": "3613110a2c43769789532a2c445f89b072dace1856c26c0e0310dab56c94ad17",
+      "case": "multi-graph-mixed-frozen-pending",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "81034646f49fd9e3dc4f5593d84ea34d012353db795e198f4fbd099af8ad4e64",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/multi-graph-mixed-frozen-pending-61598-1791741837744090000.c2",
+      "input_sha256": "7f5221cc9ceb0b365fcb9eb406fb005f78294ad9fb0c83d6e3c128cde2f1be8b"
+    },
+    {
+      "actual_trace_hex_sha256": "48df9505aea67d506ada74df43bb2527ffd92da9cce0246831f5852fd05701c7",
+      "case": "portable-v3-currenttick-flush",
+      "child_exit_code": "Some(0)",
+      "decoded_raw_trace_sha256": "18ab4d6f9cd422f1198bb186c2ae1ac572eab4de7fa801c3d3f685dca04e7c6e",
+      "expected_trace_sha256": "18ab4d6f9cd422f1198bb186c2ae1ac572eab4de7fa801c3d3f685dca04e7c6e",
+      "group": "v3-currenttick-flush",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/v3-currenttick-flush/portable-v3-currenttick-flush-61598-1791741837925272000.c2",
+      "input_sha256": "16952a8f655ef8a4c17ca04577cbc24ab48a453c0b139f60c37e15eddfe47f74"
+    },
+    {
+      "actual_trace_hex_sha256": "0b70b5e6cf8e0ddfbff75976bbb2490aac43723ed1e34671f90ee128499ca1e5",
+      "case": "portable-v3-preflush-budget-halt",
+      "child_exit_code": "Some(0)",
+      "decoded_raw_trace_sha256": "c29c31bbd203b56ebdd8df8066bd771fcb5f8f9560dccba759b9e9a9a43225a6",
+      "expected_trace_sha256": "c29c31bbd203b56ebdd8df8066bd771fcb5f8f9560dccba759b9e9a9a43225a6",
+      "group": "v3-halted-envelope",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/v3-halted-envelope/portable-v3-preflush-budget-halt-61598-1791741837948014000.c2",
+      "input_sha256": "609873982e27a0e1443a529df414c73270ab48f3ba51ea55a079e06922c187be"
+    },
+    {
+      "actual_trace_hex_sha256": "b51ab678378355ab42e955cc38df0a84fc3d4beae9f84537e4cea1d611aef8f5",
+      "case": "portable-v3-mixed-tick6-trigger-first",
+      "child_exit_code": "Some(0)",
+      "decoded_raw_trace_sha256": "3d7b4e459531478936e398868aa8d834e9e6111c0d16d3c3307dec9630f115ca",
+      "expected_trace_sha256": "3d7b4e459531478936e398868aa8d834e9e6111c0d16d3c3307dec9630f115ca",
+      "group": "v3-mixed-interior",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/v3-mixed-interior/portable-v3-mixed-tick6-trigger-first-61598-1791741837978595000.c2",
+      "input_sha256": "fca92561e6af7988367ab949558047341a3788562edec8f6bc855ee6e31ef6dd"
+    },
+    {
+      "actual_trace_hex_sha256": "5f1c40ea1831d2d757734feaed4b5156a36f45614cba96be53436f830b6d2389",
+      "case": "portable-v3-mixed-tick6-urgent-first",
+      "child_exit_code": "Some(0)",
+      "decoded_raw_trace_sha256": "a81791becec7ddeb1c86913ca9bb0e03f7a9a8c00cea795b6a50059431a5e308",
+      "expected_trace_sha256": "a81791becec7ddeb1c86913ca9bb0e03f7a9a8c00cea795b6a50059431a5e308",
+      "group": "v3-mixed-interior",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/v3-mixed-interior/portable-v3-mixed-tick6-urgent-first-61598-1791741838015450000.c2",
+      "input_sha256": "744e2da1fd9c3f031d7ae6e12565f0be39c87c2e392e58e2811a605bdbb9113b"
+    }
+  ],
+  "inherited_decoded_v3_trace_proofs": [
+    {
+      "actual_decoded_raw_sha256": "18ab4d6f9cd422f1198bb186c2ae1ac572eab4de7fa801c3d3f685dca04e7c6e",
+      "case": "portable-v3-currenttick-flush",
+      "expected_raw_sha256": "18ab4d6f9cd422f1198bb186c2ae1ac572eab4de7fa801c3d3f685dca04e7c6e"
+    },
+    {
+      "actual_decoded_raw_sha256": "3d7b4e459531478936e398868aa8d834e9e6111c0d16d3c3307dec9630f115ca",
+      "case": "portable-v3-mixed-tick6-trigger-first",
+      "expected_raw_sha256": "3d7b4e459531478936e398868aa8d834e9e6111c0d16d3c3307dec9630f115ca"
+    },
+    {
+      "actual_decoded_raw_sha256": "a81791becec7ddeb1c86913ca9bb0e03f7a9a8c00cea795b6a50059431a5e308",
+      "case": "portable-v3-mixed-tick6-urgent-first",
+      "expected_raw_sha256": "a81791becec7ddeb1c86913ca9bb0e03f7a9a8c00cea795b6a50059431a5e308"
+    },
+    {
+      "actual_decoded_raw_sha256": "c29c31bbd203b56ebdd8df8066bd771fcb5f8f9560dccba759b9e9a9a43225a6",
+      "case": "portable-v3-preflush-budget-halt",
+      "expected_raw_sha256": "c29c31bbd203b56ebdd8df8066bd771fcb5f8f9560dccba759b9e9a9a43225a6"
+    }
+  ],
+  "inherited_literal_golden_cases": [
+    {
+      "actual_sha256": "f335b8aeabf302214a54f90ca46dfc1bd22cfb47b317c4e8a0677061704d0421",
+      "case": "macro-zero-ready",
+      "expected_sha256": "f335b8aeabf302214a54f90ca46dfc1bd22cfb47b317c4e8a0677061704d0421",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/macro-zero-ready-61598-1791741837207851000.c2"
+    },
+    {
+      "actual_sha256": "67422a57a9b5b265b41296825d5871a78433a82d12faa91d8d4013d4965b3cc0",
+      "case": "micro-zero-ready",
+      "expected_sha256": "67422a57a9b5b265b41296825d5871a78433a82d12faa91d8d4013d4965b3cc0",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/micro-zero-ready-61598-1791741837237295000.c2"
+    },
+    {
+      "actual_sha256": "37d78f67bdd3b55cdc4b6ddbca30dcb392dd642afd344adf2728b31d413a0332",
+      "case": "transit-ready",
+      "expected_sha256": "37d78f67bdd3b55cdc4b6ddbca30dcb392dd642afd344adf2728b31d413a0332",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-ready-61598-1791741837261059000.c2"
+    },
+    {
+      "actual_sha256": "9552feb83ca964eb4d610f753680885f22c3dae28e064dcdb4f3256acbf32572",
+      "case": "transit-rejected-start-retry",
+      "expected_sha256": "9552feb83ca964eb4d610f753680885f22c3dae28e064dcdb4f3256acbf32572",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-rejected-start-retry-61598-1791741837289598000.c2"
+    },
+    {
+      "actual_sha256": "4d219323237f07394a87ec75caf515910600b37fa87052473202ac414d4cd877",
+      "case": "transit-rejected-progress-retry",
+      "expected_sha256": "4d219323237f07394a87ec75caf515910600b37fa87052473202ac414d4cd877",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-rejected-progress-retry-61598-1791741837322467000.c2"
+    },
+    {
+      "actual_sha256": "d98b7b22567b8348d97a7dc3a1804492456a3f1b8b6ecf81e63a9759a2f5be39",
+      "case": "transit-moving-mid-edge",
+      "expected_sha256": "d98b7b22567b8348d97a7dc3a1804492456a3f1b8b6ecf81e63a9759a2f5be39",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-moving-mid-edge-61598-1791741837361288000.c2"
+    },
+    {
+      "actual_sha256": "6131687faa8c27042484ad0fb5810162550babe2b2cb3080a131f7d714682fd5",
+      "case": "transit-paused-ready",
+      "expected_sha256": "6131687faa8c27042484ad0fb5810162550babe2b2cb3080a131f7d714682fd5",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-ready-61598-1791741837389676000.c2"
+    },
+    {
+      "actual_sha256": "02feba95ec3baadc96e1b0f1cd4443d7a681bdf28a4aa03851528f80ac18ae94",
+      "case": "transit-paused-mid-edge",
+      "expected_sha256": "02feba95ec3baadc96e1b0f1cd4443d7a681bdf28a4aa03851528f80ac18ae94",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-mid-edge-61598-1791741837416419000.c2"
+    },
+    {
+      "actual_sha256": "f649252b16b3ed4fcd32d05409eb0abab579d01cd570e6840ee6026dc30d5211",
+      "case": "transit-paused-mid-edge-native-activity",
+      "expected_sha256": "f649252b16b3ed4fcd32d05409eb0abab579d01cd570e6840ee6026dc30d5211",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-mid-edge-native-activity-61598-1791741837445930000.c2"
+    },
+    {
+      "actual_sha256": "35e5146fdd61f191da55f2253495c50e96c0704f58e86576983a504333135c42",
+      "case": "transit-paused-at-end",
+      "expected_sha256": "35e5146fdd61f191da55f2253495c50e96c0704f58e86576983a504333135c42",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-at-end-61598-1791741837489178000.c2"
+    },
+    {
+      "actual_sha256": "799f2d6711f7054357b7ad5c60c9885c10f3bb049a396d81df2dd6d691957b15",
+      "case": "transit-control-command-pending",
+      "expected_sha256": "799f2d6711f7054357b7ad5c60c9885c10f3bb049a396d81df2dd6d691957b15",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-control-command-pending-61598-1791741837522002000.c2"
+    },
+    {
+      "actual_sha256": "e8f4bb61b4eebbf51867a778f2da9e139f38f09da379023c1cdd17d4ac388e0c",
+      "case": "transit-arrived-queued",
+      "expected_sha256": "e8f4bb61b4eebbf51867a778f2da9e139f38f09da379023c1cdd17d4ac388e0c",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-arrived-queued-61598-1791741837575621000.c2"
+    },
+    {
+      "actual_sha256": "6ae384b17d1322996cd121e588ee806bb240c4f80a8435d369d665a785a98441",
+      "case": "submitted-pending",
+      "expected_sha256": "6ae384b17d1322996cd121e588ee806bb240c4f80a8435d369d665a785a98441",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/submitted-pending-61598-1791741837597163000.c2"
+    },
+    {
+      "actual_sha256": "925378362fb828e1c4a4247f6bac08ec8a19fb25618ee01758b9c6614a32e0cc",
+      "case": "submitted-active",
+      "expected_sha256": "925378362fb828e1c4a4247f6bac08ec8a19fb25618ee01758b9c6614a32e0cc",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/submitted-active-61598-1791741837615293000.c2"
+    },
+    {
+      "actual_sha256": "76c88aea3c91f8ea3c54afe0f011a9dddf6e331caee7bb11e493195799b99fc2",
+      "case": "service-suspend-sample20",
+      "expected_sha256": "76c88aea3c91f8ea3c54afe0f011a9dddf6e331caee7bb11e493195799b99fc2",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-suspend-sample20-61598-1791741837638753000.c2"
+    },
+    {
+      "actual_sha256": "cf659e54c34433554064a8812e0bd021a56148ab055781bfd7c24bd51a600913",
+      "case": "service-restart-sample20",
+      "expected_sha256": "cf659e54c34433554064a8812e0bd021a56148ab055781bfd7c24bd51a600913",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-restart-sample20-61598-1791741837665312000.c2"
+    },
+    {
+      "actual_sha256": "650a6194092c8444d719a44cab77fbaaa8913792a88399c86e856cffa1544886",
+      "case": "service-suspend-pending-cut-sample20",
+      "expected_sha256": "650a6194092c8444d719a44cab77fbaaa8913792a88399c86e856cffa1544886",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-suspend-pending-cut-sample20-61598-1791741837690562000.c2"
+    },
+    {
+      "actual_sha256": "f52bbbc6fba5d7f0df966e2bd8ed8a2cba6a37af49575d876954d1103bfb2147",
+      "case": "service-restart-pending-cut-sample20",
+      "expected_sha256": "f52bbbc6fba5d7f0df966e2bd8ed8a2cba6a37af49575d876954d1103bfb2147",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-restart-pending-cut-sample20-61598-1791741837717368000.c2"
+    },
+    {
+      "actual_sha256": "7f5221cc9ceb0b365fcb9eb406fb005f78294ad9fb0c83d6e3c128cde2f1be8b",
+      "case": "multi-graph-mixed-frozen-pending",
+      "expected_sha256": "7f5221cc9ceb0b365fcb9eb406fb005f78294ad9fb0c83d6e3c128cde2f1be8b",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/multi-graph-mixed-frozen-pending-61598-1791741837744090000.c2"
+    }
+  ],
+  "development_failure_limit": 3,
+  "prior_consumer_acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v3-consumer-completion-20261012/acceptance.json",
+  "prior_consumer_acceptance_sha256": "077a7b8bf239ba00a400a22fc81b3a29dbd7e1ff70e4a83867ff53a8a706e89d",
+  "prior_consumer_result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v3-consumer-completion-20261012/joined-final/result.json",
+  "prior_consumer_result_sha256": "81013567d3d54f4168e3f1149f4a69749e54b4e898a761ddd447c745834ab9bb",
+  "inherited_decoded_v3_trace_proof_files": 3,
+  "external_acceptances": [
+    {
+      "lane": "flow_v4_routing",
+      "expected_status": "accepted_flow_v4_routing_source_only",
+      "acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-flow-v4-routing-completion-20261012/acceptance.json",
+      "acceptance_sha256": "c55ad56db1432ddedc40772316ee392bc095b878629ae29d922e60418ee42ec7",
+      "status": "accepted_flow_v4_routing_source_only",
+      "accepted_commit": "81eb3a7703e1524ccf19c63981a44e237691ab02",
+      "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-flow-v4-routing-completion-20261012/result.json",
+      "result_sha256": "7f417e2dc180058e0a82db6a759530586a67e5d264a9bbd03c96efde2cdabea4",
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "33c549e872126f69a45481407533d59e51bf04c1a84fa44fd6833c100e7a6be4",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "78103349cae24fa76d6145eb84927d50a79cbfe856412fbfdddecc5dcd868238",
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "79a605b608ee6d3b8a80ef909e9edcb54c6b6cfb13483387d8e089638ba81446",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs": "c464d4ac56d2c9e00bebf06fdce2b504e306b7625198c546c32a0dc6305096d9",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs": "f2a7c127ed71a9e0049ea8098dd43216c1fff5cf29bb2ca8a0ea12524e86e4f1",
+        "crates/kairo-ecs-des/tests/flow_preview_v1.rs": "9cf6d586a6ebc50d26bfd4c39b4fcb1899fb14209a963ffcc83e6b2e15cb8bd2",
+        "crates/kairo-ecs-des/tests/flow_queue_order_v1.rs": "77dc1bf6e187a4e068afcc5983b6640a1e92bdb52b2b39679d2e2e8fce8aa640"
+      },
+      "gate_base_commit": "81eb3a7703e1524ccf19c63981a44e237691ab02"
+    },
+    {
+      "lane": "transit_v2_direct_wire",
+      "expected_status": "accepted_transit_v2_direct_wire_source_only",
+      "acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-transit-v2-direct-wire-completion-20261012/acceptance.json",
+      "acceptance_sha256": "93146d00a4aba0633433d6bd9e1a7c0bde62e3f44df9284c4c446f1f5d4bce8d",
+      "status": "accepted_transit_v2_direct_wire_source_only",
+      "accepted_commit": "92735f04573a2d66dee8a789827ac235f7f41034",
+      "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-transit-v2-direct-wire-completion-20261012/result.json",
+      "result_sha256": "99c59f5842cd706c2282b30c2101c7f99b8326264ce4607ea841741f0cf73ddb",
+      "source_hashes": {
+        "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+        "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "08ea01e0f8114643912a02e72d16b4c66483c7841ed80fa4b144415a6aa49030"
+      },
+      "gate_base_commit": null
+    }
+  ],
+  "gate_argv": {
+    "clippy": [
+      "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+      "clippy",
+      "--locked",
+      "-p",
+      "kairo-ecs-calibration",
+      "--features",
+      "flow",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "tests": [
+      "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--locked",
+      "-p",
+      "kairo-ecs-calibration",
+      "--features",
+      "flow",
+      "--",
+      "--test-threads=1"
+    ],
+    "format": [
+      "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+      "--edition",
+      "2021",
+      "--check",
+      "--config",
+      "skip_children=true",
+      "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs"
+    ]
+  },
+  "gate_driver_sha256": "bc610885f85876e7ff596e42e82627e3687fe5fda142ece41fb9b9671e746070"
+}

@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [Parallel V4 / Transit V2 consumer dispatch](evidence/e2.2-v4-v2-consumer-dispatch-20261012/README.md)
+
 - [Flow V4 routing acceptance](evidence/e2.2-flow-v4-routing-completion-20261012/README.md)
 
 - [Transit V2 direct wire acceptance](evidence/e2.2-transit-v2-direct-wire-completion-20261012/README.md)
