@@ -20,6 +20,10 @@ const MARKER_KIND: EventKind = EventKind::custom(4100);
 const HORIZON_OPERATION: &str = "__ed_horizon__";
 const U32_MAX: u128 = u32::MAX as u128;
 
+#[doc(hidden)]
+mod transit;
+pub use transit::{TransitBounds, TransitHandle, TransitInput};
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum AdapterError {
     InvalidInput(&'static str),
@@ -427,6 +431,14 @@ pub enum FoundationObservation {
     },
     Service(ServiceObservation),
     Manual(ManualObservation),
+    Transit {
+        identity: ServiceIdentity,
+        carrier: WorkId,
+        event: EventId,
+        at: SimTime,
+        phase: kairo_ecs_abm::TransitPhase,
+        arrival: Option<kairo_ecs_abm::TransitArrivalHandoff>,
+    },
 }
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct AdapterDispatch {
@@ -515,6 +527,7 @@ pub struct EdFlowAdapter {
     entity_used: u64,
     marker_work_id: WorkId,
     flush_limit: u64,
+    transit: Option<transit::TransitAdapterState>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -527,8 +540,48 @@ fn no_command_marker_plan(
 ) -> Result<MarkerContext, FlowError> {
     Ok(context.clone())
 }
+fn no_command_marker_receipt(
+    _context: &mut MarkerContext,
+    _receipt: &kairo_ecs_des::FlowBatchReceipt,
+) {
+}
 impl EdFlowAdapter {
     pub fn new(plan: ValidatedAdapterPlan) -> Result<Self, AdapterError> {
+        Self::build(plan, None)
+    }
+    fn build(
+        mut plan: ValidatedAdapterPlan,
+        transit_bounds: Option<TransitBounds>,
+    ) -> Result<Self, AdapterError> {
+        let transit = if let Some(bounds) = transit_bounds {
+            let operations = bounds
+                .transits
+                .checked_add(bounds.total_route_segments)
+                .and_then(|n| n.checked_add(bounds.controls.checked_mul(2)?))
+                .ok_or(AdapterError::BudgetExceeded("transit operation bounds"))?;
+            let entities = bounds
+                .transits
+                .checked_mul(2)
+                .ok_or(AdapterError::BudgetExceeded("transit entity bounds"))?;
+            let added_events = operations;
+            plan.event_limit = plan
+                .event_limit
+                .checked_add(added_events)
+                .filter(|n| *n <= u32::MAX as u64)
+                .ok_or(AdapterError::BudgetExceeded("native event representation"))?;
+            plan.entity_limit = plan
+                .entity_limit
+                .checked_add(entities)
+                .filter(|n| *n <= u32::MAX as u64)
+                .ok_or(AdapterError::BudgetExceeded("native entity representation"))?;
+            plan.transition_limit = plan
+                .transition_limit
+                .checked_add(operations)
+                .ok_or(AdapterError::BudgetExceeded("same-tick transition bound"))?;
+            Some(transit::TransitAdapterState::new(bounds))
+        } else {
+            None
+        };
         let flow = FlowRuntime::with_configs(
             FlowConfig {
                 max_same_tick_flow_transitions: NonZeroU64::new(plan.transition_limit)
@@ -539,11 +592,15 @@ impl EdFlowAdapter {
             },
         );
         let mut flow = flow;
-        flow.register_domain_plan_hook::<MarkerContext>(
+        flow.register_domain_plan_hook_with_receipt::<MarkerContext>(
             MARKER_CONTEXT,
             MARKER_KIND,
             no_command_marker_plan,
+            no_command_marker_receipt,
         )?;
+        if transit.is_some() {
+            transit::TransitAdapterState::register(&mut flow)?;
+        }
         let mut resources = BTreeMap::new();
         for spec in &plan.resources {
             let id = flow.create_resource_with_queue_ordering(
@@ -584,6 +641,7 @@ impl EdFlowAdapter {
             entity_used: plan.resources.len() as u64 + 2,
             marker_work_id: marker_work,
             flush_limit: plan.flush_limit,
+            transit,
         };
         for boundary in plan.grant_boundaries {
             let resource = *adapter
@@ -725,6 +783,13 @@ impl EdFlowAdapter {
         }
         if self.used_services.contains(&handle.work) {
             return Err(AdapterError::WrongHandleRole);
+        }
+        if self
+            .transit
+            .as_ref()
+            .is_some_and(|state| state.blocks_admission(handle.work))
+        {
+            return Err(AdapterError::WrongNativeState);
         }
         let resource = self.validate_admission(&admission)?;
         self.reserve_request(admission.can_preempt, false)?;
@@ -1007,6 +1072,9 @@ impl EdFlowAdapter {
         if preview.at.ticks() > self.horizon_tick as u128 {
             return Ok(None);
         }
+        let transit_owned = self.transit.as_ref().map_or_else(Vec::new, |transit| {
+            transit.owned_carriers(&self.flow, preview.id)
+        });
         let native = self
             .flow
             .step()?
@@ -1022,6 +1090,9 @@ impl EdFlowAdapter {
         }
         let at = native.at.ticks();
         let mut observations = Vec::new();
+        if let Some(transit) = self.transit.as_mut() {
+            observations.extend(transit.observe(&self.flow, &native, &transit_owned)?);
+        }
         let event_meta = self.events.get(&native.event).cloned();
         let is_flush = matches!(&event_meta, Some(NativeEvent::Flush { .. }));
         for record in &native.records {
