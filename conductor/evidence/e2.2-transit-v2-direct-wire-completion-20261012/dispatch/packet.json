@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "packet_id": "e22-transit-v2-direct-wire-rebound-20261012",
+  "task_id": "E2.2.TransitV2.direct-wire.rebound",
+  "target_repo": ".",
+  "base_commit": "92735f04573a2d66dee8a789827ac235f7f41034",
+  "objective": "Qualify preserved TransitV2 wire candidate with accepted imported context-schema prerequisite; manifest2 unchanged and cumulative failure ceiling3.",
+  "context_paths": [
+    ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/dispatch/context.txt"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+    "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "08ea01e0f8114643912a02e72d16b4c66483c7841ed80fa4b144415a6aa49030",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263",
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "6f939c01db05a63095cf675c34eb86642a92b4b26a81d98baf4d451faa39d5e1",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "e3ba638f1ae2e7c8f21d93a64409e676f83a120daf4d45123427b6b5a9fc2abb",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v4.rs": "865a0f7a780f977928b2962221b4a6c101f32a94b4f73efb248bc531b84af7c9",
+    "crates/kairo-ecs-des/tests/flow_context_codec_schema_versions.rs": "d19c0e220bdc564c349c1dea6ffbddc9ae9c0a33a1ff73e41716586a1fcf8ee1",
+    "conductor/design/des/ADR-e2-transit-context-v2-direct-wire.md": "57db6d985a5a0670d9b6aaac09cf56e18bb5b8c3c2f704c00ecde352cf0e9afb",
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/dispatch/packet.json": "306f6907bbeecf8bcff89af7c17e13760e167cb4892fcfaed88fedeb417400cf",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/dispatch/context.txt": "04be982637a0cd0b08e9e07f9cc96e92d96d2c6044496ed56604b4d0e939e799",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/dispatch/record_gate.py": "38506d58dab27a9e3e9b829e8ccaac7fd77d9ba65acc47d6c27f39f4190cc632",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/supplemental-dependency-stop-report.json": "39add02c288560f7f4dae0fc7740b3318907f3e06c9907c05a4782dda54e21eb",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791754982276208000-61679-started.json": "bbbc869a01e82a308f152e51b49e9b297256e110d2061e94b7d20a18fb293283",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791754982276208000-61679-result.json": "9a6fa256ee8b06b02b2d195dcb29b06ef2bbff182bc9bedcf3c445bf8ab6a3bf",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791754982276208000-61679.log": "27f4ea500df96b7c517a5302cfb346fef6db2cd46bb4e42faa2c0edf22f1068f",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791770839531378000-67454-started.json": "17f0b3ef8f61c1e211eb697d4cc4cf7441894db5ef384549d0ff057f2684d26f",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791770839531378000-67454-result.json": "9ba8e273b34fd5971ad77a4cfabe569f751cd7a38d8c878f8dc401c60162d387",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791770839531378000-67454.log": "f46412f1854729c7a2b9c77eb647844a96f6ba62441372019fefabed7b49e9b9",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/tests-1791770847990976000-67935-started.json": "448449868139b822d37a57c4a16dbcbe20b51c90f82abc0627943b769d892828",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/tests-1791770847990976000-67935-result.json": "a930d9c55abe15c2a203defcd5558b90a0416adba29dbcbe0bfafd1248033ed8",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/tests-1791770847990976000-67935.log": "ee8d6003dbe5923f73dfd7a2c9c074c5f0c58734e89382add0b4dec8b434a8bd",
+    ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/dispatch/record_gate.py": "4611cc21b3f5e75213086070fee958ce52da953e56c7b7d0fe4032b2dd715e6d",
+    ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/dispatch/context.txt": "9969bc8d8de07059331f34fb4f382cba34208ee9b100a5fe5b257c60d1a44d4d"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs",
+    "crates/kairo-ecs-abm/src/lib.rs",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs",
+    ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/result.json",
+    ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/logs/"
+  ],
+  "protected_paths": [
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v4.rs",
+    "crates/kairo-ecs-des/tests/flow_context_codec_schema_versions.rs",
+    "conductor/design/des/ADR-e2-transit-context-v2-direct-wire.md"
+  ],
+  "leaf_dependencies": [
+    "Accepted nativeTransitV2 commit6ef40266 and committed directwireownerADR"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-transit-context-v2-direct-wire.md",
+  "steps": [
+    "Verify merged baseline, all imported dependencies and immutable original two-failure history.",
+    "No old passing Clippy counts; freeze source before fresh ordered Clippy/full ABM tests/four-path format.",
+    "Every failure stops for root review; historical2 plus one new failure reaches cumulative ceiling3.",
+    "Freeze exact current source and raw receipts before independent acceptance/commit."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/dispatch/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Exact ownerdirectwire contract/all4stablehashes/10rawproofs/oldliteraltests."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/dispatch/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Exact ownerdirectwire contract/all4stablehashes/10rawproofs/oldliteraltests."
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/dispatch/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Pinned format allfour ownedsources unchanged atgate."
+    }
+  ],
+  "acceptance": [
+    "DirectV2wire/schema2caller-ownedcodec only;10actualproofs unchangedV1tests; no DESrouting/consumer/pin/EDacceptance."
+  ],
+  "result_path": ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/result.json",
+  "stop_conditions": [
+    "Cumulative historical2 plus fresh failures reaches3: STOP, no budget reset.",
+    "Any failed gate stops for root review; no further retry authorized at ceiling.",
+    "Any protected dependency/history/base drift or edit outside four ABM paths.",
+    "No wire schema1 workaround; actual manifest2 required."
+  ],
+  "development_failure_limit": 3,
+  "status": "prepared",
+  "size_exception": "Four existing source paths plus result/logs; protected imported prerequisite and bounded context.",
+  "base_source_hashes": {
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+    "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "08ea01e0f8114643912a02e72d16b4c66483c7841ed80fa4b144415a6aa49030"
+  },
+  "initially_absent_owned_paths": [],
+  "external_evidence": {
+    "parent_acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-transit-v2-native-completion-20261012/acceptance.json",
+    "parent_acceptance_sha256": "79d614b759f04f2be4f62c693abf2e1bdbefe1b9a399e809dffc7a59c2b9ff63",
+    "native_acceptance_status": "accepted_transit_v2_native_source_only",
+    "native_accepted_commit": "6ef40266a6c5adb32362e7ceac136e0612c1b2c1",
+    "joined_native_result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/.artifacts/e22-transit-v2-frontier-repair-20261012/result.json",
+    "joined_native_result_sha256": "63ca2ab62373380a5fa17f464fabb4a11d23eb79eb482acaaa8425809969cabc",
+    "joined_native_head": "df45d372aff04a642d5eb84f65e27dbd4972e8f1",
+    "parent_pin": "6d733f489225da4bf6ceec2673b02369c7918bbe"
+  },
+  "result_contract": {
+    "status": "ready_for_review only for new ordered passing gates; stopped_failure_ceiling when cumulative historical2 plus new failures reaches3; otherwise stopped_for_root_review on failure.",
+    "initial_owned_path_verification": "All four existing baseline hashes; no absent source paths.",
+    "base_source_hashes": "All four existing source files at actual clean merged HEAD; no absent source files.",
+    "owned_source_hashes": "Current allfour gate source hashes; protected nativeV2test unchanged.",
+    "required_test_names": "Exact ten directwire names.",
+    "required_success_names": "observed successful required names from terminal tests receipt",
+    "required_success_count": "observed count; zero until tests receipt",
+    "failed_development_attempts": "all failed terminal raw result receipt paths; corrections require root-published GO authority exactly binding the complete failed receipt list",
+    "gate_readiness": "latest Clippy, tests, format receipts all pass in order with matching final source hashes; each terminal receipt binds its started receipt hash and exact immutable argv/cwd/HEAD/toolchain/source set"
+  },
+  "dispatch_authority_path": "/tmp/careops-e22-transit-v2-direct-wire-rebound-20261012-dispatch-authority.json",
+  "dispatch_authority_contract": {
+    "writer": "root only; worker must not create or edit this file",
+    "required_fields": {
+      "status": "GO",
+      "packet_sha256": "exact current packet bytes",
+      "driver_sha256": "exact current record_gate.py bytes",
+      "worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012",
+      "base_commit": "92735f04573a2d66dee8a789827ac235f7f41034"
+    },
+    "repair_fields": {
+      "repair_authorized": "true only on explicit root GO after a failed gate",
+      "repair_authorized_after_failures": "exact ordered/complete failed terminal receipt paths; empty before any failures"
+    }
+  },
+  "protected_production_hashes": {
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263",
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "6f939c01db05a63095cf675c34eb86642a92b4b26a81d98baf4d451faa39d5e1",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "e3ba638f1ae2e7c8f21d93a64409e676f83a120daf4d45123427b6b5a9fc2abb",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v4.rs": "865a0f7a780f977928b2962221b4a6c101f32a94b4f73efb248bc531b84af7c9",
+    "crates/kairo-ecs-des/tests/flow_context_codec_schema_versions.rs": "d19c0e220bdc564c349c1dea6ffbddc9ae9c0a33a1ff73e41716586a1fcf8ee1"
+  },
+  "historical_evidence_hashes": {
+    ".artifacts/e22-transit-v2-direct-wire-20261012/dispatch/packet.json": "306f6907bbeecf8bcff89af7c17e13760e167cb4892fcfaed88fedeb417400cf",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/dispatch/context.txt": "04be982637a0cd0b08e9e07f9cc96e92d96d2c6044496ed56604b4d0e939e799",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/dispatch/record_gate.py": "38506d58dab27a9e3e9b829e8ccaac7fd77d9ba65acc47d6c27f39f4190cc632",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/supplemental-dependency-stop-report.json": "39add02c288560f7f4dae0fc7740b3318907f3e06c9907c05a4782dda54e21eb",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791754982276208000-61679-started.json": "bbbc869a01e82a308f152e51b49e9b297256e110d2061e94b7d20a18fb293283",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791754982276208000-61679-result.json": "9a6fa256ee8b06b02b2d195dcb29b06ef2bbff182bc9bedcf3c445bf8ab6a3bf",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791754982276208000-61679.log": "27f4ea500df96b7c517a5302cfb346fef6db2cd46bb4e42faa2c0edf22f1068f",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791770839531378000-67454-started.json": "17f0b3ef8f61c1e211eb697d4cc4cf7441894db5ef384549d0ff057f2684d26f",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791770839531378000-67454-result.json": "9ba8e273b34fd5971ad77a4cfabe569f751cd7a38d8c878f8dc401c60162d387",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791770839531378000-67454.log": "f46412f1854729c7a2b9c77eb647844a96f6ba62441372019fefabed7b49e9b9",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/tests-1791770847990976000-67935-started.json": "448449868139b822d37a57c4a16dbcbe20b51c90f82abc0627943b769d892828",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/tests-1791770847990976000-67935-result.json": "a930d9c55abe15c2a203defcd5558b90a0416adba29dbcbe0bfafd1248033ed8",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/tests-1791770847990976000-67935.log": "ee8d6003dbe5923f73dfd7a2c9c074c5f0c58734e89382add0b4dec8b434a8bd",
+    "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-context-schema-versions-completion-20261012/result.json": "911d1cc5efc1c0db5c2f8e22bbfa1a605c5c20c43c4490c73bc541ff7b678cf5",
+    "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-context-schema-versions-completion-20261012/acceptance.json": "b3e2b3e553e103fecda5dbffebc7b39ad9ad3962f532357cb306d4c8c841b88a"
+  },
+  "repair_scope": "Direct V2 wire methods/schema2caller-ownedcodec and exact two reexports; existing native/V1 semantics protected.",
+  "context_bytes": 11187,
+  "gate_source_paths": [
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs",
+    "crates/kairo-ecs-abm/src/lib.rs",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs"
+  ],
+  "source_write_paths": [
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs",
+    "crates/kairo-ecs-abm/src/lib.rs",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs"
+  ],
+  "required_success_names": [
+    "transit_v2_wire_actual_ready_moving_roundtrip",
+    "transit_v2_wire_paused_resume_suffix",
+    "transit_v2_wire_arrived_binding_and_suppression",
+    "transit_v2_wire_resume_witness_live_stale_noop",
+    "transit_v2_wire_literal_bytes_and_v1_compatibility",
+    "transit_v2_wire_exact_total_budget_real_rebind",
+    "transit_v2_wire_count_text_and_checked_size_limits",
+    "transit_v2_wire_malformed_tags_truncation_and_trailing",
+    "transit_v2_wire_owner_reference_ticket_rejection",
+    "transit_v2_wire_codec_schema_and_remaining_budget"
+  ],
+  "wire_error_contract": {
+    "header_or_native_schema": "UnsupportedVersion(u32)",
+    "bad_magic_or_unknown_tag": "InvalidData",
+    "bad_utf8": "InvalidUtf8",
+    "short_field": "Truncated",
+    "unconsumed_suffix": "TrailingBytes",
+    "count_measurement_translation_overflow": "LimitExceeded",
+    "output_reservation": "AllocationFailure",
+    "native_limit_or_version": "existing From direct LimitExceeded/UnsupportedVersion",
+    "other_native": "Native(error)",
+    "precedence": "original total byte cap; header magic/wire/native version; complete borrowed field-order scan with count-before-slice/tag-before-payload; trailingbytes beforeowneddecode; localDTOstructural checks; trustedgraph/currentbinding/cursor/ticket native joins. Encoder version/route-localbounds, exactcheckedmeasurement, outputallocation."
+  },
+  "test_oracles": {
+    "transit_v2_wire_actual_ready_moving_roundtrip": "Exact committed ADR required proof section; actual runtime positive baseline plus isolated malformed controls.",
+    "transit_v2_wire_paused_resume_suffix": "Exact committed ADR required proof section; actual runtime positive baseline plus isolated malformed controls.",
+    "transit_v2_wire_arrived_binding_and_suppression": "Exact committed ADR required proof section; actual runtime positive baseline plus isolated malformed controls.",
+    "transit_v2_wire_resume_witness_live_stale_noop": "Exact committed ADR required proof section; actual runtime positive baseline plus isolated malformed controls.",
+    "transit_v2_wire_literal_bytes_and_v1_compatibility": "Exact committed ADR required proof section; actual runtime positive baseline plus isolated malformed controls.",
+    "transit_v2_wire_exact_total_budget_real_rebind": "Exact committed ADR required proof section; actual runtime positive baseline plus isolated malformed controls.",
+    "transit_v2_wire_count_text_and_checked_size_limits": "Exact committed ADR required proof section; actual runtime positive baseline plus isolated malformed controls.",
+    "transit_v2_wire_malformed_tags_truncation_and_trailing": "Exact committed ADR required proof section; actual runtime positive baseline plus isolated malformed controls.",
+    "transit_v2_wire_owner_reference_ticket_rejection": "Exact committed ADR required proof section; actual runtime positive baseline plus isolated malformed controls.",
+    "transit_v2_wire_codec_schema_and_remaining_budget": "Exact committed ADR required proof section; actual runtime positive baseline plus isolated malformed controls."
+  },
+  "historical_failed_development_attempts": [
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791754982276208000-61679-result.json",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/tests-1791770847990976000-67935-result.json"
+  ],
+  "historical_failed_development_count": 2,
+  "prerequisite_evidence": {
+    "accepted_commit": "34ff8fc54ccbbf976d1c8e3d9158d3456c26ad9b",
+    "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-context-schema-versions-completion-20261012/result.json",
+    "result_sha256": "911d1cc5efc1c0db5c2f8e22bbfa1a605c5c20c43c4490c73bc541ff7b678cf5",
+    "acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-context-schema-versions-completion-20261012/acceptance.json",
+    "acceptance_sha256": "b3e2b3e553e103fecda5dbffebc7b39ad9ad3962f532357cb306d4c8c841b88a",
+    "acceptance_status": "accepted_context_codec_schema_versions_source_only"
+  },
+  "environment": {
+    "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+    "CARGO_TARGET_DIR": ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/logs/target",
+    "CARGO_PROFILE_DEV_DEBUG": "0",
+    "CARGO_PROFILE_TEST_DEBUG": "0",
+    "CARGO_INCREMENTAL": "0"
+  },
+  "logs_path": ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/logs",
+  "context_path": ".artifacts/e22-transit-v2-direct-wire-rebound-20261012/dispatch/context.txt",
+  "context_sha256": "9969bc8d8de07059331f34fb4f382cba34208ee9b100a5fe5b257c60d1a44d4d"
+}

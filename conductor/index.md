@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [Transit V2 direct wire acceptance](evidence/e2.2-transit-v2-direct-wire-completion-20261012/README.md)
+
 - [Parallel routing and ABM rebound dispatch](evidence/e2.2-routing-abm-rebound-dispatch-20261012/README.md)
 
 - [Context schema prerequisite acceptance and parallel successors](evidence/e2.2-context-schema-versions-completion-20261012/README.md)
