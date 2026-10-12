@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "scenario_id": "e23-constrained-mvp",
+  "seed": 42,
+  "time_unit": "tick",
+  "horizon_ticks": 20,
+  "provenance": {
+    "class": "synthetic",
+    "notes": "E2.3 constrained MVP scenario fixture"
+  },
+  "capacity_location": {
+    "schema_version": 3,
+    "status": "proposed",
+    "capacity": {
+      "unit": "treatment_space",
+      "bucket_completeness": "complete",
+      "physical_status": "known",
+      "physical_count": 1,
+      "availability_status": "known",
+      "open_count": 1,
+      "staffed_count": 1,
+      "equipment": []
+    },
+    "zones": [
+      { "zone_id": "zone.triage", "name": "triage zone" },
+      { "zone_id": "zone.treatment", "name": "treatment zone" }
+    ],
+    "locations": [
+      { "location_id": "loc.triage", "name": "triage bay", "zone_id": "zone.triage" },
+      { "location_id": "loc.treatment", "name": "cubicle 1", "zone_id": "zone.treatment" }
+    ],
+    "resource_buckets": [
+      {
+        "resource_id": "res.triage",
+        "resource_class": "nurse",
+        "location_id": "loc.triage",
+        "zone_id": "zone.triage",
+        "physical_status": "known",
+        "physical_count": 1,
+        "availability_status": "known",
+        "open_count": 1,
+        "staffed_count": 1,
+        "capabilities": []
+      },
+      {
+        "resource_id": "res.treatment",
+        "resource_class": "space",
+        "location_id": "loc.treatment",
+        "zone_id": "zone.treatment",
+        "physical_status": "known",
+        "physical_count": 1,
+        "availability_status": "known",
+        "open_count": 1,
+        "staffed_count": 1,
+        "capabilities": []
+      }
+    ],
+    "task_classes": [
+      {
+        "task_class_id": "task.triage",
+        "name": "triage intake",
+        "required_resource_classes": ["nurse"]
+      },
+      {
+        "task_class_id": "task.treatment",
+        "name": "clinical care",
+        "required_resource_classes": ["space"]
+      }
+    ],
+    "staff_roles": [
+      {
+        "staff_role_id": "role.nurse",
+        "name": "triage nurse",
+        "counts": [
+          {
+            "basis": "present",
+            "status": "known",
+            "count": 1,
+            "reference": "constrained staffing"
+          }
+        ]
+      },
+      {
+        "staff_role_id": "role.doctor",
+        "name": "treatment doctor",
+        "counts": [
+          {
+            "basis": "present",
+            "status": "known",
+            "count": 1,
+            "reference": "constrained staffing"
+          }
+        ]
+      }
+    ],
+    "eligibility": [
+      {
+        "staff_role_id": "role.nurse",
+        "task_class_id": "task.triage",
+        "zone_id": "zone.triage",
+        "location_id": "loc.triage"
+      },
+      {
+        "staff_role_id": "role.doctor",
+        "task_class_id": "task.treatment",
+        "zone_id": "zone.treatment",
+        "location_id": "loc.treatment"
+      }
+    ],
+    "routes": [
+      {
+        "from_location_id": "loc.triage",
+        "to_location_id": "loc.treatment",
+        "distance": { "value": 15, "unit": "m" }
+      }
+    ]
+  },
+  "patients": [
+    {
+      "patient_id": "patient-1",
+      "arrival_tick": 1,
+      "work_ticks": 3,
+      "resource_id": "res.triage",
+      "task_class_id": "task.triage"
+    },
+    {
+      "patient_id": "patient-2",
+      "arrival_tick": 2,
+      "work_ticks": 4,
+      "resource_id": "res.treatment",
+      "task_class_id": "task.treatment"
+    }
+  ]
+}
