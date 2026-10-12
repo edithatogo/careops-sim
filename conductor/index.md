@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [Accepted Kairos parent pin transition](evidence/e2.2-parent-pin-transition-20261012/README.md)
+
 - [Joined Flow V4 / Transit V2 consumer acceptance](evidence/e2.2-v4-v2-joined-consumers-completion-20261012/README.md)
 
 - [V4 portable Handoff acceptance](evidence/e2.2-v4-portable-completion-20261012/README.md)
