@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "phase_id": "E2",
+  "track_id": "generic_ed_delivery_20260925",
+  "status": "accepted",
+  "date": "2026-10-12",
+  "reviewer": "coordinator",
+  "source_commit": "2c7b467926eb44d98862edc8bc05e66642c5909f",
+  "leaves": [
+    "E2.1.staff",
+    "E2.1.interrupt",
+    "E2.1.space",
+    "E2.2.dispatch",
+    "E2.2.fidelity",
+    "E2.2.claims",
+    "E2.2.limits",
+    "E2.3.fixture",
+    "E2.3.boundary",
+    "E2.3.runner",
+    "E2.3.summary",
+    "E2.3.handoff",
+    "E2.4.evidence",
+    "E2.4.closeout"
+  ],
+  "verification": {
+    "total_passed": 129,
+    "failed": 0,
+    "ignored": 0,
+    "clippy_clean": true,
+    "fmt_clean": true,
+    "mvp_check_clean": true
+  },
+  "receipts": {
+    "e21_space_staff": "crates/careops-ed/tests/e13_terminal_runtime.rs",
+    "e22_claims_limits": "crates/careops-ed/tests/e22_claims_and_limits.rs",
+    "e22_dispatch_policy": "crates/careops-ed/tests/e22_dispatch_policy.rs",
+    "e23_integrated_fixture": "crates/careops-ed/tests/e23_integrated_fixture.rs",
+    "e23_boundary_cases": "crates/careops-ed/tests/e23_boundary_cases.rs",
+    "e23_runner_summary": "crates/careops-ed-cli/tests/e23_runner_summary.rs",
+    "nominal_scenario": "configs/scenarios/e23_nominal.json",
+    "constrained_scenario": "configs/scenarios/e23_constrained.json",
+    "reproduction_recipe": "conductor/evidence/e2.3-handoff-completion-20261012/reproduction-recipe.md"
+  },
+  "scope_and_limitations": {
+    "generic_ed_mvp_complete": true,
+    "clinical_acceptance_claimed": false,
+    "cairns_site_model_claimed": false,
+    "upstream_c5_c6_gates": "remain open under empirical calibration track"
+  }
+}
