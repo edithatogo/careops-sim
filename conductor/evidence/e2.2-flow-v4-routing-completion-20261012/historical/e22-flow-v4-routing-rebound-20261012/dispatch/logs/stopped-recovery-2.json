@@ -1,0 +1,51 @@
+{
+  "status": "stopped_failure_ceiling_unqualified",
+  "qualification": false,
+  "base_commit": "2177b148132d054a8822c0341cce7db1dcea6930",
+  "packet_sha256": "a9c6b07178ea66a89cc5b9573270963fd57a204e15aed3d8f75f893414a213de",
+  "driver_sha256": "97d5035fe13029c2fe4ee15aaa479be9f806442714fef40df989cff4323db2e5",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "33c549e872126f69a45481407533d59e51bf04c1a84fa44fd6833c100e7a6be4",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "78103349cae24fa76d6145eb84927d50a79cbfe856412fbfdddecc5dcd868238",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "79a605b608ee6d3b8a80ef909e9edcb54c6b6cfb13483387d8e089638ba81446",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs": "c464d4ac56d2c9e00bebf06fdce2b504e306b7625198c546c32a0dc6305096d9"
+  },
+  "source_hashes_after": {
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "33c549e872126f69a45481407533d59e51bf04c1a84fa44fd6833c100e7a6be4",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "78103349cae24fa76d6145eb84927d50a79cbfe856412fbfdddecc5dcd868238",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "79a605b608ee6d3b8a80ef909e9edcb54c6b6cfb13483387d8e089638ba81446",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs": "c464d4ac56d2c9e00bebf06fdce2b504e306b7625198c546c32a0dc6305096d9"
+  },
+  "historical_failed_development_count": 1,
+  "prior_rebound_failed_gate_count": 1,
+  "current_failed_gate_count": 1,
+  "cumulative_failed_development_count": 3,
+  "gates": [
+    {
+      "gate": "clippy",
+      "exit_code": 0,
+      "receipt_path": ".artifacts/e22-flow-v4-routing-rebound-20261012/dispatch/logs/clippy-1791774039241904000-83406-result.json",
+      "receipt_sha256": "db4c8084d2f71ebb8645a4eed69e67a86a71a0d95c1a182e751450ac7072b912",
+      "log_path": ".artifacts/e22-flow-v4-routing-rebound-20261012/dispatch/logs/clippy-1791774039241904000-83406.log",
+      "log_sha256": "f5141ab51265b0faaf9b69fbc69a61b875c7a1a4bbac4333cc11a0c412f837ab"
+    },
+    {
+      "gate": "tests",
+      "exit_code": 101,
+      "receipt_path": ".artifacts/e22-flow-v4-routing-rebound-20261012/dispatch/logs/tests-1791774048435624000-83455-result.json",
+      "receipt_sha256": "0c1f83a9e7fa9ddf7c651fa563e204c278a54d3ce700b5c4836272d0d4a982b0",
+      "log_path": ".artifacts/e22-flow-v4-routing-rebound-20261012/dispatch/logs/tests-1791774048435624000-83455.log",
+      "log_sha256": "4e34478c5e9712c4e11d25aa09ac7905f1c7ac37db3bdbaf40dafc6fc3947a5a",
+      "successful_test_count": 372,
+      "failed_test_count": 1,
+      "ignored_test_count": 1,
+      "failed_named_tests": [
+        "queue_order_legacy_capture_fails_before_codec_for_all_key_lifetimes"
+      ]
+    }
+  ],
+  "format_started": false,
+  "runtime_acceptance": false,
+  "source_commit": "7aa83e2a184aee21196a5652542bfa02ad0e45e7",
+  "diagnosis": "Protected legacy queue-order test captures empty StableKey source through image routing and receives V4 where legacy capture was expected to fail closed."
+}

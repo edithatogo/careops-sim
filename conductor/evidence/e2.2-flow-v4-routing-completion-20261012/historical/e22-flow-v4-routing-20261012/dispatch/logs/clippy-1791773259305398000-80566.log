@@ -1,0 +1,35 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.45
+    Checking kairo-ecs-types v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-types)
+   Compiling thiserror v2.0.20
+    Checking kairo-ecs-state v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-state)
+    Checking kairo-ecs-rng v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-rng)
+    Checking kairo-ecs-core v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-core)
+   Compiling syn v3.0.6
+   Compiling thiserror-impl v2.0.20
+    Checking kairo-ecs-des v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-des)
+error[E0004]: non-exhaustive patterns: `&kairo_ecs_des::FlowCheckpointImage::V4(_)` not covered
+    --> crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs:1183:38
+     |
+1183 |         let expected: Vec<_> = match &image {
+     |                                      ^^^^^^ pattern `&kairo_ecs_des::FlowCheckpointImage::V4(_)` not covered
+     |
+note: `kairo_ecs_des::FlowCheckpointImage` defined here
+    --> crates/kairo-ecs-des/src/flow/checkpoint/v2.rs:122:1
+     |
+ 122 | pub enum FlowCheckpointImage {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 126 |     V4(FlowCheckpointV4),
+     |     -- not covered
+     = note: the matched value is of type `&kairo_ecs_des::FlowCheckpointImage`
+help: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern or an explicit pattern as shown
+     |
+1190 ~             FlowCheckpointImage::V3(i) => i.commands.clone(),
+1191 ~             &kairo_ecs_des::FlowCheckpointImage::V4(_) => todo!(),
+     |
+
+For more information about this error, try `rustc --explain E0004`.
+error: could not compile `kairo-ecs-des` (test "flow_checkpoint_routing_v3") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

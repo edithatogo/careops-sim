@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "packet_id": "e22-flow-v4-routing-20261012",
+  "task_id": "E2.2",
+  "status": "prepared",
+  "objective": "Route Flow checkpoint Image/Ref capture, native restore and wire encode/decode through accepted V4 while preserving legacy selection and formats.",
+  "target_repo": ".",
+  "target_worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012",
+  "base_commit": "34ff8fc54ccbbf976d1c8e3d9158d3456c26ad9b",
+  "source_write_paths": [
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs"
+  ],
+  "base_source_hashes": {
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f1527c04bcd278027324347d7dd52c3e3eed4773457ffca4de5a2cf21fb87232",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "6f939c01db05a63095cf675c34eb86642a92b4b26a81d98baf4d451faa39d5e1",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "e3ba638f1ae2e7c8f21d93a64409e676f83a120daf4d45123427b6b5a9fc2abb",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs": null
+  },
+  "initially_absent_paths": [
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs"
+  ],
+  "protected_candidate_source_paths": [
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs",
+    "crates/kairo-ecs-des/tests/flow_context_codec_schema_versions.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v1.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v1.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v3.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v4.rs",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v4-routing.md",
+    "conductor/design/des/ADR-e2-context-codec-schema-versions.md",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v4-direct-wire.md",
+    "AGENTS.md"
+  ],
+  "protected_candidate_source_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f",
+    "crates/kairo-ecs-des/tests/flow_context_codec_schema_versions.rs": "d19c0e220bdc564c349c1dea6ffbddc9ae9c0a33a1ff73e41716586a1fcf8ee1",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs": "907135874fdf24dbdf20bcde520146371faed066426a6ed447a52bf789275d00",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v1.rs": "c750f031dbcdf22ce4c4c99940e92e65ed9955e0170c10671ae7bad2d55ce036",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs": "8fc2f1ee4e65051af53779b4ece42b933aa7d6cfbdf53ef7475a0b78a8c2b76d",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "49fac22c2df77dd920ff773b02395abdbbdbc1c2ee135d234dba9c8ea3d0a910",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v1.rs": "8ecf46774fcc5e8d41dfd821b11605e4e6b18381aed60623677c345258ce02b8",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v3.rs": "08467fc04ec2fd7038ef5c68e4987979a3a8e16b04db361d810ae95759a7c942",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v4.rs": "865a0f7a780f977928b2962221b4a6c101f32a94b4f73efb248bc531b84af7c9",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v4-routing.md": "ed332b89b619d406cdc3e2bdcb2b3774c3622549738765246519b0dc2ca3db99",
+    "conductor/design/des/ADR-e2-context-codec-schema-versions.md": "068adb299e5cc18c9254a2e4be8d41ca5768120ca829a3907eb5a8c2bf5d7d19",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v4-direct-wire.md": "9ccd02e5871ef1397fd8646def62d86dc1af9a47176b9a016edde85a00f7dac0",
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35"
+  },
+  "gate_source_paths": [
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs"
+  ],
+  "context_path": ".artifacts/e22-flow-v4-routing-20261012/dispatch/context.md",
+  "context_sha256": "5b394de37e885fe82cf7e6ccb82c1f25ffce220605aeb3a06b2424994f77dbf7",
+  "context_bytes": 21577,
+  "context_budget_bytes": 24000,
+  "immutable_dispatch_inputs": [
+    ".artifacts/e22-flow-v4-routing-20261012/dispatch/record_gate.py",
+    ".artifacts/e22-flow-v4-routing-20261012/dispatch/context.md"
+  ],
+  "external_evidence": {
+    "acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-context-schema-versions-completion-20261012/acceptance.json",
+    "acceptance_sha256": "b3e2b3e553e103fecda5dbffebc7b39ad9ad3962f532357cb306d4c8c841b88a",
+    "acceptance_status": "accepted_context_codec_schema_versions_source_only",
+    "accepted_commit": "34ff8fc54ccbbf976d1c8e3d9158d3456c26ad9b",
+    "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-context-schema-versions-completion-20261012/result.json",
+    "result_sha256": "911d1cc5efc1c0db5c2f8e22bbfa1a605c5c20c43c4490c73bc541ff7b678cf5",
+    "prerequisite_source_hashes": {
+      "crates/kairo-ecs-des/src/flow/checkpoint.rs": "6f939c01db05a63095cf675c34eb86642a92b4b26a81d98baf4d451faa39d5e1",
+      "crates/kairo-ecs-des/tests/flow_context_codec_schema_versions.rs": "d19c0e220bdc564c349c1dea6ffbddc9ae9c0a33a1ff73e41716586a1fcf8ee1"
+    }
+  },
+  "interface_contract": "conductor/design/des/ADR-e2-flow-checkpoint-v4-routing.md",
+  "leaf_dependencies": [
+    "Accepted schema-version prerequisite 34ff8fc54ccbbf976d1c8e3d9158d3456c26ad9b; durable acceptance and result hashes are separately bound."
+  ],
+  "input_hashes": {
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs": "0f31a1e93796df1dc4331e6c4b58d356e4bf2709422b846e9854f364e8b3b10f",
+    "crates/kairo-ecs-des/tests/flow_context_codec_schema_versions.rs": "d19c0e220bdc564c349c1dea6ffbddc9ae9c0a33a1ff73e41716586a1fcf8ee1",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs": "907135874fdf24dbdf20bcde520146371faed066426a6ed447a52bf789275d00",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v1.rs": "c750f031dbcdf22ce4c4c99940e92e65ed9955e0170c10671ae7bad2d55ce036",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs": "8fc2f1ee4e65051af53779b4ece42b933aa7d6cfbdf53ef7475a0b78a8c2b76d",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs": "49fac22c2df77dd920ff773b02395abdbbdbc1c2ee135d234dba9c8ea3d0a910",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v1.rs": "8ecf46774fcc5e8d41dfd821b11605e4e6b18381aed60623677c345258ce02b8",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs": "77bde9bf1c4bcd2d25dd2e8574cc70038261be6f1311d7f929987abfe1dcca54",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v3.rs": "08467fc04ec2fd7038ef5c68e4987979a3a8e16b04db361d810ae95759a7c942",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v4.rs": "865a0f7a780f977928b2962221b4a6c101f32a94b4f73efb248bc531b84af7c9",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v4-routing.md": "ed332b89b619d406cdc3e2bdcb2b3774c3622549738765246519b0dc2ca3db99",
+    "conductor/design/des/ADR-e2-context-codec-schema-versions.md": "068adb299e5cc18c9254a2e4be8d41ca5768120ca829a3907eb5a8c2bf5d7d19",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v4-direct-wire.md": "9ccd02e5871ef1397fd8646def62d86dc1af9a47176b9a016edde85a00f7dac0",
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "f1527c04bcd278027324347d7dd52c3e3eed4773457ffca4de5a2cf21fb87232",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "6f939c01db05a63095cf675c34eb86642a92b4b26a81d98baf4d451faa39d5e1",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "e3ba638f1ae2e7c8f21d93a64409e676f83a120daf4d45123427b6b5a9fc2abb",
+    ".artifacts/e22-flow-v4-routing-20261012/dispatch/record_gate.py": "0868bfa120124d6695c4e2821253d6083c4d48aae8402f7c19b65f3847d804b1",
+    ".artifacts/e22-flow-v4-routing-20261012/dispatch/context.md": "5b394de37e885fe82cf7e6ccb82c1f25ffce220605aeb3a06b2424994f77dbf7"
+  },
+  "write_paths": [
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs",
+    ".artifacts/e22-flow-v4-routing-20261012/dispatch/logs/"
+  ],
+  "protected_paths": [
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v4_native.rs",
+    "crates/kairo-ecs-des/tests/flow_context_codec_schema_versions.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v1.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v2.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_v3.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v1.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v2.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v3.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v4.rs",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v4-routing.md",
+    "conductor/design/des/ADR-e2-context-codec-schema-versions.md",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v4-direct-wire.md",
+    "AGENTS.md",
+    "conductor/design/des/ADR-e2-flow-checkpoint-v4-routing.md",
+    "conductor/design/des/ADR-e2-context-codec-schema-versions.md",
+    ".artifacts/e22-flow-v4-routing-20261012/dispatch/record_gate.py",
+    ".artifacts/e22-flow-v4-routing-20261012/dispatch/context.md"
+  ],
+  "result_path": ".artifacts/e22-flow-v4-routing-20261012/dispatch/logs/result.json",
+  "logs_path": ".artifacts/e22-flow-v4-routing-20261012/dispatch/logs",
+  "dispatch_authority_path": "/tmp/careops-e22-flow-v4-routing-dispatch-authority-20261012.json",
+  "required_success_names": [
+    "routing_v4_empty_stable_resource_selects_before_capture",
+    "routing_v4_all_keyed_lifetimes_and_removed_generation",
+    "routing_v4_ref_borrowed_accessors_and_commands_complete",
+    "routing_v4_image_direct_native_restore_suffix_equal",
+    "routing_v4_image_wire_magic_roundtrip",
+    "routing_v4_corrupt_source_and_limits_never_fallback",
+    "routing_v4_legacy_minimal_selection_unchanged",
+    "routing_v4_old_direct_capture_remains_failclosed"
+  ],
+  "test_oracles": {
+    "routing_v4_empty_stable_resource_selects_before_capture": "Actual runtime proof specified by the bound routing ADR and proposal; preserve legacy controls.",
+    "routing_v4_all_keyed_lifetimes_and_removed_generation": "Actual runtime proof specified by the bound routing ADR and proposal; preserve legacy controls.",
+    "routing_v4_ref_borrowed_accessors_and_commands_complete": "Actual runtime proof specified by the bound routing ADR and proposal; preserve legacy controls.",
+    "routing_v4_image_direct_native_restore_suffix_equal": "Actual runtime proof specified by the bound routing ADR and proposal; preserve legacy controls.",
+    "routing_v4_image_wire_magic_roundtrip": "Actual runtime proof specified by the bound routing ADR and proposal; preserve legacy controls.",
+    "routing_v4_corrupt_source_and_limits_never_fallback": "Actual runtime proof specified by the bound routing ADR and proposal; preserve legacy controls.",
+    "routing_v4_legacy_minimal_selection_unchanged": "Actual runtime proof specified by the bound routing ADR and proposal; preserve legacy controls.",
+    "routing_v4_old_direct_capture_remains_failclosed": "Actual runtime proof specified by the bound routing ADR and proposal; preserve legacy controls."
+  },
+  "development_failure_limit": 3,
+  "verification_order": [
+    "clippy",
+    "tests",
+    "format"
+  ],
+  "verification": [
+    {
+      "id": "clippy",
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-flow-v4-routing-20261012/dispatch/record_gate.py",
+        "clippy"
+      ],
+      "actual_argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "toolchain": "Rust/Cargo 1.99.0",
+      "oracle": "Bound routing ADR/proposal; exact final source hashes and captured raw output required."
+    },
+    {
+      "id": "tests",
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-flow-v4-routing-20261012/dispatch/record_gate.py",
+        "tests"
+      ],
+      "actual_argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "toolchain": "Rust/Cargo 1.99.0",
+      "required_success_names": [
+        "routing_v4_empty_stable_resource_selects_before_capture",
+        "routing_v4_all_keyed_lifetimes_and_removed_generation",
+        "routing_v4_ref_borrowed_accessors_and_commands_complete",
+        "routing_v4_image_direct_native_restore_suffix_equal",
+        "routing_v4_image_wire_magic_roundtrip",
+        "routing_v4_corrupt_source_and_limits_never_fallback",
+        "routing_v4_legacy_minimal_selection_unchanged",
+        "routing_v4_old_direct_capture_remains_failclosed"
+      ],
+      "oracle": "Bound routing ADR/proposal; exact final source hashes and captured raw output required."
+    },
+    {
+      "id": "format",
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-flow-v4-routing-20261012/dispatch/record_gate.py",
+        "format"
+      ],
+      "actual_argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "--config",
+        "skip_children=true",
+        "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "toolchain": "Rust/Cargo 1.99.0",
+      "oracle": "Bound routing ADR/proposal; exact final source hashes and captured raw output required."
+    }
+  ],
+  "environment": {
+    "CARGO_HOME": "/tmp/c2-route-receipt-cargo-home",
+    "CARGO_TARGET_DIR": ".artifacts/e22-flow-v4-routing-20261012/dispatch/logs/target",
+    "CARGO_PROFILE_DEV_DEBUG": "0",
+    "CARGO_PROFILE_TEST_DEBUG": "0",
+    "CARGO_INCREMENTAL": "0"
+  },
+  "steps": [
+    "Verify accepted prerequisite, exact clean base and protected hashes before claim.",
+    "Implement exactly four owned paths, format first, then freeze for independent source review.",
+    "After explicit GO run strict DES Clippy, full DES tests and exact four-file format in order; stop every failure for root review.",
+    "Freeze raw receipts/source hashes; commit only after explicit root GO."
+  ],
+  "stop_conditions": [
+    "Any acceptance, result, base, protected-input or source-scope drift.",
+    "Stop every failed gate; retain all attempts; maximum three failed development executions.",
+    "No V4 fallback, legacy format change, parent pin or downstream work in this packet."
+  ],
+  "acceptance": [
+    "All eight named routing proofs and full DES suite; all ordered final gates at identical four-source hashes."
+  ],
+  "result_contract": "Raw paired receipts, actual named test results/counts, source hashes and pinned toolchain; ready only at identical final hashes after all ordered gates pass.",
+  "finalizer_contract": {
+    "latest_receipts": "Latest terminal receipt per gate in chronological order must be Clippy then tests then format, all pass at current identical two-source hashes; tests counts/names are parsed from captured raw output.",
+    "toolchain": "Rust/Cargo actual version strings must begin exactly with rustc 1.99.0 and cargo 1.99.0.",
+    "failed_attempts": "Count every nonzero terminal gate receipt in this packet, preserving history; stop after three.",
+    "logs": "Keep full gate stdout/stderr under the owned logs directory and hash each log and receipt."
+  },
+  "status_note": "Prepared private; root labels/API owner review and materialization required; not dispatched.",
+  "context_paths": [
+    ".artifacts/e22-flow-v4-routing-20261012/dispatch/context.md"
+  ],
+  "dispatch_authority_contract": {
+    "required": [
+      "packet_path",
+      "packet_sha256",
+      "driver_sha256",
+      "target_worktree",
+      "base_commit",
+      "dispatch_status GO"
+    ],
+    "recovery": "repair_authorized true and exact chronological complete failed receipt path list; otherwise no retry. Fresh ordered Clippy/tests/format."
+  }
+}

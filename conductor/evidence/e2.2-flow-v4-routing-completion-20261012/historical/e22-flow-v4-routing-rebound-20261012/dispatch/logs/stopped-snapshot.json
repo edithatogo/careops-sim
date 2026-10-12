@@ -1,0 +1,51 @@
+{
+  "status": "stopped_failed_tests_unqualified",
+  "qualification": false,
+  "base_commit": "2177b148132d054a8822c0341cce7db1dcea6930",
+  "packet_sha256": "a9c6b07178ea66a89cc5b9573270963fd57a204e15aed3d8f75f893414a213de",
+  "driver_sha256": "97d5035fe13029c2fe4ee15aaa479be9f806442714fef40df989cff4323db2e5",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "33c549e872126f69a45481407533d59e51bf04c1a84fa44fd6833c100e7a6be4",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "78103349cae24fa76d6145eb84927d50a79cbfe856412fbfdddecc5dcd868238",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "79a605b608ee6d3b8a80ef909e9edcb54c6b6cfb13483387d8e089638ba81446",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs": "2e07b03142baba7e1c55fa996a33d91efb3ef866592db9689b53025ab20492ed"
+  },
+  "source_hashes_after": {
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "33c549e872126f69a45481407533d59e51bf04c1a84fa44fd6833c100e7a6be4",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "78103349cae24fa76d6145eb84927d50a79cbfe856412fbfdddecc5dcd868238",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "79a605b608ee6d3b8a80ef909e9edcb54c6b6cfb13483387d8e089638ba81446",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs": "2e07b03142baba7e1c55fa996a33d91efb3ef866592db9689b53025ab20492ed"
+  },
+  "historical_failed_development_count": 1,
+  "fresh_failed_gate_count": 1,
+  "cumulative_failed_development_count": 2,
+  "gates": [
+    {
+      "gate": "clippy",
+      "exit_code": 0,
+      "receipt_path": ".artifacts/e22-flow-v4-routing-rebound-20261012/dispatch/logs/clippy-1791773786565386000-82069-result.json",
+      "receipt_sha256": "d861150c9e29345975b441ca49da638a7d514ac82ac276eafd8510e7089ecdfd",
+      "log_path": ".artifacts/e22-flow-v4-routing-rebound-20261012/dispatch/logs/clippy-1791773786565386000-82069.log",
+      "log_sha256": "f9338aca41db3e9f6cf7c4d340dfab6022f1fdb1b4f87e442fa549c194645097"
+    },
+    {
+      "gate": "tests",
+      "exit_code": 101,
+      "receipt_path": ".artifacts/e22-flow-v4-routing-rebound-20261012/dispatch/logs/tests-1791773798461096000-82221-result.json",
+      "receipt_sha256": "4b6142003afdad5cb3e849d871e58639beb5ea433468cca25dfa2beda647de4f",
+      "log_path": ".artifacts/e22-flow-v4-routing-rebound-20261012/dispatch/logs/tests-1791773798461096000-82221.log",
+      "log_sha256": "484769f5ddcfeb9b9cb8db307bde5dbc02692f794d221ce52bf67f70b70b811f9",
+      "successful_test_count": 238,
+      "failed_test_count": 2,
+      "ignored_test_count": 1,
+      "failed_named_tests": [
+        "routing_v4_legacy_minimal_selection_unchanged",
+        "routing_v4_ref_borrowed_accessors_and_commands_complete"
+      ]
+    }
+  ],
+  "format_started": false,
+  "runtime_acceptance": false,
+  "source_commit": null,
+  "diagnosis": "Hook fixture registers runtime domain hook after ctx work creation; budget fixture uses two zero-cost GrantEnabled events and therefore does not halt."
+}
