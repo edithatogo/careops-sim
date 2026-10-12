@@ -1,0 +1,36 @@
+{
+  "status": "accepted_context_codec_schema_versions_source_only",
+  "accepted_commit": "34ff8fc54ccbbf976d1c8e3d9158d3456c26ad9b",
+  "gate_base_commit": "ed89ce27355e998da7c5f4852b5809f2691b810e",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "6f939c01db05a63095cf675c34eb86642a92b4b26a81d98baf4d451faa39d5e1",
+    "crates/kairo-ecs-des/tests/flow_context_codec_schema_versions.rs": "d19c0e220bdc564c349c1dea6ffbddc9ae9c0a33a1ff73e41716586a1fcf8ee1"
+  },
+  "final_result_sha256": "911d1cc5efc1c0db5c2f8e22bbfa1a605c5c20c43c4490c73bc541ff7b678cf5",
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "tests": {
+    "passed": 422,
+    "failed": 0,
+    "ignored": 1,
+    "suites": 43
+  },
+  "required_success_names": [
+    "context_codec_nonzero_versions_roundtrip_actual_runtime",
+    "context_codec_zero_and_duplicate_registration_atomic",
+    "context_codec_manifest_mismatch_rejects_before_decoder",
+    "context_codec_legacy_wire_versions_preserve_schema_and_bytes",
+    "context_codec_restart_schema_guard_remains_v1"
+  ],
+  "reviewers": [
+    "root",
+    "next_delivery_orchestrator GPT-6.1-sol"
+  ],
+  "retained_failed_executions": 0,
+  "review": "Only generic context registration guard changed. Exact nonzero versions, actual restored runtime completion, atomic rejection without codec calls, mismatch-before-decoder, legacy formats and unchanged restart policy reviewed. Final ordered paired receipts audited at identical source hashes.",
+  "boundary": "Context codec schema prerequisite only. ABM wire, routing, joined consumers, parent pin and ED delivery remain open.",
+  "parent_pin": "6d733f489225da4bf6ceec2673b02369c7918bbe",
+  "next": "Freeze this accepted commit; merge it into ABM snapshot for rebound qualification and dispatch DES routing in parallel."
+}

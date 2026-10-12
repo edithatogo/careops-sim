@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [Context schema prerequisite acceptance and parallel successors](evidence/e2.2-context-schema-versions-completion-20261012/README.md)
+
 - [Context schema prerequisite dispatch and ABM dependency stop](evidence/e2.2-context-schema-prerequisite-dispatch-20261012/README.md)
 
 - [Flow V4 direct wire acceptance and routing successor](evidence/e2.2-flow-v4-direct-wire-completion-20261012/README.md)
