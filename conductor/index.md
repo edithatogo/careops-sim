@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [V4 portable Handoff acceptance](evidence/e2.2-v4-portable-completion-20261012/README.md)
+
 - [V4 coherent Acquire acceptance](evidence/e2.2-v4-coherent-completion-20261012/README.md)
 
 - [V4 preview acceptance](evidence/e2.2-v4-preview-completion-20261012/README.md)

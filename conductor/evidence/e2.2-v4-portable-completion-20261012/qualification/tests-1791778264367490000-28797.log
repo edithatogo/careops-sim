@@ -1,0 +1,523 @@
+   Compiling kairo-ecs-types v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-portable-consumer-20261012/crates/kairo-ecs-types)
+   Compiling typenum v1.20.1
+   Compiling thiserror v2.0.20
+   Compiling libc v0.2.186
+   Compiling hybrid-array v0.4.15
+   Compiling kairo-ecs-state v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-portable-consumer-20261012/crates/kairo-ecs-state)
+   Compiling kairo-ecs-rng v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-portable-consumer-20261012/crates/kairo-ecs-rng)
+   Compiling kairo-ecs-core v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-portable-consumer-20261012/crates/kairo-ecs-core)
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling const-oid v0.10.2
+   Compiling kairo-ecs-des v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-portable-consumer-20261012/crates/kairo-ecs-des)
+   Compiling digest v0.11.3
+   Compiling num-traits v0.2.19
+   Compiling cpufeatures v0.3.1
+   Compiling zmij v1.0.21
+   Compiling serde_core v1.0.228
+   Compiling cfg-if v1.0.4
+   Compiling memchr v2.8.0
+   Compiling itoa v1.0.18
+   Compiling serde_json v1.0.149
+   Compiling sha2 v0.11.0
+   Compiling kairo-ecs-abm v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-portable-consumer-20261012/crates/kairo-ecs-abm)
+   Compiling chrono v0.4.45
+   Compiling kairo-ecs-arrow v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-portable-consumer-20261012/crates/kairo-ecs-arrow)
+   Compiling kairo-ecs-calibration v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-portable-consumer-20261012/crates/kairo-ecs-calibration)
+    Finished `test` profile [unoptimized] target(s) in 19.82s
+     Running unittests src/lib.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/kairo_ecs_calibration-b089c773411a5479)
+
+running 239 tests
+test c2_checkpoint_journal::tests::artifact_size_and_canonical_json_are_bounded ... ok
+test c2_checkpoint_journal::tests::checkpoint_rejects_rehashed_mutations_and_never_overwrites ... ok
+test c2_checkpoint_journal::tests::fresh_process_replay_matches_uninterrupted_suffix ... ok
+test c2_checkpoint_journal::tests::restore_child_entrypoint ... ok
+test c2_portable_checkpoint::tests::bound_record_is_rebound_with_trusted_key_and_roster_is_complete ... ok
+test c2_portable_checkpoint::tests::bound_route_requires_the_caller_approved_graph ... ok
+test c2_portable_checkpoint::tests::empty_roster_roundtrips_actual_owner_bytes_and_trusted_binding ... ok
+test c2_portable_checkpoint::tests::generic_context_tests::actual_composite_rebinds_mutated_nonclone_context_and_multiple_codec_types_in_child ... ok
+test c2_portable_checkpoint::tests::generic_context_tests::restore_child_entrypoint ... ok
+test c2_portable_checkpoint::tests::process_tests::full_owner_image_restores_in_a_new_process_and_matches_uninterrupted_suffix ... ok
+test c2_portable_checkpoint::tests::process_tests::identity_rng_tests::derived_trusted_identity_and_rng_continuation_survive_fresh_process_restore ... ok
+test c2_portable_checkpoint::tests::process_tests::identity_rng_tests::restore_child_entrypoint ... ok
+test c2_portable_checkpoint::tests::process_tests::portable_v1_full_envelope_golden_parity ... ok
+test c2_portable_checkpoint::tests::process_tests::portable_v2_gated_process_continuation ... ok
+test c2_portable_checkpoint::tests::process_tests::portable_v2_malformed_inner_sections_reject_before_codecs ... ok
+test c2_portable_checkpoint::tests::process_tests::portable_v3_current_tick_flush_fresh_process_continuation ... ok
+test c2_portable_checkpoint::tests::process_tests::portable_v3_halted_envelope_fresh_process_preserves_state ... ok
+test c2_portable_checkpoint::tests::process_tests::portable_v3_malformed_inner_resealed_outer_rejects_precodec ... ok
+test c2_portable_checkpoint::tests::process_tests::portable_v3_mixed_interior_cuts_fresh_process_continuation ... ok
+test c2_portable_checkpoint::tests::process_tests::portable_v4_handoff_schema2_caps_and_no_fallback ... ok
+test c2_portable_checkpoint::tests::process_tests::portable_v4_handoff_schema2_rebind_negative_controls ... ok
+test c2_portable_checkpoint::tests::process_tests::portable_v4_handoff_seven_fresh_process_cases ... ok
+test c2_portable_checkpoint::tests::process_tests::rejected_control_frontier_is_not_capturable_and_capture_preserves_source ... ok
+test c2_portable_checkpoint::tests::process_tests::restore_child_entrypoint ... ok
+test c2_portable_checkpoint::tests::sparse_slot_metadata_is_not_mistaken_for_wire_byte_budget ... ok
+test c5_native::tests::c5_native_actual_flow_recovers_known_route_and_work ... ok
+test c5_native::tests::c5_native_complete_study_and_final_holdout_are_separate ... ok
+test c5_native::tests::c5_native_crn_draws_are_paired_and_repeatable ... ok
+test c5_native::tests::c5_native_free_cutoff_remains_per_case_when_later_cases_extend_run ... ok
+test c5_native::tests::c5_native_free_queue_is_coupled_and_observation_independent ... ok
+test c5_native::tests::c5_native_free_runtime_failure_is_a_durable_attempt ... ok
+test c5_native::tests::c5_native_horizon_and_event_cap_retain_failed_outcomes ... ok
+test c5_native::tests::c5_native_noisy_recovery_and_confounded_ridge_are_distinct ... ok
+test c5_native::tests::c5_native_observed_completion_never_drives_prediction ... ok
+test c5_native::tests::c5_native_preview_limit_error_propagates_without_v1_fallback ... ok
+test c5_native::tests::c5_native_preview_preserves_pending_disable_and_completion ... ok
+test c5_native::tests::c5_native_task_forgery_fails_before_execution ... ok
+test c5_native::tests::preview_v3_capture_limit_error_without_legacy_fallback ... ok
+test c5_native::tests::preview_v3_deferred_pending_flush_without_advancement ... ok
+test c5_native::tests::preview_v3_disabled_queue_has_no_invented_completion ... ok
+test c5_native::tests::preview_v3_halted_live_tick_and_repeat_step_error ... ok
+test c5_study::tests::failed_probe_penalty_affects_validation_and_invalid_attempt_remains_visible ... ok
+test c5_study::tests::fixed_confirmation_uses_bounded_hoeffding_and_reports_cap_indeterminacy ... ok
+test c5_study::tests::invalid_zero_candidate_is_retained_as_attempt_not_enumeration_hole ... ok
+test c5_study::tests::leakage_and_bad_configuration_are_rejected_before_dispatch ... ok
+test c5_study::tests::mixed_failure_and_source_censoring_are_exclusive_and_case_penalized ... ok
+test c5_study::tests::oversized_repeated_case_payload_rejects_before_task_cloning ... ok
+test c5_study::tests::per_split_case_cap_is_checked_before_task_materialization ... ok
+test c5_study::tests::plan_is_canonical_bounded_and_pairs_candidate_independent_schedules ... ok
+test c5_study::tests::required_missing_transit_metric_moves_observation_to_penalty_bucket ... ok
+test c5_study::tests::result_inventory_and_identity_are_exact_and_duplicate_attempts_fail ... ok
+test c5_study::tests::training_only_censoring_and_bootstrap_oracles_are_hand_computable ... ok
+test c5_study::tests::validation_ridge_freezes_winner_then_final_test_is_winner_only ... ok
+test flow_bridge::tests::actual_flow_urgent_restart_reuses_sampled_service_for_macro_and_zero_transit_micro ... ok
+test flow_bridge::tests::actual_flow_urgent_suspend_resumes_same_macro_and_routed_micro_service ... ok
+test flow_bridge::tests::actual_transit_rejection_retries_to_one_accepted_arrival_and_request ... ok
+test flow_bridge::tests::bind_failure_keeps_same_created_work_for_retry ... ok
+test flow_bridge::tests::bound_bridge_wire_roundtrips_complete_zero_route_image ... ok
+test flow_bridge::tests::bridge_checkpoint_trusted_binding_checks_key_and_graph_without_mutation ... ok
+test flow_bridge::tests::coherent_cut_accepts_observed_arrival_and_queued_admission ... ok
+test flow_bridge::tests::coherent_cut_rejects_flow_step_before_bridge_observation ... ok
+test flow_bridge::tests::coherent_cut_requires_the_observed_domain_dispatch_frontier ... ok
+test flow_bridge::tests::coherent_v2_observed_arrival_requires_queued_submit_join ... ok
+test flow_bridge::tests::coherent_v2_requires_observed_domain_frontier ... ok
+test flow_bridge::tests::coherent_v2_transit_and_control_join_rejects_independent_mutations ... ok
+test flow_bridge::tests::coherent_v3_arrived_pending_submit_join ... ok
+test flow_bridge::tests::coherent_v3_observed_frontier_required ... ok
+test flow_bridge::tests::coherent_v3_transit_control_and_owned_field_mutations ... ok
+test flow_bridge::tests::conflicting_external_request_never_becomes_a_second_bridge_receipt ... ok
+test flow_bridge::tests::continuation_capture_decision_mismatch_returns_original_values ... ok
+test flow_bridge::tests::continuation_capture_mismatch_returns_the_original_values ... ok
+test flow_bridge::tests::create_failure_retains_template_sample_and_stream_for_retry ... ok
+test flow_bridge::tests::foreign_runtime_submit_failure_retains_bound_work_for_retry ... ok
+test flow_bridge::tests::invalid_route_metadata_rejects_before_admission_or_service_draw ... ok
+test flow_bridge::tests::joined_native_restore_preserves_arrival_and_historical_event_suffix ... ok
+test flow_bridge::tests::joined_native_restore_rebinds_paused_route_and_rejects_carrier_mutations ... ok
+test flow_bridge::tests::joined_native_restore_retries_a_rejected_issued_event_without_replay ... ok
+test flow_bridge::tests::macro_and_micro_reconcile_queue_transit_and_service_elapsed_time ... ok
+test flow_bridge::tests::macro_and_zero_micro_share_service_draws_and_submit_actual_timed_work ... ok
+test flow_bridge::tests::matching_rejected_transit_event_retries_once_and_replay_is_atomic ... ok
+test flow_bridge::tests::micro_route_is_prepared_and_samples_service_once ... ok
+test flow_bridge::tests::mixed_subsystems_keep_macro_and_routed_micro_work_associated_in_one_flow ... ok
+test flow_bridge::tests::native_bound_checkpoint_captures_zero_draw_macro_and_is_bounded_before_clone ... ok
+test flow_bridge::tests::native_bound_checkpoint_keeps_approved_route_and_receipt_state ... ok
+test flow_bridge::tests::native_bound_checkpoint_preflights_graph_limit_before_route_calculation ... ok
+test flow_bridge::tests::native_bound_checkpoint_rejects_carrier_request_and_flow_binding_mismatches ... ok
+test flow_bridge::tests::native_bound_checkpoint_restores_exact_service_stream_onto_fresh_flow ... ok
+test flow_bridge::tests::native_submitted_checkpoint_restores_existing_request_without_resubmission ... ok
+test flow_bridge::tests::native_submitted_checkpoint_retains_request_and_service_sample ... ok
+test flow_bridge::tests::native_transit_restore_preflights_trusted_graph_size_and_identity ... ok
+test flow_bridge::tests::owning_continuation_preserves_macro_and_zero_micro_values_and_service_draws ... ok
+test flow_bridge::tests::owning_continuation_preserves_started_and_observed_paused_transit ... ok
+test flow_bridge::tests::route_metadata_mismatch_preserves_bound_state_and_rejects_continuation ... ok
+test flow_bridge::tests::runtime_rejected_progress_at_u128_max_retries_once_and_preserves_progress ... ok
+test flow_bridge::tests::runtime_rejected_start_at_u128_max_retries_once_at_same_due_and_priority ... ok
+test flow_bridge::tests::wrong_service_purpose_and_identity_reject_without_advancing ... ok
+test flow_bridge::transit_flow_c20::actual_nonzero_route_consumes_stale_start_and_arrival_across_pause_resume_once ... ok
+test ingestion_c01::actual_transport_matrix ... ignored, requires exact physical transport source index and result directory
+test ingestion_c01::schema_valid_raw_marker_mutation_is_detected_by_exact_population_oracle ... ok
+test ingestion_c01::self_contained_three_profile_cartesian_matrix_has_exact_population_bytes ... ok
+test ingestion_normalize::tests::enforces_nonzero_limits_fanout_and_actual_serialized_bytes ... ok
+test ingestion_normalize::tests::order_key_projects_full_records_and_unbounded_decimal_rank ... ok
+test ingestion_normalize::tests::preserves_mapper_values_and_cumulative_partition_across_chunks ... ok
+test ingestion_normalize::tests::rejects_cross_chunk_duplicates_even_when_first_candidate_was_excluded ... ok
+test ingestion_normalize::tests::unknown_long_kind_and_outcome_duplicate_reject_transactionally ... ok
+test ingestion_pipeline::tests::actual_source_pipeline_hashes_survive_chunks_spills_permutations_and_counts_reconcile ... ok
+test ingestion_pipeline::tests::errors_remove_only_new_bundle_and_missing_evidence_never_succeeds ... ok
+test ingestion_pipeline::tests::rejects_duplicate_top_level_and_nested_json_members_before_value_collapse ... ok
+test ingestion_pipeline::tests::transported_source_rows_use_the_same_actual_pipeline ... ignored, requires actual transported source rows and original manifest
+test ingestion_sort::tests::actual_normalized_values_are_hash_identical_across_orders_and_run_layouts ... ok
+test ingestion_sort::tests::bounded_fanin_requires_multiple_merge_passes_and_handles_large_rank ... ok
+test ingestion_sort::tests::iterator_sink_oversize_invalid_key_and_temp_corruption_fail_with_cleanup ... ok
+test ingestion_sort::tests::sink_failure_and_bad_limits_cleanup_workspace ... ok
+test ingestion_validate::tests::bad_policy_caps_cycles_and_oversize_records_reject_without_outputs ... ok
+test ingestion_validate::tests::finalization_work_limit_rejects_before_materializing_occurrence_edge_violations ... ok
+test ingestion_validate::tests::interleaved_cases_and_equal_precedence_are_valid ... ok
+test ingestion_validate::tests::reversed_precedence_quarantines_whole_interleaved_case ... ok
+test ingestion_validate::tests::runtime_case_state_and_partial_line_bounds_fail_closed ... ok
+test ingestion_validate::tests::same_tick_exit_releases_before_c0_earlier_admission ... ok
+test ingestion_validate::tests::strict_never_publishes_and_window_quarantines_whole_case ... ok
+test ingestion_validate::tests::touching_intervals_are_feasible_and_overlaps_quarantine_both ... ok
+test ingestion_validate::tests::zero_duration_occupancy_is_allowed_and_does_not_consume_capacity ... ok
+test route_receipt::tests::actual_context_profile_and_topology_mismatches_reject ... ok
+test route_receipt::tests::actual_transit_carrier_keeps_route_receipt_across_pause_and_resume ... ok
+test route_receipt::tests::canonical_graph_order_and_purpose_identity_are_stable ... ok
+test route_receipt::tests::checkpoint_size_preflight_matches_encoder_and_fails_before_materialization_limit ... ok
+test route_receipt::tests::native_receipt_checkpoint_is_bounded_and_revalidates_the_actual_route ... ok
+test route_receipt::tests::sensor_only_distance_cannot_create_execution_receipt ... ok
+test route_receipt::tests::trip_purpose_rejects_noncanonical_values ... ok
+test seed_map::checkpoint_wire::tests::captured_stream_image_encodes_exact_state_without_temporary_restore ... ok
+test seed_map::checkpoint_wire::tests::malformed_schema_purpose_duplicate_utf8_trailing_truncated_and_caps_reject ... ok
+test seed_map::checkpoint_wire::tests::map_stream_and_key_roundtrip_all_purposes_and_collision_registry ... ok
+test seed_map::checkpoint_wire::tests::registry_membership_compares_full_identity_not_just_seed_slot ... ok
+test seed_map::checkpoint_wire::tests::registry_membership_is_read_only_and_checks_all_purposes_and_identity_fields ... ok
+test seed_map::checkpoint_wire::tests::registry_membership_rejects_unsupported_map_version ... ok
+test seed_map::checkpoint_wire::tests::stream_codec_preserves_zero_state_and_rejects_wrong_identity_and_state ... ok
+test seed_map::tests::checkpoint_identifier_bytes_preserve_exact_stream_state ... ok
+test seed_map::tests::checkpoint_identifier_bytes_reject_invalid_owned_identity ... ok
+test seed_map::tests::complete_stream_state_image_resumes_without_replay ... ok
+test seed_map::tests::every_identity_field_and_root_seed_change_the_frame_and_derived_seed ... ok
+test seed_map::tests::expected_key_matches_complete_identity_without_changing_registry_or_stream ... ok
+test seed_map::tests::finite_registry_is_idempotent_for_same_identity_and_rejects_collision ... ok
+test seed_map::tests::identity_validation_rejects_invalid_and_oversized_ids ... ok
+test seed_map::tests::length_framing_separates_ambiguous_concatenations ... ok
+test seed_map::tests::normative_golden_bytes_digest_seed_and_draws_match ... ok
+test seed_map::tests::overflow_does_not_advance_rng_or_draw_position ... ok
+test seed_map::tests::purpose_tags_are_exact_u32_little_endian_values ... ok
+test seed_map::tests::registry_checkpoint_applies_cumulative_key_limits_and_empty_registry_caps ... ok
+test seed_map::tests::registry_checkpoint_import_rejects_identity_and_seed_mutations ... ok
+test seed_map::tests::registry_checkpoint_rejects_malformed_state_without_changing_source ... ok
+test seed_map::tests::registry_checkpoint_restores_all_purposes_and_future_collision_checks ... ok
+test seed_map::tests::rejected_sample_then_draw_position_overflow_preserves_owner ... ok
+test seed_map::tests::snapshot_restore_continues_at_next_draw ... ok
+test seed_map::tests::state_image_limits_and_source_preservation_hold_on_rejection ... ok
+test seed_map::tests::state_image_rejects_identity_purpose_schema_seed_and_zero_state_changes ... ok
+test seed_map::tests::state_image_transports_all_purposes_and_matches_long_future_prefixes ... ok
+test seed_map::tests::unknown_snapshot_versions_and_seed_mismatch_fail_closed ... ok
+test shadow_c03::advancing_one_native_probe_leaves_the_other_image_unchanged ... ok
+test shadow_c03::fresh_process_child ... ignored, invoked only by the bounded fresh-process parent fixture
+test shadow_c03::fresh_process_pending_and_overdue_native_images_match_complete_run ... ok
+test shadow_c03::infeasible_snapshot_never_starts_native_world_and_limits_censor ... ok
+test shadow_c03::native_walk_plus_work_ridge_needs_independent_walk_observation ... ok
+test shadow_c03::real_early_exact_late_and_missing_observation_do_not_change_prediction ... ok
+test shadow_c03::slow_walk_retains_positive_residual_and_exact_macro_anchor ... ok
+test shadow_c03::two_native_probes_share_history_but_not_resource_queues ... ok
+test shadow_c2_model::tests::empty_resource_anchor_can_be_checkpointed_by_native_preview ... ok
+test shadow_c2_model::tests::no_claim_nonzero_anchor_materializes_native_clock ... ok
+test shadow_c2_model::tests::paused_transit_restores_and_matches_uninterrupted_pause_control ... ok
+test shadow_c2_model::tests::preempted_work_restores_and_matches_uninterrupted_pause_control ... ok
+test shadow_c2_model::tests::rejects_untrusted_hashes_and_claim_expansion_over_limit ... ok
+test shadow_c2_model::tests::routed_c2_image_restores_without_replaying_prediction_prefix ... ok
+test shadow_native::tests::native_hook_failure_receipt_retains_consumed_dispatch ... ok
+test shadow_native::tests::native_model_cannot_hide_extra_dispatches_from_probe_budget ... ok
+test shadow_native::tests::native_preview_and_dispatch_preserve_exact_completion_tick ... ok
+test shadow_native::tests::native_preview_disabled_queue_has_no_next_event_or_completion ... ok
+test shadow_native::tests::native_preview_handles_v2_pending_disable_and_horizon_without_advancing ... ok
+test shadow_native::tests::pool_counts_real_native_dispatch_when_hook_fails_after_dispatch ... ok
+test shadow_native::tests::preview_v3_capture_limit_error_without_legacy_fallback ... ok
+test shadow_native::tests::preview_v3_deferred_pending_flush_without_advancement ... ok
+test shadow_native::tests::preview_v3_disabled_queue_has_no_invented_completion ... ok
+test shadow_native::tests::preview_v3_halted_live_tick_and_repeat_step_error ... ok
+test shadow_wire::tests::aggregate_trusted_metadata_limit_is_checked_before_decode_clones ... ok
+test shadow_wire::tests::corruption_truncation_binding_and_inventory_mismatch_reject ... ok
+test shadow_wire::tests::empty_pending_native_image_is_rejected ... ok
+test shadow_wire::tests::reconstruction_hint_is_bounded_and_does_not_replace_decode ... ok
+test shadow_wire::tests::roundtrip_all_states_and_exact_metadata ... ok
+test shadow_wire::tests::wire_bounds_and_seed_snapshot_changes_reject ... ok
+test staff_dispatch::tests::duplicate_ids_and_no_eligible_staff_fail_closed ... ok
+test staff_dispatch::tests::eligibility_uses_exact_zone_required_skill_subset_and_availability ... ok
+test staff_dispatch::tests::fifo_then_request_id_are_stable_tie_breakers ... ok
+test staff_dispatch::tests::lowest_staff_id_breaks_eligible_staff_ties ... ok
+test staff_dispatch::tests::urgency_precedes_fifo_and_input_order ... ok
+test staff_dispatch::tests::wait_is_distinct_and_does_not_mask_later_work ... ok
+test staff_flow_lifecycle::tests::selected_work_walk_wait_and_cleaning_receipt_preserve_claim_lineage ... ok
+test trace_mapping::tests::addition_and_calendar_overflow_preserve_declared_clock_evidence ... ok
+test trace_mapping::tests::classified_and_subnanosecond_reasons_are_c0_exclusions ... ok
+test trace_mapping::tests::derived_lineage_is_retained_and_bad_lineage_becomes_safe_exclusion ... ok
+test trace_mapping::tests::duplicate_and_missing_keys_fail_dataset ... ok
+test trace_mapping::tests::fixture_file_executes_raw_requests_and_exact_goldens_only ... ok
+test trace_mapping::tests::four_semantic_guards_are_unresolved_without_fabricated_events ... ok
+test trace_mapping::tests::identities_keep_exact_unicode_case_and_ties_ignore_input_row_permutation ... ok
+test trace_mapping::tests::integer_clock_preorigin_and_overflow_are_exclusions ... ok
+test trace_mapping::tests::integer_units_are_exactly_equivalent_for_one_second ... ok
+test trace_mapping::tests::knowledge_cutoff_equality_future_and_unknown_are_reported ... ok
+test trace_mapping::tests::missing_occurrence_keeps_available_at_raw_time_c0_safe ... ok
+test trace_mapping::tests::observed_task_started_survives_and_future_outcome_cannot_change_knowledge ... ok
+test trace_mapping::tests::optional_clocks_are_role_normalized_and_distinct ... ok
+test trace_mapping::tests::outputs_full_c0_and_raw_mutation_changes_clock ... ok
+test trace_mapping::tests::ranks_above_u64_sort_numerically ... ok
+test trace_mapping::tests::reversed_open_intervals_and_cohort_denominator_are_diagnostic_only ... ok
+test trace_mapping::tests::right_censored_outcome_keeps_last_observed_separate ... ok
+test trace_mapping::tests::semantic_guards_emit_no_c0_records ... ok
+test trace_mapping::tests::signed_relative_helper_covers_full_i128_u128_domain ... ok
+test trace_mapping::tests::source_order_and_occurrence_limits_are_validated_before_clocks ... ok
+test trace_mapping::tests::timestamp_mutations_reject_unknown_offset_naive_and_noncanonical_but_allow_zero_tail ... ok
+test trace_mapping::tests::wide_episode_end_does_not_infer_later_boarding_departure ... ok
+test trace_mapping::tests::wide_row_emits_one_outcome_even_if_event_is_excluded ... ok
+test trace_order::tests::equal_keys_compare_equal_and_sorting_is_independent_of_all_permutations ... ok
+test trace_order::tests::order_tuple_uses_each_component_in_declared_precedence ... ok
+test trace_order::tests::rank_comparison_is_numeric_without_fixed_width_conversion ... ok
+test trace_order::tests::rank_requires_canonical_ascii_unsigned_decimal ... ok
+test trace_order::tests::text_order_is_unsigned_utf8_bytewise_without_normalization ... ok
+test work_duration::checkpoint_wire::tests::wire_caps_are_symmetric_at_exact_boundaries ... ok
+test work_duration::checkpoint_wire::tests::wire_preflight_rejects_header_counts_utf8_tags_truncation_and_trailing ... ok
+test work_duration::checkpoint_wire::tests::wire_restore_uses_native_distribution_validation ... ok
+test work_duration::checkpoint_wire::tests::wire_roundtrip_preserves_distribution_order_and_advanced_service_sampling ... ok
+test work_duration::tests::checkpoint_aggregate_limits_apply_before_restore_and_capture ... ok
+test work_duration::tests::checkpoint_rejects_version_order_duplicates_and_invalid_distributions ... ok
+test work_duration::tests::checkpoint_restores_canonical_strata_and_exact_draw_behavior ... ok
+test work_duration::tests::fixed_u128_max_preserves_full_width_and_consumes_no_draws ... ok
+test work_duration::tests::invalid_purpose_and_identity_errors_preserve_stream_continuation ... ok
+test work_duration::tests::provider_rejects_typed_constructor_and_lookup_errors ... ok
+test work_duration::tests::provider_validation_precedence_is_deterministic ... ok
+test work_duration::tests::rejected_real_stream_draws_are_included_in_sample_positions ... ok
+test work_duration::tests::sample_checkpoint_parts_rebuild_without_consuming_rng ... ok
+test work_duration::tests::sample_checkpoint_rejects_invalid_owner_purpose_duration_and_draw_bounds ... ok
+test work_duration::tests::sampled_duration_retains_opaque_identity_without_debug_leakage ... ok
+test work_duration::tests::weighted_sampling_matches_canonical_golden_sequence_and_draw_positions ... ok
+test work_duration::tests::weighted_sampling_preserves_support_order_and_assigns_boundary_to_next_bucket ... ok
+
+test result: ok. 236 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 14.93s
+
+     Running tests/arrow_output_c43.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/arrow_output_c43-8026901c47502407)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/c3_ledger.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/c3_ledger-770a9efc3579a6be)
+
+running 15 tests
+test bounds_and_initial_claim_validation_fail_closed ... ok
+test canonical_order_snapshot_claims_and_digest_are_stable ... ok
+test copied_identifiers_assumptions_and_initial_inventory_are_bounded ... ok
+test diagnostic_mode_keeps_invalid_row_and_reports_capacity_violation ... ok
+test diagnostic_policy_keeps_late_historical_failure_without_leaking_claim ... ok
+test duplicate_source_key_and_unknown_release_reject_or_diagnose ... ok
+test future_knowledge_never_changes_earlier_occupancy ... ok
+test strict_infeasible_transition_does_not_commit_frontier ... ok
+test strict_policy_checks_late_known_historical_occupancy ... ok
+test trace_order::tests::equal_keys_compare_equal_and_sorting_is_independent_of_all_permutations ... ok
+test trace_order::tests::order_tuple_uses_each_component_in_declared_precedence ... ok
+test trace_order::tests::rank_comparison_is_numeric_without_fixed_width_conversion ... ok
+test trace_order::tests::rank_requires_canonical_ascii_unsigned_decimal ... ok
+test trace_order::tests::text_order_is_unsigned_utf8_bytewise_without_normalization ... ok
+test unavailable_anchor_is_never_exposed_as_eligible_snapshot ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/c3_pool.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/c3_pool-0cac74161e80c030)
+
+running 16 tests
+test admission_target_costs_zero_and_horizon_includes_final_tick ... ok
+test checkpoint_restore_is_staged_and_matches_complete_trusted_inventory ... ok
+test consumed_failure_and_hidden_dispatch_preserve_truthful_terminal_accounting ... ok
+test contract_violation_poisoning_prevents_additional_dispatch ... ok
+test duplicate_ids_are_rejected ... ok
+test exact_lifetime_event_boundary_censors_before_the_next_dispatch ... ok
+test infeasible_snapshot_is_terminal_without_starting_a_runtime ... ok
+test invalid_anchor_and_inconsistent_checkpoint_states_are_rejected ... ok
+test per_call_and_lifetime_budgets_are_exact_and_target_is_first_dispatch ... ok
+test restore_rejects_zero_cost_future_completion_and_blank_failure_reason ... ok
+test snapshot_visibility_is_canonical_historical_and_excludes_selected_future_key ... ok
+test trace_order::tests::equal_keys_compare_equal_and_sorting_is_independent_of_all_permutations ... ok
+test trace_order::tests::order_tuple_uses_each_component_in_declared_precedence ... ok
+test trace_order::tests::rank_comparison_is_numeric_without_fixed_width_conversion ... ok
+test trace_order::tests::rank_requires_canonical_ascii_unsigned_decimal ... ok
+test trace_order::tests::text_order_is_unsigned_utf8_bytewise_without_normalization ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/c3_report.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/c3_report-f249eada8b858a47)
+
+running 11 tests
+test counts_all_dispositions_and_applies_strict_denominators ... ok
+test fidelity_is_independent_of_replay_role ... ok
+test projects_exact_signed_residual_at_u128_extremes ... ok
+test projects_paired_c4_rows_with_replay_role_and_statuses ... ok
+test rejects_duplicate_ids_and_invalid_policy_or_outcome ... ok
+test rejects_unbound_or_inconsistent_projection_metadata ... ok
+test trace_order::tests::equal_keys_compare_equal_and_sorting_is_independent_of_all_permutations ... ok
+test trace_order::tests::order_tuple_uses_each_component_in_declared_precedence ... ok
+test trace_order::tests::rank_comparison_is_numeric_without_fixed_width_conversion ... ok
+test trace_order::tests::rank_requires_canonical_ascii_unsigned_decimal ... ok
+test trace_order::tests::text_order_is_unsigned_utf8_bytewise_without_normalization ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/c3_runner.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/c3_runner-76ea51a23784710f)
+
+running 20 tests
+test admission_accepts_exact_metadata_cap_and_rejects_cap_minus_one ... ok
+test canonical_source_permutation_keeps_binding_and_inventory_stable ... ok
+test checkpoint_restore_accept_exact_cap_and_reject_cap_minus_one_pre_native_restore ... ok
+test checkpoint_restore_rebuilds_source_prefix_and_does_not_replay_probe_prefix ... ok
+test hidden_historical_infeasibility_does_not_block_visible_probe_but_rejects_strict_candidate ... ok
+test late_target_retains_observation_and_prediction_after_target_tick ... ok
+test mismatched_source_inventory_rejected ... ok
+test oversized_saved_metadata_is_rejected_before_native_restore ... ok
+test pool_restore_rejects_aggregate_metadata_before_native_restore ... ok
+test post_advance_admission_failure_poison_prevents_retry_and_checkpoint ... ok
+test source_advance_admits_derived_exact_target_and_keeps_pool_time_separate ... ok
+test strict_evaluation_rejects_unadvanced_requested_inventory ... ok
+test strict_ledger_error_poison_preserves_failure_and_blocks_checkpoint_retry ... ok
+test trace_order::tests::equal_keys_compare_equal_and_sorting_is_independent_of_all_permutations ... ok
+test trace_order::tests::order_tuple_uses_each_component_in_declared_precedence ... ok
+test trace_order::tests::rank_comparison_is_numeric_without_fixed_width_conversion ... ok
+test trace_order::tests::rank_requires_canonical_ascii_unsigned_decimal ... ok
+test trace_order::tests::text_order_is_unsigned_utf8_bytewise_without_normalization ... ok
+test trusted_inventory_preflights_aggregate_metadata_at_exact_cap ... ok
+test unavailable_anchor_is_audited_and_strict_evaluation_rejects_subset ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/checkpoint_envelope_v1.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/checkpoint_envelope_v1-5f965795904326ed)
+
+running 6 tests
+test concurrent_publishers_have_one_winner_and_never_replace_its_image ... ok
+test envelope_roundtrips_body_and_requires_trusted_binding ... ok
+test file_reader_checks_metadata_header_binding_and_exact_length ... ok
+test malformed_schema_digest_truncation_trailing_and_caps_reject ... ok
+test no_clobber_publication_preserves_existing_target_and_cleans_own_temp ... ok
+test stale_task_unowned_temp_is_not_removed_or_used_as_a_publication_target ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests/checkpoint_sections_v1.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/checkpoint_sections_v1-06b092979df9e266)
+
+running 7 tests
+test directory_orders_and_preserves_the_generation_component_of_full_ids ... ok
+test directory_roundtrips_all_sections_and_merges_records_by_full_entity_id ... ok
+test directory_supports_zero_record_vectors_and_zero_length_payloads ... ok
+test duplicate_or_unsorted_full_entity_ids_reject_across_record_kinds ... ok
+test encoder_rejects_duplicate_and_unsorted_source_record_ids ... ok
+test exact_caps_pass_and_each_lower_cap_rejects_symmetrically ... ok
+test malformed_schema_counts_tags_missing_singletons_truncation_and_trailing_reject ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cohorts_c42.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/cohorts_c42-65435637cd7fd4e3)
+
+running 6 tests
+test excluded_censor_warns_without_inventing_ties_for_empty_declared_group ... ok
+test identities_duplicates_and_unknown_groups_fail_without_losing_attempts ... ok
+test nonpoint_outcomes_remain_counted_with_overlap ... ok
+test permutation_provenance_weight_and_window_negatives ... ok
+test source_window_and_empty_stratum_preserve_coverage ... ok
+test tied_warning_uses_selected_supports_and_unverified_ties_stay_unknown ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/distance_c42.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/distance_c42-255ccd584803992b)
+
+running 16 tests
+test both_empty_populations_are_empty ... ok
+test checked_arithmetic_overflow_is_invalid ... ok
+test deterministic_100k_point_shift_timing ... ignored, bounded synthetic distance timing receipt; coordinator executes once
+test exact_common_origin_offsets_are_checked_before_conversion ... ok
+test identical_populations_compute_zero_distances ... ok
+test malformed_weight_with_valid_origin_is_ordinary_invalid_precision ... ok
+test null_aligned_zero_weight_stays_in_count_and_adds_no_mass ... ok
+test positive_rational_tick_scale_is_supported_exactly ... ok
+test scale_and_algorithm_weight_contract_are_enforced ... ok
+test signed_rational_supports_are_exactly_ordered ... ok
+test tick_overflow_remains_rejected_precision ... ok
+test tie_counts_use_exact_supports_within_each_side ... ok
+test tied_weighted_support_permutation_is_bitwise_stable ... ok
+test ties_are_aggregated_before_cdf_updates ... ok
+test weighted_descriptive_uses_exact_per_side_normalization ... ok
+test weighted_ties_include_zero_weight_observations ... ok
+
+test result: ok. 15 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/metrics_c41.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/metrics_c41-6002e524dfe8ec15)
+
+running 9 tests
+test c42_candidate_report ... ignored, C4.2 runtime producer is not implemented; candidate report required
+test comparator_accepts_explicitly_labeled_mock_only ... ok
+test comparator_enforces_numeric_tolerance_boundaries_and_domains ... ok
+test comparator_rejects_contract_mutations ... ok
+test comparator_rejects_fixture_mutations ... ok
+test comparator_rejects_omitted_metadata_and_wrong_algorithm_set ... ok
+test fixture_protocol_and_coverage ... ok
+test reference_expected_values_are_exact_rationals_and_protocol_coherent ... ok
+test runtime_gate_rejects_mock_and_missing_producer_binding ... ok
+
+test result: ok. 8 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/metrics_c42.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/metrics_c42-2e962177374cd4ce)
+
+running 8 tests
+test actual_conditional_metric_exposes_opposite_dependence_and_keeps_empty_group ... ok
+test c44_actual_producer_retains_exact_tie_diagnostics ... ok
+test default_actual_producer_executes_all_frozen_cases ... ok
+test nulls_remain_missing_while_malformed_and_weight_errors_are_rejected ... ok
+test optional_report_requires_committed_source_binding ... ok
+test producer_output_is_invariant_to_removed_or_mutated_expected_values ... ok
+test unrelated_or_absent_commit_claim_cannot_bind_written_report ... ok
+test unrelated_toolchain_claim_is_rejected ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running tests/residuals_c42.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/residuals_c42-d11c22c1504106c0)
+
+running 23 tests
+test bounded_large_paired_cohort_keeps_complete_counts ... ok
+test cohort_mismatch_is_invalid_across_prespecified_groups ... ok
+test contradictory_status_and_tick_inputs_are_invalid_and_retained ... ok
+test duplicate_logical_side_key_is_invalid_not_deduplicated ... ok
+test exact_float_values_above_two_to_53_do_not_raise_rounding_flag ... ok
+test exact_residual_covers_full_u128_range ... ok
+test infeasible_valid_prediction_remains_in_error_summary ... ok
+test invalid_grouping_retains_raw_rows_and_counts ... ok
+test invalid_middle_pair_retains_full_batch_rows_counts_and_order ... ok
+test invalid_window_is_reported ... ok
+test logical_key_requires_all_identity_strings_and_known_purpose ... ok
+test matched_rows_are_prediction_minus_observation_and_order_invariant ... ok
+test missing_censored_failed_and_infeasible_attempts_keep_diagnostics ... ok
+test missing_selection_time_does_not_fall_back_to_prediction ... ok
+test prespecified_empty_group_is_emitted ... ok
+test same_logical_key_in_different_groups_is_invalid_and_retained ... ok
+test simulation_failed_or_infeasible_rows_cannot_carry_observed_ticks ... ok
+test source_selection_times_must_match_within_pair ... ok
+test statuses_and_diagnostics_are_preserved_and_overlap ... ok
+test unclamped_attestation_and_tick_unit_are_required ... ok
+test unknown_row_group_is_retained_when_other_groups_are_declared ... ok
+test unsupported_provenance_is_unverified_and_retained ... ok
+test window_is_half_open_on_selection_time ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/seed_map.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/seed_map-8dc5e8d15d69af11)
+
+running 5 tests
+test independent_python_golden_seed_and_draws_match ... ok
+test owned_snapshots_resume_at_positions_zero_and_one ... ok
+test paired_candidates_share_schedule_streams_and_independent_schedules_diverge ... ok
+test reordered_registration_and_interleaved_draws_preserve_purpose_sequences ... ok
+test unknown_seed_map_version_fails_explicitly ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/sidecar_adapter_c43.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/sidecar_adapter_c43-51d63005d6eaa684)
+
+running 13 tests
+test c43_contradictory_source_clocks_fail_and_retain_both_raw_sides ... ok
+test c43_duplicate_canonical_metric_strata_fail_closed_with_raw_cohorts ... ok
+test c43_emits_c0_sidecars_from_kernels_and_joins_explicit_event ... ok
+test c43_empty_residual_population_still_emits_declared_empty_metric_summaries ... ok
+test c43_failed_prediction_preserves_reference_censor_and_missing_lineage ... ok
+test c43_in_window_nonpoint_is_ineligible_but_not_window_excluded ... ok
+test c43_input_permutation_preserves_logical_records_and_metric_bits ... ok
+test c43_invalid_run_event_hash_and_duplicate_key_fail_with_raw_diagnostics ... ok
+test c43_max_u128_is_exact_and_window_exclusion_does_not_rewrite_point_residual ... ok
+test c43_noncomputed_statuses_keep_null_contract_and_overlapping_counts ... ok
+test c43_paired_metric_denominator_is_matched_pairs_and_manifest_keeps_cohort_counts ... ok
+test c43_structurally_invalid_metric_rows_fail_with_both_raw_cohorts ... ok
+test c43_unmatched_missing_failed_and_infeasible_pairs_keep_schema_statuses ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/sidecar_pipeline_c43.rs (.artifacts/e22-handoff-portable-formatted-qualification-20261012/dispatch/logs/target/debug/deps/sidecar_pipeline_c43-b465a128359761a6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests kairo_ecs_calibration
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

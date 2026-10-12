@@ -1,0 +1,914 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.handoff-portable-owner-qualification-20261012",
+  "task_id": "E2.2.handoff-portable-owner-qualification-20261012",
+  "target_repo": ".",
+  "base_commit": "d0c5efdc8c33a1150d2633de9db24d8e013e351b",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "objective": "Artifact-only owner qualification of corrected generic Handoff portable source; original source packet closed3/3.",
+  "context_paths": [
+    ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch/context.txt"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "AGENTS.md": "f1e9c7076e13e6d83de2759434dde92119426250dd880770ae6d661be29b2b35",
+    "conductor/subagents.md": "ca2271e3c774aec83f489aa070b040b07754dfdafc293f79d5e676ea0d6e9365",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md": "c70374faee4daa568c1b8ea72910b86c39170365269643128614dbe8d14085e1",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md": "7bdd345bee3b2fdd42129fab5752196d71feafc285033e58a7a02fff08b73331",
+    "conductor/design/des/ADR-e2-flow-v4-handoff-portable-process.md": "2658a64f01c91f38d0ead31316b942d218cd7119f5c46d7a75aede44dfb2bec7",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs": "67e749e378b7b7cc39adc801c9d23b7eeffb1d9047c3400c44b17e9798685384",
+    "crates/kairo-ecs-des/src/flow.rs": "be8c78946793de3ac93e1ad26e755df60ef65a6236db83893ba0fa303abe21cc",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs": "78103349cae24fa76d6145eb84927d50a79cbfe856412fbfdddecc5dcd868238",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "33c549e872126f69a45481407533d59e51bf04c1a84fa44fd6833c100e7a6be4",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs": "3c3215c4d9d7618e4933ac0ef354d05f9ef1a36fe53b34ac43d8768b1cf8679f",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs": "8a5df8183c7193710e17a97dece4b4bacf466acd33be6f382a76b349bf8b7737",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "79a605b608ee6d3b8a80ef909e9edcb54c6b6cfb13483387d8e089638ba81446",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs": "c464d4ac56d2c9e00bebf06fdce2b504e306b7625198c546c32a0dc6305096d9",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs": "b4f02c1fd21b3bf9a7316a868f7880e71f3ad033419ca4a1d8647c7dbe786263",
+    "Cargo.toml": "c47c13457d2c7b781b90fcb037368c7e6d5cd797bff4863b307614337277512e",
+    "Cargo.lock": "ed5308f05c1a7adf131839b14e4ead9a4142fe9f24c2e861aea83029f5a5aad9",
+    "rust-toolchain.toml": "7226492624973bd00ee57bd5b5148c367f1c72edb68ec0b9bee4d5f65d426534",
+    "crates/kairo-ecs-calibration/Cargo.toml": "203ecea6d7a0c233fb08fc9563a47d0ba400d380e9ef7bc00d34b5f62cef19a1",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "93f29dc18fec3c4030ca416f98dce3f81605c47dc2896da45a9b254dd7bb43a8",
+    ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch/context.txt": "83e13256471a1dbff74582b9ddccb8610d1a7bf6041731e43606a1486a3033dc",
+    ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch/record_gate.py": "ed0a96a30d6378ab58ee57d4b9111e159cbc6a55405174d130962dd03247d3cc"
+  },
+  "write_paths": [
+    ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch/result.json",
+    ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch/logs"
+  ],
+  "protected_paths": [
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/accepted-join.json",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/context.txt",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/packet.json",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/record_gate.py",
+    ".git",
+    "AGENTS.md",
+    "Cargo.lock",
+    "Cargo.toml",
+    "conductor/design/des/ADR-e2-flow-v4-handoff-portable-process.md",
+    "conductor/subagents.md",
+    "conductor/tracks/03-flow-des-trajectory-abm-behavior/agent-contract.md",
+    "conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs",
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_v2_native.rs",
+    "crates/kairo-ecs-calibration/Cargo.toml",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint.rs",
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v3.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/v4.rs",
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs",
+    "rust-toolchain.toml"
+  ],
+  "leaf_dependencies": [
+    "E2.2.flow-v4-routing.accepted",
+    "E2.2.transit-v2-direct-wire.accepted",
+    "E2.2.generic-handoff-portable-process.contract-reviewed"
+  ],
+  "interface_contract": "conductor/design/des/ADR-e2-flow-v4-handoff-portable-process.md",
+  "steps": [
+    "Verify clean corrected HEAD and all bound immutable inputs/history.",
+    "Run Clippy, full calibration tests, then owned formatting exactly once under root authority.",
+    "Finalize exact33/4/19 raw process proof; root independently accepts."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch/record_gate.py",
+        "clippy"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Calibration all-target strict Clippy passes on frozen owned source.",
+      "actual_argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ]
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch/record_gate.py",
+        "tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All calibration tests, three named process/control tests, seven child cases, inherited 26 children, four V3 traces and 19 literal goldens pass.",
+      "actual_argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow",
+        "--",
+        "--test-threads=1"
+      ]
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch/record_gate.py",
+        "format"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Only the owned process_tests.rs passes pinned Rust 1.99 rustfmt check.",
+      "actual_argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--check",
+        "--config",
+        "skip_children=true",
+        "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs"
+      ]
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch/record_gate.py",
+        "finalize"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Finalizer verifies exact 33 raw children, inherited 4 V3 decoded traces, preserved 26 legacy cases and all 19 literal raw envelopes before ready_for_review."
+    }
+  ],
+  "acceptance": "All three ordered raw paired commands exit0 at exact frozen source; three required tests and raw33/4/19 proofs; root independent review. No joined/pin/ED acceptance.",
+  "result_path": ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch/result.json",
+  "stop_conditions": [
+    "Stop on ANY new failed execution or unresolved started receipt; cumulative failure ceiling4, no recovery under this packet.",
+    "Stop on frozen HEAD, input, source, history or external authority drift."
+  ],
+  "status": "prepared",
+  "reason_not_mvp_prepare": "Reviewed owner escalation after original closed development ceiling; tooling preparation does not grant execution.",
+  "dispatch_condition": "Root packet/driver GO and artifact-only claim; no source changes.",
+  "development_verification": "Separate owner qualification, not source development; one fresh failed execution maximum; original3 retained.",
+  "size_exception": "Two artifact write paths only; no source write authority.",
+  "required_test_names": [
+    "portable_v4_handoff_seven_fresh_process_cases",
+    "portable_v4_handoff_schema2_rebind_negative_controls",
+    "portable_v4_handoff_schema2_caps_and_no_fallback"
+  ],
+  "new_process_case_ids": [
+    "portable-v4-handoff-moving",
+    "portable-v4-handoff-paused-retained",
+    "portable-v4-handoff-paused-consumed",
+    "portable-v4-handoff-arrived-unadmitted",
+    "portable-v4-handoff-frontier-resume-live-domain",
+    "portable-v4-handoff-admitted-completion",
+    "portable-v4-handoff-stable-key-generation-ties"
+  ],
+  "artifact_prefix": ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch",
+  "base_source_hashes": {
+    "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs": "93f29dc18fec3c4030ca416f98dce3f81605c47dc2896da45a9b254dd7bb43a8"
+  },
+  "logs_path": ".artifacts/e22-handoff-portable-owner-qualification-20261012/dispatch/logs",
+  "dispatch_authority_path": "/tmp/careops-e22-handoff-portable-owner-qualification-authority-20261012.json",
+  "prior_consumer_acceptance": {
+    "status": "accepted_v3_consumers_only",
+    "path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v3-consumer-completion-20261012/acceptance.json",
+    "sha256": "077a7b8bf239ba00a400a22fc81b3a29dbd7e1ff70e4a83867ff53a8a706e89d",
+    "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v3-consumer-completion-20261012/joined-final/result.json",
+    "result_sha256": "81013567d3d54f4168e3f1149f4a69749e54b4e898a761ddd447c745834ab9bb"
+  },
+  "inherited_process_case_records": [
+    {
+      "actual_trace_hex_sha256": "d430d4930452f000b4094bb7ea6f826f11373ca8d839b0f28db0ade76bd37578",
+      "case": "transit-moving-control-future-gate",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "190b198fc1fdc77bb54cac54de0162a19c4bb20a77ca0b5c1218268cd57315d5",
+      "group": "gated-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/gated-matrix/transit-moving-control-future-gate-61598-1791741837823315000.c2",
+      "input_sha256": "04ad0e8eba73484e50858d5f2ea9c797cb75a7418ec7e08d51d199962c6d53ef"
+    },
+    {
+      "actual_trace_hex_sha256": "0e43677239669d4bb078cd34ec8603ffe7e69a8cb24b06bb9e4e9621c1ae04ca",
+      "case": "service-arrival-disabled-pending-submit",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "751a0da4a592111b80ddd0e14a8ab663a52966145ba16059bb4eb72781300a68",
+      "group": "gated-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/gated-matrix/service-arrival-disabled-pending-submit-61598-1791741837864842000.c2",
+      "input_sha256": "752d588b41ed90a9a6643405b96e8bad9cf37d93b8bd1cd20a951240b6865a51"
+    },
+    {
+      "actual_trace_hex_sha256": "4f2a839ee87a2d75b28c385834e45f73774b8fd32d48c4c6f70ed47f46319040",
+      "case": "service-suspend-pending-enable-gate",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "eee1736e6bdad884fd02608b471ac3115841de37e8763798c6f2baeeb0190319",
+      "group": "gated-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/gated-matrix/service-suspend-pending-enable-gate-61598-1791741837890058000.c2",
+      "input_sha256": "53fc54bcbb1beab56ee8614c66d66e78863496eea166ca2e63117ec780e7c9c0"
+    },
+    {
+      "actual_trace_hex_sha256": "d05e706093781159ff9d04a34215237788be8473132569c16859232a5616d9bc",
+      "case": "macro-zero-ready",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "c2f74fe3c9e48f78b3ae9a9ae0b26b032e8edeb2a99f1a3962288eb191831ada",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/macro-zero-ready-61598-1791741837207851000.c2",
+      "input_sha256": "f335b8aeabf302214a54f90ca46dfc1bd22cfb47b317c4e8a0677061704d0421"
+    },
+    {
+      "actual_trace_hex_sha256": "9efd6062d8cb3296ccfd47f161a3e9e0e6f626e2c5063c0aae49c945bf33d911",
+      "case": "micro-zero-ready",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "e02f1fe8625afffbc202db5ecdc1758a099ed01010f956b4ee66c24b31009bb5",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/micro-zero-ready-61598-1791741837237295000.c2",
+      "input_sha256": "67422a57a9b5b265b41296825d5871a78433a82d12faa91d8d4013d4965b3cc0"
+    },
+    {
+      "actual_trace_hex_sha256": "c71a8717e36fc9e5a37cdeb55a2f286eb9e9d1480683270bc7f4941683f867f4",
+      "case": "transit-ready",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "d3cdf92a3039bb7d1785396ca8498bdd29aed30a4d0373d97cce0867bfc04aa8",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-ready-61598-1791741837261059000.c2",
+      "input_sha256": "37d78f67bdd3b55cdc4b6ddbca30dcb392dd642afd344adf2728b31d413a0332"
+    },
+    {
+      "actual_trace_hex_sha256": "6fffd29a0fbf4ffc438dc3def6398a145571035078bc4ba71e0a19e4ac7c56d9",
+      "case": "transit-rejected-start-retry",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "39f2b6d6519b02a14f296e52dd03229c364dba1de19a233d26496552219be7d5",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-rejected-start-retry-61598-1791741837289598000.c2",
+      "input_sha256": "9552feb83ca964eb4d610f753680885f22c3dae28e064dcdb4f3256acbf32572"
+    },
+    {
+      "actual_trace_hex_sha256": "ea1b91892c74899b83989682bbd46638ee3533532d76cf8115dd230fb8f29660",
+      "case": "transit-rejected-progress-retry",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "e36d5930aaef291d02e8e99bafc96130e76bcf63aaa71e6a0e80c8c0815098c8",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-rejected-progress-retry-61598-1791741837322467000.c2",
+      "input_sha256": "4d219323237f07394a87ec75caf515910600b37fa87052473202ac414d4cd877"
+    },
+    {
+      "actual_trace_hex_sha256": "55604b0a1512cc972a381a37374dd9389391335b6a4c99ed23bc718bf51fbefa",
+      "case": "transit-moving-mid-edge",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "a7cc3c8d180f867e37807982efa40b8f26e687653479f1095a5961ab858f421f",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-moving-mid-edge-61598-1791741837361288000.c2",
+      "input_sha256": "d98b7b22567b8348d97a7dc3a1804492456a3f1b8b6ecf81e63a9759a2f5be39"
+    },
+    {
+      "actual_trace_hex_sha256": "2eac68cc49558b1b56de2e23d05e5094b55ed0d80a6976b544125c8d244f0f9f",
+      "case": "transit-paused-ready",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "1b65cab0c104b4a9d2a0ae7b20dfd34f806be82f34f1e540a1b287a0d5c9c988",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-ready-61598-1791741837389676000.c2",
+      "input_sha256": "6131687faa8c27042484ad0fb5810162550babe2b2cb3080a131f7d714682fd5"
+    },
+    {
+      "actual_trace_hex_sha256": "46965880c9c570a7ee0b641622ed494870bec5d16dc7e118d98c9743d555a667",
+      "case": "transit-paused-mid-edge",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "da091fd774da1b8a0cad5f3612ac273ecf2e1b009783468d9224e36dc2a883a4",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-mid-edge-61598-1791741837416419000.c2",
+      "input_sha256": "02feba95ec3baadc96e1b0f1cd4443d7a681bdf28a4aa03851528f80ac18ae94"
+    },
+    {
+      "actual_trace_hex_sha256": "2add563117f05999bbf51e3c1a77e2b330375f66df5d71006de48216b2124ba3",
+      "case": "transit-paused-mid-edge-native-activity",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "4aee53047ba3742beeec52c1bd41f3ae9570fc5a0de01608b38445723d552224",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-mid-edge-native-activity-61598-1791741837445930000.c2",
+      "input_sha256": "f649252b16b3ed4fcd32d05409eb0abab579d01cd570e6840ee6026dc30d5211"
+    },
+    {
+      "actual_trace_hex_sha256": "00b21e9bf7b3c17e55e62223c0951c1f1de70a740a9144076ebf360fbd739f53",
+      "case": "transit-paused-at-end",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "8eb01ca01b79285dd5f4c8db3952bc3dcc61117ae70173d2311f19250ce5c639",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-at-end-61598-1791741837489178000.c2",
+      "input_sha256": "35e5146fdd61f191da55f2253495c50e96c0704f58e86576983a504333135c42"
+    },
+    {
+      "actual_trace_hex_sha256": "f38dc16d6862831e98d2505aae28683335f615513a31d25074aeeab2996ab84a",
+      "case": "transit-control-command-pending",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "3816e0c778b2f9e47d0987d614f0d564239e283fd7919db4bbfde2cd772ba7fe",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-control-command-pending-61598-1791741837522002000.c2",
+      "input_sha256": "799f2d6711f7054357b7ad5c60c9885c10f3bb049a396d81df2dd6d691957b15"
+    },
+    {
+      "actual_trace_hex_sha256": "53237281849a7418bad981debf304d0f5a1dc746873e27299a3a5746658e696d",
+      "case": "transit-arrived-queued",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "98e5ed168becefaefe57b6cd15eaca4bd1e3bda7c7aca46f70de4c6d9b6d2a73",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-arrived-queued-61598-1791741837575621000.c2",
+      "input_sha256": "e8f4bb61b4eebbf51867a778f2da9e139f38f09da379023c1cdd17d4ac388e0c"
+    },
+    {
+      "actual_trace_hex_sha256": "138f7c65a3a72eaef1ba5c8d0b229c2da9d45330be66cfc56b4badf2d57dd562",
+      "case": "submitted-pending",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "ce153ac093dd19351fa5ed2f9ed64c1328ca88d477af13f8045710f7e172bb5e",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/submitted-pending-61598-1791741837597163000.c2",
+      "input_sha256": "6ae384b17d1322996cd121e588ee806bb240c4f80a8435d369d665a785a98441"
+    },
+    {
+      "actual_trace_hex_sha256": "73aaf8cc9b0c0a9347e4f86a80cfd87c9297c0008894f7969cc694453a62c5ac",
+      "case": "submitted-active",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "23e2eae3beda5a99fe3cbd9210a444ae622ed2115051f3eca2c5dbbea19aa2ed",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/submitted-active-61598-1791741837615293000.c2",
+      "input_sha256": "925378362fb828e1c4a4247f6bac08ec8a19fb25618ee01758b9c6614a32e0cc"
+    },
+    {
+      "actual_trace_hex_sha256": "a885b0e756403eb861655ea20dc6ad11fdd7f9e535ced5d67b95d6a22e2daf80",
+      "case": "service-suspend-sample20",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "7173b4a6c1bbb18776cac5f17c6fd117fcef2a262e256e8ea80413bb441b4b7d",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-suspend-sample20-61598-1791741837638753000.c2",
+      "input_sha256": "76c88aea3c91f8ea3c54afe0f011a9dddf6e331caee7bb11e493195799b99fc2"
+    },
+    {
+      "actual_trace_hex_sha256": "f834188989fff32fe8b2d7c7aa6e9788c3f2cb38883964e75898bc3d2bc8e351",
+      "case": "service-restart-sample20",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "09c3b49a77671195ec0826077845ffb45a034f33e622e970b131f2ae0de8b9be",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-restart-sample20-61598-1791741837665312000.c2",
+      "input_sha256": "cf659e54c34433554064a8812e0bd021a56148ab055781bfd7c24bd51a600913"
+    },
+    {
+      "actual_trace_hex_sha256": "ccf70acb85ecf5bacdcadfb3ea7900de332e06920863c35eee43cdc6fad81a3e",
+      "case": "service-suspend-pending-cut-sample20",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "d4c361bb2a64bce67a371b792f734cc4e416ab54fda78928fddd15b16ad87bd7",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-suspend-pending-cut-sample20-61598-1791741837690562000.c2",
+      "input_sha256": "650a6194092c8444d719a44cab77fbaaa8913792a88399c86e856cffa1544886"
+    },
+    {
+      "actual_trace_hex_sha256": "7bb09803d6ffa35afc068075d7d1b2970c25cae66d908971e800d6b157a729f2",
+      "case": "service-restart-pending-cut-sample20",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "f471a63234501d424619c30a7b103e202f39a899f2ded0113b1e1867f0c081d4",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-restart-pending-cut-sample20-61598-1791741837717368000.c2",
+      "input_sha256": "f52bbbc6fba5d7f0df966e2bd8ed8a2cba6a37af49575d876954d1103bfb2147"
+    },
+    {
+      "actual_trace_hex_sha256": "3613110a2c43769789532a2c445f89b072dace1856c26c0e0310dab56c94ad17",
+      "case": "multi-graph-mixed-frozen-pending",
+      "child_exit_code": "Some(0)",
+      "expected_trace_sha256": "81034646f49fd9e3dc4f5593d84ea34d012353db795e198f4fbd099af8ad4e64",
+      "group": "legacy-matrix",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/multi-graph-mixed-frozen-pending-61598-1791741837744090000.c2",
+      "input_sha256": "7f5221cc9ceb0b365fcb9eb406fb005f78294ad9fb0c83d6e3c128cde2f1be8b"
+    },
+    {
+      "actual_trace_hex_sha256": "48df9505aea67d506ada74df43bb2527ffd92da9cce0246831f5852fd05701c7",
+      "case": "portable-v3-currenttick-flush",
+      "child_exit_code": "Some(0)",
+      "decoded_raw_trace_sha256": "18ab4d6f9cd422f1198bb186c2ae1ac572eab4de7fa801c3d3f685dca04e7c6e",
+      "expected_trace_sha256": "18ab4d6f9cd422f1198bb186c2ae1ac572eab4de7fa801c3d3f685dca04e7c6e",
+      "group": "v3-currenttick-flush",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/v3-currenttick-flush/portable-v3-currenttick-flush-61598-1791741837925272000.c2",
+      "input_sha256": "16952a8f655ef8a4c17ca04577cbc24ab48a453c0b139f60c37e15eddfe47f74"
+    },
+    {
+      "actual_trace_hex_sha256": "0b70b5e6cf8e0ddfbff75976bbb2490aac43723ed1e34671f90ee128499ca1e5",
+      "case": "portable-v3-preflush-budget-halt",
+      "child_exit_code": "Some(0)",
+      "decoded_raw_trace_sha256": "c29c31bbd203b56ebdd8df8066bd771fcb5f8f9560dccba759b9e9a9a43225a6",
+      "expected_trace_sha256": "c29c31bbd203b56ebdd8df8066bd771fcb5f8f9560dccba759b9e9a9a43225a6",
+      "group": "v3-halted-envelope",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/v3-halted-envelope/portable-v3-preflush-budget-halt-61598-1791741837948014000.c2",
+      "input_sha256": "609873982e27a0e1443a529df414c73270ab48f3ba51ea55a079e06922c187be"
+    },
+    {
+      "actual_trace_hex_sha256": "b51ab678378355ab42e955cc38df0a84fc3d4beae9f84537e4cea1d611aef8f5",
+      "case": "portable-v3-mixed-tick6-trigger-first",
+      "child_exit_code": "Some(0)",
+      "decoded_raw_trace_sha256": "3d7b4e459531478936e398868aa8d834e9e6111c0d16d3c3307dec9630f115ca",
+      "expected_trace_sha256": "3d7b4e459531478936e398868aa8d834e9e6111c0d16d3c3307dec9630f115ca",
+      "group": "v3-mixed-interior",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/v3-mixed-interior/portable-v3-mixed-tick6-trigger-first-61598-1791741837978595000.c2",
+      "input_sha256": "fca92561e6af7988367ab949558047341a3788562edec8f6bc855ee6e31ef6dd"
+    },
+    {
+      "actual_trace_hex_sha256": "5f1c40ea1831d2d757734feaed4b5156a36f45614cba96be53436f830b6d2389",
+      "case": "portable-v3-mixed-tick6-urgent-first",
+      "child_exit_code": "Some(0)",
+      "decoded_raw_trace_sha256": "a81791becec7ddeb1c86913ca9bb0e03f7a9a8c00cea795b6a50059431a5e308",
+      "expected_trace_sha256": "a81791becec7ddeb1c86913ca9bb0e03f7a9a8c00cea795b6a50059431a5e308",
+      "group": "v3-mixed-interior",
+      "input_file": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/v3-mixed-interior/portable-v3-mixed-tick6-urgent-first-61598-1791741838015450000.c2",
+      "input_sha256": "744e2da1fd9c3f031d7ae6e12565f0be39c87c2e392e58e2811a605bdbb9113b"
+    }
+  ],
+  "inherited_decoded_v3_trace_proofs": [
+    {
+      "actual_decoded_raw_sha256": "18ab4d6f9cd422f1198bb186c2ae1ac572eab4de7fa801c3d3f685dca04e7c6e",
+      "case": "portable-v3-currenttick-flush",
+      "expected_raw_sha256": "18ab4d6f9cd422f1198bb186c2ae1ac572eab4de7fa801c3d3f685dca04e7c6e"
+    },
+    {
+      "actual_decoded_raw_sha256": "3d7b4e459531478936e398868aa8d834e9e6111c0d16d3c3307dec9630f115ca",
+      "case": "portable-v3-mixed-tick6-trigger-first",
+      "expected_raw_sha256": "3d7b4e459531478936e398868aa8d834e9e6111c0d16d3c3307dec9630f115ca"
+    },
+    {
+      "actual_decoded_raw_sha256": "a81791becec7ddeb1c86913ca9bb0e03f7a9a8c00cea795b6a50059431a5e308",
+      "case": "portable-v3-mixed-tick6-urgent-first",
+      "expected_raw_sha256": "a81791becec7ddeb1c86913ca9bb0e03f7a9a8c00cea795b6a50059431a5e308"
+    },
+    {
+      "actual_decoded_raw_sha256": "c29c31bbd203b56ebdd8df8066bd771fcb5f8f9560dccba759b9e9a9a43225a6",
+      "case": "portable-v3-preflush-budget-halt",
+      "expected_raw_sha256": "c29c31bbd203b56ebdd8df8066bd771fcb5f8f9560dccba759b9e9a9a43225a6"
+    }
+  ],
+  "inherited_literal_golden_cases": [
+    {
+      "actual_sha256": "f335b8aeabf302214a54f90ca46dfc1bd22cfb47b317c4e8a0677061704d0421",
+      "case": "macro-zero-ready",
+      "expected_sha256": "f335b8aeabf302214a54f90ca46dfc1bd22cfb47b317c4e8a0677061704d0421",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/macro-zero-ready-61598-1791741837207851000.c2"
+    },
+    {
+      "actual_sha256": "67422a57a9b5b265b41296825d5871a78433a82d12faa91d8d4013d4965b3cc0",
+      "case": "micro-zero-ready",
+      "expected_sha256": "67422a57a9b5b265b41296825d5871a78433a82d12faa91d8d4013d4965b3cc0",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/micro-zero-ready-61598-1791741837237295000.c2"
+    },
+    {
+      "actual_sha256": "37d78f67bdd3b55cdc4b6ddbca30dcb392dd642afd344adf2728b31d413a0332",
+      "case": "transit-ready",
+      "expected_sha256": "37d78f67bdd3b55cdc4b6ddbca30dcb392dd642afd344adf2728b31d413a0332",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-ready-61598-1791741837261059000.c2"
+    },
+    {
+      "actual_sha256": "9552feb83ca964eb4d610f753680885f22c3dae28e064dcdb4f3256acbf32572",
+      "case": "transit-rejected-start-retry",
+      "expected_sha256": "9552feb83ca964eb4d610f753680885f22c3dae28e064dcdb4f3256acbf32572",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-rejected-start-retry-61598-1791741837289598000.c2"
+    },
+    {
+      "actual_sha256": "4d219323237f07394a87ec75caf515910600b37fa87052473202ac414d4cd877",
+      "case": "transit-rejected-progress-retry",
+      "expected_sha256": "4d219323237f07394a87ec75caf515910600b37fa87052473202ac414d4cd877",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-rejected-progress-retry-61598-1791741837322467000.c2"
+    },
+    {
+      "actual_sha256": "d98b7b22567b8348d97a7dc3a1804492456a3f1b8b6ecf81e63a9759a2f5be39",
+      "case": "transit-moving-mid-edge",
+      "expected_sha256": "d98b7b22567b8348d97a7dc3a1804492456a3f1b8b6ecf81e63a9759a2f5be39",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-moving-mid-edge-61598-1791741837361288000.c2"
+    },
+    {
+      "actual_sha256": "6131687faa8c27042484ad0fb5810162550babe2b2cb3080a131f7d714682fd5",
+      "case": "transit-paused-ready",
+      "expected_sha256": "6131687faa8c27042484ad0fb5810162550babe2b2cb3080a131f7d714682fd5",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-ready-61598-1791741837389676000.c2"
+    },
+    {
+      "actual_sha256": "02feba95ec3baadc96e1b0f1cd4443d7a681bdf28a4aa03851528f80ac18ae94",
+      "case": "transit-paused-mid-edge",
+      "expected_sha256": "02feba95ec3baadc96e1b0f1cd4443d7a681bdf28a4aa03851528f80ac18ae94",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-mid-edge-61598-1791741837416419000.c2"
+    },
+    {
+      "actual_sha256": "f649252b16b3ed4fcd32d05409eb0abab579d01cd570e6840ee6026dc30d5211",
+      "case": "transit-paused-mid-edge-native-activity",
+      "expected_sha256": "f649252b16b3ed4fcd32d05409eb0abab579d01cd570e6840ee6026dc30d5211",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-mid-edge-native-activity-61598-1791741837445930000.c2"
+    },
+    {
+      "actual_sha256": "35e5146fdd61f191da55f2253495c50e96c0704f58e86576983a504333135c42",
+      "case": "transit-paused-at-end",
+      "expected_sha256": "35e5146fdd61f191da55f2253495c50e96c0704f58e86576983a504333135c42",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-paused-at-end-61598-1791741837489178000.c2"
+    },
+    {
+      "actual_sha256": "799f2d6711f7054357b7ad5c60c9885c10f3bb049a396d81df2dd6d691957b15",
+      "case": "transit-control-command-pending",
+      "expected_sha256": "799f2d6711f7054357b7ad5c60c9885c10f3bb049a396d81df2dd6d691957b15",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-control-command-pending-61598-1791741837522002000.c2"
+    },
+    {
+      "actual_sha256": "e8f4bb61b4eebbf51867a778f2da9e139f38f09da379023c1cdd17d4ac388e0c",
+      "case": "transit-arrived-queued",
+      "expected_sha256": "e8f4bb61b4eebbf51867a778f2da9e139f38f09da379023c1cdd17d4ac388e0c",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/transit-arrived-queued-61598-1791741837575621000.c2"
+    },
+    {
+      "actual_sha256": "6ae384b17d1322996cd121e588ee806bb240c4f80a8435d369d665a785a98441",
+      "case": "submitted-pending",
+      "expected_sha256": "6ae384b17d1322996cd121e588ee806bb240c4f80a8435d369d665a785a98441",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/submitted-pending-61598-1791741837597163000.c2"
+    },
+    {
+      "actual_sha256": "925378362fb828e1c4a4247f6bac08ec8a19fb25618ee01758b9c6614a32e0cc",
+      "case": "submitted-active",
+      "expected_sha256": "925378362fb828e1c4a4247f6bac08ec8a19fb25618ee01758b9c6614a32e0cc",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/submitted-active-61598-1791741837615293000.c2"
+    },
+    {
+      "actual_sha256": "76c88aea3c91f8ea3c54afe0f011a9dddf6e331caee7bb11e493195799b99fc2",
+      "case": "service-suspend-sample20",
+      "expected_sha256": "76c88aea3c91f8ea3c54afe0f011a9dddf6e331caee7bb11e493195799b99fc2",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-suspend-sample20-61598-1791741837638753000.c2"
+    },
+    {
+      "actual_sha256": "cf659e54c34433554064a8812e0bd021a56148ab055781bfd7c24bd51a600913",
+      "case": "service-restart-sample20",
+      "expected_sha256": "cf659e54c34433554064a8812e0bd021a56148ab055781bfd7c24bd51a600913",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-restart-sample20-61598-1791741837665312000.c2"
+    },
+    {
+      "actual_sha256": "650a6194092c8444d719a44cab77fbaaa8913792a88399c86e856cffa1544886",
+      "case": "service-suspend-pending-cut-sample20",
+      "expected_sha256": "650a6194092c8444d719a44cab77fbaaa8913792a88399c86e856cffa1544886",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-suspend-pending-cut-sample20-61598-1791741837690562000.c2"
+    },
+    {
+      "actual_sha256": "f52bbbc6fba5d7f0df966e2bd8ed8a2cba6a37af49575d876954d1103bfb2147",
+      "case": "service-restart-pending-cut-sample20",
+      "expected_sha256": "f52bbbc6fba5d7f0df966e2bd8ed8a2cba6a37af49575d876954d1103bfb2147",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/service-restart-pending-cut-sample20-61598-1791741837717368000.c2"
+    },
+    {
+      "actual_sha256": "7f5221cc9ceb0b365fcb9eb406fb005f78294ad9fb0c83d6e3c128cde2f1be8b",
+      "case": "multi-graph-mixed-frozen-pending",
+      "expected_sha256": "7f5221cc9ceb0b365fcb9eb406fb005f78294ad9fb0c83d6e3c128cde2f1be8b",
+      "raw_envelope": ".artifacts/e22-v3-consumer-final-20261012/logs/tests-1791741770220648000-59947-process/legacy-matrix/multi-graph-mixed-frozen-pending-61598-1791741837744090000.c2"
+    }
+  ],
+  "development_failure_limit": 1,
+  "prior_consumer_acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v3-consumer-completion-20261012/acceptance.json",
+  "prior_consumer_acceptance_sha256": "077a7b8bf239ba00a400a22fc81b3a29dbd7e1ff70e4a83867ff53a8a706e89d",
+  "prior_consumer_result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-v3-consumer-completion-20261012/joined-final/result.json",
+  "prior_consumer_result_sha256": "81013567d3d54f4168e3f1149f4a69749e54b4e898a761ddd447c745834ab9bb",
+  "inherited_decoded_v3_trace_proof_files": 3,
+  "external_acceptances": [
+    {
+      "lane": "flow_v4_routing",
+      "expected_status": "accepted_flow_v4_routing_source_only",
+      "acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-flow-v4-routing-completion-20261012/acceptance.json",
+      "acceptance_sha256": "c55ad56db1432ddedc40772316ee392bc095b878629ae29d922e60418ee42ec7",
+      "status": "accepted_flow_v4_routing_source_only",
+      "accepted_commit": "81eb3a7703e1524ccf19c63981a44e237691ab02",
+      "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-flow-v4-routing-completion-20261012/result.json",
+      "result_sha256": "7f417e2dc180058e0a82db6a759530586a67e5d264a9bbd03c96efde2cdabea4",
+      "source_hashes": {
+        "crates/kairo-ecs-des/src/flow/checkpoint/v2.rs": "33c549e872126f69a45481407533d59e51bf04c1a84fa44fd6833c100e7a6be4",
+        "crates/kairo-ecs-des/src/flow/checkpoint.rs": "78103349cae24fa76d6145eb84927d50a79cbfe856412fbfdddecc5dcd868238",
+        "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "79a605b608ee6d3b8a80ef909e9edcb54c6b6cfb13483387d8e089638ba81446",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v4.rs": "c464d4ac56d2c9e00bebf06fdce2b504e306b7625198c546c32a0dc6305096d9",
+        "crates/kairo-ecs-des/tests/flow_checkpoint_routing_v3.rs": "f2a7c127ed71a9e0049ea8098dd43216c1fff5cf29bb2ca8a0ea12524e86e4f1",
+        "crates/kairo-ecs-des/tests/flow_preview_v1.rs": "9cf6d586a6ebc50d26bfd4c39b4fcb1899fb14209a963ffcc83e6b2e15cb8bd2",
+        "crates/kairo-ecs-des/tests/flow_queue_order_v1.rs": "77dc1bf6e187a4e068afcc5983b6640a1e92bdb52b2b39679d2e2e8fce8aa640"
+      },
+      "gate_base_commit": "81eb3a7703e1524ccf19c63981a44e237691ab02"
+    },
+    {
+      "lane": "transit_v2_direct_wire",
+      "expected_status": "accepted_transit_v2_direct_wire_source_only",
+      "acceptance_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-transit-v2-direct-wire-completion-20261012/acceptance.json",
+      "acceptance_sha256": "93146d00a4aba0633433d6bd9e1a7c0bde62e3f44df9284c4c446f1f5d4bce8d",
+      "status": "accepted_transit_v2_direct_wire_source_only",
+      "accepted_commit": "92735f04573a2d66dee8a789827ac235f7f41034",
+      "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/conductor/evidence/e2.2-transit-v2-direct-wire-completion-20261012/result.json",
+      "result_sha256": "99c59f5842cd706c2282b30c2101c7f99b8326264ce4607ea841741f0cf73ddb",
+      "source_hashes": {
+        "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+        "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "08ea01e0f8114643912a02e72d16b4c66483c7841ed80fa4b144415a6aa49030"
+      },
+      "gate_base_commit": null
+    }
+  ],
+  "gate_argv": {
+    "clippy": [
+      "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+      "clippy",
+      "--locked",
+      "-p",
+      "kairo-ecs-calibration",
+      "--features",
+      "flow",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "tests": [
+      "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--locked",
+      "-p",
+      "kairo-ecs-calibration",
+      "--features",
+      "flow",
+      "--",
+      "--test-threads=1"
+    ],
+    "format": [
+      "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+      "--edition",
+      "2021",
+      "--check",
+      "--config",
+      "skip_children=true",
+      "crates/kairo-ecs-calibration/src/c2_portable_checkpoint/process_tests.rs"
+    ]
+  },
+  "gate_driver_sha256": "ed0a96a30d6378ab58ee57d4b9111e159cbc6a55405174d130962dd03247d3cc",
+  "historical_failure_count": 3,
+  "cumulative_failure_ceiling": 4,
+  "historical_failed_receipts": [
+    ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791776761739668000-11625-result.json",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-result.json",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-result.json"
+  ],
+  "historical_evidence_hashes": {
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/accepted-join.json": "7e6da61b5faaba4fddb865e2a3a5732669c40af3ca16d5566e23947041e6ea51",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/context.txt": "e19512b6576f4aed00e3ccce25d3c71fdee548219c48c68f6908281b8b0ca90c",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/dispatch-authority.json": "9b3f351ac9536d71e5d22cf2bcf58209c2e53def690eb05b7588b2d49b161ce2",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/packet.json": "1b8e747d6771fdd0f1c28d7502992ead29b0a3047962e1611a4fca1ab3ee1f3b",
+    ".artifacts/e22-handoff-portable-process-20261012/dispatch/record_gate.py": "bc610885f85876e7ff596e42e82627e3687fe5fda142ece41fb9b9671e746070",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791776761739668000-11625-result.json": "b8eed74c8293cf93d25e8f02d14f053d6e62d5dd3bfbe1b26eaed0faa69d09e3",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791776761739668000-11625-started.json": "aeadba641346442dcc6df07a17ac33434c0f9f342cb51247f48bbfe0d5020d5c",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791776761739668000-11625.log": "b868f6deb669dc4873abaf11e50ed775f60cc131890860c362968ba9edae4efe",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791776887528804000-13064-result.json": "fd15c16743233f69b31d9034552869b5cb2f7a1aea5b6f2f93a500234578e529",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791776887528804000-13064-started.json": "bda3932224707cd49cc43b2db9d254d3d1af006bf452d9b3c89839ff93c5e7eb",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791776887528804000-13064.log": "309599eec69be4e59bb68a81b3073f64f9b3cd74b8d2813c36614c6ef4483a07",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791777091905456000-15380-result.json": "3509ae12c02e30e4007706411b0aefb4b351d7b65f65b40018b99dbaa04cad47",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791777091905456000-15380-started.json": "a9dfc31403b465c079e3e67a5a9883ca77ad44daae3d20e355a1b34114c7fe8c",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791777091905456000-15380.log": "08e68cccd30b3b6853d465560818fe1a89c53b4154bf02535d0bff31220c9323",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/gated-matrix/process-invocations.txt": "e25e1bde83d8dfbba009fdb6524f64471e08bd5bc25948d4b6c134d8ffa1c9b4",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/gated-matrix/service-arrival-disabled-pending-submit-13538-1791776918957625000.c2": "752d588b41ed90a9a6643405b96e8bad9cf37d93b8bd1cd20a951240b6865a51",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/gated-matrix/service-arrival-disabled-pending-submit-13538-1791776918957625000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/gated-matrix/service-arrival-disabled-pending-submit-13538-1791776918957625000.child.stdout.log": "86a943c06ad670d2a5c7d5bbd8782c121b856512ddd0019ac54a753caf9f29a6",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/gated-matrix/service-suspend-pending-enable-gate-13538-1791776918976815000.c2": "53fc54bcbb1beab56ee8614c66d66e78863496eea166ca2e63117ec780e7c9c0",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/gated-matrix/service-suspend-pending-enable-gate-13538-1791776918976815000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/gated-matrix/service-suspend-pending-enable-gate-13538-1791776918976815000.child.stdout.log": "c956b4667478b82a8335dca434faaaa15a33e2d4e04c7c77ec3ba57e17f325e4",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/gated-matrix/transit-moving-control-future-gate-13538-1791776918927509000.c2": "04ad0e8eba73484e50858d5f2ea9c797cb75a7418ec7e08d51d199962c6d53ef",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/gated-matrix/transit-moving-control-future-gate-13538-1791776918927509000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/gated-matrix/transit-moving-control-future-gate-13538-1791776918927509000.child.stdout.log": "3684bd42bd630b2aab1a4fa375ab9d33837d63846f2c04fa5dcb8473a516c84c",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/macro-zero-ready-13538-1791776918341237000.c2": "f335b8aeabf302214a54f90ca46dfc1bd22cfb47b317c4e8a0677061704d0421",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/macro-zero-ready-13538-1791776918341237000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/macro-zero-ready-13538-1791776918341237000.child.stdout.log": "715508deaef2abcad19cf865368359376de0559b52f396fa6cb905eb9ea320eb",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/micro-zero-ready-13538-1791776918376814000.c2": "67422a57a9b5b265b41296825d5871a78433a82d12faa91d8d4013d4965b3cc0",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/micro-zero-ready-13538-1791776918376814000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/micro-zero-ready-13538-1791776918376814000.child.stdout.log": "1818606105c3712172e395ca62f25eb07b768412e2eaf11d7f1de40d8da13bcd",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/multi-graph-mixed-frozen-pending-13538-1791776918856511000.c2": "7f5221cc9ceb0b365fcb9eb406fb005f78294ad9fb0c83d6e3c128cde2f1be8b",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/multi-graph-mixed-frozen-pending-13538-1791776918856511000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/multi-graph-mixed-frozen-pending-13538-1791776918856511000.child.stdout.log": "950c5d27bb5edd3f7c3b2f3d32409f1139796504043ce29a138b331f378eb04c",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/process-invocations.txt": "a6cabb4ac5e488511b2c59e53cf6037391c822e1480e2ff3587cb9ba92b1a261",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-restart-pending-cut-sample20-13538-1791776918837081000.c2": "f52bbbc6fba5d7f0df966e2bd8ed8a2cba6a37af49575d876954d1103bfb2147",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-restart-pending-cut-sample20-13538-1791776918837081000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-restart-pending-cut-sample20-13538-1791776918837081000.child.stdout.log": "9517da67312c582190ef27b136363d9164877c8da22f5404ef5697475bd72fc1",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-restart-sample20-13538-1791776918798435000.c2": "cf659e54c34433554064a8812e0bd021a56148ab055781bfd7c24bd51a600913",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-restart-sample20-13538-1791776918798435000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-restart-sample20-13538-1791776918798435000.child.stdout.log": "fb6e4297e67b4c5f64611d7c77590741a80841ee13c08e1831735d81d6568559",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-suspend-pending-cut-sample20-13538-1791776918818602000.c2": "650a6194092c8444d719a44cab77fbaaa8913792a88399c86e856cffa1544886",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-suspend-pending-cut-sample20-13538-1791776918818602000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-suspend-pending-cut-sample20-13538-1791776918818602000.child.stdout.log": "a99160a21bc5a4dd0968bd1cb72d989c98aea7d66d00178e693ecee2daa71cd4",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-suspend-sample20-13538-1791776918770400000.c2": "76c88aea3c91f8ea3c54afe0f011a9dddf6e331caee7bb11e493195799b99fc2",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-suspend-sample20-13538-1791776918770400000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/service-suspend-sample20-13538-1791776918770400000.child.stdout.log": "d2ab203d4d65f91b19444c9b6172edd089b77adeaf79e6eac25e7787ecba1757",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/submitted-active-13538-1791776918753997000.c2": "925378362fb828e1c4a4247f6bac08ec8a19fb25618ee01758b9c6614a32e0cc",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/submitted-active-13538-1791776918753997000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/submitted-active-13538-1791776918753997000.child.stdout.log": "3d864c3931d7a06c01501939a67f9a6e6da52f223a398f5e4f7f6c1161e22822",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/submitted-pending-13538-1791776918735123000.c2": "6ae384b17d1322996cd121e588ee806bb240c4f80a8435d369d665a785a98441",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/submitted-pending-13538-1791776918735123000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/submitted-pending-13538-1791776918735123000.child.stdout.log": "49890bb4c1596e9f06b131e0fddf53791328a86de0a8dccd197eb9a82894fdd4",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-arrived-queued-13538-1791776918715844000.c2": "e8f4bb61b4eebbf51867a778f2da9e139f38f09da379023c1cdd17d4ac388e0c",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-arrived-queued-13538-1791776918715844000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-arrived-queued-13538-1791776918715844000.child.stdout.log": "fb1faed58472b6910982fa077da0133bf25aa75a7c09484d0847cb424ac8d17c",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-control-command-pending-13538-1791776918687724000.c2": "799f2d6711f7054357b7ad5c60c9885c10f3bb049a396d81df2dd6d691957b15",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-control-command-pending-13538-1791776918687724000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-control-command-pending-13538-1791776918687724000.child.stdout.log": "c3e39c86e0ecb6901480a0121011943e7b9f8f451798dc2bc22908d52c03876b",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-moving-mid-edge-13538-1791776918545894000.c2": "d98b7b22567b8348d97a7dc3a1804492456a3f1b8b6ecf81e63a9759a2f5be39",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-moving-mid-edge-13538-1791776918545894000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-moving-mid-edge-13538-1791776918545894000.child.stdout.log": "d15cc129edf2ac63a914a46521ec35db51ef9c8375ec353363cac9088e43696b",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-at-end-13538-1791776918664677000.c2": "35e5146fdd61f191da55f2253495c50e96c0704f58e86576983a504333135c42",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-at-end-13538-1791776918664677000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-at-end-13538-1791776918664677000.child.stdout.log": "d06946eeb0f24114cc3f83422a0ad530890ea9670d53b9cb7dca4cb5a0ac920a",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-mid-edge-13538-1791776918605288000.c2": "02feba95ec3baadc96e1b0f1cd4443d7a681bdf28a4aa03851528f80ac18ae94",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-mid-edge-13538-1791776918605288000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-mid-edge-13538-1791776918605288000.child.stdout.log": "b5eabd08955bb8dacb2858be5baf1cbcea92dffc8513ce281632d4f7ac05b562",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-mid-edge-native-activity-13538-1791776918627725000.c2": "f649252b16b3ed4fcd32d05409eb0abab579d01cd570e6840ee6026dc30d5211",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-mid-edge-native-activity-13538-1791776918627725000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-mid-edge-native-activity-13538-1791776918627725000.child.stdout.log": "9b9bda9195db694abdc5b3e00e36f9b5ec1406d8296688f7da4d813cd136f8f9",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-ready-13538-1791776918571523000.c2": "6131687faa8c27042484ad0fb5810162550babe2b2cb3080a131f7d714682fd5",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-ready-13538-1791776918571523000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-paused-ready-13538-1791776918571523000.child.stdout.log": "afd78de2c66ee7d3b309a6867f541f8478a4a076e1c0ff06597e92138519d4f8",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-ready-13538-1791776918408416000.c2": "37d78f67bdd3b55cdc4b6ddbca30dcb392dd642afd344adf2728b31d413a0332",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-ready-13538-1791776918408416000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-ready-13538-1791776918408416000.child.stdout.log": "e6507de3fd3b9d35aa1ccdfaee5a33e09a3400cbf72b4cec6082d2a84a615915",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-rejected-progress-retry-13538-1791776918502693000.c2": "4d219323237f07394a87ec75caf515910600b37fa87052473202ac414d4cd877",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-rejected-progress-retry-13538-1791776918502693000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-rejected-progress-retry-13538-1791776918502693000.child.stdout.log": "a5fddbf39dc27099fdd36ade21d6936467d0446c89bc307477f8986df0678612",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-rejected-start-retry-13538-1791776918453322000.c2": "9552feb83ca964eb4d610f753680885f22c3dae28e064dcdb4f3256acbf32572",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-rejected-start-retry-13538-1791776918453322000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/legacy-matrix/transit-rejected-start-retry-13538-1791776918453322000.child.stdout.log": "780f26fdb037bc3e24861733be492b2c602032452f9f9d5d322f7c19a3e75e30",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-currenttick-flush/decoded-trace-byte-hashes.txt": "ff81a6e8a6b63f727ce4f86a56c67e36f0e5034f8e55ef406472f3d7e348b2b5",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-currenttick-flush/portable-v3-currenttick-flush-13538-1791776919001858000.c2": "16952a8f655ef8a4c17ca04577cbc24ab48a453c0b139f60c37e15eddfe47f74",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-currenttick-flush/portable-v3-currenttick-flush-13538-1791776919001858000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-currenttick-flush/portable-v3-currenttick-flush-13538-1791776919001858000.child.stdout.log": "91a3e15b70c137c242040e3c641760992ef89d0b129f0ef70c04d0779f2f6cdb",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-currenttick-flush/process-invocations.txt": "05bf983fc3ad35a6aa54938e74c90096f415557cc23e6cc10853146835e08045",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-halted-envelope/decoded-trace-byte-hashes.txt": "1a54c6744b9084828b7a0ccb30b3c5af4c377f6f65ed30a5108fce5596060e84",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-halted-envelope/portable-v3-preflush-budget-halt-13538-1791776919020829000.c2": "609873982e27a0e1443a529df414c73270ab48f3ba51ea55a079e06922c187be",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-halted-envelope/portable-v3-preflush-budget-halt-13538-1791776919020829000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-halted-envelope/portable-v3-preflush-budget-halt-13538-1791776919020829000.child.stdout.log": "4dd4aa8db83bf8f7ecee759f5472b27d046de3b5d7dd9e5f1844624ea13e6ac1",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-halted-envelope/process-invocations.txt": "926fd2fba40fa0d792d6cf60256caeed33c3b1de69c9f47edc9107eedfbe0e73",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-mixed-interior/decoded-trace-byte-hashes.txt": "e95eac5a265af724d77aebc7264c2072f55a58d868556b14c37956b3c4030a4a",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-mixed-interior/portable-v3-mixed-tick6-trigger-first-13538-1791776919044517000.c2": "fca92561e6af7988367ab949558047341a3788562edec8f6bc855ee6e31ef6dd",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-mixed-interior/portable-v3-mixed-tick6-trigger-first-13538-1791776919044517000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-mixed-interior/portable-v3-mixed-tick6-trigger-first-13538-1791776919044517000.child.stdout.log": "e38271c1d3151fa639aa5f32c9301be232bd255bbbac4b8ee50410fe8eea697b",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-mixed-interior/portable-v3-mixed-tick6-urgent-first-13538-1791776919074254000.c2": "744e2da1fd9c3f031d7ae6e12565f0be39c87c2e392e58e2811a605bdbb9113b",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-mixed-interior/portable-v3-mixed-tick6-urgent-first-13538-1791776919074254000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-mixed-interior/portable-v3-mixed-tick6-urgent-first-13538-1791776919074254000.child.stdout.log": "b38014e4fba69196c8394e8c9a36d327e7e5762db153147d3d9b9ed5f1df486d",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-process/v3-mixed-interior/process-invocations.txt": "40b19d03e31b95f00ef7c0f5faed9903997a9d424928f4104ab229945b00149b",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-result.json": "b0feceb2e9c8999e80db0fa33a2acf1633c06b121b3ed7eaacb069225a85c8b0",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-started.json": "3aa507f5dd1c5b21e6a6a695ccedb14843144cb318ed58dae83a253568f3effc",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156.log": "3569fce93337f5eef610f138e4acddace07f131e728681ec962f0a71b064a31f",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/gated-matrix/process-invocations.txt": "b99e8296d078ed0e668d6baef469d12f0a4950ff172c888f08d92b455c07a5a5",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/gated-matrix/service-arrival-disabled-pending-submit-15578-1791777113461975000.c2": "752d588b41ed90a9a6643405b96e8bad9cf37d93b8bd1cd20a951240b6865a51",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/gated-matrix/service-arrival-disabled-pending-submit-15578-1791777113461975000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/gated-matrix/service-arrival-disabled-pending-submit-15578-1791777113461975000.child.stdout.log": "86a943c06ad670d2a5c7d5bbd8782c121b856512ddd0019ac54a753caf9f29a6",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/gated-matrix/service-suspend-pending-enable-gate-15578-1791777113492155000.c2": "53fc54bcbb1beab56ee8614c66d66e78863496eea166ca2e63117ec780e7c9c0",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/gated-matrix/service-suspend-pending-enable-gate-15578-1791777113492155000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/gated-matrix/service-suspend-pending-enable-gate-15578-1791777113492155000.child.stdout.log": "c956b4667478b82a8335dca434faaaa15a33e2d4e04c7c77ec3ba57e17f325e4",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/gated-matrix/transit-moving-control-future-gate-15578-1791777113429061000.c2": "04ad0e8eba73484e50858d5f2ea9c797cb75a7418ec7e08d51d199962c6d53ef",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/gated-matrix/transit-moving-control-future-gate-15578-1791777113429061000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/gated-matrix/transit-moving-control-future-gate-15578-1791777113429061000.child.stdout.log": "3684bd42bd630b2aab1a4fa375ab9d33837d63846f2c04fa5dcb8473a516c84c",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/macro-zero-ready-15578-1791777112692194000.c2": "f335b8aeabf302214a54f90ca46dfc1bd22cfb47b317c4e8a0677061704d0421",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/macro-zero-ready-15578-1791777112692194000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/macro-zero-ready-15578-1791777112692194000.child.stdout.log": "715508deaef2abcad19cf865368359376de0559b52f396fa6cb905eb9ea320eb",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/micro-zero-ready-15578-1791777112719077000.c2": "67422a57a9b5b265b41296825d5871a78433a82d12faa91d8d4013d4965b3cc0",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/micro-zero-ready-15578-1791777112719077000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/micro-zero-ready-15578-1791777112719077000.child.stdout.log": "ea416b2b433e6b78948f53dce348eea576f62bf7d1646a5f1d7c737c9fef28a6",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/multi-graph-mixed-frozen-pending-15578-1791777113321098000.c2": "7f5221cc9ceb0b365fcb9eb406fb005f78294ad9fb0c83d6e3c128cde2f1be8b",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/multi-graph-mixed-frozen-pending-15578-1791777113321098000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/multi-graph-mixed-frozen-pending-15578-1791777113321098000.child.stdout.log": "950c5d27bb5edd3f7c3b2f3d32409f1139796504043ce29a138b331f378eb04c",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/process-invocations.txt": "aadfaa044db505fe2f4cbe13443830fcd5653a3e19c1041209e6ea2206d79708",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-restart-pending-cut-sample20-15578-1791777113295779000.c2": "f52bbbc6fba5d7f0df966e2bd8ed8a2cba6a37af49575d876954d1103bfb2147",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-restart-pending-cut-sample20-15578-1791777113295779000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-restart-pending-cut-sample20-15578-1791777113295779000.child.stdout.log": "032adb783004945744afef3b9983cdf9d1bc1078bfb27bf4c1a4e2a8ce9ba96e",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-restart-sample20-15578-1791777113250341000.c2": "cf659e54c34433554064a8812e0bd021a56148ab055781bfd7c24bd51a600913",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-restart-sample20-15578-1791777113250341000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-restart-sample20-15578-1791777113250341000.child.stdout.log": "fb6e4297e67b4c5f64611d7c77590741a80841ee13c08e1831735d81d6568559",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-suspend-pending-cut-sample20-15578-1791777113272844000.c2": "650a6194092c8444d719a44cab77fbaaa8913792a88399c86e856cffa1544886",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-suspend-pending-cut-sample20-15578-1791777113272844000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-suspend-pending-cut-sample20-15578-1791777113272844000.child.stdout.log": "bdb264f31e66e8c91b8c4a9e281a6e3fe4d00b74584ceedff7c25ab9b070c52c",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-suspend-sample20-15578-1791777113227558000.c2": "76c88aea3c91f8ea3c54afe0f011a9dddf6e331caee7bb11e493195799b99fc2",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-suspend-sample20-15578-1791777113227558000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/service-suspend-sample20-15578-1791777113227558000.child.stdout.log": "f456020435e28bf85592b2923f7baecacaa3f933c0b50ae37c16e59f69f2b323",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/submitted-active-15578-1791777113197377000.c2": "925378362fb828e1c4a4247f6bac08ec8a19fb25618ee01758b9c6614a32e0cc",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/submitted-active-15578-1791777113197377000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/submitted-active-15578-1791777113197377000.child.stdout.log": "3d864c3931d7a06c01501939a67f9a6e6da52f223a398f5e4f7f6c1161e22822",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/submitted-pending-15578-1791777113157778000.c2": "6ae384b17d1322996cd121e588ee806bb240c4f80a8435d369d665a785a98441",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/submitted-pending-15578-1791777113157778000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/submitted-pending-15578-1791777113157778000.child.stdout.log": "34a47a7edef52874e756f30d477410ec3746a37d32a59740ee622fdcee632a26",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-arrived-queued-15578-1791777113126230000.c2": "e8f4bb61b4eebbf51867a778f2da9e139f38f09da379023c1cdd17d4ac388e0c",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-arrived-queued-15578-1791777113126230000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-arrived-queued-15578-1791777113126230000.child.stdout.log": "fb1faed58472b6910982fa077da0133bf25aa75a7c09484d0847cb424ac8d17c",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-control-command-pending-15578-1791777113083908000.c2": "799f2d6711f7054357b7ad5c60c9885c10f3bb049a396d81df2dd6d691957b15",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-control-command-pending-15578-1791777113083908000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-control-command-pending-15578-1791777113083908000.child.stdout.log": "c3e39c86e0ecb6901480a0121011943e7b9f8f451798dc2bc22908d52c03876b",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-moving-mid-edge-15578-1791777112872735000.c2": "d98b7b22567b8348d97a7dc3a1804492456a3f1b8b6ecf81e63a9759a2f5be39",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-moving-mid-edge-15578-1791777112872735000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-moving-mid-edge-15578-1791777112872735000.child.stdout.log": "f6cf18407aadd8554a56394b92f03118aab3684d092673150a53ac8c16ddc67f",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-at-end-15578-1791777113041836000.c2": "35e5146fdd61f191da55f2253495c50e96c0704f58e86576983a504333135c42",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-at-end-15578-1791777113041836000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-at-end-15578-1791777113041836000.child.stdout.log": "1d5fac623389815335297b56b89ae25efc318016871498473f2f61ddcebc9f68",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-mid-edge-15578-1791777112950599000.c2": "02feba95ec3baadc96e1b0f1cd4443d7a681bdf28a4aa03851528f80ac18ae94",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-mid-edge-15578-1791777112950599000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-mid-edge-15578-1791777112950599000.child.stdout.log": "b5eabd08955bb8dacb2858be5baf1cbcea92dffc8513ce281632d4f7ac05b562",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-mid-edge-native-activity-15578-1791777112998983000.c2": "f649252b16b3ed4fcd32d05409eb0abab579d01cd570e6840ee6026dc30d5211",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-mid-edge-native-activity-15578-1791777112998983000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-mid-edge-native-activity-15578-1791777112998983000.child.stdout.log": "04f86b824820fe7c419782c7fd90b86a841d2d45aa501f719b62bd9056379dc3",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-ready-15578-1791777112904497000.c2": "6131687faa8c27042484ad0fb5810162550babe2b2cb3080a131f7d714682fd5",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-ready-15578-1791777112904497000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-paused-ready-15578-1791777112904497000.child.stdout.log": "4dc2f3a8cd60a0d75aa4a4da7fac5760cc55c4db05b8a9a8c5023c65ca97b13f",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-ready-15578-1791777112748002000.c2": "37d78f67bdd3b55cdc4b6ddbca30dcb392dd642afd344adf2728b31d413a0332",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-ready-15578-1791777112748002000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-ready-15578-1791777112748002000.child.stdout.log": "e6507de3fd3b9d35aa1ccdfaee5a33e09a3400cbf72b4cec6082d2a84a615915",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-rejected-progress-retry-15578-1791777112823601000.c2": "4d219323237f07394a87ec75caf515910600b37fa87052473202ac414d4cd877",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-rejected-progress-retry-15578-1791777112823601000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-rejected-progress-retry-15578-1791777112823601000.child.stdout.log": "0dd5de40497df1050ca18180792345a53924ab1b584ef35090dfa264373a2ca4",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-rejected-start-retry-15578-1791777112790898000.c2": "9552feb83ca964eb4d610f753680885f22c3dae28e064dcdb4f3256acbf32572",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-rejected-start-retry-15578-1791777112790898000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/legacy-matrix/transit-rejected-start-retry-15578-1791777112790898000.child.stdout.log": "780f26fdb037bc3e24861733be492b2c602032452f9f9d5d322f7c19a3e75e30",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-admitted-completion-15578-1791777113805718000.c2": "af9a0454cbac7b4b09a6175e29d4ad23e54775689418c2e5b451e0102c5ed887",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-admitted-completion-15578-1791777113805718000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-admitted-completion-15578-1791777113805718000.child.stdout.log": "0edc1286201769fc03f75f37347c62ad8150af53d57d1842b2582a4530736e37",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-arrived-unadmitted-15578-1791777113736896000.c2": "159f06eb0ccc382d60f88e48cf501b0ee08ec5ef12dfe79c2b7437d975d9fb3f",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-arrived-unadmitted-15578-1791777113736896000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-arrived-unadmitted-15578-1791777113736896000.child.stdout.log": "ebf2d39fa6d66fe48a7c6fd6a4dba54c064c308fbafb1b0b5b8582664fdcca5a",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-frontier-resume-live-domain-15578-1791777113772904000.c2": "52b164721fef72073651fd071f3ab929b4909f8faa505229bd0c4edd7b066e55",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-frontier-resume-live-domain-15578-1791777113772904000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-frontier-resume-live-domain-15578-1791777113772904000.child.stdout.log": "b263e732c0df52894b80d7aaa5b70e59480a41c0b99d67eb687cd23c2f116f33",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-moving-15578-1791777113646201000.c2": "cd66d4a7f863968f39814b5614118480f73790d804c5afff95b6d94f20954a9a",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-moving-15578-1791777113646201000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-moving-15578-1791777113646201000.child.stdout.log": "a114ae03fc1b63e445dbf74279de342760a0d84a2be8c19cf6815a53e4db7dbc",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-paused-consumed-15578-1791777113709875000.c2": "964dbb822787084774b3611bc09cdc381d6c87328ec947aea610973ef7c6d5b1",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-paused-consumed-15578-1791777113709875000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-paused-consumed-15578-1791777113709875000.child.stdout.log": "3e8d52ffa8c58948665b9d9b2929b8a72d83c5cd603ba932736ecf451c3746b7",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-paused-retained-15578-1791777113676291000.c2": "70915dab359a2b5a9a5f67a33c22cac45571758b02317bc02285d3bc14ba175d",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-paused-retained-15578-1791777113676291000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-paused-retained-15578-1791777113676291000.child.stdout.log": "aba0b230f973ba65ea3fcf0f799b10e44d5a43045970bcef8271dcd467fe4891",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-stable-key-generation-ties-15578-1791777113850971000.c2": "8ce00978db06114dfe3868c3521db6bf145150f597f9e928859504a8a46eede5",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-stable-key-generation-ties-15578-1791777113850971000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/portable-v4-handoff-stable-key-generation-ties-15578-1791777113850971000.child.stdout.log": "3332fdd808aa4084693acbb25bef1f7579e53667045182fdaf785765daeeab7e",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/process-invocations.txt": "c9128380eb1cba894669b3aaf1ebbd6eb6612b2dae0c9e2d1685e27a46a5e6cc",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-currenttick-flush/decoded-trace-byte-hashes.txt": "ff81a6e8a6b63f727ce4f86a56c67e36f0e5034f8e55ef406472f3d7e348b2b5",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-currenttick-flush/portable-v3-currenttick-flush-15578-1791777113520223000.c2": "16952a8f655ef8a4c17ca04577cbc24ab48a453c0b139f60c37e15eddfe47f74",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-currenttick-flush/portable-v3-currenttick-flush-15578-1791777113520223000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-currenttick-flush/portable-v3-currenttick-flush-15578-1791777113520223000.child.stdout.log": "91a3e15b70c137c242040e3c641760992ef89d0b129f0ef70c04d0779f2f6cdb",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-currenttick-flush/process-invocations.txt": "d86b8b6ed26650595c35942b7b68ec734111f61e2b5cc42b488f0fa46884ac07",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-halted-envelope/decoded-trace-byte-hashes.txt": "1a54c6744b9084828b7a0ccb30b3c5af4c377f6f65ed30a5108fce5596060e84",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-halted-envelope/portable-v3-preflush-budget-halt-15578-1791777113541717000.c2": "609873982e27a0e1443a529df414c73270ab48f3ba51ea55a079e06922c187be",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-halted-envelope/portable-v3-preflush-budget-halt-15578-1791777113541717000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-halted-envelope/portable-v3-preflush-budget-halt-15578-1791777113541717000.child.stdout.log": "4dd4aa8db83bf8f7ecee759f5472b27d046de3b5d7dd9e5f1844624ea13e6ac1",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-halted-envelope/process-invocations.txt": "29fee292aa594a089d227223b646336ddc82a142a037e9c408446407e1f7265a",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-mixed-interior/decoded-trace-byte-hashes.txt": "e95eac5a265af724d77aebc7264c2072f55a58d868556b14c37956b3c4030a4a",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-mixed-interior/portable-v3-mixed-tick6-trigger-first-15578-1791777113573828000.c2": "fca92561e6af7988367ab949558047341a3788562edec8f6bc855ee6e31ef6dd",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-mixed-interior/portable-v3-mixed-tick6-trigger-first-15578-1791777113573828000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-mixed-interior/portable-v3-mixed-tick6-trigger-first-15578-1791777113573828000.child.stdout.log": "e38271c1d3151fa639aa5f32c9301be232bd255bbbac4b8ee50410fe8eea697b",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-mixed-interior/portable-v3-mixed-tick6-urgent-first-15578-1791777113611036000.c2": "744e2da1fd9c3f031d7ae6e12565f0be39c87c2e392e58e2811a605bdbb9113b",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-mixed-interior/portable-v3-mixed-tick6-urgent-first-15578-1791777113611036000.child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-mixed-interior/portable-v3-mixed-tick6-urgent-first-15578-1791777113611036000.child.stdout.log": "b38014e4fba69196c8394e8c9a36d327e7e5762db153147d3d9b9ed5f1df486d",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-process/v3-mixed-interior/process-invocations.txt": "a222ac838461bf69eb125c25a011ed5059b40d16926b4883ac8630aee962819d",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-result.json": "103d1cee038c5db182f17ac7262144da71428fc610876cd392e543a3f2df183d",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-started.json": "6febfd58c899df60b16120bd6b2a0926e71b9d2fcfd0cc4de2f4c7ff2f06701f",
+    ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479.log": "dd7e8eba331c3f136fc4d004cb000dc2817e367bdc80cac3b6419768b6e1f239",
+    ".artifacts/e22-handoff-portable-process-20261012/result.json": "0bd54aa528a6ea8f5146f8ce216b384474279efa2d1737d1a6416f3c1d447563"
+  },
+  "historical_gate_receipts": [
+    {
+      "receipt_path": ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791776761739668000-11625-result.json",
+      "started_path": ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791776761739668000-11625-started.json",
+      "start": "2026-10-12T03:46:01.819886+00:00",
+      "exit_code": 101
+    },
+    {
+      "receipt_path": ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791776887528804000-13064-result.json",
+      "started_path": ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791776887528804000-13064-started.json",
+      "start": "2026-10-12T03:48:07.600110+00:00",
+      "exit_code": 0
+    },
+    {
+      "receipt_path": ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-result.json",
+      "started_path": ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791776893753923000-13156-started.json",
+      "start": "2026-10-12T03:48:13.835234+00:00",
+      "exit_code": 101
+    },
+    {
+      "receipt_path": ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791777091905456000-15380-result.json",
+      "started_path": ".artifacts/e22-handoff-portable-process-20261012/logs/clippy-1791777091905456000-15380-started.json",
+      "start": "2026-10-12T03:51:32.015297+00:00",
+      "exit_code": 0
+    },
+    {
+      "receipt_path": ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-result.json",
+      "started_path": ".artifacts/e22-handoff-portable-process-20261012/logs/tests-1791777098782390000-15479-started.json",
+      "start": "2026-10-12T03:51:38.854011+00:00",
+      "exit_code": 101
+    }
+  ]
+}
