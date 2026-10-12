@@ -1,0 +1,23 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.45
+   Compiling unicode-ident v1.0.24
+    Checking kairo-ecs-types v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-types)
+   Compiling thiserror v2.0.20
+    Checking kairo-ecs-state v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-state)
+    Checking kairo-ecs-rng v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-rng)
+    Checking kairo-ecs-core v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-core)
+   Compiling syn v3.0.6
+   Compiling thiserror-impl v2.0.20
+    Checking kairo-ecs-des v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-flow-v4-native-20261012/crates/kairo-ecs-des)
+error: using `chunks_exact` with a constant chunk size
+   --> crates/kairo-ecs-des/tests/flow_checkpoint_wire_v4.rs:568:10
+    |
+568 |         .chunks_exact(2)
+    |          ^^^^^^^^^^^^^^^ help: consider using `as_chunks` instead: `as_chunks::<2>().0.iter()`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#chunks_exact_to_as_chunks
+    = note: `-D clippy::chunks-exact-to-as-chunks` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::chunks_exact_to_as_chunks)]`
+
+error: could not compile `kairo-ecs-des` (test "flow_checkpoint_wire_v4") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

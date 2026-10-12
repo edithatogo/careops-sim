@@ -1,0 +1,41 @@
+{
+  "status": "accepted_flow_v4_direct_wire_source_only",
+  "accepted_commit": "de8afe50322cd708e868543758231359b0926cd3",
+  "gate_base_commit": "02529ec07ef35b09a7eadf8d4a4e3727d6379780",
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/flow/checkpoint/wire.rs": "e3ba638f1ae2e7c8f21d93a64409e676f83a120daf4d45123427b6b5a9fc2abb",
+    "crates/kairo-ecs-des/tests/flow_checkpoint_wire_v4.rs": "865a0f7a780f977928b2962221b4a6c101f32a94b4f73efb248bc531b84af7c9"
+  },
+  "final_result_sha256": "f6117b533876fc2ec7f0532c743d8bde17cd370a0a8903a58a0db411130a1190",
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+  },
+  "tests": {
+    "passed": 417,
+    "failed": 0,
+    "ignored": 1,
+    "suites": 42
+  },
+  "required_success_names": [
+    "v4_wire_actual_mixed_runtime_roundtrip_continues",
+    "v4_wire_removed_generation_terminal_rows_roundtrip",
+    "v4_wire_literal_golden_and_legacy_bytes_unchanged",
+    "v4_wire_exact_byte_record_key_limits",
+    "v4_wire_checked_lengths_and_integer_overflow",
+    "v4_wire_header_tags_and_truncation_matrix",
+    "v4_wire_duplicate_missing_unsorted_metadata_rejected",
+    "v4_wire_bad_final_row_and_trailing_precede_owned_decode",
+    "v4_wire_measurement_precedes_output_allocation",
+    "v4_wire_direct_restore_has_no_legacy_fallback"
+  ],
+  "reviewers": [
+    "root",
+    "next_delivery_orchestrator GPT-6.1-sol"
+  ],
+  "retained_failed_executions": 2,
+  "review": "Direct V4 codec, canonical metadata and bounds, borrowed scanner, output allocation, independently derived literal and actual restored continuation reviewed. Failed lint and fixture attempts retained. Final ordered gates independently audited at unchanged hashes.",
+  "boundary": "Direct DES V4 wire only. Automatic Image/Ref routing, ABM V2 wire, joined consumers, parent pin, ED adapter/88 fixtures and later delivery/release remain open.",
+  "parent_pin": "6d733f489225da4bf6ceec2673b02369c7918bbe",
+  "next": "Bind reviewed four-path Image/Ref routing owner contract and dispatch; ABM direct wire gates continue in parallel."
+}
