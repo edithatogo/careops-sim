@@ -1,0 +1,22 @@
+{
+  "packet_path": ".artifacts/e22-v4-v2-acquire-coherent-20261012/dispatch/packet.json",
+  "packet_sha256": "2437c45d23510fc49ad58cd0229fa9d6868ed4398ce9d755a39f9ee979d254ba",
+  "driver_sha256": "0defdf432595d58c337066922ebaf4db0e8ca0c5dd3355c94a81e401a8451be2",
+  "target_worktree": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-v3-coherent-consumer-20261012",
+  "base_commit": "37985780b592e22076d8ef33249ccf03c259388a",
+  "dispatch_status": "GO",
+  "repair_authorized": true,
+  "repair_authorized_after_failures": [
+    ".artifacts/e22-v4-v2-acquire-coherent-20261012/dispatch/logs/clippy-1791776400229351000-5598-result.json",
+    ".artifacts/e22-v4-v2-acquire-coherent-20261012/dispatch/logs/tests-1791776483294402000-7318-result.json"
+  ],
+  "reviewed_source_hashes": {
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "a3144c5c662337a9efd5dcf1b6d9c0062576f26be906a88e0c33da084047627e",
+    "crates/kairo-ecs-calibration/src/flow_bridge/checkpoint_wire.rs": "a4621a393039d9549e8ed1806f5f61f55adccdaedc3fe66334add4e38dbe720d"
+  },
+  "reviewers": [
+    "root",
+    "next_delivery_orchestrator GPT-6.1-sol"
+  ],
+  "review": "Root and Sol identified missing real carrier in three fixtures. Fixtures now install actual pending Start before capturing and assert live event; old V1 selection remains. No production validator change. Two failures retained; restart exact ordered gates."
+}

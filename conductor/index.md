@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [V4 coherent Acquire acceptance](evidence/e2.2-v4-coherent-completion-20261012/README.md)
+
 - [V4 preview acceptance](evidence/e2.2-v4-preview-completion-20261012/README.md)
 
 - [Parallel V4 / Transit V2 consumer dispatch](evidence/e2.2-v4-v2-consumer-dispatch-20261012/README.md)
