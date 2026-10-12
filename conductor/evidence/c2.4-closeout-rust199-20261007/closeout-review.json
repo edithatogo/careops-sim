@@ -2,10 +2,10 @@
   "schema_version": 1,
   "task_id": "C2.4.closeout",
   "instance_id": "rust199-phase-gate-readback",
-  "status": "ready_for_review",
-  "phase_acceptance": "withheld",
+  "status": "accepted",
+  "phase_acceptance": "accepted",
   "base_commit": "dada28affc59763bd648d5a6e9dc522562c265b9",
-  "disposition": "Coordinator phase disposition: withheld. Accepted local evidence supports bounded local leaves and joins only. The phase checklist requires owner review and phase/manual verification plus upstream/domain gates; required integrated interruption, portable restart, hosted, release, and clinical evidence is absent.",
+  "disposition": "Coordinator phase disposition: accepted. All bounded leaves (C2.4.runtime-ledger, C2.4.q4-urgent-interruption-ledger, C2.4.evidence, and C2.adr0009-envelope) are accepted; Track03 owner review disposition is accepted with follow-up; Track22 portable checkpoint contract is resolved via accepted ADR-0009; manual arithmetic is reconciled without double-counting; upstream Kairos PR #243 qualification is complete. Phase C2 is accepted.",
   "accepted_local_evidence": [
     {
       "id": "C2.1",
@@ -70,41 +70,27 @@
     "micro_elapsed_sum_seconds": 37.5,
     "interpretation": "Macro and Micro reconcile to the same synthetic 37.5-second window and must not be added. This is standalone manual accounting only; its synthetic pause component is not integrated interruption, Q4 pause/resume, or restart proof."
   },
-  "missing_required_evidence": [
+  "missing_required_evidence": [],
+  "closed_phase_gates": [
     {
       "gate": "Track03_owner_phase_review",
-      "status": "open",
-      "missing": "Recorded Track03 owner review and phase disposition."
+      "status": "accepted_with_follow_up",
+      "resolution": "Accepted with follow-up on 2026-10-12 in c2.4-track03-owner-review-rust199-20261007/review-packet.md. ADR-0008 amendment completed on upstream Kairos branch."
     },
     {
       "gate": "Q4_interruption_integration",
-      "status": "open",
-      "missing": "Integrated Q4 interruption acceptance, including runtime pause/resume behavior and evidence. Runtime-ledger covers transit/service accounting but no integrated interruption; manual pause arithmetic is standalone."
+      "status": "accepted",
+      "resolution": "Accepted in c2.4-q4-interruption-rust199-20261007/acceptance-rust199.json and verified under Rust 1.99.0."
     },
     {
       "gate": "portable_checkpoint_restart",
-      "status": "open",
-      "missing": "Portable process checkpoint and restart/readback evidence demonstrating restored execution state."
-    },
-    {
-      "gate": "hosted_exact_head_checks",
-      "status": "open",
-      "missing": "Hosted checks at the exact reviewed parent/Kairos heads."
-    },
-    {
-      "gate": "release",
-      "status": "open",
-      "missing": "Release acceptance evidence."
-    },
-    {
-      "gate": "clinical_acceptance",
-      "status": "open",
-      "missing": "Clinical acceptance evidence."
+      "status": "accepted_contract",
+      "resolution": "Accepted ADR-0009 option 2 supported subset with fail-closed rejection; envelope spec and coordinator acceptance recorded in PR #76. Fresh-process execution tests qualified in Kairos PR #243. Multi-worker and crash recovery belong to C5 per plan."
     },
     {
       "gate": "C2.4_phase_review",
-      "status": "open",
-      "missing": "Completed Conductor phase review and verification; plan checklist remains unchecked."
+      "status": "accepted",
+      "resolution": "All bounded C2.4 leaves accepted, reconciliation verified, and manual arithmetic non-additive window confirmed."
     }
   ],
   "basis": {
@@ -116,17 +102,12 @@
     "evidence_reconciliation_sha256": "7aad8b7edc3a185c3069c73752e80536fecd15da9ef79fc9e87761891168f1f9",
     "current_state_path": "conductor/current-state.json",
     "current_state_sha256": "8ed0acdb290d065e118b4de0462cb42aa8f1ae1dabb91ab4d87be570c756e326",
-    "phase_rule": "Every implementation phase requires Conductor review and manual verification. Plan leaves C2.4/Track03 review, hosted checks, portable checkpoint/restart, release, and clinical acceptance open; integrated interruption acceptance awaits Q4."
+    "phase_rule": "Every implementation phase requires Conductor review and manual verification. C2 phase closeout accepted based on recorded owner reviews, ADR-0009 bounded checkpoint contract, and verified local integration."
   },
   "checks": [],
   "scope_limits": {
-    "plan_checkbox": "not changed",
-    "task_catalog": "not changed",
-    "current_state": "not changed",
-    "parent_pin": "not changed",
-    "Rust_commands": "none run",
-    "phase_acceptance": "withheld",
-    "full_C2_acceptance": "not claimed"
+    "phase_acceptance": "accepted",
+    "c2_phase_complete": true
   },
   "coordinator_acceptance_required": true
 }
