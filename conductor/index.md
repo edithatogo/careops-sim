@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [Parallel routing and ABM rebound dispatch](evidence/e2.2-routing-abm-rebound-dispatch-20261012/README.md)
+
 - [Context schema prerequisite acceptance and parallel successors](evidence/e2.2-context-schema-versions-completion-20261012/README.md)
 
 - [Context schema prerequisite dispatch and ABM dependency stop](evidence/e2.2-context-schema-prerequisite-dispatch-20261012/README.md)
