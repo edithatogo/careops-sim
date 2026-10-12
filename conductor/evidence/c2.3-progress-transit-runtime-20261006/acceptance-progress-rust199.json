@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "local_leaf_accepted_rust199_exact_pin",
+  "leaf_id": "C2.3.progress",
+  "status": "local_leaf_accepted_parent_runtime_join_pending",
+  "parent_base_commit": "1fba91adb072e801e93cc12bd949e88fc407a631",
+  "integrated_parent_commit": "1fba91adb072e801e93cc12bd949e88fc407a631",
+  "target_repository": "libs/kairos",
+  "source_commit": "aecb28c7089b1861b72cbd96ce29fc2577ffe47f",
+  "recipe_sha256": "d6bd23241e6fac56b99ce8451df17f589c0503177faa8a1b3cde52763518bde4",
+  "packet_path": ".artifacts/packets/C2.3.progress.rust199-current-pin.json",
+  "packet_sha256": "287043d1da05166d130abfd9b38891090c48a13e11bbe14c656184940ee8ee97",
+  "worker_result_path": "libs/kairos/.artifacts/mvp/C2.3.progress.rust199-current-pin/result.json",
+  "worker_result_sha256": "8e831ba0018ba59ff76f99fd21c83f02f64e9fca560aa3a4d3bcc854527e180c",
+  "prerequisites": {
+    "C2.3.time": {
+      "status": "accepted",
+      "receipt": "conductor/evidence/c2.3-routing-integration-20261006/acceptance.json",
+      "receipt_sha256": "5cdfa2e0c071fa513690193bf4cf490d54993bd7e6f4948d434dfd1d577fd6ac"
+    }
+  },
+  "source_hashes": {
+    "libs/kairos/conductor/design/calibration/c20-transit-execution-v1.md": "40c8400a4030a836bcec41e18291cedc8ceee1dcab88fee43f88916863d0d491",
+    "libs/kairos/crates/kairo-ecs-abm/src/spatial.rs": "53264dca3f0af57b57211aa38c0f03ae8ead1d42a425bf77fba1c05dcf242cbb",
+    "libs/kairos/crates/kairo-ecs-abm/src/flow_adapter.rs": "1535859601597bcbf687c18bcc6f44bc90e272d233723728d816405f8011f15a"
+  },
+  "independent_review": {
+    "reviewer": "gpt-6-luna read-only C2.3 leaf graph/source audit",
+    "result": "recipe oracle met for the local in-memory progress leaf",
+    "caveats": [
+      "Transit progress checkpoint is in-memory cursor state; it does not serialize full Flow runtime scheduler/context state.",
+      "Calibration BoundIntrinsicWork rejected-event retry and accepted-arrival reconciliation remain a separate open transit-bridge join."
+    ]
+  },
+  "verification": {
+    "toolchain": {
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+    },
+    "tests": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "test", "--locked", "-p", "kairo-ecs-calibration", "-p", "kairo-ecs-abm", "--features", "kairo-ecs-calibration/flow"],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "summary": "186 passed, 0 failed, 4 ignored",
+      "log": "/tmp/c23-progress-rust199-tests.log",
+      "log_sha256": "242ee4c46370b3afb2c99ce6c7b6e78be417ee81ea43a2562d7654518dd3c55a"
+    },
+    "clippy": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "clippy", "--locked", "-p", "kairo-ecs-calibration", "-p", "kairo-ecs-abm", "--features", "kairo-ecs-calibration/flow", "--all-targets", "--", "-D", "warnings"],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "/tmp/c23-progress-rust199-clippy.log",
+      "log_sha256": "d7c4f31c9c81c01ecd74870967152f06ad4a97787d6a9f9f77ee447443658019"
+    },
+    "format": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "fmt", "--all", "--", "--check"],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "/tmp/c23-progress-rust199-fmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "oracle": {
+    "checkpoint_restore_preserves_route_edge_elapsed_and_remaining_duration": true,
+    "actual_flow_pause_resume_preserves_segment_elapsed_and_remaining_duration": true,
+    "stale_event_while_paused_does_not_advance_progress": true,
+    "resumed_route_reaches_one_arrival_and_one_timed_acquire": true
+  },
+  "scope_limits": {
+    "portable_or_full_runtime_checkpoint": false,
+    "calibration_bound_retry_arrival_join": false,
+    "C2_3_dispatch_complete": false,
+    "C2_2_complete": false,
+    "C2_1_runtime_accepted": false,
+    "hosted_exact_head_checks": false,
+    "release_or_clinical_acceptance": false
+  }
+}

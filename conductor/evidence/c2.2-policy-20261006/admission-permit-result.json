@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.2.policy.admission-permit",
+  "task_id": "C2.2.policy",
+  "instance_id": "admission-permit",
+  "base_commit": "fb9f938f87086e9a9a5a8630376bf34370035e4c",
+  "source_commit": "f1f510e6c9ff9c3923b63ad733c05c19c495b46c",
+  "status": "coordinator_locally_accepted",
+  "changed_paths": [
+    "crates/kairo-ecs-des/src/fidelity.rs",
+    "crates/kairo-ecs-des/src/flow.rs",
+    "crates/kairo-ecs-des/src/fidelity_tests.rs"
+  ],
+  "input_hashes": {
+    "conductor/design/calibration/c20-admission-bridge-v1.md": "3a659df216fd1b035e0c561b5df566a73a34660289239dc947992502f36049f9",
+    "conductor/design/calibration/c2-execution-admission-v1.md": "a2ffd67c9b01fba373ba70b1681c405d6301a15b7d97e50ff82e021d60d79d13",
+    "crates/kairo-ecs-des/src/fidelity.rs": "a5641baf677af8eb483116e28bd2feb467ad0e5fcd6eeb366dffa9cb23fc594c",
+    "crates/kairo-ecs-des/src/flow.rs": "dbcaa36a3314a2a8d6b73056b0bfea3dbc8bbff64e45e01fce8550c28f118e92",
+    "crates/kairo-ecs-des/src/fidelity_tests.rs": "a4dad1c00741d6c53435cf087496baf2a22968740586842672efc1c2c081198f",
+    "crates/kairo-ecs-des/Cargo.toml": "9f5a852926de2bb795da29f203d2101bbedc5f712f65197c5d5812fe011df816",
+    ".artifacts/mvp/C2.2.policy.admission-permit/context.md": "4820c18cb8ae299c767fc868d8ef5359f295815ce2eac96c0ed5631bbbd083cc"
+  },
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/fidelity.rs": "eb9e2035b677a631eff27a67e5bd90fddf69216be5334ccbd6c020718442765e",
+    "crates/kairo-ecs-des/src/flow.rs": "ef4a4a5628ca4404d2625806e3555bc1c8cbe2aad70e2a9c13bd77e23245cb9b",
+    "crates/kairo-ecs-des/src/fidelity_tests.rs": "8bea7fe8a96e49bdaeb6aa9b93fb82a65b026a0e6dc1905e2934d626b7ceba24"
+  },
+  "verification": [
+    {
+      "argv": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/careops-sim-c22-policy-target",
+        "rustup",
+        "run",
+        "1.76.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c22-admission-permit-20261006",
+      "toolchain": "rustc 1.76.0",
+      "exit_code": 0,
+      "log_path": "conductor/evidence/c2.2-policy-20261006/admission-permit-des-tests.log",
+      "log_sha256": "4c7d5c19d800ea33e7c926ae047cb40f68cdda26dc7a770a029d186fbbf08279",
+      "summary": {
+        "test_targets": 26,
+        "passed": 246,
+        "failed": 0,
+        "ignored": 1,
+        "new_admission_permit_cases": 5
+      }
+    },
+    {
+      "argv": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/careops-sim-c22-policy-target",
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c22-admission-permit-20261006",
+      "toolchain": "Rust 1.99.0",
+      "exit_code": 0,
+      "log_path": "conductor/evidence/c2.2-policy-20261006/admission-permit-clippy.log",
+      "log_sha256": "5d159945e8c1cea8aad038530689b3f95e3bdb30cc67c129566ed03ebbb21dca"
+    },
+    {
+      "argv": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/careops-sim-c22-policy-target",
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c22-admission-permit-20261006",
+      "toolchain": "rustfmt 1.99.0",
+      "exit_code": 0,
+      "log_path": "conductor/evidence/c2.2-policy-20261006/admission-permit-format.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c22-admission-permit-20261006",
+      "exit_code": 0
+    }
+  ],
+  "implemented": [
+    "Non-Clone FidelityAdmissionPermit mutably borrows adapter until actual work binding.",
+    "prepare_admission verifies FlowRuntime lineage and a live actor before policy resolution.",
+    "bind validates runtime, actor, duplicate admission, actual owner, Pending state and sampled original duration.",
+    "Every bind rejection returns the same permit before adapter mutation; successful bind binds runtime lineage and the frozen decision exactly once.",
+    "Added crate-private FlowRuntime::validate_actor with no world mutation surface."
+  ],
+  "limitations": [
+    "No calibration/provider owned-state join is implemented.",
+    "Permit remains inside the private experimental module; this is not stable API acceptance.",
+    "Macro/Micro paired runtime and C2.1 join remain open.",
+    "Hosted and parent final-head gates remain pending."
+  ],
+  "prior_instance_receipts": {
+    "C2.2.policy.policy-test-home": {
+      "source_commit": "fb9f938f87086e9a9a5a8630376bf34370035e4c",
+      "status": "ready_for_review",
+      "result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c22-admission-permit-20261006/.artifacts/mvp/C2.2.policy.policy-test-home/result.json"
+    }
+  },
+  "coordinator_review": "Reviewed exact packet scope, source commit and hashes; preserved original fidelity tests and checked the full DES package on the stated toolchain."
+}

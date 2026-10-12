@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "local_leaf_and_parent_pin_join_accepted_rust199_exact_pin",
+  "leaf_id": "C2.4.q4-urgent-interruption-ledger",
+  "instance_id": "rust199-urgent-preemption",
+  "status": "local_leaf_and_parent_pin_join_accepted_phase_review_open",
+  "accepted_scope": "Test-only paired Macro and routed nonzero-transit Micro calibration bridge fixture exercises actual Q4 Suspend preemption and resume of one timed service work item, exact route observation/request lineage, Service state, resource/queue conservation, and runtime-derived elapsed interval reconciliation.",
+  "parent_base_commit": "777fed65f6f5f5c49bc0533eb5c625cc396781cd",
+  "target_repository": "libs/kairos",
+  "previous_parent_pin": "774d1ed1c6c7f1bfd67a0a3875f5d9188eb1e9de",
+  "integrated_kairos_pin": "6053d8dd2f8057c423decc929c90a8bcd10837f9",
+  "source_branch": "codex/c2.4-q4-urgent-interruption-rust199",
+  "source_sha256": "e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959",
+  "packet": {
+    "path": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/packet.json",
+    "sha256": "46f1dc0f2f0ce9260e808d6de9f7fe3ff6940bc2c243f3142df226436b143328"
+  },
+  "worker_context": {
+    "path": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/worker-context.md",
+    "sha256": "3743c1067641957a263dbc7e4ad74723f82bff10ea1aa1ca1e18999acb331ae6"
+  },
+  "worker_result": {
+    "path": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/worker-result.json",
+    "sha256": "5c21212911e7e45dcac1c57df679096edaca076cc00148182b6e62b9410ad926"
+  },
+  "prerequisites": {
+    "C2.4.runtime-ledger": {
+      "status": "accepted",
+      "receipt": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json",
+      "sha256": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189"
+    },
+    "C2.5.continuation": {
+      "status": "accepted",
+      "receipt": "conductor/evidence/c2.5-continuation-rust199-20261007/acceptance-rust199.json",
+      "sha256": "543a0e9e6b73c7e392280bbe6b9f3cc69fe1b6abd29a635e2ad97444d0536282"
+    },
+    "Q4.5": {
+      "status": "accepted_for_bounded_development",
+      "integrated_commit": "1125b5268bb349a5befe12f5789045042faab3e3",
+      "ancestor_of_source_commit": true,
+      "evidence": "conductor/evidence/q4-completion-acceptance-20261004.md"
+    }
+  },
+  "worker_verification": {
+    "toolchain": "Rust 1.99.0 only",
+    "tests": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "test", "--locked", "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support", "--target-dir", ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/target"],
+      "cwd": "isolated Kairos worktree at 6053d8dd2f8057c423decc929c90a8bcd10837f9",
+      "exit_status": 0,
+      "passed": 164,
+      "failed": 0,
+      "ignored": 4,
+      "log": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/logs/test.log",
+      "log_sha256": "120d67ab2bd5d009ac6f6a894fa7be771c2ab9217d14bbd54cea36d27f8a0d41"
+    },
+    "clippy": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "clippy", "--locked", "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support", "--all-targets", "--target-dir", ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.rust199-urgent-preemption/target", "--", "-D", "warnings"],
+      "cwd": "isolated Kairos worktree at 6053d8dd2f8057c423decc929c90a8bcd10837f9",
+      "exit_status": 0,
+      "warnings_denied": true,
+      "log": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/logs/clippy.log",
+      "log_sha256": "00a762ad404429c7a110944ea43931c82e557e1270bee89cc59fcbf25563dc98"
+    },
+    "format": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "fmt", "--all", "--", "--check"],
+      "cwd": "isolated Kairos worktree at 6053d8dd2f8057c423decc929c90a8bcd10837f9",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/logs/fmt-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "parent_exact_pin_rerun": {
+    "kairos_pin": "6053d8dd2f8057c423decc929c90a8bcd10837f9",
+    "toolchain": "Rust 1.99.0 only",
+    "tests": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "test", "--locked", "-p", "kairo-ecs-des", "-p", "kairo-ecs-abm", "-p", "kairo-ecs-calibration", "--features", "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support", "--target-dir", ".artifacts/c2.4-q4-interruption-parent/target"],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "test_summaries": 43,
+      "passed": 447,
+      "failed": 0,
+      "ignored": 5,
+      "log": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/logs/parent-test.log",
+      "log_sha256": "1ce6326b81ac6d9103fda1e401b6203a8b36cd93a0d57cec52f96126009c8154"
+    },
+    "clippy": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "clippy", "--locked", "-p", "kairo-ecs-des", "-p", "kairo-ecs-abm", "-p", "kairo-ecs-calibration", "--features", "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support", "--all-targets", "--target-dir", ".artifacts/c2.4-q4-interruption-parent/target", "--", "-D", "warnings"],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "warnings_denied": true,
+      "log": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/logs/parent-clippy.log",
+      "log_sha256": "732186322402325172940531d8d6d7cfac85dc902585b2bef6715ad6839dacfd"
+    },
+    "format": {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "fmt", "--all", "--", "--check"],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.4-q4-interruption-rust199-20261007/logs/parent-fmt-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "independent_source_review": {
+    "reviewer": "c2_full_oracle_audit",
+    "status": "READY",
+    "review_scope": "Final committed diff and bound packet; test source, route observations, service lifecycle, elapsed components, exact-once lineage, and scope.",
+    "residual_limit": "Does not enumerate unrelated pending Flow events after completion; outside this bounded acceptance oracle."
+  },
+  "decision": "Accept C2.4.q4-urgent-interruption-ledger as a local source-and-exact-pin leaf only. C2.4 phase acceptance and full C2 acceptance remain withheld.",
+  "open_gates": {
+    "Track03_owner_phase_review": "open",
+    "portable_checkpoint_restart_Track22": "open",
+    "hosted_exact_head_checks": "open",
+    "release_acceptance": "open",
+    "clinical_acceptance": "open",
+    "C2.4_Conductor_phase_review": "open"
+  }
+}

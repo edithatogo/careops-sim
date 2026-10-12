@@ -102,31 +102,62 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   independently reviewed test-first mode and paired integration fixtures. Record
   expected red evidence for absent runtime APIs without claiming runtime acceptance;
   this preparation gate enables C2.2 implementation, not C2.1 completion.
-- [ ] C2.2 Implement empirical work-duration providers, FidelityPolicy and stable
+- [x] C2.2 Implement empirical work-duration providers, FidelityPolicy and stable
   entity/task/purpose keys. Separate intrinsic work from queue/transit intervals;
   persist all mode and stream state for resume.
-- [ ] C2.3 Implement a deterministic route-graph TransitModel with units, stable
+- [x] C2.3 Implement a deterministic route-graph TransitModel with units, stable
   shortest-path ties, integer tick conversion, unreachable errors and stored
   movement progress. Supply a minimal urgency/FIFO/zone/skill staff adapter;
   cleaning/reservation remains an explicit model resource lifecycle. Require explicit
   movement-mode speeds, versioned geometry and O/D purpose; test mixed-use pauses
   and sensor-derived distance are not silently treated as path/speed ground truth.
-- [ ] C2.1 Write failing mode resolution/boundary tests and common-random-number
+  Connect the calibration bridge to actual route carriers: validate actor/task/
+  resource association, track exact owned event IDs and Flow callback receipts,
+  reconcile only accepted arrival with the original timed work request, and allow
+  one explicit retry only for the matching consumed rejected event. Macro and
+  explicit-zero Micro continue to emit no transit event or Transit draw.
+- [x] C2.1 Write failing mode resolution/boundary tests and common-random-number
   fixtures. Assert Macro emits no transit, zero-transit Micro matches its paired
   Macro fixture, and changing mode never discards active or suspended work.
+- [x] C2.5 Implement and test the reviewed same-live-Flow in-memory
+  continuation contract for fidelity policy/decisions, the owned Service stream
+  and one bound bridge work item. Preserve state across a one-shot in-process
+  handoff; portable serialization and process restart remain Track22 gates. The decision-mismatch rejection now has a test-only exact-value preservation oracle. Local
+  same-live-Flow continuation acceptance does not close the Track03/Track22, hosted,
+  portable checkpoint/restart, release, clinical or C2.4 phase gates.
 - [ ] C2.4 Conductor — review and verify phase (workflow.md).
 
-After preparation C2.0, C2.2 provider/policy and C2.3 generic routing have
-independent foundations. The frozen calibration bridge names actual transit
-types, so the full C2.2 owned-stream/resume join waits for C2.3 dispatch. Both
-completed branches gate full runtime join C2.1 and phase review C2.4. Dependency
-readiness does not grant parallel writes: overlapping path claims remain serial. All C2.1 original oracles remain mandatory; a
-fixed-duration fixture, disconnected RNG check, compile failure or missing transit
-API cannot satisfy paired acceptance. Existing mode-test source is preliminary
-evidence, not an accepted C2.1 leaf before C2.3. See
-[the test-first join decision](../../decisions/ADR-0008-c2-test-first-join.md).
+After preparation C2.0, C2.2 provider/policy, C2.3 generic routing, and C2.1
+mode/paired behavior have local exact-pin joins under Rust 1.99.0. The earlier
+C2.1 paired receipt is historical; its superseding paired Restart and parent
+integration receipt are recorded at Kairos pin `51b5e5d`. C2.5 decision-mismatch
+coverage is locally accepted at exact Kairos pin `3926d0f`; see [decision-mismatch
+evidence](../../evidence/c2.5-decision-mismatch-rust199-20261007/README.md). The paired comparison covers full Flow outcomes for its deterministic
+fixture; the no-Transit-draw observation is scoped to that fixture and its
+TransitContext, which has no RNG field. The separate C2.3.dispatch leaf remains
+the staff-policy adapter. Integrated runtime-ledger leaf accepted at `5cc8250`; see
+[C2.4 runtime-ledger evidence](../../evidence/c2.4-runtime-ledger-rust199-20261007/README.md).
+The test-only Q4 urgent-interruption integration is locally accepted at exact
+Kairos pin `6053d8d`; see [its Rust 1.99.0 evidence](../../evidence/c2.4-q4-interruption-rust199-20261007/README.md).
+Standalone synthetic accounting remains in [the manual ledger evidence](../../evidence/c2-manual-ledger-20261007/README.md).
+C2.4 phase review and Track03 owner review remain open. Hosted checks, portable
+checkpoint/restart, release, and clinical acceptance also remain open.
+Dependency readiness does not grant parallel writes: overlapping path claims
+remain serial. All C2.1 original oracles remain mandatory; a fixed-duration
+fixture, disconnected RNG check, compile failure or missing transit API cannot
+satisfy paired acceptance. See [the test-first join decision](../../decisions/ADR-0008-c2-test-first-join.md).
 
-Exit: C-02 in standalone fixtures; integrated interruption acceptance awaits Q4.
+Exit: C-02 has standalone fixtures and a locally accepted integrated Q4
+urgent-interruption runtime leaf. Q4.5 is accepted and integrated. Track03
+owner/phase review and the remaining hosted, portable-checkpoint, release, and
+clinical gates remain required before this phase can pass.
+Amendment 2026-10-12: Track03 owner disposition is `accepted with follow-up`
+([packet](../../evidence/c2.4-track03-owner-review-rust199-20261007/review-packet.md));
+follow-ups are the ADR-0008 three-method amendment and a mixed-use pause fixture.
+The portable-checkpoint gate is defined by
+[ADR-0009](../../decisions/ADR-0009-c2-portable-checkpoint-subset.md): a fail-closed
+fresh-process restore of the reviewed subset at one supported boundary. Worker,
+crash and mid-study resume equivalence stay with C5.
 Manual check: inspect the same synthetic case in Macro/Micro, reconcile clinical
 work plus transit plus waits, and demonstrate no double-counted elapsed time.
 

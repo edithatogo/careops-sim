@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "local_leaf_and_parent_join_accepted_phase_review_open",
+  "task_id": "C2.4.evidence",
+  "instance_id": "rust199-evidence-reconciliation",
+  "status": "local_leaf_and_parent_join_accepted_phase_review_open",
+  "accepted_scope": "Source-linked reconciliation of five bounded accepted C2 local records and execution evidence, with unresolved phase gates explicitly retained.",
+  "worker_base_commit": "b55b46ca840598cb800146b0815edd91b0e426d7",
+  "parent_integration_base": "a084862197366e351dac8d17dde8f16558162b5c",
+  "integrated_kairos_pin": "5cc825048a1116740e80e6c067ba046306f2ce10",
+  "recipe_sha256": "65548d6a715424f723a383bc6f672448a848dd668eec2c0360b41220935d4614",
+  "packet": {
+    "path": "conductor/evidence/c2.4-evidence-rust199-20261007/packet.json",
+    "sha256": "462f527c39d8ef2106e3474297fff4488429b4ec16445595b07c4d3278a2a2e9"
+  },
+  "worker_result": {
+    "path": "conductor/evidence/c2.4-evidence-rust199-20261007/worker-result.json",
+    "sha256": "5b8cd8b03190c94a75ab99c2248d2d547e7fa84a160a61858adb657f982fc294"
+  },
+  "reconciliation": {
+    "path": "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json",
+    "sha256": "7aad8b7edc3a185c3069c73752e80536fecd15da9ef79fc9e87761891168f1f9"
+  },
+  "accepted_records": [
+    {
+      "id": "C2.1",
+      "receipt_path": "conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json",
+      "receipt_sha256": "4f1ba5b364dd3c908287c286e7414d19dcdc3da3f1458e95471f66a9a76b6f20",
+      "status": "local_parent_join_accepted",
+      "kairos_pin": "bfbefa87ba15488837b01020f343685907ae09ac"
+    },
+    {
+      "id": "C2.2",
+      "receipt_path": "conductor/evidence/c2.2-parent-rerun-rust199-20261007/acceptance-rust199.json",
+      "receipt_sha256": "72a4f1868bba86aed670aee50fd2b6682166969284bf05fea328488b805675b8",
+      "status": "local_parent_join_accepted",
+      "kairos_pin": "9b360f433210d38868e1e5f102473fd6f148fccf"
+    },
+    {
+      "id": "C2.3.flow-resource-lifecycle",
+      "receipt_path": "conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json",
+      "receipt_sha256": "fd8d48f939b29901da7e6807f00d065e2414e56a076e3752b6523ef94e096afa",
+      "status": "local_leaf_and_parent_join_accepted",
+      "kairos_pin": "dbd12c98b1a72a30760996590efa6a0f445368a6"
+    },
+    {
+      "id": "C2.3.dispatch",
+      "receipt_path": "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json",
+      "receipt_sha256": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d",
+      "status": "locally_accepted_leaf_parent_and_track03_gates_open",
+      "kairos_pin": "7672a67988134438228014e7b3e0f56855cc65e8"
+    },
+    {
+      "id": "C2.4.runtime-ledger",
+      "receipt_path": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json",
+      "receipt_sha256": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189",
+      "status": "accepted_local_leaf_and_exact_pin_parent_join_phase_review_open",
+      "kairos_pin": "5cc825048a1116740e80e6c067ba046306f2ce10"
+    }
+  ],
+  "worker_verification": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "144 task records: full coverage, prerequisites and DAG valid",
+      "stdout_sha256": "3c9b46c6f92523f90a202f40d3e7982f5d6fb0fecc2022fd38bc0a271d22661d"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "PASS: 81 MVP parents; 256 bounded leaves; complete joins and context/objective hashes",
+      "stdout_sha256": "f67345979e013ce605150fd6cc1576b0b40178650d7edd04c31f592aad3fa7bf"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "{\n  \"tracks\": 5,\n  \"milestones\": 34,\n  \"local_links\": 784,\n  \"errors\": []\n}",
+      "stdout_sha256": "f777b5b027d2ada709a0a8419d227a52bfec954a4ab71e057c684f6f7b078915"
+    }
+  ],
+  "independent_reviews": {
+    "final_packet": "READY; regenerated packet, base, recipe, and all bound input hashes verified",
+    "context": "READY; accepted runtime-ledger is distinguished from standalone manual accounting and phase gates remain open",
+    "reconciliation_output": "READY; five receipt hashes, counts, pins, and manual arithmetic verified"
+  },
+  "open_gates": {
+    "Track03_owner_phase_review": "open",
+    "C2.4_phase_review": "open",
+    "Q4_interruption_acceptance": "open",
+    "portable_checkpoint_restart": "open",
+    "hosted_exact_head_checks": "open",
+    "release": "open",
+    "clinical_acceptance": "open"
+  },
+  "scope_limits": {
+    "C2_4_phase_accepted": false,
+    "Track03_owner_phase_review_complete": false,
+    "Q4_interruption_acceptance": false,
+    "portable_checkpoint_restart": false,
+    "hosted_exact_head_checks": false,
+    "release_acceptance": false,
+    "clinical_acceptance": false
+  },
+  "coordinator_acceptance": "Local C2.4.evidence leaf and exact parent evidence join accepted. This does not accept C2.4 phase or full C2."
+}

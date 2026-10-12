@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.2.seeds.rust199-bound-retention",
+  "attempt_id": "C2.2.seeds.rust199-bound-retention-attempt-3",
+  "status": "blocked",
+  "base_commit": "887458854cdb20638e47fb88524a47084494817f",
+  "commit": "315b9c5c832e3071b6e20cc7ea76b107efa248c1",
+  "scope": {
+    "changed_source_paths": ["conformance/c20/run_transit_red.py"],
+    "result_path": ".artifacts/mvp/C2.2.seeds.rust199-bound-retention/result.json",
+    "production_api_or_default_changes": false,
+    "parent_pin_or_plan_changes": false
+  },
+  "implementation": {
+    "change": "In the runner's ready branch, enable `kairo-ecs-abm/test-support` alongside `flow` for its disposable calibration cargo test. The red/missing-module branch and other runner oracles are unchanged.",
+    "lineage": "This enables the already-committed Bound retention fixture to compile its existing test-support-gated helper. The exact named test passed and reported retained Micro decision, original duration, Service identity and draw position across real in-memory transit Pause/Resume and arrival.",
+    "limitations": "No portable checkpoint, restoration, hosted, clinical, release or parent acceptance claim."
+  },
+  "input_hashes_verified": {
+    "conductor/design/calibration/c2-seed-map-v1.md": "046ba8d06f667472399cb2a3af9f15ef03168558edfc3859dd0f28c719972c5b",
+    "conformance/c20/run_transit_red.py": "f70753893a715fd1e32644a7f1a9c76d4b063f98dba8e07f28eaef004d20e5ad",
+    "conformance/c20/transit_flow_c20.rs": "a6169373466b43075e35507bd7d39a044943d88c223b6d39efcca2cc79607fc9",
+    "crates/kairo-ecs-abm/Cargo.toml": "af495c37b2c3dfa6b40d85863933adf647feec0691a5bd26a01e22f1285714cd",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "4146dfb7ad2c221b2c9df8e72a790863b120bcd461db9e71e93c112359bcf8b7",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "51d3f1a00c95361435d915d094f4f8ab152927f06c76ad7eabc4a7909b2749c3",
+    ".artifacts/mvp/C2.2.seeds.rust199-bound-retention/context.md": "1c2c3440b1ccc66c7728e2e0cf4ff5ac8e2621b7de187c3b385dc6a704caee50"
+  },
+  "verification": [
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "fmt", "--all", "--", "--check"],
+      "cwd": ".",
+      "exit_code": 0,
+      "phase": "pre-commit"
+    },
+    {
+      "argv": ["python3", "tools/agent_session.py", "--root", "libs/kairos", "check", "--token", "<redacted>", "--paths", "conformance/c20/run_transit_red.py", ".artifacts/mvp/C2.2.seeds.rust199-bound-retention/result.json", ".artifacts/mvp/C2.0.red-tests.paired-transit"],
+      "cwd": "parent checkout",
+      "exit_code": 0,
+      "note": "Attempt-3 reservation/base and declared changed paths verified. Lease immutable inputs were the seed-map contract and ABM Cargo manifest."
+    },
+    {
+      "argv": ["python3", "conformance/c20/run_transit_red.py", "--expect", "green"],
+      "cwd": ".",
+      "exit_code": 1,
+      "runner_status": "oracle_mismatch",
+      "runner_expected": "green",
+      "runner_oracle": "expected=green; cargo_exit=0; first_missing=None; diagnosed_missing=[]; all_absent_files=[]; production_ready=True; manifest_lock_unchanged=True",
+      "cargo_argv": ["cargo", "test", "--locked", "-p", "kairo-ecs-calibration", "--lib", "--features", "flow,kairo-ecs-abm/test-support"],
+      "cargo_exit_code": 0,
+      "cargo_log": ".artifacts/mvp/C2.0.red-tests.paired-transit/logs/cargo-test.log",
+      "cargo_log_sha256": "c72e2e0036dee511bd52870d5a43819d2b873cd7717becd4085b45c2df1919cc",
+      "toolchain_log": ".artifacts/mvp/C2.0.red-tests.paired-transit/logs/toolchain.log",
+      "toolchain_log_sha256": "f3ffefce2bf5646f08551258a1972fefaee9894e907a8a0473c7e9502797dc7d",
+      "runner_result": ".artifacts/mvp/C2.0.red-tests.paired-transit/result.json",
+      "runner_result_sha256": "0f7450c3b18ea03f9112f16025f429052786939852819fd6aa431e5d3552d397",
+      "named_test": "paired_transit_c20::actual_nonzero_route_consumes_stale_start_and_arrival_across_pause_resume_once",
+      "named_test_status": "passed",
+      "suite_totals": {"passed": 80, "failed": 0, "ignored": 2},
+      "ignored_tests": [
+        "ingestion_c01::actual_transport_matrix",
+        "ingestion_pipeline::tests::transported_source_rows_use_the_same_actual_pipeline"
+      ],
+      "diagnosis": "The runner's green predicate requires the whole calibration lib suite to have zero ignored tests. The named packet fixture passed, cargo exited 0, and manifests/lock stayed unchanged, but two pre-existing unrelated ingestion transport tests are ignored by design requirements. The packet also explicitly requires zero ignored, so the exact runner result is preserved as oracle_mismatch; no test exclusions, runner predicate or command scope were broadened."
+    },
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "clippy", "--locked", "-p", "kairo-ecs-calibration", "-p", "kairo-ecs-abm", "--features", "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support", "--all-targets", "--", "-D", "warnings"],
+      "cwd": ".",
+      "exit_code": 0
+    }
+  ],
+  "commit_binding": {
+    "commit": "315b9c5c832e3071b6e20cc7ea76b107efa248c1",
+    "message": "test(calibration): enable C20 runner support feature",
+    "committed_paths": ["conformance/c20/run_transit_red.py"],
+    "runner_sha256": "6fc78be7d844a2b1d997757d92c0b02abca2cfa87a8cbcdbf2a987fe0c0e1792",
+    "kairos_worktree_clean_after_commit": true,
+    "parent_pin_updated": false
+  },
+  "lease": {"released": true, "released_immediately_after_commit": true},
+  "unresolved": [
+    "The exact packet green oracle requires zero ignored tests, while the existing calibration lib suite has two unrelated ignored ingestion transport tests; the named retained-state test itself passes. Coordinator review or a separately reviewed oracle correction is required before marking this packet complete.",
+    "This worker result does not claim acceptance of C2.2 or the parent phase."
+  ]
+}

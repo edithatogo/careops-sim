@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "local_c2_1_parent_join_rust199_exact_pin",
+  "status": "checks_passed",
+  "parent_base_commit": "73731e50c7d6fcb69450f26908131eaacefc2f17",
+  "kairos_pin": "bfbefa87ba15488837b01020f343685907ae09ac",
+  "toolchain": "Rust/Cargo 1.99.0 only; every command invoked with rustup run 1.99.0",
+  "commands": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.1-parent-rerun-rust199-20261007/logs/combined-tests.log",
+      "sha256": "4b07e93dc2a5b7caf10690e36d9dfe7509c424f7607973df38e64cbfeda2a0a0"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.1-parent-rerun-rust199-20261007/logs/clippy.log",
+      "sha256": "237f2d456e5392f90cb5beab5b32d9cad3dc04d4b221f220e05d3bc3158d2698"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.1-parent-rerun-rust199-20261007/logs/fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "combined_tests": {
+    "result_lines": 43,
+    "passed": 442,
+    "failed": 0,
+    "ignored": 5
+  },
+  "accepted_leaf_instances": [
+    {
+      "leaf": "C2.1.mode",
+      "instance": "rust199-mode",
+      "receipt": "conductor/evidence/c2.1-mode-20261007/acceptance-rust199.json",
+      "sha256": "6dc68d4cb2afa3229ae8d75ee236c84852ca37b7df997a628cc67390728be004"
+    },
+    {
+      "leaf": "C2.1.paired",
+      "instance": "rust199-paired",
+      "receipt": "conductor/evidence/c2.1-paired-20261007/acceptance-rust199.json",
+      "sha256": "59379a35c595a160f012f999bb8ba9e7a6df47732c07b34b0318c7ebac69d8c9"
+    }
+  ],
+  "prerequisites": {
+    "C2.2": "local parent join accepted at 9b360f4; Rust 1.99.0",
+    "C2.3": "local parent join accepted at dbd12c9; Track03 owner/phase review remains open"
+  },
+  "scope_limits": {
+    "hosted": false,
+    "release": false,
+    "clinical_acceptance": false,
+    "C2.4_phase_review": "open",
+    "Track03_owner_phase_review": "open",
+    "portable_process_checkpoint_or_restart": false
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.2.policy.policy-test-home",
+  "task_id": "C2.2.policy",
+  "instance_id": "policy-test-home",
+  "base_commit": "401564c35994a27b05c9c6c463a65d7a9c4537d9",
+  "source_commit": "fb9f938f87086e9a9a5a8630376bf34370035e4c",
+  "status": "coordinator_locally_accepted",
+  "changed_paths": [
+    "crates/kairo-ecs-des/src/fidelity.rs",
+    "crates/kairo-ecs-des/src/fidelity_tests.rs",
+    "crates/kairo-ecs-des/tests/fidelity_mode_c21.rs",
+    "crates/kairo-ecs-des/tests/fidelity_lineage_v1.rs"
+  ],
+  "input_hashes": {
+    "conductor/design/calibration/c2-execution-admission-v1.md": "a2ffd67c9b01fba373ba70b1681c405d6301a15b7d97e50ff82e021d60d79d13",
+    "crates/kairo-ecs-des/src/fidelity.rs": "817853b4271d89370a53e7f7954884c49f1febd6b7f544837dd935830c83653f",
+    "crates/kairo-ecs-des/tests/fidelity_mode_c21.rs": "d0ae12b1d9384b16251763df166327a3d51695e0c4dfdcdd62eeec637eab23af",
+    "crates/kairo-ecs-des/tests/fidelity_lineage_v1.rs": "683a5e3ece5ce30df24b9da622696a0c618a2a98dc9ef6993cbb09d02e72f46b",
+    "crates/kairo-ecs-des/Cargo.toml": "9f5a852926de2bb795da29f203d2101bbedc5f712f65197c5d5812fe011df816",
+    ".artifacts/mvp/C2.2.policy.policy-test-home/context.md": "2cc15f90dd82393cf5e3a48aa93b087766de09660fe737c1641f61e84414b1d0"
+  },
+  "source_hashes": {
+    "crates/kairo-ecs-des/src/fidelity.rs": "a5641baf677af8eb483116e28bd2feb467ad0e5fcd6eeb366dffa9cb23fc594c",
+    "crates/kairo-ecs-des/src/fidelity_tests.rs": "a4dad1c00741d6c53435cf087496baf2a22968740586842672efc1c2c081198f",
+    "crates/kairo-ecs-des/tests/fidelity_mode_c21.rs": "48d858890480f26b2200007d385ccb6498cd7cf639cd603cd6bf1f5345e18570",
+    "crates/kairo-ecs-des/tests/fidelity_lineage_v1.rs": "a3584c1bb4cf7c2dcb9a9fb40a1b68896d07d176848e0f85ef9ad0a4a230625d"
+  },
+  "verification": [
+    {
+      "argv": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/careops-sim-c22-policy-target",
+        "rustup",
+        "run",
+        "1.76.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c22-admission-permit-20261006",
+      "toolchain": "rustc 1.76.0",
+      "exit_code": 0,
+      "summary": {
+        "test_targets": 26,
+        "passed": 241,
+        "failed": 0,
+        "ignored": 1
+      },
+      "log_path": "conductor/evidence/c2.2-policy-20261006/policy-test-home-des-tests.log",
+      "log_sha256": "52e0e771822cc7bef88367169244ce41e5a24e7d68fe651f577fb4f73053be16"
+    },
+    {
+      "argv": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/careops-sim-c22-policy-target",
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c22-admission-permit-20261006",
+      "toolchain": "rustfmt 1.99.0",
+      "exit_code": 0,
+      "log_path": "conductor/evidence/c2.2-policy-20261006/policy-test-home-format.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c22-admission-permit-20261006",
+      "exit_code": 0
+    }
+  ],
+  "limitations": [
+    "This instance only relocates original fidelity test suites into crate-private unit tests.",
+    "No runtime fidelity behavior changed.",
+    "The separately bound admission-permit instance remains pending.",
+    "Hosted and parent final-head acceptance remain pending."
+  ],
+  "coordinator_review": "Reviewed exact packet scope, source commit and hashes; preserved original fidelity tests and checked the full DES package on the stated toolchain."
+}

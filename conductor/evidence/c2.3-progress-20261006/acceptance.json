@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "coordinator_local_progress_leaf_parent_pin_integration",
+  "parent_base_commit": "0a24268f2c1a648f395a46be2be56286ec6d2686",
+  "parent_pin_commit": "401564c35994a27b05c9c6c463a65d7a9c4537d9",
+  "source_base_commit": "0edd2a05cc552c679e33cf8d677054fd91a9c071",
+  "progress_source_commit": "401564c35994a27b05c9c6c463a65d7a9c4537d9",
+  "source_paths": [
+    "crates/kairo-ecs-abm/src/spatial.rs"
+  ],
+  "source_hashes": {
+    "libs/kairos/crates/kairo-ecs-abm/src/spatial.rs": "1a1a0c1ff5b460b06eb3ba7b40994c9a3459682d67472e466f88d72452b61f3c"
+  },
+  "leaves": {
+    "C2.3.routing": {
+      "status": "local_leaf_accepted_parent_integrated_hosted_and_parent_join_pending",
+      "source_commit": "d9607405b1c9a3998f7a9dbf4d623b0a07419787"
+    },
+    "C2.3.time": {
+      "status": "local_leaf_accepted_parent_integrated_hosted_and_parent_join_pending",
+      "source_commit": "d9607405b1c9a3998f7a9dbf4d623b0a07419787"
+    },
+    "C2.3.progress": {
+      "status": "local_progress_state_leaf_accepted_parent_integrated_flow_runtime_join_pending",
+      "source_commit": "401564c35994a27b05c9c6c463a65d7a9c4537d9"
+    }
+  },
+  "prerequisite_receipt": {
+    "path": "conductor/evidence/c2.3-routing-integration-20261006/acceptance.json",
+    "sha256": "5cdfa2e0c071fa513690193bf4cf490d54993bd7e6f4948d434dfd1d577fd6ac",
+    "README_path": "conductor/evidence/c2.3-routing-integration-20261006/README.md",
+    "README_sha256": "8135e90a2be54cd31908a5c2d2e417138dca74a2e14b6f330a644380cb51d316"
+  },
+  "worker_result": {
+    "path": "conductor/evidence/c2.3-progress-20261006/progress-result.json",
+    "sha256": "7aea609a94efbd8a99d43456a431df0c0130ff5957f47045522cc28c53527ee6",
+    "source_result_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c23-transit-progress-20261006/.artifacts/mvp/C2.3.progress.transit-cursor/result.json",
+    "source_result_sha256": "7aea609a94efbd8a99d43456a431df0c0130ff5957f47045522cc28c53527ee6",
+    "status": "ready_for_review"
+  },
+  "behavioral_oracle": {
+    "checkpoint_round_trip": "retains identical immutable route, current edge, elapsed segment ticks, useful elapsed total, and remaining duration",
+    "zero_duration_edges": "consumed at the same tick boundary without creating extra movement events",
+    "invalid_state": "out-of-range cursor restore and over-advance return TransitError::InvalidProgress",
+    "failure_atomicity": "over-advance leaves edge and elapsed cursor unchanged"
+  },
+  "scope_limits": {
+    "TransitContext_public_api_added": false,
+    "Flow_start_or_progress_events_integrated": false,
+    "PauseResume_scheduler_controls_integrated": false,
+    "staff_dispatch_implemented": false,
+    "full_C2_3_accepted": false,
+    "C2_2_owned_streams_integrated": false,
+    "C2_1_paired_runtime_accepted": false,
+    "hosted_exact_head_checks": false,
+    "portable_checkpoint_codec": false,
+    "ED_operational_acceptance": false
+  },
+  "unresolved_issues": [
+    "The cursor is crate-private and not yet consumed by TransitContext or Flow scheduling; the later dispatch leaf must integrate it with the actor carrier, accepted progress events, Pause/Resume controls, and actual service claim."
+  ]
+}

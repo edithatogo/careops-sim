@@ -2437,14 +2437,14 @@
       "phase": "C2",
       "objective": "Write failing mode resolution/boundary tests and common-random-number fixtures. Assert Macro emits no transit, zero-transit Micro matches its paired Macro fixture, and changing mode never discards active or suspended work.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "C2.2",
         "C2.3"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 114
+        "line": 119
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2453,9 +2453,8 @@
         "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
       ],
       "write_reservations": [
-        "libs/kairos/crates/kairo-ecs-des",
-        "libs/kairos/crates/kairo-ecs-abm",
-        "libs/kairos/crates/kairo-ecs-rng"
+        "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "conductor/evidence"
       ],
       "dispatch_gate": "reviewed_leaf_packet_required",
       "model_route": "gpt-6-luna_candidate_after_packet_review",
@@ -2478,7 +2477,7 @@
       "phase": "C2",
       "objective": "Implement empirical work-duration providers, FidelityPolicy and stable entity/task/purpose keys. Separate intrinsic work from queue/transit intervals; persist all mode and stream state for resume.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "C2.0"
       ],
@@ -2503,7 +2502,8 @@
       "leaf_dependency_overrides": {
         "C2.2.seeds": [
           "C2.2.policy",
-          "C2.3.dispatch"
+          "C2.3.dispatch",
+          "C2.3.transit-bridge"
         ]
       }
     },
@@ -2511,9 +2511,9 @@
       "id": "C2.3",
       "track_id": "empirical_calibration_20260925",
       "phase": "C2",
-      "objective": "Implement a deterministic route-graph TransitModel with units, stable shortest-path ties, integer tick conversion, unreachable errors and stored movement progress. Supply a minimal urgency/FIFO/zone/skill staff adapter; cleaning/reservation remains an explicit model resource lifecycle. Require explicit movement-mode speeds, versioned geometry and O/D purpose; test mixed-use pauses and sensor-derived distance are not silently treated as path/speed ground truth.",
+      "objective": "Implement a deterministic route-graph TransitModel with units, stable shortest-path ties, integer tick conversion, unreachable errors and stored movement progress. Supply a minimal urgency/FIFO/zone/skill staff adapter; cleaning/reservation remains an explicit model resource lifecycle. Require explicit movement-mode speeds, versioned geometry and O/D purpose; test mixed-use pauses and sensor-derived distance are not silently treated as path/speed ground truth. Connect the calibration bridge to actual route carriers: validate actor/task/ resource association, track exact owned event IDs and Flow callback receipts, reconcile only accepted arrival with the original timed work request, and allow one explicit retry only for the matching consumed rejected event. Macro and explicit-zero Micro continue to emit no transit event or Transit draw.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "C2.0"
       ],
@@ -2534,7 +2534,21 @@
       ],
       "dispatch_gate": "reviewed_leaf_packet_required",
       "model_route": "gpt-6-luna_candidate_after_packet_review",
-      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2",
+      "leaf_dependency_overrides": {
+        "C2.3.transit-bridge": [
+          "C2.2.flow-macro-zero",
+          "C2.3.progress"
+        ],
+        "C2.3.flow-resource-lifecycle": [
+          "C2.2.flow-macro-zero",
+          "C2.3.routing",
+          "C2.3.time",
+          "C2.3.progress",
+          "C2.3.dispatch",
+          "C2.3.transit-bridge"
+        ]
+      }
     },
     {
       "id": "C2.4",
@@ -2544,11 +2558,11 @@
       "kind": "review_integrate",
       "accepted": false,
       "dependencies": [
-        "C2.1"
+        "C2.5"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 117
+        "line": 128
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2561,6 +2575,50 @@
       ],
       "dispatch_gate": "reviewed_leaf_packet_required",
       "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2",
+      "leaf_dependency_overrides": {
+        "C2.4.runtime-ledger": [
+          "C2.1.paired"
+        ],
+        "C2.4.q4-urgent-interruption-ledger": [
+          "C2.4.runtime-ledger",
+          "C2.5.continuation"
+        ],
+        "C2.4.evidence": [
+          "C2.4.runtime-ledger",
+          "C2.4.q4-urgent-interruption-ledger",
+          "C2.5.continuation"
+        ]
+      }
+    },
+    {
+      "id": "C2.5",
+      "track_id": "empirical_calibration_20260925",
+      "phase": "C2",
+      "objective": "Implement and test the reviewed same-live-Flow in-memory continuation contract for fidelity policy/decisions, the owned Service stream and one bound bridge work item. Preserve state across a one-shot in-process handoff; portable serialization and process restart remain Track22 gates. The decision-mismatch rejection now has a test-only exact-value preservation oracle. Local same-live-Flow continuation acceptance does not close the Track03/Track22, hosted, portable checkpoint/restart, release, clinical or C2.4 phase gates.",
+      "kind": "bounded_work",
+      "accepted": true,
+      "dependencies": [
+        "C2.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 122
+      },
+      "context_paths": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "libs/kairos/crates/kairo-ecs-des/src/fidelity.rs",
+        "libs/kairos/crates/kairo-ecs-calibration/src/seed_map.rs",
+        "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs",
+        "conductor/evidence"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
       "phase_acceptance_source": "conductor/tracks/empirical_calibration_20260925/plan.md#C2"
     },
     {
@@ -2577,7 +2635,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 137
+        "line": 168
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2605,7 +2663,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 142
+        "line": 173
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2633,7 +2691,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 145
+        "line": 176
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2661,7 +2719,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 148
+        "line": 179
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2688,7 +2746,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 159
+        "line": 190
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2716,7 +2774,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 165
+        "line": 196
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2744,7 +2802,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 170
+        "line": 201
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2772,7 +2830,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 174
+        "line": 205
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2800,7 +2858,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 185
+        "line": 216
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2828,7 +2886,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 190
+        "line": 221
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2856,7 +2914,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 196
+        "line": 227
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2884,7 +2942,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 199
+        "line": 230
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2912,7 +2970,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 202
+        "line": 233
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2942,7 +3000,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 213
+        "line": 244
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2970,7 +3028,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 217
+        "line": 248
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -2998,7 +3056,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 224
+        "line": 255
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -3026,7 +3084,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 227
+        "line": 258
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -3054,7 +3112,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 231
+        "line": 262
       },
       "context_paths": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",

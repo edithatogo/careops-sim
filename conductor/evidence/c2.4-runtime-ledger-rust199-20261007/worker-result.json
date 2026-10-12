@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.4.runtime-ledger.rust199-integrated-ledger",
+  "attempt_id": "C2.4.runtime-ledger.rust199-attempt-1",
+  "target_repo": "libs/kairos",
+  "base_commit": "bfbefa87ba15488837b01020f343685907ae09ac",
+  "worker_model": "gpt-6-luna candidate; served model identity unavailable",
+  "status": "ready_for_review",
+  "result_commit_or_patch": "5cc825048a1116740e80e6c067ba046306f2ce10",
+  "changed_paths": [
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs"
+  ],
+  "source_result": {
+    "diff_summary": "Added one unit test that drives actual Macro and Micro timed work through Flow. A capacity-one blocker occupies each resource from tick 0 through tick 5. Macro work queues from tick 0. Micro follows a scheduled two-edge route totaling two ticks, submits only after accepted arrival at tick 2, and queues until tick 5. Both use Service stream identity seed 5649098323316259483 (0x4e65a0feae853a9b), draw the same sampled duration D=20 ticks, receive allocation at tick 5, and complete at tick 25. Measured intervals: Macro queue 5 + service 20; Micro transit 2 + queue 3 + service 20. Each decomposition equals elapsed 25 ticks.",
+    "asserted_seed": 5649098323316259483,
+    "asserted_seed_hex": "0x4e65a0feae853a9b",
+    "asserted_service_duration_ticks": 20,
+    "asserted_macro_queue_ticks": 5,
+    "asserted_micro_transit_ticks": 2,
+    "asserted_micro_queue_ticks": 3,
+    "asserted_grant_tick": 5,
+    "asserted_completion_tick": 25,
+    "source_sha256": "c0ae15875801a5086fc547a54d18f09bdd29a45423563a1bcf53a9f82f70598c",
+    "flow_completion_verified": true,
+    "transit_context_progress_verified": true,
+    "shared_service_identity_and_draw_verified": true
+  },
+  "commands": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "Full selected package test run passed: 190 passed, 0 failed, 5 ignored across all reported test summaries; doc tests passed.",
+      "log": "/tmp/c24-runtime-ledger-test-rust199.log",
+      "sha256": "f12a7d0e17847a4f715bcc228b7e87c60d23faa36aa11377de2ecc3f2fd9a15c"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "Strict all-target Clippy passed with warnings denied on Rust 1.99.0.",
+      "log": "/tmp/c24-runtime-ledger-clippy-rust199.log",
+      "sha256": "2b34696728dc82b03cbf6311d7e3a6a41658bbde097834c3010a78bc82842c1a"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "Workspace format check passed on Rust 1.99.0.",
+      "log": "/tmp/c24-runtime-ledger-fmt-rust199.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "corrections": [
+    "Initial runs exposed test-fixture issues: queue state is Queued after admission; Flow completion timestamps must be captured from the grant allocation before completion clears active progress; the Micro route requires explicit TransitContext registration and a two-edge path; t1 progress and t2 arrival are separate callbacks; and the accepted-arrival request requires its scheduled t2 submit dispatch before it is Queued. These were corrected; final exact packet commands pass."
+  ],
+  "unresolved_issues": [
+    "This result is ready for coordinator review only. It does not accept the leaf or close the C2.4 phase. Parent exact-pin rerun and independent acceptance remain required."
+  ],
+  "next_action": "Coordinator reviews the exact source diff, result hashes, and packet oracle, then records or rejects leaf acceptance.",
+  "source_commit": "5cc825048a1116740e80e6c067ba046306f2ce10",
+  "source_branch": "codex/c2-runtime-ledger",
+  "commit_scope": "Only crates/kairo-ecs-calibration/src/flow_bridge.rs was committed; parent pin update and acceptance are pending coordinator review."
+}

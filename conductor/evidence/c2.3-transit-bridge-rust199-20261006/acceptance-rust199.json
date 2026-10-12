@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "local_leaf_accepted_rust199_exact_pin",
+  "leaf_id": "C2.3.transit-bridge",
+  "instance_id": "rust199-one-shot",
+  "status": "local_leaf_accepted_parent_and_track03_review_open",
+  "parent_base_commit": "b2ac6b3e64cb70b8bc23f1f93c6bc275e04a8f3a",
+  "target_repository": "libs/kairos",
+  "previous_parent_pin": "aecb28c7089b1861b72cbd96ce29fc2577ffe47f",
+  "source_commit": "7672a67988134438228014e7b3e0f56855cc65e8",
+  "source_branch": "codex/c2.3-transit-bridge-rust199",
+  "recipe_sha256": "ea67cd37c401b2337fba25a973e32450a0cfdd0a8b2c359b3135df7e086076d2",
+  "packet": {
+    "path": "conductor/evidence/c2.3-transit-bridge-rust199-20261006/packet.json",
+    "sha256": "bd4f584e4dcb4bddde4f214fae95f64af9e523c62679281bf41f4c98575d98de"
+  },
+  "original_packet_path": ".artifacts/packets/C2.3.transit-bridge.rust199-one-shot.json",
+  "original_packet_sha256": "bd4f584e4dcb4bddde4f214fae95f64af9e523c62679281bf41f4c98575d98de",
+  "worker_result": {
+    "path": "conductor/evidence/c2.3-transit-bridge-rust199-20261006/worker-result.json",
+    "sha256": "101726d1b687743d7e6f596eab43673985e740a2999179044b85445d5afa0788"
+  },
+  "original_worker_result_path": "libs/kairos/.artifacts/mvp/C2.3.transit-bridge.rust199-one-shot/result.json",
+  "original_worker_result_sha256": "101726d1b687743d7e6f596eab43673985e740a2999179044b85445d5afa0788",
+  "prerequisites": {
+    "C2.2.flow-macro-zero": {
+      "status": "locally accepted",
+      "receipt": "conductor/evidence/c2.2-flow-macro-zero-20261006/acceptance-rust199-corrected.json",
+      "receipt_sha256": "e6a17919762dba8893d3e24009929b812047879e8512bf387a642d8185bab752"
+    },
+    "C2.3.progress": {
+      "status": "locally accepted",
+      "receipt": "conductor/evidence/c2.3-progress-transit-runtime-20261006/acceptance-progress-rust199.json",
+      "receipt_sha256": "9c4431f35365c0fd6dfda7ca89fb4e88b3a4f4da5bfcb745ddeb028e2ea19eb5"
+    }
+  },
+  "source_hashes": {
+    "crates/kairo-ecs-abm/Cargo.toml": "af495c37b2c3dfa6b40d85863933adf647feec0691a5bd26a01e22f1285714cd",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "4146dfb7ad2c221b2c9df8e72a790863b120bcd461db9e71e93c112359bcf8b7",
+    "crates/kairo-ecs-abm/src/lib.rs": "c3f4114e44873819a4ec3140cc8eed737b0697318910f697e1801e97fe250fc3",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "51d3f1a00c95361435d915d094f4f8ab152927f06c76ad7eabc4a7909b2749c3"
+  },
+  "independent_review": {
+    "packet_reviewer": "gpt-6-luna read-only packet review; dependencies, path/command/context budgets and hashes verified",
+    "code_reviewer": "gpt-6-luna read-only source review; no concrete correctness or scope issue found",
+    "track03_owner_review": "open; required before C2.3 phase acceptance"
+  },
+  "verification": {
+    "toolchain": {
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+    },
+    "coordinator_rerun": true,
+    "tests": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "summary": "ABM 30 passed; calibration 157 passed; 0 failed; 4 ignored",
+      "log": "/tmp/c23-transit-bridge-rust199-coordinator-test.log",
+      "log_sha256": "8d9f712afeae622293881dbcb82394c17e4b17de36db66339f8269fc6892ec05"
+    },
+    "clippy": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "/tmp/c23-transit-bridge-rust199-coordinator-clippy.log",
+      "log_sha256": "beed191cf5cd39a57477a6d66e9acb53f3b4efe7566a30e0ada805357a0fe6ff"
+    },
+    "format": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "/tmp/c23-transit-bridge-rust199-coordinator-fmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "oracle": {
+    "actual_scheduler_rejected_callback_receipt_observed_by_bound": true,
+    "exact_consumed_source_event_retried_once": true,
+    "replay_rejected_without_scheduler_mutation": true,
+    "accepted_retry_and_actual_arrival_reconciled": true,
+    "exact_owned_and_consumed_event_lineage_including_acquire_verified": true,
+    "one_timed_request_linked_to_original_work_owner_resource": true,
+    "finish_returns_same_work_and_request": true,
+    "macro_and_zero_micro_no_transit_preserved_by_existing_predecessor": true
+  },
+  "scope_limits": {
+    "production_api_or_default_feature_change": false,
+    "DES_scheduler_or_event_order_change": false,
+    "parent_plan_or_phase_checkbox_changed": false,
+    "C2_3_parent_accepted": false,
+    "C2_2_parent_accepted": false,
+    "C2_1_parent_accepted": false,
+    "Track03_owner_review_complete": false,
+    "hosted_exact_head_checks": false,
+    "portable_checkpoint_or_release_or_clinical_acceptance": false
+  }
+}

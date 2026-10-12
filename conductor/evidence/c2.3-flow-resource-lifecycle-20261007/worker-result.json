@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.3.flow-resource-lifecycle.rust199-flow-resource-lifecycle",
+  "attempt_id": "C2.3.flow-resource-lifecycle.rust199-attempt-3",
+  "target_repo": "libs/kairos",
+  "base_commit": "9b360f433210d38868e1e5f102473fd6f148fccf",
+  "worker_model": "gpt-6-luna candidate; served model identity unavailable",
+  "status": "ready_for_review",
+  "result_commit_or_patch": "Uncommitted diff in the assigned Kairos worktree; no commit created.",
+  "changed_paths": [
+    "crates/kairo-ecs-calibration/src/lib.rs",
+    "crates/kairo-ecs-calibration/src/staff_flow_lifecycle.rs",
+    ".artifacts/mvp/C2.3.flow-resource-lifecycle.rust199-flow-resource-lifecycle/result.json"
+  ],
+  "commands": [
+    {
+      "argv": [
+        "rustup", "run", "1.99.0", "cargo", "test", "--locked",
+        "-p", "kairo-ecs-calibration", "-p", "kairo-ecs-abm",
+        "--features", "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--lib", "staff_flow_lifecycle::tests"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "Selected 1 focused lifecycle test; 1 passed, 0 failed. The ABM target selected 0 tests and passed.",
+      "log": "/tmp/c2-3-flow-lifecycle-test-attempt3-final.log",
+      "sha256": "2175bf38bb1ded09450c2062021bdfe4d9fc9960635d742e2c554a87177db5ea"
+    },
+    {
+      "argv": [
+        "rustup", "run", "1.99.0", "cargo", "clippy", "--locked",
+        "-p", "kairo-ecs-calibration", "-p", "kairo-ecs-abm",
+        "--features", "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets", "--", "-D", "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "Strict all-target Clippy passed with warnings denied.",
+      "log": "/tmp/c2-3-flow-lifecycle-clippy-attempt3-final.log",
+      "sha256": "06ffea364d9a8ea4f2f4cc0bff9d6dbbed61ef3661d630574a7d345391459d54"
+    },
+    {
+      "argv": [
+        "rustup", "run", "1.99.0", "cargo", "fmt", "--all", "--", "--check"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+      "exit_code": 0,
+      "summary": "Workspace formatting check passed.",
+      "log": "/tmp/c2-3-flow-lifecycle-fmt-attempt3-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "acceptance_results": [
+    "The private adapter maps each selected dispatch staff ID to an explicit typed Flow EntityId, uses that actor as owner of the capacity-one staff request and selected Work or Walk request, and preserves typed resource/work/request mappings. Wait returns no request.",
+    "The focused actual-Flow test verifies active staff allocation owner/request lineage before bed acquisition, validates the active bed request's owner/resource/original WorkId/LeaseId, and holds the named bed allocation while a second request remains queued.",
+    "A wrong callback EventId yields a rejected receipt and leaves the bed active and the queued request unchanged. The matching caller-scheduled completion callback records its observed Flow WorkId separately from the original claim WorkId, returns an accepted receipt containing the exact release ticket and EventId, and only stepping that EventId releases the original claim and activates the queued request.",
+    "Resource capacity, active allocations, and queued requests are checked before rejection, after rejection, before release application, and after release application."
+  ],
+  "unresolved_issues": [
+    "This leaf is ready for coordinator review only. Parent joins, independent acceptance, and hosted checks remain separate."
+  ],
+  "next_action": "Coordinator reviews the exact diff and local receipts, then records or rejects leaf acceptance."
+}

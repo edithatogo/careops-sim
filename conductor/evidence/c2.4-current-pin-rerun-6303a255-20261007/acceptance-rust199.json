@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "coordinator_current_pin_verification_receipt",
+  "leaf_id": "C2.4.q4-urgent-interruption-ledger",
+  "instance_id": "q4-rerun-6303a255",
+  "status": "exact_pin_checks_passed_phase_gates_open",
+  "scope": "Reverification at the integrated current Kairos pin after a documentation-only visibility correction. This is not a new source-leaf acceptance or a C2.4/C2 phase acceptance.",
+  "parent_source_commit": "b76bf0734ccb844e8bb15ecb9b1b5e2547850904",
+  "kairos_pin": "6303a2552257f1fcbd2aaa002d38352a2a467592",
+  "target_repo": "libs/kairos",
+  "working_directory": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos",
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+    "versions_used": [
+      "1.99.0"
+    ]
+  },
+  "source_sha256": {
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "056bc718740f188fdee5bde7b29061acc23eae4878cebec95c8715a3ddc27e0c",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs": "e2c3b5eb5381b85a083f879a017d7be5cd573cdabd23b82eda486bab27e41959",
+    "Cargo.lock": "946b09595a094549bfdfc7d45398810f959f539243fecb9934343cf297f4949f"
+  },
+  "verification": {
+    "tests": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255/target"
+      ],
+      "exit_status": 0,
+      "summary": {
+        "groups": 43,
+        "passed": 447,
+        "failed": 0,
+        "ignored": 5
+      },
+      "log": "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/logs/test.log",
+      "log_sha256": "ea310993b3fd7f576f88d23a39318b6b385786249da76d93cbe353536f3239e9"
+    },
+    "strict_clippy": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--target-dir",
+        ".artifacts/mvp/C2.4.q4-urgent-interruption-ledger.q4-rerun-6303a255/target",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_status": 0,
+      "warnings_denied": true,
+      "log": "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/logs/clippy.log",
+      "log_sha256": "dc3c508f81fef0a9e63c162327ed57fdd0fac9bd2ed60889cc54bbb89b37b669"
+    },
+    "format": {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/logs/fmt-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "packet": {
+    "path": "conductor/evidence/c2.4-current-pin-rerun-6303a255-20261007/packet.json",
+    "sha256": "473a96cd7a26be0c52732d2acc2a03bc4951fdedd1a94d66eeefec6786a8b4cb"
+  },
+  "open_gates": {
+    "Track03_owner_disposition": true,
+    "Track22_portable_checkpoint_restart": true,
+    "hosted_exact_head_checks": true,
+    "release_acceptance": true,
+    "clinical_acceptance": true,
+    "C2_4_phase_review": true
+  },
+  "decision": "Record exact-pin local checks as passed. Keep the accepted leaf and phase status unchanged; full C2 acceptance remains open."
+}

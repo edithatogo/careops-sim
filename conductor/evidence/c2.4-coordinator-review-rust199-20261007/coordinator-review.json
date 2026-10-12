@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "task_id": "C2.4.closeout",
+  "instance_id": "rust199-current-6784538",
+  "status": "coordinator_review_withheld",
+  "parent_review_baseline": "8ee0d59d81c4b2988429213d8487a50f3e390ea5",
+  "kairos_pin": "678453838f391f3dd869b79fd502077f63f3a067",
+  "toolchain_scope": "Rust/Cargo 1.99.0 only for referenced runtime receipts; no Rust command run during this manual review",
+  "current_pin_verification": {
+    "status": "local_pass",
+    "passed": 455,
+    "failed": 0,
+    "ignored": 5,
+    "result_groups": 43,
+    "strict_clippy": true,
+    "workspace_format": true,
+    "receipt": "conductor/evidence/c2-current-pin-rerun-rust199-20261007-6784538/acceptance-rust199.json",
+    "receipt_sha256": "ed0b0b9bf19290d993a9aed7f0bce7df7dfa4d7a786304f021982fbe75b7f04f"
+  },
+  "manual_elapsed_time_review": {
+    "status": "manual_source_reconciliation_passed",
+    "source": "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "source_sha256": "6cb8218ff09ac51848cb449053256501e2f3c9b7ac39c0799367b5c424ec2ea4",
+    "base_fixture": "macro_and_micro_reconcile_queue_transit_and_service_elapsed_time",
+    "macro_ticks": {
+      "queue": 5,
+      "service": 20,
+      "transit": 0,
+      "elapsed": 25
+    },
+    "routed_micro_ticks": {
+      "transit": 2,
+      "queue": 3,
+      "service": 20,
+      "elapsed": 25
+    },
+    "urgent_suspend_fixture": "actual_flow_urgent_suspend_resumes_same_macro_and_routed_micro_service",
+    "urgent_completion_tick": 27,
+    "useful_service_ticks": 20,
+    "pause_ticks": 2,
+    "routed_micro_transit_ticks": 2,
+    "interpretation": "Macro and Micro rows are paired alternatives. Transit, queue, useful service and interruption pause are disjoint intervals; no elapsed interval is double counted."
+  },
+  "open_gates": {
+    "Track03_owner_phase_disposition": "open",
+    "C2_3_trip_purpose_mixed_use_pause_sensor_provenance": "owner questions open in prepared unsent packet",
+    "Track22_checkpoint_contract": "open",
+    "portable_process_restart": "open",
+    "hosted_exact_head_checks": "open",
+    "release_acceptance": "open",
+    "clinical_acceptance": "open",
+    "C2_4_phase_acceptance": "withheld"
+  },
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "145 task records: full coverage, prerequisites and DAG valid\n",
+      "stdout_sha256": "7f502d933e08ab53d2495da2c611315cca2f96b9564f51ec1e280004a26209ad",
+      "scope": "Task graph integrity only"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "PASS: 82 MVP parents; 258 bounded leaves; complete joins and context/objective hashes\n",
+      "stdout_sha256": "3c7b9a3062f62964126c8db247833e935b8557a4baeffb7a30525cbe5f410966",
+      "scope": "Recipe/join integrity only"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "{\n  \"tracks\": 5,\n  \"milestones\": 34,\n  \"local_links\": 865,\n  \"errors\": []\n}\n",
+      "stdout_sha256": "5b7ff03f2a98e5e873e89644df137cb8510fd6f011479c8411795e83ed9c7661",
+      "scope": "Context reference integrity only"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "packet-check",
+        ".artifacts/packets/C2.4.closeout.rust199-current-6784538.json"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "{\n  \"errors\": [],\n  \"authority\": \"Validation only; coordinator must claim/review leaf dependencies and dispatch\"\n}\n",
+      "stdout_sha256": "2abaac2832351140c25f21f6fe23ba23c80e9d02f9b5043cee4c5c0d13d2ebe5",
+      "scope": "Packet shape/hash integrity only"
+    }
+  ],
+  "decision": "Withhold C2.4 phase acceptance; accept only the bounded manual source arithmetic and current-pin local receipt as evidence. Do not change phase checkbox, catalog, source or pin.",
+  "checkbox_changed": false,
+  "catalog_changed": false,
+  "source_or_pin_changed": false,
+  "owner_contacted": false,
+  "rust_command_run": false
+}

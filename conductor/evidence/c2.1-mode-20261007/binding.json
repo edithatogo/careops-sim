@@ -1,0 +1,125 @@
+{
+  "reviewer": "coordinator with independent C2.1.mode read-only source/oracle audit",
+  "reservation_id": "b22b9ec1923d4a29bd7efb2a2bb7fe1f",
+  "instance_id": "rust199-mode",
+  "instance_scope": "Exact-head qualification of existing actual-Flow mode precedence and boundary fixtures; no source edit unless the bound tests expose a defect.",
+  "instance_set": [
+    "rust199-mode"
+  ],
+  "reviewed_recipe_sha256": "65f2204755f7bdcf538d312e30e7a13bfe277122692b227d86e65f86460a3c13",
+  "interface_contract": "C2 mode policy precedence, admission boundaries, immutable decisions, and no-transit Macro behavior as defined by the existing Kairos fidelity API and the C2 execution admission contract.",
+  "context_slices": [
+    {
+      "repo": "libs/kairos",
+      "path": "crates/kairo-ecs-des/src/fidelity_tests.rs",
+      "start": 144,
+      "end": 236
+    },
+    {
+      "repo": "libs/kairos",
+      "path": "crates/kairo-ecs-des/src/fidelity_tests.rs",
+      "start": 314,
+      "end": 375
+    },
+    {
+      "repo": "libs/kairos",
+      "path": "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+      "start": 1160,
+      "end": 1215
+    },
+    {
+      "repo": ".",
+      "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+      "start": 119,
+      "end": 133
+    }
+  ],
+  "input_paths": [
+    "crates/kairo-ecs-des/src/fidelity_tests.rs",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs"
+  ],
+  "write_paths": [
+    ".artifacts/mvp/C2.1.mode.rust199-mode/result.json"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "DES mode precedence and pending/active/suspended boundary tests plus actual Flow Macro no-transit test are selected and pass at the exact source pin under Rust 1.99.0; capture stdout/stderr and confirm named oracle tests are present."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target Clippy passes under Rust 1.99.0."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting check passes under Rust 1.99.0."
+    }
+  ],
+  "prerequisite_receipts": {
+    "C2.3.dispatch": {
+      "status": "accepted",
+      "reviewer": "coordinator; current C2.3 parent local join accepted",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d"
+      }
+    },
+    "C2.2.policy": {
+      "status": "accepted",
+      "reviewer": "coordinator; C2.2 parent local join accepted at Rust 1.99.0",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.2-parent-rerun-rust199-20261007/acceptance-rust199.json": "72a4f1868bba86aed670aee50fd2b6682166969284bf05fea328488b805675b8"
+      }
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "task_id": "C2.4.closeout",
+  "instance_id": "rust199-phase-gate-readback",
+  "status": "ready_for_review",
+  "packet_path": ".artifacts/packets/C2.4.closeout.rust199-phase-gate-readback.json",
+  "packet_sha256": "1f98636a208abdb5ccc17a8178f2258c0a2c0b811ef66c6b963ca3b6c0f45bb8",
+  "base_commit": "dada28affc59763bd648d5a6e9dc522562c265b9",
+  "write_paths": [
+    "conductor/evidence/c2.4-closeout-rust199-20261007/README.md",
+    "conductor/evidence/c2.4-closeout-rust199-20261007/closeout-review.json",
+    ".artifacts/mvp/C2.4.closeout.rust199-phase-gate-readback/result.json"
+  ],
+  "phase_disposition": "withheld",
+  "input_hashes": {
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "8ba9f937fff0d74e384b53e686ec9fc3891c990bc233622dd521bb087c92040f",
+    "conductor/workflow.md": "09f0cb1def43a83955a6d7f2620ad8e798a4142d5ab6c691c261938ec1c0d8f9",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/README.md": "beb99e819475d38b0317018810dada9e21c4b90de0e111f18e2b799fe5bc8bb4",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/acceptance-rust199.json": "1ac88afddeed737b7754ce73d1b842cd04ce9fb18c2d9e2d4bc415bf63d90ce2",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/reconciliation.json": "7aad8b7edc3a185c3069c73752e80536fecd15da9ef79fc9e87761891168f1f9",
+    "conductor/evidence/c2-manual-ledger-20261007/acceptance.json": "b0b21dd5eb7aba5bf2e86797dd8d22f9c31b3e36f51bec7620b95a3ba063acbb",
+    "conductor/current-state.json": "8ed0acdb290d065e118b4de0462cb42aa8f1ae1dabb91ab4d87be570c756e326",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/packet.json": "462f527c39d8ef2106e3474297fff4488429b4ec16445595b07c4d3278a2a2e9",
+    "conductor/evidence/c2.4-evidence-rust199-20261007/worker-result.json": "5b8cd8b03190c94a75ab99c2248d2d547e7fa84a160a61858adb657f982fc294",
+    "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189",
+    ".artifacts/mvp/C2.4.closeout.rust199-phase-gate-readback/context.md": "9217119f16e48d16dc0e04edf50ee74240f96ee1545313dc63343351a2333171"
+  },
+  "accepted_local_receipt_hashes": {
+    "C2.1": {
+      "path": "conductor/evidence/c2.1-parent-rerun-rust199-20261007/acceptance-rust199.json",
+      "sha256": "4f1ba5b364dd3c908287c286e7414d19dcdc3da3f1458e95471f66a9a76b6f20",
+      "status": "local_parent_join_accepted"
+    },
+    "C2.2": {
+      "path": "conductor/evidence/c2.2-parent-rerun-rust199-20261007/acceptance-rust199.json",
+      "sha256": "72a4f1868bba86aed670aee50fd2b6682166969284bf05fea328488b805675b8",
+      "status": "local_parent_join_accepted"
+    },
+    "C2.3.flow-resource-lifecycle": {
+      "path": "conductor/evidence/c2.3-flow-resource-lifecycle-20261007/acceptance-rust199.json",
+      "sha256": "fd8d48f939b29901da7e6807f00d065e2414e56a076e3752b6523ef94e096afa",
+      "status": "local_leaf_and_parent_join_accepted"
+    },
+    "C2.3.dispatch": {
+      "path": "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json",
+      "sha256": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d",
+      "status": "locally_accepted_leaf_parent_and_track03_gates_open"
+    },
+    "C2.4.runtime-ledger": {
+      "path": "conductor/evidence/c2.4-runtime-ledger-rust199-20261007/acceptance-rust199.json",
+      "sha256": "b4e250c598d1cd540f32bde27889961365d8709909201b433927616f8a7e3189",
+      "status": "accepted_local_leaf_and_exact_pin_parent_join_phase_review_open"
+    }
+  },
+  "manual_accounting": {
+    "receipt": "conductor/evidence/c2-manual-ledger-20261007/acceptance.json",
+    "sha256": "b0b21dd5eb7aba5bf2e86797dd8d22f9c31b3e36f51bec7620b95a3ba063acbb",
+    "arithmetic": "37.5 seconds Macro equals Micro 4.0 queue + 12.0 active clinical work + 18.5 transit + 3.0 synthetic interruption pause; standalone synthetic arithmetic only, not integrated Q4 interruption or restart proof."
+  },
+  "open_gates": [
+    "Track03 owner/phase review",
+    "Integrated Q4 interruption acceptance",
+    "Portable checkpoint/restart",
+    "Hosted exact-head checks",
+    "Release acceptance",
+    "Clinical acceptance",
+    "C2.4 Conductor phase review"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "144 task records: full coverage, prerequisites and DAG valid\n",
+      "stdout_sha256": "3c9b46c6f92523f90a202f40d3e7982f5d6fb0fecc2022fd38bc0a271d22661d"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "PASS: 81 MVP parents; 256 bounded leaves; complete joins and context/objective hashes\n",
+      "stdout_sha256": "f67345979e013ce605150fd6cc1576b0b40178650d7edd04c31f592aad3fa7bf"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "exit_status": 0,
+      "stdout": "{\n  \"tracks\": 5,\n  \"milestones\": 34,\n  \"local_links\": 786,\n  \"errors\": []\n}\n",
+      "stdout_sha256": "7043688afce80df1f55b3e3e1df2d98a5a2c938fa909aa1bec322b1e622747fd"
+    }
+  ],
+  "changed_paths": [
+    "conductor/evidence/c2.4-closeout-rust199-20261007/README.md",
+    "conductor/evidence/c2.4-closeout-rust199-20261007/closeout-review.json",
+    ".artifacts/mvp/C2.4.closeout.rust199-phase-gate-readback/result.json"
+  ],
+  "scope_limits": {
+    "plan_checkbox": "not changed",
+    "task_catalog": "not changed",
+    "current_state": "not changed",
+    "parent_or_source_pin": "not changed",
+    "Rust_commands": "none run",
+    "phase_acceptance": "withheld",
+    "full_C2_acceptance": "not claimed"
+  },
+  "coordinator_acceptance_required": true
+}

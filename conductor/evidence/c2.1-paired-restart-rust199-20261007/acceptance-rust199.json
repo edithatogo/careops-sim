@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "coordinator_local_c2_1_paired_restart_rust199_exact_pin",
+  "status": "local_leaf_and_parent_join_accepted_phase_gates_open",
+  "task_id": "C2.1.paired",
+  "instance_id": "restart",
+  "parent_base_commit": "74c047e5b52b1f4cf6ff8b9f93995ed8f4d381b1",
+  "implementation_commits": [
+    "9e3ec7f075553525f288093b993c1afa35c23775",
+    "51b5e5dcd09bf747e272dbfee71f924c2ccbf017"
+  ],
+  "integrated_kairos_pin": "51b5e5dcd09bf747e272dbfee71f924c2ccbf017",
+  "worker_packet": {
+    "path": "conductor/evidence/c2.1-paired-restart-rust199-20261007/packet.json",
+    "sha256": "878c9d99f50745ed88f58f6fb228022e7240824bf4b10d140c0da418b627e7f8"
+  },
+  "worker_result": {
+    "path": "conductor/evidence/c2.1-paired-restart-rust199-20261007/worker-result.json",
+    "sha256": "0d3f122d5cc21d918ff9a69e5b0eb081ece61112eacc7bcb95b114071e2e7f17"
+  },
+  "toolchain": {
+    "required": "stable Rust/Cargo 1.99.0 only",
+    "rustc": "1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "1.99.0 (5f94df478 2026-08-27)"
+  },
+  "source_hashes": {
+    "libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs": "c1ab300db992015fd1cd09b9a19aa1f734cc629a64a90501a5678eee62718769",
+    "libs/kairos/Cargo.lock": "946b09595a094549bfdfc7d45398810f959f539243fecb9934343cf297f4949f"
+  },
+  "commands": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--lib",
+        "flow_bridge::tests::actual_flow_urgent_restart_reuses_sampled_service_for_macro_and_zero_transit_micro"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "summary": "1 passed; 0 failed; 88 filtered. Worker focused acceptance.",
+      "output_retained": false
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--lib",
+        "flow_bridge::tests::actual_flow_urgent_suspend_resumes_same_macro_and_routed_micro_service",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "summary": "1 passed; 0 failed; 88 filtered.",
+      "log": "suspend.log",
+      "log_sha256": "bf44fdbea35cbdebeea37f1b3d3ffeeb2f685089d700935ab15dc3afd5369c42"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--lib"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "summary": "87 passed; 0 failed; 2 ignored. Includes both paired Restart and routed Suspend cases.",
+      "log": "tests-final.log",
+      "log_sha256": "dc282f2b88384922fb0f36ba8c0cfa69d3162e20387e06a7eb393a689b34222c"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "summary": "Strict Clippy passed with warnings denied.",
+      "log": "clippy.log",
+      "log_sha256": "23c02c73289aa210c123b2824491965236638e8520fa410f35832de9587d647e"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "summary": "Workspace formatting check passed.",
+      "log": "format.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "superseded_attempt": {
+    "command": "rustup run 1.99.0 cargo test --locked -p kairo-ecs-calibration --features flow,kairo-ecs-abm/test-support --lib",
+    "cwd": "libs/kairos",
+    "exit_status": 101,
+    "summary": "86 passed; 1 failed; 2 ignored. Existing routed Suspend fixture failed because the refactored helper checked its not-yet-started carrier instead of the bound route request. Fixed in commit 51b5e5d and reverified.",
+    "log": "integration-first-attempt-failure.log",
+    "log_sha256": "dd866d4a040436f013c3cefabdf681784632e772f6b5f4e1fedaf981e1703511"
+  },
+  "oracle": {
+    "macro_and_explicit_zero_micro": true,
+    "preemption_strategy": "Restart",
+    "same_service_key_seed_duration_and_draw_position": true,
+    "no_transit_elapsed_or_carrier": true,
+    "terminal_progress_equal": true,
+    "completion_tick": 30,
+    "discarded_first_attempt_ticks": 3,
+    "interruption_ticks": 2,
+    "restarted_service_ticks": 20,
+    "existing_routed_suspend_preserved_and_passed": true
+  },
+  "independent_review": {
+    "reviewer": "gpt-6-luna read-only C2.5 audit follow-up",
+    "result": "READY; confirmed explicit-zero Micro branch, equal canonical terminal state, Restart lifecycle, and preserved routed Suspend assertions"
+  },
+  "limits": {
+    "portable_checkpoint_or_restart": false,
+    "hosted_exact_head_checks": false,
+    "release": false,
+    "clinical_acceptance": false,
+    "Track03_owner_phase_review": "open",
+    "transit_rng_claim": false
+  }
+}

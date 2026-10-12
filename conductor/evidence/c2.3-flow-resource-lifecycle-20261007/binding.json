@@ -1,0 +1,290 @@
+{
+  "reviewer": "coordinator plus independent Luna recipe/API/packet review",
+  "reservation_id": "C2.3-flow-resource-lifecycle-rust199-attempt-3",
+  "instance_id": "rust199-flow-resource-lifecycle",
+  "instance_scope": "One focused actual-Flow scenario proving selected Work/Walk/Wait handling and a named bed claim held through a caller-supplied cleaning completion callback, exact accepted release command and applied release event, with one queued request admitted afterward.",
+  "instance_set": [
+    "rust199-flow-resource-lifecycle"
+  ],
+  "prior_attempts": [
+    {
+      "reservation_id": "C2.3-flow-resource-lifecycle-rust199-attempt-1",
+      "status": "blocked_before_module_compile",
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow",
+        "--lib",
+        "staff_flow_lifecycle::tests"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 101,
+      "log": "/tmp/c2-3-flow-lifecycle-test.log",
+      "log_sha256": "53d3ba275f99baaf64328b2d9519a7828f7645a151c5de7103eeb3804791538e",
+      "reason": "The existing calibration flow_bridge test imports an ABM helper gated by the already-declared kairo-ecs-abm/test-support feature; this feature was added to the re-bound test and Clippy commands."
+    },
+    {
+      "reservation_id": "C2.3-flow-resource-lifecycle-rust199-attempt-2",
+      "status": "focused_test_passed_then_clippy_and_format_blocked_before_correction",
+      "test": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "-p",
+          "kairo-ecs-abm",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+          "--lib",
+          "staff_flow_lifecycle::tests"
+        ],
+        "exit_status": 0,
+        "selected": 1,
+        "passed": 1,
+        "log": "/tmp/c2-3-flow-lifecycle-test-attempt2.log",
+        "log_sha256": "607bf7de54f835bf83a51c56ac58a46e3dc8eb61412ba6a8cc397074507cf563"
+      },
+      "clippy": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "kairo-ecs-calibration",
+          "-p",
+          "kairo-ecs-abm",
+          "--features",
+          "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "exit_status": 101,
+        "log": "/tmp/c2-3-flow-lifecycle-clippy-attempt2.log",
+        "log_sha256": "99d9bea2ed947f7ccf5ce34a22576e0ceb032b3b3a6d41972fc8ed52e044d3fb",
+        "reason": "Clippy reported unused EventKind and SimDuration imports in the uncorrected draft."
+      },
+      "format": {
+        "argv": [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "exit_status": 1,
+        "log": "/tmp/c2-3-flow-lifecycle-fmt-attempt2.log",
+        "log_sha256": "de6baf6957d90778d783388c83ac5bd63cd888a0d28502229ba8104e58791df7",
+        "reason": "Rustfmt reported formatting changes in the uncorrected new module."
+      },
+      "reason": "The path lease declared crates/kairo-ecs-calibration/src/lib.rs as both an input and output; its expected module declaration edit correctly triggered input-hash drift before correction. The next reservation omits the self-modifying file from lease inputs."
+    }
+  ],
+  "reviewed_recipe_sha256": "bd23b9f8cce2ee7a2ffde81d10400d2bf14b2ec3cd49325570511b51f703d9fd",
+  "interface_contract": "Implement only a crate-private calibration adapter in crates/kairo-ecs-calibration/src/staff_flow_lifecycle.rs and its private declaration in src/lib.rs. Connect the accepted select_dispatch result to caller-supplied Flow RequestId/EntityId/ResourceId/WorkId mappings without numeric casts. Keep Work, Walk and Wait as distinct typed activities; Work and Walk may submit distinct mapped requests, and Wait creates no request or claim. Model a named bed claim with explicit claim/owner/resource/request/lease identity and staged staff-versus-bed allocation, never atomic multi-resource acquisition. The fixture must schedule a caller-supplied cleaning domain callback for the same work/claim and bind its actual EventId. Keep the bed allocated and next request queued until the matching callback runs and its FlowBatchReceipt is Accepted with the exact emitted release ticket/event; step that actual release event before asserting release and queued admission. Assert request/owner/resource/lease lineage, callback and release EventIds, queue/resource conservation, and that wrong callback identity or rejected receipt cannot release the bed. Do not introduce cleaning duration/trigger policy, cancellation/expiry/conflict/failure policy, clinical semantics, public API, Cargo feature, DES/ABM core edits, or changes to accepted selector/transit modules.",
+  "context_slices": [
+    {
+      "repo": ".",
+      "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+      "start": 108,
+      "end": 119
+    },
+    {
+      "repo": ".",
+      "path": "conductor/tracks/empirical_calibration_20260925/spec.md",
+      "start": 118,
+      "end": 124
+    },
+    {
+      "repo": ".",
+      "path": "conductor/tracks/empirical_calibration_20260925/agent-contract.md",
+      "start": 1,
+      "end": 23
+    },
+    {
+      "repo": "libs/kairos",
+      "path": "crates/kairo-ecs-calibration/src/staff_dispatch.rs",
+      "start": 1,
+      "end": 108
+    },
+    {
+      "repo": "libs/kairos",
+      "path": "crates/kairo-ecs-des/src/flow.rs",
+      "start": 412,
+      "end": 426
+    },
+    {
+      "repo": "libs/kairos",
+      "path": "crates/kairo-ecs-des/src/flow.rs",
+      "start": 478,
+      "end": 555
+    },
+    {
+      "repo": "libs/kairos",
+      "path": "crates/kairo-ecs-des/src/flow.rs",
+      "start": 1899,
+      "end": 1938
+    },
+    {
+      "repo": "libs/kairos",
+      "path": "crates/kairo-ecs-des/src/flow.rs",
+      "start": 1960,
+      "end": 2001
+    },
+    {
+      "repo": "libs/kairos",
+      "path": "crates/kairo-ecs-des/src/flow.rs",
+      "start": 2265,
+      "end": 2303
+    }
+  ],
+  "input_paths": [
+    "crates/kairo-ecs-calibration/src/staff_dispatch.rs",
+    "crates/kairo-ecs-des/src/flow.rs"
+  ],
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/staff_flow_lifecycle.rs",
+    "crates/kairo-ecs-calibration/src/lib.rs",
+    ".artifacts/mvp/C2.3.flow-resource-lifecycle.rust199-flow-resource-lifecycle/result.json"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--lib",
+        "staff_flow_lifecycle::tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "One or more focused lifecycle tests are selected and pass on stable Rust 1.99.0, including exact accepted callback/release-event lineage and held-bed/queued-request conservation. Record the nonzero selected test count and complete stdout/stderr log hash."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Strict all-target Clippy passes on stable Rust 1.99.0."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting check passes on stable Rust 1.99.0."
+    }
+  ],
+  "prerequisite_receipts": {
+    "C2.2": {
+      "status": "accepted",
+      "reviewer": "coordinator; local parent join accepted on Rust 1.99.0",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.2-parent-rerun-rust199-20261007/acceptance-rust199.json": "72a4f1868bba86aed670aee50fd2b6682166969284bf05fea328488b805675b8"
+      }
+    },
+    "C2.2.flow-macro-zero": {
+      "status": "accepted",
+      "reviewer": "coordinator; exact Rust 1.99.0 leaf receipt, included as the Flow baseline dependency",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.2-flow-macro-zero-20261006/acceptance-rust199-corrected.json": "e6a17919762dba8893d3e24009929b812047879e8512bf387a642d8185bab752"
+      }
+    },
+    "C2.3.routing": {
+      "status": "accepted",
+      "reviewer": "coordinator; source/current-pin local join recorded",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.3-routing-integration-20261006/acceptance.json": "5cdfa2e0c071fa513690193bf4cf490d54993bd7e6f4948d434dfd1d577fd6ac"
+      }
+    },
+    "C2.3.time": {
+      "status": "accepted",
+      "reviewer": "coordinator; source/current-pin local join recorded",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.3-routing-integration-20261006/acceptance.json": "5cdfa2e0c071fa513690193bf4cf490d54993bd7e6f4948d434dfd1d577fd6ac"
+      }
+    },
+    "C2.3.progress": {
+      "status": "accepted",
+      "reviewer": "coordinator; exact Rust 1.99.0 leaf receipt",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.3-progress-transit-runtime-20261006/acceptance-progress-rust199.json": "9c4431f35365c0fd6dfda7ca89fb4e88b3a4f4da5bfcb745ddeb028e2ea19eb5"
+      }
+    },
+    "C2.3.dispatch": {
+      "status": "accepted",
+      "reviewer": "coordinator; exact Rust 1.99.0 leaf receipt",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d"
+      }
+    },
+    "C2.3.transit-bridge": {
+      "status": "accepted",
+      "reviewer": "coordinator; exact Rust 1.99.0 leaf receipt",
+      "all_instances_accepted": true,
+      "artifacts": {
+        "conductor/evidence/c2.3-transit-bridge-rust199-20261006/acceptance-rust199.json": "04b35a643a30347e5465d5f37936fd6443698692654cd6ea879cab9567fb80a2"
+      }
+    }
+  }
+}

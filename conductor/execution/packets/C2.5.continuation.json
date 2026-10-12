@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.5.continuation",
+  "task_id": "C2.5",
+  "target_repo": "libs/kairos",
+  "base_commit": "REQUIRED",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "objective": "Implement a crate-private, one-shot owning continuation bundle for exactly one successfully bound calibration bridge work item, preserving the same FlowRuntime and FidelityAdapter values without cloning or serialization.",
+  "context_paths": [
+    "AGENTS.md",
+    "conductor/design/calibration/c2-in-memory-continuation-v1.md",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "crates/kairo-ecs-des/src/fidelity.rs"
+  ],
+  "input_hashes": {},
+  "input_paths": [
+    "conductor/design/calibration/c2-in-memory-continuation-v1.md",
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    "crates/kairo-ecs-des/src/fidelity.rs"
+  ],
+  "write_paths": [
+    "crates/kairo-ecs-calibration/src/flow_bridge.rs",
+    ".artifacts/c2.5-continuation/target",
+    ".artifacts/c2.5-continuation/verification",
+    ".artifacts/c2.5-continuation/worker-result.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/kairo-ecs-des/src/fidelity.rs",
+    "crates/kairo-ecs-calibration/src/seed_map.rs",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/design/calibration/c2-in-memory-continuation-v1.md",
+  "steps": [
+    "Inspect the frozen contract and relevant bridge types only.",
+    "Add an opaque crate-private bundle that owns the exact FlowRuntime, FidelityAdapter, and one BoundIntrinsicWork<T,C>; resume must consume it and infallibly return those same values.",
+    "Capture must return the original tuple for Flow identity or decision mismatches, and verify bound.runtime == flow.identity() plus adapter.decision(bound.work()) == Some(&bound.decision()). The same-adapter provenance is a caller precondition because DES exposes no adapter-instance lineage check. Keep capture limited to a completed bound bridge call with no unobserved FlowDispatch.",
+    "Add focused actual-Flow unit tests for Macro, explicit-zero Micro, nonzero Micro after transit start, and nonzero Micro after a pause has been dispatched and observed. Verify identity, progress, adapter decisions/pending-policy blocking, bridge receipts and next Service draw continuity against uninterrupted control.",
+    "Run only the bound stable Rust 1.99.0 commands, record exact outputs and hashes in the result file, commit once, and report ready_for_review; do not edit task metadata or parent evidence."
+  ],
+  "verification": [
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "fmt", "--all", "--", "--check"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting is clean at the repository-pinned stable Rust 1.99.0 toolchain."
+    },
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "test", "--locked", "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support", "--target-dir", ".artifacts/c2.5-continuation/target"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All calibration crate tests pass, including the new same-runtime owning continuation behavioral oracles and existing Flow bridge tests."
+    },
+    {
+      "argv": ["rustup", "run", "1.99.0", "cargo", "clippy", "--locked", "-p", "kairo-ecs-calibration", "--features", "flow,kairo-ecs-abm/test-support", "--all-targets", "--target-dir", ".artifacts/c2.5-continuation/target", "--", "-D", "warnings"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "The changed calibration crate and all its targets pass strict Clippy with warnings denied at stable Rust 1.99.0."
+    }
+  ],
+  "acceptance": [
+    "Only flow_bridge.rs and the declared ignored worker result are changed; no public API, dependency, manifest, lockfile, seed algorithm, or DES internals change.",
+    "The continuation owns exactly one bound bridge work item plus its same FlowRuntime and adapter. Rust ownership prevents duplicate resume; resume returns the exact original objects.",
+    "Capture rejects Flow identity or decision mismatches and returns original inputs; adapter-instance pairing remains a private caller precondition, not a mechanically checked guarantee.",
+    "Tests do not capture while any FlowDispatch awaits observe_transit_dispatch and do not mutate aliased context payloads while detached.",
+    "Receipt claims remain limited to a local same-process single-work handoff; no portable checkpoint, process restart, C2 phase completion, hosted, release, or clinical acceptance claim."
+  ],
+  "result_path": ".artifacts/c2.5-continuation/worker-result.json",
+  "stop_conditions": [
+    "The contract cannot be implemented within flow_bridge.rs without public API or writes to a protected owner path.",
+    "Source or contract hash drift from the bound packet.",
+    "An oracle requires advancing Flow while the bundle is detached or depends on arbitrary aliased context mutation.",
+    "Any Rust command would use a toolchain other than 1.99.0.",
+    "Behavioral oracle cannot be established without changing the reviewed contract."
+  ],
+  "context_budget_bytes": 120000,
+  "size_exception": null,
+  "status": "template"
+}

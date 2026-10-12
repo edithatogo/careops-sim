@@ -5207,7 +5207,7 @@
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 114
+        "line": 119
       },
       "context_sources": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -5243,8 +5243,8 @@
           "target_repo": "libs/kairos",
           "model": "gpt-6-luna",
           "role": "worker",
-          "output": "Paired Macro/zero-transit Micro oracle",
-          "oracle": "Same purpose draws and equal canonical outcomes in zero-transit fixture",
+          "output": "Paired Macro/zero-transit Micro Restart oracle",
+          "oracle": "Same purpose draws and equal canonical outcomes across paired Macro and explicit-zero Micro Restart fixtures; no transit event or Transit draw",
           "dependencies": [
             "C2.1.mode",
             "C2.2.seeds",
@@ -5319,6 +5319,44 @@
           "existing_recipe": null
         },
         {
+          "id": "C2.2.flow-submit-atomicity",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Preflight cumulative Flow scheduler event capacity before timed request mutation",
+          "oracle": "When scheduler cumulative scheduled-event count cannot admit acquisition plus optional deadline, submit returns CounterOverflow with no ResourceRequest, WorkSpec.request, request registry entry, scheduled counter, or scheduler event mutation.",
+          "dependencies": [
+            "C2.2.policy"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 2,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
+          "id": "C2.2.flow-macro-zero",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Transactional Macro and explicit-zero Micro bridge to actual Flow work and acquisition",
+          "oracle": "One frozen Fidelity decision binds the actual Pending Flow work created at the sampled intrinsic duration; successful timed acquisition returns the actual request; every failure retains state without resampling/recreation; Macro and explicit-zero Micro have no transit draw/event. This leaf covers Macro and explicit-zero Micro direct submission; nonzero Micro Route dispatch and accepted-arrival reconciliation are covered by C2.3.transit-bridge. Flow submit failure at cumulative scheduler cap creates no orphan request.",
+          "dependencies": [
+            "C2.2.flow-submit-atomicity"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 90,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
           "id": "C2.2.seeds",
           "target_repo": "libs/kairos",
           "model": "gpt-6-luna",
@@ -5327,7 +5365,8 @@
           "oracle": "No thread/wall-clock identity in keys; resume preserves mode and stream state",
           "dependencies": [
             "C2.2.policy",
-            "C2.3.dispatch"
+            "C2.3.dispatch",
+            "C2.3.transit-bridge"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
@@ -5338,11 +5377,18 @@
           "max_corrections": 2,
           "existing_recipe": null
         }
-      ]
+      ],
+      "leaf_dependency_overrides": {
+        "C2.2.seeds": [
+          "C2.2.policy",
+          "C2.3.dispatch",
+          "C2.3.transit-bridge"
+        ]
+      }
     },
     {
       "task_id": "C2.3",
-      "task_objective_sha256": "c76bbb24d73c9a83071ba3e64cd423ce3e4747e4f71d8b49b48f8b3f8cb08876",
+      "task_objective_sha256": "65f1052c3c4adb3528229003dbe9870b8687acc46916554d7702d4d7926d0ff8",
       "parent_dependencies": [
         "C2.0"
       ],
@@ -5434,18 +5480,76 @@
           "max_context_bytes": 24000,
           "max_corrections": 2,
           "existing_recipe": null
+        },
+        {
+          "id": "C2.3.transit-bridge",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Calibration BoundIntrinsicWork route dispatch and actual arrival reconciliation",
+          "oracle": "Nonzero Micro Route uses the actual TransitContext carrier and exact owned event IDs; only accepted arrival reconciles the original timed task/resource request and work link; explicit retry is one-shot and limited to the matching consumed rejected event. Macro and Zero Micro emit no transit event or Transit draw.",
+          "dependencies": [
+            "C2.2.flow-macro-zero",
+            "C2.3.progress"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
+          "id": "C2.3.flow-resource-lifecycle",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Private calibration adapter connecting explicit staff selections to Flow resource requests and owner-bound cleaning leases",
+          "oracle": "Selected Work and Walk preserve exact request/owner/resource claim lineage in real Flow; Wait creates no Flow request; a bed stays unavailable and the next request queued until the supplied cleaning completion callback for the same claim and owner is accepted and its exact release event is applied; release then activates the queued request; queue and resource counts conserve throughout. Staff and bed acquisition remain staged.",
+          "dependencies": [
+            "C2.2.flow-macro-zero",
+            "C2.3.routing",
+            "C2.3.time",
+            "C2.3.progress",
+            "C2.3.dispatch",
+            "C2.3.transit-bridge"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
+          "timebox_minutes": 60,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
         }
-      ]
+      ],
+      "leaf_dependency_overrides": {
+        "C2.3.transit-bridge": [
+          "C2.2.flow-macro-zero",
+          "C2.3.progress"
+        ],
+        "C2.3.flow-resource-lifecycle": [
+          "C2.2.flow-macro-zero",
+          "C2.3.routing",
+          "C2.3.time",
+          "C2.3.progress",
+          "C2.3.dispatch",
+          "C2.3.transit-bridge"
+        ]
+      }
     },
     {
-      "task_id": "C2.4",
-      "task_objective_sha256": "7c42fe09c4142cc4879f07a6c1fde6c17626bbf336431a499b922c218e9dcc7f",
+      "task_id": "C2.5",
+      "task_objective_sha256": "d50e181799a03e8a651562191b026b55cdd9366e0fb02611d5dcba97caccfb75",
       "parent_dependencies": [
         "C2.1"
       ],
       "source": {
         "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
-        "line": 117
+        "line": 122
       },
       "context_sources": [
         "conductor/tracks/empirical_calibration_20260925/spec.md",
@@ -5457,14 +5561,95 @@
       "join": "All leaf instances must be independently accepted and combined parent acceptance rerun; no partial checkbox completion",
       "leaves": [
         {
-          "id": "C2.4.evidence",
+          "id": "C2.5.continuation",
           "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Crate-private one-shot same-live-Flow continuation for one bound bridge work item",
+          "oracle": "Capture and resume preserve the exact FlowRuntime, adapter, one bound work item, fidelity decision and Service stream. Mismatch returns original values. Actual-Flow tests compare Macro, explicit-zero Micro, transit start and observed pause/resume through accepted arrival against uninterrupted control, including the original timed request. No serialization/restart or multi-work aggregation.",
+          "dependencies": [
+            "C2.1.paired"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "single same-live-Flow continuation leaf; coordinator records exact source commit, parent pin and Rust 1.99 evidence",
+          "timebox_minutes": 90,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": "conductor/execution/packets/C2.5.continuation.json"
+        }
+      ]
+    },
+    {
+      "task_id": "C2.4",
+      "task_objective_sha256": "7c42fe09c4142cc4879f07a6c1fde6c17626bbf336431a499b922c218e9dcc7f",
+      "parent_dependencies": [
+        "C2.5"
+      ],
+      "source": {
+        "path": "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "line": 128
+      },
+      "context_sources": [
+        "conductor/tracks/empirical_calibration_20260925/spec.md",
+        "conductor/tracks/empirical_calibration_20260925/plan.md",
+        "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+        "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+      ],
+      "status": "recipe_requires_binding",
+      "join": "All leaf instances must be independently accepted and combined parent acceptance rerun; no partial checkbox completion",
+      "leaves": [
+        {
+          "id": "C2.4.runtime-ledger",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Integrated same-case Macro/Micro elapsed-time ledger fixture using actual Flow queues and accepted transit arrival",
+          "oracle": "In one paired fixture with the same service stream identity and sampled duration D, a capacity-1 blocker holds until tick 5. Macro submits at tick 0 and records 5 ticks queued plus D service. Micro uses a scheduled 2-tick nonzero route, submits only on accepted arrival at tick 2, records 3 ticks queued plus D service. Both actual Flow requests/work complete at tick 5+D with equal service draw/stream identity; assert queue wait from submission/grant timestamps, transit from TransitContext progress, and service from allocation/completion timestamps. Intervals are disjoint and sum to equal elapsed time; no arithmetic-only ledger, fixed duration substitute, extra Transit RNG, production API, scheduler-order, seed algorithm, or non-Rust-1.99 verification change.",
+          "dependencies": [
+            "C2.1.paired"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "single paired deterministic case; coordinator records exact source commit and parent pin",
+          "timebox_minutes": 90,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
+          "id": "C2.4.q4-urgent-interruption-ledger",
+          "target_repo": "libs/kairos",
+          "model": "gpt-6-luna",
+          "role": "worker",
+          "output": "Test-only actual Flow/Q4 urgent preemption integration through the calibration bridge, preserving interrupted service and separately reconciling route, queue, useful service, and interruption intervals",
+          "oracle": "In paired Macro and routed nonzero-transit Micro actual-Flow cases, hold a capacity-1 blocker until tick 5, begin a service whose frozen fixture seed samples 20 ticks at tick 5, and admit a 2-tick urgent request at tick 8 that suspends the original work until tick 10. Assert the original WorkId/RequestId, sampled service duration/key/draw position, exact remaining service progress, one suspend/resume/completion lifecycle, and resource/queue conservation. Macro completes at tick 27 with queue 5 + useful service 20 + interruption 2; Micro's accepted 2-tick route precedes service submission and completes at tick 27 with transit 2 + queue 3 + useful service 20 + interruption 2. Assert intervals from actual Flow/transit callbacks, no duplicate arrival/request, no extra Transit RNG, no production API or scheduler/seed changes, and run Rust 1.99.0 only.",
+          "dependencies": [
+            "C2.4.runtime-ledger",
+            "C2.5.continuation"
+          ],
+          "approval": "coordinator_acceptance_required",
+          "fanout": "one paired deterministic urgent-interruption case; coordinator records exact Kairos commit, parent pin and Rust 1.99 receipt",
+          "timebox_minutes": 90,
+          "max_write_paths": 5,
+          "max_commands": 3,
+          "max_context_bytes": 24000,
+          "max_corrections": 2,
+          "existing_recipe": null
+        },
+        {
+          "id": "C2.4.evidence",
+          "target_repo": ".",
           "model": "gpt-6-luna",
           "role": "worker",
           "output": "Phase evidence reconciliation",
           "oracle": "Every parent task has integrated output and executed gates; unresolved failures prevent acceptance",
           "dependencies": [
-            "C2.1.paired"
+            "C2.4.runtime-ledger",
+            "C2.4.q4-urgent-interruption-ledger",
+            "C2.5.continuation"
           ],
           "approval": "coordinator_acceptance_required",
           "fanout": "one source/family/platform/case per instance when plural; coordinator records all instances and join coverage",
@@ -5477,7 +5662,7 @@
         },
         {
           "id": "C2.4.closeout",
-          "target_repo": "libs/kairos",
+          "target_repo": ".",
           "model": "gpt-6-luna",
           "role": "proposal_or_review",
           "output": "Coordinator phase acceptance record",

@@ -1,0 +1,182 @@
+{
+  "task_id": "C2.2",
+  "base_parent_commit": "ab269f3c3289f1b727d50a6e8dcd1ad85aba4056",
+  "integrated_kairos_pin": "9b360f433210d38868e1e5f102473fd6f148fccf",
+  "objective": "Perform the required combined C2.2 parent acceptance rerun after every declared C2.2 leaf instance has a local acceptance receipt. Verify the integrated provider/policy/Flow/seed state path on one exact Kairos pin. This is a coordinator-owned read-only acceptance rerun, not a new worker dispatch or a parent recipe override.",
+  "join_rule": "All leaf instances must be independently accepted and combined parent acceptance rerun; no partial checkbox completion.",
+  "leaf_receipts": {
+    "C2.2.durations": [
+      "conductor/evidence/c2.2-provider-20261005/README.md",
+      "conductor/evidence/c2.2-provider-20261005/child-checks.json",
+      "conductor/evidence/c2.2-provider-20261005/native-owner-hosted.json"
+    ],
+    "C2.2.policy": "conductor/evidence/c2.2-policy-20261006/acceptance.json",
+    "C2.2.flow-submit-atomicity": "conductor/evidence/c2.2-flow-submit-atomicity-20261006/acceptance-rust199.json",
+    "C2.2.flow-macro-zero": "conductor/evidence/c2.2-flow-macro-zero-20261006/acceptance-rust199-corrected.json",
+    "C2.2.seeds": [
+      "conductor/evidence/c2.2-seeds-rust199-20261006/acceptance-rust199.json",
+      "conductor/evidence/c2.2-seeds-snapshot-continuation-20261006/acceptance-rust199.json"
+    ]
+  },
+  "reviewer_constraints": [
+    "The C2.2 parent recipe depends on accepted C2.0, which is current; its leaf-instance join must include each listed accepted instance.",
+    "The C2.2 leaf and parent scope excludes portable process restart/checkpoint codec; record this as open Track03/22/runtime work, not C2.2 proof.",
+    "C2.3 owner/parent review and C2.1 remain separate and open; no hosted/release/clinical claim."
+  ],
+  "verification": [
+    {
+      "phase": "toolchain_versions",
+      "cwd": "libs/kairos",
+      "exit": 0,
+      "oracle": "Record exact stable Rust compiler and Cargo version output for this run.",
+      "commands": [
+        [
+          "rustup",
+          "run",
+          "1.99.0",
+          "rustc",
+          "--version"
+        ],
+        [
+          "rustup",
+          "run",
+          "1.99.0",
+          "cargo",
+          "--version"
+        ]
+      ]
+    },
+    {
+      "phase": "combined_native_tests",
+      "argv": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/careops-c22-parent-rerun-target",
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": "libs/kairos",
+      "exit": 0,
+      "oracle": "On one exact integrated Kairos pin and stable Rust 1.99.0, all DES, ABM, and calibration unit/integration tests pass with no failures; report ignored tests without treating the separate pre-existing ignored ingestion tests as failures. This combines the provider, policy boundary, actual Flow submit, macro/zero-Micro bridge, nonzero route transit, and seed snapshot regression packages."
+    },
+    {
+      "phase": "c20_bound_retention_fixture",
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "python3",
+        "conformance/c20/run_transit_red.py",
+        "--expect",
+        "green"
+      ],
+      "cwd": "libs/kairos",
+      "exit": 0,
+      "oracle": "The exact nonzero Micro Route Flow transit fixture passes on the integrated pin, including BoundIntrinsicWork identity/duration/mode retention across pause/resume and stream draw-position continuation.",
+      "preservation": "Pre-run backup and verified restore required per evidence_requirements.c20_preservation."
+    },
+    {
+      "phase": "strict_clippy",
+      "argv": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/careops-c22-parent-rerun-target",
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "libs/kairos",
+      "exit": 0,
+      "oracle": "Combined strict all-target Clippy passes for the same three packages/features on stable Rust 1.99.0."
+    },
+    {
+      "phase": "format",
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "libs/kairos",
+      "exit": 0,
+      "oracle": "Workspace formatting passes at the same exact Kairos pin on stable Rust 1.99.0."
+    }
+  ],
+  "scope_limits": {
+    "C2_2_parent_acceptance_pending_until_successful_rerun_and_receipt": true,
+    "C2_3_parent_or_track03_review": false,
+    "C2_1_runtime_accepted": false,
+    "portable_checkpoint_or_process_restart": false,
+    "hosted_release_or_clinical_acceptance": false
+  },
+  "receipt_hashes": {
+    "C2.2.durations": {
+      "conductor/evidence/c2.2-provider-20261005/README.md": "bca4fbc60c4d0e8c8d982e4203bdc9cc27bab72a80501d9d436eae959639fcbc",
+      "conductor/evidence/c2.2-provider-20261005/child-checks.json": "4e91ee45dcbc80738526fb63f760437f47f54949de2b6e849497354ffb08b4c5",
+      "conductor/evidence/c2.2-provider-20261005/native-owner-hosted.json": "2b562713aa96c695d8dab267a7e1a1ebffc1d6c6f8c3a5326d4c3d90c16ea285"
+    },
+    "C2.2.policy": {
+      "conductor/evidence/c2.2-policy-20261006/acceptance.json": "fff8eabc5983bb1fd875be05b057ffcedaf6299ca801f009bf7dd2e27dbecb36"
+    },
+    "C2.2.flow-submit-atomicity": {
+      "conductor/evidence/c2.2-flow-submit-atomicity-20261006/acceptance-rust199.json": "09ccb4b7e567ee1d845a37ba42d0ec010fa430782f67cefe2aadff188217ccc0"
+    },
+    "C2.2.flow-macro-zero": {
+      "conductor/evidence/c2.2-flow-macro-zero-20261006/acceptance-rust199-corrected.json": "e6a17919762dba8893d3e24009929b812047879e8512bf387a642d8185bab752"
+    },
+    "C2.2.seeds": {
+      "conductor/evidence/c2.2-seeds-rust199-20261006/acceptance-rust199.json": "a2093f64a18bb05a6999e0c7671ef5bb3e46f81fdb8ba437e3bac3c2704fa47c",
+      "conductor/evidence/c2.2-seeds-snapshot-continuation-20261006/acceptance-rust199.json": "d6ac6da9fae6fd28666af0eddaf4512248842159c4ccc5a692c3e01ec2e7373a"
+    }
+  },
+  "parent_source_hashes": {
+    "conductor/execution/mvp/recipes.json": "1da4b2b3898a7d86f775601e679c6b860588d1d5f1a29d0969461e6c9cee7dbc",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "c44e3a52ffbbb22930656d3b30f0c406a8323b683773c337ddfa00836314c341",
+    "libs/kairos/crates/kairo-ecs-calibration/src/seed_map.rs": "2a6dcae497c6001f1c6b09a4ce4c6034398986fb9593b01ed7e38fc69bb009c4"
+  },
+  "evidence_requirements": {
+    "capture": "For every verification command, save exact stdout+stderr bytes to a distinct log file and record exact argv, cwd, parent and Kairos commits, rustc/cargo version output under rustup 1.99.0, exit code, test summary/counts where applicable, and SHA-256 of each log. Use filenames 00-toolchain-rustc.log, 01-toolchain-cargo.log, 02-combined-native-tests.log, 03-c20-bound-retention.log, 04-strict-clippy.log, and 05-format.log in the declared evidence_directory; store a receipt manifest there with argv/cwd/commits/toolchain/exit/summary and each path/hash.",
+    "execution_order": [
+      "toolchain_versions",
+      "combined_native_tests",
+      "c20_bound_retention_fixture",
+      "strict_clippy",
+      "format"
+    ],
+    "limits": "The C20 runner is a separate out-of-crate conformance fixture; it is required because cargo package tests do not include conformance/. Preserve its result as additional joined proof, not as a new recipe leaf.",
+    "c20_preservation": {
+      "before_run": "The C20 runner removes libs/kairos/.artifacts/mvp/C2.0.red-tests.paired-transit/disposable and /logs and overwrites result.json. Before invoking it, hash the existing result.json and each logs file, and create a byte-preserving backup of the entire existing runner artifact tree (including attempt-3-preserved/) at /tmp/c2.2-parent-rerun-20261007/c20-prerun-backup.tar; record backup SHA-256 and member hashes in the evidence receipt. Verify the backup before proceeding.",
+      "after_run": "Copy the newly generated result.json and logs to evidence_directory/c20-current-pin/ with their hashes. Then remove the entire generated libs/kairos/.artifacts/mvp/C2.0.red-tests.paired-transit tree before extracting the verified backup archive using replacement semantics (never overlay extraction). Verify the restored full member inventory and every original member hash match the pre-run manifest. Leave no generated C20 ignored artifacts behind in Kairos."
+    }
+  },
+  "evidence_directory": "conductor/evidence/c2.2-parent-rerun-rust199-20261007"
+}

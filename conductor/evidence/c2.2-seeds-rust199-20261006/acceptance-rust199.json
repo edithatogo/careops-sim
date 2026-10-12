@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "coordinator_local_C2_2_seeds_leaf_rust199_exact_pin",
+  "status": "local_leaf_accepted_c22_parent_join_pending",
+  "leaf_id": "C2.2.seeds",
+  "instance_id": "rust199-bound-retention",
+  "parent_base_commit": "7672a67988134438228014e7b3e0f56855cc65e8",
+  "implementation_commits": [
+    "887458854cdb20638e47fb88524a47084494817f",
+    "315b9c5c832e3071b6e20cc7ea76b107efa248c1",
+    "3d6efca658ba540c96f71f8f72c50214a4ef0eb2"
+  ],
+  "integrated_kairos_pin": "3d6efca658ba540c96f71f8f72c50214a4ef0eb2",
+  "packet_path": "conductor/evidence/c2.2-seeds-rust199-20261006/packet-attempt-4.json",
+  "packet_sha256": "7758008fc1de08925274d495de500596f70e66423b16cffe268e3d314a9d7e47",
+  "worker_result_path": "conductor/evidence/c2.2-seeds-rust199-20261006/worker-result-attempt-4.json",
+  "worker_result_sha256": "ebd6e2f40b63a13ef7a312112d4cfe8749e35b1f3b4e798b6bd13e9432b7b61b",
+  "runner_result_path": "conductor/evidence/c2.2-seeds-rust199-20261006/runner-result-attempt-4.json",
+  "runner_result_sha256": "5a84db922fab5f2b6c78a0d887d82066876b20a159eee68b5a9ecaa11f8c12b9",
+  "source_hashes": {
+    "libs/kairos/conformance/c20/transit_flow_c20.rs": "a6169373466b43075e35507bd7d39a044943d88c223b6d39efcca2cc79607fc9",
+    "libs/kairos/conformance/c20/run_transit_red.py": "bdd7c146fa3112e568b2e7d31303427701543c1fed4c34f5be8bc1033c26058c",
+    "libs/kairos/conductor/design/calibration/c2-seed-map-v1.md": "046ba8d06f667472399cb2a3af9f15ef03168558edfc3859dd0f28c719972c5b"
+  },
+  "prerequisites": {
+    "C2.2.policy": {
+      "status": "accepted",
+      "receipt": "conductor/evidence/c2.2-policy-20261006/acceptance.json",
+      "sha256": "fff8eabc5983bb1fd875be05b057ffcedaf6299ca801f009bf7dd2e27dbecb36"
+    },
+    "C2.3.dispatch": {
+      "status": "accepted",
+      "receipt": "conductor/evidence/c2.3-staff-policy-20261006/leaf-acceptance-rust199.json",
+      "sha256": "0bada6fe15b01e157dbf4ea45849b953add19209c68b550718dec60bfa8ccd5d"
+    },
+    "C2.3.transit-bridge": {
+      "status": "accepted",
+      "receipt": "conductor/evidence/c2.3-transit-bridge-rust199-20261006/acceptance-rust199.json",
+      "sha256": "04b35a643a30347e5465d5f37936fd6443698692654cd6ea879cab9567fb80a2"
+    }
+  },
+  "review": {
+    "independent_source_review": "gpt-6-luna read-only review found the exact source diff, committed fixture, runner arguments, and result consistent with the bounded contract; no private API or production Rust API change. The fixture proves only in-memory Bound/Flow retention across transit pause/resume and arrival.",
+    "coordinator_disposition": "Accepted this local C2.2.seeds leaf instance at the integrated Kairos pin after exact-head artifact/hash review and stable Rust 1.99.0 format, focused runner and strict Clippy checks.",
+    "limitations": [
+      "No portable checkpoint codec, process restart, serialization or restoration is tested.",
+      "The supporting package-wide attempt-3 test run had 80 passed and 2 unrelated ignored ingestion tests; its runner oracle mismatch is preserved and is not represented as a green run.",
+      "No parent C2.2/C2.3 acceptance, Track03 owner review, hosted check, release readiness or clinical acceptance is implied."
+    ]
+  },
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "conformance/c20/run_transit_red.py",
+        "--expect",
+        "green"
+      ],
+      "cwd": "libs/kairos",
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "exit_status": 0,
+      "summary": {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered_out": 81
+      },
+      "runner_result_sha256": "5a84db922fab5f2b6c78a0d887d82066876b20a159eee68b5a9ecaa11f8c12b9",
+      "cargo_log_sha256": "bf55b184935315050a087583ce33fd3196d0a324ca233e4100a4d9cf1512d61e",
+      "toolchain_log_sha256": "f3ffefce2bf5646f08551258a1972fefaee9894e907a8a0473c7e9502797dc7d",
+      "manifest_and_lock_unchanged": true
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.2-seeds-rust199-20261006/format-rust199.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "-p",
+        "kairo-ecs-abm",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "libs/kairos",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.2-seeds-rust199-20261006/strict-clippy-rust199.log",
+      "log_sha256": "56d431c8a47415fda65a64b02cfce35cc4bac1787f4118fbb21a52cac664233e"
+    }
+  ],
+  "claims": {
+    "task_and_purpose_seed_keys_are_defined_without_thread_or_wall_clock_identity": true,
+    "stable_seed_map_package_tests": "attempt-3 broad suite completed with 80 passed, 0 failed, 2 ignored; preserved as supporting evidence, runner oracle mismatch retained",
+    "actual_bound_flow_work_retains_frozen_mode_duration_service_identity_and_draw_position_across_in_memory_transit_pause_resume_arrival": true,
+    "portable_checkpoint_or_restart_restoration": false,
+    "C2_2_parent_complete": false,
+    "C2_3_parent_complete": false,
+    "Track03_owner_review_complete": false,
+    "C2_1_runtime_accepted": false,
+    "hosted_checks_passed": false,
+    "release_or_clinical_acceptance": false
+  }
+}

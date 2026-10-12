@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "acceptance_type": "coordinator_local_private_staff_policy_instance",
+  "packet_id": "C2.3.dispatch.staff-policy",
+  "parent_base_commit": "6f8df39c9392ac4cc5977a6e0243bdb9abae81bc",
+  "source_base_commit": "f1f510e6c9ff9c3923b63ad733c05c19c495b46c",
+  "source_commit": "b2e42e7c2a4ed157218e9de15807410d513e65ae",
+  "parent_pin_commit": "b2e42e7c2a4ed157218e9de15807410d513e65ae",
+  "source_paths": [
+    "crates/kairo-ecs-calibration/src/lib.rs",
+    "crates/kairo-ecs-calibration/src/staff_dispatch.rs"
+  ],
+  "source_hashes": {
+    "libs/kairos/crates/kairo-ecs-calibration/src/lib.rs": "5840abb32f2488d7b3be4a8c4f59e22b05b3531270e0744ee25bfdd983c00dc4",
+    "libs/kairos/crates/kairo-ecs-calibration/src/staff_dispatch.rs": "686247daf657b89baafbf7059194089c11591fcc96cbd23bfc9995e0bd26974a"
+  },
+  "prerequisite_receipt": "conductor/evidence/c2.3-progress-20261006/acceptance.json",
+  "verification": [
+    {
+      "command": "CARGO_TARGET_DIR=/tmp/careops-c23-staff-target rustup run 1.99.0 cargo test --locked -p kairo-ecs-calibration staff_dispatch",
+      "cwd": "libs/kairos",
+      "toolchain": "Rust 1.99.0",
+      "exit_status": 0,
+      "passed": 6,
+      "failed": 0,
+      "log": "conductor/evidence/c2.3-staff-policy-20261006/test.log",
+      "log_sha256": "aef2c26c9a79e27d11c42952efdad8a161acd9621266ab156923e254dc2cc039"
+    },
+    {
+      "command": "CARGO_TARGET_DIR=/tmp/careops-c23-staff-target rustup run 1.99.0 cargo clippy --locked -p kairo-ecs-calibration --all-targets -- -D warnings",
+      "cwd": "libs/kairos",
+      "toolchain": "Rust 1.99.0",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.3-staff-policy-20261006/clippy.log",
+      "log_sha256": "6222483923b2dcdde988227cd50cf41867696819d3db7b42416437a8af21c769"
+    },
+    {
+      "command": "rustup run 1.99.0 cargo fmt --all -- --check",
+      "cwd": "libs/kairos",
+      "toolchain": "Rust 1.99.0",
+      "exit_status": 0,
+      "log": "conductor/evidence/c2.3-staff-policy-20261006/fmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "git diff --check",
+      "cwd": "libs/kairos",
+      "exit_status": 0
+    }
+  ],
+  "local_instance_status": "accepted_by_coordinator",
+  "scope_limits": {
+    "staff_policy_instance_complete": true,
+    "C2_3_dispatch_leaf_complete": false,
+    "Flow_transit_events_integrated": false,
+    "staff_resource_reservation_integrated": false,
+    "cleaning_lifecycle_implemented": false,
+    "C2_2_provider_flow_bridge_complete": false,
+    "C2_1_paired_runtime_accepted": false,
+    "hosted_exact_head_checks": false,
+    "ED_operational_acceptance": false
+  },
+  "unresolved_issues": [
+    "This is a pure selector in private calibration code, not a Flow/TransitContext implementation. Staff choice among service/walk work does not create actual claims or movement events; cleaning and reservations remain explicit downstream model lifecycle.",
+    "C2.3 transit dispatch integration, C2.2 provider-to-Flow lifecycle and C2.1 paired Macro/Micro runtime remain open."
+  ]
+}

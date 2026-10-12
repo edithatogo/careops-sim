@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "packet_id": "C2.3.dispatch.staff-policy",
+  "attempt_id": "3936253cad424b8e8cedb7fb64717dab",
+  "target_repo": "libs/kairos",
+  "base_commit": "f1f510e6c9ff9c3923b63ad733c05c19c495b46c",
+  "worker_model": "coordinator-led local execution; served-model metadata unavailable",
+  "status": "ready_for_review",
+  "result_commit_or_patch": {
+    "source_commit": null,
+    "patch_base": "f1f510e6c9ff9c3923b63ad733c05c19c495b46c",
+    "source_hashes": {
+      "crates/kairo-ecs-calibration/src/lib.rs": "5840abb32f2488d7b3be4a8c4f59e22b05b3531270e0744ee25bfdd983c00dc4",
+      "crates/kairo-ecs-calibration/src/staff_dispatch.rs": "686247daf657b89baafbf7059194089c11591fcc96cbd23bfc9995e0bd26974a"
+    }
+  },
+  "changed_paths": [
+    "crates/kairo-ecs-calibration/src/lib.rs",
+    "crates/kairo-ecs-calibration/src/staff_dispatch.rs"
+  ],
+  "commands": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "staff_dispatch"
+      ],
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/careops-c23-staff-target"
+      },
+      "cwd": ".",
+      "commit": "f1f510e6c9ff9c3923b63ad733c05c19c495b46c",
+      "toolchain": "Rust 1.99.0",
+      "exit_status": 0,
+      "summary": "Six focused tests passed. Raw log /tmp/careops-c23-staff-test.log SHA-256 aef2c26c9a79e27d11c42952efdad8a161acd9621266ab156923e254dc2cc039."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/careops-c23-staff-target"
+      },
+      "cwd": ".",
+      "commit": "f1f510e6c9ff9c3923b63ad733c05c19c495b46c",
+      "toolchain": "Rust 1.99.0",
+      "exit_status": 0,
+      "summary": "Strict Clippy passed. Raw log /tmp/careops-c23-staff-clippy.log SHA-256 6222483923b2dcdde988227cd50cf41867696819d3db7b42416437a8af21c769."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "commit": "f1f510e6c9ff9c3923b63ad733c05c19c495b46c",
+      "toolchain": "Rust 1.99.0",
+      "exit_status": 0,
+      "summary": "Workspace formatting passed. Empty log SHA-256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "commit": "f1f510e6c9ff9c3923b63ad733c05c19c495b46c",
+      "exit_status": 0,
+      "summary": "No whitespace errors."
+    }
+  ],
+  "acceptance_results": [
+    {
+      "oracle": "Urgency descending, FIFO ascending and stable request tie-break; exact zone/skill/availability filtering; stable staff tie-break; Wait distinct from Work and Walk; duplicates fail closed.",
+      "status": "passed_locally"
+    }
+  ],
+  "unresolved_issues": [
+    "Private pure selection helper only. It does not schedule walk/progress events, bind staff resources, represent cleaning/reservation lifecycle, integrate with TransitContext/Flow, or qualify clinical policy.",
+    "The first focused test invocation used the parent repository root and failed to find the Kairos package; the packet command passed from the bound libs/kairos working directory.",
+    "The first format check found rustfmt differences; cargo fmt was applied and the packet check then passed."
+  ],
+  "next_action": "Coordinator reviews patch/evidence, commits source and integrates parent pin. Keep the C2.3 Flow transit-dispatch join open."
+}
