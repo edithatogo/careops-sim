@@ -2,6 +2,8 @@
 
 ## Project context
 
+- [Accepted native Flow foundation](evidence/e2.2-flow-foundation-completion-20261012/README.md) — transit and E1 migration next.
+
 - [Accepted Kairos parent pin transition](evidence/e2.2-parent-pin-transition-20261012/README.md)
 
 - [Joined Flow V4 / Transit V2 consumer acceptance](evidence/e2.2-v4-v2-joined-consumers-completion-20261012/README.md)
