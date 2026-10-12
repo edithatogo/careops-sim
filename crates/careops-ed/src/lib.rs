@@ -11,6 +11,8 @@ pub mod dispatch;
 #[doc(hidden)]
 pub mod disposition;
 #[doc(hidden)]
+pub mod flow_adapter;
+#[doc(hidden)]
 pub mod offers;
 #[doc(hidden)]
 pub mod pathway;
