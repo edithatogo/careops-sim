@@ -1,0 +1,86 @@
+{
+  "acceptance": [
+    "envelope-spec.md covers version, inventory, hashes, preflight, limits, publication, boundary, negatives; no Rust/API/manifest change.",
+    "ADR-0009 boundary enforced; FlowRuntimeIdentity never serialized.",
+    "Oracle bound to C2.1 paired fixture at event k with exact-match criteria.",
+    "Receipt limited to spec-fragment evidence; implementation leaf stays separate."
+  ],
+  "base_commit": "804fb8fa9ffc71a364177ddbe1b9d4e5f030bc3e",
+  "context_paths": [
+    "conductor/decisions/ADR-0009-c2-portable-checkpoint-subset.md",
+    "conductor/evidence/c2-track22-checkpoint-contract-options-20261007/proposal.md",
+    "conductor/evidence/c2-track22-checkpoint-owner-review-20261007/review-packet.md",
+    "conductor/tracks/empirical_calibration_20260925/spec.md",
+    "conductor/tracks/empirical_calibration_20260925/plan.md",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0009-c2-portable-checkpoint-subset.md": "85f03da87292b2f1ee8a0c271d5839724e3cdaae50b6ca7cc60f1294cd75369a",
+    "conductor/evidence/c2-track22-checkpoint-contract-options-20261007/proposal.md": "d8a0b59d82817c76fe1a32dbe42058cd929a77c1a0680575793e225f3a4f8199",
+    "conductor/evidence/c2-track22-checkpoint-owner-review-20261007/review-packet.md": "fa0aacac280be2ba41e211b43953782857b7f0d46ab7433027b4205100a23106",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "b0a21f5a48fdc42ff1db702744a17f0909ab441cb30f935f1405c2c9b363c9a3",
+    "conductor/tracks/empirical_calibration_20260925/spec.md": "ac39678081c2ea3391ddaf45b948e6ba62fb7f01a52e5905444ffd127c33b9f3",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md": "8819ff02e33b929962c6d5aeb8dc8695826ba17b53549c8a570090b405e809f4"
+  },
+  "interface_contract": "conductor/decisions/ADR-0009-c2-portable-checkpoint-subset.md",
+  "leaf_dependencies": [],
+  "model_candidate": "gpt-6-luna",
+  "model_role": "worker",
+  "objective": "Prepare ONLY the ADR-0009 first-leaf envelope spec fragment: versioned Track22 envelope validation plus atomic publication rules for the reviewed C2 state subset, with the fresh-process restore oracle bound to the C2.1 paired fixture at event k. No Rust source edits in this leaf.",
+  "packet_id": "C2.adr0009-envelope",
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json",
+    "libs/kairos"
+  ],
+  "result_path": ".artifacts/c2-adr0009-envelope/worker-result.json",
+  "schema_version": 1,
+  "size_exception": null,
+  "source_hashes": {
+    "libs/kairos/conductor/design/calibration/ADR-0006-flow-runtime-identity.md": "0e55a48d05bd9acfdb34dc4b320958b19cdda48206941411bbd43efe157f4bdb"
+  },
+  "status": "accepted",
+  "steps": [
+    "Read ADR-0009, contract-options proposal, owner packet, C-06, and C2.1 paired fixture references only.",
+    "Write envelope-spec.md: version, inventory, hash/length, preflight, limits, atomic publication, supported boundary, fail-closed matrix.",
+    "Bind fixture to exact scenario, seed/config hashes, toolchain, payload versions, uninterrupted oracle at event k.",
+    "Specify fresh-process restore oracle: exact event IDs, trace hash, Service draws; four negative envelopes reject before mutation."
+  ],
+  "stop_conditions": [
+    "Input/base drift",
+    "Missing prerequisite or undefined interface",
+    "Edit outside write_paths",
+    "Cannot establish the specified oracle"
+  ],
+  "target_repo": ".",
+  "task_id": "C2.4",
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "json.tool",
+        ".artifacts/c2-adr0009-envelope/worker-result.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Result file is valid JSON and records hashes, base commits, and oracle bindings."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "No whitespace errors in the new spec fragment."
+    }
+  ],
+  "write_paths": [
+    ".artifacts/c2-adr0009-envelope/envelope-spec.md",
+    ".artifacts/c2-adr0009-envelope/verification",
+    ".artifacts/c2-adr0009-envelope/worker-result.json"
+  ]
+}
