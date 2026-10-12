@@ -1,0 +1,29 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.45
+   Compiling unicode-ident v1.0.24
+    Checking kairo-ecs-types v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-types)
+   Compiling thiserror v2.0.20
+   Compiling syn v3.0.6
+    Checking kairo-ecs-state v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-state)
+    Checking kairo-ecs-rng v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-rng)
+    Checking kairo-ecs-core v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-core)
+   Compiling thiserror-impl v2.0.20
+    Checking kairo-ecs-des v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-des)
+    Checking kairo-ecs-abm v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012/crates/kairo-ecs-abm)
+error[E0308]: mismatched types
+   --> crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs:968:33
+    |
+968 |     assert!(rebind.resolve_work(f.carrier).is_ok());
+    |                    ------------ ^^^^^^^^^ expected `EntityId`, found `WorkId`
+    |                    |
+    |                    arguments to this method are incorrect
+    |
+note: method defined here
+   --> crates/kairo-ecs-des/src/flow/checkpoint.rs:379:12
+    |
+379 |     pub fn resolve_work(&self, id: EntityId) -> Result<WorkId, FlowCheckpointCodecError> {
+    |            ^^^^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `kairo-ecs-abm` (test "transit_context_checkpoint_wire_v2") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

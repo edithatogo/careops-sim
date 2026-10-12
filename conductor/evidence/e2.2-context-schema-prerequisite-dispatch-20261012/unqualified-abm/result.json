@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "packet_id": "e22-transit-v2-direct-wire-20261012",
+  "packet_sha256": "306f6907bbeecf8bcff89af7c17e13760e167cb4892fcfaed88fedeb417400cf",
+  "base_commit": "bbc472177876649b4c58e3f5972715c7855f1410",
+  "head": "bbc472177876649b4c58e3f5972715c7855f1410",
+  "status": "stopped_for_root_review",
+  "qualification": false,
+  "initial_owned_path_verification": {
+    "verified": true,
+    "existing_source_hashes": {
+      "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "8479e54d6bca19f5d71eeab7a1623198968cad6bb0006d7dd9933e537b3f5384",
+      "crates/kairo-ecs-abm/src/flow_adapter.rs": "0a59f15cbc2154298dd9071ef00ccddbdc65d2e08843f1624bc99eb227dc423d",
+      "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+      "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": null
+    },
+    "absent_paths": [
+      "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs"
+    ]
+  },
+  "base_source_hashes": {
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "8479e54d6bca19f5d71eeab7a1623198968cad6bb0006d7dd9933e537b3f5384",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "0a59f15cbc2154298dd9071ef00ccddbdc65d2e08843f1624bc99eb227dc423d",
+    "crates/kairo-ecs-abm/src/lib.rs": "45b681727def3226c0a72e37c9da7a8710313f0f5093293772f9c06b3e0fb490",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": null
+  },
+  "owned_source_hashes": {
+    "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+    "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+    "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+    "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "47f04f091606943902b4dab15a5d4fa481fbc5d573004def4a426d91bcdeab1a"
+  },
+  "required_test_names": [
+    "transit_v2_wire_actual_ready_moving_roundtrip",
+    "transit_v2_wire_paused_resume_suffix",
+    "transit_v2_wire_arrived_binding_and_suppression",
+    "transit_v2_wire_resume_witness_live_stale_noop",
+    "transit_v2_wire_literal_bytes_and_v1_compatibility",
+    "transit_v2_wire_exact_total_budget_real_rebind",
+    "transit_v2_wire_count_text_and_checked_size_limits",
+    "transit_v2_wire_malformed_tags_truncation_and_trailing",
+    "transit_v2_wire_owner_reference_ticket_rejection",
+    "transit_v2_wire_codec_schema_and_remaining_budget"
+  ],
+  "required_success_names": [
+    "transit_v2_wire_literal_bytes_and_v1_compatibility",
+    "transit_v2_wire_count_text_and_checked_size_limits"
+  ],
+  "required_success_count": 2,
+  "failed_development_attempts": [
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791754982276208000-61679-result.json",
+    ".artifacts/e22-transit-v2-direct-wire-20261012/logs/tests-1791770847990976000-67935-result.json"
+  ],
+  "gates": [
+    {
+      "gate": "clippy",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-abm",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012",
+      "head": "bbc472177876649b4c58e3f5972715c7855f1410",
+      "packet_sha256": "306f6907bbeecf8bcff89af7c17e13760e167cb4892fcfaed88fedeb417400cf",
+      "start": "2026-10-11T21:43:02.303688+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+        "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "e9ea304d813b74821f7cb634e6c607a84bcd486e71245a1c2249fa13eac052de"
+      },
+      "log": ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791754982276208000-61679.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791754982276208000-61679-started.json",
+      "end": "2026-10-11T21:43:08.196336+00:00",
+      "exit_code": 101,
+      "command_exit_code": 101,
+      "gate_error": null,
+      "log_sha256": "27f4ea500df96b7c517a5302cfb346fef6db2cd46bb4e42faa2c0edf22f1068f",
+      "source_hashes_after": {
+        "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+        "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "e9ea304d813b74821f7cb634e6c607a84bcd486e71245a1c2249fa13eac052de"
+      },
+      "started_receipt_sha256": "bbbc869a01e82a308f152e51b49e9b297256e110d2061e94b7d20a18fb293283",
+      "required_success_names_observed": null,
+      "required_success_count_observed": null,
+      "receipt_path": ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791754982276208000-61679-result.json",
+      "receipt_sha256": "9a6fa256ee8b06b02b2d195dcb29b06ef2bbff182bc9bedcf3c445bf8ab6a3bf"
+    },
+    {
+      "gate": "clippy",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "kairo-ecs-abm",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012",
+      "head": "bbc472177876649b4c58e3f5972715c7855f1410",
+      "packet_sha256": "306f6907bbeecf8bcff89af7c17e13760e167cb4892fcfaed88fedeb417400cf",
+      "start": "2026-10-12T02:07:19.551337+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+        "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "47f04f091606943902b4dab15a5d4fa481fbc5d573004def4a426d91bcdeab1a"
+      },
+      "log": ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791770839531378000-67454.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791770839531378000-67454-started.json",
+      "end": "2026-10-12T02:07:22.453611+00:00",
+      "exit_code": 0,
+      "command_exit_code": 0,
+      "gate_error": null,
+      "log_sha256": "f46412f1854729c7a2b9c77eb647844a96f6ba62441372019fefabed7b49e9b9",
+      "source_hashes_after": {
+        "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+        "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "47f04f091606943902b4dab15a5d4fa481fbc5d573004def4a426d91bcdeab1a"
+      },
+      "started_receipt_sha256": "17f0b3ef8f61c1e211eb697d4cc4cf7441894db5ef384549d0ff057f2684d26f",
+      "required_success_names_observed": null,
+      "required_success_count_observed": null,
+      "receipt_path": ".artifacts/e22-transit-v2-direct-wire-20261012/logs/clippy-1791770839531378000-67454-result.json",
+      "receipt_sha256": "9ba8e273b34fd5971ad77a4cfabe569f751cd7a38d8c878f8dc401c60162d387"
+    },
+    {
+      "gate": "tests",
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-abm",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-e22-transit-v2-native-20261012",
+      "head": "bbc472177876649b4c58e3f5972715c7855f1410",
+      "packet_sha256": "306f6907bbeecf8bcff89af7c17e13760e167cb4892fcfaed88fedeb417400cf",
+      "start": "2026-10-12T02:07:28.032467+00:00",
+      "toolchain": {
+        "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+        "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)"
+      },
+      "source_hashes": {
+        "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+        "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "47f04f091606943902b4dab15a5d4fa481fbc5d573004def4a426d91bcdeab1a"
+      },
+      "log": ".artifacts/e22-transit-v2-direct-wire-20261012/logs/tests-1791770847990976000-67935.log",
+      "status": "finished",
+      "started_receipt_path": ".artifacts/e22-transit-v2-direct-wire-20261012/logs/tests-1791770847990976000-67935-started.json",
+      "end": "2026-10-12T02:07:43.841240+00:00",
+      "exit_code": 101,
+      "command_exit_code": 101,
+      "gate_error": null,
+      "log_sha256": "ee8d6003dbe5923f73dfd7a2c9c074c5f0c58734e89382add0b4dec8b434a8bd",
+      "source_hashes_after": {
+        "crates/kairo-ecs-abm/src/flow_adapter/transit_checkpoint_wire.rs": "99b7512ac05d79af6ff44e4b99f3122bf9fa3e325d4f77a72b69b7906ea94116",
+        "crates/kairo-ecs-abm/src/flow_adapter.rs": "0af3ae935ab98f9b5d99e70123843a0d2975e7c44e46a059e40a6a02fe1948c0",
+        "crates/kairo-ecs-abm/src/lib.rs": "f529af4967d659c3584dd4843562f6a81cdc05b947f2875aa17206627673cb36",
+        "crates/kairo-ecs-abm/tests/transit_context_checkpoint_wire_v2.rs": "47f04f091606943902b4dab15a5d4fa481fbc5d573004def4a426d91bcdeab1a"
+      },
+      "started_receipt_sha256": "448449868139b822d37a57c4a16dbcbe20b51c90f82abc0627943b769d892828",
+      "required_success_names_observed": [
+        "transit_v2_wire_literal_bytes_and_v1_compatibility",
+        "transit_v2_wire_count_text_and_checked_size_limits"
+      ],
+      "required_success_count_observed": 2,
+      "receipt_path": ".artifacts/e22-transit-v2-direct-wire-20261012/logs/tests-1791770847990976000-67935-result.json",
+      "receipt_sha256": "a930d9c55abe15c2a203defcd5558b90a0416adba29dbcbe0bfafd1248033ed8"
+    }
+  ]
+}
