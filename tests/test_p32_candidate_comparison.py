@@ -6,6 +6,7 @@ import math
 import random
 import struct
 import unittest
+from copy import deepcopy
 from unittest import mock
 from pathlib import Path
 
@@ -155,6 +156,47 @@ def make_candidates(training_records, truth_mu, truth_sigma, tail_cutoff,
     }
 
 
+PARAMETRIC_CROSS_RUNTIME_TOLERANCE_PATHS = {
+    ("parametric_lognormal_mle", "mu_log_duration"),
+    ("parametric_lognormal_mle", "sigma_log_duration"),
+    ("parametric_lognormal_mle", "log_likelihood_training_only"),
+    ("parametric_lognormal_mle", "known_truth_diagnostic", "absolute_mu_error"),
+    ("parametric_lognormal_mle", "known_truth_diagnostic", "absolute_sigma_error"),
+}
+# These narrow tolerances cover only cross-libm roundoff in lognormal fit
+# arithmetic. They are comparison portability bounds, not calibration or
+# statistical acceptance thresholds; inputs, empirical resampling and the
+# same-runtime repeat remain exact.
+PARAMETRIC_CROSS_RUNTIME_REL_TOLERANCE = 2e-15
+PARAMETRIC_CROSS_RUNTIME_ABS_TOLERANCE = 1e-14
+
+
+def assert_candidate_snapshot(test, actual, expected, path=()):
+    """Keep inputs/scenarios/bootstrap exact; allow only documented libm fit drift."""
+    if type(expected) is float:
+        if path in PARAMETRIC_CROSS_RUNTIME_TOLERANCE_PATHS:
+            test.assertTrue(
+                math.isclose(actual, expected,
+                             rel_tol=PARAMETRIC_CROSS_RUNTIME_REL_TOLERANCE,
+                             abs_tol=PARAMETRIC_CROSS_RUNTIME_ABS_TOLERANCE),
+                f"{path}: {actual!r} differs from {expected!r} beyond cross-runtime tolerance",
+            )
+        else:
+            test.assertEqual(actual, expected, path)
+    elif isinstance(expected, dict):
+        test.assertIsInstance(actual, dict)
+        test.assertEqual(set(actual), set(expected), path)
+        for key in expected:
+            assert_candidate_snapshot(test, actual[key], expected[key], (*path, key))
+    elif isinstance(expected, list):
+        test.assertIsInstance(actual, list)
+        test.assertEqual(len(actual), len(expected), path)
+        for index, (got, want) in enumerate(zip(actual, expected)):
+            assert_candidate_snapshot(test, got, want, (*path, index))
+    else:
+        test.assertEqual(actual, expected, path)
+
+
 def build_output():
     source = json.loads(SOURCE_PATH.read_text())
     case = source["case"]
@@ -273,7 +315,39 @@ class SyntheticCandidateComparisonTests(unittest.TestCase):
         self.assertEqual(one["parametric_lognormal_mle"]["sample_size"], one["empirical_resampling_baseline"]["resample_sample_size"])
         self.assertEqual(one["units"], "fixture duration units (unchanged; not an ED unit claim)")
         self.assertEqual(self.output["units"], "fixture duration units; same unchanged units for both candidates; no ED mapping asserted")
-        self.assertEqual(one, self.output["candidates"])
+        assert_candidate_snapshot(self, one, self.output["candidates"])
+
+    def test_candidate_snapshot_comparison_rejects_bad_drift_and_shape(self):
+        expected = deepcopy(self.output["candidates"])
+
+        excessive_parametric_drift = deepcopy(expected)
+        excessive_parametric_drift["parametric_lognormal_mle"]["mu_log_duration"] += 1e-7
+        with self.assertRaises(AssertionError):
+            assert_candidate_snapshot(self, excessive_parametric_drift, expected)
+
+        empirical_drift = deepcopy(expected)
+        current = empirical_drift["empirical_resampling_baseline"]["resample_quantiles"]["p50"]
+        empirical_drift["empirical_resampling_baseline"]["resample_quantiles"]["p50"] = math.nextafter(current, math.inf)
+        with self.assertRaises(AssertionError):
+            assert_candidate_snapshot(self, empirical_drift, expected)
+
+        missing_field = deepcopy(expected)
+        del missing_field["sample_size"]
+        with self.assertRaises(AssertionError):
+            assert_candidate_snapshot(self, missing_field, expected)
+
+        extra_field = deepcopy(expected)
+        extra_field["unexpected"] = 1
+        with self.assertRaises(AssertionError):
+            assert_candidate_snapshot(self, extra_field, expected)
+
+    def test_fixture_generator_environment_is_provenance_not_a_runtime_lock(self):
+        generator = self.source["case"]["generator"]
+        self.assertRegex(generator["runtime"], r"^CPython \d+\.\d+\.\d+$")
+        self.assertIn("not a cross-platform promise", generator["portability"])
+        self.assertEqual(self.output["lineage"]["input_fixture_sha256"], digest_bytes(SOURCE_PATH.read_bytes()))
+        self.assertEqual(self.output["lineage"]["generator_seed"], generator["seed"])
+        self.assertEqual(self.output["lineage"]["generator_contract"], generator["normal_transform"])
 
     def test_synthetic_only_and_no_winner_or_holdout_claim(self):
         provenance = self.output["provenance"]
