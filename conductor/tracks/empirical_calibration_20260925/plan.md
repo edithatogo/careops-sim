@@ -125,7 +125,7 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   handoff; portable serialization and process restart remain Track22 gates. The decision-mismatch rejection now has a test-only exact-value preservation oracle. Local
   same-live-Flow continuation acceptance does not close the Track03/Track22, hosted,
   portable checkpoint/restart, release, clinical or C2.4 phase gates.
-- [ ] C2.4 Conductor — review and verify phase (workflow.md).
+- [x] C2.4 Conductor — review and verify phase (workflow.md).
 
 After preparation C2.0, C2.2 provider/policy, C2.3 generic routing, and C2.1
 mode/paired behavior have local exact-pin joins under Rust 1.99.0. The earlier
