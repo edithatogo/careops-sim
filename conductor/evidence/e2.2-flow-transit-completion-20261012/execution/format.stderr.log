@@ -1,0 +1,54 @@
+error: expected one of `,` or `>`, found `.`
+   --> /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/crates/careops-ed/src/flow_adapter/transit.rs:102:43
+    |
+102 |         if input.start_tick as u128 < self.now().ticks() || input.start_tick > self.horizon_tick {
+    |                                           ^ expected one of `,` or `>`
+    |
+help: expressions must be enclosed in braces to be used as const generic arguments
+    |
+102 |         if input.start_tick as u128 < { self.now().ticks() || input.start_tick } > self.horizon_tick {
+    |                                       +                                        +
+
+error: expected `{`, found keyword `self`
+   --> /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/crates/careops-ed/src/flow_adapter/transit.rs:102:80
+    |
+102 |         if input.start_tick as u128 < self.now().ticks() || input.start_tick > self.horizon_tick {
+    |                                                                                ^^^^ expected `{`
+    |
+note: the `if` expression is missing a block after this condition
+   --> /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/crates/careops-ed/src/flow_adapter/transit.rs:102:12
+    |
+102 |         if input.start_tick as u128 < self.now().ticks() || input.start_tick > self.horizon_tick {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: you might have meant to write a field access
+    |
+102 |         if input.start_tick as u128 < self.now().ticks() || input.start_tick >.self.horizon_tick {
+    |                                                                               +
+
+error: expected one of `,` or `>`, found `.`
+   --> /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/crates/careops-ed/src/flow_adapter/transit.rs:152:34
+    |
+152 |         if at_tick as u128 < self.now().ticks() || at_tick > self.horizon_tick {
+    |                                  ^ expected one of `,` or `>`
+    |
+help: expressions must be enclosed in braces to be used as const generic arguments
+    |
+152 |         if at_tick as u128 < { self.now().ticks() || at_tick } > self.horizon_tick {
+    |                              +                               +
+
+error: expected `{`, found keyword `self`
+   --> /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/crates/careops-ed/src/flow_adapter/transit.rs:152:62
+    |
+152 |         if at_tick as u128 < self.now().ticks() || at_tick > self.horizon_tick {
+    |                                                              ^^^^ expected `{`
+    |
+note: the `if` expression is missing a block after this condition
+   --> /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/crates/careops-ed/src/flow_adapter/transit.rs:152:12
+    |
+152 |         if at_tick as u128 < self.now().ticks() || at_tick > self.horizon_tick {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: you might have meant to write a field access
+    |
+152 |         if at_tick as u128 < self.now().ticks() || at_tick >.self.horizon_tick {
+    |                                                             +
+

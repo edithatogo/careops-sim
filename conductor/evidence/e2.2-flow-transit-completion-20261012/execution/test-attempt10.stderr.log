@@ -1,0 +1,26 @@
+   Compiling careops-ed v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/crates/careops-ed)
+error[E0609]: no field `work` on type `&LifecycleRecord`
+   --> crates/careops-ed/src/flow_adapter/transit.rs:793:31
+    |
+793 |                     && record.work == service.work_id()
+    |                               ^^^^ unknown field
+    |
+help: one of the expressions' fields has a field of the same name
+    |
+793 |                     && record.snapshot.work == service.work_id()
+    |                               +++++++++
+
+error[E0609]: no field `work` on type `&LifecycleRecord`
+   --> crates/careops-ed/src/flow_adapter/transit.rs:800:31
+    |
+800 |                     && record.work == service.work_id()
+    |                               ^^^^ unknown field
+    |
+help: one of the expressions' fields has a field of the same name
+    |
+800 |                     && record.snapshot.work == service.work_id()
+    |                               +++++++++
+
+For more information about this error, try `rustc --explain E0609`.
+error: could not compile `careops-ed` (lib test) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

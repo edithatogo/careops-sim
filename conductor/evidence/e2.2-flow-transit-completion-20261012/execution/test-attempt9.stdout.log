@@ -1,0 +1,232 @@
+
+running 76 tests
+test arrivals::tests::unbiased_threshold_retry_and_bounded_exhaustion ... ok
+test arrivals::tests::serde_rejects_unknown_fields_and_wrong_acuity_array_length ... ok
+test disposition::tests::invalid_policy_bindings_and_non_full_pathway_reject ... ok
+test arrivals::tests::sampling_error_returns_no_partial_schedule_and_validation_draws_nothing ... ok
+test arrivals::tests::empty_width_one_adjacent_bins_and_excluded_endpoints ... ok
+test arrivals::tests::independent_reference_and_generator_match_canonical_non_power_of_two_vector ... ok
+test arrivals::tests::rejects_each_configuration_error_variant ... ok
+test disposition::tests::empty_population_validates_policy_and_returns_empty ... ok
+test disposition::tests::treatment_completion_reveals_only_at_exact_tick_and_never_changes_pathway ... ok
+test disposition::tests::patient_service_and_decision_binding_permutations_preserve_output ... ok
+test disposition::tests::sampled_service_duration_drives_provisional_observation_tick ... ok
+test disposition::tests::generator_template_service_and_decision_compose ... ok
+test arrivals::tests::exact_mode_acuity_counts_and_input_permutations_are_canonical ... ok
+test disposition::tests::no_one_and_repeated_diagnostics_use_actual_completion_times ... ok
+test offers::tests::allocation_ticks_must_increase_and_snapshot_cannot_rewind ... ok
+test offers::tests::empty_book_and_snapshots_are_well_formed ... ok
+test offers::tests::policies_offers_and_requests_are_validated ... ok
+test offers::tests::duplicate_request_and_consumed_patient_are_rejected_without_mutation ... ok
+test offers::tests::older_pending_request_keeps_priority_across_tick_batches ... ok
+test offers::tests::half_open_lifetime_availability_and_consumption_are_exact ... ok
+test offers::tests::request_and_offer_order_is_canonical_and_input_permutation_invariant ... ok
+test offers::tests::failed_batch_is_atomic_and_can_retry_at_same_tick ... ok
+test flow_adapter::transit::tests::same_runtime_wrong_carrier_cannot_rebind_service_owner ... ok
+test flow_adapter::transit::tests::arrived_stale_domain_changes_only_native_dispatch_accounting ... ok
+test offers::tests::same_tick_request_tie_uses_bytewise_patient_id_not_input_order ... ok
+test offers::tests::unrestricted_and_patient_restricted_offers_share_availability_order ... ok
+test offers::tests::wrong_destinations_and_patient_restrictions_do_not_consume ... ok
+test offers::tests::snapshots_and_boundary_ticks_cover_future_available_expired_and_consumed ... ok
+test pathway::tests::abandonment_at_horizon_realizes_but_future_and_overflow_deadlines_are_censored ... ok
+test pathway::tests::abandonment_cancels_queued_triage_releases_space_and_regrants_at_same_tick ... ok
+test pathway::tests::abandonment_removes_triage_from_its_actual_pool_after_input_permutation ... ok
+test pathway::tests::discrete_selection_is_canonical_bounded_and_exact_at_bucket_boundaries ... ok
+test pathway::tests::abandonment_policy_is_explicit_and_disabled_stays_unchanged ... ok
+test pathway::tests::class_eligibility_and_capacity_consistency_mutations_are_rejected ... ok
+test pathway::tests::abandonment_outside_space_removes_queue_without_acquiring_or_releasing ... ok
+test pathway::tests::distinct_stage_pool_capacities_keep_fcfs_queues_independent ... ok
+test pathway::tests::empty_population_still_validates_capacity_profile ... ok
+test pathway::tests::exact_horizon_completion_grants_next_stage_at_horizon_and_censors_it_at_zero ... ok
+test pathway::tests::first_triage_start_permanently_disables_abandonment_during_later_states ... ok
+test pathway::tests::generator_adapter_preserves_values_through_template_and_runtime ... ok
+test pathway::tests::patient_binding_and_support_permutations_preserve_full_results ... ok
+test pathway::tests::generated_arrivals_bind_only_exact_templates_and_preserve_fields ... ok
+test pathway::tests::queued_and_active_episodes_are_censored_at_horizon ... ok
+test pathway::tests::queued_at_horizon_episode_is_sampled_once_and_capacity_delay_does_not_change_samples ... ok
+test pathway::tests::invalid_patient_and_stage_mutations_are_rejected ... ok
+test pathway::tests::fixed_pipeline_preserves_legacy_and_adds_diagnostics_treatment_continuation ... ok
+test pathway::tests::root11_diagnostic_and_treatment_sampling_matches_independent_stream_vectors ... ok
+test pathway::tests::second_diagnostic_repeat_is_censored_when_active_or_queued_at_horizon ... ok
+test pathway::tests::service_bindings_distributions_and_stage_bounds_reject_invalid_inputs ... ok
+test pathway::tests::same_tick_completion_and_arrivals_enqueue_before_deterministic_fcfs_grants ... ok
+test pathway::tests::simultaneous_expired_waiters_use_pre_cancellation_snapshot_and_are_permutation_stable ... ok
+test pathway::tests::supplied_two_stage_work_has_exact_non_queue_intervals_and_stable_ids ... ok
+test pathway::tests::terminal_discharge_and_no_offer_are_distinct_realized_and_censored_states ... ok
+test pathway::tests::terminal_care_repeats_through_shared_clinical_resource_queue ... ok
+test pathway::tests::terminal_admission_uses_live_transfer_and_retains_space_until_departure ... ok
+test pathway::tests::terminal_active_care_cannot_be_matched_and_offer_expires ... ok
+test pathway::tests::terminal_resource_metrics_match_independent_interval_sweep ... ok
+test pathway::tests::terminal_departure_at_horizon_releases_space_and_grants_zero_work ... ok
+test pathway::tests::terminal_scheduled_event_counter_rejects_first_event_past_bound ... ok
+test pathway::tests::terminal_due_care_is_cancelled_before_same_tick_offer_work_grants ... ok
+test pathway::tests::terminal_exact_horizon_censors_transfer_and_releases_space_only_on_departure ... ok
+test pathway::tests::terminal_space_is_acquired_before_triage_and_held_through_departure ... ok
+test pathway::tests::terminal_transfer_pool_is_fcfs_and_input_permutations_are_stable ... ok
+test pathway::tests::terminal_u64_max_horizon_accumulates_metrics_without_overflow ... ok
+test pathway::tests::terminal_u64_max_service_duration_uses_wide_completion_arithmetic ... ok
+test pathway::tests::terminal_validation_rejects_care_budget_alias_and_missing_destination_before_run ... ok
+test pathway::tests::triage_reveals_acuity_and_fcfs_ignores_acuity_priority ... ok
+test pathway::tests::very_long_service_is_censored_without_completion_overflow ... ok
+test pathway::tests::whole_path_sampling_reaches_all_support_buckets_from_independent_seeds ... ok
+test tests::accepted_e01_synthetic_case_maps_to_the_e0_single_work_slice ... ok
+test pathway::tests::triage_start_at_deadline_wins_even_when_it_is_the_horizon ... ok
+test tests::processes_completion_at_the_horizon_and_leaves_late_work_unfinished ... ok
+test tests::repeated_runs_are_identical ... ok
+test arrivals::tests::accepts_limit_and_rejects_one_above_before_sampling ... ok
+test pathway::tests::documented_patient_profile_and_template_bounds_are_enforced ... ok
+test offers::tests::max_bounds_are_checked_before_indexing_and_allow_exact_limit ... ok
+
+test result: ok. 76 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+
+
+running 3 tests
+test cancel_removes_a_scheduled_event_once_and_keeps_live_order ... ok
+test ed_rejects_zero_duration_work_without_claiming_graceful_cancellation ... ok
+test same_tick_work_stops_at_budget_and_continues_on_the_next_call ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+
+running 1 test
+test simulation_error_display_preserves_validation_context ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+test seed_change_is_reported_without_inventing_stochastic_behavior ... ok
+test horizon_conserves_queued_and_running_work ... ok
+test malformed_inputs_never_enter_the_runner ... ok
+test fifo_and_metric_accounting_match_an_independent_recurrence ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 10 tests
+test staff_count_status_requires_the_matching_value_and_reason ... ok
+test resource_unknown_availability_requires_null_counts_and_a_reason ... ok
+test identifiers_must_be_nonempty_and_already_trimmed ... ok
+test routes_require_resolved_locations_and_nonnegative_metre_distance ... ok
+test resource_known_availability_requires_both_counts_and_no_reason ... ok
+test profile_metadata_and_aggregate_shape_are_checked_one_field_at_a_time ... ok
+test equipment_reason_rules_match_each_status ... ok
+test resource_counts_enforce_positive_and_physical_boundaries ... ok
+test aggregate_physical_and_availability_counts_have_distinct_status_rules ... ok
+test eligibility_and_required_resource_classes_are_checked_independently ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 3 tests
+test extreme_fixtures_bind_only_triage_projection ... ok
+test invalid_fixture_cases_reject_and_single_mutation_repairs ... ok
+test endpoint_fixtures_bind_native_component_projections ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 1 test
+test seed11_arrivals_compose_through_four_stages_and_censor_at_horizon ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 3 tests
+test all_frozen_extremes_use_the_actual_e0_runner ... ok
+test all_frozen_endpoint_cases_bind_to_native_terminal_rows_and_reducers ... ok
+test all_frozen_invalid_cases_reject_full_terminal_input_and_single_mutation_repairs ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 11 tests
+test reversing_configuration_vectors_preserves_canonical_result ... ok
+test immediate_delayed_and_horizon_censored_discharge_are_distinct ... ok
+test care_and_clinical_work_share_one_fcfs_pool ... ok
+test wide_completion_arithmetic_censors_without_wrapping ... ok
+test transfer_capacity_delays_physical_departure_and_conserves_space ... ok
+test transfer_at_horizon_is_censored_then_terminal_at_exact_completion ... ok
+test malformed_terminal_policy_rejects_before_any_lifecycle_result ... ok
+test disabled_abandonment_leaves_boarder_open_and_wrong_or_expired_offers_unconsumed ... ok
+test care_due_tie_cancels_without_work_and_active_care_blocks_offer_until_completion ... ok
+test space_is_retained_until_departure_and_outside_patient_starts_at_release ... ok
+test zero_delay_departure_releases_space_before_same_tick_grants ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 25 tests
+test exact_zone_all_required_skills_and_extra_staff_skills_apply ... ok
+test calendars_are_order_independent_adjacency_is_valid_and_inputs_are_unchanged ... ok
+test available_staff_waits_for_future_request_and_empty_shifts_are_unavailable ... ok
+test busy_staff_and_future_requests_are_unavailable ... ok
+test break_overlap_and_containment_use_original_order_after_calendar_normalization ... ok
+test calendar_validation_reports_original_indices_and_calendar_paths ... ok
+test combined_calendar_limit_accepts_1024_and_rejects_1025 ... ok
+test empty_and_single_pair_are_supported ... ok
+test calendar_combined_cap_is_checked_before_intervals ... ok
+test now_at_horizon_can_select_from_shift_starting_at_horizon ... ok
+test high_priority_without_eligible_staff_is_skipped ... ok
+test idle_shift_and_break_boundaries_are_half_open ... ok
+test only_already_waiting_requests_compete_and_staff_ties_use_ascii_id ... ok
+test request_and_staff_identity_limits_are_ascii_and_separate_namespaces ... ok
+test request_and_staff_skill_lists_enforce_order_identity_and_both_caps ... ok
+test request_priority_is_urgency_then_ready_time_then_ascii_id ... ok
+test skill_cap_and_empty_skill_lists_are_valid ... ok
+test reversed_inputs_choose_same_pair_and_repeat_selection_without_mutation ... ok
+test urgency_handles_minimum_zero_and_maximum_without_negation ... ok
+test validation_checks_identities_skills_and_required_count_with_paths ... ok
+test zone_and_skill_intersections_exclude_otherwise_matching_staff ... ok
+test validation_checks_ineligible_rows_and_preserves_error_precedence ... ok
+test validation_reports_outer_limits_and_time_paths ... ok
+test bitset_boundaries_and_joint_skill_intersection_select_correct_staff ... ok
+test request_outer_cardinality_rejects_100001_and_accepts_100000_unique_rows ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+
+
+running 10 tests
+test foundation_native_closed_phase_rejection_is_atomic ... ok
+test foundation_native_positive_service_and_lineage ... ok
+test foundation_native_calendar_and_reflush ... ok
+test foundation_native_bounds_and_handle_atomicity ... ok
+test foundation_native_queue_keys_and_urgency ... ok
+test foundation_native_manual_claims_and_release ... ok
+test foundation_native_sampled_service_lineage_pass_through ... ok
+test foundation_native_horizon_and_wide_duration ... ok
+test foundation_native_suspend_and_finite_bound ... ok
+test foundation_native_causal_microsteps ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 7 tests
+test adapter_transit_domain_and_frontier_resume_arrival ... ok
+test adapter_transit_actual_moving_and_service_unconsumed ... ok
+test adapter_transit_class_limits_and_callback_budget ... ok
+test adapter_transit_admits_once_and_suppresses ... ok
+test adapter_transit_horizon_and_zero_route ... ok
+test adapter_transit_identity_and_owner_controls ... ok
+test adapter_transit_pause_retained_and_consumed_resume ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 7 tests
+test rejects_unsupported_time_unit ... ok
+test rejects_zero_horizon_and_zero_work ... ok
+test validates_optional_p0_equipment_status_and_reason ... ok
+test rejects_nonpositive_capacity_and_unresolved_references ... ok
+test rejects_bad_route_units_and_unknown_capacity ... ok
+test rejects_unsupported_schema_version_with_clear_diagnostic ... ok
+test rejects_missing_required_inputs_and_extra_fields ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 1 test
+test crates/careops-ed/src/dispatch.rs - dispatch::ValidatedDispatchSnapshot (line 43) - compile fail ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+

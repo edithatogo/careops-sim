@@ -1,0 +1,44 @@
+{
+  "status": "ready_for_review",
+  "acceptance": "not_claimed",
+  "base_head": "1c8c8938c8caf9c2640f717375d7ac805ee920ad",
+  "toolchain": "Rust 1.99.0",
+  "source_sha256": {
+    "crates/careops-ed/src/flow_adapter.rs": "ab91943450144ade25d7fcd492ba7b05615bb4a78e8a148ad6e5e4483fb9e5b5",
+    "crates/careops-ed/src/flow_adapter/transit.rs": "605c9e1bdbb15b499302e20dc4f7f3ba3c92acedbb14ec798a3a7facbbd799de",
+    "crates/careops-ed/tests/flow_adapter_transit_native.rs": "8aba65653c3015cbb04f2db4d3bc3856155527d70ee20f4a5ec1a0848e7adb7a"
+  },
+  "passing_gates": [
+    "root-format-14.receipt.json",
+    "root-test-12.receipt.json",
+    "root-clippy-3.receipt.json",
+    "root-format-check-3.receipt.json"
+  ],
+  "preserved_failed_attempts": [
+    "format.receipt.json: syntax failure; preserved",
+    "format-attempt2: runner failed before rustfmt with NameError; no native gate was executed",
+    "test-attempt1.receipt.json: compile failure from incorrect TransitGraphV1 import",
+    "test-attempt2.receipt.json: four fixture assertion failures",
+    "test-attempt3.receipt.json: paused DTO stale-event metadata mismatch",
+    "test-attempt4.receipt.json: private V4 fixture scheduled Pause outside its route horizon",
+    "test-attempt5.receipt.json: compile error using nonexistent RoutePlan.duration_ticks field",
+    "test-attempt6.receipt.json: V4 capture rejected marker callback identity registration",
+    "test-attempt7.receipt.json: full V4 projection omitted consumed Domain command-row removal",
+    "test-attempt8.receipt.json: pause test checked tick 2 in a later drain after both tick-2 events were consumed"
+  ],
+  "reviewed_repairs": [
+    "Paused stale DTO expectation clears only expected_event, expected_due_ticks, and next_progress_ticket; full remaining DTO equality is asserted.",
+    "Private native V4 stale Domain proof uses the shared named marker receipt callback and matching callback registration identities.",
+    "V4 expected image removes the consumed Domain command and scheduler entry, advances dispatch/batch accounting, and applies same-tick budget accounting; full image equality is asserted.",
+    "Pause and stale Domain dispatches are asserted at tick 2; Resume uses its returned event ID at tick 5 and arrival is asserted at tick 7."
+  ],
+  "known_coverage_gap": "Seven review gaps closed by frozen proof pass, independently reviewed by GPT-6.1-sol; final accessor fixes preserve assertions.",
+  "scope_notes": [
+    "No source changes outside the three owned Rust paths.",
+    "No commit or acceptance claim; root review remains required.",
+    "The private FrozenService checkpoint decoder is a capture-fixture placeholder and is not restoration or persistence evidence.",
+    "The advisory reservation was renewed by root after validation of owner, base, input hashes, and scope."
+  ],
+  "root_continuation": "Former worker handle missing, no live gates. Root preserved dirty scope, corrected LifecycleRecord access to snapshot.work Option in unit and integration tests. All prior receipts retained; later compile failures also preserved.",
+  "tests_passed": 162
+}

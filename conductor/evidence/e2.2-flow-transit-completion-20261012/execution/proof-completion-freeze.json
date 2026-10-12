@@ -1,0 +1,21 @@
+{
+  "checklist_source": "/tmp/careops-e22-transit-seven-family-final-review-20261012.md",
+  "checklist_sha256": "558ec6348f38e0c540b42d94ede3adaaa26222aac2b1b94afc2096d025213522",
+  "status": "frozen_for_root_and_sol_readonly_review_before_gates",
+  "source_sha256": {
+    "crates/careops-ed/src/flow_adapter.rs": "ab91943450144ade25d7fcd492ba7b05615bb4a78e8a148ad6e5e4483fb9e5b5",
+    "crates/careops-ed/src/flow_adapter/transit.rs": "16453b40f5d944ab68d91823833e7f3a447491e0901671239f401cc910497e45",
+    "crates/careops-ed/tests/flow_adapter_transit_native.rs": "2219452cab723d6b77babae90313677990068832d10be69f0d8c72aefc476f21"
+  },
+  "proof_items": {
+    "1_moving_service_row": "Full ServiceSnapshot row is captured before transit and compared after Start, Progress, and Domain arrival; request/resource absence and no lifecycle records are asserted.",
+    "2_pause_retained_and_consumed": "Two identical fixtures cover Resume scheduled while old Domain is retained and Resume scheduled after old Domain consumption. Both assert distinct expected-event cuts, old event dispatch, same arrival tick 7, final route/cursor/phase parity, complete service row parity, and callback row bounds.",
+    "3_domain_and_resume_arrival": "Domain and frontier Resume arrivals assert actual event linkage, arrival cause/witness, no error or lifecycle records, and Accepted(empty) callback receipt; private full V4 stale-delta proof retained.",
+    "4_admission_and_observers": "Duplicate begin_transit and admission rejection compare adapter/context/preview snapshots. Private test calls pending and dispatch observers before and after actual service binding; both suppress after binding. Existing actual Granted/Completed control preserves request/work/sample origin linkage.",
+    "5_identity_terminal_and_observer_negatives": "Existing wrong-owner, route collision, and forged carrier tests remain. Terminal service rejection compares snapshot/preview. Private observer state rejects an error-marked clone without publication, ignores a genuine unrelated marker dispatch, and accepts the actual arrival baseline; error-marked clone is explicitly not a runtime-error claim.",
+    "6_horizon_and_zero_route": "Zero-segment route accepted-empty arrival is drained through Horizon, with one bounded horizon remainder, unchanged full pending service row, no further arrival observation, and no dispatch errors.",
+    "7_limits_and_callback_shape": "Existing exact/one-over class and all four native size limits plus entity/operation overflow proofs retained. Callback row limits are checked over both pause branch timelines and moving events; no pre-admission lifecycle rows."
+  },
+  "preserved_prior_receipts": "All attempts 1-9 remain immutable; no new gates have run against this frozen source snapshot.",
+  "scope": "test-only additions in existing owned test files and private child module; no production logic changes in this proof-completion pass"
+}
