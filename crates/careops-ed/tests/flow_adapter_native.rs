@@ -344,6 +344,95 @@ fn foundation_native_positive_service_and_lineage() {
 }
 
 #[test]
+fn foundation_native_sampled_service_lineage_pass_through() {
+    let mut adapter = make(
+        vec![resource("sampled-staff", 1)],
+        vec![],
+        3,
+        bounds(1, 1, 1, 0, 0, 0),
+    );
+    let origin = SampleOrigin::Sampled {
+        root_seed: 0x5eed_cafe_1234_9876,
+        stream_slot: 17,
+        draws_before: 41,
+        draws_after: 43,
+    };
+    let mut sampled = service("p-sampled", "p-sampled-episode", 4);
+    sampled.useful_before_ticks = 2;
+    sampled.remaining_ticks = 2;
+    sampled.origin = origin.clone();
+    let identity = sampled.identity.clone();
+    let handle = adapter.create_service(sampled.clone()).unwrap();
+    let request = adapter
+        .admit_service(
+            &handle,
+            admission(
+                "sampled-staff",
+                QueueKey::from_request(0, "sampled".into()).unwrap(),
+                0,
+                false,
+                false,
+            ),
+        )
+        .unwrap();
+    let request_id = request.request_id();
+    let work_id = handle.work_id();
+    assert_eq!(handle.identity(), &identity);
+    let before = adapter.snapshot();
+    assert_eq!(before.services[0].progress.useful_elapsed.ticks(), 0);
+    assert_eq!(before.services[0].progress.remaining.ticks(), 2);
+
+    let submit = adapter.step().unwrap().unwrap();
+    adapter.flush_dirty().unwrap();
+    let grant = adapter.step().unwrap().unwrap();
+    let mut dispatches = vec![submit, grant];
+    dispatches.extend(drain_through_horizon(&mut adapter));
+
+    for (transition, elapsed, remaining, state) in [
+        (LifecycleTransition::Queued, 0, 2, WorkState::Pending),
+        (LifecycleTransition::Granted, 0, 2, WorkState::Active),
+        (LifecycleTransition::Completed, 2, 0, WorkState::Completed),
+    ] {
+        let matches: Vec<_> = dispatches
+            .iter()
+            .flat_map(|dispatch| dispatch.observations.iter())
+            .filter_map(|observation| match observation {
+                FoundationObservation::Service(observation)
+                    if observation.request == request_id
+                        && observation.work == work_id
+                        && observation.transition == transition =>
+                {
+                    Some(observation)
+                }
+                _ => None,
+            })
+            .collect();
+        assert_eq!(matches.len(), 1, "expected one {transition:?} observation");
+        let observation = matches[0];
+        assert_eq!(observation.identity, identity);
+        assert_eq!(observation.origin, origin);
+        assert_eq!(observation.original_ticks, 4);
+        assert_eq!(observation.useful_before_ticks, 2);
+        assert_eq!(observation.useful_elapsed_ticks, elapsed);
+        assert_eq!(observation.total_useful_ticks, 2 + elapsed);
+        assert_eq!(observation.remaining_ticks, remaining);
+        assert_eq!(observation.state, state);
+    }
+    for transition in [
+        LifecycleTransition::Queued,
+        LifecycleTransition::Granted,
+        LifecycleTransition::Completed,
+    ] {
+        assert!(dispatches.iter().any(|dispatch| dispatch
+            .native
+            .records
+            .iter()
+            .any(|record| record.request == request_id && record.transition == transition)));
+    }
+    assert_eq!(sampled.origin, origin);
+}
+
+#[test]
 fn foundation_native_manual_claims_and_release() {
     let mut adapter = make(
         vec![resource("room", 2)],
@@ -1435,6 +1524,53 @@ fn foundation_native_causal_microsteps() {
     assert!(stale.records.is_empty());
     assert!(stale.error.is_none());
     assert!(zero.step().unwrap().is_none());
+}
+
+#[test]
+fn foundation_native_closed_phase_rejection_is_atomic() {
+    let mut adapter = make(vec![], vec![], 3, bounds(0, 0, 0, 0, 0, 2));
+    let decision_event = adapter
+        .schedule_marker("closed-phase", 1, ParentPhase::Decision)
+        .unwrap();
+    let decision = adapter.step().unwrap().unwrap();
+    assert_eq!(decision.native.event, decision_event);
+    assert_eq!(decision.native.at, SimTime::from_ticks(1));
+    assert!(decision.observations.iter().any(|observation| matches!(
+        observation,
+        FoundationObservation::Marker { operation_id, event, at }
+            if operation_id == "closed-phase" && *event == decision_event && *at == SimTime::from_ticks(1)
+    )));
+
+    let before_rejection = adapter.snapshot();
+    assert!(matches!(
+        adapter.schedule_marker("reusable", 1, ParentPhase::CalendarExpiry),
+        Err(AdapterError::ClosedPhase)
+    ));
+    assert_eq!(adapter.snapshot(), before_rejection);
+
+    let accepted_event = adapter
+        .schedule_marker("reusable", 1, ParentPhase::Ready)
+        .unwrap();
+    let after_acceptance = adapter.snapshot();
+    assert_eq!(
+        after_acceptance.counters.parent_markers,
+        before_rejection.counters.parent_markers + 1
+    );
+    assert_eq!(
+        after_acceptance.counters.scheduled_adapter_events,
+        before_rejection.counters.scheduled_adapter_events + 1
+    );
+    let next = adapter.peek_next().unwrap();
+    assert_eq!(next.id, accepted_event);
+    assert_eq!(next.at, SimTime::from_ticks(1));
+    assert_eq!(next.priority, ParentPhase::Ready.priority());
+    let ready = adapter.step().unwrap().unwrap();
+    assert_eq!(ready.native.event, accepted_event);
+    assert!(ready.observations.iter().any(|observation| matches!(
+        observation,
+        FoundationObservation::Marker { operation_id, event, at }
+            if operation_id == "reusable" && *event == accepted_event && *at == SimTime::from_ticks(1)
+    )));
 }
 
 #[test]
