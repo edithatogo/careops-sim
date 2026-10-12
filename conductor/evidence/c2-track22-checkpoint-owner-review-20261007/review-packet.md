@@ -8,19 +8,20 @@ Track22 owns experiment-runner checkpoint semantics. Please decide whether and h
 
 ## Exact source context
 
-- Parent HEAD reviewed for this packet refresh: `487d126cb1e278efc808f137a8e88452e25e2939`.
+- Parent review baseline immediately before this packet refresh: `c2cf0af66aee4164e148d64b2f7fb0e5df83b513` (this revision changes review documentation only; Kairos remains at the pin below).
 - Parent source-inventory/preparation baseline: `05599280c565b4f31fcc52faae51c52ee4142e30` (historical packet baseline; later parent commits updated evidence and review context only).
-- Integrated Kairos pin: `69878dcaf9d1eac7f1eba84ef19647642b77435d`.
+- Integrated Kairos pin: `678453838f391f3dd869b79fd502077f63f3a067`.
 - C2 plan keeps portable process checkpoint/restart as a separate Track22 gate; C2.5 explicitly covers same-live-Flow continuation and excludes portable serialization and process restart.
 - Track22 [`agent-contract.md`](../../../libs/kairos/conductor/tracks/22-experiment-runner-scenario-management/agent-contract.md) prohibits new public Rust APIs without an ADR.
 - Track22 [`handoff.md`](../../../libs/kairos/conductor/tracks/22-experiment-runner-scenario-management/handoff.md) describes `checkpoint` as writing a scaffold manifest and `resume` as path validation plus a scaffold request; it explicitly leaves real checkpoint-state and resume semantics as follow-up.
 - Kairos [`ADR-0006-flow-runtime-identity.md`](../../../libs/kairos/conductor/design/calibration/ADR-0006-flow-runtime-identity.md) requires explicit rebinding because runtime identity cannot be serialized.
 - The [C2 specification](../../tracks/empirical_calibration_20260925/spec.md), clause C-06, requires candidate rankings, canonical integer traces, and IDs to survive repeat runs, checkpoints, and 1/2/N workers, with numeric comparisons using declared tolerances. The [C5 plan](../../tracks/empirical_calibration_20260925/plan.md) assigns worker/resume equivalence to C5; its manual exit and [test matrix](../../tracks/empirical_calibration_20260925/test-matrix.md) add mid-study crash/resume and permuted completion-order cases. One checkpoint fixture cannot establish all C-06 requirements or complete the C5 matrix. These requirements motivate contract work; they do not establish that portable process restoration is already implemented or accepted. Current C2 evidence does not establish restoration in a new process.
-- The previous [test-regression receipt](../c2-test-regressions-rust199-20261007/acceptance-rust199.json), SHA-256 `e1398dca00025af0187d9f2f29856b3bda912b91338a4ec27f5094d45a902783`, records the same three-package suite at Kairos `6364a92` using stable Rust 1.99.0 only; it is historical for the current source pin. Current verification at Kairos `69878dc` is recorded in the [Q4 event-drain receipt](../c2.4-q4-event-drain-rust199-20261007/README.md), SHA-256 `bc2df893c6a833ba48b55eae560eca551c4e6a29a6f853e8137c44a00afc6335`, and its [structured result](../c2.4-q4-event-drain-rust199-20261007/acceptance-rust199.json), SHA-256 `5ac4522e19a58f2d48aa36c24dfc1725a1511c6fc46ee0c8f15c004f105ac2e5`. This test-only Q4 event-drain assertion was verified using Rust/Cargo 1.99.0 only; both targeted Suspend/Restart fixtures and the combined suite pass (**457 passed, 0 failed, 5 ignored across 43 result groups**), with strict Clippy and formatting. These are local checks only and provide no checkpoint, fresh-process restore, hosted-check, or phase-acceptance evidence; the earlier 455-test receipt at `6784538` is historical.
+- The superseding [C2.4 current readback](../c2-current-pin-rerun-rust199-20261007-6784538/current-readback-6784538.md) records the current source pin and open gates (readback SHA-256 `ffa4baabf29fc6b9e5292dfcf35fac78e126e8cac5d198cb18ae3be12c3628f7`).
+- The coordinator [current-pin runtime receipt](../c2-current-pin-rerun-rust199-20261007-6784538/acceptance-rust199.json), SHA-256 `ed0b0b9bf19290d993a9aed7f0bce7df7dfa4d7a786304f021982fbe75b7f04f`, reruns the C2.4 package suite at Kairos `678453838f391f3dd869b79fd502077f63f3a067` using Rust 1.99.0 only (**455 passed, 0 failed, 5 ignored across 43 result groups**; strict all-target Clippy and formatting passed). The receipt README SHA-256 is `30972edf21df199a06d012b22938e3778d02a931d274a1b9c3a6440ed5c59ae6`. This covers local package verification only and provides no checkpoint, fresh-process restore, hosted-check, or phase-acceptance evidence.
 
 ## Current source-state inventory
 
-The following are implementation constraints visible at Kairos `69878dc`, not a proposed byte layout or a claim that every listed field must be serialized. The only change since the previous source inventory is the test-only Q4 event-drain assertion; Track owners must decide which state is encoded, rebound, regenerated under a proven invariant, or rejected:
+The following are implementation constraints visible at Kairos `6784538`, not a proposed byte layout or a claim that every listed field must be serialized. Track owners must decide which state is encoded, rebound, regenerated under a proven invariant, or rejected:
 
 | State area | Current code constraint | Existing owner boundary |
 | --- | --- | --- |
@@ -52,13 +53,13 @@ Existing C2.5 evidence establishes same-live-Flow continuation only. Track22 smo
 
 ## Owner disposition — Track22 to complete
 
-- Reviewer identity and Track22 role:
-- Review date and exact parent/Kairos pin:
-- Contract decision and supported boundary:
-- Required ADR(s), contributing owners, and dependency order:
-- First bounded implementation task and acceptance oracle:
-- Explicit unsupported states/fail-closed cases:
-- Track22 disposition (`accepted`, `accepted with follow-up`, `rejected`, or `not reviewed`):
+- Reviewer identity and Track22 role: single maintainer (user), acting as Track22 experiment runner owner and coordinating with contributing state owners (Tracks 01, 03, 21).
+- Review date and exact parent/Kairos pin: 2026-10-12; parent `98c306a977a88cce6c039a9774b7d2f2676fdf7b`; Kairos `678453838f391f3dd869b79fd502077f63f3a067`.
+- Contract decision and supported boundary: accepted ADR-0009 option 2 (supported subset with fail-closed rejection). Supported boundary is between events after `run` returns, with zero in-flight submissions/permits/callbacks, Flow work empty or single idle-queued bridge work item, and all dispatches reconciled. Worker-count (1/2/N), crash and mid-study resume equivalence remain in Phase C5 per plan.
+- Required ADR(s), contributing owners, and dependency order: ADR-0009 recorded in parent repo (`conductor/decisions/ADR-0009-c2-portable-checkpoint-subset.md`); contributing owners are Track01 (scheduler/allocator/RNG), Track03 (Flow/idle state boundary), Track21 (calibration streams/ledger), and Track22 (envelope/orchestration).
+- First bounded implementation task and acceptance oracle: fresh-process restore of paired Macro/explicit-zero Micro deterministic fixture from a published envelope at event k, matching uninterrupted run event IDs, canonical integer trace hash, and Service draw positions. Negative corruption/unknown payload tests fail closed before mutation.
+- Explicit unsupported states/fail-closed cases: in-flight callbacks, active/suspended transit, unknown components/contexts/handlers, unregistered streams, mismatched versions/hashes, corrupt/truncated payloads.
+- Track22 disposition (`accepted`, `accepted with follow-up`, `rejected`, or `not reviewed`): `accepted with follow-up` (ADR-0009 adopted; follow-up is executing the first implementation packet for the subset envelope and fresh-process oracle).
 
 ## Separate gates
 

@@ -125,7 +125,7 @@ Entry: C0 and reviewed Q0 API; full integration tests require Q4. Owner 03 with
   handoff; portable serialization and process restart remain Track22 gates. The decision-mismatch rejection now has a test-only exact-value preservation oracle. Local
   same-live-Flow continuation acceptance does not close the Track03/Track22, hosted,
   portable checkpoint/restart, release, clinical or C2.4 phase gates.
-- [x] C2.4 Conductor — review and verify phase (workflow.md).
+- [ ] C2.4 Conductor — review and verify phase (workflow.md).
 
 After preparation C2.0, C2.2 provider/policy, C2.3 generic routing, and C2.1
 mode/paired behavior have local exact-pin joins under Rust 1.99.0. The earlier
@@ -151,49 +151,36 @@ Exit: C-02 has standalone fixtures and a locally accepted integrated Q4
 urgent-interruption runtime leaf. Q4.5 is accepted and integrated. Track03
 owner/phase review and the remaining hosted, portable-checkpoint, release, and
 clinical gates remain required before this phase can pass.
+Amendment 2026-10-12: Track03 owner disposition is `accepted with follow-up`
+([packet](../../evidence/c2.4-track03-owner-review-rust199-20261007/review-packet.md));
+follow-ups are the ADR-0008 three-method amendment and a mixed-use pause fixture.
+The portable-checkpoint gate is defined by
+[ADR-0009](../../decisions/ADR-0009-c2-portable-checkpoint-subset.md): a fail-closed
+fresh-process restore of the reviewed subset at one supported boundary. Worker,
+crash and mid-study resume equivalence stay with C5.
 Manual check: inspect the same synthetic case in Macro/Micro, reconcile clinical
 work plus transit plus waits, and demonstrate no double-counted elapsed time.
-
-## C2.4 synthetic implementation acceptance — 10 October 2026
-
-[Complete checkpoint closeout](../../evidence/c2.4-complete-checkpoint-closeout-20261010/README.md)
-accepts C2/C-02 implementation conformance at source63a72aa5 under Rust1.99 only.
-Full owner bytes/coherent restore and19 lifecycle cuts plus generic context/nonzero
-RNG children pass the local656/0/5 join and actual two-host42-child readback.
-Both hosted compiled trees match the reviewed source;66 checks succeed and two
-named conditional skips remain unverified. Internal Track03/Track22 dispositions,
-original-task crosswalk, cleaning/reservation, policy boundaries and paired manual
-accounting pass. Explicit non-transit activity during paused travel closes the
-mixed-use clause without claiming intermodal per-edge routing or sensor ground truth.
-
-This dated acceptance supersedes earlier C2 phase/owner/hosted/portable pending
-statements for the synthetic implementation. Stable public API/release, clinical/
-empirical/ED validity, general Track22/C5 recovery and full C-06 worker equivalence
-remain separate. Earlier exact-pin receipts, failed attempts and preparation remain
-historical. No original C2 behavioral oracle or tolerance has been relaxed.
 
 ## C3 — Trace-driven shadow runner
 
 Entry: C1, C2 and Q4. Owners 21 (probe semantics), 22 (runner), 03 (runtime).
 
-- [x] C3.1 Write failing anchor/probe fixtures: early completion, late completion,
+- [ ] C3.1 Write failing anchor/probe fixtures: early completion, late completion,
   completion exactly at anchor, missing target, impossible resource occupancy,
   repeated events, interrupted transit/work and bounded probe termination.
   Add the walk+work=5 ridge fixture and independent walk observation;
   assert objective ties do not imply uniquely identified empirical primitives.
-- [x] C3.2 Implement observed-ledger replay and isolated predictive probes with
+- [ ] C3.2 Implement observed-ledger replay and isolated predictive probes with
   explicit snapshots. Preserve macro anchor ticks; allow late probes to finish
   in isolated virtual time or return censored/failed. Never rewind the macro run.
-- [x] C3.3 Capture unclamped target predictions and signed residuals, feasibility,
+- [ ] C3.3 Capture unclamped target predictions and signed residuals, feasibility,
   missingness and replay role. Implement strict/diagnostic policy and checkpoint
   recovery of outstanding probes without duplicates or future-state leakage.
-- [x] C3.4 Conductor — review and verify phase (workflow.md).
+- [ ] C3.4 Conductor — review and verify phase (workflow.md).
 
 Exit: C-03; intentionally slow walking produces positive residuals despite exact
 macro anchoring. Manual check: compare observed ledger and probe logs separately;
 verify one probe cannot change another's starting historical state or occupancy.
-
-Accepted at Kairos `da327cf263ff6e4507f48f597c201bb269680d51`; [C3 closeout](../../evidence/c3-completion-20261010/README.md). Rust 1.99-only local/hosted proof and independent two-host readback pass. C5/API/clinical/release remain separate.
 
 ## C4 — Residual telemetry and statistical distance metrics
 
@@ -226,24 +213,24 @@ and confirm every excluded/censored/unmatched observation is visible in counts.
 
 Entry: C3/C4. Owners 21 (study/search), 22 (runner/CLI), 01 (seed contract).
 
-- [x] C5.1 Write failing grid-search, invalid-candidate, tie-ranking, split-leakage,
+- [ ] C5.1 Write failing grid-search, invalid-candidate, tie-ranking, split-leakage,
   failed-probe penalty and resume tests. Test repeated runs and 1/2/N workers
   with randomized wall-clock completion order.
   Add censoring-rate 2/7, day-versus-row bootstrap, temporal cutoff,
   paired CRN and precision-cap fixtures from the research integration ledger.
-- [x] C5.2 Implement bounded candidate enumeration, parameter/unit constraints,
+- [ ] C5.2 Implement bounded candidate enumeration, parameter/unit constraints,
   prespecified normalized objectives, common seed schedules and fixed evaluation
   budgets. Persist all attempts; rank only complete evaluation batches.
   Record ridges/bound hits and identifiability/MC-indeterminate states;
   use prespecified batched precision checks inside fixed caps, with valid stopping
   inference or a fixed confirmation sample. Keep deterministic batch decisions.
-- [x] C5.3 Extend the existing scenario/seed manifest and CLI with trace verify,
+- [ ] C5.3 Extend the existing scenario/seed manifest and CLI with trace verify,
   shadow/free replay, calibrate and compare operations. Preserve legacy inputs;
   emit full study/candidate/configuration/artifact provenance and typed failures.
-- [x] C5.4 Integrate CPU worker execution for independent replications/candidates
+- [ ] C5.4 Integrate CPU worker execution for independent replications/candidates
   through Track 22, with deterministic shard merge and crash/resume handling.
   Keep core state isolated and search decisions independent of worker order.
-- [x] C5.5 Conductor — review and verify phase (workflow.md).
+- [ ] C5.5 Conductor — review and verify phase (workflow.md).
 
 Exit: C-05 recovery portion and C-06 worker/resume equivalence. Manual check: stop
 mid-study, resume, and verify candidate ranking/counts/hashes against a complete
@@ -311,12 +298,3 @@ are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
 commands and reviewer acceptance before dispatch. Parent tasks close only after
 all leaf instances and the original phase acceptance pass. Post-MVP tasks are
 outside this workpack. No Luna execution or qualification is implied by coverage.
-
-## C5 synthetic implementation acceptance — 11 October 2026
-
-[C5 closeout](../../evidence/c5-completion-20261011/README.md) accepts C5.1–C5.5,
-C-05 recovery and C-06 study worker/resume conformance at Kairos6d733f4 on Rust1.99.
-Three Luna workers, independent source/artifact reviews, local712native+26CLI,
-two-host native qualification and64successful checks support this bounded scope.
-MC precision remains indeterminate for the small example; ED/C6, clinical, API,
-MVP and release gates remain open. Historical pending records keep their prior scope.

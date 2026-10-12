@@ -13,16 +13,16 @@
 
 ## Manual elapsed-time check
 
-I inspected [`macro_and_micro_reconcile_queue_transit_and_service_elapsed_time`](../../../libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs#L1803) at the current Kairos pin. The assertion fixture samples the same 20-tick Service duration and verifies the same service key/seed in both arms.
+I inspected `macro_and_micro_reconcile_queue_transit_and_service_elapsed_time` at the current Kairos pin. The assertion fixture samples the same 20-tick Service duration and verifies the same service key/seed in both arms.
 
 | Arm | Non-overlapping intervals | Total window |
 | --- | --- | --- |
-| Macro | Queue `[0,5)` = 5 ticks; Service `[5,25)` = 20 ticks | `5 + 20 = 25` ticks |
+| Macro | Queue `0,5)` = 5 ticks; Service `[5,25)` = 20 ticks | `5 + 20 = 25` ticks |
 | Routed Micro | Transit `[0,2)` = 2 ticks; Queue `[2,5)` = 3 ticks; Service `[5,25)` = 20 ticks | `2 + 3 + 20 = 25` ticks |
 
 The route fixture has two one-millimetre edges with a one-millimetre-per-tick walking profile and one tick per second. Flow arrival is observed at tick 2; the resource grants the request at tick 5; service completes at tick 25. The assertions reconcile each arm to the same `[0,25)` elapsed window. Macro and Micro are paired alternatives and their totals must not be added together. Transit and queue delay are not counted as Service work.
 
-I also inspected [`actual_flow_urgent_suspend_resumes_same_macro_and_routed_micro_service`](../../../libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs#L2408) and its current helper. The urgent request suspends useful service at tick 8 after 3 ticks, holds the interruption through tick 10, and resumes with 17 ticks remaining. Both arms complete at tick 27: Macro `5 queue + 20 useful Service + 2 pause`; routed Micro `2 transit + 3 queue + 20 useful Service + 2 pause`. The test checks equal service duration/key/seed/draw position and records two ticks of transit only for routed Micro. This corroborates pause accounting; it does not broaden the accepted leaf beyond its receipt.
+I also inspected [`actual_flow_urgent_suspend_resumes_same_macro_and_routed_micro_service` and its current helper. The urgent request suspends useful service at tick 8 after 3 ticks, holds the interruption through tick 10, and resumes with 17 ticks remaining. Both arms complete at tick 27: Macro `5 queue + 20 useful Service + 2 pause`; routed Micro `2 transit + 3 queue + 20 useful Service + 2 pause`. The test checks equal service duration/key/seed/draw position and records two ticks of transit only for routed Micro. This corroborates pause accounting; it does not broaden the accepted leaf beyond its receipt.
 
 This was a manual source check; **no Rust test, Clippy, formatting, or other Rust command was run for this review**. Runtime execution evidence comes from the exact-pin Rust 1.99.0 receipt above.
 

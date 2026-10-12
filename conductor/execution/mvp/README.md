@@ -1,7 +1,7 @@
 # Luna workpack through the functional MVP
 
 Scope: every ancestor of E2.4, including that closeout. There are **82 parent tasks
-and 258 leaf recipes**, including historical D0.1 and explicit review/join leaves.
+and 257 leaf recipes**, including historical D0.1 and explicit review/join leaves.
 The recipes cover D0–D2, P0–P4, Q0–Q4, C0–C2 and E0–E2. V1-only and later UI/device
 features are excluded. The current 145-task graph remains the acceptance source.
 
