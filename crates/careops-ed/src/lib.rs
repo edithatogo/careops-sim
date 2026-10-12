@@ -491,7 +491,7 @@ impl ScenarioConfig {
                     && entry
                         .location_id
                         .as_ref()
-                        .map_or(true, |location| location == &resource.location_id)
+                        .is_none_or(|location| location == &resource.location_id)
             }) {
                 return invalid(format!(
                     "patient '{}' has no matching staff/task/zone eligibility",

@@ -55,8 +55,23 @@ jobs:
           submodules: recursive
       - name: Install Rust 1.99.0
         run: rustup toolchain install 1.99.0 --profile minimal --component rustfmt
+      - name: Verify and export canonical Rust 1.99.0 tools
+        run: |
+          set -euo pipefail
+          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          toolchain_bin="$(dirname "$rustc_path")"
+          test "$(dirname "$rustdoc_path")" = "$toolchain_bin"
+          test "$(dirname "$cargo_path")" = "$toolchain_bin"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          test "$(command -v rustc)" = "$rustc_path"
+          test "$(command -v rustdoc)" = "$rustdoc_path"
+          test "$(command -v cargo)" = "$cargo_path"
+          printf 'RUSTUP_TOOLCHAIN=1.99.0\nRUSTC=%s\nRUSTDOC=%s\n' "$rustc_path" "$rustdoc_path" >> "$GITHUB_ENV"
+          echo "$toolchain_bin" >> "$GITHUB_PATH"
       - name: Format
-        run: cargo +1.99.0 fmt --all --check
+        run: cargo fmt --all --check
 
   clippy:
     timeout-minutes: 15
@@ -71,8 +86,23 @@ jobs:
           submodules: recursive
       - name: Install Rust 1.99.0
         run: rustup toolchain install 1.99.0 --profile minimal --component clippy
+      - name: Verify and export canonical Rust 1.99.0 tools
+        run: |
+          set -euo pipefail
+          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          toolchain_bin="$(dirname "$rustc_path")"
+          test "$(dirname "$rustdoc_path")" = "$toolchain_bin"
+          test "$(dirname "$cargo_path")" = "$toolchain_bin"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          test "$(command -v rustc)" = "$rustc_path"
+          test "$(command -v rustdoc)" = "$rustdoc_path"
+          test "$(command -v cargo)" = "$cargo_path"
+          printf 'RUSTUP_TOOLCHAIN=1.99.0\nRUSTC=%s\nRUSTDOC=%s\n' "$rustc_path" "$rustdoc_path" >> "$GITHUB_ENV"
+          echo "$toolchain_bin" >> "$GITHUB_PATH"
       - name: Clippy
-        run: cargo +1.99.0 clippy --locked --workspace --all-targets --all-features -- -D warnings
+        run: cargo clippy --locked --workspace --all-targets --all-features -- -D warnings
 
   test:
     timeout-minutes: 20
@@ -113,6 +143,7 @@ jobs:
           rustdoc --version | tee -a .artifacts/ci/nextest/host.log
           cargo -vV | tee -a .artifacts/ci/nextest/host.log
           test "$(command -v rustc)" = "$rustc_path"
+          test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
           if [ "$EXPECTED_OS" = macos-15 ]; then
             test "$(uname -m)" = arm64
@@ -148,9 +179,9 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
-  msrv:
+  default:
     timeout-minutes: 20
-    name: msrv (Rust 1.76.0, default features)
+    name: default (Rust 1.99.0, default features)
     needs: scope
     if: needs.scope.outputs.native == 'true'
     runs-on: ubuntu-24.04
@@ -159,196 +190,54 @@ jobs:
         with:
           persist-credentials: false
           submodules: recursive
-      - name: Install Rust 1.76.0
+      - name: Install Rust 1.99.0
         run: |
           set -euo pipefail
-          mkdir -p .artifacts/ci/msrv
-          rustup toolchain install 1.76.0 --profile minimal 2>&1 | tee .artifacts/ci/msrv/toolchain-install.log
-      - name: Resolve and verify explicit Rust 1.76.0 Linux tools
+          mkdir -p .artifacts/ci/default
+          rustup toolchain install 1.99.0 --profile minimal 2>&1 | tee .artifacts/ci/default/toolchain-install.log
+      - name: Resolve and verify canonical Rust 1.99.0 Linux tools
         run: |
           set -euo pipefail
-          rustc_path="$(rustup which rustc --toolchain 1.76.0)"
-          rustdoc_path="$(rustup which rustdoc --toolchain 1.76.0)"
-          cargo_path="$(rustup which cargo --toolchain 1.76.0)"
+          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
           toolchain_bin="$(dirname "$rustc_path")"
           test -x "$rustc_path"
           test -x "$rustdoc_path"
           test -x "$cargo_path"
           export PATH="$toolchain_bin:$PATH"
-          export RUSTUP_TOOLCHAIN=1.76.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          export RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
           test "$(uname -s)" = Linux
           test "$(uname -m)" = x86_64
           test "$(command -v rustc)" = "$rustc_path"
+          test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
-          rustc -vV | tee .artifacts/ci/msrv/environment.log
-          grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/msrv/environment.log
-          rustdoc --version | tee -a .artifacts/ci/msrv/environment.log
-          cargo -vV | tee -a .artifacts/ci/msrv/environment.log
+          rustc -vV | tee .artifacts/ci/default/environment.log
+          grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/default/environment.log
+          rustdoc --version | tee -a .artifacts/ci/default/environment.log
+          cargo -vV | tee -a .artifacts/ci/default/environment.log
           {
-            echo "RUSTUP_TOOLCHAIN=1.76.0"
+            echo "RUSTUP_TOOLCHAIN=1.99.0"
             echo "RUSTC=$rustc_path"
             echo "RUSTDOC=$rustdoc_path"
           } >> "$GITHUB_ENV"
           echo "$toolchain_bin" >> "$GITHUB_PATH"
-      - name: Run parent default-feature workspace tests at MSRV
+      - name: Run parent default-feature workspace tests
         run: |
           set -euo pipefail
-          export CARGO_TARGET_DIR=.artifacts/ci/msrv/target
-          cargo test --workspace --lib --bins --tests --locked 2>&1 | tee .artifacts/ci/msrv/tests.log
-      - name: Retain bounded failed MSRV logs
+          export CARGO_TARGET_DIR=.artifacts/ci/default/target
+          cargo test --workspace --lib --bins --tests --locked 2>&1 | tee .artifacts/ci/default/tests.log
+      - name: Retain bounded failed default-lane logs
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: msrv-failure-linux-x86_64
+          name: default-failure-linux-x86_64
           path: |
-            .artifacts/ci/msrv/toolchain-install.log
-            .artifacts/ci/msrv/environment.log
-            .artifacts/ci/msrv/tests.log
+            .artifacts/ci/default/toolchain-install.log
+            .artifacts/ci/default/environment.log
+            .artifacts/ci/default/tests.log
           retention-days: 7
           if-no-files-found: error
-
-  fuzz:
-    timeout-minutes: 20
-    name: fuzz (nightly 2026-10-02)
-    needs: scope
-    if: needs.scope.outputs.native == 'true'
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-        with:
-          persist-credentials: false
-          submodules: recursive
-      - name: Install dated nightly and pinned cargo-fuzz with retained setup log
-        run: |
-          mkdir -p .artifacts/ci/fuzz
-          set -o pipefail
-          rustup toolchain install nightly-2026-10-02 --profile minimal 2>&1 | tee .artifacts/ci/fuzz/install.log
-          nightly_rustc="$(rustup which rustc --toolchain nightly-2026-10-02)"
-          nightly_bin="$(dirname "$nightly_rustc")"
-          export RUSTC="$nightly_rustc"
-          export RUSTDOC="$nightly_bin/rustdoc"
-          export PATH="$nightly_bin:$PATH"
-          test "$(uname -s)" = Linux
-          test "$(uname -m)" = x86_64
-          rustc -vV | tee -a .artifacts/ci/fuzz/install.log
-          grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/fuzz/install.log
-          rustdoc --version | tee -a .artifacts/ci/fuzz/install.log
-          cargo -vV | tee -a .artifacts/ci/fuzz/install.log
-          cargo install cargo-fuzz --version 0.13.2 --locked --root .artifacts/ci/fuzz-tools 2>&1 | tee -a .artifacts/ci/fuzz/install.log
-          echo "$GITHUB_WORKSPACE/.artifacts/ci/fuzz-tools/bin" >> "$GITHUB_PATH"
-      - name: Run bounded synthetic ED parser fuzzing
-        env:
-          RUSTUP_TOOLCHAIN: nightly-2026-10-02
-        run: |
-          set -o pipefail
-          nightly_rustc="$(rustup which rustc --toolchain nightly-2026-10-02)"
-          nightly_bin="$(dirname "$nightly_rustc")"
-          export RUSTC="$nightly_rustc"
-          export RUSTDOC="$nightly_bin/rustdoc"
-          export PATH="$nightly_bin:$GITHUB_WORKSPACE/.artifacts/ci/fuzz-tools/bin:$PATH"
-          rustc -vV | grep -Fx 'host: x86_64-unknown-linux-gnu'
-          mkdir -p .artifacts/ci/fuzz/corpus
-          cp crates/careops-ed/examples/one_patient.json .artifacts/ci/fuzz/corpus/synthetic-one-patient.json
-          cargo fuzz build --sanitizer address parse_scenario_json 2>&1 | tee .artifacts/ci/fuzz/build.log
-          fuzz_binary="fuzz/target/x86_64-unknown-linux-gnu/release/parse_scenario_json"
-          test -x "$fuzz_binary"
-          nm --defined-only "$fuzz_binary" > .artifacts/ci/fuzz/symbols.txt
-          grep -E '[[:space:]]__asan_init$' .artifacts/ci/fuzz/symbols.txt | tee .artifacts/ci/fuzz/sanitizer-symbols.log
-          sha256sum "$fuzz_binary" | tee .artifacts/ci/fuzz/binary-sha256.txt
-          cargo fuzz run --sanitizer address parse_scenario_json .artifacts/ci/fuzz/corpus -- -seed=20261003 -runs=100000 -max_total_time=120 -max_len=32768 -timeout=5 -rss_limit_mb=1024 2>&1 | tee .artifacts/ci/fuzz/fuzz.log
-          sha256sum --check .artifacts/ci/fuzz/binary-sha256.txt
-          test -s .artifacts/ci/fuzz/fuzz.log
-          git diff --quiet -- fuzz/Cargo.lock
-      - name: Retain bounded fuzz log on failure
-        if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: parser-fuzz-failure
-          path: |
-            .artifacts/ci/fuzz/
-            fuzz/artifacts/parse_scenario_json/
-          retention-days: 7
-          if-no-files-found: ignore
-      - name: Retain sanitizer instrumentation evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: parser-fuzz-instrumentation
-          path: |
-            .artifacts/ci/fuzz/install.log
-            .artifacts/ci/fuzz/build.log
-            .artifacts/ci/fuzz/sanitizer-symbols.log
-            .artifacts/ci/fuzz/binary-sha256.txt
-            .artifacts/ci/fuzz/fuzz.log
-          retention-days: 7
-          if-no-files-found: error
-
-  miri:
-    timeout-minutes: 20
-    name: miri (nightly 2026-10-02, kairo-ecs-ffi integration)
-    needs: scope
-    if: needs.scope.outputs.native == 'true'
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-        with:
-          persist-credentials: false
-          submodules: recursive
-      - name: Install dated nightly Miri and capture host/toolchain/sysroot
-        run: |
-          set -o pipefail
-          mkdir -p .artifacts/ci/miri
-          rustup toolchain install nightly-2026-10-02 --profile minimal --component miri --component rust-src 2>&1 | tee .artifacts/ci/miri/setup.log
-          nightly_rustc="$(rustup which rustc --toolchain nightly-2026-10-02)"
-          nightly_bin="$(dirname "$nightly_rustc")"
-          nightly_cargo="$nightly_bin/cargo"
-          test -x "$nightly_rustc"
-          test -x "$nightly_cargo"
-          test -x "$nightly_bin/rustdoc"
-          test -x "$nightly_bin/miri"
-          test -x "$nightly_bin/cargo-miri"
-          export PATH="$nightly_bin:$PATH"
-          export RUSTUP_TOOLCHAIN=nightly-2026-10-02
-          export RUSTDOC="$nightly_bin/rustdoc"
-          export MIRI="$nightly_bin/miri"
-          test "$(uname -s)" = Linux
-          test "$(uname -m)" = x86_64
-          test "$(command -v rustc)" = "$nightly_rustc"
-          test "$(command -v cargo)" = "$nightly_cargo"
-          rustc -vV | tee -a .artifacts/ci/miri/setup.log
-          grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/miri/setup.log
-          rustdoc --version | tee -a .artifacts/ci/miri/setup.log
-          cargo -vV | tee -a .artifacts/ci/miri/setup.log
-          miri --version | tee -a .artifacts/ci/miri/setup.log
-          rustup component list --toolchain nightly-2026-10-02 --installed | tee -a .artifacts/ci/miri/setup.log
-          grep -Fx 'miri-x86_64-unknown-linux-gnu' .artifacts/ci/miri/setup.log
-          grep -Fx 'rust-src' .artifacts/ci/miri/setup.log
-          cargo miri setup 2>&1 | tee -a .artifacts/ci/miri/setup.log
-      - name: Run exact Kairos FFI integration target under Miri
-        env:
-          RUSTUP_TOOLCHAIN: nightly-2026-10-02
-        run: |
-          set -o pipefail
-          nightly_rustc="$(rustup which rustc --toolchain nightly-2026-10-02)"
-          nightly_bin="$(dirname "$nightly_rustc")"
-          nightly_cargo="$nightly_bin/cargo"
-          export PATH="$nightly_bin:$PATH"
-          export RUSTDOC="$nightly_bin/rustdoc"
-          export MIRI="$nightly_bin/miri"
-          test "$(uname -s)" = Linux
-          test "$(uname -m)" = x86_64
-          test "$(command -v rustc)" = "$nightly_rustc"
-          test "$(command -v cargo)" = "$nightly_cargo"
-          cargo miri test --manifest-path libs/kairos/Cargo.toml -p kairo-ecs-ffi --test ffi_integration --locked 2>&1 | tee .artifacts/ci/miri/test.log
-          test -s .artifacts/ci/miri/test.log
-      - name: Retain bounded Miri setup and test logs
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: selective-miri-logs
-          path: .artifacts/ci/miri/*.log
-          retention-days: 7
-          if-no-files-found: ignore
 
   doctest:
     timeout-minutes: 15
@@ -363,8 +252,23 @@ jobs:
           submodules: recursive
       - name: Install Rust 1.99.0
         run: rustup toolchain install 1.99.0 --profile minimal
+      - name: Verify and export canonical Rust 1.99.0 tools
+        run: |
+          set -euo pipefail
+          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          toolchain_bin="$(dirname "$rustc_path")"
+          test "$(dirname "$rustdoc_path")" = "$toolchain_bin"
+          test "$(dirname "$cargo_path")" = "$toolchain_bin"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          test "$(command -v rustc)" = "$rustc_path"
+          test "$(command -v rustdoc)" = "$rustdoc_path"
+          test "$(command -v cargo)" = "$cargo_path"
+          printf 'RUSTUP_TOOLCHAIN=1.99.0\nRUSTC=%s\nRUSTDOC=%s\n' "$rustc_path" "$rustdoc_path" >> "$GITHUB_ENV"
+          echo "$toolchain_bin" >> "$GITHUB_PATH"
       - name: Documentation tests
-        run: cargo +1.99.0 test --doc --workspace --all-features --locked
+        run: cargo test --doc --workspace --all-features --locked
 
   context:
     timeout-minutes: 20
@@ -398,7 +302,15 @@ jobs:
         run: |
           set -euo pipefail
           rustup toolchain install 1.99.0 --profile minimal
-          cargo +1.99.0 build --locked --release --package careops-ed-cli
+          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          toolchain_bin="$(dirname "$rustc_path")"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          test "$(command -v rustc)" = "$rustc_path"
+          test "$(command -v rustdoc)" = "$rustdoc_path"
+          test "$(command -v cargo)" = "$cargo_path"
+          cargo build --locked --release --package careops-ed-cli
           python3 tools/ed_benchmarks.py --binary target/release/careops-ed --output .artifacts/ci/d34/report.json
       - name: Retain D3.4 benchmark report
         if: always()
@@ -420,15 +332,20 @@ jobs:
           tar -xzf "$archive" -C .artifacts/ci/d33/bin cargo-llvm-cov
           export PATH="$PWD/.artifacts/ci/d33/bin:$PATH"
           cargo-llvm-cov llvm-cov --version | grep -E '^cargo-llvm-cov 0\.9\.1($| )'
-          export RUSTUP_TOOLCHAIN=1.99.0
           RUSTC="$(rustup which rustc --toolchain 1.99.0)"
-          export RUSTC
           RUSTDOC="$(rustup which rustdoc --toolchain 1.99.0)"
-          export RUSTDOC
+          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          toolchain_bin="$(dirname "$RUSTC")"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC RUSTDOC
+          test "$(dirname "$RUSTDOC")" = "$toolchain_bin"
+          test "$(dirname "$cargo_path")" = "$toolchain_bin"
+          test "$(command -v rustc)" = "$RUSTC"
+          test "$(command -v rustdoc)" = "$RUSTDOC"
+          test "$(command -v cargo)" = "$cargo_path"
           "$RUSTC" --version | grep -E '^rustc 1\.99\.0 '
           "$RUSTDOC" --version | grep -E '^rustdoc 1\.99\.0 '
-          cargo +1.99.0 -V | grep -E '^cargo 1\.99\.0 '
-          cargo +1.99.0 llvm-cov --locked --package careops-ed --all-features --all-targets --json --output-path .artifacts/ci/d33/coverage.json
+          cargo -V | grep -E '^cargo 1\.99\.0 '
+          cargo llvm-cov --locked --package careops-ed --all-features --all-targets --json --output-path .artifacts/ci/d33/coverage.json
           python3 tools/quality_metrics.py --coverage .artifacts/ci/d33/coverage.json --config .config/d33-quality-gates.json
       - name: Check current-source critical ED mutations
         if: needs.scope.outputs.native == 'true'
@@ -441,13 +358,18 @@ jobs:
           tar -xzf "$archive" -C .artifacts/ci/d33/bin cargo-mutants
           export PATH="$PWD/.artifacts/ci/d33/bin:$PATH"
           cargo-mutants mutants --version | grep -E '^cargo-mutants 27\.1\.0($| )'
-          export RUSTUP_TOOLCHAIN=1.99.0
           RUSTC="$(rustup which rustc --toolchain 1.99.0)"
-          export RUSTC
           RUSTDOC="$(rustup which rustdoc --toolchain 1.99.0)"
-          export RUSTDOC
+          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          toolchain_bin="$(dirname "$RUSTC")"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC RUSTDOC
+          test "$(dirname "$RUSTDOC")" = "$toolchain_bin"
+          test "$(dirname "$cargo_path")" = "$toolchain_bin"
+          test "$(command -v rustc)" = "$RUSTC"
+          test "$(command -v rustdoc)" = "$RUSTDOC"
+          test "$(command -v cargo)" = "$cargo_path"
           set +e
-          cargo +1.99.0 mutants --cargo-arg=--locked --manifest-path crates/careops-ed/Cargo.toml --package careops-ed --file crates/careops-ed/src/lib.rs --gitignore=true --jobs 2 --timeout 180 --output .artifacts/ci/d33/mutations >.artifacts/ci/d33/mutations.log 2>&1
+          cargo mutants --cargo-arg=--locked --manifest-path crates/careops-ed/Cargo.toml --package careops-ed --file crates/careops-ed/src/lib.rs --gitignore=true --jobs 2 --timeout 180 --output .artifacts/ci/d33/mutations >.artifacts/ci/d33/mutations.log 2>&1
           status=$?
           set -e
           if [ "$status" != 0 ] && [ "$status" != 2 ]; then
@@ -492,7 +414,15 @@ jobs:
         run: rustup toolchain install 1.99.0 --profile minimal
       - name: Check all dependency, secret and workflow policies
         run: |
-          export RUSTUP_TOOLCHAIN=1.99.0
+          set -euo pipefail
+          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          toolchain_bin="$(dirname "$rustc_path")"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          test "$(command -v rustc)" = "$rustc_path"
+          test "$(command -v rustdoc)" = "$rustdoc_path"
+          test "$(command -v cargo)" = "$cargo_path"
           python3 tools/ci_policy.py
           cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check
       - name: Retain bounded failed policy logs
@@ -508,7 +438,7 @@ jobs:
     timeout-minutes: 5
     name: Required checks
     if: always()
-    needs: [scope, fmt, clippy, test, msrv, fuzz, miri, doctest, context, policy]
+    needs: [scope, fmt, clippy, test, default, doctest, context, policy]
     runs-on: ubuntu-latest
     steps:
       - name: Enforce required lanes and report unchanged scope
@@ -521,9 +451,7 @@ jobs:
           FMT_RESULT: ${{ needs.fmt.result }}
           CLIPPY_RESULT: ${{ needs.clippy.result }}
           TEST_RESULT: ${{ needs.test.result }}
-          MSRV_RESULT: ${{ needs.msrv.result }}
-          FUZZ_RESULT: ${{ needs.fuzz.result }}
-          MIRI_RESULT: ${{ needs.miri.result }}
+          DEFAULT_RESULT: ${{ needs.default.result }}
           DOCTEST_RESULT: ${{ needs.doctest.result }}
           CONTEXT_RESULT: ${{ needs.context.result }}
           POLICY_RESULT: ${{ needs.policy.result }}
@@ -563,9 +491,7 @@ jobs:
           expect_lane fmt "$SCOPE_NATIVE" "$FMT_RESULT"
           expect_lane clippy "$SCOPE_NATIVE" "$CLIPPY_RESULT"
           expect_lane test "$SCOPE_NATIVE" "$TEST_RESULT"
-          expect_lane msrv "$SCOPE_NATIVE" "$MSRV_RESULT"
-          expect_lane fuzz "$SCOPE_NATIVE" "$FUZZ_RESULT"
-          expect_lane miri "$SCOPE_NATIVE" "$MIRI_RESULT"
+          expect_lane default "$SCOPE_NATIVE" "$DEFAULT_RESULT"
           expect_lane doctest "$SCOPE_NATIVE" "$DOCTEST_RESULT"
           expect_lane context "$SCOPE_CONTEXT" "$CONTEXT_RESULT"
           expect_lane policy "$SCOPE_POLICY" "$POLICY_RESULT"

@@ -42,11 +42,16 @@ platform/toolchain/provenance ([nextest guidance](https://nexte.st/docs/ci-featu
 
 ## D3: harden as behavior lands
 
-Add nightly/weekly property/fuzz/soak and benchmark lanes; sanitizer/Miri where
-applicable, a dated supported nightly for cargo-fuzz, and deterministic seed
-corpora. PR gates include relevant golden/differential/restore tests; longer runs
-can be scheduled without hiding release blockers. Flaky tests retain issue,
-owner, expiry and failure signal; unlimited retries never produce an honest pass.
+Use the pinned Rust 1.99.0 lane for active builds, tests, benchmarks and policy
+checks. Miri and libFuzzer AddressSanitizer runtime jobs are unavailable under the
+current owner policy because they require nightly; prior dated-nightly results
+remain historical and are not current qualification. This unavailability does
+not waive later release obligations for unsafe/FFI review, malformed-input and
+resource-exhaustion assurance, sanitizer/Miri or fuzz evidence, or an equivalent
+owner-approved method. PR gates include relevant golden/differential/restore
+tests; longer stable runs can be scheduled without hiding release blockers.
+Flaky tests retain issue, owner, expiry and failure signal; unlimited retries
+never produce an honest pass.
 
 Run cargo-deny advisories, sources, licences and bans, plus cargo-audit with
 recorded database freshness. Add actionlint and zizmor, full-SHA action pins,
