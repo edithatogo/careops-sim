@@ -1,0 +1,27 @@
+   Compiling careops-ed v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/crates/careops-ed)
+warning: field `transition_limit` is never read
+   --> crates/careops-ed/src/flow_adapter.rs:516:5
+    |
+494 | pub struct EdFlowAdapter {
+    |            ------------- field in this struct
+...
+516 |     transition_limit: u64,
+    |     ^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `careops-ed` (lib) generated 1 warning
+warning: `careops-ed` (lib test) generated 1 warning (1 duplicate)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.22s
+     Running unittests src/lib.rs (.artifacts/mvp/E2.2.fidelity.foundation-20261012/execution/target/debug/deps/careops_ed-f532321e27a8530b)
+     Running tests/d34_scheduler_bounds.rs (.artifacts/mvp/E2.2.fidelity.foundation-20261012/execution/target/debug/deps/d34_scheduler_bounds-f209f82cd8476bdd)
+     Running tests/d3_display_regression.rs (.artifacts/mvp/E2.2.fidelity.foundation-20261012/execution/target/debug/deps/d3_display_regression-846bd4b3d381a37e)
+     Running tests/d3_regressions.rs (.artifacts/mvp/E2.2.fidelity.foundation-20261012/execution/target/debug/deps/d3_regressions-f738a82b381a66ab)
+     Running tests/d3_validator_mutation_regressions.rs (.artifacts/mvp/E2.2.fidelity.foundation-20261012/execution/target/debug/deps/d3_validator_mutation_regressions-358910d67f851fc2)
+     Running tests/e12_fixture_components.rs (.artifacts/mvp/E2.2.fidelity.foundation-20261012/execution/target/debug/deps/e12_fixture_components-a2bf09dd6044d6d0)
+     Running tests/e13_arrival_terminal_composition.rs (.artifacts/mvp/E2.2.fidelity.foundation-20261012/execution/target/debug/deps/e13_arrival_terminal_composition-10c942a0fdbc8419)
+     Running tests/e13_native_fixture_join.rs (.artifacts/mvp/E2.2.fidelity.foundation-20261012/execution/target/debug/deps/e13_native_fixture_join-feb84cfaaf7d9ff1)
+     Running tests/e13_terminal_runtime.rs (.artifacts/mvp/E2.2.fidelity.foundation-20261012/execution/target/debug/deps/e13_terminal_runtime-baa816505d9a3a6e)
+     Running tests/e22_dispatch_policy.rs (.artifacts/mvp/E2.2.fidelity.foundation-20261012/execution/target/debug/deps/e22_dispatch_policy-0db550beb81581ee)
+     Running tests/flow_adapter_native.rs (.artifacts/mvp/E2.2.fidelity.foundation-20261012/execution/target/debug/deps/flow_adapter_native-556a463d3b3e97a3)
+error: test failed, to rerun pass `-p careops-ed --test flow_adapter_native`

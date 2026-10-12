@@ -1,0 +1,38 @@
+{
+  "status": "accepted_native_flow_foundation_only",
+  "reviewer": "root with independent GPT-6-luna review",
+  "source_commit": "bf2d27c39e53de0dacbe005105ea214372757309",
+  "proof_commit": "a6d148b6ff33f6ea2d2c7024a9a1a548b48dd274",
+  "toolchain": "Rust/Cargo 1.99.0",
+  "kairos_pin": "832dfb159981f7bd5041e636a7c4d609b2bd6e9c",
+  "source_hashes": {
+    "crates/careops-ed/src/lib.rs": "627063077f14c5c97d7c9226d490b43fe2f32eb307b441b8e67361cc9e12db5f",
+    "crates/careops-ed/src/flow_adapter.rs": "1143273f980565b4d927a14d4e63695c52db2007af9c1bda32a73dcc8a8f2fc5",
+    "crates/careops-ed/tests/flow_adapter_native.rs": "1168da51fd97c556c36037a5767745e72899f43a909425a9ccbc81eba845fb40"
+  },
+  "tests_passed": 153,
+  "tests_failed": 0,
+  "tests_ignored": 0,
+  "gates": [
+    "foundation-proofs-20261012/execution/cargo-test-attempt2.receipt.json",
+    "foundation-proofs-20261012/execution/cargo-clippy.receipt.json",
+    "foundation-proofs-20261012/execution/format-check.receipt.json"
+  ],
+  "review_resolution": [
+    "Eight foundation proof families passed; two added proofs preserve Sampled lineage through Queued/Granted/Completed and establish ClosedPhase atomic rejection plus same-ID positive control.",
+    "Reviewer confirmed final test hash1168da51fd97c556c36037a5767745e72899f43a909425a9ccbc81eba845fb40.",
+    "Horizon equal-priority marker is not defect: step drains all events at or below H before None, parent cursor rejects backward phases."
+  ],
+  "provenance_limits": [
+    "Original receipts bind command, base HEAD and log hashes; final result binds source hashes. They are local execution evidence, not external attestation.",
+    "Failed compilation/test/lint attempts preserved. Supplemental lint-only correction was explicitly root-authorized beyond original two behavioral corrections.",
+    "Exposed local advisory credential was rotated without changing ownership; no credential copied into archive."
+  ],
+  "remaining": [
+    "Same-runtime transit adapter",
+    "E1 native migration",
+    "All 88 E2 runtime fixture bindings",
+    "Parent portable provenance and composed E2 acceptance",
+    "Remaining delivery phases and release gates"
+  ]
+}

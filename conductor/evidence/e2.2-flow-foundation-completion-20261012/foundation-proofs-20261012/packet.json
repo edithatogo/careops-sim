@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "packet_id": "E2.2.fidelity.foundation-proofs-20261012",
+  "task_id": "E2.2",
+  "target_repo": ".",
+  "base_commit": "bf2d27c39e53de0dacbe005105ea214372757309",
+  "model_role": "worker",
+  "model_candidate": "gpt-6-luna",
+  "status": "prepared",
+  "objective": "Test-only completion of foundation review: Sampled lineage pass-through and atomic ClosedPhase rejection with positive controls; production source protected.",
+  "context_paths": [
+    ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/context.md"
+  ],
+  "input_hashes": {
+    "conductor/design/ed/e2-flow-foundation.md": "225b766754c15efa99b4c6fd6d3c4c5e98e575bce7e794ee0cfa7e023ebbad5f",
+    "crates/careops-ed/tests/flow_adapter_native.rs": "4a8ae3910a2ec0adb29b90d9a2255b294073cf46646419b547afa7750e25dbd6",
+    "crates/careops-ed/src/flow_adapter.rs": "1143273f980565b4d927a14d4e63695c52db2007af9c1bda32a73dcc8a8f2fc5",
+    "Cargo.toml": "072c77943fc2fb13675729fd4e99151420f03243717196ba897b39b16b561255",
+    "Cargo.lock": "a650a174fd9e0ea3838c64842eb14a9d766374103b6bf22e2d871b70ec6a4dd3",
+    "crates/careops-ed/Cargo.toml": "8ccd56f2ef557256d9ca16f178b0663c8f15c6184b6c03e5d38a4bc096ddb5cb",
+    "conductor/evidence/e2.2-adapter-dependencies-completion-20261012/acceptance.json": "7b8802f7afae3d1aab1bf1b9f8a2a7409dcce81a9451d6b40e261710eacb869f",
+    ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/context.md": "5521bb14d5b02fb0e6720ef96bab0d96cdfe6f0590a64b9c7319a1eda522c008"
+  },
+  "write_paths": [
+    "crates/careops-ed/tests/flow_adapter_native.rs",
+    ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/result.json",
+    ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "E2.2.dispatch"
+  ],
+  "interface_contract": "conductor/design/ed/e2-flow-foundation.md",
+  "steps": [
+    "Read bound context; recheck hashes and coordinator reservation.",
+    "Execute only the instance output; escalate any undefined interface.",
+    "Run exact verification; stop after two failed corrections.",
+    "Return actual diff, commands and result for coordinator review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "test",
+        "--offline",
+        "--locked",
+        "-p",
+        "careops-ed"
+      ],
+      "oracle": "All existing tests and two additional foundation proofs pass: exact Sampled lineage at completion plus atomic ClosedPhase rejection and same-ID positive control.",
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin",
+        "CARGO_HOME": "/Users/doughnut/.cargo",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/target"
+      }
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+        "clippy",
+        "--offline",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "oracle": "Strict all-target careops-ed lint pass.",
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin",
+        "CARGO_HOME": "/Users/doughnut/.cargo",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/target"
+      }
+    },
+    {
+      "argv": [
+        "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+        "--edition",
+        "2021",
+        "--config",
+        "skip_children=true",
+        "--check",
+        "crates/careops-ed/tests/flow_adapter_native.rs"
+      ],
+      "oracle": "Only owned test file formatted, Rust1.99 edition2021 skip_children=true.",
+      "cwd": ".",
+      "expected_exit": 0,
+      "env": {
+        "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin",
+        "CARGO_HOME": "/Users/doughnut/.cargo",
+        "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/target"
+      }
+    }
+  ],
+  "acceptance": [
+    "One authoritative state; no duplicate transit or animation-driven time",
+    "All instance/parent joins require independent coordinator acceptance"
+  ],
+  "result_path": ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Scope or interface unresolved",
+    "Oracle unavailable",
+    "Two unsuccessful corrections"
+  ],
+  "coordinator_binding": {
+    "reviewer": "root and independent GPT-6-luna source review",
+    "reservation_id": "root-foundation-proofs-20261012",
+    "instance_id": "foundation-proofs-20261012",
+    "instance_scope": "Test-only completion of foundation review: Sampled lineage pass-through and atomic ClosedPhase rejection with positive controls; production source protected.",
+    "instance_set": [
+      "foundation-proofs-20261012"
+    ],
+    "interface_contract": "conductor/design/ed/e2-flow-foundation.md",
+    "context_slices": [
+      {
+        "path": "conductor/design/ed/e2-flow-foundation.md",
+        "start": 1,
+        "end": 74
+      },
+      {
+        "path": "crates/careops-ed/tests/flow_adapter_native.rs",
+        "start": 1,
+        "end": 90
+      },
+      {
+        "path": "crates/careops-ed/tests/flow_adapter_native.rs",
+        "start": 282,
+        "end": 348
+      },
+      {
+        "path": "crates/careops-ed/src/flow_adapter.rs",
+        "start": 910,
+        "end": 954
+      }
+    ],
+    "input_paths": [
+      "Cargo.toml",
+      "Cargo.lock",
+      "crates/careops-ed/Cargo.toml",
+      "conductor/evidence/e2.2-adapter-dependencies-completion-20261012/acceptance.json",
+      "crates/careops-ed/src/flow_adapter.rs"
+    ],
+    "write_paths": [
+      "crates/careops-ed/tests/flow_adapter_native.rs",
+      ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/result.json",
+      ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution"
+    ],
+    "verification": [
+      {
+        "argv": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+          "test",
+          "--offline",
+          "--locked",
+          "-p",
+          "careops-ed"
+        ],
+        "oracle": "All existing tests and two additional foundation proofs pass: exact Sampled lineage at completion plus atomic ClosedPhase rejection and same-ID positive control.",
+        "cwd": ".",
+        "expected_exit": 0,
+        "env": {
+          "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin",
+          "CARGO_HOME": "/Users/doughnut/.cargo",
+          "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/target"
+        }
+      },
+      {
+        "argv": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+          "clippy",
+          "--offline",
+          "--locked",
+          "-p",
+          "careops-ed",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "oracle": "Strict all-target careops-ed lint pass.",
+        "cwd": ".",
+        "expected_exit": 0,
+        "env": {
+          "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin",
+          "CARGO_HOME": "/Users/doughnut/.cargo",
+          "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/target"
+        }
+      },
+      {
+        "argv": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+          "--edition",
+          "2021",
+          "--config",
+          "skip_children=true",
+          "--check",
+          "crates/careops-ed/tests/flow_adapter_native.rs"
+        ],
+        "oracle": "Only owned test file formatted, Rust1.99 edition2021 skip_children=true.",
+        "cwd": ".",
+        "expected_exit": 0,
+        "env": {
+          "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin",
+          "CARGO_HOME": "/Users/doughnut/.cargo",
+          "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/target"
+        }
+      }
+    ],
+    "prerequisite_receipts": {
+      "E2.2.dispatch": {
+        "status": "accepted",
+        "reviewer": "root",
+        "all_instances_accepted": true,
+        "artifacts": {
+          "conductor/evidence/e2.2-dispatch-policy-completion-20261011/acceptance.json": "3083d493a030541862443f0743cb3729f8bf60331cb761a8ce28fa3c42399590",
+          "conductor/evidence/e2.2-adapter-dependencies-completion-20261012/acceptance.json": "7b8802f7afae3d1aab1bf1b9f8a2a7409dcce81a9451d6b40e261710eacb869f"
+        }
+      }
+    },
+    "reviewed_recipe_sha256": "18383eeb7ab3e598e4bae13497cdc696c2aa30ac2f71c285a0542db04d7614b2"
+  },
+  "source_hashes": {
+    "conductor/execution/mvp/recipes.json": "ede7e318d02958c427d1381ab9a3cae6318ccd41a151f3b3b4fe74020afea119",
+    "conductor/design/ed/e2-flow-foundation.md": "225b766754c15efa99b4c6fd6d3c4c5e98e575bce7e794ee0cfa7e023ebbad5f",
+    "crates/careops-ed/tests/flow_adapter_native.rs": "4a8ae3910a2ec0adb29b90d9a2255b294073cf46646419b547afa7750e25dbd6",
+    "crates/careops-ed/src/flow_adapter.rs": "1143273f980565b4d927a14d4e63695c52db2007af9c1bda32a73dcc8a8f2fc5",
+    "conductor/execution/worker-prompt.md": "975508d5c3c8e24e0a3189ac208cbe74c4eb187ec0c4810b0ed4282f03412775",
+    "conductor/execution/mvp/worker-loop.md": "ab4c536bb191b8987ff26e5cadac38299f63ec10351607f56b7521c70909d518"
+  },
+  "context_budget_bytes": 24000
+}

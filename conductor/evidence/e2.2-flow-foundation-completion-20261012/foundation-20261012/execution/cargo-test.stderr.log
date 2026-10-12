@@ -1,0 +1,123 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling kairo-ecs-types v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-types)
+   Compiling serde_core v1.0.229
+   Compiling thiserror v2.0.20
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling memchr v2.8.3
+   Compiling kairo-ecs-rng v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-rng)
+   Compiling kairo-ecs-core v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-core)
+   Compiling kairo-ecs-state v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-state)
+   Compiling itoa v1.0.18
+   Compiling syn v3.0.6
+   Compiling thiserror-impl v2.0.20
+   Compiling serde_derive v1.0.229
+   Compiling kairo-ecs-des v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-des)
+   Compiling kairo-ecs-abm v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-abm)
+   Compiling careops-ed v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/crates/careops-ed)
+error[E0425]: cannot find type `ScheduledEventPreview` in crate `kairo_ecs_des`
+   --> crates/careops-ed/src/flow_adapter.rs:620:58
+    |
+620 |     pub fn peek_next(&mut self) -> Option<kairo_ecs_des::ScheduledEventPreview> {
+    |                                                          ^^^^^^^^^^^^^^^^^^^^^ not found in `kairo_ecs_des`
+
+error[E0282]: type annotations needed
+   --> crates/careops-ed/src/flow_adapter.rs:223:13
+    |
+223 |         let grants = boundaries
+    |             ^^^^^^
+...
+236 |         let b = grants.len() as u128;
+    |                 ------ type must be known at this point
+    |
+help: consider giving `grants` an explicit type
+    |
+223 |         let grants: Vec<_> = boundaries
+    |                   ++++++++
+
+error[E0308]: mismatched types
+   --> crates/careops-ed/src/flow_adapter.rs:924:9
+    |
+923 |     fn services_marker_work(&self) -> Option<WorkId> {
+    |                                       -------------- expected `std::option::Option<WorkId>` because of return type
+924 |         self.marker_work_id
+    |         ^^^^^^^^^^^^^^^^^^^ expected `Option<WorkId>`, found `WorkId`
+    |
+    = note: expected enum `std::option::Option<WorkId>`
+             found struct `WorkId`
+help: try wrapping the expression in `Some`
+    |
+924 |         Some(self.marker_work_id)
+    |         +++++                   +
+
+error[E0277]: `?` couldn't convert the error to `AdapterError`
+   --> crates/careops-ed/src/flow_adapter.rs:964:91
+    |
+964 |                     .schedule_allocation_flush(resource, SimTime::from_ticks(at_tick), 60)?;
+    |                      ---------------------------------------------------------------------^ the trait `From<ResourceAllocationAdmissionError>` is not implemented for `AdapterError`
+    |                      |
+    |                      this can't be annotated with `?` because it has type `Result<_, ResourceAllocationAdmissionError>`
+    |
+note: `AdapterError` needs to implement `From<ResourceAllocationAdmissionError>`
+   --> crates/careops-ed/src/flow_adapter.rs:23:1
+    |
+ 23 | pub enum AdapterError {
+    | ^^^^^^^^^^^^^^^^^^^^^
+    = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+help: `AdapterError` implements trait `From<T>`
+   --> crates/careops-ed/src/flow_adapter.rs:41:1
+    |
+ 41 | impl From<FlowError> for AdapterError {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `From<FlowError>`
+...
+ 46 | impl From<ResourceGrantAdmissionError> for AdapterError {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `From<ResourceGrantAdmissionError>`
+
+error[E0502]: cannot borrow `*self` as immutable because it is also borrowed as mutable
+   --> crates/careops-ed/src/flow_adapter.rs:721:17
+    |
+716 |           let mut acquire = self
+    |  ___________________________-
+717 | |             .flow
+    | |_________________- mutable borrow occurs here
+...
+721 |               .at(self.now())
+    |                -- ^^^^ immutable borrow occurs here
+    |                |
+    |                mutable borrow later used by call
+
+error[E0502]: cannot borrow `*self` as immutable because it is also borrowed as mutable
+   --> crates/careops-ed/src/flow_adapter.rs:778:17
+    |
+774 |           let request = self
+    |  _______________________-
+775 | |             .flow
+    | |_________________- mutable borrow occurs here
+...
+778 |               .at(self.now())
+    |                -- ^^^^ immutable borrow occurs here
+    |                |
+    |                mutable borrow later used by call
+
+warning: unused variable: `meta`
+   --> crates/careops-ed/src/flow_adapter.rs:833:23
+    |
+833 |         let (request, meta) = self.validate_handle(handle, handle.role)?;
+    |                       ^^^^ help: if this is intentional, prefix it with an underscore: `_meta`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `meta`
+   --> crates/careops-ed/src/flow_adapter.rs:853:23
+    |
+853 |         let (request, meta) = self.validate_handle(handle, handle.role)?;
+    |                       ^^^^ help: if this is intentional, prefix it with an underscore: `_meta`
+
+Some errors have detailed explanations: E0277, E0282, E0308, E0425, E0502.
+For more information about an error, try `rustc --explain E0277`.
+warning: `careops-ed` (lib) generated 2 warnings
+error: could not compile `careops-ed` (lib) due to 6 previous errors; 2 warnings emitted
+warning: build failed, waiting for other jobs to finish...

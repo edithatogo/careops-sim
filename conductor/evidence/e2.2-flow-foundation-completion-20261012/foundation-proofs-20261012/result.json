@@ -1,0 +1,204 @@
+{
+  "task": "E2.2.fidelity.foundation-proofs-20261012",
+  "packet_sha256": "c1bc7e10e8b6e5881f7906763e02fbda080c086f799cd19b7cf093a2cfdc2f8b",
+  "base_head": "bf2d27c39e53de0dacbe005105ea214372757309",
+  "implementation_status": "ready_for_review",
+  "acceptance_status": "not_accepted",
+  "source_hashes": {
+    "crates/careops-ed/tests/flow_adapter_native.rs": "1168da51fd97c556c36037a5767745e72899f43a909425a9ccbc81eba845fb40"
+  },
+  "tests": {
+    "all_test_count": 153,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 0,
+    "foundation_native_family_count": 10,
+    "new_proofs": [
+      "foundation_native_sampled_service_lineage_pass_through",
+      "foundation_native_closed_phase_rejection_is_atomic"
+    ],
+    "sampled_proof": "Real service with original=4, useful_before=2, remaining=2 and Sampled root_seed=0x5eedcafe12349876, stream_slot=17, draws 41..43; retained actual Submit, Grant and later dispatches; exact SampleOrigin, identity, request, WorkId and progress observed across Queued/Pending, Granted/Active and Completed.",
+    "phase_proof": "Consumed Decision@1; CalendarExpiry@1 rejected with ClosedPhase and identical full snapshot; re-used operation ID accepted for Ready@1, counters incremented once, native next-event preview and dispatch match event/time/priority."
+  },
+  "verification": {
+    "rust": "1.99.0",
+    "cargo_test_attempt1_exit": 101,
+    "cargo_test_attempt2_exit": 0,
+    "cargo_clippy_exit": 0,
+    "rustfmt_format_exit": 0,
+    "rustfmt_check_exit": 0
+  },
+  "correction_history": [
+    "Initial test compile failed because WorkState has no Ready variant; root-authorized correction changed the expected queued WorkState to Pending only. Failed receipt and logs are preserved."
+  ],
+  "review_notes": [
+    "Root and independent reviewer reviewed test source hash 1168da51fd97c556c36037a5767745e72899f43a909425a9ccbc81eba845fb40 and confirmed both proof semantics."
+  ],
+  "receipts": [
+    {
+      "path": ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/format.receipt.json",
+      "sha256": "e9f5856caca22b1bcf71135557788b46c4bde3ff09ed41d8d0ccb9cdf3501cd5",
+      "receipt": {
+        "command": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+          "--edition",
+          "2021",
+          "--config",
+          "skip_children=true",
+          "crates/careops-ed/tests/flow_adapter_native.rs"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+        "head": "bf2d27c39e53de0dacbe005105ea214372757309",
+        "toolchain": "rustfmt 1.10.0-stable (b940084d7e 2026-09-28)",
+        "started_utc": "2026-10-12T05:31:39.169196+00:00",
+        "ended_utc": "2026-10-12T05:31:39.544682+00:00",
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/format.stdout.log",
+        "stderr_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/format.stderr.log"
+      }
+    },
+    {
+      "path": ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/cargo-test.receipt.json",
+      "sha256": "1154c814a30819d606ffd3ee0e58a1be0d07f60f09d6654d924b1976ef7decb8",
+      "receipt": {
+        "command": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+          "test",
+          "--offline",
+          "--locked",
+          "-p",
+          "careops-ed"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+        "head": "bf2d27c39e53de0dacbe005105ea214372757309",
+        "toolchain": "cargo 1.99.0 (5f94df478 2026-08-27)",
+        "env": {
+          "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin",
+          "CARGO_HOME": "/Users/doughnut/.cargo",
+          "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/target"
+        },
+        "started_utc": "2026-10-12T05:31:47.279677+00:00",
+        "ended_utc": "2026-10-12T05:32:08.674344+00:00",
+        "exit_code": 101,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "fa00747926448cdfbe7d2e135625b5d0cb8c15cc0e85286023ea7f4079264078",
+        "stdout_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/cargo-test.stdout.log",
+        "stderr_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/cargo-test.stderr.log"
+      }
+    },
+    {
+      "path": ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/format-attempt2.receipt.json",
+      "sha256": "30e55a046e90414e0260463fbdc8a630706140182c492b73642408df22ca48a8",
+      "receipt": {
+        "command": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+          "--edition",
+          "2021",
+          "--config",
+          "skip_children=true",
+          "crates/careops-ed/tests/flow_adapter_native.rs"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+        "head": "bf2d27c39e53de0dacbe005105ea214372757309",
+        "toolchain": "rustfmt 1.10.0-stable (b940084d7e 2026-09-28)",
+        "started_utc": "2026-10-12T05:32:49.630954+00:00",
+        "ended_utc": "2026-10-12T05:32:49.935941+00:00",
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/format-attempt2.stdout.log",
+        "stderr_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/format-attempt2.stderr.log"
+      }
+    },
+    {
+      "path": ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/cargo-test-attempt2.receipt.json",
+      "sha256": "7c49619182cb79c56bd58fa72eba209122ec98c124afb174848514db56eee083",
+      "receipt": {
+        "command": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+          "test",
+          "--offline",
+          "--locked",
+          "-p",
+          "careops-ed"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+        "head": "bf2d27c39e53de0dacbe005105ea214372757309",
+        "toolchain": "cargo 1.99.0 (5f94df478 2026-08-27)",
+        "env": {
+          "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin",
+          "CARGO_HOME": "/Users/doughnut/.cargo",
+          "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/target"
+        },
+        "started_utc": "2026-10-12T05:32:57.715146+00:00",
+        "ended_utc": "2026-10-12T05:33:04.709926+00:00",
+        "exit_code": 0,
+        "stdout_sha256": "0a7578faf22aff2ad6b6bbc9265a6650c3247b1d5f9dca1cd0eef49bafd5a161",
+        "stderr_sha256": "a9bce67af2ab905188f7df6209e416799fc2a7f058d9c590a38cb1d025e73ce4",
+        "stdout_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/cargo-test-attempt2.stdout.log",
+        "stderr_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/cargo-test-attempt2.stderr.log"
+      }
+    },
+    {
+      "path": ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/cargo-clippy.receipt.json",
+      "sha256": "772a11d00dc297a6cc63934b21d3b6365f3b4bb1c2f6d185f59efd2a6d886ff5",
+      "receipt": {
+        "command": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo",
+          "clippy",
+          "--offline",
+          "--locked",
+          "-p",
+          "careops-ed",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+        "head": "bf2d27c39e53de0dacbe005105ea214372757309",
+        "toolchain": "cargo 1.99.0 (5f94df478 2026-08-27)",
+        "env": {
+          "PATH": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/bin:/bin",
+          "CARGO_HOME": "/Users/doughnut/.cargo",
+          "CARGO_TARGET_DIR": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/target"
+        },
+        "started_utc": "2026-10-12T05:33:13.695077+00:00",
+        "ended_utc": "2026-10-12T05:33:18.003287+00:00",
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "ecc457b92177462a93c035645670d5d044306a9d097a6d85fa503d4be8cd0be4",
+        "stdout_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/cargo-clippy.stdout.log",
+        "stderr_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/cargo-clippy.stderr.log"
+      }
+    },
+    {
+      "path": ".artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/format-check.receipt.json",
+      "sha256": "e019b14961b7e86a5e5a3ed1e81a4b477ca662ea83d4190e902929db1dd54baf",
+      "receipt": {
+        "command": [
+          "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustfmt",
+          "--edition",
+          "2021",
+          "--config",
+          "skip_children=true",
+          "--check",
+          "crates/careops-ed/tests/flow_adapter_native.rs"
+        ],
+        "cwd": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006",
+        "head": "bf2d27c39e53de0dacbe005105ea214372757309",
+        "toolchain": "rustfmt 1.10.0-stable (b940084d7e 2026-09-28)",
+        "started_utc": "2026-10-12T05:33:26.039874+00:00",
+        "ended_utc": "2026-10-12T05:33:26.126473+00:00",
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/format-check.stdout.log",
+        "stderr_path": "/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/.artifacts/mvp/E2.2.fidelity.foundation-proofs-20261012/execution/format-check.stderr.log"
+      }
+    }
+  ],
+  "generated_utc": "2026-10-12T05:33:45.509402+00:00"
+}

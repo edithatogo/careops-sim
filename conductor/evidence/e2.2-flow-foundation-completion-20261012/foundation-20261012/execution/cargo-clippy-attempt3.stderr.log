@@ -1,0 +1,56 @@
+    Checking kairo-ecs-types v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-types)
+    Checking memchr v2.8.3
+    Checking itoa v1.0.18
+    Checking serde_core v1.0.229
+    Checking zmij v1.0.23
+    Checking thiserror v2.0.20
+    Checking kairo-ecs-state v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-state)
+    Checking kairo-ecs-rng v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-rng)
+    Checking kairo-ecs-core v0.0.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-core)
+    Checking kairo-ecs-des v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-des)
+    Checking serde_json v1.0.151
+    Checking serde v1.0.229
+    Checking kairo-ecs-abm v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-abm)
+    Checking careops-ed v0.1.0 (/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/crates/careops-ed)
+error: using `clone` on type `Option<FlowError>` which implements the `Copy` trait
+    --> crates/careops-ed/src/flow_adapter.rs:1014:30
+     |
+1014 |         if let Some(error) = native.error.clone() {
+     |                              ^^^^^^^^^^^^^^^^^^^^ help: try removing the `clone` call: `native.error`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#clone_on_copy
+     = note: `-D clippy::clone-on-copy` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::clone_on_copy)]`
+
+error: iterating on a map's keys
+    --> crates/careops-ed/src/flow_adapter.rs:1129:24
+     |
+1129 |           let requests = self
+     |  ________________________^
+1130 | |             .requests
+1131 | |             .iter()
+1132 | |             .filter_map(|(id, _)| {
+...    |
+1138 | |                 })
+1139 | |             })
+     | |______________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#iter_kv_map
+     = note: `-D clippy::iter-kv-map` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::iter_kv_map)]`
+help: try
+     |
+1129 ~         let requests = self
+1130 +             .requests.keys().filter_map(|id| {
+1131 +                 self.flow.request(*id).ok().map(|r| RequestSnapshot {
+1132 +                     request: *id,
+1133 +                     state: r.state,
+1134 +                     lease: r.lease,
+1135 +                     work: r.work,
+1136 +                 })
+1137 +             })
+     |
+
+error: could not compile `careops-ed` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `careops-ed` (lib test) due to 2 previous errors
