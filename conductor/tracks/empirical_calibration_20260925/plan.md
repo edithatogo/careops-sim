@@ -218,7 +218,7 @@ Entry: C3/C4. Owners 21 (study/search), 22 (runner/CLI), 01 (seed contract).
   with randomized wall-clock completion order.
   Add censoring-rate 2/7, day-versus-row bootstrap, temporal cutoff,
   paired CRN and precision-cap fixtures from the research integration ledger.
-- [ ] C5.2 Implement bounded candidate enumeration, parameter/unit constraints,
+- [x] C5.2 Implement bounded candidate enumeration, parameter/unit constraints,
   prespecified normalized objectives, common seed schedules and fixed evaluation
   budgets. Persist all attempts; rank only complete evaluation batches.
   Record ridges/bound hits and identifiability/MC-indeterminate states;
