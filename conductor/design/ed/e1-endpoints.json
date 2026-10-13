@@ -1,0 +1,2752 @@
+{
+  "cases": [
+    {
+      "case_id": "endpoints_empty",
+      "expected": {
+        "counts": {
+          "arrivals": 0,
+          "started": 0,
+          "terminal": 0,
+          "throughput_count": 0,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 0,
+          "completed_los": 0,
+          "first_care_wait": 0,
+          "observed_elapsed": 0,
+          "total_stage_queue_wait": 0
+        },
+        "metrics_ticks": {
+          "mean_active_work": null,
+          "mean_completed_los": null,
+          "mean_first_care_wait": null,
+          "mean_observed_elapsed": null,
+          "mean_total_stage_queue_wait": null
+        },
+        "patients": []
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 10,
+        "patients": []
+      },
+      "purpose": "Empty run has zero counts and null undefined averages.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_one_discharge",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": 10.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 10.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "boarding_interval": null,
+            "completed_los_ticks": 10,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 3
+            },
+            "observed_elapsed_ticks": 10,
+            "patient_id": "patient-endpoints_one_discharge",
+            "provisional_disposition": "discharge",
+            "realized_outcome": {
+              "kind": "discharged",
+              "terminal_tick": 11
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": 11,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 3
+            },
+            "patient_id": "patient-endpoints_one_discharge",
+            "provisional_disposition": "discharge",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_acuity_1_discharge_no_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": 10.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 10.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 1
+            },
+            "arrival_tick": 1,
+            "boarding_interval": null,
+            "completed_los_ticks": 10,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 1
+            },
+            "observed_elapsed_ticks": 10,
+            "patient_id": "patient-endpoints_acuity_1_discharge_no_diagnostics",
+            "provisional_disposition": "discharge",
+            "realized_outcome": {
+              "kind": "discharged",
+              "terminal_tick": 11
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": 11,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 1
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 1
+            },
+            "patient_id": "patient-endpoints_acuity_1_discharge_no_diagnostics",
+            "provisional_disposition": "discharge",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_acuity_1_discharge_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 14.0,
+          "mean_completed_los": 14.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 14.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 14,
+            "agent_knowledge": {
+              "triage_acuity": 1
+            },
+            "arrival_tick": 1,
+            "boarding_interval": null,
+            "completed_los_ticks": 14,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 1
+            },
+            "observed_elapsed_ticks": 14,
+            "patient_id": "patient-endpoints_acuity_1_discharge_diagnostics",
+            "provisional_disposition": "discharge",
+            "realized_outcome": {
+              "kind": "discharged",
+              "terminal_tick": 15
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 10,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics",
+                "start_tick": 6
+              },
+              {
+                "end_tick": 15,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 10
+              }
+            ],
+            "terminal_tick": 15,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 1
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 1
+            },
+            "patient_id": "patient-endpoints_acuity_1_discharge_diagnostics",
+            "provisional_disposition": "discharge",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 4,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_acuity_1_admission_no_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": 14.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 14.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 1
+            },
+            "arrival_tick": 1,
+            "boarding_interval": {
+              "duration_ticks": 2,
+              "end_tick": 13,
+              "start_tick": 11
+            },
+            "completed_los_ticks": 14,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 1
+            },
+            "observed_elapsed_ticks": 14,
+            "patient_id": "patient-endpoints_acuity_1_admission_no_diagnostics",
+            "provisional_disposition": "admission",
+            "realized_outcome": {
+              "destination": "destination.synthetic",
+              "kind": "transferred",
+              "offer_id": "offer-endpoints_acuity_1_admission_no_diagnostics",
+              "terminal_tick": 15
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": 15,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": {
+              "duration_ticks": 2,
+              "end_tick": 15,
+              "offer_id": "offer-endpoints_acuity_1_admission_no_diagnostics",
+              "start_tick": 13
+            },
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [
+          {
+            "available_tick": 13,
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_1_admission_no_diagnostics",
+            "patient_id": "patient-endpoints_acuity_1_admission_no_diagnostics",
+            "transfer_duration_ticks": 2,
+            "withdrawn_tick": 21
+          }
+        ],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 1
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 1
+            },
+            "patient_id": "patient-endpoints_acuity_1_admission_no_diagnostics",
+            "provisional_disposition": "admission",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.3"
+    },
+    {
+      "case_id": "endpoints_acuity_1_admission_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 14.0,
+          "mean_completed_los": 18.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 18.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 14,
+            "agent_knowledge": {
+              "triage_acuity": 1
+            },
+            "arrival_tick": 1,
+            "boarding_interval": {
+              "duration_ticks": 2,
+              "end_tick": 17,
+              "start_tick": 15
+            },
+            "completed_los_ticks": 18,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 1
+            },
+            "observed_elapsed_ticks": 18,
+            "patient_id": "patient-endpoints_acuity_1_admission_diagnostics",
+            "provisional_disposition": "admission",
+            "realized_outcome": {
+              "destination": "destination.synthetic",
+              "kind": "transferred",
+              "offer_id": "offer-endpoints_acuity_1_admission_diagnostics",
+              "terminal_tick": 19
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 10,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics",
+                "start_tick": 6
+              },
+              {
+                "end_tick": 15,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 10
+              }
+            ],
+            "terminal_tick": 19,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": {
+              "duration_ticks": 2,
+              "end_tick": 19,
+              "offer_id": "offer-endpoints_acuity_1_admission_diagnostics",
+              "start_tick": 17
+            },
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [
+          {
+            "available_tick": 17,
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_1_admission_diagnostics",
+            "patient_id": "patient-endpoints_acuity_1_admission_diagnostics",
+            "transfer_duration_ticks": 2,
+            "withdrawn_tick": 25
+          }
+        ],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 1
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 1
+            },
+            "patient_id": "patient-endpoints_acuity_1_admission_diagnostics",
+            "provisional_disposition": "admission",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 4,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.3"
+    },
+    {
+      "case_id": "endpoints_acuity_2_discharge_no_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": 10.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 10.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 2
+            },
+            "arrival_tick": 1,
+            "boarding_interval": null,
+            "completed_los_ticks": 10,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 2
+            },
+            "observed_elapsed_ticks": 10,
+            "patient_id": "patient-endpoints_acuity_2_discharge_no_diagnostics",
+            "provisional_disposition": "discharge",
+            "realized_outcome": {
+              "kind": "discharged",
+              "terminal_tick": 11
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": 11,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 2
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 2
+            },
+            "patient_id": "patient-endpoints_acuity_2_discharge_no_diagnostics",
+            "provisional_disposition": "discharge",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_acuity_2_discharge_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 14.0,
+          "mean_completed_los": 14.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 14.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 14,
+            "agent_knowledge": {
+              "triage_acuity": 2
+            },
+            "arrival_tick": 1,
+            "boarding_interval": null,
+            "completed_los_ticks": 14,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 2
+            },
+            "observed_elapsed_ticks": 14,
+            "patient_id": "patient-endpoints_acuity_2_discharge_diagnostics",
+            "provisional_disposition": "discharge",
+            "realized_outcome": {
+              "kind": "discharged",
+              "terminal_tick": 15
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 10,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics",
+                "start_tick": 6
+              },
+              {
+                "end_tick": 15,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 10
+              }
+            ],
+            "terminal_tick": 15,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 2
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 2
+            },
+            "patient_id": "patient-endpoints_acuity_2_discharge_diagnostics",
+            "provisional_disposition": "discharge",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 4,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_acuity_2_admission_no_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": 14.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 14.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 2
+            },
+            "arrival_tick": 1,
+            "boarding_interval": {
+              "duration_ticks": 2,
+              "end_tick": 13,
+              "start_tick": 11
+            },
+            "completed_los_ticks": 14,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 2
+            },
+            "observed_elapsed_ticks": 14,
+            "patient_id": "patient-endpoints_acuity_2_admission_no_diagnostics",
+            "provisional_disposition": "admission",
+            "realized_outcome": {
+              "destination": "destination.synthetic",
+              "kind": "transferred",
+              "offer_id": "offer-endpoints_acuity_2_admission_no_diagnostics",
+              "terminal_tick": 15
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": 15,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": {
+              "duration_ticks": 2,
+              "end_tick": 15,
+              "offer_id": "offer-endpoints_acuity_2_admission_no_diagnostics",
+              "start_tick": 13
+            },
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [
+          {
+            "available_tick": 13,
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_2_admission_no_diagnostics",
+            "patient_id": "patient-endpoints_acuity_2_admission_no_diagnostics",
+            "transfer_duration_ticks": 2,
+            "withdrawn_tick": 21
+          }
+        ],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 2
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 2
+            },
+            "patient_id": "patient-endpoints_acuity_2_admission_no_diagnostics",
+            "provisional_disposition": "admission",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.3"
+    },
+    {
+      "case_id": "endpoints_acuity_2_admission_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 14.0,
+          "mean_completed_los": 18.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 18.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 14,
+            "agent_knowledge": {
+              "triage_acuity": 2
+            },
+            "arrival_tick": 1,
+            "boarding_interval": {
+              "duration_ticks": 2,
+              "end_tick": 17,
+              "start_tick": 15
+            },
+            "completed_los_ticks": 18,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 2
+            },
+            "observed_elapsed_ticks": 18,
+            "patient_id": "patient-endpoints_acuity_2_admission_diagnostics",
+            "provisional_disposition": "admission",
+            "realized_outcome": {
+              "destination": "destination.synthetic",
+              "kind": "transferred",
+              "offer_id": "offer-endpoints_acuity_2_admission_diagnostics",
+              "terminal_tick": 19
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 10,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics",
+                "start_tick": 6
+              },
+              {
+                "end_tick": 15,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 10
+              }
+            ],
+            "terminal_tick": 19,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": {
+              "duration_ticks": 2,
+              "end_tick": 19,
+              "offer_id": "offer-endpoints_acuity_2_admission_diagnostics",
+              "start_tick": 17
+            },
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [
+          {
+            "available_tick": 17,
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_2_admission_diagnostics",
+            "patient_id": "patient-endpoints_acuity_2_admission_diagnostics",
+            "transfer_duration_ticks": 2,
+            "withdrawn_tick": 25
+          }
+        ],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 2
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 2
+            },
+            "patient_id": "patient-endpoints_acuity_2_admission_diagnostics",
+            "provisional_disposition": "admission",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 4,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.3"
+    },
+    {
+      "case_id": "endpoints_acuity_3_discharge_no_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": 10.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 10.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "boarding_interval": null,
+            "completed_los_ticks": 10,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 3
+            },
+            "observed_elapsed_ticks": 10,
+            "patient_id": "patient-endpoints_acuity_3_discharge_no_diagnostics",
+            "provisional_disposition": "discharge",
+            "realized_outcome": {
+              "kind": "discharged",
+              "terminal_tick": 11
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": 11,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 3
+            },
+            "patient_id": "patient-endpoints_acuity_3_discharge_no_diagnostics",
+            "provisional_disposition": "discharge",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_acuity_3_discharge_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 14.0,
+          "mean_completed_los": 14.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 14.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 14,
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "boarding_interval": null,
+            "completed_los_ticks": 14,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 3
+            },
+            "observed_elapsed_ticks": 14,
+            "patient_id": "patient-endpoints_acuity_3_discharge_diagnostics",
+            "provisional_disposition": "discharge",
+            "realized_outcome": {
+              "kind": "discharged",
+              "terminal_tick": 15
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 10,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics",
+                "start_tick": 6
+              },
+              {
+                "end_tick": 15,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 10
+              }
+            ],
+            "terminal_tick": 15,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 3
+            },
+            "patient_id": "patient-endpoints_acuity_3_discharge_diagnostics",
+            "provisional_disposition": "discharge",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 4,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_acuity_3_admission_no_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": 14.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 14.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "boarding_interval": {
+              "duration_ticks": 2,
+              "end_tick": 13,
+              "start_tick": 11
+            },
+            "completed_los_ticks": 14,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 3
+            },
+            "observed_elapsed_ticks": 14,
+            "patient_id": "patient-endpoints_acuity_3_admission_no_diagnostics",
+            "provisional_disposition": "admission",
+            "realized_outcome": {
+              "destination": "destination.synthetic",
+              "kind": "transferred",
+              "offer_id": "offer-endpoints_acuity_3_admission_no_diagnostics",
+              "terminal_tick": 15
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": 15,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": {
+              "duration_ticks": 2,
+              "end_tick": 15,
+              "offer_id": "offer-endpoints_acuity_3_admission_no_diagnostics",
+              "start_tick": 13
+            },
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [
+          {
+            "available_tick": 13,
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_3_admission_no_diagnostics",
+            "patient_id": "patient-endpoints_acuity_3_admission_no_diagnostics",
+            "transfer_duration_ticks": 2,
+            "withdrawn_tick": 21
+          }
+        ],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 3
+            },
+            "patient_id": "patient-endpoints_acuity_3_admission_no_diagnostics",
+            "provisional_disposition": "admission",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.3"
+    },
+    {
+      "case_id": "endpoints_acuity_3_admission_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 14.0,
+          "mean_completed_los": 18.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 18.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 14,
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "boarding_interval": {
+              "duration_ticks": 2,
+              "end_tick": 17,
+              "start_tick": 15
+            },
+            "completed_los_ticks": 18,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 3
+            },
+            "observed_elapsed_ticks": 18,
+            "patient_id": "patient-endpoints_acuity_3_admission_diagnostics",
+            "provisional_disposition": "admission",
+            "realized_outcome": {
+              "destination": "destination.synthetic",
+              "kind": "transferred",
+              "offer_id": "offer-endpoints_acuity_3_admission_diagnostics",
+              "terminal_tick": 19
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 10,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics",
+                "start_tick": 6
+              },
+              {
+                "end_tick": 15,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 10
+              }
+            ],
+            "terminal_tick": 19,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": {
+              "duration_ticks": 2,
+              "end_tick": 19,
+              "offer_id": "offer-endpoints_acuity_3_admission_diagnostics",
+              "start_tick": 17
+            },
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [
+          {
+            "available_tick": 17,
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_3_admission_diagnostics",
+            "patient_id": "patient-endpoints_acuity_3_admission_diagnostics",
+            "transfer_duration_ticks": 2,
+            "withdrawn_tick": 25
+          }
+        ],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 3
+            },
+            "patient_id": "patient-endpoints_acuity_3_admission_diagnostics",
+            "provisional_disposition": "admission",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 4,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.3"
+    },
+    {
+      "case_id": "endpoints_acuity_4_discharge_no_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": 10.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 10.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 4
+            },
+            "arrival_tick": 1,
+            "boarding_interval": null,
+            "completed_los_ticks": 10,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 4
+            },
+            "observed_elapsed_ticks": 10,
+            "patient_id": "patient-endpoints_acuity_4_discharge_no_diagnostics",
+            "provisional_disposition": "discharge",
+            "realized_outcome": {
+              "kind": "discharged",
+              "terminal_tick": 11
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": 11,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 4
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 4
+            },
+            "patient_id": "patient-endpoints_acuity_4_discharge_no_diagnostics",
+            "provisional_disposition": "discharge",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_acuity_4_discharge_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 14.0,
+          "mean_completed_los": 14.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 14.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 14,
+            "agent_knowledge": {
+              "triage_acuity": 4
+            },
+            "arrival_tick": 1,
+            "boarding_interval": null,
+            "completed_los_ticks": 14,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 4
+            },
+            "observed_elapsed_ticks": 14,
+            "patient_id": "patient-endpoints_acuity_4_discharge_diagnostics",
+            "provisional_disposition": "discharge",
+            "realized_outcome": {
+              "kind": "discharged",
+              "terminal_tick": 15
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 10,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics",
+                "start_tick": 6
+              },
+              {
+                "end_tick": 15,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 10
+              }
+            ],
+            "terminal_tick": 15,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 4
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 4
+            },
+            "patient_id": "patient-endpoints_acuity_4_discharge_diagnostics",
+            "provisional_disposition": "discharge",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 4,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_acuity_4_admission_no_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": 14.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 14.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 4
+            },
+            "arrival_tick": 1,
+            "boarding_interval": {
+              "duration_ticks": 2,
+              "end_tick": 13,
+              "start_tick": 11
+            },
+            "completed_los_ticks": 14,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 4
+            },
+            "observed_elapsed_ticks": 14,
+            "patient_id": "patient-endpoints_acuity_4_admission_no_diagnostics",
+            "provisional_disposition": "admission",
+            "realized_outcome": {
+              "destination": "destination.synthetic",
+              "kind": "transferred",
+              "offer_id": "offer-endpoints_acuity_4_admission_no_diagnostics",
+              "terminal_tick": 15
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": 15,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": {
+              "duration_ticks": 2,
+              "end_tick": 15,
+              "offer_id": "offer-endpoints_acuity_4_admission_no_diagnostics",
+              "start_tick": 13
+            },
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [
+          {
+            "available_tick": 13,
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_4_admission_no_diagnostics",
+            "patient_id": "patient-endpoints_acuity_4_admission_no_diagnostics",
+            "transfer_duration_ticks": 2,
+            "withdrawn_tick": 21
+          }
+        ],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 4
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 4
+            },
+            "patient_id": "patient-endpoints_acuity_4_admission_no_diagnostics",
+            "provisional_disposition": "admission",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.3"
+    },
+    {
+      "case_id": "endpoints_acuity_4_admission_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 14.0,
+          "mean_completed_los": 18.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 18.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 14,
+            "agent_knowledge": {
+              "triage_acuity": 4
+            },
+            "arrival_tick": 1,
+            "boarding_interval": {
+              "duration_ticks": 2,
+              "end_tick": 17,
+              "start_tick": 15
+            },
+            "completed_los_ticks": 18,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 4
+            },
+            "observed_elapsed_ticks": 18,
+            "patient_id": "patient-endpoints_acuity_4_admission_diagnostics",
+            "provisional_disposition": "admission",
+            "realized_outcome": {
+              "destination": "destination.synthetic",
+              "kind": "transferred",
+              "offer_id": "offer-endpoints_acuity_4_admission_diagnostics",
+              "terminal_tick": 19
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 10,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics",
+                "start_tick": 6
+              },
+              {
+                "end_tick": 15,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 10
+              }
+            ],
+            "terminal_tick": 19,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": {
+              "duration_ticks": 2,
+              "end_tick": 19,
+              "offer_id": "offer-endpoints_acuity_4_admission_diagnostics",
+              "start_tick": 17
+            },
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [
+          {
+            "available_tick": 17,
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_4_admission_diagnostics",
+            "patient_id": "patient-endpoints_acuity_4_admission_diagnostics",
+            "transfer_duration_ticks": 2,
+            "withdrawn_tick": 25
+          }
+        ],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 4
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 4
+            },
+            "patient_id": "patient-endpoints_acuity_4_admission_diagnostics",
+            "provisional_disposition": "admission",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 4,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.3"
+    },
+    {
+      "case_id": "endpoints_acuity_5_discharge_no_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": 10.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 10.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 5
+            },
+            "arrival_tick": 1,
+            "boarding_interval": null,
+            "completed_los_ticks": 10,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 5
+            },
+            "observed_elapsed_ticks": 10,
+            "patient_id": "patient-endpoints_acuity_5_discharge_no_diagnostics",
+            "provisional_disposition": "discharge",
+            "realized_outcome": {
+              "kind": "discharged",
+              "terminal_tick": 11
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": 11,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 5
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 5
+            },
+            "patient_id": "patient-endpoints_acuity_5_discharge_no_diagnostics",
+            "provisional_disposition": "discharge",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_acuity_5_discharge_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 14.0,
+          "mean_completed_los": 14.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 14.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 14,
+            "agent_knowledge": {
+              "triage_acuity": 5
+            },
+            "arrival_tick": 1,
+            "boarding_interval": null,
+            "completed_los_ticks": 14,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 5
+            },
+            "observed_elapsed_ticks": 14,
+            "patient_id": "patient-endpoints_acuity_5_discharge_diagnostics",
+            "provisional_disposition": "discharge",
+            "realized_outcome": {
+              "kind": "discharged",
+              "terminal_tick": 15
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 10,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics",
+                "start_tick": 6
+              },
+              {
+                "end_tick": 15,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 10
+              }
+            ],
+            "terminal_tick": 15,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 5
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 5
+            },
+            "patient_id": "patient-endpoints_acuity_5_discharge_diagnostics",
+            "provisional_disposition": "discharge",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 4,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.2"
+    },
+    {
+      "case_id": "endpoints_acuity_5_admission_no_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": 14.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 14.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 5
+            },
+            "arrival_tick": 1,
+            "boarding_interval": {
+              "duration_ticks": 2,
+              "end_tick": 13,
+              "start_tick": 11
+            },
+            "completed_los_ticks": 14,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 5
+            },
+            "observed_elapsed_ticks": 14,
+            "patient_id": "patient-endpoints_acuity_5_admission_no_diagnostics",
+            "provisional_disposition": "admission",
+            "realized_outcome": {
+              "destination": "destination.synthetic",
+              "kind": "transferred",
+              "offer_id": "offer-endpoints_acuity_5_admission_no_diagnostics",
+              "terminal_tick": 15
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": 15,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": {
+              "duration_ticks": 2,
+              "end_tick": 15,
+              "offer_id": "offer-endpoints_acuity_5_admission_no_diagnostics",
+              "start_tick": 13
+            },
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [
+          {
+            "available_tick": 13,
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_5_admission_no_diagnostics",
+            "patient_id": "patient-endpoints_acuity_5_admission_no_diagnostics",
+            "transfer_duration_ticks": 2,
+            "withdrawn_tick": 21
+          }
+        ],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 5
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 5
+            },
+            "patient_id": "patient-endpoints_acuity_5_admission_no_diagnostics",
+            "provisional_disposition": "admission",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.3"
+    },
+    {
+      "case_id": "endpoints_acuity_5_admission_diagnostics",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 1,
+          "throughput_count": 1,
+          "unfinished": 0
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 1,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 14.0,
+          "mean_completed_los": 18.0,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 18.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 14,
+            "agent_knowledge": {
+              "triage_acuity": 5
+            },
+            "arrival_tick": 1,
+            "boarding_interval": {
+              "duration_ticks": 2,
+              "end_tick": 17,
+              "start_tick": 15
+            },
+            "completed_los_ticks": 18,
+            "endpoint_state": "terminal",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 5
+            },
+            "observed_elapsed_ticks": 18,
+            "patient_id": "patient-endpoints_acuity_5_admission_diagnostics",
+            "provisional_disposition": "admission",
+            "realized_outcome": {
+              "destination": "destination.synthetic",
+              "kind": "transferred",
+              "offer_id": "offer-endpoints_acuity_5_admission_diagnostics",
+              "terminal_tick": 19
+            },
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 10,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics",
+                "start_tick": 6
+              },
+              {
+                "end_tick": 15,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 10
+              }
+            ],
+            "terminal_tick": 19,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": {
+              "duration_ticks": 2,
+              "end_tick": 19,
+              "offer_id": "offer-endpoints_acuity_5_admission_diagnostics",
+              "start_tick": 17
+            },
+            "unfinished_reason": null
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [
+          {
+            "available_tick": 17,
+            "destination": "destination.synthetic",
+            "offer_id": "offer-endpoints_acuity_5_admission_diagnostics",
+            "patient_id": "patient-endpoints_acuity_5_admission_diagnostics",
+            "transfer_duration_ticks": 2,
+            "withdrawn_tick": 25
+          }
+        ],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 5
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 5
+            },
+            "patient_id": "patient-endpoints_acuity_5_admission_diagnostics",
+            "provisional_disposition": "admission",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 4,
+                "resource_id": "resource.diagnostics",
+                "stage": "diagnostics"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.3"
+    },
+    {
+      "case_id": "endpoints_admission_no_offer",
+      "expected": {
+        "counts": {
+          "arrivals": 1,
+          "started": 1,
+          "terminal": 0,
+          "throughput_count": 0,
+          "unfinished": 1
+        },
+        "denominators": {
+          "active_work": 1,
+          "completed_los": 0,
+          "first_care_wait": 1,
+          "observed_elapsed": 1,
+          "total_stage_queue_wait": 1
+        },
+        "metrics_ticks": {
+          "mean_active_work": 10.0,
+          "mean_completed_los": null,
+          "mean_first_care_wait": 0.0,
+          "mean_observed_elapsed": 29.0,
+          "mean_total_stage_queue_wait": 0.0
+        },
+        "patients": [
+          {
+            "active_work_ticks": 10,
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "boarding_interval": {
+              "duration_ticks": 19,
+              "end_tick": 30,
+              "start_tick": 11
+            },
+            "completed_los_ticks": null,
+            "endpoint_state": "unfinished_at_horizon",
+            "first_care_wait_ticks": 0,
+            "latent_state": {
+              "acuity": 3
+            },
+            "observed_elapsed_ticks": 29,
+            "patient_id": "patient-endpoints_admission_no_offer",
+            "provisional_disposition": "admission",
+            "realized_outcome": null,
+            "stage_intervals": [
+              {
+                "end_tick": 3,
+                "resource_id": "resource.triage",
+                "stage": "triage",
+                "start_tick": 1
+              },
+              {
+                "end_tick": 6,
+                "resource_id": "resource.assessment",
+                "stage": "assessment",
+                "start_tick": 3
+              },
+              {
+                "end_tick": 11,
+                "resource_id": "resource.treatment",
+                "stage": "treatment",
+                "start_tick": 6
+              }
+            ],
+            "terminal_tick": null,
+            "total_stage_queue_wait_ticks": 0,
+            "transfer_interval": null,
+            "unfinished_reason": "boarding_without_compatible_offer"
+          }
+        ]
+      },
+      "inputs": {
+        "bed_offers": [],
+        "horizon_tick": 30,
+        "patients": [
+          {
+            "agent_knowledge": {
+              "triage_acuity": 3
+            },
+            "arrival_tick": 1,
+            "latent_state": {
+              "acuity": 3
+            },
+            "patient_id": "patient-endpoints_admission_no_offer",
+            "provisional_disposition": "admission",
+            "stages": [
+              {
+                "duration_ticks": 2,
+                "resource_id": "resource.triage",
+                "stage": "triage"
+              },
+              {
+                "duration_ticks": 3,
+                "resource_id": "resource.assessment",
+                "stage": "assessment"
+              },
+              {
+                "duration_ticks": 5,
+                "resource_id": "resource.treatment",
+                "stage": "treatment"
+              }
+            ]
+          }
+        ]
+      },
+      "purpose": "Synthetic one-patient pathway oracle; not a clinical routing or acuity claim.",
+      "runtime_owner": "E1.3"
+    }
+  ],
+  "family": "endpoints",
+  "fixture_version": 1,
+  "provenance": "synthetic_test_only",
+  "runtime_status": "unbound",
+  "time_unit": "tick"
+}
