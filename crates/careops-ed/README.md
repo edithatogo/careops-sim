@@ -33,3 +33,5 @@ buckets whose open and staffed counts are known. Optional route distances must
 use the P0 unit `m`, but E0 does not simulate movement. E1/E2 own patient
 pathways and operational constraints; later calibration, exports and release
 qualification remain separate gates.
+
+Workspace package metadata declares SPDX `Apache-2.0` via `license.workspace = true`. The repository README section "Licenses, notices, and citation" records that a root `LICENSE` file and a CareOps Sim `CITATION.cff` are still maintainer decisions. Kairos keeps its own `libs/kairos/LICENSE` and `libs/kairos/CITATION.cff`.
