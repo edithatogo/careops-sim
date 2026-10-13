@@ -59,7 +59,7 @@ Entry: D2, Q4, C1/C2 reviewed implementation; no C6 dependency yet.
 - [x] E1.2 Implement seeded time-varying arrivals, triage/assessment/diagnostics/
   treatment/disposition states and stable patient/task IDs; configure service
   distributions with provenance. Do not hide queue time in service samples.
-- [ ] E1.3 Implement admission boarding/discharge and optional abandonment/transfer
+- [x] E1.3 Implement admission boarding/discharge and optional abandonment/transfer
   policies, with terminal reason/censoring and endpoint timestamps. Version policy
   choices and test time bounds, run-horizon endings and unfinished work.
   Consume bed offers once, retain ED occupancy through actual transfer, and retain recurrent boarder-care tasks. Do not infer ward-policy or community ambulance effects from external boundary scenarios; validate unused/expired offers and compatible destinations.
