@@ -213,7 +213,7 @@ and confirm every excluded/censored/unmatched observation is visible in counts.
 
 Entry: C3/C4. Owners 21 (study/search), 22 (runner/CLI), 01 (seed contract).
 
-- [ ] C5.1 Write failing grid-search, invalid-candidate, tie-ranking, split-leakage,
+- [x] C5.1 Write failing grid-search, invalid-candidate, tie-ranking, split-leakage,
   failed-probe penalty and resume tests. Test repeated runs and 1/2/N workers
   with randomized wall-clock completion order.
   Add censoring-rate 2/7, day-versus-row bootstrap, temporal cutoff,
