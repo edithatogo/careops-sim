@@ -224,13 +224,14 @@ Entry: C3/C4. Owners 21 (study/search), 22 (runner/CLI), 01 (seed contract).
   Record ridges/bound hits and identifiability/MC-indeterminate states;
   use prespecified batched precision checks inside fixed caps, with valid stopping
   inference or a fixed confirmation sample. Keep deterministic batch decisions.
-- [ ] C5.3 Extend the existing scenario/seed manifest and CLI with trace verify,
+- [x] C5.3 Extend the existing scenario/seed manifest and CLI with trace verify,
   shadow/free replay, calibrate and compare operations. Preserve legacy inputs;
   emit full study/candidate/configuration/artifact provenance and typed failures.
-- [ ] C5.4 Integrate CPU worker execution for independent replications/candidates
+- [x] C5.4 Integrate CPU worker execution for independent replications/candidates
   through Track 22, with deterministic shard merge and crash/resume handling.
   Keep core state isolated and search decisions independent of worker order.
-- [ ] C5.5 Conductor — review and verify phase (workflow.md).
+- [x] C5.5 Conductor — review and verify phase (workflow.md).
+  Phase C5 review accepted: C-05 recovery and C-06 worker/resume equivalence verified under Kairos pin 7af989c (712+ native tests, 26 CLI tests on Linux/macOS, byte-identical shard recovery across 1/2/4 workers).
 
 Exit: C-05 recovery portion and C-06 worker/resume equivalence. Manual check: stop
 mid-study, resume, and verify candidate ranking/counts/hashes against a complete
