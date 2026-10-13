@@ -224,7 +224,7 @@ Entry: C3/C4. Owners 21 (study/search), 22 (runner/CLI), 01 (seed contract).
   Record ridges/bound hits and identifiability/MC-indeterminate states;
   use prespecified batched precision checks inside fixed caps, with valid stopping
   inference or a fixed confirmation sample. Keep deterministic batch decisions.
-- [ ] C5.3 Extend the existing scenario/seed manifest and CLI with trace verify,
+- [x] C5.3 Extend the existing scenario/seed manifest and CLI with trace verify,
   shadow/free replay, calibrate and compare operations. Preserve legacy inputs;
   emit full study/candidate/configuration/artifact provenance and typed failures.
 - [ ] C5.4 Integrate CPU worker execution for independent replications/candidates
