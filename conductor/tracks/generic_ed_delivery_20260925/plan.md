@@ -63,7 +63,7 @@ Entry: D2, Q4, C1/C2 reviewed implementation; no C6 dependency yet.
   policies, with terminal reason/censoring and endpoint timestamps. Version policy
   choices and test time bounds, run-horizon endings and unfinished work.
   Consume bed offers once, retain ED occupancy through actual transfer, and retain recurrent boarder-care tasks. Do not infer ward-policy or community ambulance effects from external boundary scenarios; validate unused/expired offers and compatible destinations.
-- [ ] E1.4 Conductor — review and verify phase (workflow.md).
+- [x] E1.4 Conductor — review and verify phase (workflow.md).
 
 Exit: generic flow conserves all patients/outcomes under E-R1/4. Manual verification:
 trace a patient through every pathway and reconcile event times with its summary.
