@@ -53,7 +53,7 @@ Manual check: fresh checkout produces the declared one-patient outcome.
 
 Entry: D2, Q4, C1/C2 reviewed implementation; no C6 dependency yet.
 
-- [ ] E1.1 Write pathway tests for empty run, one patient, each acuity/pathway,
+- [x] E1.1 Write pathway tests for empty run, one patient, each acuity/pathway,
   saturated arrival demand, zero/long service, impossible resource config and
   endpoint count conservation. Define explicit metrics and expected intervals.
 - [ ] E1.2 Implement seeded time-varying arrivals, triage/assessment/diagnostics/
