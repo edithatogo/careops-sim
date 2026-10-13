@@ -176,7 +176,7 @@ Entry: C1, C2 and Q4. Owners 21 (probe semantics), 22 (runner), 03 (runtime).
 - [x] C3.3 Capture unclamped target predictions and signed residuals, feasibility,
   missingness and replay role. Implement strict/diagnostic policy and checkpoint
   recovery of outstanding probes without duplicates or future-state leakage.
-- [ ] C3.4 Conductor — review and verify phase (workflow.md).
+- [x] C3.4 Conductor — review and verify phase (workflow.md).
 
 Exit: C-03; intentionally slow walking produces positive residuals despite exact
 macro anchoring. Manual check: compare observed ledger and probe logs separately;
