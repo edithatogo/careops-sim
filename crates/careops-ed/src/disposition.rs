@@ -11,6 +11,9 @@ use crate::pathway::{
 const MAX_DECISION_PATIENTS: usize = 100_000;
 const MAX_DIAGNOSTIC_STAGES: usize = 16;
 
+#[path = "boarding.rs"]
+pub mod boarding;
+
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum DispositionIntent {
