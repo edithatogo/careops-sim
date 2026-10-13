@@ -696,8 +696,14 @@ fn admission_patient(id: &str, treatment_ticks: u64) -> (PathwayPatient, Vec<Res
 fn optional_abandonment_is_explicit_and_disabled_policy_stays_off() {
     let (patient, rows) = admission_patient("wait", 20);
     let pathways = run_pathway(&cfg(8, vec![patient.clone()], &rows)).unwrap();
-    let censored =
-        compute_endpoints(&pathways, &[patient.clone()], &BTreeMap::new(), &[], 8).unwrap();
+    let censored = compute_endpoints(
+        &pathways,
+        std::slice::from_ref(&patient),
+        &BTreeMap::new(),
+        &[],
+        8,
+    )
+    .unwrap();
     assert_eq!(censored.patients[0].endpoint_state, "unfinished_at_horizon");
     assert!(censored.patients[0].realized_outcome.is_none());
 
@@ -782,11 +788,25 @@ fn horizon_edge_censors_unfinished_transfer_without_causal_claims() {
         transfer_duration_ticks: 4,
     }];
     let intents = BTreeMap::from([("p".into(), DispositionIntent::Admission)]);
-    let finished = compute_endpoints(&pathways, &[patient.clone()], &intents, &offers, 11).unwrap();
+    let finished = compute_endpoints(
+        &pathways,
+        std::slice::from_ref(&patient),
+        &intents,
+        &offers,
+        11,
+    )
+    .unwrap();
     assert_eq!(finished.patients[0].endpoint_state, "terminal");
     assert_eq!(finished.patients[0].terminal_tick, Some(11));
 
-    let censored = compute_endpoints(&pathways, &[patient.clone()], &intents, &offers, 10).unwrap();
+    let censored = compute_endpoints(
+        &pathways,
+        std::slice::from_ref(&patient),
+        &intents,
+        &offers,
+        10,
+    )
+    .unwrap();
     assert_eq!(censored.patients[0].endpoint_state, "unfinished_at_horizon");
     assert!(censored.patients[0].realized_outcome.is_none());
     assert_eq!(
@@ -806,9 +826,15 @@ fn horizon_edge_censors_unfinished_transfer_without_causal_claims() {
         transfer_requests: requests,
         ..ExitOptions::default()
     };
-    let error =
-        compute_endpoints_with_options(&pathways, &[patient.clone()], &intents, &[], 20, &blocked)
-            .unwrap_err();
+    let error = compute_endpoints_with_options(
+        &pathways,
+        std::slice::from_ref(&patient),
+        &intents,
+        &[],
+        20,
+        &blocked,
+    )
+    .unwrap_err();
     assert!(error.to_string().contains("transfer policy is disabled"));
 
     let mut eligible_requests = BTreeMap::new();
