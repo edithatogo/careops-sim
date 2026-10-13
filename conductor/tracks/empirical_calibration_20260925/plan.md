@@ -227,11 +227,10 @@ Entry: C3/C4. Owners 21 (study/search), 22 (runner/CLI), 01 (seed contract).
 - [x] C5.3 Extend the existing scenario/seed manifest and CLI with trace verify,
   shadow/free replay, calibrate and compare operations. Preserve legacy inputs;
   emit full study/candidate/configuration/artifact provenance and typed failures.
-- [x] C5.4 Integrate CPU worker execution for independent replications/candidates
+- [ ] C5.4 Integrate CPU worker execution for independent replications/candidates
   through Track 22, with deterministic shard merge and crash/resume handling.
   Keep core state isolated and search decisions independent of worker order.
-- [x] C5.5 Conductor — review and verify phase (workflow.md).
-  Phase C5 review accepted: C-05 recovery and C-06 worker/resume equivalence verified under Kairos pin 7af989c (712+ native tests, 26 CLI tests on Linux/macOS, byte-identical shard recovery across 1/2/4 workers).
+- [ ] C5.5 Conductor — review and verify phase (workflow.md).
 
 Exit: C-05 recovery portion and C-06 worker/resume equivalence. Manual check: stop
 mid-study, resume, and verify candidate ranking/counts/hashes against a complete
