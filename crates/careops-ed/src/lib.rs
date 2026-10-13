@@ -4,6 +4,13 @@
 //! items. This crate does not encode clinical pathways or empirically validate
 //! an ED profile.
 
+#[doc(hidden)]
+pub mod arrivals;
+#[doc(hidden)]
+pub mod disposition;
+#[doc(hidden)]
+pub mod pathway;
+
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::error::Error;
 use std::fmt::{Display, Formatter};
@@ -262,248 +269,252 @@ impl ScenarioConfig {
             return invalid("patients must contain at least one supplied work item");
         }
 
-        let profile = &self.capacity_location;
-        if profile.schema_version != 3 || profile.status != "proposed" {
-            return invalid("capacity_location must use proposed P0 schema version 3");
-        }
-        validate_aggregate_capacity(&profile.capacity)?;
+        validate_capacity_work(&self.capacity_location, &self.patients, self.horizon_ticks)
+    }
+}
 
-        let zone_ids = unique_ids(
-            "zone_id",
-            profile.zones.iter().map(|zone| zone.zone_id.as_str()),
+pub(crate) fn validate_capacity_work(
+    profile: &CapacityLocationProfile,
+    patients: &[PatientWorkItem],
+    horizon_ticks: u64,
+) -> Result<(), ScenarioError> {
+    if profile.schema_version != 3 || profile.status != "proposed" {
+        return invalid("capacity_location must use proposed P0 schema version 3");
+    }
+    validate_aggregate_capacity(&profile.capacity)?;
+
+    let zone_ids = unique_ids(
+        "zone_id",
+        profile.zones.iter().map(|zone| zone.zone_id.as_str()),
+    )?;
+    let mut location_ids = HashSet::new();
+    for location in &profile.locations {
+        require_id("location_id", &location.location_id)?;
+        require_id("location.name", &location.name)?;
+        if !location_ids.insert(location.location_id.as_str()) {
+            return invalid(format!("duplicate location_id '{}'", location.location_id));
+        }
+        if !zone_ids.contains(location.zone_id.as_str()) {
+            return invalid(format!(
+                "location '{}' refers to unknown zone '{}'",
+                location.location_id, location.zone_id
+            ));
+        }
+    }
+    if profile.locations.is_empty() {
+        return invalid("capacity_location.locations must not be empty");
+    }
+
+    let mut resource_ids = HashMap::new();
+    for resource in &profile.resource_buckets {
+        require_id("resource_id", &resource.resource_id)?;
+        require_id("resource_class", &resource.resource_class)?;
+        if resource_ids
+            .insert(resource.resource_id.as_str(), resource)
+            .is_some()
+        {
+            return invalid(format!("duplicate resource_id '{}'", resource.resource_id));
+        }
+        if !location_ids.contains(resource.location_id.as_str()) {
+            return invalid(format!(
+                "resource '{}' refers to unknown location '{}'",
+                resource.resource_id, resource.location_id
+            ));
+        }
+        if !zone_ids.contains(resource.zone_id.as_str()) {
+            return invalid(format!(
+                "resource '{}' refers to unknown zone '{}'",
+                resource.resource_id, resource.zone_id
+            ));
+        }
+        validate_known_count(
+            "resource availability",
+            resource.availability_status,
+            resource.open_count,
+            resource.staffed_count,
+            resource.availability_reason.as_deref(),
         )?;
-        let mut location_ids = HashSet::new();
-        for location in &profile.locations {
-            require_id("location_id", &location.location_id)?;
-            require_id("location.name", &location.name)?;
-            if !location_ids.insert(location.location_id.as_str()) {
-                return invalid(format!("duplicate location_id '{}'", location.location_id));
-            }
-            if !zone_ids.contains(location.zone_id.as_str()) {
-                return invalid(format!(
-                    "location '{}' refers to unknown zone '{}'",
-                    location.location_id, location.zone_id
-                ));
-            }
+        if resource.open_count.unwrap_or(0) == 0 || resource.staffed_count.unwrap_or(0) == 0 {
+            return invalid(format!(
+                "resource '{}' needs positive known open and staffed counts to run",
+                resource.resource_id
+            ));
         }
-        if profile.locations.is_empty() {
-            return invalid("capacity_location.locations must not be empty");
-        }
-
-        let mut resource_ids = HashMap::new();
-        for resource in &profile.resource_buckets {
-            require_id("resource_id", &resource.resource_id)?;
-            require_id("resource_class", &resource.resource_class)?;
-            if resource_ids
-                .insert(resource.resource_id.as_str(), resource)
-                .is_some()
-            {
-                return invalid(format!("duplicate resource_id '{}'", resource.resource_id));
-            }
-            if !location_ids.contains(resource.location_id.as_str()) {
+        validate_physical_count(
+            resource.physical_status,
+            resource.physical_count,
+            "resource physical count",
+        )?;
+        if let (Some(physical), Some(open)) = (resource.physical_count, resource.open_count) {
+            if open > physical {
                 return invalid(format!(
-                    "resource '{}' refers to unknown location '{}'",
-                    resource.resource_id, resource.location_id
-                ));
-            }
-            if !zone_ids.contains(resource.zone_id.as_str()) {
-                return invalid(format!(
-                    "resource '{}' refers to unknown zone '{}'",
-                    resource.resource_id, resource.zone_id
-                ));
-            }
-            validate_known_count(
-                "resource availability",
-                resource.availability_status,
-                resource.open_count,
-                resource.staffed_count,
-                resource.availability_reason.as_deref(),
-            )?;
-            if resource.open_count.unwrap_or(0) == 0 || resource.staffed_count.unwrap_or(0) == 0 {
-                return invalid(format!(
-                    "resource '{}' needs positive known open and staffed counts to run",
+                    "resource '{}' open_count exceeds physical_count",
                     resource.resource_id
                 ));
             }
-            validate_physical_count(
-                resource.physical_status,
-                resource.physical_count,
-                "resource physical count",
-            )?;
-            if let (Some(physical), Some(open)) = (resource.physical_count, resource.open_count) {
-                if open > physical {
-                    return invalid(format!(
-                        "resource '{}' open_count exceeds physical_count",
-                        resource.resource_id
-                    ));
-                }
-            }
-            if let (Some(open), Some(staffed)) = (resource.open_count, resource.staffed_count) {
-                if staffed > open {
-                    return invalid(format!(
-                        "resource '{}' staffed_count exceeds open_count",
-                        resource.resource_id
-                    ));
-                }
-            }
-            for capability in &resource.capabilities {
-                require_id("resource capability", capability)?;
-            }
         }
-        if resource_ids.is_empty() {
-            return invalid("capacity_location.resource_buckets must not be empty");
-        }
-
-        let task_ids = unique_ids(
-            "task_class_id",
-            profile
-                .task_classes
-                .iter()
-                .map(|item| item.task_class_id.as_str()),
-        )?;
-        let mut task_classes = HashMap::new();
-        for task in &profile.task_classes {
-            require_id("task_class.name", &task.name)?;
-            for class in &task.required_resource_classes {
-                require_id("required_resource_class", class)?;
-            }
-            task_classes.insert(task.task_class_id.as_str(), task);
-        }
-        if task_ids.is_empty() {
-            return invalid("capacity_location.task_classes must not be empty");
-        }
-
-        let role_ids = unique_ids(
-            "staff_role_id",
-            profile
-                .staff_roles
-                .iter()
-                .map(|role| role.staff_role_id.as_str()),
-        )?;
-        for role in &profile.staff_roles {
-            require_id("staff_role.name", &role.name)?;
-            if role.counts.is_empty() {
+        if let (Some(open), Some(staffed)) = (resource.open_count, resource.staffed_count) {
+            if staffed > open {
                 return invalid(format!(
-                    "staff role '{}' must record at least one count",
-                    role.staff_role_id
-                ));
-            }
-            for count in &role.counts {
-                if !["employed", "rostered", "present", "task_eligible"]
-                    .contains(&count.basis.as_str())
-                {
-                    return invalid(format!(
-                        "staff role '{}' has unsupported count basis '{}'",
-                        role.staff_role_id, count.basis
-                    ));
-                }
-                require_id("staff_count.reference", &count.reference)?;
-                validate_staff_count(count)?;
-            }
-        }
-        if role_ids.is_empty() {
-            return invalid("capacity_location.staff_roles must not be empty");
-        }
-
-        for item in &profile.eligibility {
-            if !role_ids.contains(item.staff_role_id.as_str())
-                || !task_ids.contains(item.task_class_id.as_str())
-                || !zone_ids.contains(item.zone_id.as_str())
-            {
-                return invalid(
-                    "eligibility contains an unresolved staff, task, or zone reference",
-                );
-            }
-            if let Some(location_id) = &item.location_id {
-                if !location_ids.contains(location_id.as_str()) {
-                    return invalid(format!(
-                        "eligibility refers to unknown location '{location_id}'"
-                    ));
-                }
-            }
-        }
-        if profile.eligibility.is_empty() {
-            return invalid("capacity_location.eligibility must not be empty");
-        }
-
-        for route in &profile.routes {
-            if !location_ids.contains(route.from_location_id.as_str())
-                || !location_ids.contains(route.to_location_id.as_str())
-            {
-                return invalid("route contains an unresolved location reference");
-            }
-            if route.distance.unit != "m"
-                || !route.distance.value.is_finite()
-                || route.distance.value < 0.0
-            {
-                return invalid("route distance must be finite, nonnegative, and use unit 'm'");
-            }
-        }
-
-        let patient_ids = unique_ids(
-            "patient_id",
-            self.patients
-                .iter()
-                .map(|patient| patient.patient_id.as_str()),
-        )?;
-        for patient in &self.patients {
-            if patient.arrival_tick >= self.horizon_ticks {
-                return invalid(format!(
-                    "patient '{}' arrival_tick must be earlier than horizon_ticks",
-                    patient.patient_id
-                ));
-            }
-            if patient.work_ticks == 0 {
-                return invalid(format!(
-                    "patient '{}' work_ticks must be positive",
-                    patient.patient_id
-                ));
-            }
-            let resource = resource_ids
-                .get(patient.resource_id.as_str())
-                .ok_or_else(|| {
-                    ScenarioError(format!(
-                        "patient '{}' refers to unknown resource '{}'",
-                        patient.patient_id, patient.resource_id
-                    ))
-                })?;
-            let task = task_classes
-                .get(patient.task_class_id.as_str())
-                .ok_or_else(|| {
-                    ScenarioError(format!(
-                        "patient '{}' refers to unknown task class '{}'",
-                        patient.patient_id, patient.task_class_id
-                    ))
-                })?;
-            if !task.required_resource_classes.is_empty()
-                && !task
-                    .required_resource_classes
-                    .contains(&resource.resource_class)
-            {
-                return invalid(format!(
-                    "patient '{}' task class is incompatible with resource '{}'",
-                    patient.patient_id, patient.resource_id
-                ));
-            }
-            if !profile.eligibility.iter().any(|entry| {
-                entry.task_class_id == patient.task_class_id
-                    && entry.zone_id == resource.zone_id
-                    && entry
-                        .location_id
-                        .as_ref()
-                        .is_none_or(|location| location == &resource.location_id)
-            }) {
-                return invalid(format!(
-                    "patient '{}' has no matching staff/task/zone eligibility",
-                    patient.patient_id
+                    "resource '{}' staffed_count exceeds open_count",
+                    resource.resource_id
                 ));
             }
         }
-        if patient_ids.is_empty() {
-            return invalid("patients must contain at least one supplied work item");
+        for capability in &resource.capabilities {
+            require_id("resource capability", capability)?;
         }
-        Ok(())
     }
+    if resource_ids.is_empty() {
+        return invalid("capacity_location.resource_buckets must not be empty");
+    }
+
+    let task_ids = unique_ids(
+        "task_class_id",
+        profile
+            .task_classes
+            .iter()
+            .map(|item| item.task_class_id.as_str()),
+    )?;
+    let mut task_classes = HashMap::new();
+    for task in &profile.task_classes {
+        require_id("task_class.name", &task.name)?;
+        for class in &task.required_resource_classes {
+            require_id("required_resource_class", class)?;
+        }
+        task_classes.insert(task.task_class_id.as_str(), task);
+    }
+    if task_ids.is_empty() {
+        return invalid("capacity_location.task_classes must not be empty");
+    }
+
+    let role_ids = unique_ids(
+        "staff_role_id",
+        profile
+            .staff_roles
+            .iter()
+            .map(|role| role.staff_role_id.as_str()),
+    )?;
+    for role in &profile.staff_roles {
+        require_id("staff_role.name", &role.name)?;
+        if role.counts.is_empty() {
+            return invalid(format!(
+                "staff role '{}' must record at least one count",
+                role.staff_role_id
+            ));
+        }
+        for count in &role.counts {
+            if !["employed", "rostered", "present", "task_eligible"].contains(&count.basis.as_str())
+            {
+                return invalid(format!(
+                    "staff role '{}' has unsupported count basis '{}'",
+                    role.staff_role_id, count.basis
+                ));
+            }
+            require_id("staff_count.reference", &count.reference)?;
+            validate_staff_count(count)?;
+        }
+    }
+    if role_ids.is_empty() {
+        return invalid("capacity_location.staff_roles must not be empty");
+    }
+
+    for item in &profile.eligibility {
+        if !role_ids.contains(item.staff_role_id.as_str())
+            || !task_ids.contains(item.task_class_id.as_str())
+            || !zone_ids.contains(item.zone_id.as_str())
+        {
+            return invalid("eligibility contains an unresolved staff, task, or zone reference");
+        }
+        if let Some(location_id) = &item.location_id {
+            if !location_ids.contains(location_id.as_str()) {
+                return invalid(format!(
+                    "eligibility refers to unknown location '{location_id}'"
+                ));
+            }
+        }
+    }
+    if profile.eligibility.is_empty() {
+        return invalid("capacity_location.eligibility must not be empty");
+    }
+
+    for route in &profile.routes {
+        if !location_ids.contains(route.from_location_id.as_str())
+            || !location_ids.contains(route.to_location_id.as_str())
+        {
+            return invalid("route contains an unresolved location reference");
+        }
+        if route.distance.unit != "m"
+            || !route.distance.value.is_finite()
+            || route.distance.value < 0.0
+        {
+            return invalid("route distance must be finite, nonnegative, and use unit 'm'");
+        }
+    }
+
+    let patient_ids = if patients.is_empty() {
+        HashSet::new()
+    } else {
+        unique_ids(
+            "patient_id",
+            patients.iter().map(|patient| patient.patient_id.as_str()),
+        )?
+    };
+    for patient in patients {
+        if patient.arrival_tick >= horizon_ticks {
+            return invalid(format!(
+                "patient '{}' arrival_tick must be earlier than horizon_ticks",
+                patient.patient_id
+            ));
+        }
+        if patient.work_ticks == 0 {
+            return invalid(format!(
+                "patient '{}' work_ticks must be positive",
+                patient.patient_id
+            ));
+        }
+        let resource = resource_ids
+            .get(patient.resource_id.as_str())
+            .ok_or_else(|| {
+                ScenarioError(format!(
+                    "patient '{}' refers to unknown resource '{}'",
+                    patient.patient_id, patient.resource_id
+                ))
+            })?;
+        let task = task_classes
+            .get(patient.task_class_id.as_str())
+            .ok_or_else(|| {
+                ScenarioError(format!(
+                    "patient '{}' refers to unknown task class '{}'",
+                    patient.patient_id, patient.task_class_id
+                ))
+            })?;
+        if !task.required_resource_classes.is_empty()
+            && !task
+                .required_resource_classes
+                .contains(&resource.resource_class)
+        {
+            return invalid(format!(
+                "patient '{}' task class is incompatible with resource '{}'",
+                patient.patient_id, patient.resource_id
+            ));
+        }
+        if !profile.eligibility.iter().any(|entry| {
+            entry.task_class_id == patient.task_class_id
+                && entry.zone_id == resource.zone_id
+                && entry
+                    .location_id
+                    .as_ref()
+                    .is_none_or(|location| location == &resource.location_id)
+        }) {
+            return invalid(format!(
+                "patient '{}' has no matching staff/task/zone eligibility",
+                patient.patient_id
+            ));
+        }
+    }
+    let _ = patient_ids;
+    Ok(())
 }
 
 fn validate_aggregate_capacity(capacity: &AggregateCapacity) -> Result<(), ScenarioError> {
