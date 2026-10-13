@@ -1,12 +1,10 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use careops_ed::arrivals::{generate_arrivals, ArrivalBin, ArrivalConfig, ArrivalModeCounts};
-use careops_ed::pathway::{
-    run_pathway, PathwayConfig, PathwayPatient, StageKind, StageWork,
-};
+use careops_ed::pathway::{run_pathway, PathwayConfig, PathwayPatient, StageKind, StageWork};
 use careops_ed::{
-    AggregateCapacity, CapacityLocationProfile, Eligibility, KnowledgeStatus, Location,
-    Provenance, ResourceBucket, StaffCount, StaffRole, TaskClass, Zone,
+    AggregateCapacity, CapacityLocationProfile, Eligibility, KnowledgeStatus, Location, Provenance,
+    ResourceBucket, StaffCount, StaffRole, TaskClass, Zone,
 };
 
 #[test]
@@ -43,8 +41,7 @@ fn test_seeded_time_varying_arrivals_determinism_and_stability() {
 
     assert_eq!(arrivals_a.len(), 5);
     assert_eq!(
-        arrivals_a,
-        arrivals_b,
+        arrivals_a, arrivals_b,
         "Seeded arrivals must be byte-for-byte deterministic"
     );
 
