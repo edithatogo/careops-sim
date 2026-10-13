@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "packet_id": "C5.1.grid-search",
+  "task_id": "C5.1",
+  "status": "prepared",
+  "base_commit": "84d2daaba9b785b69fd9d0774013f4d9af40efe4",
+  "target_repo": ".",
+  "model_candidate": "gpt-6-luna",
+  "model_role": "calibration_worker",
+  "objective": "Write failing grid-search, invalid-candidate, tie-ranking, split-leakage, failed-probe penalty and resume tests. Test repeated runs and 1/2/N workers with randomized wall-clock completion order. Add censoring-rate 2/7, day-versus-row bootstrap, temporal cutoff, paired CRN and precision-cap fixtures from the research integration ledger.",
+  "interface_contract": "conductor/tracks/empirical_calibration_20260925/spec.md",
+  "leaf_dependencies": [],
+  "context_paths": [
+    "conductor/tracks/empirical_calibration_20260925/spec.md",
+    "conductor/tracks/empirical_calibration_20260925/plan.md",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+    "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/empirical_calibration_20260925/spec.md": "ac39678081c2ea3391ddaf45b948e6ba62fb7f01a52e5905444ffd127c33b9f3",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "11b515d56e284d7a3f9b58664bc398353626da87e2d0759b2dc6b4678a422df0",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md": "8819ff02e33b929962c6d5aeb8dc8695826ba17b53549c8a570090b405e809f4",
+    "conductor/tracks/empirical_calibration_20260925/agent-contract.md": "a67538a9e6b9a67eb8f1c3a4308da391dace15dda9b31926c8998e6caff5f806"
+  },
+  "source_hashes": {},
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json"
+  ],
+  "write_reservations": [
+    "libs/kairos/crates/kairo-ecs-calibration",
+    "libs/kairos/crates/kairo-ecs-cli"
+  ],
+  "write_paths": [
+    "libs/kairos/crates/kairo-ecs-calibration/tests/grid_search_fixtures.rs",
+    ".artifacts/c5.1-grid-search/worker-result.json"
+  ],
+  "result_path": ".artifacts/c5.1-grid-search/worker-result.json",
+  "size_exception": null,
+  "steps": [
+    "Read empirical calibration spec (C-05), test-matrix, and agent-contract for grid search and split integrity semantics.",
+    "Formulate fixture declarations for grid-search bounds, invalid candidate rejection, tie-ranking deterministic order, split-leakage rejection (patient/episode overlap + future leakage), failed-probe penalty (late/missing/unreachable cannot improve objective), and crash/resume with 1/2/N workers.",
+    "Add censoring-rate 2/7, day-versus-row bootstrap, temporal cutoff, paired CRN and precision-cap fixtures from research integration ledger.",
+    "Verify that the fixtures compile or fail cleanly under Rust 1.99.0."
+  ],
+  "stop_conditions": [
+    "Input/base drift",
+    "Edits outside write reservations",
+    "Public API modification without Track25 review"
+  ],
+  "acceptance": [
+    "Covers all 6 fixture families: grid-search, invalid-candidate, tie-ranking, split-leakage, failed-probe penalty, resume (1/2/N workers).",
+    "Contains exact assertions for split integrity (no patient/episode overlap, no future leakage).",
+    "Contains exact assertions for failed-probe penalty (typed failures, fixed penalties/thresholds).",
+    "Strict Clippy and rustfmt pass without warnings on Rust 1.99.0."
+  ],
+  "verification": [
+    {
+      "argv": ["cargo", "check", "--package", "careops-ed"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "CareOps workspace compiles cleanly"
+    }
+  ]
+}
