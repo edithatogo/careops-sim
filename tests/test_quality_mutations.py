@@ -13,20 +13,20 @@ from tools.quality_mutations import check_outcomes, main
 
 SOURCE_PATH = Path(__file__).resolve().parents[1] / "crates/careops-ed/src/lib.rs"
 SOURCE_BYTES = SOURCE_PATH.read_bytes()
-HISTORICAL_SOURCE_SHA256 = "4f7917f3976d84b86a1b2b6837065c803d75b29d6b4f594abbbb7ceaedc57380"
+HISTORICAL_SOURCE_SHA256 = "d8f54a1547f6275cc366e54cd85590f33e2e01eba47d05a390e7c293aa3d1657"
 HISTORICAL_CATALOG_SHA256 = "a2cb9d0d444dece53af296a0082b18dcdd4ad58616a2ceea58df2b0f3c86194e"
 HISTORICAL_CATALOG_PATH = (
     Path(__file__).resolve().parents[1]
     / "conductor/evidence/d3.3-quality-gates-20261005/mutants.json"
 )
 BASELINE_UNVIABLES = (
-    "crates/careops-ed/src/lib.rs:239:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:635:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:653:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:246:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:646:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:664:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
 )
 EQUIVALENT_MISSES = (
-    (735, 60, "crates/careops-ed/src/lib.rs:735:60: replace || with && in run_scenario"),
-    (798, 43, "crates/careops-ed/src/lib.rs:798:43: replace || with && in run_scenario"),
+    (746, 60, "crates/careops-ed/src/lib.rs:746:60: replace || with && in run_scenario"),
+    (809, 43, "crates/careops-ed/src/lib.rs:809:43: replace || with && in run_scenario"),
 )
 
 
@@ -71,7 +71,7 @@ def valid_outcomes():
         "scenario": "Baseline",
         "summary": "Success",
     }]
-    for index in range(110):
+    for index in range(111):
         line = 10 + index
         rows.append(mutant_row(
             f"crates/careops-ed/src/lib.rs:{line}:1: replace ! with true in run_scenario",
@@ -85,7 +85,7 @@ def valid_outcomes():
             phase_results=[phase("Build", "Success"), phase("Test", "Success")],
         ))
     for index, name in enumerate(BASELINE_UNVIABLES):
-        line = (239, 635, 653)[index]
+        line = (246, 646, 664)[index]
         rows.append(mutant_row(
             name, "Unviable", line=line, column=5,
             genre="FnValue", replacement="Ok(Default::default())",
@@ -93,14 +93,14 @@ def valid_outcomes():
         ))
     return {
         "cargo_mutants_version": "27.1.0",
-        "caught": 110,
+        "caught": 111,
         "end_time": "2026-10-05T10:02:00Z",
         "missed": 2,
         "outcomes": rows,
         "start_time": "2026-10-05T10:00:00Z",
         "success": 0,
         "timeout": 0,
-        "total_mutants": 115,
+        "total_mutants": 116,
         "unviable": 3,
     }
 
@@ -122,9 +122,9 @@ def validate(document, source_bytes=SOURCE_BYTES, catalog=None, expected_catalog
 class MutationGateTests(unittest.TestCase):
     def test_accepts_full_bound_baseline_and_exact_equivalence_boundaries(self):
         result = validate(valid_outcomes())
-        self.assertEqual(result["source_sha256"], "1f1f66bfd1f3f6e9457c025aa441c040c861029c2342ff9711cddc33e909d4e1")
-        self.assertEqual(result["total_mutants"], 115)
-        self.assertEqual(result["caught"], 110)
+        self.assertEqual(result["source_sha256"], "a79aa97f98e5585f622484691e42ba5725eff3a88b5276234b93eb8061cf591c")
+        self.assertEqual(result["total_mutants"], 116)
+        self.assertEqual(result["caught"], 111)
         self.assertEqual(result["missed"], 2)
         self.assertEqual(result["unviable"], 3)
         self.assertEqual(result["timeout"], 0)
@@ -144,7 +144,7 @@ class MutationGateTests(unittest.TestCase):
         for row in document["outcomes"]:
             for item in row["phase_results"]:
                 item["argv"].append("--locked")
-        self.assertEqual(validate(document)["total_mutants"], 115)
+        self.assertEqual(validate(document)["total_mutants"], 116)
 
     def test_exact_runtime_resolved_cargo_path_must_be_supplied(self):
         resolved = "/home/runner/.rustup/toolchains/1.99.0-x86_64-unknown-linux-gnu/bin/cargo"
@@ -155,7 +155,7 @@ class MutationGateTests(unittest.TestCase):
                 item["argv"].append("--locked")
         with self.assertRaises(ValueError):
             validate(document)
-        self.assertEqual(validate(document, expected_cargo=resolved)["total_mutants"], 115)
+        self.assertEqual(validate(document, expected_cargo=resolved)["total_mutants"], 116)
         with self.assertRaises(ValueError):
             validate(document, expected_cargo=resolved.replace("/home/runner", "/other"))
 
@@ -231,15 +231,15 @@ class MutationGateTests(unittest.TestCase):
 
     def test_rejects_any_non_disposition_missed_mutant(self):
         bad_mutants = (
-            {"line": 735, "column": 61, "genre": "BinaryOperator", "replacement": "&&", "name": "replace || with &&"},
-            {"line": 735, "column": 60, "genre": "Other", "replacement": "&&", "name": "replace || with &&"},
-            {"line": 735, "column": 60, "genre": "BinaryOperator", "replacement": "||", "name": "replace || with &&"},
-            {"line": 735, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "replace && with ||"},
-            {"line": 735, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "unbound replace || with &&"},
+            {"line": 746, "column": 61, "genre": "BinaryOperator", "replacement": "&&", "name": "replace || with &&"},
+            {"line": 746, "column": 60, "genre": "Other", "replacement": "&&", "name": "replace || with &&"},
+            {"line": 746, "column": 60, "genre": "BinaryOperator", "replacement": "||", "name": "replace || with &&"},
+            {"line": 746, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "replace && with ||"},
+            {"line": 746, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "unbound replace || with &&"},
         )
         for bad in bad_mutants:
             document = valid_outcomes()
-            row = document["outcomes"][111]
+            row = document["outcomes"][112]
             mutant = row["scenario"]["Mutant"]
             mutant["span"]["start"] = {"line": bad["line"], "column": bad["column"]}
             mutant["span"]["end"] = {"line": bad["line"], "column": bad["column"] + 2}
@@ -286,8 +286,8 @@ class MutationGateTests(unittest.TestCase):
     def test_rejects_incoherent_mutant_phase_results(self):
         cases = (
             (1, [phase("Build", "Success"), phase("Test", "Success")]),
-            (111, [phase("Build", "Success"), phase("Test", {"Failure": 101})]),
-            (113, [phase("Build", "Success"), phase("Test", "Success")]),
+            (112, [phase("Build", "Success"), phase("Test", {"Failure": 101})]),
+            (114, [phase("Build", "Success"), phase("Test", "Success")]),
         )
         for row_index, phases in cases:
             document = valid_outcomes()
