@@ -1,6 +1,9 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use careops_ed::disposition::boarding::{compute_endpoints, BedOffer, EndpointExecutionResult};
+use careops_ed::disposition::boarding::{
+    compute_endpoints, compute_endpoints_with_options, AbandonmentPolicy, BedOffer,
+    BoarderCarePolicy, EndpointExecutionResult, ExitOptions, FacilityTransferPolicy,
+};
 use careops_ed::disposition::DispositionIntent;
 use careops_ed::pathway::{run_pathway, PathwayConfig, PathwayPatient, StageKind, StageWork};
 use careops_ed::{
@@ -648,4 +651,181 @@ fn test_wrong_destination_cannot_accept() {
     assert!(err
         .to_string()
         .contains("invalid bed offer destination syntax"));
+}
+
+fn admission_patient(id: &str, treatment_ticks: u64) -> (PathwayPatient, Vec<ResourceRow>) {
+    let stages = [
+        ("triage", 2),
+        ("assessment", 2),
+        ("treatment", treatment_ticks),
+    ];
+    let mut rows = vec![];
+    let mut work = vec![];
+    for (stage_name, duration) in stages {
+        let resource = format!("res.{stage_name}");
+        let task = format!("task.{stage_name}");
+        rows.push((
+            resource.clone(),
+            "nurse".into(),
+            task.clone(),
+            format!("zone.{stage_name}"),
+            1,
+            1,
+            1,
+        ));
+        work.push(StageWork {
+            kind: kind(stage_name),
+            resource_id: resource,
+            task_class_id: task,
+            duration_ticks: duration,
+        });
+    }
+    (
+        PathwayPatient {
+            patient_id: id.into(),
+            arrival_tick: 1,
+            mode: "synthetic".into(),
+            acuity: 3,
+            stages: work,
+        },
+        rows,
+    )
+}
+
+#[test]
+fn optional_abandonment_is_explicit_and_disabled_policy_stays_off() {
+    let (patient, rows) = admission_patient("wait", 20);
+    let pathways = run_pathway(&cfg(8, vec![patient.clone()], &rows)).unwrap();
+    let censored =
+        compute_endpoints(&pathways, &[patient.clone()], &BTreeMap::new(), &[], 8).unwrap();
+    assert_eq!(censored.patients[0].endpoint_state, "unfinished_at_horizon");
+    assert!(censored.patients[0].realized_outcome.is_none());
+
+    let enabled = ExitOptions {
+        abandonment: Some(AbandonmentPolicy {
+            version: 1,
+            patience_ticks: 2,
+        }),
+        ..ExitOptions::default()
+    };
+    let abandoned =
+        compute_endpoints_with_options(&pathways, &[patient], &BTreeMap::new(), &[], 8, &enabled)
+            .unwrap();
+    assert_eq!(
+        abandoned.patients[0]
+            .realized_outcome
+            .as_ref()
+            .unwrap()
+            .kind,
+        "abandoned"
+    );
+    assert_eq!(abandoned.patients[0].terminal_tick, Some(3));
+    assert!(!abandoned.claims.ward_policy);
+    assert!(!abandoned.claims.community_ambulance);
+}
+
+#[test]
+fn recurrent_care_continues_until_physical_departure_without_staff_reservation() {
+    let (patient, rows) = admission_patient("p", 2);
+    let pathways = run_pathway(&cfg(30, vec![patient.clone()], &rows)).unwrap();
+    let offers = vec![BedOffer {
+        offer_id: "offer-1".into(),
+        patient_id: "p".into(),
+        destination: "ward-a".into(),
+        available_tick: 8,
+        withdrawn_tick: 30,
+        transfer_duration_ticks: 4,
+    }];
+    let options = ExitOptions {
+        care: Some(BoarderCarePolicy {
+            version: 1,
+            interval_ticks: 2,
+            duration_ticks: 1,
+        }),
+        ..ExitOptions::default()
+    };
+    let actual = compute_endpoints_with_options(
+        &pathways,
+        &[patient],
+        &BTreeMap::from([("p".into(), DispositionIntent::Admission)]),
+        &offers,
+        30,
+        &options,
+    )
+    .unwrap();
+    let person = &actual.patients[0];
+    let acceptance = person.transfer_interval.as_ref().unwrap().start_tick;
+    let departure = person.terminal_tick.unwrap();
+    assert!(departure > acceptance);
+    assert_eq!(
+        person.boarding_interval.as_ref().unwrap().end_tick,
+        acceptance
+    );
+    assert!(actual.boarder_care.len() >= 2);
+    assert!(actual.boarder_care.iter().all(|task| !task.reserves_staff));
+    assert!(actual
+        .boarder_care
+        .iter()
+        .all(|task| task.start_tick < departure));
+}
+
+#[test]
+fn horizon_edge_censors_unfinished_transfer_without_causal_claims() {
+    let (patient, rows) = admission_patient("p", 2);
+    let pathways = run_pathway(&cfg(20, vec![patient.clone()], &rows)).unwrap();
+    let offers = vec![BedOffer {
+        offer_id: "late".into(),
+        patient_id: "p".into(),
+        destination: "ward-a".into(),
+        available_tick: 7,
+        withdrawn_tick: 40,
+        transfer_duration_ticks: 4,
+    }];
+    let intents = BTreeMap::from([("p".into(), DispositionIntent::Admission)]);
+    let finished = compute_endpoints(&pathways, &[patient.clone()], &intents, &offers, 11).unwrap();
+    assert_eq!(finished.patients[0].endpoint_state, "terminal");
+    assert_eq!(finished.patients[0].terminal_tick, Some(11));
+
+    let censored = compute_endpoints(&pathways, &[patient.clone()], &intents, &offers, 10).unwrap();
+    assert_eq!(censored.patients[0].endpoint_state, "unfinished_at_horizon");
+    assert!(censored.patients[0].realized_outcome.is_none());
+    assert_eq!(
+        censored.patients[0].unfinished_reason.as_deref(),
+        Some("censored_during_transfer")
+    );
+    assert_eq!(
+        censored.counts.terminal + censored.counts.unfinished,
+        censored.counts.arrivals
+    );
+    assert!(!censored.claims.ward_policy);
+    assert!(!censored.claims.community_ambulance);
+
+    let mut requests = BTreeMap::new();
+    requests.insert("p".into(), "facility.other".into());
+    let blocked = ExitOptions {
+        transfer_requests: requests,
+        ..ExitOptions::default()
+    };
+    let error =
+        compute_endpoints_with_options(&pathways, &[patient.clone()], &intents, &[], 20, &blocked)
+            .unwrap_err();
+    assert!(error.to_string().contains("transfer policy is disabled"));
+
+    let mut eligible_requests = BTreeMap::new();
+    eligible_requests.insert("p".into(), "facility.other".into());
+    let transfer = ExitOptions {
+        transfer: Some(FacilityTransferPolicy {
+            version: 1,
+            transport_delay_ticks: 2,
+            eligible_destinations: BTreeSet::from(["facility.other".into()]),
+        }),
+        transfer_requests: eligible_requests,
+        ..ExitOptions::default()
+    };
+    let moved = compute_endpoints_with_options(&pathways, &[patient], &intents, &[], 20, &transfer)
+        .unwrap();
+    let outcome = moved.patients[0].realized_outcome.as_ref().unwrap();
+    assert_eq!(outcome.kind, "transferred");
+    assert_eq!(outcome.destination.as_deref(), Some("facility.other"));
+    assert!(outcome.offer_id.is_none());
 }
