@@ -165,7 +165,7 @@ work plus transit plus waits, and demonstrate no double-counted elapsed time.
 
 Entry: C1, C2 and Q4. Owners 21 (probe semantics), 22 (runner), 03 (runtime).
 
-- [ ] C3.1 Write failing anchor/probe fixtures: early completion, late completion,
+- [x] C3.1 Write failing anchor/probe fixtures: early completion, late completion,
   completion exactly at anchor, missing target, impossible resource occupancy,
   repeated events, interrupted transit/work and bounded probe termination.
   Add the walk+work=5 ridge fixture and independent walk observation;
