@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "packet_id": "C5.4.cpu-workers",
+  "task_id": "C5.4",
+  "status": "prepared",
+  "base_commit": "368a147fce6ac35288caa6ef5d4950f8706f4eea",
+  "target_repo": "libs/kairos",
+  "model_candidate": "gpt-6-luna",
+  "model_role": "calibration_worker",
+  "objective": "Integrate CPU worker execution for independent replications/candidates through Track 22, with deterministic shard merge and crash/resume handling. Keep core state isolated and search decisions independent of worker order.",
+  "interface_contract": "conductor/tracks/empirical_calibration_20260925/spec.md",
+  "leaf_dependencies": ["C5.3"],
+  "context_paths": [
+    "conductor/tracks/empirical_calibration_20260925/spec.md",
+    "conductor/tracks/empirical_calibration_20260925/plan.md",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md",
+    "conductor/tracks/empirical_calibration_20260925/agent-contract.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/empirical_calibration_20260925/spec.md": "ac39678081c2ea3391ddaf45b948e6ba62fb7f01a52e5905444ffd127c33b9f3",
+    "conductor/tracks/empirical_calibration_20260925/plan.md": "02e3768f44dea28a096228190e5609f5073fc35a0e6189629b5b918aa6b42da4",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md": "8819ff02e33b929962c6d5aeb8dc8695826ba17b53549c8a570090b405e809f4",
+    "conductor/tracks/empirical_calibration_20260925/agent-contract.md": "a67538a9e6b9a67eb8f1c3a4308da391dace15dda9b31926c8998e6caff5f806"
+  },
+  "source_hashes": {
+    "libs/kairos": "7af989c8951c232f7bc4e6a2f543c4ee0061af99"
+  },
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json"
+  ],
+  "write_reservations": [
+    "libs/kairos/crates/kairo-ecs-calibration",
+    "libs/kairos/crates/kairo-ecs-cli"
+  ],
+  "write_paths": [
+    "crates/kairo-ecs-cli/src/c5_workers.rs",
+    "crates/kairo-ecs-cli/src/c5_cli.rs",
+    "crates/kairo-ecs-cli/tests/c5_cli.rs"
+  ],
+  "result_path": ".artifacts/c5.4-cpu-workers/worker-result.json",
+  "size_exception": null,
+  "steps": [
+    "Confirm Kairos pin 7af989c already contains c5_workers shard executor, calibrate --workers/--resume/--stop-after wiring, and Track 22 legacy validate/replay/resume-plan paths.",
+    "Run Rust 1.99.0 verification: c5_workers unit tests, c5_cli integration (worker equivalence, crash/resume, corrupt shard rejection), grid_search_fixtures resume invariance with --features flow.",
+    "Record coordinator acceptance on parent without pin bump when verification passes."
+  ],
+  "stop_conditions": [
+    "Input/base drift",
+    "Pin bump to origin/main without qualification",
+    "Edits outside write reservations"
+  ],
+  "acceptance": [
+    "1/2/N workers produce byte-identical shard trees and calibration artifacts for the synthetic C5 study.",
+    "stop-after plus --resume completes with same artifacts as a full run; corrupt shards and binding drift fail closed.",
+    "Legacy Track 22 validate-scenario, replay, and resume-plan outputs unchanged."
+  ],
+  "verification": [
+    {
+      "argv": ["cargo", "test", "-p", "kairo-ecs-cli", "c5_"],
+      "cwd": "libs/kairos",
+      "expected_exit": 0,
+      "oracle": "C5 CLI and worker shard tests pass on Rust 1.99.0"
+    },
+    {
+      "argv": ["cargo", "test", "-p", "kairo-ecs-calibration", "--test", "grid_search_fixtures", "--features", "flow"],
+      "cwd": "libs/kairos",
+      "expected_exit": 0,
+      "oracle": "C5.1 resume/completion-order invariance fixtures pass"
+    }
+  ]
+}
