@@ -173,7 +173,7 @@ Entry: C1, C2 and Q4. Owners 21 (probe semantics), 22 (runner), 03 (runtime).
 - [x] C3.2 Implement observed-ledger replay and isolated predictive probes with
   explicit snapshots. Preserve macro anchor ticks; allow late probes to finish
   in isolated virtual time or return censored/failed. Never rewind the macro run.
-- [ ] C3.3 Capture unclamped target predictions and signed residuals, feasibility,
+- [x] C3.3 Capture unclamped target predictions and signed residuals, feasibility,
   missingness and replay role. Implement strict/diagnostic policy and checkpoint
   recovery of outstanding probes without duplicates or future-state leakage.
 - [ ] C3.4 Conductor — review and verify phase (workflow.md).
