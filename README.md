@@ -17,12 +17,33 @@ See [delivery scope and acceptance](conductor/delivery-contract.md) and
 
 ## Current state
 
-Local planning and context tooling are present; the ED runtime is not implemented.
-Git is initialized. `libs/kairos` and `extensions/conductor` are pinned submodules.
-No parent GitHub remote exists yet; creation is deliberately gated at D2.
-Do not run an unimplemented simulation command copied from a proposed plan.
+Local planning and context tooling are present. The E0 runner in
+`crates/careops-ed` exists. E1.2 pathway work is accepted: seeded time-varying
+arrivals, clinical states, pathway runtime, disposition, and D3.3 mutation
+qualification. There is no E2 headless MVP and no release-qualified ED
+simulation. Functional MVP acceptance is phase E2, and that phase is not done.
 
-From this checkout, with Python 3 installed:
+Active work is recorded in
+[`conductor/current-state.json`](conductor/current-state.json). Re-read that
+file before dispatch; it can move. The copy in this tree (`updated_at`
+2026-10-13) names track `generic_ed_delivery_20260925`, phase E1. Next is
+E1.3: admission boarding/discharge and optional abandonment/transfer policies.
+
+Git is initialized. `libs/kairos` is a development pin (see `submodule_pins` in
+[`conductor/current-state.json`](conductor/current-state.json)). That pin can
+move. It is not a release pin and it is not clinical acceptance.
+`extensions/conductor` is a pinned submodule. The parent GitHub remote exists:
+`git@github.com:edithatogo/careops-sim.git`
+([https://github.com/edithatogo/careops-sim](https://github.com/edithatogo/careops-sim)).
+This README does not claim a release. Conductor still states that publication
+follows its readiness gates, including the D2 notes in
+[delivery scope](conductor/delivery-contract.md) and
+[CI, security and GitHub timing](conductor/ci-security-release.md). Those
+pages are the publication gate; they are not a statement that the remote is
+still missing.
+
+The workspace toolchain is Rust 1.99.0 (`rust-toolchain.toml`; `Cargo.toml`
+`rust-version` is `1.99`). From this checkout, with Python 3 installed:
 
 ```sh
 git submodule update --init --recursive
@@ -33,16 +54,30 @@ python3 tools/mvp.py check
 python3 -m unittest discover -s tests -v
 ```
 
-These checks verify local planning/harness integrity, not simulation acceptance.
-The first native E0 runner is available in `crates/careops-ed`: `cargo run --locked -p careops-ed-cli -- run crates/careops-ed/examples/one_patient.json`. It runs a synthetic one-patient fixture only; see the crate README and E0 assumptions contract for scope and limits.
+`python3 -m unittest discover -s tests -v` is the local harness command.
+Failures are not acceptance, and this README records no harness result. The
+commands above check local planning and harness integrity. They are not
+simulation acceptance.
 
-Next preparation candidates: D0.2 capability/owner/gate reconciliation and P0.1
-supplied-evidence reconciliation. Read [AGENTS.md](AGENTS.md); use bounded packets
-and the [serial/parallel protocol](conductor/execution-model.md). Research has
-already been supplied; verify sources and fill specific gaps rather than rerunning
+The E0 runner, on that same toolchain, is:
+
+```sh
+cargo run --locked -p careops-ed-cli -- run crates/careops-ed/examples/one_patient.json
+```
+
+That command runs a synthetic one-patient fixture. Scope and limits are in the
+crate README and the
+[E0 assumptions and boundary](conductor/design/ed/e0-assumptions-and-boundary.md).
+
+Read [AGENTS.md](AGENTS.md); use bounded packets and the
+[serial/parallel protocol](conductor/execution-model.md). Research has already
+been supplied; verify sources and fill specific gaps rather than rerunning
 broad research. See [handoff](conductor/research/research-handoff.md).
 
-For gpt-6-luna execution through the MVP, use the [complete leaf workpack](conductor/execution/mvp/README.md).
+For gpt-6-luna execution through the MVP, use the
+[complete leaf workpack](conductor/execution/mvp/README.md): 82 parent tasks,
+258 bounded leaves, and the 145-task graph (`python3 tools/mvp.py check`,
+`python3 tools/tasks.py check`).
 
 ## Licenses, notices, and citation
 
