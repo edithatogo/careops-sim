@@ -12,7 +12,10 @@ checksum = "c3d036a3c4ab069c7b410a2ce876bd74808d2d0888a82667669f8e783a898bf1"
 name = "careops-ed"
 version = "0.1.0"
 dependencies = [
+ "kairo-ecs-abm",
  "kairo-ecs-core",
+ "kairo-ecs-des",
+ "kairo-ecs-rng",
  "kairo-ecs-types",
  "serde",
  "serde_json",
@@ -79,7 +82,43 @@ dependencies = [
 ]
 
 [[package]]
+name = "kairo-ecs-abm"
+version = "0.1.0"
+dependencies = [
+ "kairo-ecs-core",
+ "kairo-ecs-des",
+ "kairo-ecs-rng",
+ "kairo-ecs-state",
+ "kairo-ecs-types",
+]
+
+[[package]]
 name = "kairo-ecs-core"
+version = "0.0.0"
+dependencies = [
+ "kairo-ecs-types",
+]
+
+[[package]]
+name = "kairo-ecs-des"
+version = "0.1.0"
+dependencies = [
+ "kairo-ecs-core",
+ "kairo-ecs-rng",
+ "kairo-ecs-state",
+ "kairo-ecs-types",
+ "thiserror",
+]
+
+[[package]]
+name = "kairo-ecs-rng"
+version = "0.0.0"
+dependencies = [
+ "kairo-ecs-types",
+]
+
+[[package]]
+name = "kairo-ecs-state"
 version = "0.0.0"
 dependencies = [
  "kairo-ecs-types",
@@ -193,6 +232,26 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
+]
+
+[[package]]
+name = "thiserror"
+version = "2.0.20"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ec86235f5fcc2a73650310756d2ac5b138a5780bbbdfae3eeccec992c435ba4f"
+dependencies = [
+ "thiserror-impl",
+]
+
+[[package]]
+name = "thiserror-impl"
+version = "2.0.20"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bc04cd3e1236dd4a98afca4569f2deb3f120e5422a4023be2cb683f8486292af"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]

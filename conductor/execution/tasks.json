@@ -3248,7 +3248,7 @@
       "phase": "E1",
       "objective": "Write pathway tests for empty run, one patient, each acuity/pathway, saturated arrival demand, zero/long service, impossible resource config and endpoint count conservation. Define explicit metrics and expected intervals.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "C1.4",
         "C2.4",
@@ -3273,7 +3273,33 @@
       ],
       "dispatch_gate": "reviewed_leaf_packet_required",
       "model_route": "gpt-6-luna_candidate_after_packet_review",
-      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E1"
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E1",
+      "leaf_dependency_overrides": {
+        "E1.1.endpoints": [
+          "C1.4.closeout",
+          "C2.4.closeout",
+          "D2.5.closeout",
+          "E0.4.closeout",
+          "P4.4.closeout",
+          "Q4.5.closeout"
+        ],
+        "E1.1.extremes": [
+          "C1.4.closeout",
+          "C2.4.closeout",
+          "D2.5.closeout",
+          "E0.4.closeout",
+          "P4.4.closeout",
+          "Q4.5.closeout"
+        ],
+        "E1.1.invalid": [
+          "C1.4.closeout",
+          "C2.4.closeout",
+          "D2.5.closeout",
+          "E0.4.closeout",
+          "P4.4.closeout",
+          "Q4.5.closeout"
+        ]
+      }
     },
     {
       "id": "E1.2",
@@ -3281,7 +3307,7 @@
       "phase": "E1",
       "objective": "Implement seeded time-varying arrivals, triage/assessment/diagnostics/ treatment/disposition states and stable patient/task IDs; configure service distributions with provenance. Do not hide queue time in service samples.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "E1.1"
       ],
@@ -3309,7 +3335,7 @@
       "phase": "E1",
       "objective": "Implement admission boarding/discharge and optional abandonment/transfer policies, with terminal reason/censoring and endpoint timestamps. Version policy choices and test time bounds, run-horizon endings and unfinished work. Consume bed offers once, retain ED occupancy through actual transfer, and retain recurrent boarder-care tasks. Do not infer ward-policy or community ambulance effects from external boundary scenarios; validate unused/expired offers and compatible destinations.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "E1.2"
       ],
@@ -3337,7 +3363,7 @@
       "phase": "E1",
       "objective": "Conductor \u2014 review and verify phase (workflow.md).",
       "kind": "review_integrate",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "E1.3"
       ],
@@ -3364,7 +3390,7 @@
       "phase": "E2",
       "objective": "Write tests for shifts/breaks/skill-zone constraints, urgent preemption, staff handover, cleaning/reservation, blocked diagnostics and boarding capacity.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "E1.4"
       ],
