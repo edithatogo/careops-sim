@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "packet_id": "E1.1.pathway",
+  "task_id": "E1.1",
+  "status": "prepared",
+  "base_commit": "cb55bdf27c2940971e31a35ad9d296c6c764cdfb",
+  "target_repo": ".",
+  "model_candidate": "gpt-6-luna",
+  "model_role": "ed_worker",
+  "objective": "Write pathway tests for empty run, one patient, each acuity/pathway, saturated arrival demand, zero/long service, impossible resource config and endpoint count conservation. Define explicit metrics and expected intervals.",
+  "interface_contract": "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+  "leaf_dependencies": [],
+  "context_paths": [
+    "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+    "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+    "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/generic_ed_delivery_20260925/spec.md": "48a6f3cee9bd695acd46c700ddbf3ae1ff10fc2430a198f0022dd3502a1ce98e",
+    "conductor/tracks/generic_ed_delivery_20260925/plan.md": "6741ef98812dc90a150848a5f20bbc0a7564ce9bfa1816382d4f8b36e1554cfc",
+    "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md": "7909d620116bab447c67b6f7ddaf750f94384df6a23f8ee977f9429b7c14848e",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md": "99d6f3bcaecc57037a955b33a977e45e9b6c1c1ba35557870abaf70fef6bc863"
+  },
+  "source_hashes": {},
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json",
+    "libs/kairos"
+  ],
+  "write_reservations": [
+    "crates/careops-ed",
+    "tests/ed"
+  ],
+  "write_paths": [
+    "tests/ed/test_pathway_specifications.py",
+    "crates/careops-ed/tests/pathway_conformance.rs",
+    ".artifacts/e1.1-pathway/worker-result.json"
+  ],
+  "result_path": ".artifacts/e1.1-pathway/worker-result.json",
+  "size_exception": null,
+  "steps": [
+    "Read Generic ED delivery spec, test matrix, and agent contract for pathway specifications.",
+    "Formulate test cases for: empty run, one patient, each acuity/pathway, saturated arrival demand, zero/long service, impossible resource configuration, endpoint count conservation.",
+    "Define explicit metrics and expected intervals without mutating D3.3 baseline bindings.",
+    "Verify clean execution and report results."
+  ],
+  "stop_conditions": [
+    "Input/base drift",
+    "Edits outside write reservations",
+    "Mutation of crates/careops-ed/src/lib.rs that violates D3.3 pinned sha256"
+  ],
+  "acceptance": [
+    "Path tests cover all required conditions under E-R1/4.",
+    "D3.3 mutation tests and baseline lib.rs remain untouched and passing.",
+    "All verification commands pass on Rust 1.99.0."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--package",
+        "careops-ed"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Existing careops-ed tests pass without regression"
+    }
+  ]
+}
