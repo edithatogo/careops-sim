@@ -1,0 +1,129 @@
+{
+  "acceptance": [
+    "impl-binding.md fixes the KC2ENV01 148-byte header, KCSBODY1 section directory, and little-endian non-serde codec rule for the DES/ABM/RNG/calibration subset.",
+    "Event k is explicit-unbound, with the paired_flow_c20_v2.rs test and the dispatched_events measurement required to bind it.",
+    "Restore and publish stay crate-private; Track25 forbids a new public API.",
+    "Corrupt, truncated, unknown, and active-work negatives reject before mutation.",
+    "Worker-count, crash, and mid-study resume remain C5. No Rust, pin, ED, or Cargo.lock change in this leaf."
+  ],
+  "base_commit": "0de745a50706392c8e8fea7d4a47b73a8249677c",
+  "bindings": {
+    "codec": "little-endian integer and length-prefixed bytes; no serde, JSON, or bincode on DES, ABM transit, engine RNG, or calibration seed/provider/fidelity images",
+    "envelope": {
+      "body_sha256": "sha256 of body bytes only",
+      "header_bytes": 148,
+      "magic": "KC2ENV01",
+      "schema_u32": 1,
+      "source": "libs/kairos/crates/kairo-ecs-calibration/src/checkpoint_envelope.rs",
+      "source_sha256": "5c444f2edfcce23d64b69a2099b3b591b82496a76486cd0a24d8679c7dcdc5d0"
+    },
+    "entry": "pub(crate) capture/save_no_clobber/read_file/restore; cfg(test) harness allowed inside the crate; no new public API",
+    "event_k": {
+      "fixture": "libs/kairos/conformance/c20/paired_flow_c20_v2.rs",
+      "fixture_sha256": "40b0c380ddea4247297a2f36ba1bba315059344cb8430132f721d9b399ab76dc",
+      "kairos_pin": "7af989c8951c232f7bc4e6a2f543c4ee0061af99",
+      "lookup": "Test macro_and_explicit_zero_micro_pair_actual_provider_work_without_transit_events_or_draws calls run_for(128) and never asserts a numeric dispatched_events count. 128 is a cap and tick 30 is completion time.",
+      "required_measurement": "budget_snapshot().scheduler.dispatched_events after run_for(128) returns, both Macro and explicit-zero Micro, at the pin above",
+      "status": "unbound",
+      "test": "macro_and_explicit_zero_micro_pair_actual_provider_work_without_transit_events_or_draws"
+    },
+    "fail_closed_before_mutation": [
+      "corrupt",
+      "truncated",
+      "unknown",
+      "active-work"
+    ],
+    "kairos_pin": "7af989c8951c232f7bc4e6a2f543c4ee0061af99",
+    "non_goals": [
+      "calibration_worker_resume worker-count, permuted completion, crash, and mid-study resume remain C5",
+      "crash and commit-ordering details stay unbound",
+      "no Kairos pin bump"
+    ],
+    "sections": {
+      "magic": "KCSBODY1",
+      "schema_u16": 1,
+      "singleton_tags": {
+        "1": "flow",
+        "2": "fidelity",
+        "3": "provider",
+        "4": "seed_registry"
+      },
+      "record_tags": {
+        "5": "bound",
+        "6": "submitted"
+      },
+      "source": "libs/kairos/crates/kairo-ecs-calibration/src/checkpoint_sections.rs",
+      "source_sha256": "87748498d61f32491a1e3da4724e7f62d7ef29e0a875fe0f935f0f89c7fbdeb1"
+    },
+    "tolerance": "exact equality of event ids, canonical integer trace hash, and Service draw positions"
+  },
+  "context_paths": [
+    "conductor/decisions/ADR-0009-c2-portable-checkpoint-subset.md",
+    "conductor/evidence/c2.4-adr0009-envelope-20261012/envelope-spec.md",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0009-c2-portable-checkpoint-subset.md": "85f03da87292b2f1ee8a0c271d5839724e3cdaae50b6ca7cc60f1294cd75369a",
+    "conductor/evidence/c2.4-adr0009-envelope-20261012/envelope-spec.md": "542633409caf4e5e8b0f0548a3ccf959495c8fe0063157f5e5951146a3f4cbc3",
+    "conductor/tracks/empirical_calibration_20260925/test-matrix.md": "8819ff02e33b929962c6d5aeb8dc8695826ba17b53549c8a570090b405e809f4"
+  },
+  "interface_contract": "conductor/decisions/ADR-0009-c2-portable-checkpoint-subset.md",
+  "leaf_dependencies": [],
+  "objective": "Bind the ADR-0009 fresh-process restore implementation contract: KC2ENV01 envelope layout, non-serde integer/byte codec, explicit-unbound event k for the C2.1 paired Macro/explicit-zero Micro fixture, crate-private restore/publish, and fail-closed corrupt/truncated/unknown/active-work negatives. No Rust source edits and no Kairos pin bump in this leaf.",
+  "packet_id": "C2.adr0009-impl",
+  "protected_paths": [
+    ".git",
+    "Cargo.lock",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json",
+    "crates/careops-ed",
+    "libs/kairos",
+    "tests/ed",
+    "tests/test_quality_mutations.py"
+  ],
+  "result_path": "conductor/evidence/c2.4-adr0009-impl-20261013/impl-binding.md",
+  "schema_version": 1,
+  "size_exception": null,
+  "status": "prepared",
+  "steps": [
+    "Read ADR-0009, envelope-spec.md section 6, and the Kairos pin layout sources named in the binding.",
+    "Write impl-binding.md with the 148-byte KC2ENV01 header, KCSBODY1 tags, non-serde codec rule, and crate-private entry.",
+    "Record event k as unbound unless dispatched_events is a literal in paired_flow_c20_v2.rs.",
+    "State the four pre-mutation negatives and the C5 non-goals. Do not edit Rust or the pin."
+  ],
+  "stop_conditions": [
+    "Input or base drift",
+    "Event k would have to be invented",
+    "Edit outside the evidence write paths",
+    "Request to bump libs/kairos or touch ED, Cargo.lock, or Renovate branches"
+  ],
+  "target_repo": ".",
+  "task_id": "C2.4",
+  "verification": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "json.tool",
+        "conductor/execution/packets/C2.adr0009-impl.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "The binding packet is valid JSON and still names k status unbound."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "The binding fragment has no whitespace errors."
+    }
+  ],
+  "write_paths": [
+    "conductor/evidence/c2.4-adr0009-impl-20261013/README.md",
+    "conductor/evidence/c2.4-adr0009-impl-20261013/impl-binding.md"
+  ]
+}
