@@ -170,7 +170,7 @@ Entry: C1, C2 and Q4. Owners 21 (probe semantics), 22 (runner), 03 (runtime).
   repeated events, interrupted transit/work and bounded probe termination.
   Add the walk+work=5 ridge fixture and independent walk observation;
   assert objective ties do not imply uniquely identified empirical primitives.
-- [ ] C3.2 Implement observed-ledger replay and isolated predictive probes with
+- [x] C3.2 Implement observed-ledger replay and isolated predictive probes with
   explicit snapshots. Preserve macro anchor ticks; allow late probes to finish
   in isolated virtual time or return censored/failed. Never rewind the macro run.
 - [ ] C3.3 Capture unclamped target predictions and signed residuals, feasibility,
