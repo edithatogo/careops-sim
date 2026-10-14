@@ -15,6 +15,8 @@ const MAX_DIAGNOSTIC_STAGES: usize = 16;
 pub mod boarding;
 #[path = "operations.rs"]
 pub mod operations;
+#[path = "composite_fixture.rs"]
+pub mod composite_fixture;
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
