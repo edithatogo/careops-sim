@@ -91,7 +91,7 @@ inspect staff occupancy and patient availability across a shift and interruption
 
 Entry: C5. Owners parent ED adapter plus upstream 22/04/01.
 
-- [ ] E3.1 Write public API/CLI tests for validate/run/compare/export, cancellation,
+- [x] E3.1 Write public API/CLI tests for validate/run/compare/export, cancellation,
   malformed config, deterministic error codes, output overwrite protection,
   disk-full/interrupted output, seed/replication allocation and crash recovery.
   Test validate/run/compare/export exit codes and help from a fresh-user walkthrough; include reference scenario selection, overrides, missing files and bounded output. Compare matching metrics with units, denominators, replication uncertainty and incompatible-scenario diagnostics.
