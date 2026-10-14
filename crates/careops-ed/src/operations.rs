@@ -1,9 +1,14 @@
-//! Minimum E2.1 operational constraints for synthetic ED staff and spaces.
+//! Minimum E2.1/E2.2 operational constraints for synthetic ED staff and spaces.
 //!
 //! Shift reductions follow the Kairos shrink contract: a reduction that would
 //! sit below in-flight claims is rejected, and active work is not evicted.
 //! Space occupancy, cleaning, and reservation are separate from staff claims.
 //! One bay holds one patient. Diagnostics and boarding retain that hold.
+//!
+//! E2.2 dispatch is urgency, then FIFO, then stable ids. Macro records no
+//! transit. Micro adds route time once, beside wait and work. A grant is one
+//! unit of one resource; space is a separate lifecycle. Multi-person sedation,
+//! resuscitation, and assisted transfer need a dedicated non-overlapping team.
 
 use std::fmt::{Display, Formatter};
 
@@ -21,6 +26,10 @@ pub enum OperationalError {
     CleaningInProgress,
     DiagnosticBlocked,
     BoardingRetained,
+    AtomicMultiResourceUnsupported,
+    UnsupportedMultiRole,
+    RouteUnreachable,
+    EdgeInaccessible,
 }
 
 impl Display for OperationalError {
@@ -36,6 +45,14 @@ impl Display for OperationalError {
             Self::CleaningInProgress => "treatment space is still being cleaned",
             Self::DiagnosticBlocked => "blocked diagnostics retain the treatment space",
             Self::BoardingRetained => "boarding retains the treatment space until transfer",
+            Self::AtomicMultiResourceUnsupported => {
+                "atomic multi-resource acquisition is unsupported in v1; use phased sequential claims"
+            }
+            Self::UnsupportedMultiRole => {
+                "multi-person procedure requires dedicated composite team approximation"
+            }
+            Self::RouteUnreachable => "target location is unreachable in directed movement graph",
+            Self::EdgeInaccessible => "movement edge is currently marked inaccessible",
         };
         formatter.write_str(message)
     }
@@ -464,5 +481,188 @@ impl Ward {
             .ok_or(OperationalError::SpaceUnavailable)?;
         self.bays[index].occupy(patient_id)?;
         Ok(index)
+    }
+}
+
+/// A queued patient task eligible for staff assignment.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct TaskCandidate {
+    pub task_id: String,
+    pub patient_id: u64,
+    pub acuity: u8,
+    pub enqueue_tick: u64,
+    pub task_class_id: String,
+    pub zone_id: String,
+    pub location_id: String,
+}
+
+/// Dispatches the next task according to clinical urgency (acuity ascending, e.g. ATS 1 before ATS 5),
+/// FIFO within the same acuity (enqueue_tick ascending), and deterministic tie-breaking (patient_id, task_id).
+pub fn select_dispatch_candidate<'a>(
+    candidates: &'a [TaskCandidate],
+    shift: &StaffShift,
+    role_id: &str,
+    eligibilities: &[Eligibility],
+) -> Option<&'a TaskCandidate> {
+    if shift.claimable() == 0 {
+        return None;
+    }
+    candidates
+        .iter()
+        .filter(|c| {
+            role_is_eligible(
+                eligibilities,
+                role_id,
+                &c.task_class_id,
+                &c.zone_id,
+                &c.location_id,
+            )
+        })
+        .min_by(|a, b| {
+            a.acuity
+                .cmp(&b.acuity)
+                .then_with(|| a.enqueue_tick.cmp(&b.enqueue_tick))
+                .then_with(|| a.patient_id.cmp(&b.patient_id))
+                .then_with(|| a.task_id.cmp(&b.task_id))
+        })
+}
+
+/// Target identifiers for claiming a task.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct TaskClaimTarget<'a> {
+    pub role_id: &'a str,
+    pub task_class_id: &'a str,
+    pub zone_id: &'a str,
+    pub location_id: &'a str,
+}
+
+/// Atomic multi-resource acquisition (e.g. implicitly granting bed + staff together)
+/// is unsupported in v1; resource claims must be sequenced as explicit phases.
+pub fn claim_atomic_multi_resource() -> Result<(), OperationalError> {
+    Err(OperationalError::AtomicMultiResourceUnsupported)
+}
+
+/// Phased acquisition: reserve or occupy space first, then acquire staff assignment.
+pub fn execute_phased_claim(
+    bay: &mut TreatmentBay,
+    patient_id: u64,
+    shift: &mut StaffShift,
+    eligibilities: &[Eligibility],
+    target: TaskClaimTarget<'_>,
+) -> Result<(), OperationalError> {
+    bay.occupy(patient_id)?;
+    if let Err(err) = claim_task(
+        shift,
+        eligibilities,
+        target.role_id,
+        target.task_class_id,
+        target.zone_id,
+        target.location_id,
+    ) {
+        let _ = bay.vacate_for_cleaning(0);
+        return Err(err);
+    }
+    Ok(())
+}
+
+/// Simulation execution fidelity level.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ExecutionFidelity {
+    Macro,
+    Micro,
+}
+
+/// A movement edge in the physical/spatial transit graph.
+#[derive(Clone, Debug, PartialEq)]
+pub struct MovementEdge {
+    pub edge_id: String,
+    pub from: String,
+    pub to: String,
+    pub distance_m: f64,
+    pub speed_m_per_s: f64,
+    pub accessible: bool,
+}
+
+/// Directed routing graph for spatial micro-simulation.
+#[derive(Clone, Debug, PartialEq)]
+pub struct SyntheticGraph {
+    pub edges: Vec<MovementEdge>,
+}
+
+impl SyntheticGraph {
+    pub fn new(edges: Vec<MovementEdge>) -> Self {
+        Self { edges }
+    }
+
+    pub fn compute_travel_seconds(&self, edge_ids: &[&str]) -> Result<f64, OperationalError> {
+        let mut total = 0.0;
+        for edge_id in edge_ids {
+            let edge = self
+                .edges
+                .iter()
+                .find(|e| e.edge_id == *edge_id)
+                .ok_or(OperationalError::RouteUnreachable)?;
+            if !edge.accessible {
+                return Err(OperationalError::EdgeInaccessible);
+            }
+            if edge.speed_m_per_s <= 0.0 {
+                return Err(OperationalError::Accounting);
+            }
+            total += edge.distance_m / edge.speed_m_per_s;
+        }
+        Ok(total)
+    }
+}
+
+/// Evaluates execution duration under Macro vs Micro fidelity.
+/// In Macro mode: no hidden transit cost; total duration is active work time.
+/// In Micro mode: total duration is active work + travel time along the route.
+pub fn calculate_execution_duration(
+    fidelity: ExecutionFidelity,
+    active_work_seconds: f64,
+    graph: Option<&SyntheticGraph>,
+    edge_ids: &[&str],
+) -> Result<f64, OperationalError> {
+    match fidelity {
+        ExecutionFidelity::Macro => Ok(active_work_seconds),
+        ExecutionFidelity::Micro => {
+            let g = graph.ok_or(OperationalError::RouteUnreachable)?;
+            let travel = g.compute_travel_seconds(edge_ids)?;
+            Ok(active_work_seconds + travel)
+        }
+    }
+}
+
+/// Clinical procedure categories.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ProcedureKind {
+    RoutineAssessment,
+    DiagnosticScan,
+    MedicationAdministration,
+    ProceduralSedation,
+    Resuscitation,
+    AssistedTransfer,
+}
+
+/// Enforces multi-role procedural staffing rules.
+/// Multi-person sedation, resuscitation, and assisted transfer require an explicit dedicated
+/// composite-team approximation; raw concurrent uncoordinated multi-role claims are rejected.
+pub fn validate_procedure_staffing(
+    procedure: ProcedureKind,
+    is_composite_team: bool,
+) -> Result<(), OperationalError> {
+    match procedure {
+        ProcedureKind::RoutineAssessment
+        | ProcedureKind::DiagnosticScan
+        | ProcedureKind::MedicationAdministration => Ok(()),
+        ProcedureKind::ProceduralSedation
+        | ProcedureKind::Resuscitation
+        | ProcedureKind::AssistedTransfer => {
+            if is_composite_team {
+                Ok(())
+            } else {
+                Err(OperationalError::UnsupportedMultiRole)
+            }
+        }
     }
 }
