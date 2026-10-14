@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "scenario_id": "constrained-ed-mvp",
+  "seed": 42,
+  "time_unit": "tick",
+  "horizon_ticks": 20,
+  "provenance": {
+    "class": "synthetic",
+    "notes": "Constrained emergency department MVP scenario with acute capacity reduced from 2 to 1."
+  },
+  "capacity_location": {
+    "schema_version": 3,
+    "status": "proposed",
+    "capacity": {
+      "unit": "treatment_space",
+      "bucket_completeness": "complete",
+      "physical_status": "known",
+      "physical_count": 4,
+      "availability_status": "known",
+      "open_count": 4,
+      "staffed_count": 4,
+      "equipment": []
+    },
+    "zones": [
+      {"zone_id": "zone.triage", "name": "Triage Assessment Area"},
+      {"zone_id": "zone.resus", "name": "Resuscitation Unit"},
+      {"zone_id": "zone.acute", "name": "Acute Treatment Bays"},
+      {"zone_id": "zone.subacute", "name": "Subacute Ambulatory"}
+    ],
+    "locations": [
+      {"location_id": "loc.triage.1", "name": "Triage Desk 1", "zone_id": "zone.triage"},
+      {"location_id": "loc.resus.1", "name": "Resus Cubicle 1", "zone_id": "zone.resus"},
+      {"location_id": "loc.acute.1", "name": "Acute Bay 1", "zone_id": "zone.acute"},
+      {"location_id": "loc.acute.2", "name": "Acute Bay 2", "zone_id": "zone.acute"},
+      {"location_id": "loc.subacute.1", "name": "Subacute Chair 1", "zone_id": "zone.subacute"}
+    ],
+    "resource_buckets": [
+      {
+        "resource_id": "res.acute",
+        "resource_class": "acute_slot",
+        "location_id": "loc.acute.1",
+        "zone_id": "zone.acute",
+        "physical_status": "known",
+        "physical_count": 1,
+        "availability_status": "known",
+        "open_count": 1,
+        "staffed_count": 1,
+        "capabilities": ["acute_care"]
+      },
+      {
+        "resource_id": "res.triage",
+        "resource_class": "triage_slot",
+        "location_id": "loc.triage.1",
+        "zone_id": "zone.triage",
+        "physical_status": "known",
+        "physical_count": 1,
+        "availability_status": "known",
+        "open_count": 1,
+        "staffed_count": 1,
+        "capabilities": ["triage"]
+      },
+      {
+        "resource_id": "res.resus",
+        "resource_class": "resus_slot",
+        "location_id": "loc.resus.1",
+        "zone_id": "zone.resus",
+        "physical_status": "known",
+        "physical_count": 1,
+        "availability_status": "known",
+        "open_count": 1,
+        "staffed_count": 1,
+        "capabilities": ["resuscitation"]
+      },
+      {
+        "resource_id": "res.subacute",
+        "resource_class": "subacute_slot",
+        "location_id": "loc.subacute.1",
+        "zone_id": "zone.subacute",
+        "physical_status": "known",
+        "physical_count": 1,
+        "availability_status": "known",
+        "open_count": 1,
+        "staffed_count": 1,
+        "capabilities": ["subacute_care"]
+      }
+    ],
+    "task_classes": [
+      {
+        "task_class_id": "task.acute_treatment",
+        "name": "Acute Medical Treatment",
+        "required_resource_classes": ["acute_slot"]
+      },
+      {
+        "task_class_id": "task.triage_work",
+        "name": "Triage Intake",
+        "required_resource_classes": ["triage_slot"]
+      }
+    ],
+    "staff_roles": [
+      {
+        "staff_role_id": "staff.ed_nurse",
+        "name": "Emergency Nurse",
+        "counts": [
+          {
+            "basis": "present",
+            "status": "known",
+            "count": 3,
+            "reference": "synthetic roster"
+          }
+        ]
+      }
+    ],
+    "eligibility": [
+      {
+        "staff_role_id": "staff.ed_nurse",
+        "task_class_id": "task.acute_treatment",
+        "zone_id": "zone.acute",
+        "location_id": "loc.acute.1"
+      }
+    ],
+    "routes": [
+      {
+        "from_location_id": "loc.triage.1",
+        "to_location_id": "loc.acute.1",
+        "distance": {
+          "value": 15.0,
+          "unit": "m"
+        }
+      }
+    ]
+  },
+  "patients": [
+    {
+      "patient_id": "patient-001",
+      "arrival_tick": 1,
+      "work_ticks": 3,
+      "resource_id": "res.acute",
+      "task_class_id": "task.acute_treatment"
+    },
+    {
+      "patient_id": "patient-002",
+      "arrival_tick": 1,
+      "work_ticks": 4,
+      "resource_id": "res.acute",
+      "task_class_id": "task.acute_treatment"
+    },
+    {
+      "patient_id": "patient-003",
+      "arrival_tick": 3,
+      "work_ticks": 3,
+      "resource_id": "res.acute",
+      "task_class_id": "task.acute_treatment"
+    },
+    {
+      "patient_id": "patient-004",
+      "arrival_tick": 5,
+      "work_ticks": 2,
+      "resource_id": "res.acute",
+      "task_class_id": "task.acute_treatment"
+    },
+    {
+      "patient_id": "patient-005",
+      "arrival_tick": 6,
+      "work_ticks": 3,
+      "resource_id": "res.acute",
+      "task_class_id": "task.acute_treatment"
+    }
+  ]
+}

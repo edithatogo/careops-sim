@@ -13,6 +13,8 @@ const MAX_DIAGNOSTIC_STAGES: usize = 16;
 
 #[path = "boarding.rs"]
 pub mod boarding;
+#[path = "composite_fixture.rs"]
+pub mod composite_fixture;
 #[path = "operations.rs"]
 pub mod operations;
 
