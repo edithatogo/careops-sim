@@ -1,9 +1,12 @@
-//! Minimum E2.1 operational constraints for synthetic ED staff and spaces.
+//! Minimum E2.1/E2.2 operational constraints for synthetic ED staff and spaces.
 //!
 //! Shift reductions follow the Kairos shrink contract: a reduction that would
 //! sit below in-flight claims is rejected, and active work is not evicted.
 //! Space occupancy, cleaning, and reservation are separate from staff claims.
 //! One bay holds one patient. Diagnostics and boarding retain that hold.
+//!
+//! E2.2 dispatch ranks eligible tasks by clinical urgency (lower acuity first),
+//! FIFO within acuity, then stable patient and task identifiers.
 
 use std::fmt::{Display, Formatter};
 
@@ -465,4 +468,49 @@ impl Ward {
         self.bays[index].occupy(patient_id)?;
         Ok(index)
     }
+}
+
+/// A queued patient task eligible for staff assignment.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct TaskCandidate {
+    pub task_id: String,
+    pub patient_id: u64,
+    pub acuity: u8,
+    pub enqueue_tick: u64,
+    pub task_class_id: String,
+    pub zone_id: String,
+    pub location_id: String,
+}
+
+/// Select the next dispatchable task for `role_id`.
+///
+/// Returns `None` when no staff are claimable, the queue is empty, or no candidate
+/// matches declared role/task/zone/location eligibility.
+pub fn select_dispatch_candidate<'a>(
+    candidates: &'a [TaskCandidate],
+    shift: &StaffShift,
+    role_id: &str,
+    eligibilities: &[Eligibility],
+) -> Option<&'a TaskCandidate> {
+    if shift.claimable() == 0 || candidates.is_empty() {
+        return None;
+    }
+    candidates
+        .iter()
+        .filter(|candidate| {
+            role_is_eligible(
+                eligibilities,
+                role_id,
+                &candidate.task_class_id,
+                &candidate.zone_id,
+                &candidate.location_id,
+            )
+        })
+        .min_by(|left, right| {
+            left.acuity
+                .cmp(&right.acuity)
+                .then_with(|| left.enqueue_tick.cmp(&right.enqueue_tick))
+                .then_with(|| left.patient_id.cmp(&right.patient_id))
+                .then_with(|| left.task_id.cmp(&right.task_id))
+        })
 }
