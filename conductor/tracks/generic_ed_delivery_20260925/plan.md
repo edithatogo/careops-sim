@@ -82,7 +82,7 @@ trace a patient through every pathway and reconcile event times with its summary
   Cover report 29 ST001–ST009: compatible/unused offers, retained occupancy/care, saturated offload and receiver-staff sensitivity, unsupported multi-role tasks and prohibited causal ward-policy claims. No unsupported deterioration hazard is an implicit default.
   Deliver a documented headless MVP scenario with configurable bed/staff counts and named locations, fixed-seed repeatability, patient/capacity conservation and basic wait/throughput/occupancy tables. No visual or CAD dependency; this is not completed calibration/release qualification.
   Exercise the delivery-contract MVP recipe: validate and run nominal/constrained scenarios from config without code edits, write basic CSV/JSON summaries and manifest, reject malformed input, and demonstrate a hand-checked capacity change. Basic runner here precedes E3; no C3–C6 completion gate for this MVP.
-- [ ] E2.4 Conductor — review and verify phase (workflow.md).
+- [x] E2.4 Conductor — review and verify phase (workflow.md).
 
 Exit: E-R2/3; C6 can calibrate/validate the actual generic model. Manual check:
 inspect staff occupancy and patient availability across a shift and interruption.
