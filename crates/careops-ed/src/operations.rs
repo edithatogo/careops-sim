@@ -1,9 +1,14 @@
-//! Minimum E2.1 operational constraints for synthetic ED staff and spaces.
+//! Minimum E2.1/E2.2 operational constraints for synthetic ED staff and spaces.
 //!
 //! Shift reductions follow the Kairos shrink contract: a reduction that would
 //! sit below in-flight claims is rejected, and active work is not evicted.
 //! Space occupancy, cleaning, and reservation are separate from staff claims.
 //! One bay holds one patient. Diagnostics and boarding retain that hold.
+//!
+//! E2.2 dispatch is urgency, then FIFO, then stable ids. Macro records no
+//! transit. Micro adds route time once, beside wait and work. A grant is one
+//! unit of one resource; space is a separate lifecycle. Multi-person sedation,
+//! resuscitation, and assisted transfer need a dedicated non-overlapping team.
 
 use std::fmt::{Display, Formatter};
 
