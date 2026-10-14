@@ -11,6 +11,8 @@ use crate::pathway::{
 const MAX_DECISION_PATIENTS: usize = 100_000;
 const MAX_DIAGNOSTIC_STAGES: usize = 16;
 
+#[path = "api_runner.rs"]
+pub mod api_runner;
 #[path = "boarding.rs"]
 pub mod boarding;
 #[path = "composite_fixture.rs"]
