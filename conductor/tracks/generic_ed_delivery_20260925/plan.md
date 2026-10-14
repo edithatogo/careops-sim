@@ -76,7 +76,7 @@ trace a patient through every pathway and reconcile event times with its summary
   phased resource claims avoiding unsupported atomic multi-resource acquisition.
   Shift reductions must honor the resource shrink/in-flight-work contract.
   Reject implicit resource-plus-space atomic claims: v1 grants one unit of one resource per work item. Coordinate separate occupancy/reservation lifecycles explicitly. Multi-person sedation/resuscitation/assisted transfer requires visible unsupported status or reviewed dedicated, non-overlapping composite-team approximation.
-- [ ] E2.3 Add a composed synthetic ED fixture, simultaneous events and restart/
+- [x] E2.3 Add a composed synthetic ED fixture, simultaneous events and restart/
   resume edge cases; verify no double allocation, leaks, starvation hidden by
   censoring, or movement driven by animation time. Make this the shared C6 fixture.
   Cover report 29 ST001–ST009: compatible/unused offers, retained occupancy/care, saturated offload and receiver-staff sensitivity, unsupported multi-role tasks and prohibited causal ward-policy claims. No unsupported deterioration hazard is an implicit default.
