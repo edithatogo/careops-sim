@@ -785,6 +785,17 @@ Commands:\n\
         --format <json|csv>   Output format (default: json)\n\
         --reference <name>    Use checked-in reference scenario (nominal | constrained)\n\
 \n\
+  batch <scenario.json> [options]\n\
+      Execute multi-replication experiment across independent CPU workers with checkpointing.\n\
+      Options:\n\
+        --replications <usize> Number of replications (default: 4)\n\
+        --workers <usize>      Number of parallel worker threads (default: 2)\n\
+        --seed <u64>           Base seed for deterministic seed sequence\n\
+        --horizon <u64>        Override simulation horizon in ticks\n\
+        --output-dir <path>    Output directory for checkpoint and final artifact\n\
+        --checkpoint <usize>   Checkpoint interval in replications (default: 2)\n\
+        --resume <path>        Resume previously interrupted batch from checkpoint\n\
+\n\
   compare <base_run.json> <candidate_run.json>\n\
       Compare metrics between two simulation runs with units and denominators.\n\
 \n\
@@ -1254,6 +1265,239 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                 CliOutput::success(format!("exported to '{}'", out_p.display()))
             } else {
                 CliOutput::success(exported)
+            }
+        }
+        "batch" => {
+            let mut scenario_arg: Option<String> = None;
+            let mut replications: usize = 4;
+            let mut num_workers: usize = 2;
+            let mut seed_override: Option<u64> = None;
+            let mut horizon_override: Option<u64> = None;
+            let mut output_dir: Option<PathBuf> = None;
+            let mut checkpoint_interval: Option<usize> = Some(2);
+            let mut resume_path: Option<PathBuf> = None;
+
+            let mut idx = 1;
+            while idx < args.len() {
+                match args[idx].as_str() {
+                    "--help" | "-h" => return CliOutput::success(cli_usage_text()),
+                    "--replications" | "-r" => {
+                        idx += 1;
+                        if idx >= args.len() {
+                            return CliOutput::error(
+                                ExitCodeDef::UsageError,
+                                "careops-ed: --replications requires an integer",
+                            );
+                        }
+                        match args[idx].parse::<usize>() {
+                            Ok(r) if r > 0 => replications = r,
+                            _ => {
+                                return CliOutput::error(
+                                    ExitCodeDef::UsageError,
+                                    "careops-ed: invalid replications integer",
+                                )
+                            }
+                        }
+                    }
+                    "--workers" | "-w" => {
+                        idx += 1;
+                        if idx >= args.len() {
+                            return CliOutput::error(
+                                ExitCodeDef::UsageError,
+                                "careops-ed: --workers requires an integer",
+                            );
+                        }
+                        match args[idx].parse::<usize>() {
+                            Ok(w) if w > 0 => num_workers = w,
+                            _ => {
+                                return CliOutput::error(
+                                    ExitCodeDef::UsageError,
+                                    "careops-ed: invalid workers integer",
+                                )
+                            }
+                        }
+                    }
+                    "--seed" => {
+                        idx += 1;
+                        if idx >= args.len() {
+                            return CliOutput::error(
+                                ExitCodeDef::UsageError,
+                                "careops-ed: --seed requires a numeric argument",
+                            );
+                        }
+                        match args[idx].parse::<u64>() {
+                            Ok(s) => seed_override = Some(s),
+                            _ => {
+                                return CliOutput::error(
+                                    ExitCodeDef::UsageError,
+                                    "careops-ed: invalid seed integer",
+                                )
+                            }
+                        }
+                    }
+                    "--horizon" => {
+                        idx += 1;
+                        if idx >= args.len() {
+                            return CliOutput::error(
+                                ExitCodeDef::UsageError,
+                                "careops-ed: --horizon requires a numeric argument",
+                            );
+                        }
+                        match args[idx].parse::<u64>() {
+                            Ok(h) => horizon_override = Some(h),
+                            _ => {
+                                return CliOutput::error(
+                                    ExitCodeDef::UsageError,
+                                    "careops-ed: invalid horizon integer",
+                                )
+                            }
+                        }
+                    }
+                    "--output-dir" | "-o" => {
+                        idx += 1;
+                        if idx >= args.len() {
+                            return CliOutput::error(
+                                ExitCodeDef::UsageError,
+                                "careops-ed: --output-dir requires a directory path",
+                            );
+                        }
+                        output_dir = Some(PathBuf::from(&args[idx]));
+                    }
+                    "--checkpoint" => {
+                        idx += 1;
+                        if idx >= args.len() {
+                            return CliOutput::error(
+                                ExitCodeDef::UsageError,
+                                "careops-ed: --checkpoint requires an integer",
+                            );
+                        }
+                        match args[idx].parse::<usize>() {
+                            Ok(c) if c > 0 => checkpoint_interval = Some(c),
+                            _ => {
+                                return CliOutput::error(
+                                    ExitCodeDef::UsageError,
+                                    "careops-ed: invalid checkpoint integer",
+                                )
+                            }
+                        }
+                    }
+                    "--resume" => {
+                        idx += 1;
+                        if idx >= args.len() {
+                            return CliOutput::error(
+                                ExitCodeDef::UsageError,
+                                "careops-ed: --resume requires a checkpoint file path",
+                            );
+                        }
+                        resume_path = Some(PathBuf::from(&args[idx]));
+                    }
+                    pos if !pos.starts_with('-') && scenario_arg.is_none() => {
+                        scenario_arg = Some(pos.to_string());
+                    }
+                    other => {
+                        return CliOutput::error(
+                            ExitCodeDef::UsageError,
+                            format!("careops-ed: unrecognized batch option '{other}'"),
+                        );
+                    }
+                }
+                idx += 1;
+            }
+
+            let Some(input_file) = scenario_arg else {
+                return CliOutput::error(
+                    ExitCodeDef::UsageError,
+                    "careops-ed: batch requires a scenario file path",
+                );
+            };
+
+            let input_path = PathBuf::from(&input_file);
+            if !input_path.exists() {
+                return CliOutput::error(
+                    ExitCodeDef::FileNotFound,
+                    format!(
+                        "careops-ed: scenario file not found: '{}'",
+                        input_path.display()
+                    ),
+                );
+            }
+
+            let bytes = match fs::read(&input_path) {
+                Ok(b) => b,
+                Err(e) => {
+                    return CliOutput::error(
+                        ExitCodeDef::FileNotFound,
+                        format!("careops-ed: failed to read '{}': {e}", input_path.display()),
+                    )
+                }
+            };
+
+            let source = match std::str::from_utf8(&bytes) {
+                Ok(s) => s,
+                Err(_) => {
+                    return CliOutput::error(
+                        ExitCodeDef::MalformedConfig,
+                        "careops-ed: file contains invalid UTF-8",
+                    )
+                }
+            };
+
+            let scenario = match crate::parse_scenario_json(source) {
+                Ok(s) => s,
+                Err(e) => {
+                    return CliOutput::error(
+                        ExitCodeDef::MalformedConfig,
+                        format!("careops-ed: failed to parse scenario JSON: {e}"),
+                    );
+                }
+            };
+
+            if let Some(r_path) = resume_path {
+                let out_dir = match output_dir {
+                    Some(d) => d,
+                    None => r_path
+                        .parent()
+                        .map(PathBuf::from)
+                        .unwrap_or_else(|| PathBuf::from(".")),
+                };
+                match crate::disposition::batch_runner::resume_batch_from_checkpoint(
+                    &r_path,
+                    &scenario,
+                    num_workers,
+                    &out_dir,
+                    None,
+                ) {
+                    Ok(doc) => {
+                        let json = serde_json::to_string_pretty(&doc).unwrap_or_default();
+                        CliOutput::success(json)
+                    }
+                    Err(e) => CliOutput::error(e.code, format!("careops-ed: {e}")),
+                }
+            } else {
+                let batch_cfg = crate::disposition::batch_runner::BatchConfig {
+                    schema_version: 1,
+                    batch_id: format!("batch-{}", scenario.scenario_id),
+                    scenario_id: scenario.scenario_id.clone(),
+                    base_seed: seed_override.unwrap_or(scenario.seed),
+                    replications,
+                    num_workers,
+                    horizon_override,
+                    checkpoint_interval,
+                };
+
+                match crate::disposition::batch_runner::run_batch_with_workers(
+                    &scenario,
+                    &batch_cfg,
+                    output_dir.as_deref(),
+                    None,
+                    None,
+                ) {
+                    Ok(doc) => {
+                        let json = serde_json::to_string_pretty(&doc).unwrap_or_default();
+                        CliOutput::success(json)
+                    }
+                    Err(e) => CliOutput::error(e.code, format!("careops-ed: {e}")),
+                }
             }
         }
         unknown => CliOutput::error(
