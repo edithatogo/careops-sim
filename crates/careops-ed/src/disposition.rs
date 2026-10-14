@@ -13,6 +13,8 @@ const MAX_DIAGNOSTIC_STAGES: usize = 16;
 
 #[path = "boarding.rs"]
 pub mod boarding;
+#[path = "operations.rs"]
+pub mod operations;
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
