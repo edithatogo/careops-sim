@@ -1,4 +1,4 @@
-use careops_ed::operations::{
+use careops_ed::disposition::operations::{
     claim_task, handover, preempt, BayPhase, HeldWork, OperationalError, PreemptConsent,
     StaffShift, TreatmentBay, Ward, WorkAccount,
 };

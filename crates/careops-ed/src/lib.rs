@@ -9,8 +9,6 @@ pub mod arrivals;
 #[doc(hidden)]
 pub mod disposition;
 #[doc(hidden)]
-pub mod operations;
-#[doc(hidden)]
 pub mod pathway;
 
 use std::collections::{HashMap, HashSet, VecDeque};
