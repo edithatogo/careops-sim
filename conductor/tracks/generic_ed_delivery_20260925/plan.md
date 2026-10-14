@@ -72,7 +72,7 @@ trace a patient through every pathway and reconcile event times with its summary
 
 - [x] E2.1 Write tests for shifts/breaks/skill-zone constraints, urgent preemption,
   staff handover, cleaning/reservation, blocked diagnostics and boarding capacity.
-- [ ] E2.2 Implement minimal agent dispatch, Macro/Micro route/work execution and
+- [x] E2.2 Implement minimal agent dispatch, Macro/Micro route/work execution and
   phased resource claims avoiding unsupported atomic multi-resource acquisition.
   Shift reductions must honor the resource shrink/in-flight-work contract.
   Reject implicit resource-plus-space atomic claims: v1 grants one unit of one resource per work item. Coordinate separate occupancy/reservation lifecycles explicitly. Multi-person sedation/resuscitation/assisted transfer requires visible unsupported status or reviewed dedicated, non-overlapping composite-team approximation.
