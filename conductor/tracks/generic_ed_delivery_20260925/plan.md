@@ -95,7 +95,7 @@ Entry: C5. Owners parent ED adapter plus upstream 22/04/01.
   malformed config, deterministic error codes, output overwrite protection,
   disk-full/interrupted output, seed/replication allocation and crash recovery.
   Test validate/run/compare/export exit codes and help from a fresh-user walkthrough; include reference scenario selection, overrides, missing files and bounded output. Compare matching metrics with units, denominators, replication uncertainty and incompatible-scenario diagnostics.
-- [ ] E3.2 Integrate existing runner/scenario formats, independent CPU workers,
+- [x] E3.2 Integrate existing runner/scenario formats, independent CPU workers,
   checkpointing and progress. Write artifacts atomically; a partial run is clearly
   incomplete and cannot be mistaken for a valid finished experiment.
 - [ ] E3.3 Export Arrow/Parquet and summaries with metric denominators, uncertainty,
