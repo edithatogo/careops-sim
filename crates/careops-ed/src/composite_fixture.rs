@@ -10,10 +10,9 @@
 use std::fmt::{Display, Formatter};
 
 use crate::disposition::operations::{
-    claim_task, preempt, select_dispatch_candidate, validate_procedure_staffing,
-    BayPhase, ExecutionFidelity, OperationalError, PreemptConsent, ProcedureKind,
-    StaffShift, SyntheticGraph, TaskCandidate, TaskClaimTarget, TreatmentBay,
-    WorkAccount,
+    claim_task, preempt, select_dispatch_candidate, validate_procedure_staffing, BayPhase,
+    ExecutionFidelity, OperationalError, PreemptConsent, ProcedureKind, StaffShift, SyntheticGraph,
+    TaskCandidate, TaskClaimTarget, TreatmentBay, WorkAccount,
 };
 use crate::{Eligibility, PatientStatus, RunSummary};
 
@@ -114,9 +113,10 @@ pub fn st003_verify_retained_occupancy(
 ) -> Result<bool, BoundaryError> {
     if !physical_departure_complete {
         match bay.phase() {
-            BayPhase::Occupied { patient_id: occupied_id, .. } if occupied_id == patient_id => {
-                Ok(true)
-            }
+            BayPhase::Occupied {
+                patient_id: occupied_id,
+                ..
+            } if occupied_id == patient_id => Ok(true),
             _ => Err(BoundaryError::PrematureBayReleaseBeforePhysicalTransfer),
         }
     } else {
@@ -386,9 +386,12 @@ impl CompositeEdFixture {
             elapsed_ticks: self.in_flight[idx].work_elapsed_ticks,
             total_ticks: self.in_flight[idx].work_required_ticks,
         };
-        if let Ok(preempt_outcome) =
-            preempt(&work, victim_acuity, PreemptConsent::Preemptible, incoming_acuity)
-        {
+        if let Ok(preempt_outcome) = preempt(
+            &work,
+            victim_acuity,
+            PreemptConsent::Preemptible,
+            incoming_acuity,
+        ) {
             if preempt_outcome.yielded {
                 let mut victim = self.in_flight.remove(idx);
                 victim.lifecycle = PatientLifecycle::Preempted;
@@ -546,8 +549,7 @@ pub fn compare_capacity(nominal: &RunSummary, constrained: &RunSummary) -> Capac
         0.0
     };
 
-    let throughput_difference =
-        nominal.completed as i64 - constrained.completed as i64;
+    let throughput_difference = nominal.completed as i64 - constrained.completed as i64;
     let wait_time_increased = constrained_mean_wait > nominal_mean_wait;
     let unfinished_increased = constrained.unfinished > nominal.unfinished;
 

@@ -3,8 +3,8 @@ use careops_ed::disposition::composite_fixture::{
     st002_evaluate_offer_policy, st003_verify_retained_occupancy,
     st004_verify_boarder_recurrent_care, st005_evaluate_ambulance_offload,
     st006_receiver_staff_delay, st007_enforce_multi_role_procedure,
-    st008_validate_ward_policy_causal_claim, st009_validate_deterioration_hazard,
-    BoundaryError, ComposedPatient, CompositeEdFixture, OfferStatus, PatientLifecycle,
+    st008_validate_ward_policy_causal_claim, st009_validate_deterioration_hazard, BoundaryError,
+    ComposedPatient, CompositeEdFixture, OfferStatus, PatientLifecycle,
 };
 use careops_ed::disposition::operations::{
     ExecutionFidelity, MovementEdge, OperationalError, ProcedureKind, SyntheticGraph, TreatmentBay,
@@ -351,13 +351,8 @@ fn test_macro_micro_synthetic_graph_transit() {
     };
     let graph = SyntheticGraph::new(vec![edge]);
 
-    let mut fixture = CompositeEdFixture::new(
-        2,
-        2,
-        "staff.ed_nurse",
-        Vec::new(),
-        ExecutionFidelity::Micro,
-    );
+    let mut fixture =
+        CompositeEdFixture::new(2, 2, "staff.ed_nurse", Vec::new(), ExecutionFidelity::Micro);
     fixture.set_graph(graph);
 
     let travel = fixture
