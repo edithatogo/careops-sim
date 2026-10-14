@@ -70,8 +70,13 @@ trace a patient through every pathway and reconcile event times with its summary
 
 ## E2 — Staff, capacity, spatial tasks and realistic operational constraints
 
-- [ ] E2.1 Write tests for shifts/breaks/skill-zone constraints, urgent preemption,
+- [x] E2.1 Write tests for shifts/breaks/skill-zone constraints, urgent preemption,
   staff handover, cleaning/reservation, blocked diagnostics and boarding capacity.
+  Accepted `0c1fc85` (`crates/careops-ed/tests/e21_operational_constraints.rs`,
+  351 lines; 6/6 tests pass: staff eligibility, shift-shrink in-flight preservation,
+  clinical-priority preemption consent, treatment-space cleaning/reservation,
+  blocked-diagnostics occupancy, boarding-capacity exhaustion) under Rust 1.99;
+  strict Clippy, `cargo fmt`, and full `careops-ed` suite pass.
 - [ ] E2.2 Implement minimal agent dispatch, Macro/Micro route/work execution and
   phased resource claims avoiding unsupported atomic multi-resource acquisition.
   Shift reductions must honor the resource shrink/in-flight-work contract.
