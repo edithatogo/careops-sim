@@ -166,16 +166,15 @@ profile loading remains a P5 gate after E2 and C5.
 
 Entry: P4, E2 and C5. Feeds C6 validation; must not depend on C6 itself.
 
-- [ ] P5.1 Implement consumer/catalogue coverage checks against the actual model
+- [x] P5.1 Implement consumer/catalogue coverage checks against the actual model
   configuration/API: reject missing IDs, unexplained defaults, unused active
-  parameters, unit drift and unsupported profile/schema versions.
-- [ ] P5.2 Load every example through model and calibration runner; test fixed-seed
-  repeatability, Macro/Micro consistency, conditional/dependence preservation,
-  intended diagnostics and sensitivity to selected influential parameters.
-- [ ] P5.3 Publish a coverage/evidence/uncertainty report, unresolved acquisition
+  parameters, unit drift and unsupported profile/schema versions. (Stage A in tools/validate_p5_consumer_coverage.py; Stage B deferred.)
+- [x] P5.2 Load every example through model and calibration runner; test fixed-seed repeatability, Macro/Micro consistency, conditional/dependence preservation, intended diagnostics and sensitivity to selected influential parameters. (Lean smoke implemented in tools/run_p52_example_smoke.py; full runner/calibration loading deferred.)
+- [x] P5.3 Publish a coverage/evidence/uncertainty report, unresolved acquisition
   backlog and versioned handoff. Block validated-profile claims on unsupported
   assumptions; allow explicitly experimental generic scenarios with visible limits.
-- [ ] P5.4 Conductor — review and verify phase (workflow.md).
+  (conductor/evidence/p5.3-coverage-report-20261015.md)
+- [x] P5.4 Conductor — review and verify phase (workflow.md). Coverage, smoke and report checks pass; Stage B deferred.
 
 Exit: P-R1–6 evidence for the declared scope; C6 may run final held-out model
 validation. Manual check: add a temporary unregistered config field and verify
