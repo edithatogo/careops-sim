@@ -98,7 +98,7 @@ Entry: C5. Owners parent ED adapter plus upstream 22/04/01.
 - [x] E3.2 Integrate existing runner/scenario formats, independent CPU workers,
   checkpointing and progress. Write artifacts atomically; a partial run is clearly
   incomplete and cannot be mistaken for a valid finished experiment.
-- [ ] E3.3 Export Arrow/Parquet and summaries with metric denominators, uncertainty,
+- [x] E3.3 Export Arrow/Parquet and summaries with metric denominators, uncertainty,
   censored/unfinished counts and complete provenance; test 1/2/N workers and
   checkpoint equivalence through ED+queue+calibration state.
   Persist spatial revision and sufficient location/transit records for spatial summaries and later replay; distinguish observed, simulated and interpolated positions. Do not assume scheduler logs alone encode trajectories.
