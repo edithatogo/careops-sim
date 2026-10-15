@@ -103,7 +103,7 @@ Entry: C5. Owners parent ED adapter plus upstream 22/04/01.
   checkpoint equivalence through ED+queue+calibration state.
   Persist spatial revision and sufficient location/transit records for spatial summaries and later replay; distinguish observed, simulated and interpolated positions. Do not assume scheduler logs alone encode trajectories.
   For v1 persist ordinary state/route provenance needed for reproducibility; defer visualization-specific delta protocols, replay indexing/player and asset serving to E5.
-- [ ] E3.4 Conductor — review and verify phase (workflow.md).
+- [x] E3.4 Conductor — review and verify phase (workflow.md).
 
 Exit: E-R4/5 and reproducible usable headless API. Manual check: cancel/resume a
 batch and compare the completed artifact bundle with an uninterrupted baseline.
