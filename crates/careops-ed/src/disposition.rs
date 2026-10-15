@@ -13,6 +13,8 @@ const MAX_DIAGNOSTIC_STAGES: usize = 16;
 
 #[path = "api_runner.rs"]
 pub mod api_runner;
+#[path = "arrow_export.rs"]
+pub mod arrow_export;
 #[path = "batch_runner.rs"]
 pub mod batch_runner;
 #[path = "boarding.rs"]

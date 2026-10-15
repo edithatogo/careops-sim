@@ -261,6 +261,7 @@ pub enum ExportFormat {
     Json,
     Csv,
     ArrowSchema,
+    ParquetSchema,
 }
 
 /// Options controlling simulation execution and output behavior.
@@ -736,6 +737,9 @@ pub fn export_document(doc: &RunDocument, format: ExportFormat) -> Result<String
             serde_json::to_string_pretty(&schema_doc)
                 .map_err(|e| ValidationError::new(ExitCodeDef::MalformedConfig, e.to_string()))
         }
+        ExportFormat::ParquetSchema => {
+            Ok(crate::disposition::arrow_export::generate_parquet_schema_ddl())
+        }
     }
 }
 
@@ -788,23 +792,26 @@ Commands:\n\
   batch <scenario.json> [options]\n\
       Execute multi-replication experiment across independent CPU workers with checkpointing.\n\
       Options:\n\
-        --replications <usize> Number of replications (default: 4)\n\
-        --workers <usize>      Number of parallel worker threads (default: 2)\n\
-        --seed <u64>           Base seed for deterministic seed sequence\n\
-        --horizon <u64>        Override simulation horizon in ticks\n\
-        --output-dir <path>    Output directory for checkpoint and final artifact\n\
-        --checkpoint <usize>   Checkpoint interval in replications (default: 2)\n\
-        --resume <path>        Resume previously interrupted batch from checkpoint\n\
+        --replications <usize>  Number of replications (default: 4)\n\
+        --workers <usize>       Number of parallel worker threads (default: 2)\n\
+        --seed <u64>            Base seed for deterministic seed sequence\n\
+        --horizon <u64>         Override simulation horizon in ticks\n\
+        --output-dir <path>     Output directory for checkpoint and final artifact\n\
+        --checkpoint <usize>    Checkpoint interval in replications (default: 2)\n\
+        --resume <path>         Resume previously interrupted batch from checkpoint\n\
+        --export-arrow <path>   Export Arrow/Parquet bundle with denominators and uncertainty\n\
+        --export-spatial <path> Export spatial route traversal summaries to CSV\n\
+        --spatial-rev <string>  Spatial revision identifier (default: spatial.v1.synthetic-generic-ed)\n\
 \n\
   compare <base_run.json> <candidate_run.json>\n\
       Compare metrics between two simulation runs with units and denominators.\n\
 \n\
   export <run.json> [options]\n\
-      Export run artifact to CSV or Arrow-compatible format.\n\
+      Export run artifact to CSV, Arrow-compatible schema, or Parquet schema.\n\
       Options:\n\
-        --format <json|csv|arrow> Output format (default: csv)\n\
-        --output <path>           Destination file\n\
-        --overwrite               Allow overwriting existing output\n\
+        --format <json|csv|arrow|parquet> Output format (default: csv)\n\
+        --output <path>                   Destination file\n\
+        --overwrite                       Allow overwriting existing output\n\
 \n\
 Exit Codes:\n\
   0  Success\n\
@@ -1159,13 +1166,14 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                         if idx >= args.len() {
                             return CliOutput::error(
                                 ExitCodeDef::UsageError,
-                                "careops-ed: --format requires 'csv', 'json', or 'arrow'",
+                                "careops-ed: --format requires 'csv', 'json', 'arrow', or 'parquet'",
                             );
                         }
                         match args[idx].to_lowercase().as_str() {
                             "csv" => format = ExportFormat::Csv,
                             "json" => format = ExportFormat::Json,
                             "arrow" => format = ExportFormat::ArrowSchema,
+                            "parquet" | "parquet-schema" => format = ExportFormat::ParquetSchema,
                             other => {
                                 return CliOutput::error(
                                     ExitCodeDef::UsageError,
@@ -1276,6 +1284,9 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
             let mut output_dir: Option<PathBuf> = None;
             let mut checkpoint_interval: Option<usize> = Some(2);
             let mut resume_path: Option<PathBuf> = None;
+            let mut export_arrow_path: Option<PathBuf> = None;
+            let mut export_spatial_path: Option<PathBuf> = None;
+            let mut spatial_rev: Option<String> = None;
 
             let mut idx = 1;
             while idx < args.len() {
@@ -1391,6 +1402,36 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                         }
                         resume_path = Some(PathBuf::from(&args[idx]));
                     }
+                    "--export-arrow" => {
+                        idx += 1;
+                        if idx >= args.len() {
+                            return CliOutput::error(
+                                ExitCodeDef::UsageError,
+                                "careops-ed: --export-arrow requires a file path",
+                            );
+                        }
+                        export_arrow_path = Some(PathBuf::from(&args[idx]));
+                    }
+                    "--export-spatial" => {
+                        idx += 1;
+                        if idx >= args.len() {
+                            return CliOutput::error(
+                                ExitCodeDef::UsageError,
+                                "careops-ed: --export-spatial requires a file path",
+                            );
+                        }
+                        export_spatial_path = Some(PathBuf::from(&args[idx]));
+                    }
+                    "--spatial-rev" | "--spatial-revision" => {
+                        idx += 1;
+                        if idx >= args.len() {
+                            return CliOutput::error(
+                                ExitCodeDef::UsageError,
+                                "careops-ed: --spatial-rev requires a revision string",
+                            );
+                        }
+                        spatial_rev = Some(args[idx].clone());
+                    }
                     pos if !pos.starts_with('-') && scenario_arg.is_none() => {
                         scenario_arg = Some(pos.to_string());
                     }
@@ -1452,7 +1493,7 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                 }
             };
 
-            if let Some(r_path) = resume_path {
+            let batch_result = if let Some(r_path) = resume_path {
                 let out_dir = match output_dir {
                     Some(d) => d,
                     None => r_path
@@ -1460,19 +1501,14 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                         .map(PathBuf::from)
                         .unwrap_or_else(|| PathBuf::from(".")),
                 };
-                match crate::disposition::batch_runner::resume_batch_from_checkpoint(
+                crate::disposition::batch_runner::resume_batch_from_checkpoint(
                     &r_path,
                     &scenario,
                     num_workers,
                     &out_dir,
                     None,
-                ) {
-                    Ok(doc) => {
-                        let json = serde_json::to_string_pretty(&doc).unwrap_or_default();
-                        CliOutput::success(json)
-                    }
-                    Err(e) => CliOutput::error(e.code, format!("careops-ed: {e}")),
-                }
+                )
+                .map(|doc| (doc, true))
             } else {
                 let batch_cfg = crate::disposition::batch_runner::BatchConfig {
                     schema_version: 1,
@@ -1485,19 +1521,84 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                     checkpoint_interval,
                 };
 
-                match crate::disposition::batch_runner::run_batch_with_workers(
+                crate::disposition::batch_runner::run_batch_with_workers(
                     &scenario,
                     &batch_cfg,
                     output_dir.as_deref(),
                     None,
                     None,
-                ) {
-                    Ok(doc) => {
-                        let json = serde_json::to_string_pretty(&doc).unwrap_or_default();
-                        CliOutput::success(json)
+                )
+                .map(|doc| (doc, false))
+            };
+
+            match batch_result {
+                Ok((doc, is_resumed)) => {
+                    if export_arrow_path.is_some() || export_spatial_path.is_some() {
+                        let bundle =
+                            match crate::disposition::arrow_export::generate_arrow_export_bundle(
+                                &scenario,
+                                &doc,
+                                spatial_rev.as_deref(),
+                                Some((is_resumed, None)),
+                            ) {
+                                Ok(b) => b,
+                                Err(e) => {
+                                    return CliOutput::error(e.code, format!("careops-ed: {e}"))
+                                }
+                            };
+
+                        if let Some(ref arrow_path) = export_arrow_path {
+                            if let Some(parent) = arrow_path.parent() {
+                                if !parent.as_os_str().is_empty() {
+                                    let _ = fs::create_dir_all(parent);
+                                }
+                            }
+                            let arrow_json =
+                                match crate::disposition::arrow_export::export_bundle_to_json(
+                                    &bundle,
+                                ) {
+                                    Ok(j) => j,
+                                    Err(e) => {
+                                        return CliOutput::error(e.code, format!("careops-ed: {e}"))
+                                    }
+                                };
+                            if let Err(e) = fs::write(arrow_path, arrow_json) {
+                                return CliOutput::error(
+                                    ExitCodeDef::OutputWriteFailed,
+                                    format!(
+                                        "careops-ed: failed to write arrow export '{}': {e}",
+                                        arrow_path.display()
+                                    ),
+                                );
+                            }
+                        }
+
+                        if let Some(ref spatial_path) = export_spatial_path {
+                            if let Some(parent) = spatial_path.parent() {
+                                if !parent.as_os_str().is_empty() {
+                                    let _ = fs::create_dir_all(parent);
+                                }
+                            }
+                            let spatial_csv =
+                                crate::disposition::arrow_export::export_spatial_summary_to_csv(
+                                    &bundle.spatial_summary,
+                                );
+                            if let Err(e) = fs::write(spatial_path, spatial_csv) {
+                                return CliOutput::error(
+                                    ExitCodeDef::OutputWriteFailed,
+                                    format!(
+                                        "careops-ed: failed to write spatial summary '{}': {e}",
+                                        spatial_path.display()
+                                    ),
+                                );
+                            }
+                        }
                     }
-                    Err(e) => CliOutput::error(e.code, format!("careops-ed: {e}")),
+
+                    let json = serde_json::to_string_pretty(&doc).unwrap_or_default();
+                    CliOutput::success(json)
                 }
+                Err(e) => CliOutput::error(e.code, format!("careops-ed: {e}")),
             }
         }
         unknown => CliOutput::error(
