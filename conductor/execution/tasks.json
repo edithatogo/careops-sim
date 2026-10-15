@@ -1370,9 +1370,9 @@
       "id": "P5.1",
       "track_id": "ed_parameter_evidence_20260927",
       "phase": "P5",
-      "objective": "Implement consumer/catalogue coverage checks against the actual model configuration/API: reject missing IDs, unexplained defaults, unused active parameters, unit drift and unsupported profile/schema versions.",
+      "objective": "Implement consumer/catalogue coverage checks against the actual model configuration/API: reject missing IDs, unexplained defaults, unused active parameters, unit drift and unsupported profile/schema versions. (Stage A in tools/validate_p5_consumer_coverage.py; Stage B deferred.)",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "C5.5",
         "E2.4",
@@ -1399,9 +1399,9 @@
       "id": "P5.2",
       "track_id": "ed_parameter_evidence_20260927",
       "phase": "P5",
-      "objective": "Load every example through model and calibration runner; test fixed-seed repeatability, Macro/Micro consistency, conditional/dependence preservation, intended diagnostics and sensitivity to selected influential parameters.",
+      "objective": "Load every example through model and calibration runner; test fixed-seed repeatability, Macro/Micro consistency, conditional/dependence preservation, intended diagnostics and sensitivity to selected influential parameters. (Lean smoke implemented in tools/run_p52_example_smoke.py; full runner/calibration loading deferred.)",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "P5.1"
       ],
@@ -1426,15 +1426,15 @@
       "id": "P5.3",
       "track_id": "ed_parameter_evidence_20260927",
       "phase": "P5",
-      "objective": "Publish a coverage/evidence/uncertainty report, unresolved acquisition backlog and versioned handoff. Block validated-profile claims on unsupported assumptions; allow explicitly experimental generic scenarios with visible limits.",
+      "objective": "Publish a coverage/evidence/uncertainty report, unresolved acquisition backlog and versioned handoff. Block validated-profile claims on unsupported assumptions; allow explicitly experimental generic scenarios with visible limits. (conductor/evidence/p5.3-coverage-report-20261015.md)",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "P5.2"
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 175
+        "line": 173
       },
       "context_paths": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
@@ -1453,15 +1453,15 @@
       "id": "P5.4",
       "track_id": "ed_parameter_evidence_20260927",
       "phase": "P5",
-      "objective": "Conductor \u2014 review and verify phase (workflow.md).",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md). Coverage, smoke and report checks pass; Stage B deferred.",
       "kind": "review_integrate",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "P5.3"
       ],
       "source": {
         "path": "conductor/tracks/ed_parameter_evidence_20260927/plan.md",
-        "line": 178
+        "line": 177
       },
       "context_paths": [
         "conductor/tracks/ed_parameter_evidence_20260927/spec.md",
