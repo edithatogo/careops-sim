@@ -258,10 +258,11 @@ Owners 21/12/25, with 03/04/22 and backend-owner handoff.
   performance gates; benchmark ingestion memory, probe overhead, metrics and
   candidate throughput with named data sizes/hardware. Document validity limits.
   Accepted: [retained C6.3 evidence](../../evidence/c6.3-compatibility-replay-performance-20261016.md); development pin `991a6a2` implements C6.3 compatibility, deterministic replay across worker counts (C-06), scaling benchmarks, and boundary validity guards.
-- [ ] C6.4 Hand off fixtures and contracts to existing Metal/PDES/distributed
+- [x] C6.4 Hand off fixtures and contracts to existing Metal/PDES/distributed
   tracks. Add future visualization snapshot/Wasm parity requirements from
   [hybrid-model appraisal](../../hybrid-model-insights.md); render-rate changes
   must not change simulation results. Hardware/UI work stays with those owners.
+  Accepted: [retained C6.4 evidence](../../evidence/c6.4-fixture-and-track-handoff-20261016.md); development pin `44261eb` implements C6.4 fixture and contract handoffs (`c64_handoff_contracts.rs`), render-rate invariance (0/30/60 FPS, jittered frame drops), IEEE 754 safe integer tick bounds, and slow-consumer bounded buffer coalescing.
 - [ ] C6.5 Conductor — review and verify phase (workflow.md).
 
 Exit: C-01–C-07 evidence, reviewed documentation/release notes, upstream registry
