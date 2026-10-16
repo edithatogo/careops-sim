@@ -112,9 +112,9 @@ batch and compare the completed artifact bundle with an uninterrupted baseline.
 
 Entry: Q5, C6, E3 and D3/D4 release evidence.
 
-- [ ] E4.1 Add analytic limiting cases (no contention, deterministic single server,
+- [x] E4.1 Add analytic limiting cases (no contention, deterministic single server,
   known queue fixture), invariant/differential tests, public-reference comparisons
-  and independent review. Distinguish software verification from domain validation.
+  and independent review. Distinguish software verification from domain validation. Accepted: [retained E4.1 evidence](../../evidence/e4.1-analytic-limits-and-validation-20261016.md).
 - [ ] E4.2 Run sensitivity/identifiability, held-out Macro/Micro and warm-up/
   observation-window checks; establish uncertainty and profile-specific validity
   limits. Benchmark representative demand, memory and long-run leak behavior.

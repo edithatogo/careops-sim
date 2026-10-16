@@ -634,7 +634,11 @@ impl CompositeEdFixture {
             time_unit: "tick".to_string(),
             horizon_ticks,
         };
-        RunDocument { manifest, summary }
+        RunDocument {
+            manifest,
+            validation_taxonomy: Default::default(),
+            summary,
+        }
     }
 }
 

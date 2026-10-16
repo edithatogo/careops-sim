@@ -651,6 +651,7 @@ fn test_performance_benchmarks_and_scaling() {
                     time_unit: "tick".to_string(),
                     horizon_ticks,
                 },
+                validation_taxonomy: Default::default(),
                 summary,
             };
             stored_1000_doc = Some(doc);

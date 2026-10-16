@@ -22,8 +22,28 @@ struct RunManifest {
 }
 
 #[derive(Serialize)]
+struct ValidationTaxonomy {
+    verification_scope: String,
+    validation_scope: String,
+    provenance_class: String,
+    disclaimer: String,
+}
+
+impl Default for ValidationTaxonomy {
+    fn default() -> Self {
+        Self {
+            verification_scope: "software_verification".to_string(),
+            validation_scope: "none".to_string(),
+            provenance_class: "synthetic".to_string(),
+            disclaimer: "Software verification of simulation mechanics (queueing, state invariants, determinism) does NOT constitute clinical domain validation for any healthcare site.".to_string(),
+        }
+    }
+}
+
+#[derive(Serialize)]
 struct RunDocument {
     manifest: RunManifest,
+    validation_taxonomy: ValidationTaxonomy,
     summary: RunSummary,
 }
 
@@ -69,7 +89,11 @@ fn execute() -> Result<(), Box<dyn Error>> {
         time_unit: summary.time_unit.clone(),
         horizon_ticks: summary.horizon_ticks,
     };
-    let document = RunDocument { manifest, summary };
+    let document = RunDocument {
+        manifest,
+        validation_taxonomy: ValidationTaxonomy::default(),
+        summary,
+    };
     println!("{}", serde_json::to_string_pretty(&document)?);
     Ok(())
 }
