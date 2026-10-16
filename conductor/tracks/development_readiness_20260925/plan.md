@@ -193,8 +193,9 @@ Entry: E4 hardened native v1 and D4; this optional extension cannot block v1.
   write scope and permissions, record cost/false-pass/intervention metrics and
   require exact-commit checks before merges. Keep one writer per owned path.
   Agent governance, scope restriction, benchmark evaluation, and exact-commit merge evidence: [D5.2 evidence](../../evidence/d5.2-agent-evaluation-and-governance-20261017.md).
-- [ ] D5.3 Track quality debt, flaky tests and performance drift; review whether
+- [x] D5.3 Track quality debt, flaky tests and performance drift; review whether
   automation saves maintainer effort. Roll back workflows that weaken evidence.
+  Quality debt surveillance, flaky test quarantine, performance drift, and workflow rollback evidence: [D5.3 evidence](../../evidence/d5.3-quality-debt-and-performance-drift-20261017.md).
 - [ ] D5.4 Conductor — review and verify phase (workflow.md).
 
 Exit: demonstrated maintenance loop with bounded cost and correct failures.

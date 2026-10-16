@@ -490,4 +490,93 @@ All agent invocations and evaluation workflows must capture structured telemetry
 - Autonomous pushing (`git push`), tag generation (`git tag`), GitHub release publication (`gh release create`), and package publishing (`cargo publish`, `npm publish`, `twine upload`) remain strictly prohibited.
 - Release publication demands explicit human maintainer cryptographic signing and the environment assertion `CAREOPS_HUMAN_MAINTAINER_AUTHORITY=1`.
 
+## D5.3 Quality Debt, Flaky Test Quarantine, Performance Drift, and Workflow Rollback Policy
+
+Task D5.3 establishes continuous quality surveillance, maintainer effort protection, performance benchmarking guardrails, and automated workflow rollback mechanisms.
+
+### 1. Scope & Principles: Ongoing Quality Surveillance & Maintainer Effort Protection
+
+1. **Evidence Protection Mandate**: Automation must strengthen, never dilute, repository verification evidence. Automated tooling that generates ambient noise, false alarms, or unverified churn undermines developer confidence and shall be rolled back.
+2. **Maintainer Effort Conservation**: Automated maintenance and CI workflows must deliver a net reduction in human maintainer cognitive load. When the maintenance overhead or triage burden of an automated workflow exceeds the time it saves, the workflow is classified as burdensome and must be disabled.
+3. **Continuous Auditing**: Quality debt, flaky test inventories, runtime throughput, and heap memory profiles are monitored continuously against canonical baselines.
+
+### 2. Quality Debt Tracking Policy
+
+1. **Continuous Debt Marker Scanning**:
+   - Technical debt markers (`TODO`, `FIXME`, `HACK`, `XXX`, `DEPRECATED`) across all tracked source, documentation, and configuration files are systematically inventoried via [`tools/quality_tracker.py`](../tools/quality_tracker.py).
+   - Weighted scoring is assigned per marker severity: `FIXME` (5), `HACK` (4), `XXX` (3), `TODO` (2), `DEPRECATED` (1).
+2. **Compiler Warning and Hygiene Deficits**:
+   - Zero-warning invariant on canonical stable Rust (`rustc 1.99.0` with `#![forbid(unsafe_code)]` and `-D warnings`).
+   - Line coverage floor ($\ge 80.0\%$) and zero viable surviving mutant policy established in D3.3 are maintained on critical engine crates.
+3. **Hard Debt Threshold Ceilings**:
+   - Repository-wide quality debt score must remain below the strict ceiling of **150 points**.
+   - Any commit or PR that causes quality debt to breach this ceiling fails CI closed immediately with `QualityDebtExceededError`.
+   - New debt markers introduced in core simulation modules require explicit owner approval and tracking issue linkage.
+
+### 3. Flaky Test Quarantine Policy
+
+1. **Zero Ambient Flake Tolerance**:
+   - Non-deterministic test execution, hidden test retries (e.g., `nextest --retries > 0`), and unquarantined intermittent failures are strictly forbidden in CI and local verification harnesses.
+2. **Strict Quarantine Requirements**:
+   - Any test exhibiting non-deterministic behavior must be immediately documented in the quarantine inventory ([`.config/d33-quality-gates.json`](../.config/d33-quality-gates.json)).
+   - Each quarantine entry must define all five required fields:
+     - `test_id`: Fully qualified test identifier.
+     - `owner`: Designated maintainer responsible for resolution (e.g., `Owner 13 (Kairos Core)`).
+     - `reason`: Root-cause hypothesis or reproduction notes.
+     - `issue_url`: Canonical issue tracker URL.
+     - `expires_on`: Hard expiration date (ISO 8601 `YYYY-MM-DD`).
+3. **Hard 14-Day Expiration Ceiling**:
+   - Quarantine grants are temporary mitigations with a **maximum lifetime of 14 calendar days**.
+   - Permanent or indefinite quarantine is strictly prohibited.
+4. **Fail-Closed Expiry Enforcement**:
+   - [`tools/quality_tracker.py flakes`](../tools/quality_tracker.py) validates active quarantine inventories on every CI run.
+   - Any expired entry or entry lacking required attribution fails CI closed immediately with `UnquarantinedFlakeError`.
+
+### 4. Performance Drift & Memory Leak Policy
+
+1. **Regular Benchmark Tracking Against Native Baseline**:
+   - Discrete-event simulation throughput and memory footprint are benchmarked against the certified native baseline established in Task E4.2:
+     - Baseline Simulation Throughput: $\ge \mathbf{540,000\,\text{steps/sec}}$ ($\ge 270,000$ completed patients/sec).
+     - Baseline Memory Footprint: Peak RSS $\le \mathbf{10.0\,\text{MB}}$ across multi-day (2,500-patient) runs.
+     - Memory Growth Slope: $0.00\,\text{KB}$ leak over 20-run soak repetition.
+2. **Performance Regression Thresholds**:
+   - **Throughput Drop Tolerance**: Any sustained throughput drop $> 15.0\%$ relative to canonical baseline triggers `PerformanceRegressionError` (exit code 1).
+   - **Memory RSS Growth Tolerance**: Any heap growth $> 15.0\%$ over baseline or a positive memory leak slope across soak iterations triggers `PerformanceRegressionError`.
+3. **Automated Enforcement**:
+   - Performance regression evaluation is enforced programmatically via `evaluate_performance()` in [`tools/quality_tracker.py`](../tools/quality_tracker.py).
+
+### 5. Maintainer Effort & Automation ROI Policy
+
+1. **Automation Efficiency Evaluation**:
+   - All automated workflows, maintenance schedulers, bot commenters, and agent assistance pipelines are audited for operational return-on-investment (ROI).
+   - Metric tracking captures: maintainer hours saved ($H_{\text{saved}}$), triage and investigation hours ($H_{\text{triage}}$), false alerts count ($N_{\text{false}}$), and workflow maintenance hours ($H_{\text{maint}}$).
+2. **Automation Efficiency Ratio ($AER$)**:
+   - Defined as:
+     $$AER = \frac{H_{\text{saved}}}{H_{\text{triage}} + H_{\text{maint}} + (N_{\text{false}} \times 0.5\,\text{hrs})}$$
+   - **Retention Threshold**: Sustained automation requires $AER \ge 2.0$ and net time savings $\ge 3.0\,\text{hours}$.
+   - **Classification Rules**:
+     - **Beneficial ($AER \ge 2.0$)**: Retained. Delivers clear maintainer effort savings with low false alarm burden.
+     - **Neutral ($1.0 \le AER < 2.0$)**: Monitored. Marginal ROI; requires tuning of alert thresholds to prevent evidence erosion.
+     - **Burdensome ($AER < 1.0$ or $N_{\text{false}} \ge 5$ with low savings)**: Target for immediate rollback.
+
+### 6. Workflow Rollback Mandate
+
+1. **Mandatory Rollback Trigger**:
+   - Any automated workflow, scheduled task, or agent evaluation pipeline that weakens evidence, generates excessive false alerts, or drains maintainer focus must be rolled back immediately.
+2. **Rollback Procedure**:
+   - Execution of rollback via [`tools/quality_tracker.py rollback`](../tools/quality_tracker.py):
+     ```bash
+     python3 tools/quality_tracker.py rollback --workflow-id "<id>" --config "<config_path>" --reason "<justification>" --user "<maintainer>" --receipt-dir ".artifacts/receipts"
+     ```
+   - Workflow state is set to `enabled: false` in the owning configuration file.
+   - An immutable JSON rollback receipt is generated recording `receipt_id`, UTC timestamp, `workflow_id`, `reason`, `user`, and `config_change`.
+   - A post-mortem review is filed in `conductor/evidence/` prior to any prospective re-enablement.
+
+### 7. Absolute Prohibition of Autonomous Publication
+
+Under no circumstances may automated quality tracking routines, benchmark scripts, or rollback tools autonomously publish packages or push commits:
+- Execution of `git push`, `git push --tags`, `cargo publish`, `gh release create`, or credentialed registry uploads triggers an immediate security halt with `AutonomousPublicationError`.
+- All release publication requires explicit human maintainer verification, cryptographic signature, and the manual assertion of `CAREOPS_HUMAN_MAINTAINER_AUTHORITY=1`.
+
+
 
