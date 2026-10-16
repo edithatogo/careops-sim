@@ -246,13 +246,14 @@ Owners 21/12/25, with 03/04/22 and backend-owner handoff.
   transit parameters, recover the identifiable fixture and flag a deliberately
   confounded service/transit case instead of claiming unique recovery.
   Accepted: [retained C6.1 evidence](../../evidence/c6.1-ed-calibration-fixture-20261015.md); development pin `96e8ac7` implements C6.1 integration tests (`c61_ed_fixture_calibration.rs`), identifiable calibration recovery (`ridge == false`), and confounded ridge identification (`non_identifiable_ridge`).
-- [ ] C6.2 Freeze selected parameters and evaluate free-running Macro/Micro on
+- [x] C6.2 Freeze selected parameters and evaluate free-running Macro/Micro on
   held-out cases/time blocks. Report waits/length of stay/throughput/resource use,
   transit/interruption counts, W1/KS/residuals, uncertainty, exclusions and runtime.
   Require correct synthetic expectations; empirical superiority is not presumed.
   Separate historical-exogenous-input holdout from arrival-generator
   validation, orthogonally to Macro/Micro fidelity. Freeze thresholds and use fresh
   seeds; report marginal/joint conflicts and stochastic/input/structural uncertainty.
+  Accepted: [retained C6.2 evidence](../../evidence/c6.2-ed-holdout-evaluation-20261016.md); development pin `2be675b` implements C6.2 holdout evaluation (`c62_ed_holdout_evaluation.rs` and `c62_macro_micro_holdout_comparison.rs`), 2x2 orthogonal arrival/fidelity matrix, marginal/joint conflict analysis, and 3-way uncertainty decomposition.
 - [ ] C6.3 Run feature/API/manifest/Arrow compatibility, deterministic replay and
   performance gates; benchmark ingestion memory, probe overhead, metrics and
   candidate throughput with named data sizes/hardware. Document validity limits.
