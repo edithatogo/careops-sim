@@ -1,5 +1,12 @@
 # CareOps Sim
 
+[![CI](https://github.com/edithatogo/careops-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/edithatogo/careops-sim/actions/workflows/ci.yml)
+[![Session Guard](https://github.com/edithatogo/careops-sim/actions/workflows/agent-session.yml/badge.svg)](https://github.com/edithatogo/careops-sim/actions/workflows/agent-session.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE-APACHE)
+[![Rust: 1.99.0](https://img.shields.io/badge/rust-1.99.0-orange.svg)](rust-toolchain.toml)
+[![Platforms: Linux x86_64 | macOS ARM64](https://img.shields.io/badge/platform-Linux%20x86__64%20%7C%20macOS%20ARM64-lightgrey.svg)](conductor/dependency-policy.md#cross-platform-reproducibility-policy)
+[![Conductor Progress: 83.4%](https://img.shields.io/badge/progress-83.4%25%20(121%2F145%20tasks)-brightgreen.svg)](conductor/tracks.md)
+
 A planned Rust-native generic emergency-department simulation using Kairos/KairoECS
 DES and ABM. Generic/public or explicitly synthetic inputs first; Cairns later.
 
@@ -17,17 +24,14 @@ See [delivery scope and acceptance](conductor/delivery-contract.md) and
 
 ## Current state
 
-Local planning and context tooling are present. The E0 runner in
-`crates/careops-ed` exists. E1.2 pathway work is accepted: seeded time-varying
-arrivals, clinical states, pathway runtime, disposition, and D3.3 mutation
-qualification. There is no E2 headless MVP and no release-qualified ED
-simulation. Functional MVP acceptance is phase E2, and that phase is not done.
+The codebase is at **83.4% overall completion** (121 of 145 task records accepted in Conductor DAG):
+- `empirical_calibration_20260925` (C0–C6): **100% complete** and formally accepted ([C6.5 closeout](conductor/evidence/c6.5-phase-acceptance-20261016.md)).
+- `des_queue_preemption_20260925` (Q0–Q5): **100% complete**.
+- `ed_parameter_evidence_20260927` (P0–P5): **100% complete**.
+- `development_readiness_20260925` (D0–D4): **85.7% complete** (Phases D0–D4 accepted; [D4.4 closeout](conductor/evidence/d4.4-phase-acceptance-20261016.md)).
+- `generic_ed_delivery_20260925` (E0–E3): Core domain, CLI (`careops-ed-cli`), multi-worker batch runner, and Arrow/Parquet export accepted.
 
-Active work is recorded in
-[`conductor/current-state.json`](conductor/current-state.json). Re-read that
-file before dispatch; it can move. The copy in this tree (`updated_at`
-2026-10-13) names track `generic_ed_delivery_20260925`, phase E1. Next is
-E1.3: admission boarding/discharge and optional abandonment/transfer policies.
+Active work is recorded in [`conductor/current-state.json`](conductor/current-state.json). Next is **Phase E4 (Hardened native v1 release and qualification)**, starting with Task E4.1 (analytic limiting cases, invariant/differential tests, and independent review).
 
 Git is initialized. `libs/kairos` is a development pin (see `submodule_pins` in
 [`conductor/current-state.json`](conductor/current-state.json)). That pin can
@@ -89,19 +93,32 @@ Workspace package metadata declares SPDX `Apache-2.0`:
 
 [`deny.toml`](deny.toml) allows dependency licenses `MIT`, `Apache-2.0`, `BSD-3-Clause`, and `Unicode-3.0`. Parent Rust and Python sources have no SPDX file headers.
 
-Root `LICENSE`, `NOTICE`, `CITATION.cff`, and `CITATION.md` are absent. The [P4 pack manifest](model-inputs/ed/profiles/p4-pack-manifest.json) records parent redistribution as `not_established` and keeps Kairos and Conductor licenses inside those submodules. [E0.2](conductor/evidence/e0.2-local-acceptance-20261002.md) records the Cargo Apache-2.0 fields as repeated Kairos workspace metadata. License ownership and a public redistribution grant remain a maintainer decision. [D2.3](conductor/evidence/d2.3-policy-20261003.md) added the Cargo fields so `cargo deny` can check licenses.
+Root `CITATION.cff` is present for software citation. Distribution packaging and release rehearsals bundle `LICENSE-APACHE` and `NOTICE` via `tools/release_rehearsal.py`. The [P4 pack manifest](model-inputs/ed/profiles/p4-pack-manifest.json) records parent redistribution as `not_established` and keeps Kairos and Conductor licenses inside those submodules. [E0.2](conductor/evidence/e0.2-local-acceptance-20261002.md) records the Cargo Apache-2.0 fields as repeated Kairos workspace metadata. [D2.3](conductor/evidence/d2.3-policy-20261003.md) added the Cargo fields so `cargo deny` can check licenses.
 
 Pinned submodules (initialize with `git submodule update --init --recursive`):
 
 | Path | Gitlink | License | Citation |
 | --- | --- | --- | --- |
-| `libs/kairos` | `7af989c8951c232f7bc4e6a2f543c4ee0061af99` | `libs/kairos/LICENSE` (Apache-2.0 OR MIT) | `libs/kairos/CITATION.cff` cites KairoECS |
+| `libs/kairos` | `44261eb5cf8275f132f63a3396903d116d701dbe` | `libs/kairos/LICENSE` (Apache-2.0 OR MIT) | `libs/kairos/CITATION.cff` cites KairoECS |
 | `extensions/conductor` | `7a5c560a4fdf5297be58594cc37527eb12790272` | `extensions/conductor/LICENSE` (Apache-2.0) | no citation file at this pin |
 
-Maintainer checklist before publishing a grant or a software citation:
+### Citation
 
-1. Name the copyright holder.
-2. If Apache-2.0 stays the parent license, add the standard Apache-2.0 text as root `LICENSE`, then revisit P4 `repository_licensing.status`.
-3. Add `NOTICE` for third-party notices the holder chooses to carry. Dependency SPDX identifiers stay in `deny.toml` and `Cargo.lock`.
-4. Add `CITATION.cff` after authors are named. This README and [`conductor/product.md`](conductor/product.md) already use the title CareOps Sim. Neither file names authors.
-5. Keep research citations in [`conductor/generic-ed-evidence.md`](conductor/generic-ed-evidence.md), [`conductor/research/`](conductor/research/research-handoff.md), and `model-inputs/ed/**/evidence/`. The shortlist names AIHW, CDC NHAMCS, the HSMA SimPy examples, and the treatment-centre model docs. AIHW and the pinned HSMA example have bound evidence under `model-inputs/ed/`. CDC NHAMCS and the treatment-centre documentation page remain shortlist candidates in `conductor/generic-ed-evidence.md`; that note already requires a recorded licence and revision before reuse.
+If you use CareOps Sim in research, healthcare operational analysis, or software studies, please cite:
+
+```bibtex
+@software{careops_sim_2026,
+  author = {Mordaunt, Dylan A. and {CareOps Sim Contributors}},
+  title = {CareOps Sim: A Rust-Native Emergency Department Discrete-Event Simulation and Agent-Based Modeling System},
+  year = {2026},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/edithatogo/careops-sim}},
+  version = {0.1.0}
+}
+```
+
+**APA Format:**
+> Mordaunt, D. A., & CareOps Sim Contributors. (2026). *CareOps Sim: A Rust-Native Emergency Department Discrete-Event Simulation and Agent-Based Modeling System* (Version 0.1.0) [Computer software]. https://github.com/edithatogo/careops-sim
+
+Machine-readable citation metadata is provided in [`CITATION.cff`](CITATION.cff). Research evidence citations are retained in [`conductor/generic-ed-evidence.md`](conductor/generic-ed-evidence.md) and [`conductor/research/`](conductor/research/research-handoff.md).
