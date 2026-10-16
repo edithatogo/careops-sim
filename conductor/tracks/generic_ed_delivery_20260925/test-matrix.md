@@ -6,7 +6,7 @@
 | E-R2 / E2 | Shift/break/handover, zone/skill, cleaning/reservation, boarding/diagnostic contention | Inspect resource ownership over shift change |
 | E-R3 / E2 | Macro/Micro paired draws, route interruption/restore, no double-counted transit | Explain task work+wait+transit intervals |
 | E-R4/5 / E3 | Formula/denominator oracle, censoring/warm-up, cancellation/disk failure, atomic writes, 1/2/N workers/resume | Cancel/resume and compare full artifacts |
-| E-R6/7 / E4 | Analytic/differential/invariant, sensitivity/held-out tests, package consumer and supported-platform gates | Reproduce examples independently |
+| E-R6/7 / E4 | **PASSED** per [E4.4 Evidence](../../evidence/e4.4-phase-evidence-20261016.md): Analytic/differential/invariant, sensitivity/held-out tests, package consumer and supported-platform gates | **PASSED**: fresh consumer installed `careops-ed`, reproduced examples independently |
 | E-R8 / E5 | Native/Wasm IDs/time/API parity; off/30/60 render-rate invariance, slow consumer/memory and accessibility checks | Run/edit/compare/export through dashboard |
 | E-R9 / E6 | Actual Metal dispatch + CPU oracle/tolerance/ranking/device failure/benchmark | Prove device execution, inspect timings |
 | E-R9 / E7 | Real threaded PDES, serial observable parity, causality/GVT/deadlock/lookahead tests | Inspect cross-LP claim/message lifecycle |

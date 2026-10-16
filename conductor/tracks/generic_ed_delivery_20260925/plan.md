@@ -123,7 +123,7 @@ Entry: Q5, C6, E3 and D3/D4 release evidence.
   Verify release evidence, dependency pins, licences/SBOM and restore/rollback.
   Qualify hardened native v1 against the delivery contract: a fresh user installs, edits a documented scenario, runs/compares/exports and troubleshoots an intentional input error without author assistance or Rust edits. Record actual commands, outcomes, support limits and unresolved release blockers. Accepted: [retained E4.3 evidence](../../evidence/e4.3-docs-examples-delivery-contract-20261016.md).
 
-- [ ] E4.4 Conductor — review and verify phase (workflow.md).
+- [x] E4.4 Conductor — review and verify phase (workflow.md). Accepted: [retained E4.4 acceptance](../../evidence/e4.4-phase-acceptance-20261016.md) and [phase evidence reconciliation](../../evidence/e4.4-phase-evidence-20261016.md).
 
 Exit: G1 complete only after evidence; no production/Cairns validity assertion.
 Manual verification: new consumer installs the candidate and reproduces example
