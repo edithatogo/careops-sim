@@ -85,3 +85,39 @@ Actual runtime source `59d7dbb0c004654e3da90951d42e2b983ef23993`; reviewed devel
 ## C4.4 accepted synthetic statistical phase — 2026-10-05
 
 Compiled source `79fac7ea52b8c21650759ef2d137104fa421c48d`, evidence publication `fd211888a4f435bc3679fd40589e40b482b92cf7`. Source-derived exact tie counts and censor/coverage warnings are independently reconstructed from actual IPC/Parquet source and join manifests. All 42 frozen cases pass C0/C4.1 tolerances on explicitly pinned Rust 1.99/1.88; full calibration 146 pass/four named ignores each, strict current Clippy, framing readback and actual supplemental cases pass. Six independent actual-output tampering controls and strict manifest/statistical controls reject inconsistent evidence. Archive592 safe members independently verified. Exact-head hosted CI: 48 success/two conditional skips; native Linux/macOS and all Rust 1.88 feature lanes pass. [C4.4 evidence and limits](../../evidence/c4.4-completion-20261005/README.md). C-04 closes for synthetic implementation conformance. C2, public API, release, clinical and full MVP acceptance remain open. Earlier phase records remain historical snapshots.
+
+## C-05 executed calibration recovery and holdout qualification — 2026-10-16
+
+[Acceptance and evidence](../../evidence/c6.1-ed-calibration-fixture-20261015.md) and [holdout evidence](../../evidence/c6.2-ed-holdout-evaluation-20261016.md).
+- **Identifiable parameter recovery**: Synthetic ED operational trace with true parameters (`route_ticks = 2`, `work_ticks = 3`, total = 5) uniquely recovers candidate `c000004` on candidate grid with `summary["ridge"] == false`, `mean_completion_error == 0.0`, and `mean_objective_score == 0.0`.
+- **Confounded case identification**: Trace evaluated without transit observation correctly identifies non-unique ridge $\text{route\_ticks} + \text{work\_ticks} = 5$, reporting `summary["ridge"] == true` and `summary["identifiability"] == "non_identifiable_ridge"` with deterministic tie-breaking by candidate ID rather than claiming false recovery.
+- **Operational fixture coverage**: Evaluated ATS 1–5 urgency queue dispatch, staff zone eligibility (`OperationalError::Ineligible`), diagnostic bay retention (`OperationalError::DiagnosticBlocked`), urgent preemption with work conservation, bed cleaning cycles (`OperationalError::CleaningInProgress`), and boarding bay retention (`BoundaryError::PrematureBayReleaseBeforePhysicalTransfer`).
+- **Macro/Micro holdout comparison**: Disjoint held-out patient cases evaluated free-running without timestamp clamping. Micro reports physical transit ticks ($LOS \ge Wait + Work + Transit$); Macro reports zero transit ($LOS \ge Wait + Work$). Preemption preserves accrued work without restart penalty.
+- **Orthogonal 2x2 validation matrix**: Separates historical-exogenous holdout from generative arrival validation across Macro and Micro fidelities.
+- **Marginal vs joint conflict**: Evaluated FX-007 identical marginals with reversed dependence; detected divergence via multivariate energy distance ($\mathcal{E} \approx 0.5858 > 0.4$) despite zero 1D W1 and KS distance.
+- **3-way uncertainty decomposition**: Evaluated stochastic uncertainty (CRN with half-width $\le 0.5$), input sensitivity ($\pm 20\%$ arrival rate), and structural model discrepancy (Macro vs Micro) under frozen precision threshold $\delta = 2.0$.
+- **Pass receipts**: `c61_ed_fixture_calibration` (9 passed), `c61_ed_fixture_verification` (8 passed), `c62_ed_holdout_evaluation` (3 passed), `c62_macro_micro_holdout_comparison` (3 passed). Rust 1.99.0 macOS aarch64.
+
+## C-06 executed determinism, replay, and worker concurrency qualification — 2026-10-16
+
+[Acceptance and evidence](../../evidence/c6.3-compatibility-replay-performance-20261016.md) and [handoff evidence](../../evidence/c6.4-fixture-and-track-handoff-20261016.md).
+- **Deterministic replay**: 5 sequential simulation and calibration replays using identical seed schedules produce byte-for-byte identical outputs, serialized JSON, and SHA-256 hashes.
+- **Worker concurrency invariance**: Permuted candidate execution orders across 1, 2, and 4 worker threads yield bit-for-bit identical calibration winners, ranking tables, objective scores, and Arrow export bundles.
+- **Render-rate invariance**: Executing simulation headless (0 FPS), with 30 FPS snapshots, 60 FPS snapshots, or variable frame-drop jitter produces 100% bit-for-bit identical event logs, simulation trajectories, and SHA-256 output hashes.
+- **Pass receipts**: `c63_compatibility_replay_performance` in Kairos (4 passed) and CareOps ED (4 passed), `c64_handoff_contracts` in Kairos (4 passed) and CareOps ED (4 passed). Rust 1.99.0 macOS aarch64.
+
+## C-07 executed compatibility, performance, and validity qualification — 2026-10-16
+
+[Acceptance and evidence](../../evidence/c6.3-compatibility-replay-performance-20261016.md) and [handoff evidence](../../evidence/c6.4-fixture-and-track-handoff-20261016.md).
+- **Zero runtime dependencies**: Pure Rust native evaluation: zero Python runtime, zero GPU/CUDA requirements, and zero GUI/display requirements for core simulation and calibration.
+- **Schema compatibility**: Versioned study manifests (`kairoecs.calibration.*.v1`), Arrow 30-column residual schema (`calibration_residual.v1`), and 27-column metric schema (`calibration_metric.v1`). Backward compatibility verified for legacy null transit fields and unparameterized traces.
+- **Performance benchmarks (Apple M-series 10-core, Rust 1.99.0)**:
+  - Ingestion throughput: $N = 4,000$ records ingested in 2.7 ms ($O(N)$ linear memory, $\approx 113$ B/patient).
+  - Simulation throughput: $> 60,000$ steps/sec ($> 35,000$ patients/sec); 1,000-patient simulation in $< 30$ ms.
+  - Shadow probe overhead: $< 5.0\,\mu\text{s}$ per probe step.
+  - Metrics kernel throughput: Wasserstein-1 and Kolmogorov-Smirnov calculation $> 350,000$ points/sec (exceeding $\ge 50,000$ gate).
+  - Candidate evaluation rate: $\approx 110-120$ candidates/sec per thread.
+- **Validity limits and fail-closed guards**: Dataset cap at 4,096 records per split, positive horizon requirement, non-negative consistent bed/staff capacities, exact integer tick representation up to $2^{53}-1$ (`MAX_EXACT_TICK`), and typed outcome categorization (`complete`, `censored`, `missing`, `failed`, `infeasible`) preventing silent drop of records.
+- **Contract handoffs**: Metal/GPU WGSL compute offload specification with canonical reduction ($\epsilon \le 10^{-12}$) and CPU fallback; PDES LP partitioning with positive lookahead; distributed MPI/gRPC telemetry transport; Wasm safe tick bound $2^{53}-1$; slow consumer queue capacity $K = 64$.
+- **Pass receipts**: Full `kairo-ecs-calibration` suite (102 passed, 0 failed), full `careops-ed` suite (105 passed, 0 failed), Rust 1.99.0 formatting and Clippy clean.
+
