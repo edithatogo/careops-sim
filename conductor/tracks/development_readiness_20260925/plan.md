@@ -171,9 +171,10 @@ Entry: E3 integrated runner, Q5 and C6; native library packaging is finalized in
   Test expired/wrong-commit evidence and an incompatible schema as failures.
   Build once from clean locked source; bind checksums, SBOM and attestations to the same actual artifact bytes and verify as consumer. Reject missing/substituted artifacts and dirty release inputs; rehearse corrected-version/yank policy without rewriting immutable releases.
   Consumer packaging, SBOM, and provenance evidence: [D4.2 evidence](../../evidence/d4.2-clean-consumer-packaging-rehearsal-20261016.md).
-- [ ] D4.3 Rehearse rollback to last-known-good pins and checkpoint migration;
+- [x] D4.3 Rehearse rollback to last-known-good pins and checkpoint migration;
   verify reproducibility across claimed platforms and create release notes and
   explicit unsupported-feature list. No autonomous public publication.
+  Rollback, checkpoint migration, reproducibility, and release notes: [D4.3 evidence](../../evidence/d4.3-rollback-checkpoints-release-notes-20261016.md) and [v0.1.0 Release Notes](../../evidence/d4.3-release-notes-v0.1.0.md).
 - [ ] D4.4 Conductor — review and verify phase (workflow.md).
 
 Exit: verifiable release candidate evidence, no unresolved critical release risks.

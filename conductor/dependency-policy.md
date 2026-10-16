@@ -265,3 +265,93 @@ Release evaluation scripts and consumer verifiers must enforce six mandatory fai
      3. **Clean-Source Rebuild**: The patch release is built from clean source with the defect resolved.
      4. **Yank Defective Version**: Owner 15 executes registry withdrawal (`cargo yank --version 0.1.0 careops-ed`) or marks the release deprecated in the distribution index. This prevents new projects from adopting the flawed release while allowing existing lockfiles to continue resolving.
      5. **Publish Advisory**: A formal security/defect advisory (RUSTSEC / GitHub Security Advisory) is published explaining the defect, affected versions, and upgrade path to `0.1.1`.
+
+## D4.3 Rollback, Checkpoint Migration, and Cross-Platform Reproducibility Policy
+
+Prior to publishing v0.1.0 and authorizing general deployment, explicit policies govern rollbacks to last-known-good pins, schema migration and state conservation for simulation checkpoints, cross-platform reproducibility bounds across claimed architectures, and non-negotiable boundaries for unsupported features.
+
+### Submodule Pin Rollback Protocol
+
+1. **Strict Reviewed Pinning**:
+   - The upstream Kairos submodule (`libs/kairos`) is pinned strictly to the owner-reviewed, native-accepted commit: `44261eb5cf8275f132f63a3396903d116d701dbe`.
+   - Floating branches, detached unverified heads, or unreviewed submodule upgrades are prohibited.
+2. **Fail-Closed Verification Gate**:
+   - The verification script [`tools/check_kairos_pin.py`](../tools/check_kairos_pin.py) enforces continuous integrity of the submodule pin. It checks:
+     - Exact commit identity in [`conductor/evidence/d2.4-kairos-contract.json`](evidence/d2.4-kairos-contract.json).
+     - Submodule pin declaration in [`conductor/current-state.json`](current-state.json).
+     - Committed and index gitlinks (`160000` gitlink tree entry).
+     - Clean checkout status and exact `HEAD` rev-parse in `libs/kairos`.
+     - Cryptographic SHA-256 verification of all tracked upstream source files.
+   - Any discrepancy, divergence, uncommitted tracked change, or missing acceptance evidence halts CI with exit code 1.
+3. **Rollback Procedure**:
+   - When an unreviewed, incompatible, or failing upstream commit is detected:
+     1. **Revert Gitlink**: `git update-index --cacheinfo 160000,44261eb5cf8275f132f63a3396903d116d701dbe,libs/kairos` or `git checkout HEAD -- libs/kairos`.
+     2. **Restore Upstream Tree**: `git -C libs/kairos checkout 44261eb5cf8275f132f63a3396903d116d701dbe && git -C libs/kairos clean -fd`.
+     3. **Reconcile Evidence**: Restore reviewed contract in [`conductor/evidence/d2.4-kairos-contract.json`](evidence/d2.4-kairos-contract.json) and state metadata in [`conductor/current-state.json`](current-state.json).
+     4. **Execute Verification**: Run `python3 tools/check_kairos_pin.py` to confirm full restoration.
+
+### Dependency Pin Rollback Protocol
+
+1. **Strict Cargo.lock Adherence**:
+   - All builds, continuous integration pipelines, and release rehearsals execute with `cargo build --locked` and `cargo test --locked`.
+   - Floating version ranges or ambient updating of dependencies without formal review is strictly prohibited.
+2. **Unauthorized Tampering Detection & Rollback**:
+   - Any unauthorized edit or drift in `Cargo.lock` triggers an immediate build failure under `--locked` (`error: the lock file needs to be updated but --locked was passed`).
+   - Rollback procedure:
+     1. Discard untrusted modifications: `git checkout HEAD -- Cargo.lock`.
+     2. Reverification: Execute `cargo check --locked --quiet` and `cargo audit` to confirm integrity against project security policies.
+
+### Checkpoint Schema Migration and Rollback Protocol
+
+1. **Schema Versioning Support**:
+   - Simulation state checkpoints generated during long-running batch experiments support explicit integer schema versioning (`schema_version: 1` $\to$ `schema_version: 2`).
+   - Legacy schema version 1 represents minimal batch progress (`BatchCheckpoint` containing completed replication arrays and pending indices).
+   - Schema version 2 introduces enhanced provenance tracking, including `checkpoint_version: "2.0.0"`, `simulation_engine: "careops-ed-v1"`, `migration_metadata` (timestamps, operator identity, SHA-256 replication checksum), and cryptographic `provenance_digest`.
+2. **State Conservation Law**:
+   - Any checkpoint migration from schema version 1 to 2 MUST satisfy the strict State Conservation Law:
+     $$\text{len}(\text{completed\_replications}) + \text{len}(\text{pending\_indices}) = \text{total\_replications}$$
+   - Migrations MUST preserve 100% of completed replication records bit-for-bit without data loss, reordering, index mutation, or precision truncation.
+   - Base seeds, scenario configurations, horizon overrides, and batch identifiers must remain invariant across migrations.
+   - Any missing replication, duplicate index, or set divergence raises `StateConservationViolationError` and fails closed.
+3. **Reversible Migration (Rollback Protocol)**:
+   - Checkpoint migration is strictly bidirectional and reversible.
+   - If downstream tools, older worker nodes, or external analytical scripts require schema version 1, schema version 2 checkpoints can be downgraded cleanly via `tools/checkpoint_migration.py rollback`.
+   - The rollback procedure validates schema version 2 cryptographic digests and replication checksums before safely stripping version 2 envelope metadata, producing an exact, conforming schema version 1 document.
+   - Resuming a batch from a rolled-back v1 checkpoint produces identical mathematical and operational results as resuming directly from v2.
+
+### Cross-Platform Reproducibility Policy
+
+1. **Claimed Supported Platforms**:
+   - CareOps Sim v0.1.0 officially supports and qualifies exactly two Tier 1 host platforms:
+     - `x86_64-unknown-linux-gnu` (Linux x86_64)
+     - `aarch64-apple-darwin` (macOS Apple Silicon ARM64)
+   - Other target triples (including `x86_64-pc-windows-msvc`, `i686-unknown-linux-gnu`, `wasm32-unknown-unknown`, and `wasm32-wasi`) are unverified and unsupported in v0.1.0.
+2. **Deterministic Reproducibility Invariant**:
+   - For any identical scenario specification, input configuration, and integer base seed:
+     - **Integer Equivalence**: All discrete state metrics, event counts, patient arrivals, completions, unfinished counts, queue lengths, discrete tick totals, and PRNG draw sequences must match **100% bit-for-bit** across both claimed platforms.
+     - **Floating-Point Reduction Tolerance**: Floating-point reductions (such as aggregate mean waiting times, standard errors, and resource utilizations) are bounded by strict IEEE 754 floating-point reduction tolerance:
+       $$|\Delta_{\text{metric}}| \le 1.0 \times 10^{-12}$$
+   - Any simulation run exceeding this tolerance or exhibiting integer drift triggers `PlatformReproducibilityError` and fails release qualification.
+
+### Explicit Unsupported-Feature Boundary Policy
+
+To prevent misuse, avoid scope creep, and protect patient safety, the following six operational boundaries are explicitly defined as **unsupported and prohibited** in CareOps Sim v0.1.0:
+
+1. **No Real EHR or Private Clinical Patient Data**:
+   - The engine is qualified exclusively on synthetic, parametric, or generic open hospital operational data.
+   - Ingestion of real Electronic Health Record (EHR) data or identifiable patient event streams is strictly barred until independent Institutional Review Board (IRB) / Human Research Ethics Committee (HREC) approval, formal HIPAA Safe Harbor / APP de-identification verification, and encrypted on-premise local storage are certified.
+2. **No Autonomous Public Publication**:
+   - Automated scripts, background CI runners, and AI agent harnesses are strictly forbidden from publishing packages to public registries (crates.io, PyPI, npm) or creating public GitHub Releases.
+   - All external releases require explicit human maintainer authorization, verifiable PGP commit signatures, and the deliberate assertion of `CAREOPS_HUMAN_MAINTAINER_AUTHORITY=1`.
+3. **No Hardware Acceleration (GPU / Metal / CUDA / MLX) in Core**:
+   - The simulation engine core is architected strictly as single-core or multi-core CPU discrete-event / agent-based simulation.
+   - GPU, CUDA, Apple Metal, or WebGPU compute kernels are not bundled into the core engine. GPU acceleration exploration is deferred to Track 32.
+4. **No Distributed Networking (MPI / gRPC / Sockets) in Core**:
+   - The native core executes under a strict zero-network airgap. No network sockets, RPC listeners, or distributed consensus protocols are included in core binaries.
+   - Multi-node distributed clustering is deferred to Track 35.
+5. **No Interactive GUI / CAD / PixiJS Renderer in Core**:
+   - CareOps Sim v0.1.0 is a headless computational engine and CLI tool (`careops-ed`, `careops-ed-cli`).
+   - Interactive 2D/3D graphical interfaces, CAD spatial visualizers, and web canvases (PixiJS) are not bundled in core and are deferred to visualization tracks (Tracks 05 and 09).
+6. **No Cross-Process Arrow C Data Sharing**:
+   - Raw C Data pointers (`ArrowArray`, `ArrowSchema`) are restricted exclusively to in-process FFI memory boundaries within the same address space.
+   - Passing raw memory pointers across OS processes, containers, or network boundaries is prohibited; all IPC must utilize bounded Arrow IPC streaming buffers (`arrow::ipc`) or self-contained Parquet files.
