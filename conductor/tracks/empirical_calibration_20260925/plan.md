@@ -254,9 +254,10 @@ Owners 21/12/25, with 03/04/22 and backend-owner handoff.
   validation, orthogonally to Macro/Micro fidelity. Freeze thresholds and use fresh
   seeds; report marginal/joint conflicts and stochastic/input/structural uncertainty.
   Accepted: [retained C6.2 evidence](../../evidence/c6.2-ed-holdout-evaluation-20261016.md); development pin `2be675b` implements C6.2 holdout evaluation (`c62_ed_holdout_evaluation.rs` and `c62_macro_micro_holdout_comparison.rs`), 2x2 orthogonal arrival/fidelity matrix, marginal/joint conflict analysis, and 3-way uncertainty decomposition.
-- [ ] C6.3 Run feature/API/manifest/Arrow compatibility, deterministic replay and
+- [x] C6.3 Run feature/API/manifest/Arrow compatibility, deterministic replay and
   performance gates; benchmark ingestion memory, probe overhead, metrics and
   candidate throughput with named data sizes/hardware. Document validity limits.
+  Accepted: [retained C6.3 evidence](../../evidence/c6.3-compatibility-replay-performance-20261016.md); development pin `991a6a2` implements C6.3 compatibility, deterministic replay across worker counts (C-06), scaling benchmarks, and boundary validity guards.
 - [ ] C6.4 Hand off fixtures and contracts to existing Metal/PDES/distributed
   tracks. Add future visualization snapshot/Wasm parity requirements from
   [hybrid-model appraisal](../../hybrid-model-insights.md); render-rate changes
