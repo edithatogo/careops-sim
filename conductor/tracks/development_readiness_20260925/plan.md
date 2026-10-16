@@ -189,9 +189,10 @@ Entry: E4 hardened native v1 and D4; this optional extension cannot block v1.
   drift, dependency groups and extended tests. Validate no-change silence,
   actionable reports, idempotency, timeout, retry ceiling and pause controls.
   Maintenance schedules, operational controls, and verification ledger: [D5.1 evidence](../../evidence/d5.1-maintenance-schedules-and-controls-20261017.md).
-- [ ] D5.2 Evaluate optional repair/reviewer agents on held-out tasks; restrict
+- [x] D5.2 Evaluate optional repair/reviewer agents on held-out tasks; restrict
   write scope and permissions, record cost/false-pass/intervention metrics and
   require exact-commit checks before merges. Keep one writer per owned path.
+  Agent governance, scope restriction, benchmark evaluation, and exact-commit merge evidence: [D5.2 evidence](../../evidence/d5.2-agent-evaluation-and-governance-20261017.md).
 - [ ] D5.3 Track quality debt, flaky tests and performance drift; review whether
   automation saves maintainer effort. Roll back workflows that weaken evidence.
 - [ ] D5.4 Conductor — review and verify phase (workflow.md).
