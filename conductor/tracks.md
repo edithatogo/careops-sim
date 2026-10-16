@@ -16,11 +16,10 @@
   development scope, including [D3 phase review](evidence/d3.5-phase-review-20261005/README.md).
   D4 release/threat/provenance and D5 maintenance remain open. Native v1, stable
   API and clinical acceptance are separate; D4 waits for integrated E3/C6 gates.
-- [ ] **Generic ED library delivery** — `generic_ed_delivery_20260925`
+- [~] **Generic ED library delivery** — `generic_ed_delivery_20260925`
   ([index](tracks/generic_ed_delivery_20260925/index.md),
   [spec](tracks/generic_ed_delivery_20260925/spec.md),
-  [plan](tracks/generic_ed_delivery_20260925/plan.md)). Proposed; ED-native, dashboard
-  and existing-backend acceptance phases. No later clinical-domain tracks.
+  [plan](tracks/generic_ed_delivery_20260925/plan.md)). E0–E4 complete and accepted; Milestone G1 (Hardened native v1) qualified per [E4.4 Phase Acceptance](evidence/e4.4-phase-acceptance-20261016.md) and [E4.4 Phase Evidence](evidence/e4.4-phase-evidence-20261016.md). Headless ED DES/ABM, verification vs clinical validation taxonomy distinction, sensitivity/identifiability surfaces, held-out Macro/Micro evaluation, multi-day ED benchmarks (>540k steps/sec), leak-free heap soak, executable documentation, and fresh consumer delivery contract qualified. Phase E5 dashboard, E6 Metal, E7 PDES, and E8 distributed execution remain downstream. No later clinical-domain tracks.
 
 [Readiness and capability coverage](module-readiness.md) defines completion levels.
 Metadata carries explicit local phase dependencies and cross-track milestone
