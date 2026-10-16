@@ -196,7 +196,7 @@ Entry: E4 hardened native v1 and D4; this optional extension cannot block v1.
 - [x] D5.3 Track quality debt, flaky tests and performance drift; review whether
   automation saves maintainer effort. Roll back workflows that weaken evidence.
   Quality debt surveillance, flaky test quarantine, performance drift, and workflow rollback evidence: [D5.3 evidence](../../evidence/d5.3-quality-debt-and-performance-drift-20261017.md).
-- [ ] D5.4 Conductor — review and verify phase (workflow.md).
+- [x] D5.4 Conductor — review and verify phase (workflow.md). Accepted: [retained D5.4 acceptance](../../evidence/d5.4-phase-acceptance-20261017.md) and [phase evidence reconciliation](../../evidence/d5.4-phase-evidence-20261017.md).
 
 Exit: demonstrated maintenance loop with bounded cost and correct failures.
 Manual verification: pause and resume a job without duplicate edits or publication.

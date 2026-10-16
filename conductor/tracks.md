@@ -9,13 +9,10 @@
   [spec](tracks/empirical_calibration_20260925/spec.md),
   [plan](tracks/empirical_calibration_20260925/plan.md)). C0–C6 complete and accepted; upstream owner 21, with 03/04/22 integration. Qualification gates C-01 through C-07 passed: Arrow IPC/Parquet ingestion invariance, Macro/Micro fidelity policy and route graph transit, shadow replay with unclamped residuals and probe isolation, deterministic Wasserstein-1/KS distance metrics, candidate grid search with worker/resume equivalence, synthetic ED fixture calibration with identifiable recovery and confounded ridge identification, free-running Macro/Micro holdout evaluation with 3-way uncertainty decomposition, 1/2/4 worker invariance, and contract handoffs to Metal/PDES/distributed/Wasm. Retained evidence: [C6.5 phase acceptance](evidence/c6.5-phase-acceptance-20261016.md). Real-world hospital clinical validation, physical GPU compute execution, distributed MPI clustering, and browser frontend UI remain separate downstream gates.
 
-- [~] **Development readiness and hardened delivery** — `development_readiness_20260925`
+- [x] **Development readiness and hardened delivery** — `development_readiness_20260925`
   ([index](tracks/development_readiness_20260925/index.md),
   [spec](tracks/development_readiness_20260925/spec.md),
-  [plan](tracks/development_readiness_20260925/plan.md)). D0–D3 complete for
-  development scope, including [D3 phase review](evidence/d3.5-phase-review-20261005/README.md).
-  D4 release/threat/provenance and D5 maintenance remain open. Native v1, stable
-  API and clinical acceptance are separate; D4 waits for integrated E3/C6 gates.
+  [plan](tracks/development_readiness_20260925/plan.md)). D0–D5 complete and accepted per [D5.4 Phase Acceptance](evidence/d5.4-phase-acceptance-20261017.md) and [D5.4 Phase Evidence](evidence/d5.4-phase-evidence-20261017.md). Clean bootstrap, context harness, evaluated agent skills, GitHub/CI required check validation, quality/mutation defenses, trust boundary reviews, clean-consumer release packaging with SPDX 2.3 SBOM and SLSA v1 provenance, pin/dependency rollback rehearsals, and bounded maintenance automation (schedules, scope restrictions, quality debt tracking, performance drift surveillance, and workflow rollbacks) are fully delivered. Track closed; development handoff complete.
 - [~] **Generic ED library delivery** — `generic_ed_delivery_20260925`
   ([index](tracks/generic_ed_delivery_20260925/index.md),
   [spec](tracks/generic_ed_delivery_20260925/spec.md),
