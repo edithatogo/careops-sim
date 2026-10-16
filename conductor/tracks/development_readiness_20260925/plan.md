@@ -185,9 +185,10 @@ Manual verification: independent install and attestation/checksum verification.
 
 Entry: E4 hardened native v1 and D4; this optional extension cannot block v1.
 
-- [ ] D5.1 Add schedules only after CI is reliable: version freshness, documentation
+- [x] D5.1 Add schedules only after CI is reliable: version freshness, documentation
   drift, dependency groups and extended tests. Validate no-change silence,
   actionable reports, idempotency, timeout, retry ceiling and pause controls.
+  Maintenance schedules, operational controls, and verification ledger: [D5.1 evidence](../../evidence/d5.1-maintenance-schedules-and-controls-20261017.md).
 - [ ] D5.2 Evaluate optional repair/reviewer agents on held-out tasks; restrict
   write scope and permissions, record cost/false-pass/intervention metrics and
   require exact-commit checks before merges. Keep one writer per owned path.

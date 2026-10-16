@@ -355,3 +355,78 @@ To prevent misuse, avoid scope creep, and protect patient safety, the following 
 6. **No Cross-Process Arrow C Data Sharing**:
    - Raw C Data pointers (`ArrowArray`, `ArrowSchema`) are restricted exclusively to in-process FFI memory boundaries within the same address space.
    - Passing raw memory pointers across OS processes, containers, or network boundaries is prohibited; all IPC must utilize bounded Arrow IPC streaming buffers (`arrow::ipc`) or self-contained Parquet files.
+
+## D5.1 Bounded Maintenance Automation and Scheduled Quality Policy
+
+Following the successful completion and acceptance of Milestone G1 (Hardened native v1 closeout across Phases E4 and D4), scheduled maintenance automation is unlocked under strict bounding constraints. Automated schedules must never precede reliable, deterministic continuous integration. Under Task D5.1, background maintenance operates as an advisory, bounded quality guardian designed to detect drift early without creating maintainer alert fatigue, mutation loops, or unreviewed repository state.
+
+### Scope & Principles
+
+1. **Prerequisite Reliability Gate**: Scheduled jobs run only against proven, stable CI baselines. If core compilation, unit tests, or platform checks are unstable, automated maintenance schedules remain disabled.
+2. **Advisory by Default**: Scheduled routines audit, verify, and diagnose. They do NOT execute autonomous code edits, unreviewed git commits, pull request merges, or releases.
+3. **One Writer per Path**: Any remediation suggested by automated maintenance must be explicitly authorized and claimed by the designated Conductor owner in accordance with [AGENTS.md](../AGENTS.md) and [single-maintainer.md](harness/single-maintainer.md).
+
+### The Four Scheduled Maintenance Routines
+
+1. **Version Freshness**:
+   - *Scope*: Continuous audit of `Cargo.lock`, compiler toolchains, GitHub Actions workflows, and upstream submodule pins against reviewed baselines.
+   - *Cadence & Execution*: Weekly candidate review; triggered via [`tools/refresh_versions.py`](../tools/refresh_versions.py) and [`tools/maintenance_scheduler.py`](../tools/maintenance_scheduler.py).
+   - *Invariants*: Canonical Rust toolchain is exact `1.99.0`; `libs/kairos` submodule pin must strictly match [`conductor/evidence/d2.4-kairos-contract.json`](evidence/d2.4-kairos-contract.json); CI workflow actions must resolve to immutable commit SHAs, never floating major tags (`@v4`, `@v7`).
+2. **Documentation Drift**:
+   - *Scope*: Real-time cross-validation of markdown links, CLI help flags, scenario schema definitions, and evidence registers against actual code and filesystem reality.
+   - *Cadence & Execution*: Pre-commit and bi-weekly scheduled check; executed via [`tools/context.py check`](../tools/context.py) and schema validation scripts.
+   - *Invariants*: Zero dead markdown links; CLI `--help` parameters exactly match argument parser declarations; scenario schemas in `model-inputs/ed/schema/` (`capacity-location.schema.json`, `example-profile-pack.schema.json`) accurately reflect parser expectations.
+3. **Dependency Groups**:
+   - *Scope*: Comprehensive audit of crate dependency graphs, open-source license declarations, forbidden dependency trees, and `#![forbid(unsafe_code)]` compliance.
+   - *Cadence & Execution*: Weekly automated audit; executed via `cargo-deny` checks, manifest inspection, and AST/regex tree scanning.
+   - *Invariants*: All workspace crates declare `Apache-2.0` license expressions; domain crates (`careops-ed`, `careops-sim`) and CLI roots (`careops-ed-cli`) strictly enforce `#![forbid(unsafe_code)]`; prohibited licenses (GPL, AGPL, SSPL) and unvetted network crates are rejected fail-closed.
+4. **Extended Tests**:
+   - *Scope*: Periodic deep soak tests, property-based invariants (`proptest`), long-horizon memory benchmarks, and deterministic PRNG replay stress checks.
+   - *Cadence & Execution*: Nightly or weekly scheduled matrix runs; executed via `cargo test --locked` and dedicated benchmark harnesses.
+   - *Invariants*: Memory utilization remains bounded and leak-free ($O(1)$ heap growth after transient warm-up); discrete event counts and PRNG draw sequences remain 100% bit-for-bit reproducible across seeds.
+
+### Six Core Operational Controls
+
+All automated routines orchestrated by [`tools/maintenance_scheduler.py`](../tools/maintenance_scheduler.py) are bounded by six non-negotiable operational controls:
+
+1. **No-Change Silence**:
+   - Maintenance runs that detect no drift, anomalies, or policy violations MUST remain completely silent (`silent_on_clean = True`).
+   - Clean executions emit zero terminal output to `stdout`/`stderr`, send zero email/Slack/webhook notifications, and create zero redundant pull requests or commits. Maintainers are notified only when actionable defects arise.
+2. **Actionable Reports**:
+   - When drift or violations occur, the system emits a structured, deterministic machine-readable report (JSON) accompanied by human-readable diagnostic output.
+   - Every violation record explicitly specifies:
+     - `routine`: Name of the maintenance routine (e.g., `version_freshness`).
+     - `error_class`: Strict machine-readable error class (e.g., `SubmodulePinDriftError`, `LicenseDeclarationDriftError`).
+     - `file_path`: Exact file path relative to repository root.
+     - `line_number`: Specific offending line number.
+     - `conductor_owner`: Designated Conductor owner responsible for the domain (e.g., `Owner 13 (Upstream Kairos Core)`, `Owner 42 (Legal & Compliance)`).
+     - `remediation_command`: Deterministic shell command to immediately resolve or test the fix.
+     - `message`: Diagnostic explanation of the drift.
+3. **Idempotency**:
+   - Execution of maintenance jobs is strictly idempotent.
+   - Sequential invocations against unchanged repository state produce zero compounding side-effects, zero file modifications, zero uncommitted git changes, and identical diagnostic findings.
+4. **Timeout Enforcement**:
+   - Every scheduled routine is subject to a strict execution timeout (default: 60 seconds per routine, configurable via `--timeout`).
+   - If a routine hangs, blocks on disk I/O, or enters an infinite loop, the scheduler cleanly terminates the worker process with `SchedulerTimeoutError` and logs an actionable failure report.
+5. **Retry Ceiling**:
+   - Transient failures (e.g., temporary disk lock contention, transient process spawn failure) are bounded by a strict retry ceiling (default: 3 retries, configurable via `--retry-ceiling`).
+   - If a routine fails consistently across all attempts, execution halts immediately with `RetryCeilingExceededError`. Infinite retry loops and recursive scheduling cascades are strictly forbidden.
+6. **Pause and Resume Controls**:
+   - Human maintainers can pause the scheduler at any time via the command:
+     ```bash
+     python3 tools/maintenance_scheduler.py pause --reason "<audit or maintenance justification>"
+     ```
+   - While paused, the scheduler state file (`conductor/maintenance-scheduler-state.json`) records `paused: true`, timestamp, operator identity, and reason.
+   - Any scheduled or background run attempted while paused **fails closed** immediately with `SchedulerPausedError` (exit code 2) without executing any routine or mutating state.
+   - When manual intervention or auditing is complete, the human maintainer restores automated scheduling via:
+     ```bash
+     python3 tools/maintenance_scheduler.py resume
+     ```
+   - Resumption restores normal scheduled execution safely without state corruption or duplicate queued runs.
+
+### Absolute Prohibition of Autonomous Publication
+
+Under no circumstances may automated maintenance routines, CI bots, background schedules, or AI coding agents autonomously push tags, publish packages to registries (crates.io, PyPI, npm), or generate public releases:
+- Any routine attempting `cargo publish`, `git push`, `gh release create`, or credentialed external uploads triggers an immediate security halt with `AutonomousPublicationViolationError`.
+- All release publication requires explicit human maintainer verification, cryptographic signature, and the manual assertion of `CAREOPS_HUMAN_MAINTAINER_AUTHORITY=1`.
+
