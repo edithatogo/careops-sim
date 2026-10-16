@@ -1,0 +1,229 @@
+{
+  "schema_version": "careops_ed.spatial.v1",
+  "spatial_revision": "sha256:f48f2dbf88d19575e939a82b384b450307eae500d43c1f1a5ec22e4bb9ad9622",
+  "units": "millimeters",
+  "coordinate_system": "right-handed Cartesian 2D/3D",
+  "scale_factor_to_meters": 0.001,
+  "locations": [
+    {
+      "location_id": "WAITING-ROOM-01",
+      "name": "Main Waiting Room",
+      "zone": "ZONE-WAITING",
+      "kind": "waiting_room",
+      "coordinates": {
+        "x_mm": 2000,
+        "y_mm": 2000,
+        "z_mm": 0
+      },
+      "bounds": {
+        "min_x": 0,
+        "min_y": 0,
+        "max_x": 4000,
+        "max_y": 4000
+      }
+    },
+    {
+      "location_id": "LOC-TRIAGE-01",
+      "name": "Triage Station 01",
+      "zone": "ZONE-TRIAGE",
+      "kind": "triage",
+      "coordinates": {
+        "x_mm": 6000,
+        "y_mm": 2000,
+        "z_mm": 0
+      },
+      "bounds": {
+        "min_x": 4000,
+        "min_y": 0,
+        "max_x": 8000,
+        "max_y": 4000
+      }
+    },
+    {
+      "location_id": "CORRIDOR-MAIN",
+      "name": "Central Circulation Corridor",
+      "zone": "ZONE-CIRCULATION",
+      "kind": "corridor",
+      "coordinates": {
+        "x_mm": 6000,
+        "y_mm": 6000,
+        "z_mm": 0
+      },
+      "bounds": {
+        "min_x": 0,
+        "min_y": 4000,
+        "max_x": 12000,
+        "max_y": 8000
+      }
+    },
+    {
+      "location_id": "BAY-ACUTE-01",
+      "name": "Acute Treatment Bay 01",
+      "zone": "ZONE-ACUTE",
+      "kind": "acute_bay",
+      "coordinates": {
+        "x_mm": 2000,
+        "y_mm": 10000,
+        "z_mm": 0
+      },
+      "bounds": {
+        "min_x": 0,
+        "min_y": 8000,
+        "max_x": 4000,
+        "max_y": 12000
+      }
+    },
+    {
+      "location_id": "BAY-ACUTE-02",
+      "name": "Acute Treatment Bay 02",
+      "zone": "ZONE-ACUTE",
+      "kind": "acute_bay",
+      "coordinates": {
+        "x_mm": 6000,
+        "y_mm": 10000,
+        "z_mm": 0
+      },
+      "bounds": {
+        "min_x": 4000,
+        "min_y": 8000,
+        "max_x": 8000,
+        "max_y": 12000
+      }
+    },
+    {
+      "location_id": "ROOM-RESUS-01",
+      "name": "Resuscitation Room 01",
+      "zone": "ZONE-RESUS",
+      "kind": "resus",
+      "coordinates": {
+        "x_mm": 10000,
+        "y_mm": 10000,
+        "z_mm": 0
+      },
+      "bounds": {
+        "min_x": 8000,
+        "min_y": 8000,
+        "max_x": 12000,
+        "max_y": 12000
+      }
+    }
+  ],
+  "routes": {
+    "nodes": [
+      {
+        "node_id": "NODE-WAITING-01",
+        "location_id": "WAITING-ROOM-01",
+        "x_mm": 2000,
+        "y_mm": 2000,
+        "z_mm": 0
+      },
+      {
+        "node_id": "NODE-TRIAGE-01",
+        "location_id": "LOC-TRIAGE-01",
+        "x_mm": 6000,
+        "y_mm": 2000,
+        "z_mm": 0
+      },
+      {
+        "node_id": "NODE-CORRIDOR-WEST",
+        "location_id": "CORRIDOR-MAIN",
+        "x_mm": 2000,
+        "y_mm": 6000,
+        "z_mm": 0
+      },
+      {
+        "node_id": "NODE-CORRIDOR-CENTRAL",
+        "location_id": "CORRIDOR-MAIN",
+        "x_mm": 6000,
+        "y_mm": 6000,
+        "z_mm": 0
+      },
+      {
+        "node_id": "NODE-CORRIDOR-EAST",
+        "location_id": "CORRIDOR-MAIN",
+        "x_mm": 10000,
+        "y_mm": 6000,
+        "z_mm": 0
+      },
+      {
+        "node_id": "NODE-ACUTE-01",
+        "location_id": "BAY-ACUTE-01",
+        "x_mm": 2000,
+        "y_mm": 10000,
+        "z_mm": 0
+      },
+      {
+        "node_id": "NODE-ACUTE-02",
+        "location_id": "BAY-ACUTE-02",
+        "x_mm": 6000,
+        "y_mm": 10000,
+        "z_mm": 0
+      },
+      {
+        "node_id": "NODE-RESUS-01",
+        "location_id": "ROOM-RESUS-01",
+        "x_mm": 10000,
+        "y_mm": 10000,
+        "z_mm": 0
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": "EDGE-WAITING-TO-CORRIDOR",
+        "from_node": "NODE-WAITING-01",
+        "to_node": "NODE-CORRIDOR-WEST",
+        "distance_mm": 4000,
+        "bidirectional": true,
+        "speed_limit_mm_per_sec": 1400
+      },
+      {
+        "edge_id": "EDGE-TRIAGE-TO-CORRIDOR",
+        "from_node": "NODE-TRIAGE-01",
+        "to_node": "NODE-CORRIDOR-CENTRAL",
+        "distance_mm": 4000,
+        "bidirectional": true,
+        "speed_limit_mm_per_sec": 1400
+      },
+      {
+        "edge_id": "EDGE-CORRIDOR-WEST-CENTRAL",
+        "from_node": "NODE-CORRIDOR-WEST",
+        "to_node": "NODE-CORRIDOR-CENTRAL",
+        "distance_mm": 4000,
+        "bidirectional": true,
+        "speed_limit_mm_per_sec": 1400
+      },
+      {
+        "edge_id": "EDGE-CORRIDOR-CENTRAL-EAST",
+        "from_node": "NODE-CORRIDOR-CENTRAL",
+        "to_node": "NODE-CORRIDOR-EAST",
+        "distance_mm": 4000,
+        "bidirectional": true,
+        "speed_limit_mm_per_sec": 1400
+      },
+      {
+        "edge_id": "EDGE-CORRIDOR-WEST-TO-ACUTE-01",
+        "from_node": "NODE-CORRIDOR-WEST",
+        "to_node": "NODE-ACUTE-01",
+        "distance_mm": 4000,
+        "bidirectional": true,
+        "speed_limit_mm_per_sec": 1400
+      },
+      {
+        "edge_id": "EDGE-CORRIDOR-CENTRAL-TO-ACUTE-02",
+        "from_node": "NODE-CORRIDOR-CENTRAL",
+        "to_node": "NODE-ACUTE-02",
+        "distance_mm": 4000,
+        "bidirectional": true,
+        "speed_limit_mm_per_sec": 1400
+      },
+      {
+        "edge_id": "EDGE-CORRIDOR-EAST-TO-RESUS-01",
+        "from_node": "NODE-CORRIDOR-EAST",
+        "to_node": "NODE-RESUS-01",
+        "distance_mm": 4000,
+        "bidirectional": true,
+        "speed_limit_mm_per_sec": 1400
+      }
+    ]
+  }
+}
