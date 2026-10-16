@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareOps Sim - ED Spatial Scenario Dashboard</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #16a34a;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --radius: 8px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 320px 1fr 340px;
+      gap: 24px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .card h2 {
+      font-size: 16px;
+      margin-top: 0;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    input, select, button {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    button.btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .playback-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 8px;
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    .spatial-viewport {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      min-height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .metric-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px;
+      text-align: center;
+    }
+    .metric-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .metric-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    table.careops-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+    table.careops-table th, table.careops-table td {
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      text-align: left;
+    }
+    table.careops-table th {
+      background: #f1f5f9;
+      font-weight: 600;
+    }
+    .provenance-tag {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .provenance-tag.simulated { background: #e0f2fe; color: #0369a1; }
+    .provenance-tag.observed { background: #dcfce7; color: #15803d; }
+    .provenance-tag.interpolated { background: #fef3c7; color: #b45309; }
+    .provenance-tag.unknown { background: #fee2e2; color: #b91c1c; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>Emergency Department Spatial Scenario Dashboard</h1>
+      <span class="badge">careops_ed.abi.v1 | careops_ed.spatial.v1</span>
+    </div>
+    <div id="connection-status">
+      <span class="badge" style="background: #dcfce7; color: #15803d;">Engine Mode: Replay (Decoupled Frame Clock)</span>
+    </div>
+  </header>
+
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div class="metric-val" id="metric-wait">5.00 ticks</div>
+      <div class="metric-label">Mean Wait Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-val" id="metric-los">125.00 ticks</div>
+      <div class="metric-label">Mean Length of Stay</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-val" id="metric-util">54.0%</div>
+      <div class="metric-label">Peak Bed Utilization</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-val" id="metric-admitted">108 / 102</div>
+      <div class="metric-label">Admitted / Completed</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- Left Column: Scenario Editor & Parameters -->
+    <div class="card">
+      <h2>Scenario Controls</h2>
+      <div class="controls">
+        <label for="scenario-select">Preset Scenario:</label>
+        <select id="scenario-select">
+          <option value="nominal">Nominal MVP Scenario (4.5 arr/h)</option>
+          <option value="surge">Surge Scenario (12.0 arr/h)</option>
+        </select>
+
+        <label for="horizon-input">Horizon Ticks:</label>
+        <input type="number" id="horizon-input" value="1440" min="60" step="60">
+
+        <label for="beds-input">Acute Beds Capacity:</label>
+        <input type="number" id="beds-input" value="8" min="1" max="50">
+
+        <label for="staff-input">RN Staff Roster:</label>
+        <input type="number" id="staff-input" value="6" min="1" max="20">
+
+        <button class="btn-primary" id="btn-run-scenario">Run Simulation</button>
+        <button id="btn-compare-scenarios">Compare Nominal vs Surge</button>
+      </div>
+
+      <h2 style="margin-top: 24px;">Multi-Format Export</h2>
+      <div class="controls">
+        <button id="btn-export-json">Export JSON Run Document</button>
+        <button id="btn-export-csv">Export Comparison CSV</button>
+        <button id="btn-export-arrow">Export Arrow Schema</button>
+      </div>
+    </div>
+
+    <!-- Center Column: PixiJS / SVG Spatial Viewport -->
+    <div>
+      <div class="card" style="padding: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h2 style="margin: 0; border: none; padding: 0;">2D Floor Plan: Synthetic ED Layout v1</h2>
+          <div>
+            <label for="floor-select">Floor:</label>
+            <select id="floor-select">
+              <option value="0">Ground Level (0)</option>
+            </select>
+            <label for="fps-select" style="margin-left: 12px;">Render Rate:</label>
+            <select id="fps-select">
+              <option value="60">60 FPS</option>
+              <option value="30">30 FPS</option>
+              <option value="0">Off (Headless)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="spatial-viewport" id="viewport-container" aria-label="Interactive ED Floor Plan Viewport">
+          <!-- Rendered SVG / Canvas Floor Plan will be injected here -->
+        </div>
+
+        <div class="playback-bar">
+          <button id="btn-play">▶ Play</button>
+          <button id="btn-pause">⏸ Pause</button>
+          <button id="btn-step-back">⏮ Step</button>
+          <button id="btn-step-fwd">⏭ Step</button>
+          <input type="range" id="scrub-bar" min="0" max="100" value="0" style="flex: 1;">
+          <span id="current-tick-display">Tick: 0 / 1440</span>
+          <select id="speed-select">
+            <option value="0.5">0.5x</option>
+            <option value="1.0" selected>1.0x</option>
+            <option value="2.0">2.0x</option>
+            <option value="5.0">5.0x</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Accessible Data Tables & Overlays -->
+    <div class="card">
+      <h2>Live Accessible Tables</h2>
+      <div id="accessible-tables-container">
+        <!-- Accessible HTML tables rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/index.js"></script>
+</body>
+</html>
