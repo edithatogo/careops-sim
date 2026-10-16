@@ -52,6 +52,26 @@ impl Display for ExitCodeDef {
     }
 }
 
+/// Validation taxonomy distinguishing software verification from clinical domain validation.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ValidationTaxonomy {
+    pub verification_scope: String,
+    pub validation_scope: String,
+    pub provenance_class: String,
+    pub disclaimer: String,
+}
+
+impl Default for ValidationTaxonomy {
+    fn default() -> Self {
+        Self {
+            verification_scope: "software_verification".to_string(),
+            validation_scope: "none".to_string(),
+            provenance_class: "synthetic".to_string(),
+            disclaimer: "Software verification of simulation mechanics (queueing, state invariants, determinism) does NOT constitute clinical domain validation for any healthcare site.".to_string(),
+        }
+    }
+}
+
 /// Run manifest recording complete provenance and input hash.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct RunManifest {
@@ -68,6 +88,8 @@ pub struct RunManifest {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct RunDocument {
     pub manifest: RunManifest,
+    #[serde(default)]
+    pub validation_taxonomy: ValidationTaxonomy,
     pub summary: RunSummary,
 }
 
@@ -485,7 +507,11 @@ pub fn run_experiment(
         horizon_ticks: summary.horizon_ticks,
     };
 
-    let document = RunDocument { manifest, summary };
+    let document = RunDocument {
+        manifest,
+        validation_taxonomy: ValidationTaxonomy::default(),
+        summary,
+    };
 
     // Atomic output writing if output_path requested
     if let Some(ref out_path) = options.output_path {
@@ -572,6 +598,8 @@ pub struct ScenarioComparisonReport {
     pub time_unit: String,
     pub metrics: Vec<MetricComparison>,
     pub diagnostics: Vec<String>,
+    #[serde(default)]
+    pub validation_taxonomy: ValidationTaxonomy,
 }
 
 /// Compares matching metrics across two scenario runs, checking scenario compatibility.
@@ -827,6 +855,7 @@ pub fn compare_run_documents(
         time_unit: base.manifest.time_unit.clone(),
         metrics,
         diagnostics,
+        validation_taxonomy: ValidationTaxonomy::default(),
     })
 }
 
