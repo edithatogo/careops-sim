@@ -9,7 +9,7 @@ catalog preserves every prerequisite and phase closeout. Prepare and validate
 bounded worker packets before dispatch; gpt-6-luna is a candidate worker, not an
 assumed authority for unresolved contracts or acceptance decisions.
 
-**Status:** proposed; checkboxes describe future implementation.
+**Status:** C0–C6 are complete and accepted for empirical calibration and validation scope. C-01 through C-07 qualification gates passed across synthetic fixtures, held-out Macro/Micro evaluation, deterministic replay, 1/2/4 worker invariance, performance gates, and Metal/PDES/distributed/Wasm contract handoffs. Clinical validation, physical GPU compute, distributed MPI clusters, and browser UI remain separate downstream gates.
 **Specification:** [spec.md](spec.md) · **Workflow:** [workflow.md](../../workflow.md)
 **Owners:** existing 21/04/03/22; 01/12/25/30 for shared contracts and gates.
 
@@ -263,7 +263,7 @@ Owners 21/12/25, with 03/04/22 and backend-owner handoff.
   [hybrid-model appraisal](../../hybrid-model-insights.md); render-rate changes
   must not change simulation results. Hardware/UI work stays with those owners.
   Accepted: [retained C6.4 evidence](../../evidence/c6.4-fixture-and-track-handoff-20261016.md); development pin `44261eb` implements C6.4 fixture and contract handoffs (`c64_handoff_contracts.rs`), render-rate invariance (0/30/60 FPS, jittered frame drops), IEEE 754 safe integer tick bounds, and slow-consumer bounded buffer coalescing.
-- [ ] C6.5 Conductor — review and verify phase (workflow.md).
+- [x] C6.5 Conductor — review and verify phase (workflow.md). Accepted: [retained C6.5 evidence](../../evidence/c6.5-phase-acceptance-20261016.md); C-01 through C-07 qualification complete; track closeout accepted for empirical calibration and validation. Real-world clinical validation, physical GPU compute, distributed MPI clusters, and browser UI remain separate downstream gates.
 
 Exit: C-01–C-07 evidence, reviewed documentation/release notes, upstream registry
 and handoff synchronization, scoped commits and compatible parent pin update.

@@ -4,15 +4,10 @@
   ([index](tracks/des_queue_preemption_20260925/index.md),
   [spec](tracks/des_queue_preemption_20260925/spec.md),
   [plan](tracks/des_queue_preemption_20260925/plan.md)). Q0–Q5 accepted for experimental queue development; upstream owner 03. Independent Q5.4 replay, evidence/risk disposition, release notes and governance review passed with exact-head native and child hosted gates. Preserves C1.4/Q5.2; child PR219 stays stacked/draft and formal release/security, stable API, advanced backend, checkpoint and clinical/MVP gates remain separate. Parent local gates passed. At source preparation, the committed-pin check, hosted parent CI and merge readback await publication; this registry does not assert a completed parent merge.
-- [ ] **Empirical calibration and validation** — `empirical_calibration_20260925`
+- [x] **Empirical calibration and validation** — `empirical_calibration_20260925`
   ([index](tracks/empirical_calibration_20260925/index.md),
   [spec](tracks/empirical_calibration_20260925/spec.md),
-  [plan](tracks/empirical_calibration_20260925/plan.md)). Proposed; upstream owner 21,
-  with 03/04/22 integration.
-
-Calibration schema/ingestion/metrics can proceed independently after contract
-review. Shadow replay of interrupted work depends on the queue/Flow integration
-milestone Q4. See [milestones and ownership](kairos-enhancements.md).
+  [plan](tracks/empirical_calibration_20260925/plan.md)). C0–C6 complete and accepted; upstream owner 21, with 03/04/22 integration. Qualification gates C-01 through C-07 passed: Arrow IPC/Parquet ingestion invariance, Macro/Micro fidelity policy and route graph transit, shadow replay with unclamped residuals and probe isolation, deterministic Wasserstein-1/KS distance metrics, candidate grid search with worker/resume equivalence, synthetic ED fixture calibration with identifiable recovery and confounded ridge identification, free-running Macro/Micro holdout evaluation with 3-way uncertainty decomposition, 1/2/4 worker invariance, and contract handoffs to Metal/PDES/distributed/Wasm. Retained evidence: [C6.5 phase acceptance](evidence/c6.5-phase-acceptance-20261016.md). Real-world hospital clinical validation, physical GPU compute execution, distributed MPI clustering, and browser frontend UI remain separate downstream gates.
 
 - [~] **Development readiness and hardened delivery** — `development_readiness_20260925`
   ([index](tracks/development_readiness_20260925/index.md),
