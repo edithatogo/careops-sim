@@ -143,11 +143,11 @@ Entry: G1; upstream 05/02/09 coordinated scope, public API review before binding
   Qualify optional worker/Wasm profiles separately; keep
   engine and frame clocks independent. Start with a synthetic shared layout.
   Add selectable rooms/resources/agents, layer/floor controls, route and occupancy/queue/utilization overlays with provenance and accessible tables. Support recorded replay and versioned layout comparison using backend telemetry; unknown positions remain unknown.
-- [ ] E5.3 Test render rates off/30/60, slow consumers/backpressure, memory growth,
+- [x] E5.3 Test render rates off/30/60, slow consumers/backpressure, memory growth,
   restart/route state, accessibility and useful error reporting. Measure actual
   transfer copies/frame latency; never infer WebGPU compute from rendering.
   Test shared-layout mismatch, known-distance visual/route alignment, dropped/stale deltas, disconnect, duplicate commands and bounded slow-client buffers. Qualify later CAD/capture adapters separately; initial G2 uses a synthetic/public layout and does not imply production CAD support.
-  Verify source-to-location-to-resource-to-metric joins, live/replay agreement and overlay/summary reconciliation. Macro displays must not invent transit; Micro fixture distance must affect travel timing. Static assets and bulk outputs load separately from live state sync.
+  Verify source-to-location-to-resource-to-metric joins, live/replay agreement and overlay/summary reconciliation. Macro displays must not invent transit; Micro fixture distance must affect travel timing. Static assets and bulk outputs load separately from live state sync. Accepted: [retained E5.3 evidence](../../evidence/e5.3-render-rates-backpressure-and-spatial-parity-20261017.md).
 - [ ] E5.4 Conductor — review and verify phase (workflow.md).
 
 Exit: G2 later interactive product with verified exports and interaction; reapply D4 gates
