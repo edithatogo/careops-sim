@@ -118,10 +118,11 @@ Entry: Q5, C6, E3 and D3/D4 release evidence.
 - [x] E4.2 Run sensitivity/identifiability, held-out Macro/Micro and warm-up/
   observation-window checks; establish uncertainty and profile-specific validity
   limits. Benchmark representative demand, memory and long-run leak behavior. Accepted: [retained E4.2 evidence](../../evidence/e4.2-sensitivity-identifiability-benchmarks-20261016.md).
-- [ ] E4.3 Publish executable docs/examples and migration/support tables; package
+- [x] E4.3 Publish executable docs/examples and migration/support tables; package
   dry-run and test from a clean downstream Rust project at promised toolchains.
   Verify release evidence, dependency pins, licences/SBOM and restore/rollback.
-  Qualify hardened native v1 against the delivery contract: a fresh user installs, edits a documented scenario, runs/compares/exports and troubleshoots an intentional input error without author assistance or Rust edits. Record actual commands, outcomes, support limits and unresolved release blockers.
+  Qualify hardened native v1 against the delivery contract: a fresh user installs, edits a documented scenario, runs/compares/exports and troubleshoots an intentional input error without author assistance or Rust edits. Record actual commands, outcomes, support limits and unresolved release blockers. Accepted: [retained E4.3 evidence](../../evidence/e4.3-docs-examples-delivery-contract-20261016.md).
+
 - [ ] E4.4 Conductor — review and verify phase (workflow.md).
 
 Exit: G1 complete only after evidence; no production/Cairns validity assertion.

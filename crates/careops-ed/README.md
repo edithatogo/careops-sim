@@ -36,21 +36,28 @@ The one-patient example uses P0's proposed capacity/location schema v3. E0
 only runs resource buckets whose open and staffed counts are known. Optional
 route distances must use the P0 unit `m`. E0 does not simulate movement.
 
-## Headless MVP Scenarios (E2.3 / Delivery Contract Stage 1)
+## Hardened Native v1 Interface & Walkthrough (E4.3 / Delivery Contract Stage 2)
 
-The crate delivers runnable headless MVP scenarios with configurable bed and
-staff capacity, named zones/locations, and fixed-seed repeatability:
+The crate delivers a fully validated, hardened command-line interface (`careops-ed`) and public Rust API for reproducible discrete-event simulation experiments:
 
 ```sh
-# Run nominal scenario (2 acute bays)
-cargo run --locked -p careops-ed-cli -- run crates/careops-ed/examples/nominal_mvp.json
+# Validate scenario configuration syntax
+cargo run --locked -p careops-ed-cli -- validate crates/careops-ed/examples/nominal_mvp.json
 
-# Run constrained scenario (1 acute bay)
-cargo run --locked -p careops-ed-cli -- run crates/careops-ed/examples/constrained_mvp.json
+# Execute simulation with atomic output persistence
+cargo run --locked -p careops-ed-cli -- run crates/careops-ed/examples/nominal_mvp.json --output nominal_run.json --overwrite
 
-# Test input validation rejection
-cargo run --locked -p careops-ed-cli -- run crates/careops-ed/examples/malformed_mvp.json
+# Compare two simulation scenarios with units and denominators
+cargo run --locked -p careops-ed-cli -- compare nominal_run.json constrained_run.json
+
+# Export results to CSV or Arrow/Parquet schema metadata
+cargo run --locked -p careops-ed-cli -- export nominal_run.json --format csv --output nominal_patients.csv
 ```
+
+Detailed guides and specifications:
+- [Fresh User Walkthrough & Onboarding Guide](../../docs/user-walkthrough.md): Complete end-to-end user journey with editing, execution, comparison, and troubleshooting.
+- [Support Matrix & Schema Migration Policy](../../docs/support-matrix.md): Tier 1 platform support (`x86_64-unknown-linux-gnu`, `aarch64-apple-darwin`, Rust 1.99.0) and explicit out-of-scope boundaries.
+- [Delivery Contract Specification](../../conductor/delivery-contract.md): Stage 2 qualification requirements.
 
 Controlled capacity comparison:
 - Nominal (`nominal_mvp.json`): 5 patient arrivals across ATS 1-5 acuity levels;
@@ -72,8 +79,10 @@ Boundary specifications (ST001–ST009):
   arrivals alone; no implicit default deterioration hazard.
 
 Limitations:
-This functional headless MVP precedes E3 (usable experiment API/Parquet exports),
-C3–C6 (empirical calibration and validation), and E4 (hardened native v1). No clinical
-operational endorsement or Cairns calibration validity is claimed.
+Native v1 delivers headless CPU simulation. It strictly excludes live EHR/HL7 feeds,
+autonomous publishing, GPU/Metal execution, distributed transports, and GUI displays.
+Software verification does not constitute domain validation or clinical endorsement
+for Cairns Hospital or any physical healthcare facility.
 
 Workspace package metadata declares SPDX `Apache-2.0` via `license.workspace = true`. The repository README section "Licenses, notices, and citation" records that a root `LICENSE` file and a CareOps Sim `CITATION.cff` are still maintainer decisions. Kairos keeps its own `libs/kairos/LICENSE` and `libs/kairos/CITATION.cff`.
+
