@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workflows": {
+    "speculative_mutation_fuzzer": {
+      "enabled": false,
+      "schedule": "*/30 * * * *",
+      "description": "Continuous speculative mutation fuzzer across non-critical crates",
+      "status": "disabled",
+      "rolled_back_at_utc": "2026-10-16T15:44:50.520839+00:00",
+      "rolled_back_by": "lead-maintainer",
+      "rollback_reason": "Workflow generated 87% false alarms (AER = 0.22 < 2.0) and diluted verification evidence"
+    },
+    "canonical_quality_pipeline": {
+      "enabled": true,
+      "schedule": "daily",
+      "description": "Deterministic daily test matrix and flake audit"
+    }
+  }
+}
