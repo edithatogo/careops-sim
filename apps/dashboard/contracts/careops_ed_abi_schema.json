@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://careops-sim.invalid/schemas/careops_ed_abi_schema.json",
+  "title": "CareOps ED Simulation ABI Envelopes",
+  "description": "Formal JSON Schema (Draft 2020-12) for CareOps ED WebSocket ABI snapshot, delta, command, ack, progress, and error envelopes. Enforces exact decimal string representation for wide integer tick fields to prevent JavaScript IEEE 754 float precision loss beyond 2^53 - 1.",
+  "oneOf": [
+    { "$ref": "#/$defs/SnapshotEnvelope" },
+    { "$ref": "#/$defs/DeltaEnvelope" },
+    { "$ref": "#/$defs/CommandEnvelope" },
+    { "$ref": "#/$defs/CommandAckEnvelope" },
+    { "$ref": "#/$defs/ProgressEnvelope" },
+    { "$ref": "#/$defs/ErrorEnvelope" }
+  ],
+  "$defs": {
+    "wideIntegerString": {
+      "type": "string",
+      "pattern": "^[0-9]+$",
+      "description": "Decimal representation of a wide unsigned integer (e.g. u64/u128 virtual tick or entity ID) to preserve precision beyond JS Number.MAX_SAFE_INTEGER (2^53 - 1)."
+    },
+    "CoordinatesMm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x_mm", "y_mm"],
+      "properties": {
+        "x_mm": { "type": "integer" },
+        "y_mm": { "type": "integer" },
+        "z_mm": { "type": "integer", "default": 0 }
+      }
+    },
+    "EntityState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entity_id", "kind", "location_id", "status"],
+      "properties": {
+        "entity_id": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "minLength": 1 },
+        "location_id": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "minLength": 1 },
+        "coordinates_mm": { "$ref": "#/$defs/CoordinatesMm" },
+        "attributes": { "type": "object" }
+      }
+    },
+    "EntityChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entity_id", "op"],
+      "properties": {
+        "entity_id": { "type": "string", "minLength": 1 },
+        "op": { "type": "string", "enum": ["spawn", "update", "despawn", "move"] },
+        "location_id": { "type": "string" },
+        "coordinates_mm": { "$ref": "#/$defs/CoordinatesMm" },
+        "status": { "type": "string" },
+        "attributes": { "type": "object" }
+      }
+    },
+    "SimEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_type", "tick"],
+      "properties": {
+        "event_type": { "type": "string", "minLength": 1 },
+        "tick": { "$ref": "#/$defs/wideIntegerString" },
+        "entity_id": { "type": "string" },
+        "payload": { "type": "object" }
+      }
+    },
+    "SnapshotEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "protocol_version",
+        "run_id",
+        "sequence",
+        "sim_tick",
+        "spatial_revision",
+        "entities",
+        "is_terminal"
+      ],
+      "properties": {
+        "type": { "const": "snapshot" },
+        "protocol_version": { "const": "careops_ed.abi.v1" },
+        "run_id": { "type": "string", "minLength": 1 },
+        "sequence": { "type": "integer", "minimum": 0 },
+        "sim_tick": { "$ref": "#/$defs/wideIntegerString" },
+        "spatial_revision": { "type": "string", "minLength": 1 },
+        "entities": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/EntityState" }
+        },
+        "metrics": { "type": "object" },
+        "queue_states": { "type": "object" },
+        "is_terminal": { "type": "boolean" }
+      }
+    },
+    "DeltaEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "protocol_version",
+        "run_id",
+        "sequence",
+        "base_sequence",
+        "sim_tick",
+        "base_tick",
+        "changes"
+      ],
+      "properties": {
+        "type": { "const": "delta" },
+        "protocol_version": { "const": "careops_ed.abi.v1" },
+        "run_id": { "type": "string", "minLength": 1 },
+        "sequence": { "type": "integer", "minimum": 0 },
+        "base_sequence": { "type": "integer", "minimum": 0 },
+        "sim_tick": { "$ref": "#/$defs/wideIntegerString" },
+        "base_tick": { "$ref": "#/$defs/wideIntegerString" },
+        "changes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/EntityChange" }
+        },
+        "events": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/SimEvent" }
+        }
+      }
+    },
+    "CommandEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "protocol_version",
+        "command_id",
+        "client_nonce",
+        "run_id",
+        "client_sequence",
+        "action"
+      ],
+      "properties": {
+        "type": { "const": "command" },
+        "protocol_version": { "const": "careops_ed.abi.v1" },
+        "command_id": { "type": "string", "minLength": 1 },
+        "client_nonce": { "type": "string", "minLength": 1 },
+        "run_id": { "type": "string", "minLength": 1 },
+        "client_sequence": { "type": "integer", "minimum": 0 },
+        "action": {
+          "type": "string",
+          "enum": ["pause", "resume", "step", "set_speed", "cancel", "inject_patient", "divert_ambulance"]
+        },
+        "target_tick": { "$ref": "#/$defs/wideIntegerString" },
+        "payload": { "type": "object" }
+      }
+    },
+    "CommandAckEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "protocol_version",
+        "command_id",
+        "client_nonce",
+        "run_id",
+        "status",
+        "effective_tick"
+      ],
+      "properties": {
+        "type": { "const": "command_ack" },
+        "protocol_version": { "const": "careops_ed.abi.v1" },
+        "command_id": { "type": "string", "minLength": 1 },
+        "client_nonce": { "type": "string", "minLength": 1 },
+        "run_id": { "type": "string", "minLength": 1 },
+        "status": {
+          "type": "string",
+          "enum": ["accepted", "rejected", "applied", "duplicate_noop"]
+        },
+        "effective_tick": { "$ref": "#/$defs/wideIntegerString" },
+        "error_message": { "type": ["string", "null"] }
+      }
+    },
+    "ProgressEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "protocol_version",
+        "run_id",
+        "current_tick",
+        "horizon_tick",
+        "percentage",
+        "status",
+        "wall_clock_elapsed_ms"
+      ],
+      "properties": {
+        "type": { "const": "progress" },
+        "protocol_version": { "const": "careops_ed.abi.v1" },
+        "run_id": { "type": "string", "minLength": 1 },
+        "current_tick": { "$ref": "#/$defs/wideIntegerString" },
+        "horizon_tick": { "$ref": "#/$defs/wideIntegerString" },
+        "percentage": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+        "status": {
+          "type": "string",
+          "enum": ["running", "paused", "completed", "cancelled", "diverted"]
+        },
+        "wall_clock_elapsed_ms": { "type": "number", "minimum": 0 }
+      }
+    },
+    "ErrorEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "protocol_version",
+        "error_code",
+        "message"
+      ],
+      "properties": {
+        "type": { "const": "error" },
+        "protocol_version": { "const": "careops_ed.abi.v1" },
+        "run_id": { "type": "string" },
+        "error_code": {
+          "type": "string",
+          "enum": [
+            "SEQUENCE_GAP",
+            "STALE_RUN_ID",
+            "IDEMPOTENCY_CONFLICT",
+            "INVALID_COMMAND",
+            "BUFFER_OVERFLOW",
+            "REVISION_MISMATCH",
+            "INTERNAL_ERROR"
+          ]
+        },
+        "message": { "type": "string", "minLength": 1 },
+        "details": { "type": "object" },
+        "occurred_at_tick": { "$ref": "#/$defs/wideIntegerString" }
+      }
+    }
+  }
+}

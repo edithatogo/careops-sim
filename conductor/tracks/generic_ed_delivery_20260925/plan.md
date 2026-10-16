@@ -133,7 +133,7 @@ outputs from checked-in public/synthetic inputs without a private data dependenc
 
 Entry: G1; upstream 05/02/09 coordinated scope, public API review before binding work.
 
-- [ ] E5.1 Freeze a narrow snapshot/command ABI and implement native/Wasm parity
+- [x] E5.1 Freeze a narrow snapshot/command ABI and implement native/Wasm parity
   fixtures for IDs/u128 time, configuration, progress, cancellation and errors.
   Review actual FFI needs, memory/buffer lifetime and supported browser targets.
   Freeze shared spatial-package revision/units/location IDs and WebSocket snapshot/delta/command contracts per the spatial capability plan. Include exact wide integers, sequencing, reconnect/resync and idempotent commands.

@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://careops-sim.invalid/schemas/careops_ed_spatial_schema.json",
+  "title": "CareOps ED Shared Spatial Package Schema (v1)",
+  "description": "Formal JSON Schema (Draft 2020-12) for careops_ed.spatial.v1 shared spatial package. Freezes spatial revision, millimeter units, right-handed Cartesian coordinate system, scale factor, semantic locations, and topological routes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "spatial_revision",
+    "units",
+    "coordinate_system",
+    "scale_factor_to_meters",
+    "locations",
+    "routes"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "careops_ed.spatial.v1"
+    },
+    "spatial_revision": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Deterministic revision hash (SHA-256) of layout geometry and semantics."
+    },
+    "units": {
+      "type": "string",
+      "const": "millimeters"
+    },
+    "coordinate_system": {
+      "type": "string",
+      "enum": [
+        "right-handed Cartesian 2D/3D",
+        "right-handed Cartesian 2D",
+        "right-handed Cartesian 3D"
+      ]
+    },
+    "scale_factor_to_meters": {
+      "type": "number",
+      "const": 0.001
+    },
+    "locations": {
+      "oneOf": [
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/Location" }
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "$ref": "#/$defs/Location" }
+        }
+      ]
+    },
+    "routes": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nodes", "edges"],
+          "properties": {
+            "nodes": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/RouteNode" }
+            },
+            "edges": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/RouteEdge" }
+            }
+          }
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/RouteEdge" }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "Coordinates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x_mm", "y_mm"],
+      "properties": {
+        "x_mm": { "type": "integer" },
+        "y_mm": { "type": "integer" },
+        "z_mm": { "type": "integer", "default": 0 }
+      }
+    },
+    "Bounds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["min_x", "min_y", "max_x", "max_y"],
+      "properties": {
+        "min_x": { "type": "integer" },
+        "min_y": { "type": "integer" },
+        "max_x": { "type": "integer" },
+        "max_y": { "type": "integer" }
+      }
+    },
+    "Location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["location_id", "name", "zone", "kind", "coordinates", "bounds"],
+      "properties": {
+        "location_id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "zone": { "type": "string", "minLength": 1 },
+        "kind": {
+          "type": "string",
+          "enum": ["triage", "acute_bay", "resus", "waiting_room", "corridor"]
+        },
+        "coordinates": { "$ref": "#/$defs/Coordinates" },
+        "bounds": { "$ref": "#/$defs/Bounds" }
+      }
+    },
+    "RouteNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "location_id", "x_mm", "y_mm"],
+      "properties": {
+        "node_id": { "type": "string", "minLength": 1 },
+        "location_id": { "type": "string", "minLength": 1 },
+        "x_mm": { "type": "integer" },
+        "y_mm": { "type": "integer" },
+        "z_mm": { "type": "integer", "default": 0 }
+      }
+    },
+    "RouteEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from_node",
+        "to_node",
+        "distance_mm",
+        "bidirectional",
+        "speed_limit_mm_per_sec"
+      ],
+      "properties": {
+        "edge_id": { "type": "string" },
+        "from_node": { "type": "string", "minLength": 1 },
+        "to_node": { "type": "string", "minLength": 1 },
+        "distance_mm": { "type": "integer", "minimum": 0 },
+        "bidirectional": { "type": "boolean" },
+        "speed_limit_mm_per_sec": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}
