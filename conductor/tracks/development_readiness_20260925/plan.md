@@ -175,7 +175,8 @@ Entry: E3 integrated runner, Q5 and C6; native library packaging is finalized in
   verify reproducibility across claimed platforms and create release notes and
   explicit unsupported-feature list. No autonomous public publication.
   Rollback, checkpoint migration, reproducibility, and release notes: [D4.3 evidence](../../evidence/d4.3-rollback-checkpoints-release-notes-20261016.md) and [v0.1.0 Release Notes](../../evidence/d4.3-release-notes-v0.1.0.md).
-- [ ] D4.4 Conductor — review and verify phase (workflow.md).
+- [x] D4.4 Conductor — review and verify phase (workflow.md).
+  Accepted: [retained D4.4 evidence](../../evidence/d4.4-phase-acceptance-20261016.md) and [reconciled evidence ledger](../../evidence/d4.4-phase-evidence-20261016.md). Exit criteria satisfied: verifiable release candidate evidence, clean independent install/attestation rehearsal, and zero unresolved release risks.
 
 Exit: verifiable release candidate evidence, no unresolved critical release risks.
 Manual verification: independent install and attestation/checksum verification.
