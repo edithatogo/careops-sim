@@ -11,12 +11,13 @@ use std::fmt::{Display, Formatter};
 
 use serde::{Deserialize, Serialize};
 
+use crate::disposition::api_runner::{compute_sha256_hex, RunDocument, RunManifest};
 use crate::disposition::operations::{
     claim_task, preempt, select_dispatch_candidate, validate_procedure_staffing, BayPhase,
     ExecutionFidelity, OperationalError, PreemptConsent, ProcedureKind, StaffShift, SyntheticGraph,
     TaskCandidate, TaskClaimTarget, TreatmentBay, WorkAccount,
 };
-use crate::{Eligibility, PatientStatus, RunSummary};
+use crate::{Eligibility, PatientResult, PatientStatus, RunSummary};
 
 /// Boundary and specification errors for ST001–ST009.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -417,7 +418,25 @@ impl CompositeEdFixture {
         let mut still_in_flight = Vec::new();
         while let Some(mut patient) = self.in_flight.pop() {
             patient.work_elapsed_ticks += 1;
-            if patient.work_elapsed_ticks >= patient.work_required_ticks {
+            let mut dischargeable = patient.work_elapsed_ticks >= patient.work_required_ticks;
+            if dischargeable {
+                if let Some(bay_idx) = patient.assigned_bay {
+                    match self.bays[bay_idx].phase() {
+                        BayPhase::Occupied {
+                            diagnostic_blocked: true,
+                            ..
+                        } => {
+                            dischargeable = false;
+                        }
+                        BayPhase::Occupied { boarding: true, .. } => {
+                            patient.lifecycle = PatientLifecycle::Boarding;
+                            dischargeable = false;
+                        }
+                        _ => {}
+                    }
+                }
+            }
+            if dischargeable {
                 patient.lifecycle = PatientLifecycle::Discharged;
                 patient.completion_tick = Some(self.current_tick);
                 if let Some(bay_idx) = patient.assigned_bay.take() {
@@ -434,6 +453,27 @@ impl CompositeEdFixture {
 
         // Perform dispatch
         self.dispatch_cycle();
+    }
+
+    /// Completes transfer for a boarding patient, releasing their bay to cleaning.
+    pub fn complete_boarding_transfer(&mut self, patient_id: u64) -> Result<(), OperationalError> {
+        let p_idx = self
+            .in_flight
+            .iter()
+            .position(|p| p.id == patient_id)
+            .ok_or(OperationalError::Accounting)?;
+        let mut patient = self.in_flight.remove(p_idx);
+        let bay_idx = patient
+            .assigned_bay
+            .take()
+            .ok_or(OperationalError::SpaceUnavailable)?;
+        self.bays[bay_idx].accept_transfer(self.current_tick)?;
+        self.bays[bay_idx].finish_cleaning(self.current_tick)?;
+        let _ = self.shift.release_assignment();
+        patient.lifecycle = PatientLifecycle::Transferred;
+        patient.completion_tick = Some(self.current_tick);
+        self.completed.push(patient);
+        Ok(())
     }
 
     /// Verifies all conservation invariants:
@@ -483,14 +523,19 @@ impl CompositeEdFixture {
         day: u32,
         route_edges: &[&str],
     ) -> Result<Vec<CalibrationTraceRecord>, OperationalError> {
-        let transit_ticks = if let Some(ref graph) = self.graph {
-            if route_edges.is_empty() {
-                0
-            } else {
-                graph.compute_travel_seconds(route_edges)? as u64
+        let transit_ticks = match self.fidelity {
+            ExecutionFidelity::Macro => 0,
+            ExecutionFidelity::Micro => {
+                if let Some(ref graph) = self.graph {
+                    if route_edges.is_empty() {
+                        0
+                    } else {
+                        graph.compute_travel_seconds(route_edges)? as u64
+                    }
+                } else {
+                    0
+                }
             }
-        } else {
-            0
         };
 
         let mut records = Vec::with_capacity(self.completed.len());
@@ -507,6 +552,89 @@ impl CompositeEdFixture {
             });
         }
         Ok(records)
+    }
+
+    /// Exports current fixture state into a RunSummary.
+    pub fn to_run_summary(&self, scenario_id: &str, seed: u64, horizon_ticks: u64) -> RunSummary {
+        let mut patients = Vec::new();
+        for p in &self.completed {
+            let wait_ticks = p.start_tick.map(|s| s.saturating_sub(p.arrival_tick));
+            let elapsed_ticks = p.completion_tick.map(|c| c.saturating_sub(p.arrival_tick));
+            patients.push(PatientResult {
+                patient_id: p.name.clone(),
+                arrival_tick: p.arrival_tick,
+                start_tick: p.start_tick,
+                completion_tick: p.completion_tick,
+                work_ticks: p.work_elapsed_ticks,
+                wait_ticks,
+                elapsed_ticks,
+                status: PatientStatus::Completed,
+            });
+        }
+        for p in &self.in_flight {
+            let wait_ticks = p.start_tick.map(|s| s.saturating_sub(p.arrival_tick));
+            patients.push(PatientResult {
+                patient_id: p.name.clone(),
+                arrival_tick: p.arrival_tick,
+                start_tick: p.start_tick,
+                completion_tick: None,
+                work_ticks: p.work_elapsed_ticks,
+                wait_ticks,
+                elapsed_ticks: None,
+                status: PatientStatus::Unfinished,
+            });
+        }
+        for p in &self.queue {
+            patients.push(PatientResult {
+                patient_id: p.name.clone(),
+                arrival_tick: p.arrival_tick,
+                start_tick: None,
+                completion_tick: None,
+                work_ticks: p.work_elapsed_ticks,
+                wait_ticks: None,
+                elapsed_ticks: None,
+                status: PatientStatus::Unfinished,
+            });
+        }
+
+        patients.sort_by(|a, b| {
+            a.arrival_tick
+                .cmp(&b.arrival_tick)
+                .then_with(|| a.patient_id.cmp(&b.patient_id))
+        });
+
+        let completed = self.completed.len();
+        let unfinished = self.in_flight.len() + self.queue.len();
+        let arrivals = completed + unfinished;
+        let started = self.completed.len() + self.in_flight.len();
+
+        RunSummary {
+            schema_version: 1,
+            scenario_id: scenario_id.to_string(),
+            seed,
+            time_unit: "tick".to_string(),
+            horizon_ticks,
+            arrivals,
+            started,
+            completed,
+            unfinished,
+            patients,
+        }
+    }
+
+    /// Exports current fixture state into a RunDocument with provenance manifest.
+    pub fn to_run_document(&self, scenario_id: &str, seed: u64, horizon_ticks: u64) -> RunDocument {
+        let summary = self.to_run_summary(scenario_id, seed, horizon_ticks);
+        let manifest = RunManifest {
+            schema_version: 1,
+            scenario_id: scenario_id.to_string(),
+            input_file: format!("{scenario_id}.json"),
+            input_sha256: compute_sha256_hex(scenario_id.as_bytes()),
+            seed,
+            time_unit: "tick".to_string(),
+            horizon_ticks,
+        };
+        RunDocument { manifest, summary }
     }
 }
 

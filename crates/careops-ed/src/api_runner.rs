@@ -673,6 +673,89 @@ pub fn compare_run_documents(
         candidate_se: c_se,
     });
 
+    // Metric 5: Mean elapsed (LOS) ticks
+    let b_elapsed: Vec<u64> = b_sum
+        .patients
+        .iter()
+        .filter_map(|p| p.elapsed_ticks)
+        .collect();
+    let c_elapsed: Vec<u64> = c_sum
+        .patients
+        .iter()
+        .filter_map(|p| p.elapsed_ticks)
+        .collect();
+
+    let b_mean_elapsed = if !b_elapsed.is_empty() {
+        b_elapsed.iter().sum::<u64>() as f64 / b_elapsed.len() as f64
+    } else {
+        0.0
+    };
+    let c_mean_elapsed = if !c_elapsed.is_empty() {
+        c_elapsed.iter().sum::<u64>() as f64 / c_elapsed.len() as f64
+    } else {
+        0.0
+    };
+    let elapsed_delta = c_mean_elapsed - b_mean_elapsed;
+
+    let b_elapsed_se = if b_elapsed.len() > 1 {
+        let var = b_elapsed
+            .iter()
+            .map(|&w| (w as f64 - b_mean_elapsed).powi(2))
+            .sum::<f64>()
+            / (b_elapsed.len() - 1) as f64;
+        Some((var / b_elapsed.len() as f64).sqrt())
+    } else {
+        None
+    };
+
+    let c_elapsed_se = if c_elapsed.len() > 1 {
+        let var = c_elapsed
+            .iter()
+            .map(|&w| (w as f64 - c_mean_elapsed).powi(2))
+            .sum::<f64>()
+            / (c_elapsed.len() - 1) as f64;
+        Some((var / c_elapsed.len() as f64).sqrt())
+    } else {
+        None
+    };
+
+    metrics.push(MetricComparison {
+        metric_name: "mean_elapsed".to_string(),
+        unit: base.manifest.time_unit.clone(),
+        denominator_description: "completed patients with elapsed intervals".to_string(),
+        base_value: b_mean_elapsed,
+        candidate_value: c_mean_elapsed,
+        delta: elapsed_delta,
+        percent_change: if b_mean_elapsed > 0.0 {
+            Some((elapsed_delta / b_mean_elapsed) * 100.0)
+        } else {
+            None
+        },
+        base_se: b_elapsed_se,
+        candidate_se: c_elapsed_se,
+    });
+
+    // Metric 6: Peak bay occupancy
+    let b_peak = compute_peak_bay_occupancy(b_sum);
+    let c_peak = compute_peak_bay_occupancy(c_sum);
+    let peak_delta = c_peak as f64 - b_peak as f64;
+
+    metrics.push(MetricComparison {
+        metric_name: "peak_occupancy".to_string(),
+        unit: "bay".to_string(),
+        denominator_description: "peak concurrent bay occupancy".to_string(),
+        base_value: b_peak as f64,
+        candidate_value: c_peak as f64,
+        delta: peak_delta,
+        percent_change: if b_peak > 0 {
+            Some((peak_delta / b_peak as f64) * 100.0)
+        } else {
+            None
+        },
+        base_se: None,
+        candidate_se: None,
+    });
+
     if wait_delta > 0.0 {
         diagnostics.push(format!(
             "Constrained capacity or demand increased mean wait by {:.2} {}",
@@ -702,6 +785,27 @@ pub fn compare_run_documents(
         metrics,
         diagnostics,
     })
+}
+
+fn compute_peak_bay_occupancy(summary: &RunSummary) -> usize {
+    let mut events = Vec::new();
+    for p in &summary.patients {
+        if let Some(start) = p.start_tick {
+            let end = p.completion_tick.unwrap_or(summary.horizon_ticks);
+            events.push((start, 1i32));
+            events.push((end, -1i32));
+        }
+    }
+    events.sort_by(|a, b| a.0.cmp(&b.0).then_with(|| a.1.cmp(&b.1)));
+    let mut current = 0i32;
+    let mut peak = 0i32;
+    for (_, delta) in events {
+        current += delta;
+        if current > peak {
+            peak = current;
+        }
+    }
+    peak.max(0) as usize
 }
 
 /// Exports a run document into the requested serialization format.
