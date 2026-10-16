@@ -180,3 +180,88 @@ Ahead of packaging, distribution, and release qualification (D4.1–D4.4), expli
   - *Toolchain Availability*: Under the canonical Rust 1.99.0 stable toolchain directed by project policy, runtime Miri undefined-behavior interpretation and libFuzzer/AddressSanitizer (ASan) runtime instrumentation require nightly toolchain features and are not executable in stable CI lanes.
   - *Risk Assessment*: Because domain crates enforce `#![forbid(unsafe_code)]` and concurrency is restricted to message-passing without shared mutable state, memory safety risks are confined entirely to the isolated FFI boundary layer.
   - *Mitigation & Release Obligation*: Prior to tagging and distributing native library release candidates (D4.2–D4.4), a dedicated dated-nightly validation pass using Miri and AddressSanitizer must be executed against all FFI entry points (`kairo-ecs-ffi`, `kairo-ecs-diplomat`, `kairo-ecs-uniffi`). Stable CI unavailability during daily development does not waive this release gate.
+
+## D4.2 Consumer Packaging, SBOM, Provenance, and Release Immutability Policy
+
+Prior to packaging, publishing, and distributing CareOps Sim release candidates, strict supply-chain controls bind release artifacts, cryptographic checksums, Software Bill of Materials (SBOM), and provenance attestations into a verifiable, immutable release bundle.
+
+### Build-Once and Single-Digest Cryptographic Binding
+
+1. **Build-Once Invariant**:
+   - Every distribution artifact (crate tarball `.crate`, standalone CLI binary tarball `.tar.gz`, wheel `.whl`) is built exactly once within an isolated, hermetic continuous integration environment from clean, locked source (`cargo build --locked --release`).
+   - Downstream consumers, testing harnesses, and verification workflows must evaluate the identical compiled binary artifact bytes. Rebuilding binaries from source in subsequent packaging or attestation steps is strictly prohibited.
+2. **Single-Digest Cryptographic Binding**:
+   - The cryptographic SHA-256 digest computed across the canonical output bytes of each release artifact is the sole authoritative subject identifier across all supply-chain documents:
+     - `SHA256SUMS`: Plaintext record mapping hexadecimal SHA-256 digests to distribution artifact filenames.
+     - SPDX 2.3 SBOM (`spdx.json`): Package checksum record binding each delivery archive (`Checksum: SHA256 <hex>`).
+     - SLSA Provenance v1 (`provenance.json`): Attestation `subject` array recording artifact name and hex digest (`subject[].digest.sha256`).
+   - If any artifact byte differs between delivery bundles, checksums, SBOM, or provenance, the release is invalid and fails verification.
+
+### Multi-Owner Governance Model
+
+Packaging, attestation, and distribution responsibilities are partitioned across seven distinct Conductor owners, each exercising sole authority over their operational domain:
+
+| Owner | Domain & Architectural Responsibility | Governance Mandate |
+|---|---|---|
+| **Owner 15** | Release packaging & clean distribution | Owns distribution packaging scripts, archive layout (`tar.gz`, `.crate`), reproducible permissions (`tar --mode=0755`), and consumer download staging. |
+| **Owner 16** | Provenance attestations & SLSA v1 | Owns generation and signing of in-toto SLSA Provenance v1.0 attestations, builder identity verification, materials tracking, and build invocation parameter locking. |
+| **Owner 20** | CI isolation & dirty tree rejection | Enforces clean ephemeral build runners (`git status --porcelain` check == 0), isolated network sandboxing post-fetch (`--network=none`), and hermetic compiler environments. |
+| **Owner 25** | Version governance & semver patch increments | Governs semantic versioning contracts (`Cargo.toml`), tag taxonomy (`vX.Y.Z`), patch increment authorization, and immutable release lifecycle management. |
+| **Owner 28** | SPDX 2.3 SBOM generation & verification | Governs Software Bill of Materials (SPDX 2.3 JSON), component dependency graph capture, package verification codes, and external reference validation. |
+| **Owner 42** | License notices (Apache-2.0) & legal compliance | Governs statutory legal compliance, top-level `LICENSE` and `NOTICE` files, crate manifest license expressions (`Apache-2.0`), copyright headers, and third-party license audit clean-status via `cargo-deny`. |
+| **Owner 44** | Dependency lockfile integrity | Governs `Cargo.lock` reproducibility, exact dependency commit/version pins, canonical MSRV enforcement (`1.99.0`), and prevention of floating dependency ranges. |
+
+### Consumer-Side Verification Protocol
+
+An end-consumer or downstream automated deployment agent verifies the release bundle strictly from published assets without requiring access to source code or build infrastructure:
+
+1. **Artifact Byte Validation against `SHA256SUMS`**:
+   - The consumer downloads `SHA256SUMS` along with distribution archives.
+   - Computes independent SHA-256 digests of downloaded archives.
+   - Verifies bit-for-bit equality against `SHA256SUMS`.
+2. **SPDX 2.3 Schema and Component Digest Audit**:
+   - Validates SBOM schema conformity against SPDX 2.3 JSON specification (`spdxVersion == "SPDX-2.3"`, `dataLicense == "CC0-1.0"`).
+   - Verifies that root package component checksums match the computed artifact SHA-256 digest.
+   - Confirms declared licenses match `Apache-2.0` and third-party dependency licenses comply with repository policy.
+3. **SLSA v1 Provenance and Freshness Audit**:
+   - Validates provenance against in-toto attestation schema (`_type == "https://in-toto.io/Statement/v1"`, `predicateType == "https://slsa.dev/provenance/v1"`).
+   - Validates that `subject` digest matches the artifact SHA-256 digest.
+   - Verifies that git commit SHA in `resolvedDependencies` or `invocation.configSource` matches the authorized clean git commit tag.
+   - Evaluates evidence freshness: attestation timestamp (`predicate.buildDefinition.internalParameters.buildTimestamp` or metadata) must fall within a **30-day freshness horizon** ($\Delta t \le 30\text{ days}$) relative to the evaluation date. Evidence older than 30 days is rejected.
+
+### Six Mandatory Failure Gates
+
+Release evaluation scripts and consumer verifiers must enforce six mandatory failure gates, failing closed upon any detected anomaly:
+
+1. **Dirty Release Inputs (`DirtyReleaseInputError`)**:
+   - *Trigger*: Uncommitted modifications, staged changes, or untracked files present in the build tree (`git status --porcelain` non-empty) during packaging.
+   - *Behavior*: Build aborts immediately with `DirtyReleaseInputError`. No release artifacts, checksums, or attestations are generated.
+2. **Missing Artifact (`MissingArtifactError`)**:
+   - *Trigger*: An artifact declared in `SHA256SUMS`, SBOM packages, or SLSA provenance subjects is absent from the distribution payload.
+   - *Behavior*: Verification fails closed with `MissingArtifactError`. Partial release bundles are rejected.
+3. **Substituted / Corrupted Artifact Bytes (`DigestMismatchError`)**:
+   - *Trigger*: The SHA-256 hash of an artifact byte stream differs from the digest recorded in `SHA256SUMS`, SPDX SBOM, or SLSA Provenance.
+   - *Behavior*: Immediate fail-closed abort with `DigestMismatchError`. Artifact is discarded as tampered or corrupted.
+4. **Expired Evidence (`ExpiredEvidenceError`)**:
+   - *Trigger*: Attestation or verification evidence has a generation timestamp older than the 30-day freshness window.
+   - *Behavior*: Verification halts with `ExpiredEvidenceError`. Stale release evidence cannot qualify a release.
+5. **Wrong-Commit Attestation (`WrongCommitError`)**:
+   - *Trigger*: SLSA Provenance materials, git commit claims, or SBOM metadata reference a commit hash that does not match the signed release tag commit SHA.
+   - *Behavior*: Aborts with `WrongCommitError`. Prevents misattribution of build provenance to divergent or unvetted branches.
+6. **Incompatible Schema Version (`IncompatibleSchemaError`)**:
+   - *Trigger*: SBOM or Provenance documents specify unsupported schema specifications (e.g., deprecated SPDX 2.1 / CycloneDX 1.2, or legacy SLSA v0.2 when SLSA v1 is required).
+   - *Behavior*: Aborts with `IncompatibleSchemaError`. Prevents parser confusion or evasion attacks against security tools.
+
+### Immutability and Corrected-Version / Yank Policy
+
+1. **Absolute Immutability of Released Versions and Tags**:
+   - Once a version tag (e.g., `v0.1.0`) is published and attached to release artifacts, it is **permanently immutable**.
+   - Git tags, release binaries, checksum digests, and attestation documents must never be modified, deleted, overwritten, or re-pointed in place.
+   - Any attempt to overwrite an existing release tag or replace released archive bytes triggers a critical security halt with `ImmutableReleaseViolationError`.
+2. **Corrected-Version Workflow**:
+   - If a published release is found to contain a severe defect, security vulnerability, or corrupted binary:
+     1. **Do Not Overwrite**: The defective release remains in place to preserve cryptographic auditability and prevent breakages in existing downstream lockfiles.
+     2. **Increment Semver Patch**: Owner 25 authorizes a semantic version patch increment (e.g., from `0.1.0` to `0.1.1`).
+     3. **Clean-Source Rebuild**: The patch release is built from clean source with the defect resolved.
+     4. **Yank Defective Version**: Owner 15 executes registry withdrawal (`cargo yank --version 0.1.0 careops-ed`) or marks the release deprecated in the distribution index. This prevents new projects from adopting the flawed release while allowing existing lockfiles to continue resolving.
+     5. **Publish Advisory**: A formal security/defect advisory (RUSTSEC / GitHub Security Advisory) is published explaining the defect, affected versions, and upgrade path to `0.1.1`.

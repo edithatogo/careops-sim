@@ -166,10 +166,11 @@ Entry: E3 integrated runner, Q5 and C6; native library packaging is finalized in
   resolve release-blocking findings and test resource limits. Record local-data
   and networking entry gates without presuming real EHR access.
   Treat Arrow C Data pointers as trusted in-process interfaces only; use validated bounded IPC across process boundaries. Apply sanitizers/Miri to actual unsafe surfaces and concurrency checks when real parallel code exists.
-- [ ] D4.2 Rehearse clean-consumer package/install, licence notices, SBOM, checksum
+- [x] D4.2 Rehearse clean-consumer package/install, licence notices, SBOM, checksum
   and provenance generation/verification with owners 15/16/20/25/28/42/44.
   Test expired/wrong-commit evidence and an incompatible schema as failures.
   Build once from clean locked source; bind checksums, SBOM and attestations to the same actual artifact bytes and verify as consumer. Reject missing/substituted artifacts and dirty release inputs; rehearse corrected-version/yank policy without rewriting immutable releases.
+  Consumer packaging, SBOM, and provenance evidence: [D4.2 evidence](../../evidence/d4.2-clean-consumer-packaging-rehearsal-20261016.md).
 - [ ] D4.3 Rehearse rollback to last-known-good pins and checkpoint migration;
   verify reproducibility across claimed platforms and create release notes and
   explicit unsupported-feature list. No autonomous public publication.
