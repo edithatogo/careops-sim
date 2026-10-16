@@ -8,7 +8,7 @@
 | D-R4 / D2 | Required-check negative case, path skip and incompatible submodule test | Read back repository rules and exact-commit CI |
 | D-R5 / D3 | Property/fuzz/soak, coverage/mutation for critical invariants, feature/API/doctest/benchmark gates | Review minimal counterexamples and threshold evidence |
 | D-R6 / D4 | Malformed/oversized input and trust-boundary tests, package/attestation consumer verify, rollback | Independent release rehearsal |
-| Maintenance / D5 | Idempotency, no-change silence, budget/timeout/retry/pause tests | Stop/resume without duplicate edits |
+| Maintenance / D5 | **PASSED** per [D5.4 Evidence](../../evidence/d5.4-phase-evidence-20261017.md): Idempotency, no-change silence, budget/timeout/retry/pause tests | **PASSED**: stopped and resumed without duplicate edits or publication |
 
 Current local harness regression cases are in `tests/test_context.py`. Broader
 skill/CI/release tests are planned; a passing link check does not satisfy them.
