@@ -148,7 +148,7 @@ Entry: G1; upstream 05/02/09 coordinated scope, public API review before binding
   transfer copies/frame latency; never infer WebGPU compute from rendering.
   Test shared-layout mismatch, known-distance visual/route alignment, dropped/stale deltas, disconnect, duplicate commands and bounded slow-client buffers. Qualify later CAD/capture adapters separately; initial G2 uses a synthetic/public layout and does not imply production CAD support.
   Verify source-to-location-to-resource-to-metric joins, live/replay agreement and overlay/summary reconciliation. Macro displays must not invent transit; Micro fixture distance must affect travel timing. Static assets and bulk outputs load separately from live state sync. Accepted: [retained E5.3 evidence](../../evidence/e5.3-render-rates-backpressure-and-spatial-parity-20261017.md).
-- [ ] E5.4 Conductor — review and verify phase (workflow.md).
+- [x] E5.4 Conductor — review and verify phase (workflow.md). Accepted: [retained E5.4 acceptance](../../evidence/e5.4-phase-acceptance-20261017.md) and [phase evidence reconciliation](../../evidence/e5.4-phase-evidence-20261017.md).
 
 Exit: G2 later interactive product with verified exports and interaction; reapply D4 gates
 for introduced browser/input/FFI surfaces. Manual check: user runs and compares
