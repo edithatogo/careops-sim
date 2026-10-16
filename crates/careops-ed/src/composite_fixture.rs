@@ -9,6 +9,8 @@
 
 use std::fmt::{Display, Formatter};
 
+use serde::{Deserialize, Serialize};
+
 use crate::disposition::operations::{
     claim_task, preempt, select_dispatch_candidate, validate_procedure_staffing, BayPhase,
     ExecutionFidelity, OperationalError, PreemptConsent, ProcedureKind, StaffShift, SyntheticGraph,
@@ -474,6 +476,38 @@ impl CompositeEdFixture {
 
         Ok(())
     }
+
+    /// Converts completed patient records into calibration-compatible trace records.
+    pub fn export_calibration_traces(
+        &self,
+        day: u32,
+        route_edges: &[&str],
+    ) -> Result<Vec<CalibrationTraceRecord>, OperationalError> {
+        let transit_ticks = if let Some(ref graph) = self.graph {
+            if route_edges.is_empty() {
+                0
+            } else {
+                graph.compute_travel_seconds(route_edges)? as u64
+            }
+        } else {
+            0
+        };
+
+        let mut records = Vec::with_capacity(self.completed.len());
+        for p in &self.completed {
+            let start = p.start_tick.unwrap_or(p.arrival_tick);
+            let end = p.completion_tick.unwrap_or(start + p.work_elapsed_ticks);
+            records.push(CalibrationTraceRecord {
+                case_id: format!("case_{}", p.id),
+                day,
+                start_tick: start,
+                end_tick: end,
+                transit_ticks,
+                work_ticks: p.work_elapsed_ticks,
+            });
+        }
+        Ok(records)
+    }
 }
 
 /// Converts a RunSummary into a standard CSV table.
@@ -566,4 +600,50 @@ pub fn compare_capacity(nominal: &RunSummary, constrained: &RunSummary) -> Capac
         wait_time_increased,
         unfinished_increased,
     }
+}
+
+/// A calibration-compatible trace record for empirical calibration and validation.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CalibrationTraceRecord {
+    pub case_id: String,
+    pub day: u32,
+    pub start_tick: u64,
+    pub end_tick: u64,
+    pub transit_ticks: u64,
+    pub work_ticks: u64,
+}
+
+/// Standalone helper to convert a slice of completed patients into calibration trace records.
+pub fn export_patient_calibration_traces(
+    patients: &[ComposedPatient],
+    day: u32,
+    transit_ticks: u64,
+) -> Vec<CalibrationTraceRecord> {
+    patients
+        .iter()
+        .map(|p| {
+            let start = p.start_tick.unwrap_or(p.arrival_tick);
+            let end = p.completion_tick.unwrap_or(start + p.work_elapsed_ticks);
+            CalibrationTraceRecord {
+                case_id: format!("case_{}", p.id),
+                day,
+                start_tick: start,
+                end_tick: end,
+                transit_ticks,
+                work_ticks: p.work_elapsed_ticks,
+            }
+        })
+        .collect()
+}
+
+/// Converts calibration trace records into a standard CSV table.
+pub fn calibration_traces_to_csv(records: &[CalibrationTraceRecord]) -> String {
+    let mut out = String::from("case_id,day,start_tick,end_tick,transit_ticks,work_ticks\n");
+    for r in records {
+        out.push_str(&format!(
+            "{},{},{},{},{},{}\n",
+            r.case_id, r.day, r.start_tick, r.end_tick, r.transit_ticks, r.work_ticks
+        ));
+    }
+    out
 }

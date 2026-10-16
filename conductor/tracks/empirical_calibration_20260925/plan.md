@@ -241,10 +241,11 @@ run. Legacy runner fixtures still parse and behave as before.
 Entry: C5, Q5 and generic ED E2; source and dependency versions frozen for acceptance.
 Owners 21/12/25, with 03/04/22 and backend-owner handoff.
 
-- [ ] C6.1 Execute a synthetic ED fixture covering arrivals/acuity, staff zones,
+- [x] C6.1 Execute a synthetic ED fixture covering arrivals/acuity, staff zones,
   diagnostics, urgent preemption, bed cleaning and boarding. Calibrate known
   transit parameters, recover the identifiable fixture and flag a deliberately
   confounded service/transit case instead of claiming unique recovery.
+  Accepted: [retained C6.1 evidence](../../evidence/c6.1-ed-calibration-fixture-20261015.md); development pin `96e8ac7` implements C6.1 integration tests (`c61_ed_fixture_calibration.rs`), identifiable calibration recovery (`ridge == false`), and confounded ridge identification (`non_identifiable_ridge`).
 - [ ] C6.2 Freeze selected parameters and evaluate free-running Macro/Micro on
   held-out cases/time blocks. Report waits/length of stay/throughput/resource use,
   transit/interruption counts, W1/KS/residuals, uncertainty, exclusions and runtime.
