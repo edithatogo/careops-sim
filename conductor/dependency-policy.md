@@ -430,3 +430,64 @@ Under no circumstances may automated maintenance routines, CI bots, background s
 - Any routine attempting `cargo publish`, `git push`, `gh release create`, or credentialed external uploads triggers an immediate security halt with `AutonomousPublicationViolationError`.
 - All release publication requires explicit human maintainer verification, cryptographic signature, and the manual assertion of `CAREOPS_HUMAN_MAINTAINER_AUTHORITY=1`.
 
+## D5.2 Agent Governance, Scope Restriction, and Exact-Commit Merge Policy
+
+Task D5.2 establishes rigorous governance, security boundaries, and empirical evaluation standards for optional repair and reviewer agents deployed across CareOps Sim workflows.
+
+### 1. Role Definitions & Advisory Authority Boundaries
+
+1. **Optional Repair Agents**:
+   - *Scope & Function*: Assist human maintainers with narrowly bounded bug fixes, syntax repairs, compiler diagnostic remediation, and documentation alignment within explicitly assigned, owned paths.
+   - *Authority Boundary*: Repair agents possess **zero merge or publication authority**. Their outputs constitute proposals requiring deterministic validation, test harness passes, and independent review.
+2. **Optional Reviewer Agents**:
+   - *Scope & Function*: Provide independent, read-only analysis of candidate diffs, property invariants, deterministic PRNG replay sequences, statistical calibration residuals, and schema compatibility.
+   - *Authority Boundary*: Reviewers can challenge diffs, demand additional evidence, or emit `hold_for_evidence` / `reject` dispositions. However, consensus between agents does **not** constitute proof of correctness; human maintainer authority remains the sole certification of acceptance.
+
+### 2. Strict Write Scope Restrictions & Protected Paths
+
+1. **Path-Level and Directory-Level Reservations**:
+   - Prior to making any workspace modifications, agents must declare and acquire an explicit, exclusive path reservation covering only the files necessary for their active task (orchestrated via [`tools/agent_eval.py`](../tools/agent_eval.py) and [`tools/agent_session.py`](../tools/agent_session.py)).
+   - Writes targeting any path outside the active reservation fail closed immediately with `ScopeViolationError`.
+2. **Absolute Prohibition on Protected Core Files**:
+   - The following repository-critical artifacts are permanently protected from agent modification:
+     - `crates/careops-ed/src/lib.rs` (core ED domain contract and module root)
+     - `conductor/delivery-contract.md` (delivery and acceptance contract)
+     - `LICENSE` (Apache-2.0 legal grant)
+   - Any attempt by an agent or automated script to write, truncate, delete, or rename these files triggers an unbypassable, fail-closed `ProtectedPathError`.
+3. **Escaped and Traversal Guardrails**:
+   - Direct access to `.git`, directory traversal sequences (`..`), and symlinks resolving outside the repository root fail closed with `ValueError` and immediate claim revocation.
+
+### 3. Single-Writer-Per-Owned-Path Invariant
+
+To eliminate write races, clobbering, and merge divergence across concurrent agent sessions:
+- **Single-Writer Rule**: At most one active writer process or agent lease may hold a write reservation on any given path or directory at any instant across all worktrees.
+- **Hierarchical Overlap Detection**: Reservations are checked hierarchically and normalized against Unicode NFC and casefolding. A claim on `tools` precludes any concurrent claim on `tools/context.py`, and vice-versa.
+- **Fail-Closed Conflict**: Any overlapping claim triggers an immediate `MultipleWritersError`, halting the competing agent before any filesystem write occurs.
+
+### 4. Exact-Commit Merge Rule
+
+Automated merges and qualification reviews must guarantee exact commit identity to prevent TOCTOU (time-of-check to time-of-use) vulnerabilities:
+- **Exact-Commit Verification**: A candidate branch or patch may only be merged if required CI test runs, local harnesses, and reviewer approvals were executed against the **exact Git commit SHA** that is current HEAD on the target branch.
+- **Stale CI Invalidation**: Reviews, status checks, or test receipts performed against an older ancestor commit cannot qualify a subsequent commit. Any commit drift between test execution and merge triggers an unrecoverable `ExactCommitMismatchError`.
+- **Pre-Merge Gate**: Pre-merge validation requires:
+  1. `tested_commit_sha == target_head_sha`
+  2. All required CI test matrix jobs reported passing status.
+  3. Reviewer verdict equals `pass` (zero unresolved `hold_for_evidence` or `reject` notices).
+
+### 5. Agent Performance, Safety, and Cost Accounting
+
+All agent invocations and evaluation workflows must capture structured telemetry:
+1. **Token Usage and Cost Tracking**:
+   - Input tokens, output tokens, context length, and dollar cost must be logged per invocation.
+2. **Zero-Tolerance False-Pass Rate on Safety Defects**:
+   - **Critical Threshold**: **0.0%** false-pass rate on safety-critical defects (PRNG determinism regressions, trust boundary violations, schema mismatches, protected path tamper attempts).
+   - Any agent model or configuration that emits a false pass on a known safety regression is immediately disqualified from automated workflow participation.
+3. **False-Reject Rate & Human Interventions**:
+   - False-rejects (unnecessary blocking of clean patches) and maintainer intervention events (lease recoveries, conflict resolutions, manual overrides) are tracked to assess net maintainer burden.
+
+### 6. Absolute Prohibition of Autonomous Publication
+
+- Autonomous pushing (`git push`), tag generation (`git tag`), GitHub release publication (`gh release create`), and package publishing (`cargo publish`, `npm publish`, `twine upload`) remain strictly prohibited.
+- Release publication demands explicit human maintainer cryptographic signing and the environment assertion `CAREOPS_HUMAN_MAINTAINER_AUTHORITY=1`.
+
+
