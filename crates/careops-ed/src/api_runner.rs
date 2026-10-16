@@ -187,8 +187,33 @@ pub fn compute_sha256_hex(data: &[u8]) -> String {
     )
 }
 
+pub const MAX_SCENARIO_PAYLOAD_BYTES: usize = 10 * 1024 * 1024; // 10 MiB limit
+
+/// Verifies that a path does not contain path traversal components (e.g. `..`).
+pub fn check_safe_cli_path(path: &Path) -> Result<(), ValidationError> {
+    for component in path.components() {
+        if matches!(component, std::path::Component::ParentDir) {
+            return Err(ValidationError::new(
+                ExitCodeDef::UsageError,
+                format!("path traversal rejected in '{}'", path.display()),
+            ));
+        }
+    }
+    Ok(())
+}
+
 /// Validates scenario configuration from JSON text.
 pub fn validate_scenario_source(source: &str) -> Result<ValidationSuccess, ValidationError> {
+    if source.len() > MAX_SCENARIO_PAYLOAD_BYTES {
+        return Err(ValidationError::new(
+            ExitCodeDef::MalformedConfig,
+            format!(
+                "scenario payload exceeds maximum allowed size ({} bytes)",
+                MAX_SCENARIO_PAYLOAD_BYTES
+            ),
+        ));
+    }
+
     let scenario = parse_scenario_json(source)
         .map_err(|e| ValidationError::new(ExitCodeDef::MalformedConfig, e.to_string()))?;
 
@@ -229,8 +254,26 @@ pub fn validate_scenario_source(source: &str) -> Result<ValidationSuccess, Valid
         ));
     }
 
-    // Verify patient arrival bounds
+    for route in &scenario.capacity_location.routes {
+        if !route.distance.value.is_finite() || route.distance.value <= 0.0 {
+            return Err(ValidationError::new(
+                ExitCodeDef::MalformedConfig,
+                format!(
+                    "route from '{}' to '{}' has invalid non-positive distance {}",
+                    route.from_location_id, route.to_location_id, route.distance.value
+                ),
+            ));
+        }
+    }
+
+    // Verify patient arrival and duration bounds
     for p in &scenario.patients {
+        if p.work_ticks == 0 {
+            return Err(ValidationError::new(
+                ExitCodeDef::MalformedConfig,
+                format!("patient '{}' has non-positive work_ticks", p.patient_id),
+            ));
+        }
         if p.arrival_tick > scenario.horizon_ticks {
             warnings.push(format!(
                 "patient {} arrives at tick {} which exceeds horizon_ticks {}",
@@ -952,6 +995,9 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                 );
             }
             let path = PathBuf::from(&args[1]);
+            if let Err(err) = check_safe_cli_path(&path) {
+                return CliOutput::error(err.code, format!("careops-ed: {err}"));
+            }
             if !path.exists() {
                 return CliOutput::error(
                     ExitCodeDef::FileNotFound,
@@ -967,6 +1013,15 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                     )
                 }
             };
+            if bytes.len() > MAX_SCENARIO_PAYLOAD_BYTES {
+                return CliOutput::error(
+                    ExitCodeDef::MalformedConfig,
+                    format!(
+                        "careops-ed: scenario payload exceeds limit ({} bytes)",
+                        MAX_SCENARIO_PAYLOAD_BYTES
+                    ),
+                );
+            }
             let source = match std::str::from_utf8(&bytes) {
                 Ok(s) => s,
                 Err(_) => {
@@ -1098,6 +1153,12 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                 idx += 1;
             }
 
+            if let Some(ref out_p) = output_path {
+                if let Err(err) = check_safe_cli_path(out_p) {
+                    return CliOutput::error(err.code, format!("careops-ed: {err}"));
+                }
+            }
+
             let Some(input_file) = scenario_arg else {
                 return CliOutput::error(
                     ExitCodeDef::UsageError,
@@ -1106,6 +1167,9 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
             };
 
             let input_path = PathBuf::from(&input_file);
+            if let Err(err) = check_safe_cli_path(&input_path) {
+                return CliOutput::error(err.code, format!("careops-ed: {err}"));
+            }
             if !input_path.exists() {
                 return CliOutput::error(
                     ExitCodeDef::FileNotFound,
@@ -1125,6 +1189,16 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                     )
                 }
             };
+
+            if bytes.len() > MAX_SCENARIO_PAYLOAD_BYTES {
+                return CliOutput::error(
+                    ExitCodeDef::MalformedConfig,
+                    format!(
+                        "careops-ed: scenario payload exceeds limit ({} bytes)",
+                        MAX_SCENARIO_PAYLOAD_BYTES
+                    ),
+                );
+            }
 
             let source = match std::str::from_utf8(&bytes) {
                 Ok(s) => s,
@@ -1181,6 +1255,13 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
             }
             let base_path = PathBuf::from(&args[1]);
             let cand_path = PathBuf::from(&args[2]);
+
+            if let Err(err) = check_safe_cli_path(&base_path) {
+                return CliOutput::error(err.code, format!("careops-ed: {err}"));
+            }
+            if let Err(err) = check_safe_cli_path(&cand_path) {
+                return CliOutput::error(err.code, format!("careops-ed: {err}"));
+            }
 
             if !base_path.exists() {
                 return CliOutput::error(
@@ -1319,12 +1400,22 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                 idx += 1;
             }
 
+            if let Some(ref out_p) = output_path {
+                if let Err(err) = check_safe_cli_path(out_p) {
+                    return CliOutput::error(err.code, format!("careops-ed: {err}"));
+                }
+            }
+
             let Some(path) = run_path else {
                 return CliOutput::error(
                     ExitCodeDef::UsageError,
                     "careops-ed: export requires a run document JSON file",
                 );
             };
+
+            if let Err(err) = check_safe_cli_path(&path) {
+                return CliOutput::error(err.code, format!("careops-ed: {err}"));
+            }
 
             if !path.exists() {
                 return CliOutput::error(
@@ -1549,6 +1640,27 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                 idx += 1;
             }
 
+            if let Some(ref od) = output_dir {
+                if let Err(err) = check_safe_cli_path(od) {
+                    return CliOutput::error(err.code, format!("careops-ed: {err}"));
+                }
+            }
+            if let Some(ref rp) = resume_path {
+                if let Err(err) = check_safe_cli_path(rp) {
+                    return CliOutput::error(err.code, format!("careops-ed: {err}"));
+                }
+            }
+            if let Some(ref ea) = export_arrow_path {
+                if let Err(err) = check_safe_cli_path(ea) {
+                    return CliOutput::error(err.code, format!("careops-ed: {err}"));
+                }
+            }
+            if let Some(ref es) = export_spatial_path {
+                if let Err(err) = check_safe_cli_path(es) {
+                    return CliOutput::error(err.code, format!("careops-ed: {err}"));
+                }
+            }
+
             let Some(input_file) = scenario_arg else {
                 return CliOutput::error(
                     ExitCodeDef::UsageError,
@@ -1557,6 +1669,9 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
             };
 
             let input_path = PathBuf::from(&input_file);
+            if let Err(err) = check_safe_cli_path(&input_path) {
+                return CliOutput::error(err.code, format!("careops-ed: {err}"));
+            }
             if !input_path.exists() {
                 return CliOutput::error(
                     ExitCodeDef::FileNotFound,
@@ -1576,6 +1691,16 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
                     )
                 }
             };
+
+            if bytes.len() > MAX_SCENARIO_PAYLOAD_BYTES {
+                return CliOutput::error(
+                    ExitCodeDef::MalformedConfig,
+                    format!(
+                        "careops-ed: scenario payload exceeds limit ({} bytes)",
+                        MAX_SCENARIO_PAYLOAD_BYTES
+                    ),
+                );
+            }
 
             let source = match std::str::from_utf8(&bytes) {
                 Ok(s) => s,

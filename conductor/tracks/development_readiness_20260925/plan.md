@@ -162,7 +162,7 @@ verification: inject a known queue/RNG/metric defect and verify the proper gate 
 
 Entry: E3 integrated runner, Q5 and C6; native library packaging is finalized in E4.
 
-- [ ] D4.1 Review input/FFI/agent/build/output trust boundaries and misuse cases;
+- [x] D4.1 Review input/FFI/agent/build/output trust boundaries and misuse cases;
   resolve release-blocking findings and test resource limits. Record local-data
   and networking entry gates without presuming real EHR access.
   Treat Arrow C Data pointers as trusted in-process interfaces only; use validated bounded IPC across process boundaries. Apply sanitizers/Miri to actual unsafe surfaces and concurrency checks when real parallel code exists.
