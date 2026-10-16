@@ -160,10 +160,10 @@ Entry: E4 CPU correctness/performance baseline; preserve upstream performance
 gates. E6 may proceed alongside E5 dashboard work in disjoint owner paths;
 metadata records this explicitly. It does not wait for browser development.
 
-- [ ] E6.1 Profile batch numeric workloads and choose a kernel with measurable
+- [x] E6.1 Profile batch numeric workloads and choose a kernel with measurable
   end-to-end benefit (initial candidate: batched numeric metrics/transit evaluation).
   Write CPU/device oracle, precision/ranking and fallback/error tests first.
-  Profile report 26 workload candidates and real batch sizes; separate presorted equal-size W1 reduction from full weighted/unequal W1. Freeze intended-use numeric/ranking tolerances before held-out measurements; exact integer/event contracts stay exact.
+  Profile report 26 workload candidates and real batch sizes; separate presorted equal-size W1 reduction from full weighted/unequal W1. Freeze intended-use numeric/ranking tolerances before held-out measurements; exact integer/event contracts stay exact. Accepted: [retained E6.1 evidence](../../evidence/e6.1-numeric-batch-profiling-and-oracle-20261017.md).
 - [ ] E6.2 Implement real wgpu/WGSL device path in owner 32, pin tested dependencies
   and record device/driver/compiler details. Keep queue arbitration CPU-owned.
 - [ ] E6.3 Run actual Apple hardware parity/throughput/transfer/memory tests,
