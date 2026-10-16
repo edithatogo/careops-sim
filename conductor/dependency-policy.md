@@ -13,7 +13,18 @@ URLs, fetch time, release date and declared MSRV. Refresh with
 The snapshot is a candidate inventory, not a tested lockfile or promise that all
 packages should be adopted. Unknown MSRV means unknown, not compatible.
 
-## Active dependency freshness audit — 2026-10-04
+## Active dependency freshness audit — 2026-10-16
+
+The 33-entry registry snapshot was refreshed at 2026-10-16T07:01 UTC via `python3 tools/refresh_versions.py` and compared with active parent pins, Kairos direct manifests, and root/nested lockfiles. All entries remain `candidate_unvalidated`. Key observations:
+- Stable Rust toolchain: 1.99.1 observed (released 2026-10-13). Pinned canonical development toolchain remains exact 1.99.0; adoption of 1.99.1 requires formal owner authorization and manifest/CI synchronization.
+- Kairos Arrow array, schema, IPC, and Parquet match the 60.0.0 pin.
+- Serde 1.0.229 matches root `Cargo.lock`; Kairos lock resolves 1.0.228. Serde JSON 1.0.154 observed in registry (root lock is 1.0.151, Kairos is 1.0.149).
+- CLI sha2 remains pinned at 0.10.9; 0.11.0 is a breaking 0.x change requiring golden manifest verification prior to evaluation.
+- Dev tools: nextest 0.9.148 observed (pinned 0.9.146); cargo-deny 0.20.2 and cargo-audit 0.22.2 match pins; zizmor 1.31.1 observed.
+- GitHub Actions: actions/checkout v7.0.1, upload-artifact v7.0.2, download-artifact v8.0.2, and codeql-action v4.39.0 observed; workflows preserve exact immutable commit SHAs.
+- No production dependency, lockfile, or toolchain was altered by this read-only audit.
+
+## Historical dependency freshness audit — 2026-10-04
 
 The 33-entry registry snapshot was refreshed at 09:09 UTC and compared with
 active parent pins, Kairos direct manifests, root/nested locks and workflows.
@@ -112,3 +123,60 @@ before adoption. Run conformance, resume, feature/MSRV and affected performance
 checks. Automatic dependency merges only after required checks and stable policy;
 never auto-merge RNG/time/schema, security-permission or public-release changes.
 Automation is planned here; no recurring task has been enabled by this audit.
+
+## D4 Trust Boundaries, FFI Safety, and Release Misuse Policy
+
+Ahead of packaging, distribution, and release qualification (D4.1–D4.4), explicit threat modeling establishes system boundaries, resource constraints, data governance gates, and unsafe code boundaries to protect against misuse, corruption, and unauthorized data exposure.
+
+### Explicit Trust Boundaries and Misuse Modeling
+
+1. **Input Boundary (Untrusted to Engine Core)**:
+   - *Threat Surface*: Scenario JSON documents, CLI arguments, and tabular data files (Arrow IPC, Parquet, CSV) ingested from user or external sources.
+   - *Mitigations & Misuse Constraints*: All deserialization enforces strict schema conformance via `#[serde(deny_unknown_fields)]`. Bounded allocation caps apply to arrival counts, horizon ticks, entity allocations, and resource configurations. Inputs causing non-terminating event loops, zero-time cycles, unbounded recursion, or disk/memory exhaustion are rejected fail-closed with structured error messages before simulation admission.
+
+2. **FFI and C-Data Boundary (Native Rust to External Runtimes)**:
+   - *Threat Surface*: Foreign Function Interface (FFI) bindings for C ABI, WebAssembly, and language bridges (UniFFI, Diplomat).
+   - *Mitigations & Misuse Constraints*: Raw memory pointers and foreign function pointers are quarantined within isolated interface crates (`kairo-ecs-ffi`, `kairo-ecs-fmi`, `kairo-ecs-wasm`). All incoming pointers undergo exhaustive validation (null checks, alignment, buffer length bounds, and lifetime invariants) prior to dereferencing or conversion into Rust domain references.
+
+3. **Agent and Tool Boundary (Autonomous Automation to Environment)**:
+   - *Threat Surface*: Autonomous coding agents, subagents, and automated maintenance/repair runners operating on repository and system assets.
+   - *Mitigations & Misuse Constraints*: Agents operate under bounded workpackets, immutable command receipts, and explicit advisory file claims ([AGENTS.md](../AGENTS.md) and [single-maintainer.md](harness/single-maintainer.md)). One writer per owned path is strictly enforced. Automated tools and agents are forbidden from executing unbounded shell scripts, modifying CI security credentials/permissions, publishing artifacts autonomously, or mutating files outside pre-authorized write scopes.
+
+4. **Build and Dependency Boundary (Upstream Supply Chain to Binaries)**:
+   - *Threat Surface*: Compromised transitive dependencies, malicious build scripts (`build.rs`), unpinned compiler toolchains, or registry poisoning.
+   - *Mitigations & Misuse Constraints*: Hermetic builds enforce the exact canonical Rust 1.99.0 toolchain and strictly locked lockfiles (`Cargo.lock` enforced via `--locked` in CI). Dependencies undergo continuous scanning via `cargo-deny` (advisories, bans, licenses, sources) and `cargo-audit`. Build scripts and procedural macros are forbidden from initiating network connections or executing untrusted ambient binaries.
+
+5. **Output and Privacy Boundary (Engine Telemetry to External Storage)**:
+   - *Threat Surface*: Execution summaries, trace logs, statistical diagnostics, and performance benchmarks leaking sensitive operational or individual-level data.
+   - *Mitigations & Misuse Constraints*: Outputs are deterministic, reproducible artifacts bound to cryptographic hashes (SHA-256) of input configurations and simulation seeds. Run manifests, diagnostic tables, and Arrow/Parquet outputs emit strictly aggregate statistical distributions and anonymized entity identifiers; no Protected Health Information (PHI) or unmasked patient attributes are generated or stored.
+
+### Arrow C Data Interface vs. Inter-Process Communication (IPC) Safety
+
+- **In-Process C Data Interface**: Raw pointers exposed via the Arrow C Data interface (`ArrowArray`, `ArrowSchema`) are treated strictly as **trusted in-process interfaces only**. These raw pointer representations rely on shared virtual memory address space assumptions and lack transport serialization or cross-process memory protection. Exposing or passing Arrow C Data raw pointers across process, host, or security container boundaries is strictly prohibited.
+- **Inter-Process and Network IPC**: All communication crossing process boundaries, container barriers, or network interfaces MUST use validated, bounded Arrow IPC streams (`arrow::ipc::reader::StreamReader`) or self-contained Parquet files. IPC streams must validate encapsulated metadata, schema definitions, dictionary encodings, alignment, message length limits, and record batch counts to prevent malformed-buffer memory corruption and allocation bomb attacks.
+
+### Local-Data Entry Gate: Clinical and Patient Privacy
+
+- **Synthetic Default**: All public continuous integration, development workspaces, automated test fixtures, calibration baselines, and performance benchmarks use strictly synthetic, parametric, or generic public hospital data. No actual patient data is required or presumed for engine validation.
+- **Real EHR Entry Gate**: Entry of real electronic health records (EHR), Cairns Hospital operational extracts, or clinical datasets into the CareOps Sim environment is barred until all of the following entry conditions are independently audited and fulfilled:
+  1. **Ethics & Governance Approval**: Valid Institutional Review Board (IRB) / Human Research Ethics Committee (HREC) approval and authorized data custodian transfer agreement.
+  2. **De-Identification Verification**: Formal statistical and algorithmic certification of de-identification (complying with HIPAA Privacy Rule Safe Harbor / Expert Determination and Australian Privacy Principles), ensuring removal of all direct and indirect identifiers and verification that re-identification risk on sparse event logs is within approved thresholds.
+  3. **Airgapped Encrypted Storage**: Storage on dedicated on-premise, encrypted volumes (AES-256 at rest) with hardware-enforced access controls and strict role-based authorization (RBAC). Real patient records or derivative identifiable embeddings must never be committed to Git repositories, uploaded to hosted cloud CI runners, or stored in public test artifact caches.
+
+### Networking Entry Gate: Airgap and Distributed Communication
+
+- **Zero-Network Airgap for Core Engine**: The native DES/ABM simulation engine (`careops-ed`, `careops-ed-cli`, `careops-sim`, and Kairos core) operates under a strict **zero-network airgap policy**. Core execution, calibration fitting, and CLI report generation must function completely offline without opening network sockets, making remote RPC calls, or resolving external DNS requests.
+- **Networking Entry Gate for Distributed Profiles**: Any future distributed runner, remote visualization service, or multi-node parallel DES profile (planned in post-v1 extensions E5/E7/E8) must satisfy the networking entry gate before activation:
+  - **Transport Security**: Mandatory TLS 1.3 encryption with strict certificate validation and modern cryptographic cipher suites; unencrypted plain-text communication is forbidden.
+  - **Mutual Authentication**: Mutual TLS (mTLS) or cryptographically signed ephemeral identity tokens for all distributed nodes and operator interfaces.
+  - **Rate Limiting & DoS Protection**: Bounded connection concurrency, request size ceilings, per-peer rate limiting, and aggressive socket timeout policies to prevent exhaustion of file descriptors or memory.
+  - **Replay Mitigation**: Cryptographic nonce validation, monotonically increasing sequence numbers, and idempotent operation processing to neutralize message replay or spoofing attacks.
+
+### Unsafe Code and Concurrency Discipline
+
+- **Forbid Unsafe Code in Domain Modules**: All simulation domain crates (`careops-ed`, `careops-ed-cli`, `kairo-ecs-core`, `kairo-ecs-des`, `kairo-ecs-abm`, `kairo-ecs-calibration`, `kairo-ecs-types`, `kairo-ecs-rng`) strictly enforce `#![forbid(unsafe_code)]`. Any required `unsafe` blocks are quarantined exclusively in dedicated FFI adapter boundary crates (`kairo-ecs-ffi`, `kairo-ecs-fmi`) under exhaustive invariant checks and documentation.
+- **Message-Passing Concurrency**: Shared-memory multithreading with mutable shared state is architecturally prohibited. Concurrent simulation workers communicate exclusively via deterministic message-passing channels and immutable, chunked data partitions. Race conditions, data races, and mutex deadlocks are eliminated by construction.
+- **Miri and Sanitizer Tooling Status & Release Risk Assessment**:
+  - *Toolchain Availability*: Under the canonical Rust 1.99.0 stable toolchain directed by project policy, runtime Miri undefined-behavior interpretation and libFuzzer/AddressSanitizer (ASan) runtime instrumentation require nightly toolchain features and are not executable in stable CI lanes.
+  - *Risk Assessment*: Because domain crates enforce `#![forbid(unsafe_code)]` and concurrency is restricted to message-passing without shared mutable state, memory safety risks are confined entirely to the isolated FFI boundary layer.
+  - *Mitigation & Release Obligation*: Prior to tagging and distributing native library release candidates (D4.2–D4.4), a dedicated dated-nightly validation pass using Miri and AddressSanitizer must be executed against all FFI entry points (`kairo-ecs-ffi`, `kairo-ecs-diplomat`, `kairo-ecs-uniffi`). Stable CI unavailability during daily development does not waive this release gate.
