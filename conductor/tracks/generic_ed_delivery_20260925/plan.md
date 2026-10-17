@@ -185,12 +185,12 @@ selection dispatched on hardware, not a CPU fallback with a GPU label.
 - [x] E7.2 Integrate actual scheduler/Flow state with conservative PDES and real
   worker communication; preserve task RNG and snapshot contracts. Restrict shared
   resources to a defined owner and model explicit inter-LP messages. Accepted: [retained E7.2 evidence](../../evidence/e7.2-conservative-pdes-flow-scheduler-20261017.md).
-- [ ] E7.3 Test threaded 1/2/N execution, deadlock/causality/migration boundaries,
+- [x] E7.3 Test threaded 1/2/N execution, deadlock/causality/migration boundaries,
   slow workers, checkpoint and final observable state parity. Do not impose an
   identical global cross-LP trace beyond Track 34's contract. Measure speedup.
   Distinguish trace/state/statistical equivalence per upstream contract;
   statistical similarity alone cannot pass deterministic CPU acceptance. Record
-  safe-frontier blocking, communication overhead and negative scaling results.
+  safe-frontier blocking, communication overhead and negative scaling results. Accepted: [retained E7.3 evidence](../../evidence/e7.3-threaded-pdes-execution-and-parity-20261017.md).
 - [ ] E7.4 Conductor — review and verify phase (workflow.md).
 
 Exit: G3-PDES supported partition/profile, explicit unsupported zero-lookahead
