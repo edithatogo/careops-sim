@@ -182,9 +182,9 @@ selection dispatched on hardware, not a CPU fallback with a GPU label.
   write serial-oracle, in-flight message/GVT and zero-lookahead failure tests.
   Certify each cross-LP minimum causal advance, including same-time
   cycles; empirical duration means/quantiles are never lookahead guarantees. Accepted: [retained E7.1 evidence](../../evidence/e7.1-pdes-partition-lookahead-and-oracle-20261017.md).
-- [ ] E7.2 Integrate actual scheduler/Flow state with conservative PDES and real
+- [x] E7.2 Integrate actual scheduler/Flow state with conservative PDES and real
   worker communication; preserve task RNG and snapshot contracts. Restrict shared
-  resources to a defined owner and model explicit inter-LP messages.
+  resources to a defined owner and model explicit inter-LP messages. Accepted: [retained E7.2 evidence](../../evidence/e7.2-conservative-pdes-flow-scheduler-20261017.md).
 - [ ] E7.3 Test threaded 1/2/N execution, deadlock/causality/migration boundaries,
   slow workers, checkpoint and final observable state parity. Do not impose an
   identical global cross-LP trace beyond Track 34's contract. Measure speedup.
