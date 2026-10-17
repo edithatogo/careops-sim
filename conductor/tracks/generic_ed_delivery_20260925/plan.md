@@ -166,11 +166,11 @@ metadata records this explicitly. It does not wait for browser development.
   Profile report 26 workload candidates and real batch sizes; separate presorted equal-size W1 reduction from full weighted/unequal W1. Freeze intended-use numeric/ranking tolerances before held-out measurements; exact integer/event contracts stay exact. Accepted: [retained E6.1 evidence](../../evidence/e6.1-numeric-batch-profiling-and-oracle-20261017.md).
 - [x] E6.2 Implement real wgpu/WGSL device path in owner 32, pin tested dependencies
   and record device/driver/compiler details. Keep queue arbitration CPU-owned. Accepted: [retained E6.2 evidence](../../evidence/e6.2-wgpu-wgsl-device-path-20261017.md).
-- [ ] E6.3 Run actual Apple hardware parity/throughput/transfer/memory tests,
+- [x] E6.3 Run actual Apple hardware parity/throughput/transfer/memory tests,
   unavailable-device behavior and representative end-to-end benchmark. If no
   material gain, retain experimental status and document findings rather than
   declaring acceleration successful. MLX replacement requires comparative ADR.
-  Measure cold/compile/staging/encoding/kernel/synchronization/readback and full end-to-end costs against production multicore CPU, plus resident chains, memory and median/p95. Preserve upstream million-agent speedup gate separately. MLX FFI is an optional comparator, not Rust-native module implementation; CPU validates near-tie decisions and owns RNG/event insertion.
+  Measure cold/compile/staging/encoding/kernel/synchronization/readback and full end-to-end costs against production multicore CPU, plus resident chains, memory and median/p95. Preserve upstream million-agent speedup gate separately. MLX FFI is an optional comparator, not Rust-native module implementation; CPU validates near-tie decisions and owns RNG/event insertion. Accepted: [retained E6.3 evidence](../../evidence/e6.3-apple-metal-benchmark-and-parity-20261017.md).
 - [ ] E6.4 Conductor — review and verify phase (workflow.md).
 
 Exit: G3-Metal only for measured supported kernels. Manual check: prove backend
