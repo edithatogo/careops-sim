@@ -199,12 +199,12 @@ resource interaction and reconcile all claims/messages with the serial oracle.
 
 ## E8 — Real distributed execution through existing Track 35
 
-- [ ] E8.1 Specify and test versioned transport envelopes, allocation/entity
+- [x] E8.1 Specify and test versioned transport envelopes, allocation/entity
   migration ownership, deduplication, reconnect/checkpoint and failure policy;
   extend D4 threat review before network execution.
   Account for in-flight traffic and persisted deduplication at coordinated
   checkpoint publication; define event identity, ownership-map revision and restart
-  incarnation compatibility without replacing existing RNG/envelope contracts.
+  incarnation compatibility without replacing existing RNG/envelope contracts. Accepted: [retained E8.1 evidence](../../evidence/e8.1-distributed-cluster-topology-and-transport-20261017.md).
 - [ ] E8.2 Implement real gRPC and MPI adapters within existing owners using
   evaluated current tonic/prost/MPI dependencies at that phase. Pin runtime and
   library versions then; do not add them to the initial native-ED dependency graph.
