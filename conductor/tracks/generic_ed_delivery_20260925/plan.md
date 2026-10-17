@@ -191,7 +191,7 @@ selection dispatched on hardware, not a CPU fallback with a GPU label.
   Distinguish trace/state/statistical equivalence per upstream contract;
   statistical similarity alone cannot pass deterministic CPU acceptance. Record
   safe-frontier blocking, communication overhead and negative scaling results. Accepted: [retained E7.3 evidence](../../evidence/e7.3-threaded-pdes-execution-and-parity-20261017.md).
-- [ ] E7.4 Conductor — review and verify phase (workflow.md).
+- [x] E7.4 Conductor — review and verify phase (workflow.md). Accepted: [retained E7.4 acceptance](../../evidence/e7.4-phase-acceptance-20261017.md) and [phase evidence reconciliation](../../evidence/e7.4-phase-evidence-20261017.md).
 
 Exit: G3-PDES supported partition/profile, explicit unsupported zero-lookahead
 cases and retained performance acceptance. Manual check: exercise a cross-LP
