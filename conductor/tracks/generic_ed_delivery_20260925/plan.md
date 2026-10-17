@@ -171,7 +171,7 @@ metadata records this explicitly. It does not wait for browser development.
   material gain, retain experimental status and document findings rather than
   declaring acceleration successful. MLX replacement requires comparative ADR.
   Measure cold/compile/staging/encoding/kernel/synchronization/readback and full end-to-end costs against production multicore CPU, plus resident chains, memory and median/p95. Preserve upstream million-agent speedup gate separately. MLX FFI is an optional comparator, not Rust-native module implementation; CPU validates near-tie decisions and owns RNG/event insertion. Accepted: [retained E6.3 evidence](../../evidence/e6.3-apple-metal-benchmark-and-parity-20261017.md).
-- [ ] E6.4 Conductor — review and verify phase (workflow.md).
+- [x] E6.4 Conductor — review and verify phase (workflow.md). Accepted: [retained E6.4 acceptance](../../evidence/e6.4-phase-acceptance-20261017.md) and [phase evidence reconciliation](../../evidence/e6.4-phase-evidence-20261017.md).
 
 Exit: G3-Metal only for measured supported kernels. Manual check: prove backend
 selection dispatched on hardware, not a CPU fallback with a GPU label.
