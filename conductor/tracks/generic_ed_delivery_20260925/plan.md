@@ -208,12 +208,12 @@ resource interaction and reconcile all claims/messages with the serial oracle.
 - [x] E8.2 Implement real gRPC and MPI adapters within existing owners using
   evaluated current tonic/prost/MPI dependencies at that phase. Pin runtime and
   library versions then; do not add them to the initial native-ED dependency graph. Accepted: [retained E8.2 evidence](../../evidence/e8.2-distributed-coordinator-and-gvt-consensus-20261017.md).
-- [ ] E8.3 Run actual multi-process/multi-node tests: loss/delay/retry, duplicate
+- [x] E8.3 Run actual multi-process/multi-node tests: loss/delay/retry, duplicate
   message/migration, worker failure, bounded shutdown and telemetry aggregation.
   Verify serial/PDES observable parity and profile-specific speed/memory evidence.
   Exercise crashes before/after checkpoint publication, corrupt snapshots
   and obsolete incarnation traffic; include independent-replication transport
-  profiles without making multiple physical nodes a C5/E7 prerequisite.
+  profiles without making multiple physical nodes a C5/E7 prerequisite. Accepted: [retained E8.3 evidence](../../evidence/e8.3-multinode-cluster-execution-20261017.md).
 - [ ] E8.4 Conductor — review and verify phase (workflow.md).
 
 Exit: G3-distributed only for executed runtime profiles. Cloud deployment and
