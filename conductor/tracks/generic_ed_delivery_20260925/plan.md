@@ -178,10 +178,10 @@ selection dispatched on hardware, not a CPU fallback with a GPU label.
 
 ## E7 — Within-run parallel DES through existing Track 34
 
-- [ ] E7.1 Define ED LP partition/resource ownership and lookahead constraints;
+- [x] E7.1 Define ED LP partition/resource ownership and lookahead constraints;
   write serial-oracle, in-flight message/GVT and zero-lookahead failure tests.
   Certify each cross-LP minimum causal advance, including same-time
-  cycles; empirical duration means/quantiles are never lookahead guarantees.
+  cycles; empirical duration means/quantiles are never lookahead guarantees. Accepted: [retained E7.1 evidence](../../evidence/e7.1-pdes-partition-lookahead-and-oracle-20261017.md).
 - [ ] E7.2 Integrate actual scheduler/Flow state with conservative PDES and real
   worker communication; preserve task RNG and snapshot contracts. Restrict shared
   resources to a defined owner and model explicit inter-LP messages.
