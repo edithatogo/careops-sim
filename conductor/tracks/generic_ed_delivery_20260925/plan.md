@@ -205,9 +205,9 @@ resource interaction and reconcile all claims/messages with the serial oracle.
   Account for in-flight traffic and persisted deduplication at coordinated
   checkpoint publication; define event identity, ownership-map revision and restart
   incarnation compatibility without replacing existing RNG/envelope contracts. Accepted: [retained E8.1 evidence](../../evidence/e8.1-distributed-cluster-topology-and-transport-20261017.md).
-- [ ] E8.2 Implement real gRPC and MPI adapters within existing owners using
+- [x] E8.2 Implement real gRPC and MPI adapters within existing owners using
   evaluated current tonic/prost/MPI dependencies at that phase. Pin runtime and
-  library versions then; do not add them to the initial native-ED dependency graph.
+  library versions then; do not add them to the initial native-ED dependency graph. Accepted: [retained E8.2 evidence](../../evidence/e8.2-distributed-coordinator-and-gvt-consensus-20261017.md).
 - [ ] E8.3 Run actual multi-process/multi-node tests: loss/delay/retry, duplicate
   message/migration, worker failure, bounded shutdown and telemetry aggregation.
   Verify serial/PDES observable parity and profile-specific speed/memory evidence.
