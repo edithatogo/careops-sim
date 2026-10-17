@@ -5,7 +5,7 @@
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE-APACHE)
 [![Rust: 1.99.0](https://img.shields.io/badge/rust-1.99.0-orange.svg)](rust-toolchain.toml)
 [![Platforms: Linux x86_64 | macOS ARM64](https://img.shields.io/badge/platform-Linux%20x86__64%20%7C%20macOS%20ARM64-lightgrey.svg)](conductor/dependency-policy.md#cross-platform-reproducibility-policy)
-[![Conductor Progress: 83.4%](https://img.shields.io/badge/progress-83.4%25%20(121%2F145%20tasks)-brightgreen.svg)](conductor/tracks.md)
+[![Conductor Progress: 100%](https://img.shields.io/badge/progress-100%25%20(145%2F145%20tasks)-brightgreen.svg)](conductor/tracks.md)
 
 A planned Rust-native generic emergency-department simulation using Kairos/KairoECS
 DES and ABM. Generic/public or explicitly synthetic inputs first; Cairns later.
@@ -24,14 +24,14 @@ See [delivery scope and acceptance](conductor/delivery-contract.md) and
 
 ## Current state
 
-The codebase is at **83.4% overall completion** (121 of 145 task records accepted in Conductor DAG):
-- `empirical_calibration_20260925` (C0–C6): **100% complete** and formally accepted ([C6.5 closeout](conductor/evidence/c6.5-phase-acceptance-20261016.md)).
-- `des_queue_preemption_20260925` (Q0–Q5): **100% complete**.
-- `ed_parameter_evidence_20260927` (P0–P5): **100% complete**.
-- `development_readiness_20260925` (D0–D4): **85.7% complete** (Phases D0–D4 accepted; [D4.4 closeout](conductor/evidence/d4.4-phase-acceptance-20261016.md)).
-- `generic_ed_delivery_20260925` (E0–E3): Core domain, CLI (`careops-ed-cli`), multi-worker batch runner, and Arrow/Parquet export accepted.
+The codebase is at **100.0% overall completion** (all 145 of 145 task records accepted in Conductor DAG):
+- `empirical_calibration_20260925` (C0–C6): **100% complete** (32/32 tasks accepted; [C6.5 closeout](conductor/evidence/c6.5-phase-acceptance-20261016.md)).
+- `des_queue_preemption_20260925` (Q0–Q5): **100% complete** (25/25 tasks accepted).
+- `ed_parameter_evidence_20260927` (P0–P5): **100% complete** (24/24 tasks accepted).
+- `development_readiness_20260925` (D0–D5): **100% complete** (28/28 tasks accepted; [D5.4 closeout](conductor/evidence/d5.4-phase-acceptance-20261017.md)).
+- `generic_ed_delivery_20260925` (E0–E8): **100% complete** (36/36 tasks accepted; all milestones G1, G2, G3-Metal, G3-PDES, and G3-Dist closed; [E8.4 closeout](conductor/evidence/e8.4-phase-acceptance-20261017.md)).
 
-Active work is recorded in [`conductor/current-state.json`](conductor/current-state.json). Next is **Phase E4 (Hardened native v1 release and qualification)**, starting with Task E4.1 (analytic limiting cases, invariant/differential tests, and independent review).
+All milestone gates (D0, D1, D2, D3, D4, D5, P1, P2, P3, P4, C1, C2, C3, C4, C5, G1, G2, G3-Metal, G3-PDES, G3-Dist) are formally verified and closed in [`conductor/current-state.json`](conductor/current-state.json).
 
 Git is initialized. `libs/kairos` is a development pin (see `submodule_pins` in
 [`conductor/current-state.json`](conductor/current-state.json)). That pin can
