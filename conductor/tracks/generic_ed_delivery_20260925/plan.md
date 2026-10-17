@@ -214,7 +214,7 @@ resource interaction and reconcile all claims/messages with the serial oracle.
   Exercise crashes before/after checkpoint publication, corrupt snapshots
   and obsolete incarnation traffic; include independent-replication transport
   profiles without making multiple physical nodes a C5/E7 prerequisite. Accepted: [retained E8.3 evidence](../../evidence/e8.3-multinode-cluster-execution-20261017.md).
-- [ ] E8.4 Conductor — review and verify phase (workflow.md).
+- [x] E8.4 Conductor — review and verify phase (workflow.md). Accepted: [retained E8.4 acceptance](../../evidence/e8.4-phase-acceptance-20261017.md) and [phase evidence reconciliation](../../evidence/e8.4-phase-evidence-20261017.md).
 
 Exit: G3-distributed only for executed runtime profiles. Cloud deployment and
 browser WebGPU continue through existing 39/43/33 owner plans if needed; this phase
