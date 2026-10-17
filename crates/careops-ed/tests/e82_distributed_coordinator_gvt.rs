@@ -102,7 +102,11 @@ impl DistributedGvtCoordinator {
         }
 
         // 1. Verify global message balance (all in-flight messages accounted for)
-        let total_balance: i64 = self.pending_reports.values().map(|r| r.message_balance).sum();
+        let total_balance: i64 = self
+            .pending_reports
+            .values()
+            .map(|r| r.message_balance)
+            .sum();
         if total_balance != 0 {
             return Err(format!(
                 "Inconsistent cut: in-flight message balance != 0 (got {total_balance})"
@@ -164,12 +168,7 @@ impl ClusterRoutingDirectory {
             .ok_or_else(|| format!("Unknown destination LP {dest_lp:?}"))
     }
 
-    pub fn migrate_lp(
-        &mut self,
-        lp: LpId,
-        source: NodeId,
-        target: NodeId,
-    ) -> Result<(), String> {
+    pub fn migrate_lp(&mut self, lp: LpId, source: NodeId, target: NodeId) -> Result<(), String> {
         let current_owner = self.route_event(lp)?;
         if current_owner != source {
             return Err(format!(
