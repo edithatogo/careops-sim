@@ -42,7 +42,7 @@ platform/toolchain/provenance ([nextest guidance](https://nexte.st/docs/ci-featu
 
 ## D3: harden as behavior lands
 
-Use the pinned Rust 1.99.0 lane for active builds, tests, benchmarks and policy
+Use the pinned Rust 1.99.1 candidate lane for active builds, tests, benchmarks and policy
 checks. Miri and libFuzzer AddressSanitizer runtime jobs are unavailable under the
 current owner policy because they require nightly; prior dated-nightly results
 remain historical and are not current qualification. This unavailability does
@@ -203,7 +203,8 @@ locked workspace tests, doctests and Clippy execute. Setup, compiler mismatch,
 test failures, source drift and invalid terminal evidence remain unqualified.
 Receipts retain exact commands, exit codes, log hashes and source identity.
 
-This bounded candidate lane preserves the exact canonical Rust1.99.0 toolchain,
+This bounded candidate lane preserves the exact canonical toolchain declared in
+`rust-toolchain.toml`,
 Cargo lock, engine/submodule pins and ordinary native gates. It does not enable
 Miri/libFuzzer, change accepted native evidence, grant a licence or promote any
 candidate. A later exact-pin adoption must synchronize canonical policy, manifests
@@ -216,3 +217,13 @@ syntax and pedantic security lint. Real official discovery freezes Rust1.99.1,
 beta1.100.0-beta.7 and nightly1.101.0 with full compiler commits and dated manifest
 SHA256 verification. This is discovery and infrastructure evidence; actual
 candidate native execution and hosted current-head gates remain pending.
+
+
+### Coordinated compiler source proposal — 19 October 2026
+
+Rust 1.99.1 is synchronized across active CI, bootstrap and quality tools.
+Official manifest and supported-host checksum bindings are in the bootstrap
+profile. Historical runs above remain tied to their actual Rust 1.99.0 sources.
+The candidate requires its own current-head Linux/macOS and context checks;
+prior canary success does not establish integrated-source acceptance. The Cargo
+lock, upstream pins, immutable action SHAs and declared minimum remain unchanged.

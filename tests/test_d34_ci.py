@@ -30,17 +30,17 @@ class D34CiTests(unittest.TestCase):
 
         step = context[benchmark:retention]
         self.assertNotIn("if:", step)
-        self.assertIn("rustup toolchain install 1.99.0 --profile minimal", step)
+        self.assertIn("rustup toolchain install 1.99.1 --profile minimal", step)
         self.assertIn(
             "cargo build --locked --release --package careops-ed-cli",
             step,
         )
         for binding in (
-            'rustc_path="$(rustup which rustc --toolchain 1.99.0)"',
-            'rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"',
-            'cargo_path="$(rustup which cargo --toolchain 1.99.0)"',
+            'rustc_path="$(rustup which rustc --toolchain 1.99.1)"',
+            'rustdoc_path="$(rustup which rustdoc --toolchain 1.99.1)"',
+            'cargo_path="$(rustup which cargo --toolchain 1.99.1)"',
             'toolchain_bin="$(dirname "$rustc_path")"',
-            'export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"',
+            'export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.1 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"',
             'test "$(command -v rustc)" = "$rustc_path"',
             'test "$(command -v rustdoc)" = "$rustdoc_path"',
             'test "$(command -v cargo)" = "$cargo_path"',

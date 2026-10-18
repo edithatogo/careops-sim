@@ -12,6 +12,8 @@ CareOps Sim (`careops-ed` and `careops-ed-cli`) provides Tier 1 native support f
 
 ### 1.1 Tier 1 Primary Platforms
 
+Historical Rust 1.99.0 platform evidence is retained below; it does not establish current-revision container or workstation qualification.
+
 | Target Triple | Operating System | Architecture | Toolchain & MSRV | Execution Mode | Verification Status |
 |---|---|---|---|---|---|
 | `x86_64-unknown-linux-gnu` | Linux (glibc ≥ 2.31, Ubuntu 20.04+, Debian 11+, RHEL 8+) | x86-64 (AMD64) | Rust 1.99.0 (`stable`) | Local CPU (1–N cores) | **TIER 1 SUPPORTED** (CI & Container Verified) |
@@ -19,7 +21,7 @@ CareOps Sim (`careops-ed` and `careops-ed-cli`) provides Tier 1 native support f
 
 ### 1.2 Toolchain & Compiler Dependencies
 
-- **Rust Version**: Pin is Rust 1.99.0 (`rust-toolchain.toml` at repository root).
+- **Rust Version**: Pin is Rust 1.99.1 (`rust-toolchain.toml` at repository root).
 - **Minimum Supported Rust Version (MSRV)**: Rust 1.99.0 (`rust-version = "1.99"` in `Cargo.toml`).
 - **Cargo Resolver**: Version 2 (`resolver = "2"`).
 - **Submodule Dependencies**: Pinned Kairos engine (`libs/kairos`) at audited commit hash.

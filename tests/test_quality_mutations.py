@@ -147,7 +147,7 @@ class MutationGateTests(unittest.TestCase):
         self.assertEqual(validate(document)["total_mutants"], 116)
 
     def test_exact_runtime_resolved_cargo_path_must_be_supplied(self):
-        resolved = "/home/runner/.rustup/toolchains/1.99.0-x86_64-unknown-linux-gnu/bin/cargo"
+        resolved = "/home/runner/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/cargo"
         document = valid_outcomes()
         for row in document["outcomes"]:
             for item in row["phase_results"]:

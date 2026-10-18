@@ -19,26 +19,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      RUSTUP_TOOLCHAIN: 1.99.0
+      RUSTUP_TOOLCHAIN: 1.99.1
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
       - name: Install canonical Rust lane
-        run: rustup toolchain install 1.99.0 --profile minimal
+        run: rustup toolchain install 1.99.1 --profile minimal
       - name: Regenerate required workspace dependency changes
         id: resolve
         run: |
           mkdir -p .artifacts/ci-suite
-          rustup run 1.99.0 cargo update --workspace
+          rustup run 1.99.1 cargo update --workspace
           cp Cargo.lock .artifacts/ci-suite/Cargo.lock
       - name: Verify exact locked dependency resolution
         id: install
-        run: rustup run 1.99.0 cargo metadata --locked --format-version 1 > .artifacts/ci-suite/cargo-metadata.json
+        run: rustup run 1.99.1 cargo metadata --locked --format-version 1 > .artifacts/ci-suite/cargo-metadata.json
       - name: Exercise native workspace tests on regenerated lock
         id: tests
-        run: rustup run 1.99.0 cargo test --locked --workspace --lib --bins --tests
+        run: rustup run 1.99.1 cargo test --locked --workspace --lib --bins --tests
       - name: Audit regenerated resolution under existing source and licence policy
         id: audit
         run: |
