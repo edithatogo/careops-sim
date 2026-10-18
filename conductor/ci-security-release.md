@@ -111,3 +111,13 @@ qualification; no existing required/native gate is waived. Development runtime
 canaries, actual release SBOM/signatures and optional-interface qualification
 remain open suite work; this update does not reopen or recertify accepted MVP
 tasks or Kairos native releases.
+
+Local preparation evidence: five hash-locked packages install in a fresh exact
+Python3.14.8 environment, lock regeneration is byte-identical, and an altered
+candidate is refused by the actual guard. Dependency audit reports no known
+vulnerabilities; actionlint and pedantic Zizmor pass. A full670-case harness run
+found one stale artifact-pin assertion, now repaired to read the reviewed tool
+manifest while retaining failure-report preservation assertions. Targeted repair
+and actual workflow receipt/guard regressions pass. Fresh hosted full-suite and
+native gates, policy binary execution and protection readback remain required;
+no full current-head hosted qualification is inferred from these local results.

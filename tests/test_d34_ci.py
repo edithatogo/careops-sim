@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import re
 import unittest
@@ -59,10 +60,8 @@ class D34CiTests(unittest.TestCase):
         retention = context.split("- name: Retain D3.4 benchmark report", 1)[1]
         step = retention.split("      - name:", 1)[0]
         self.assertIn("if: always()", step)
-        self.assertIn(
-            "uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
-            step,
-        )
+        pins = json.loads((WORKFLOW.parents[2] / "tools/ci-tools.json").read_text())
+        self.assertIn("uses: actions/upload-artifact@" + pins["actions"]["upload-artifact"], step)
         self.assertIn("name: d34-benchmarks-${{ github.run_id }}", step)
         self.assertIn("path: .artifacts/ci/d34/report.json", step)
         self.assertIn("if-no-files-found: error", step)
