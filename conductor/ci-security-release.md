@@ -94,7 +94,7 @@ agent jobs from fighting over files. No jobs are enabled in this planning audit.
 
 ## Scheduled schema development qualification — 19 October 2026
 
-The schema development workflow runs weekly or manually, independently of the
+The schema development candidate tests run weekly or manually, independently of the
 canonical Rust 1.99.0 lane. It tests exact Python 3.14.8 and 3.15.0, plus a published
 next-runtime preview selected from an immutable discovery manifest. An absent
 preview is recorded as unavailable; it is not a successful preview execution.
@@ -107,6 +107,11 @@ markers cannot silently exclude a target dependency when the audit tools run on
 Python 3.14.8. Execution receipts bind runtime, package inventory and lock hashes;
 setup failures, missing evidence and failed tests cannot qualify a candidate.
 Four regression tests exercise the actual preparation, discovery and receipt code.
+The first main dispatch exposed a missing required discovery CLI argument before
+any candidate execution. The corrected call passes the explicit GitHub output
+file. Relevant PRs now exercise discovery against the pinned shared tool; only
+schedule/manual events execute development dependency candidates. An early
+discovery failure is setup failure, not successful preview qualification.
 
 Candidate artifacts never promote versions or change native objects. Promotion
 requires a separately reviewed exact-pin update and all applicable hosted checks.
