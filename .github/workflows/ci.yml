@@ -23,7 +23,7 @@ jobs:
       context: ${{ steps.detect.outputs.context }}
       policy: ${{ steps.detect.outputs.policy }}
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -49,7 +49,7 @@ jobs:
     if: needs.scope.outputs.native == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
@@ -80,7 +80,7 @@ jobs:
     if: needs.scope.outputs.native == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
@@ -115,7 +115,7 @@ jobs:
         os: [ubuntu-24.04, macos-15]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
@@ -164,7 +164,7 @@ jobs:
           python3 tools/nextest_ci.py --toolchain 1.99.0
       - name: Retain bounded failed native log
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: native-failure-${{ matrix.os }}
           path: |
@@ -186,7 +186,7 @@ jobs:
     if: needs.scope.outputs.native == 'true'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
@@ -229,7 +229,7 @@ jobs:
           cargo test --workspace --lib --bins --tests --locked 2>&1 | tee .artifacts/ci/default/tests.log
       - name: Retain bounded failed default-lane logs
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: default-failure-linux-x86_64
           path: |
@@ -246,7 +246,7 @@ jobs:
     if: needs.scope.outputs.native == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
@@ -277,7 +277,7 @@ jobs:
     if: needs.scope.outputs.context == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -291,7 +291,7 @@ jobs:
       - name: Install locked harness dependencies
         run: |
           python3 -m venv .artifacts/ci/harness-venv
-          .artifacts/ci/harness-venv/bin/pip install -r requirements-schema-validation.txt
+          .artifacts/ci/harness-venv/bin/pip install --require-hashes --only-binary=:all: -r requirements-schema-validation.lock
       - name: Run harness and incompatible-pin regressions
         run: .artifacts/ci/harness-venv/bin/python -m unittest discover -s tests -v
       - name: Check reviewed support and flaky-test inventory
@@ -314,7 +314,7 @@ jobs:
           python3 tools/ed_benchmarks.py --binary target/release/careops-ed --output .artifacts/ci/d34/report.json
       - name: Retain D3.4 benchmark report
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: d34-benchmarks-${{ github.run_id }}
           path: .artifacts/ci/d34/report.json
@@ -380,7 +380,7 @@ jobs:
           python3 tools/quality_mutations.py --outcomes .artifacts/ci/d33/mutations/mutants.out/outcomes.json --source crates/careops-ed/src/lib.rs --cargo "$cargo_path"
       - name: Retain bounded D3.3 quality evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: d33-quality-${{ github.run_id }}
           path: |
@@ -400,7 +400,7 @@ jobs:
     if: needs.scope.outputs.policy == 'true'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -427,7 +427,7 @@ jobs:
           cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check
       - name: Retain bounded failed policy logs
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: policy-failure
           path: .artifacts/ci/policy/

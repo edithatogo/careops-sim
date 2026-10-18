@@ -1,0 +1,102 @@
+name: Schema dependency lock qualification
+on:
+  schedule:
+    - cron: '23 7 * * 4'
+  workflow_dispatch:
+  pull_request:
+    paths: ['requirements-schema-validation.txt', 'requirements-schema-validation.lock', '.github/workflows/schema-lock-refresh.yml', '.github/workflows/ci.yml']
+  push:
+    branches: [main]
+    paths: ['requirements-schema-validation.txt', 'requirements-schema-validation.lock', '.github/workflows/schema-lock-refresh.yml', '.github/workflows/ci.yml']
+permissions:
+  contents: read
+concurrency:
+  group: schema-lock-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  qualify:
+    name: Regenerate and qualify hashed schema lock
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          submodules: true
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: '0.13.1'
+          enable-cache: false
+      - name: Regenerate exact source declarations with universal integrity hashes
+        id: resolve
+        run: |
+          mkdir -p .artifacts/ci-suite
+          uv pip compile requirements-schema-validation.txt --python-version 3.14 --universal --generate-hashes --no-header --no-annotate --output-file .artifacts/ci-suite/requirements-schema-validation.lock
+      - name: Install candidate in an isolated exact runtime
+        id: install
+        run: |
+          uv venv --python 3.14.8 .artifacts/ci-suite/schema-venv
+          uv pip install --python .artifacts/ci-suite/schema-venv/bin/python --require-hashes --only-binary=:all: -r .artifacts/ci-suite/requirements-schema-validation.lock
+      - name: Exercise every affected schema validator and negative fixture group
+        id: tests
+        run: |
+          for pattern in test_source_packet_record.py test_source_verification_schema.py test_ed_profile_pack_schema.py test_des_catalogue.py test_source_acceptance.py test_parameter_validation.py test_ed_capacity.py test_ed_profile_pack_negative_cases.py test_abm_catalogue.py; do
+            .artifacts/ci-suite/schema-venv/bin/python -m unittest discover -s tests -p "$pattern" -v
+          done
+      - name: Read qualified immutable audit tool lock
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: edithatogo/careops
+          ref: 1373e971013724dfaa268e215a45505bb89300cd
+          path: .artifacts/ci-suite/policy
+          persist-credentials: false
+          submodules: false
+      - name: Audit schema dependencies using hash-locked qualification tools
+        id: audit
+        run: |
+          uv venv --python 3.15.0 .artifacts/ci-suite/audit-venv
+          uv pip install --python .artifacts/ci-suite/audit-venv/bin/python --require-hashes --only-binary=:all: -r .artifacts/ci-suite/policy/requirements-ci.lock
+          .artifacts/ci-suite/audit-venv/bin/python -m pip_audit --disable-pip --no-deps -r .artifacts/ci-suite/requirements-schema-validation.lock
+      - name: Refuse uncommitted lock repair in source checks
+        id: committed
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        run: cmp requirements-schema-validation.lock .artifacts/ci-suite/requirements-schema-validation.lock
+      - name: Record actual terminal outcomes without promotion
+        if: always()
+        env:
+          RESOLVE_OUTCOME: ${{ steps.resolve.outcome }}
+          INSTALL_OUTCOME: ${{ steps.install.outcome }}
+          TEST_OUTCOME: ${{ steps.tests.outcome }}
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+          COMMITTED_OUTCOME: ${{ steps.committed.outcome }}
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path('.artifacts/ci-suite')
+          root.mkdir(parents=True, exist_ok=True)
+          lock = root / 'requirements-schema-validation.lock'
+          value = {
+              'sourceCommit': os.environ['GITHUB_SHA'],
+              'resolveOutcome': os.environ['RESOLVE_OUTCOME'],
+              'installOutcome': os.environ['INSTALL_OUTCOME'],
+              'testOutcome': os.environ['TEST_OUTCOME'],
+              'auditOutcome': os.environ['AUDIT_OUTCOME'],
+              'committedLockOutcome': os.environ['COMMITTED_OUTCOME'],
+              'lockSha256': hashlib.sha256(lock.read_bytes()).hexdigest() if lock.exists() else None,
+              'promoted': False,
+              'scope': 'nine affected schema regression groups; full harness and dedicated Rust gates remain separate',
+          }
+          (root / 'qualification.json').write_text(json.dumps(value, indent=2) + '\n')
+          PYCODE
+      - name: Preserve regenerated lock and execution receipt
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: schema-lock-candidate-${{ github.run_id }}
+          path: |
+            .artifacts/ci-suite/requirements-schema-validation.lock
+            .artifacts/ci-suite/qualification.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
