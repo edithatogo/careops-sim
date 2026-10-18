@@ -182,6 +182,16 @@ class RustDevelopmentCanary(unittest.TestCase):
         with self.assertRaises(ValueError):
             canary.source_snapshot(root)
 
+    def test_real_bulk_source_snapshot_has_bounded_input_and_output(self):
+        root = self.repository('large-checkout')
+        for index in range(500):
+            (root / (str(index).zfill(4) + '-' + 'long-source-name-' * 8 + '.rs')).write_text('public fictional source')
+        self.git(root, 'add', '.')
+        self.git(root, 'commit', '-qm', 'fictional larger source tree')
+        result = subprocess.run([os.sys.executable, '-c', 'from pathlib import Path; import sys; from tools.rust_development_canary import source_snapshot; print(source_snapshot(Path(sys.argv[1]))["trackedFileCount"])', str(root)], cwd=self.previous, capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.strip(), '501')
+
     def test_real_git_snapshot_refuses_changed_submodule_commit_or_source(self):
         root = self.repository('parent')
         child = self.repository('upstream')

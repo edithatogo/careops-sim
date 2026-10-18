@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import tempfile
 import tomllib
 import urllib.request
 
@@ -93,8 +94,8 @@ def discover(output: Path, github_output: Path, baseline: str) -> int:
 
 def source_snapshot(root: Path | None = None) -> dict:
     root = (Path.cwd() if root is None else root).resolve()
-    def git(*arguments, input=None):
-        return subprocess.check_output(['git', '-C', str(root), *arguments], text=True, input=input)
+    def git(*arguments):
+        return subprocess.check_output(['git', '-C', str(root), *arguments], text=True, stdin=subprocess.DEVNULL, timeout=60)
     if Path(git('rev-parse', '--show-toplevel').strip()).resolve() != root:
         raise ValueError('Source checkout is missing or uninitialized')
     if git('status', '--porcelain', '--untracked-files=normal', '--ignore-submodules=none', '--', '.', ':(exclude).artifacts/rust-canary').strip():
@@ -134,7 +135,11 @@ def source_snapshot(root: Path | None = None) -> dict:
             if any(ord(character) < 32 for character in name):
                 raise ValueError('Unsupported control character in source path')
             expected_blobs[name] = expected
-    actual_blobs = git('hash-object', '--stdin-paths', input=''.join(json.dumps(name, ensure_ascii=False) + '\n' for name in expected_blobs)).splitlines()
+    # A file avoids duplex pipe stalls for large checkouts on supported hosts.
+    with tempfile.TemporaryFile(mode='w+t', encoding='utf-8') as paths:
+        paths.write(''.join(json.dumps(name, ensure_ascii=False) + '\n' for name in expected_blobs))
+        paths.seek(0)
+        actual_blobs = subprocess.check_output(['git', '-C', str(root), 'hash-object', '--stdin-paths'], stdin=paths, text=True, timeout=60).splitlines()
     if actual_blobs != list(expected_blobs.values()):
         raise ValueError('Actual source bytes differ from the pinned Git blobs')
     return {'commit': git('rev-parse', 'HEAD').strip(), 'trackedFileCount': len(tracked),
