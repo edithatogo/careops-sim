@@ -92,6 +92,24 @@ maintainer intervention rate. Fix proposals stay scoped; secrets/permissions/
 publishing changes do not auto-merge. Pause/retry/lease controls prevent repeated
 agent jobs from fighting over files. No jobs are enabled in this planning audit.
 
+## Actual native CLI package qualification — 19 October 2026
+
+The existing release rehearsal can substitute a shell stub when a built CLI is
+missing. Its fixtures and historical evidence are retained, but cannot establish
+an actual native release. The native release workflow instead compiles the CLI
+once with locked dependencies and Rust 1.99.0, packages those exact executable
+bytes with the source licence and nominal example, then unpacks and executes
+help, validation and a seeded simulation outside the source tree. Missing files,
+scripts, links and existing output revisions are refused by the new packager.
+
+A qualified immutable CareOps tool inventories every archive file. The workspace
+Cargo.lock is retained separately as source-resolution evidence, not a claim of
+exact binary dependency closure. Main-only OIDC jobs sign the previously built
+archive and its SPDX inventory, then verify repository, workflow, source, signer
+and main ref. PRs do not receive signing permissions. Hosted build, consumer and
+signature results are required before claiming qualification; wider platform,
+reproducibility and operational release gates remain separate.
+
 ## Suite source CI maintenance — 19 October 2026
 
 The CareOps suite CI goal owns this isolated source-workflow update. Retain Rust
