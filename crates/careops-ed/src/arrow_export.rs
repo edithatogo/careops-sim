@@ -687,7 +687,7 @@ pub fn generate_arrow_export_bundle(
         resumed_from_checkpoint: resumed,
         checkpoint_epoch_ms: chk_epoch,
         spatial_revision: spatial_revision.clone(),
-        toolchain: "rustc 1.99.0".to_string(),
+        toolchain: env!("CAREOPS_ED_BUILD_RUSTC").to_string(),
         completed_epoch_ms: batch_doc.completed_at_epoch_ms,
     };
 
