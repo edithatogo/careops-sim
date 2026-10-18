@@ -1,0 +1,93 @@
+name: Cargo dependency lock qualification
+on:
+  schedule:
+    - cron: '11 7 * * 3'
+  workflow_dispatch:
+  pull_request:
+    paths: ['Cargo.toml', 'Cargo.lock', 'crates/**/Cargo.toml', 'libs/kairos', '.github/workflows/cargo-lock-refresh.yml']
+  push:
+    branches: [main]
+    paths: ['Cargo.toml', 'Cargo.lock', 'crates/**/Cargo.toml', 'libs/kairos', '.github/workflows/cargo-lock-refresh.yml']
+permissions:
+  contents: read
+concurrency:
+  group: cargo-lock-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  qualify:
+    name: Regenerate and qualify canonical Cargo lock
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      RUSTUP_TOOLCHAIN: 1.99.0
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - name: Install canonical Rust lane
+        run: rustup toolchain install 1.99.0 --profile minimal
+      - name: Regenerate required workspace dependency changes
+        id: resolve
+        run: |
+          mkdir -p .artifacts/ci-suite
+          rustup run 1.99.0 cargo update --workspace
+          cp Cargo.lock .artifacts/ci-suite/Cargo.lock
+      - name: Verify exact locked dependency resolution
+        id: install
+        run: rustup run 1.99.0 cargo metadata --locked --format-version 1 > .artifacts/ci-suite/cargo-metadata.json
+      - name: Exercise native workspace tests on regenerated lock
+        id: tests
+        run: rustup run 1.99.0 cargo test --locked --workspace --lib --bins --tests
+      - name: Audit regenerated resolution under existing source and licence policy
+        id: audit
+        run: |
+          python3 tools/install_ci_tools.py
+          .artifacts/ci/bin/cargo-deny --version
+          .artifacts/ci/bin/cargo-deny --manifest-path Cargo.toml --locked check
+      - name: Refuse uncommitted lock repair in source checks
+        id: committed
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        run: |
+          git show HEAD:Cargo.lock > .artifacts/ci-suite/committed-Cargo.lock
+          cmp .artifacts/ci-suite/committed-Cargo.lock .artifacts/ci-suite/Cargo.lock
+      - name: Record actual terminal outcomes without promotion
+        if: always()
+        env:
+          RESOLVE_OUTCOME: ${{ steps.resolve.outcome }}
+          INSTALL_OUTCOME: ${{ steps.install.outcome }}
+          TEST_OUTCOME: ${{ steps.tests.outcome }}
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+          COMMITTED_OUTCOME: ${{ steps.committed.outcome }}
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path('.artifacts/ci-suite')
+          root.mkdir(parents=True, exist_ok=True)
+          lock = root / 'Cargo.lock'
+          value = {
+              'sourceCommit': os.environ['GITHUB_SHA'],
+              'resolveOutcome': os.environ['RESOLVE_OUTCOME'],
+              'installOutcome': os.environ['INSTALL_OUTCOME'],
+              'testOutcome': os.environ['TEST_OUTCOME'],
+              'auditOutcome': os.environ['AUDIT_OUTCOME'],
+              'committedLockOutcome': os.environ['COMMITTED_OUTCOME'],
+              'lockSha256': hashlib.sha256(lock.read_bytes()).hexdigest() if lock.exists() else None,
+              'promoted': False,
+              'scope': 'canonical Rust workspace tests and dependency policy; other domain gates remain independent',
+          }
+          (root / 'qualification.json').write_text(json.dumps(value, indent=2) + '\n')
+          PYCODE
+      - name: Preserve regenerated lock and execution receipt
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: cargo-lock-candidate-${{ github.run_id }}
+          path: |
+            .artifacts/ci-suite/Cargo.lock
+            .artifacts/ci-suite/cargo-metadata.json
+            .artifacts/ci-suite/qualification.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14

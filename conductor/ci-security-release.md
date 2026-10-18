@@ -92,6 +92,25 @@ maintainer intervention rate. Fix proposals stay scoped; secrets/permissions/
 publishing changes do not auto-merge. Pause/retry/lease controls prevent repeated
 agent jobs from fighting over files. No jobs are enabled in this planning audit.
 
+## Cargo lock regeneration and SHA-2 qualification — 19 October 2026
+
+Renovate PR158 changed the SHA-2 declaration without regenerating Cargo.lock;
+its locked native checks correctly refused that stale source. The official
+registry identifies 0.11.1 as the latest release including development versions.
+The candidate pins that exact version, uses Rust 1.99.0 and updates only workspace
+resolution and newly required transitive packages; the Kairos pin is unchanged.
+
+The Cargo lock workflow automatically regenerates required resolution on source
+PRs, main pushes, weekly schedules and manual dispatch. It runs native tests and
+the existing dependency policy, retains the exact candidate and honest stage
+receipt even on failure, and refuses source checks whose committed lock differs.
+It never commits a repair or promotes a dependency. Three actual-workflow
+regressions exercise failure receipts, lock-byte binding and stale-lock refusal.
+The first hosted full harness found the rollback validator still expecting
+SHA-2 0.10.9. Advance only its exact SHA-2 pin to 0.11.1 with the reviewed
+manifest/lock candidate; existing tamper/refusal and restoration tests remain.
+All applicable current-head native and source gates remain required before merge.
+
 ## Scheduled schema development qualification — 19 October 2026
 
 The schema development candidate tests run weekly or manually, independently of the
