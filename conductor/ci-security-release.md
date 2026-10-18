@@ -131,3 +131,20 @@ Explicitly select the already-qualified3.14.8 schema runtime in context and the
 isolated audit environment. Preserve hashes, wheel-only installation and exact
 tool versions; do not treat these setup failures as advisory/test failures or
 claim current-head hosted qualification before rerun.
+
+## Next exact schema backend candidate
+
+Official PyPI metadata identifies RPDS2026.9.1 as newer than the existing
+2026.5.1 schema backend; the other four exact schema packages have no newer
+published version or later development candidate in this observation. Prepare
+only that RPDS pin and regenerate the universal integrity lock in an isolated
+worktree. Qualify all nine schema validator groups and dependency audit with
+verified wheels on exactPython3.14.8; retain the other four package versions.
+This candidate follows PR159 and is not adopted by that source-CI repair. Full
+current-head hosted/domain checks and normal protected merge remain necessary
+before promotion; no Rust engine/submodule or native acceptance change implied.
+
+Candidate local evidence: a fresh verified-wheel Python3.14.8 install selects
+RPDS2026.9.1 while preserving the other four package versions. All81cases across
+the nine affected schema groups pass, and dependency audit reports no known
+vulnerabilities. Hosted current-head/full-domain qualification remains pending.
