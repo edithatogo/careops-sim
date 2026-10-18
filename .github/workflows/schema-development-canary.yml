@@ -1,5 +1,7 @@
 name: Schema development candidates
 on:
+  pull_request:
+    paths: ['.github/workflows/schema-development-canary.yml', 'tests/test_schema_canary.py']
   schedule:
     - cron: '47 8 * * 5'
   workflow_dispatch:
@@ -40,7 +42,7 @@ jobs:
           [[ "$revision" =~ ^[a-f0-9]{40}$ ]]
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/actions/python-versions/$revision/versions-manifest.json" -o .artifacts/ci-preview/manifest.json
           platform_version="$(python -c 'import platform; print(platform.freedesktop_os_release()["VERSION_ID"])')"
-          python .artifacts/ci-preview-policy/portfolio-scripts/ci_delivery.py runtime --platform-version "$platform_version" --manifest .artifacts/ci-preview/manifest.json --manifest-revision "$revision" --output .artifacts/ci-preview/discovery.json
+          python .artifacts/ci-preview-policy/portfolio-scripts/ci_delivery.py runtime --platform-version "$platform_version" --manifest .artifacts/ci-preview/manifest.json --manifest-revision "$revision" --output .artifacts/ci-preview/discovery.json --github-output "$GITHUB_OUTPUT"
           python - <<'PYCODE'
           import json, os
           from pathlib import Path
@@ -67,6 +69,7 @@ jobs:
   qualify:
     name: Schema candidate (${{ matrix.python }})
     needs: discover
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
