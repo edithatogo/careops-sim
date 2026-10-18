@@ -91,3 +91,43 @@ freshness, test duration, flaky-rate, performance drift, unresolved risks and
 maintainer intervention rate. Fix proposals stay scoped; secrets/permissions/
 publishing changes do not auto-merge. Pause/retry/lease controls prevent repeated
 agent jobs from fighting over files. No jobs are enabled in this planning audit.
+
+## Suite source CI maintenance — 19 October 2026
+
+The CareOps suite CI goal owns this isolated source-workflow update. Retain Rust
+1.99.0 bindings, Kairos/Conductor pins, domain tests and the fail-closed Required
+checks aggregate. Adopt immutable current checkout/artifact actions and reviewed
+checksum-bound Zizmor1.31.1. Add the qualified immutable shared source-security
+workflow alongside existing Rust dependency/licence and scoped policy checks.
+
+Install schema-validation tools from a universal hash lock. PR/push qualification
+regenerates the exact declarations, installs only verified wheels in an isolated
+Python3.14.8 environment, runs all nine affected schema regression groups, audits dependencies using the immutable suite
+audit-tool hash lock, and refuses uncommitted lock
+repair. Scheduled/manual runs retain candidate lock and actual stage outcomes,
+without source promotion. The existing full harness/native gates remain intact;
+weekly lock qualification avoids duplicating unrelated native builds. New check protection follows successful hosted
+qualification; no existing required/native gate is waived. Development runtime
+canaries, actual release SBOM/signatures and optional-interface qualification
+remain open suite work; this update does not reopen or recertify accepted MVP
+tasks or Kairos native releases.
+
+Local preparation evidence: five hash-locked packages install in a fresh exact
+Python3.14.8 environment, lock regeneration is byte-identical, and an altered
+candidate is refused by the actual guard. Dependency audit reports no known
+vulnerabilities; actionlint and pedantic Zizmor pass. A full670-case harness run
+found one stale artifact-pin assertion, now repaired to read the reviewed tool
+manifest while retaining failure-report preservation assertions. Targeted repair
+and actual workflow receipt/guard regressions pass. Fresh hosted full-suite and
+native gates, policy binary execution and protection readback remain required;
+no full current-head hosted qualification is inferred from these local results.
+
+First hosted PR159 result: Rust/Linux/macOS tests, fmt/clippy/default/doctest,
+policy and shared security passed. Context failed before tests because the
+runner-selected Python3.12 required a conditional dependency outside the3.14
+lock; schema qualification passed its81cases but audit-tool setup failed because
+pinned PyYAML6.0.3 has no usable Python3.15 wheel under wheel-only installation.
+Explicitly select the already-qualified3.14.8 schema runtime in context and the
+isolated audit environment. Preserve hashes, wheel-only installation and exact
+tool versions; do not treat these setup failures as advisory/test failures or
+claim current-head hosted qualification before rerun.
