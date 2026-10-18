@@ -192,3 +192,27 @@ Candidate local evidence: a fresh verified-wheel Python3.14.8 install selects
 RPDS2026.9.1 while preserving the other four package versions. All81cases across
 the nine affected schema groups pass, and dependency audit reports no known
 vulnerabilities. Hosted current-head/full-domain qualification remains pending.
+
+## Isolated Rust development qualification — 19 October 2026
+
+The suite CI goal adds a separate weekly/manual and source-PR canary for newer
+stable patches, beta and nightly compilers. Official manifests are frozen by date,
+SHA256 and full compiler commit. Qualification re-fetches the dated manifest and
+requires the installed release, compiler commit and native host to match before
+locked workspace tests, doctests and Clippy execute. Setup, compiler mismatch,
+test failures, source drift and invalid terminal evidence remain unqualified.
+Receipts retain exact commands, exit codes, log hashes and source identity.
+
+This bounded candidate lane preserves the exact canonical Rust1.99.0 toolchain,
+Cargo lock, engine/submodule pins and ordinary native gates. It does not enable
+Miri/libFuzzer, change accepted native evidence, grant a licence or promote any
+candidate. A later exact-pin adoption must synchronize canonical policy, manifests
+and CI and pass all affected current-head checks. The existing single-file
+Rust1.99.1 proposal fails the maintenance scheduler's canonical-pin check; that
+failure is not evidence of a compiler or simulation regression.
+
+Local preparation passes9identity/receipt/setup/test/drift regressions, workflow
+syntax and pedantic security lint. Real official discovery freezes Rust1.99.1,
+beta1.100.0-beta.7 and nightly1.101.0 with full compiler commits and dated manifest
+SHA256 verification. This is discovery and infrastructure evidence; actual
+candidate native execution and hosted current-head gates remain pending.
