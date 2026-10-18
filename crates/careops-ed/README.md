@@ -7,7 +7,7 @@ triage/assessment, diagnostics, treatment, and disposition. Inputs are
 synthetic. The crate does not assert clinical validity, and it is not the E2
 headless MVP or a release-qualified ED simulation.
 
-The workspace toolchain is Rust 1.99.0 (`rust-toolchain.toml` at the repository
+The workspace toolchain is Rust 1.99.1 (`rust-toolchain.toml` at the repository
 root; `Cargo.toml` `rust-version` is `1.99`). From the repository root:
 
 ```sh
@@ -28,9 +28,9 @@ cargo test --locked -p careops-ed
 cargo test --locked -p careops-ed-cli
 ```
 
-The workspace MSRV is Rust 1.99, matching `rust-version` and the 1.99.0
-toolchain pin. A compatible `Cargo.lock` is committed so that toolchain can
-reproduce dependency resolution.
+The declared minimum is Rust 1.99 (`rust-version`); the exact development and
+CI toolchain pin is Rust 1.99.1. A compatible `Cargo.lock` is committed so the
+pinned toolchain can reproduce dependency resolution.
 
 The one-patient example uses P0's proposed capacity/location schema v3. E0
 only runs resource buckets whose open and staffed counts are known. Optional
@@ -56,7 +56,7 @@ cargo run --locked -p careops-ed-cli -- export nominal_run.json --format csv --o
 
 Detailed guides and specifications:
 - [Fresh User Walkthrough & Onboarding Guide](../../docs/user-walkthrough.md): Complete end-to-end user journey with editing, execution, comparison, and troubleshooting.
-- [Support Matrix & Schema Migration Policy](../../docs/support-matrix.md): Tier 1 platform support (`x86_64-unknown-linux-gnu`, `aarch64-apple-darwin`, Rust 1.99.0) and explicit out-of-scope boundaries.
+- [Support Matrix & Schema Migration Policy](../../docs/support-matrix.md): Historical platform results (`x86_64-unknown-linux-gnu`, `aarch64-apple-darwin`), the current exact toolchain pin and explicit out-of-scope boundaries.
 - [Delivery Contract Specification](../../conductor/delivery-contract.md): Stage 2 qualification requirements.
 
 Controlled capacity comparison:
