@@ -89,7 +89,8 @@ class BootstrapTests(unittest.TestCase):
         self.assertIsNone(bootstrap.detected_host("Linux", "aarch64"))
 
     def test_core_suite_checks_toolchain_then_runs_five_locked_packages(self):
-        with patch.object(bootstrap, "check") as check, \
+        with patch.object(bootstrap, "compiler_environment", return_value=("/pinned/bin/cargo", {"RUSTC": "/pinned/bin/rustc"})), \
+             patch.object(bootstrap, "check") as check, \
              patch.object(bootstrap, "KAIROS_PATH") as kairos, \
              patch.object(bootstrap.subprocess, "run") as run:
             kairos.__truediv__.return_value.is_file.return_value = True
@@ -97,13 +98,46 @@ class BootstrapTests(unittest.TestCase):
             bootstrap.test_core()
         check.assert_called_once()
         command = run.call_args.args[0]
-        self.assertEqual(command[:5], ["rustup", "run", "1.99.0", "cargo", "test"])
+        self.assertEqual(command[:3], ["/pinned/bin/cargo", "test", "--locked"])
+        self.assertEqual(run.call_args.kwargs["env"]["RUSTC"], "/pinned/bin/rustc")
         self.assertIn("--locked", command)
         self.assertEqual(
             [command[index + 1] for index, value in enumerate(command[:-1]) if value == "-p"],
             list(bootstrap.CORE_PACKAGES),
         )
         self.assertEqual(run.call_args.kwargs["cwd"], kairos)
+
+    def test_compiler_binding_overrides_unrelated_path_and_compiler(self):
+        def resolve(command, **kwargs):
+            return type("Result", (), {"returncode": 0, "stdout": "/pinned/bin/" + command[-1] + "\n"})()
+        with patch.object(bootstrap.shutil, "which", return_value="/safe/rustup"), \
+             patch.object(bootstrap.subprocess, "run", side_effect=resolve), \
+             patch.dict(bootstrap.os.environ, {"PATH": "/other/bin", "RUSTC": "/other/rustc"}):
+            cargo, environment = bootstrap.compiler_environment("1.99.0")
+        self.assertEqual(cargo, "/pinned/bin/cargo")
+        self.assertEqual(environment["RUSTC"], "/pinned/bin/rustc")
+        self.assertEqual(environment["RUSTDOC"], "/pinned/bin/rustdoc")
+        self.assertEqual(environment["RUSTUP_TOOLCHAIN"], "1.99.0")
+        self.assertEqual(environment["PATH"].split(bootstrap.os.pathsep)[0], "/pinned/bin")
+
+    def test_invalid_tool_resolution_is_refused(self):
+        for code, output in ((1, "/pinned/bin/cargo"), (0, "cargo"),
+                             (0, "/pinned/bin/not-cargo"), (0, "")):
+            with self.subTest(code=code, output=output), \
+                 patch.object(bootstrap.shutil, "which", return_value="/safe/rustup"), \
+                 patch.object(bootstrap.subprocess, "run", return_value=type(
+                     "Result", (), {"returncode": code, "stdout": output})()):
+                with self.assertRaisesRegex(bootstrap.BootstrapError, "resolve pinned cargo"):
+                    bootstrap.compiler_environment("1.99.0")
+
+    def test_mixed_compiler_directories_are_refused(self):
+        def resolve(command, **kwargs):
+            directory = "/other/bin/" if command[-1] == "rustc" else "/pinned/bin/"
+            return type("Result", (), {"returncode": 0, "stdout": directory + command[-1]})()
+        with patch.object(bootstrap.shutil, "which", return_value="/safe/rustup"), \
+             patch.object(bootstrap.subprocess, "run", side_effect=resolve):
+            with self.assertRaisesRegex(bootstrap.BootstrapError, "share one toolchain"):
+                bootstrap.compiler_environment("1.99.0")
 
     def test_core_suite_reports_submodule_setup_instructions(self):
         with patch.object(bootstrap, "check"), \
