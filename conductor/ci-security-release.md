@@ -106,6 +106,9 @@ the existing dependency policy, retains the exact candidate and honest stage
 receipt even on failure, and refuses source checks whose committed lock differs.
 It never commits a repair or promotes a dependency. Three actual-workflow
 regressions exercise failure receipts, lock-byte binding and stale-lock refusal.
+The first hosted full harness found the rollback validator still expecting
+SHA-2 0.10.9. Advance only its exact SHA-2 pin to 0.11.1 with the reviewed
+manifest/lock candidate; existing tamper/refusal and restoration tests remain.
 All applicable current-head native and source gates remain required before merge.
 
 ## Suite source CI maintenance — 19 October 2026
