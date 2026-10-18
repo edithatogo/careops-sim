@@ -54,7 +54,7 @@ jobs:
       - name: Audit schema dependencies using hash-locked qualification tools
         id: audit
         run: |
-          uv venv --python 3.15.0 .artifacts/ci-suite/audit-venv
+          uv venv --python 3.14.8 .artifacts/ci-suite/audit-venv
           uv pip install --python .artifacts/ci-suite/audit-venv/bin/python --require-hashes --only-binary=:all: -r .artifacts/ci-suite/policy/requirements-ci.lock
           .artifacts/ci-suite/audit-venv/bin/python -m pip_audit --disable-pip --no-deps -r .artifacts/ci-suite/requirements-schema-validation.lock
       - name: Refuse uncommitted lock repair in source checks

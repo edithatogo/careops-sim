@@ -121,3 +121,13 @@ manifest while retaining failure-report preservation assertions. Targeted repair
 and actual workflow receipt/guard regressions pass. Fresh hosted full-suite and
 native gates, policy binary execution and protection readback remain required;
 no full current-head hosted qualification is inferred from these local results.
+
+First hosted PR159 result: Rust/Linux/macOS tests, fmt/clippy/default/doctest,
+policy and shared security passed. Context failed before tests because the
+runner-selected Python3.12 required a conditional dependency outside the3.14
+lock; schema qualification passed its81cases but audit-tool setup failed because
+pinned PyYAML6.0.3 has no usable Python3.15 wheel under wheel-only installation.
+Explicitly select the already-qualified3.14.8 schema runtime in context and the
+isolated audit environment. Preserve hashes, wheel-only installation and exact
+tool versions; do not treat these setup failures as advisory/test failures or
+claim current-head hosted qualification before rerun.
