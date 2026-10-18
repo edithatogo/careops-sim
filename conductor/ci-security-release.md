@@ -111,6 +111,26 @@ SHA-2 0.10.9. Advance only its exact SHA-2 pin to 0.11.1 with the reviewed
 manifest/lock candidate; existing tamper/refusal and restoration tests remain.
 All applicable current-head native and source gates remain required before merge.
 
+## Scheduled schema development qualification — 19 October 2026
+
+The schema development workflow runs weekly or manually, independently of the
+canonical Rust 1.99.0 lane. It tests exact Python 3.14.8 and 3.15.0, plus a published
+next-runtime preview selected from an immutable discovery manifest. An absent
+preview is recorded as unavailable; it is not a successful preview execution.
+
+Candidate declarations are isolated from source pins and resolved with prereleases
+allowed, universal integrity hashes and wheel-only installation. Nine affected
+schema regression groups execute on each actual candidate interpreter. Security
+auditing uses that interpreter's installed distribution inventory, so environment
+markers cannot silently exclude a target dependency when the audit tools run on
+Python 3.14.8. Execution receipts bind runtime, package inventory and lock hashes;
+setup failures, missing evidence and failed tests cannot qualify a candidate.
+Four regression tests exercise the actual preparation, discovery and receipt code.
+
+Candidate artifacts never promote versions or change native objects. Promotion
+requires a separately reviewed exact-pin update and all applicable hosted checks.
+This schema-only lane does not qualify a Rust engine or native release.
+
 ## Suite source CI maintenance — 19 October 2026
 
 The CareOps suite CI goal owns this isolated source-workflow update. Retain Rust
