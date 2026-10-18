@@ -18,18 +18,21 @@ jobs:
     outputs:
       matrix: ${{ steps.discover.outputs.matrix }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - id: source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Read qualified discovery tooling
+        id: policy
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: edithatogo/careops
-          ref: 1373e971013724dfaa268e215a45505bb89300cd
+          ref: f0e8db252b181955d31185f1ccdd1e77dee1f5f9
           path: .artifacts/ci-preview-policy
           persist-credentials: false
           submodules: false
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - id: bootstrap
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.15.0'
       - name: Freeze manifest and select exact candidates
@@ -56,6 +59,42 @@ jobs:
               path.write_text(json.dumps(receipt, indent=2) + '\n')
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write('matrix=' + json.dumps({'python': list(dict.fromkeys(versions))}) + '\n')
+          PYCODE
+      - name: Record terminal discovery evidence
+        if: always()
+        env:
+          SOURCE_OUTCOME: ${{ steps.source.outcome }}
+          POLICY_OUTCOME: ${{ steps.policy.outcome }}
+          BOOTSTRAP_OUTCOME: ${{ steps.bootstrap.outcome }}
+          DISCOVERY_OUTCOME: ${{ steps.discover.outcome }}
+        run: |
+          python3 - <<'PYCODE'
+          import json, os
+          from pathlib import Path
+          path = Path('.artifacts/ci-preview/discovery.json')
+          path.parent.mkdir(parents=True, exist_ok=True)
+          stages = {name: os.environ[name.upper() + '_OUTCOME'] for name in ['source', 'policy', 'bootstrap', 'discovery']}
+          raw = path.read_bytes() if path.is_file() else None
+          try:
+              receipt = json.loads(raw) if raw is not None else None
+              if not isinstance(receipt, dict) or receipt.get('state') not in ['unavailable', 'candidate-resolved'] or (receipt['state'] == 'unavailable' and receipt.get('candidate') is not None) or (receipt['state'] == 'candidate-resolved' and (not isinstance(receipt.get('candidate'), str) or not receipt['candidate'])):
+                  raise ValueError('Missing discovery evidence')
+          except (ValueError, TypeError):
+              receipt = None
+          failed = next((name for name, outcome in stages.items() if outcome == 'failure'), None)
+          complete = all(outcome == 'success' for outcome in stages.values())
+          invalid = complete and receipt is None
+          if not complete or invalid:
+              if raw is not None:
+                  path.with_suffix('.json.partial').write_bytes(raw)
+              state = ('evidence-invalid' if invalid else 'setup-failed' if failed in ['source', 'policy', 'bootstrap'] else 'discovery-failed' if failed else 'discovery-cancelled' if 'cancelled' in stages.values() else 'discovery-not-executed')
+              receipt = {'state': state, 'candidate': None}
+          receipt.update(discoveryStages=stages, discoveryFailedStage=failed,
+                         runtimeTestsExecuted=False, promoted=False,
+                         scope='discovery only; matrix qualification receipts are separate')
+          path.write_text(json.dumps(receipt, indent=2) + '\n')
+          if invalid:
+              raise SystemExit(1)
           PYCODE
       - name: Retain discovery and unavailable-preview evidence
         if: always()
@@ -156,7 +195,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: edithatogo/careops
-          ref: 1373e971013724dfaa268e215a45505bb89300cd
+          ref: f0e8db252b181955d31185f1ccdd1e77dee1f5f9
           path: .artifacts/ci-preview-policy
           persist-credentials: false
           submodules: false

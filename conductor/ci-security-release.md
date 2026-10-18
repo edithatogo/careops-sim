@@ -216,3 +216,15 @@ syntax and pedantic security lint. Real official discovery freezes Rust1.99.1,
 beta1.100.0-beta.7 and nightly1.101.0 with full compiler commits and dated manifest
 SHA256 verification. This is discovery and infrastructure evidence; actual
 candidate native execution and hosted current-head gates remain pending.
+
+
+### Schema discovery terminal evidence — 19 October 2026
+
+The source candidate adopts qualified immutable CareOps f0e8db2 across source
+security, schema lock and canary helper checkouts. An always-run discovery step
+records setup/discovery failure, cancellation or missing execution even when no
+receipt was produced. Partial evidence is preserved; apparent successful discovery
+without a valid receipt fails. Discovery alone never claims runtime tests.
+Focused tests execute the actual workflow terminal script; hosted current-head
+qualification remains required. Rust pins, schema locks and domain tests remain
+unchanged. Revert the source refs and terminal-step change together for recovery.

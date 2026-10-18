@@ -117,5 +117,58 @@ class SchemaCanaryTests(unittest.TestCase):
                     self.assertIn('unavailable', json.loads(path.read_text())['runtimeTestOutcome'])
 
 
+    def test_discovery_failure_always_emits_terminal_receipt_and_preserves_partial(self):
+        for failed in ['source', 'policy', 'bootstrap', 'discovery']:
+            with self.subTest(stage=failed), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                env = {name.upper() + '_OUTCOME': 'success' for name in ['source', 'policy', 'bootstrap', 'discovery']}
+                env[failed.upper() + '_OUTCOME'] = 'failure'
+                if failed != 'discovery':
+                    env['DISCOVERY_OUTCOME'] = 'skipped'
+                path = root / '.artifacts/ci-preview/discovery.json'
+                if failed == 'discovery':
+                    path.parent.mkdir(parents=True)
+                    path.write_bytes(b'{partial')
+                result = execute('Record terminal discovery evidence', root, env)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                receipt = json.loads(path.read_text())
+                self.assertEqual(receipt['discoveryFailedStage'], failed)
+                self.assertEqual(receipt['state'], 'discovery-failed' if failed == 'discovery' else 'setup-failed')
+                self.assertFalse(receipt['runtimeTestsExecuted'])
+                self.assertFalse(receipt['promoted'])
+                self.assertIsNone(receipt['candidate'])
+                if failed == 'discovery':
+                    self.assertEqual(path.with_suffix('.json.partial').read_bytes(), b'{partial')
+
+    def test_cancelled_or_skipped_discovery_is_not_runtime_qualification(self):
+        for outcome, state in [('cancelled', 'discovery-cancelled'), ('skipped', 'discovery-not-executed')]:
+            with self.subTest(outcome=outcome), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                env = {name.upper() + '_OUTCOME': 'success' for name in ['source', 'policy', 'bootstrap', 'discovery']}
+                env['DISCOVERY_OUTCOME'] = outcome
+                result = execute('Record terminal discovery evidence', root, env)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                receipt = json.loads((root / '.artifacts/ci-preview/discovery.json').read_text())
+                self.assertEqual(receipt['state'], state)
+                self.assertFalse(receipt['runtimeTestsExecuted'])
+
+    def test_successful_discovery_requires_receipt_and_never_claims_runtime_tests(self):
+        for candidate in [None, '3.16.0-alpha.1']:
+            with self.subTest(candidate=candidate), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                env = {name.upper() + '_OUTCOME': 'success' for name in ['source', 'policy', 'bootstrap', 'discovery']}
+                path = root / '.artifacts/ci-preview/discovery.json'
+                missing = execute('Record terminal discovery evidence', root, env)
+                self.assertEqual(missing.returncode, 1)
+                self.assertEqual(json.loads(path.read_text())['state'], 'evidence-invalid')
+                path.write_text(json.dumps({'candidate': candidate, 'state': 'candidate-resolved' if candidate else 'unavailable'}))
+                result = execute('Record terminal discovery evidence', root, env)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                receipt = json.loads(path.read_text())
+                self.assertEqual(receipt['candidate'], candidate)
+                self.assertFalse(receipt['runtimeTestsExecuted'])
+                self.assertFalse(receipt['promoted'])
+
+
 if __name__ == '__main__':
     unittest.main()
