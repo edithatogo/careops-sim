@@ -219,6 +219,18 @@ SHA256 verification. This is discovery and infrastructure evidence; actual
 candidate native execution and hosted current-head gates remain pending.
 
 
+### Schema discovery terminal evidence — 19 October 2026
+
+The source candidate adopts qualified immutable CareOps f0e8db2 across source
+security, schema lock and canary helper checkouts. An always-run discovery step
+records setup/discovery failure, cancellation or missing execution even when no
+receipt was produced. Partial evidence is preserved; apparent successful discovery
+without a valid receipt fails. Discovery alone never claims runtime tests.
+Focused tests execute the actual workflow terminal script; hosted current-head
+qualification remains required. Rust pins, schema locks and domain tests remain
+unchanged. Revert the source refs and terminal-step change together for recovery.
+
+
 ### Coordinated compiler source proposal — 19 October 2026
 
 Rust 1.99.1 is synchronized across active CI, bootstrap and quality tools.
@@ -227,3 +239,4 @@ profile. Historical runs above remain tied to their actual Rust 1.99.0 sources.
 The candidate requires its own current-head Linux/macOS and context checks;
 prior canary success does not establish integrated-source acceptance. The Cargo
 lock, upstream pins, immutable action SHAs and declared minimum remain unchanged.
+
