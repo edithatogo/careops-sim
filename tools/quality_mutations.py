@@ -98,8 +98,8 @@ def _cargo_identity(value):
     path = Path(value)
     if (not path.is_absolute() or ".." in path.parts or len(path.parts) < 3
             or path.parts[-2:] != ("bin", "cargo")
-            or path.parts[-3] not in {"1.99.0-x86_64-unknown-linux-gnu", "1.99.0-aarch64-apple-darwin"}):
-        raise ValueError("expected Cargo must be cargo or the exact resolved canonical Rust 1.99.0 executable")
+            or path.parts[-3] not in {"1.99.1-x86_64-unknown-linux-gnu", "1.99.1-aarch64-apple-darwin"}):
+        raise ValueError("expected Cargo must be cargo or the exact resolved canonical Rust 1.99.1 executable")
     return value
 
 

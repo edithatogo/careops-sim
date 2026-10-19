@@ -26,6 +26,7 @@ import re
 import subprocess
 import sys
 import time
+import tomllib
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import uuid
 
@@ -410,11 +411,15 @@ def audit_version_freshness(root: Path) -> List[DriftViolation]:
         except Exception:
             pass
 
-    # 2. Toolchain check (Canonical Rust 1.99.0)
+    # 2. Toolchain check (Canonical Rust 1.99.1)
     rust_toolchain_path = root / "rust-toolchain.toml"
     if rust_toolchain_path.exists():
         content = rust_toolchain_path.read_text(encoding="utf-8")
-        if 'channel = "1.99.0"' not in content and 'channel = "1.99"' not in content:
+        try:
+            exact_channel = tomllib.loads(content).get("toolchain", {}).get("channel")
+        except tomllib.TOMLDecodeError:
+            exact_channel = None
+        if exact_channel != "1.99.1":
             violations.append(
                 DriftViolation(
                     routine=JobKind.VERSION_FRESHNESS.value,
@@ -422,8 +427,8 @@ def audit_version_freshness(root: Path) -> List[DriftViolation]:
                     file_path="rust-toolchain.toml",
                     line_number=1,
                     conductor_owner="Owner 44 (Dependency Lockfile & MSRV)",
-                    remediation_command="echo 'channel = \"1.99.0\"' > rust-toolchain.toml",
-                    message="rust-toolchain.toml does not declare canonical stable 1.99.0",
+                    remediation_command="echo 'channel = \"1.99.1\"' > rust-toolchain.toml",
+                    message="rust-toolchain.toml does not declare canonical stable 1.99.1",
                 )
             )
 

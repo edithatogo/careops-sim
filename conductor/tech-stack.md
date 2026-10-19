@@ -16,11 +16,12 @@
   runtime requirement. Julia, Mojo and MLX are not required by these tracks.
 - CPU replications use isolated run state and deterministic result merging.
   Existing Tracks 32/34/35 own GPU/Metal, PDES and distributed execution.
-- Baseline workspace: Rust 2021, declared MSRV 1.76 for default features, exact
-  canonical developer/integration toolchain 1.99.0 (current stable, owner-selected 2026-10-04). Track 13 CI separately exercises
-  the Rust 1.76 default-feature workspace. The dated Rust 1.99.0-beta.8 snapshot
-  (observed 2026-09-27) is a non-blocking canary. Change this policy only through
-  the reviewed Track 25/30 contracts.
+- Parent workspace: Rust 2021, declared minimum Rust 1.99, exact candidate
+  developer/integration toolchain 1.99.1. Upstream Kairos retains its independent
+  minimum and optional Arrow compatibility contracts; this source update does not
+  qualify upstream under an older compiler. The dated Rust 1.99.0-beta.8 snapshot
+  (observed 2026-09-27) is historical. Current canaries use frozen official
+  manifests and exact dated preview compilers, with no automatic promotion.
 - Historical D1.2 submodule audit baseline: Kairos development branch `codex/d12-bench-lock-msrv`
   at reviewed D1.2 commit `339af4e7365e70ad7e67fe3e934e4fb215fbaf8b`;
   Conductor `7a5c560a4fdf5297be58594cc37527eb12790272` (`conductor-v0.4.1`).
@@ -33,9 +34,8 @@ See [the alignment decisions](../docs/kairos-alignment.md) and
 ## Current development audit
 
 [Dependency policy](dependency-policy.md) and its live source snapshot supersede
-older version assumptions: Rust 1.99.0 current stable is pinned and the 1.76 default-feature
-workspace floor is tested. Arrow 60 requires MSRV 1.88, above Kairos's declared
-1.76, and is isolated behind optional package/features and its explicit compatibility lane.
+older version assumptions: the parent exact Rust 1.99.1 candidate and declared
+1.99 minimum are distinct from Kairos's upstream compatibility contracts.
 Optional latest dependencies remain candidates, not approved additions. The
 lightweight local context harness uses Python stdlib for developer orchestration
 only.

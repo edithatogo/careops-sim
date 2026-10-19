@@ -2,27 +2,29 @@
 
 Run `python3 tools/bootstrap.py --check` before native Rust work. The command
 reads `bootstrap-profile.json`, accepts macOS ARM64 and Linux x86_64 GNU, and
-checks the exact Rust 1.99.0 compiler and Cargo through `rustup run`. It only
+checks the exact Rust 1.99.1 compiler and Cargo through `rustup run`. It only
 reads tool versions and host metadata. It does not install, update, or change
 system tools.
 
 From a clean checkout with the Kairos submodule initialized, run
 `python3 tools/bootstrap.py --test-core` to perform that same pinned-toolchain
-check and then execute `rustup run 1.99.0 cargo test --locked` for
+check and then execute the resolved pinned Cargo with `test --locked` for
 `kairo-ecs-core`, `kairo-ecs-state`, `kairo-ecs-rng`, `kairo-ecs-des`, and
-`kairo-ecs-abm` in `libs/kairos`. It does not install or update toolchains. Cargo
+`kairo-ecs-abm` in `libs/kairos`. Cargo, rustc and rustdoc are resolved through
+Rustup from one toolchain directory; the child environment binds their exact
+paths. It does not install or update toolchains. Cargo
 may download the locked crates into its cache; compilation writes build artifacts
 under `libs/kairos/target`. Initialize a missing submodule from the repository
 root with `git submodule update --init --recursive`, then rerun the command.
 
-The profile records exact URLs and checksums for the official Rust 1.99.0
+The profile records exact URLs and checksums for the official Rust 1.99.1
 channel manifest
-(`ce6dddc886364f8d786514771212cebe9b731ba82d6b859951c6b0ccc516b6a2`) and
+(`fb152be80975c194aa5fc684b2aec3a6e14e2b855efe2faa4e5f8ae6e590f463`) and
 platform installer archives. The archive names and checksums identify the
 upstream distribution; this preflight does not download or revalidate them.
 
 If rustup is missing, install it explicitly from [rustup.rs](https://rustup.rs/).
-If the pinned toolchain is missing, run `rustup toolchain install 1.99.0` and
+If the pinned toolchain is missing, run `rustup toolchain install 1.99.1` and
 rerun the check. On an unsupported host, use a supported host or propose a
 reviewed profile update. A successful check proves local version/host metadata
 only; it does not qualify a clean machine, Linux execution, dependency

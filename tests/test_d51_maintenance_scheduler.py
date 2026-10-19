@@ -94,7 +94,7 @@ class MaintenanceSchedulerTests(unittest.TestCase):
             json.dumps({"kairos_commit": "commit-abc-123"}), encoding="utf-8"
         )
         (self.root / "rust-toolchain.toml").write_text(
-            '[toolchain]\nchannel = "1.99.0"\n', encoding="utf-8"
+            '[toolchain]\nchannel = "1.99.1"\n', encoding="utf-8"
         )
         (self.root / "Cargo.toml").write_text(
             '[workspace.package]\nlicense = "Apache-2.0"\n', encoding="utf-8"
@@ -478,6 +478,15 @@ class MaintenanceSchedulerTests(unittest.TestCase):
         v = violations[0]
         self.assertEqual(v.error_class, "ToolchainDriftError")
         self.assertIn("Owner 44", v.conductor_owner)
+
+    def test_version_freshness_refuses_floating_or_malformed_toolchain(self) -> None:
+        for content in ('[toolchain]\nchannel = "1.99"\n',
+                        '# channel = "1.99.1"\n[toolchain]\nchannel = "nightly"\n',
+                        '[toolchain\nchannel = "1.99.1"\n'):
+            with self.subTest(content=content):
+                (self.root / "rust-toolchain.toml").write_text(content, encoding="utf-8")
+                violations = audit_version_freshness(self.root)
+                self.assertTrue(any(v.error_class == "ToolchainDriftError" for v in violations))
 
     def test_version_freshness_detects_floating_ci_action_tag(self) -> None:
         (self.root / ".github/workflows/ci.yml").write_text(
