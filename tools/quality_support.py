@@ -14,7 +14,7 @@ import tomllib
 from typing import Any
 
 
-CANONICAL_RUST = "1.99.0"
+CANONICAL_RUST = "1.99.1"
 # Schema v1 retains the field name; this now enforces the sole declared floor.
 DEFAULT_MSRV = "1.99"
 EXPECTED_FIXTURE_PATH = "libs/kairos/crates/kairo-ecs-arrow-io/tests/fixtures/calibration_physical_v2/manifest.json"

@@ -11,7 +11,7 @@ bootstrap = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(bootstrap)
 
 
-def tool_output(tool, version="1.99.0", host="aarch64-apple-darwin"):
+def tool_output(tool, version="1.99.1", host="aarch64-apple-darwin"):
     return f"{tool} {version} (fixture)\nrelease: {version}\nhost: {host}\n"
 
 
@@ -22,7 +22,7 @@ class BootstrapTests(unittest.TestCase):
                    "cargo": cargo or tool_output("cargo")}
 
         def run(command, **kwargs):
-            self.assertEqual(command[:3], [rustup, "run", "1.99.0"])
+            self.assertEqual(command[:3], [rustup, "run", "1.99.1"])
             self.assertEqual(command[4:], ["--version", "--verbose"])
             tool = command[3]
             return type("Result", (), {"returncode": 0, "stdout": outputs[tool], "stderr": ""})()
@@ -45,7 +45,7 @@ class BootstrapTests(unittest.TestCase):
     def test_wrong_rustc_version_fails(self):
         with patch.object(bootstrap.subprocess, "run", return_value=type(
                 "Result", (), {"returncode": 0, "stdout": tool_output("rustc", "1.97.0"), "stderr": ""})()):
-            with self.assertRaisesRegex(bootstrap.BootstrapError, "Pinned rustc 1.99.0"):
+            with self.assertRaisesRegex(bootstrap.BootstrapError, "Pinned rustc 1.99.1"):
                 bootstrap.check(host="aarch64-apple-darwin", rustup_path="rustup")
 
     def test_wrong_cargo_version_fails(self):
@@ -55,11 +55,11 @@ class BootstrapTests(unittest.TestCase):
             nonlocal calls
             calls += 1
             tool = args[0][3]
-            version = "1.97.0" if tool == "cargo" else "1.99.0"
+            version = "1.97.0" if tool == "cargo" else "1.99.1"
             return type("Result", (), {"returncode": 0, "stdout": tool_output(tool, version), "stderr": ""})()
 
         with patch.object(bootstrap.subprocess, "run", side_effect=run):
-            with self.assertRaisesRegex(bootstrap.BootstrapError, "Pinned cargo 1.99.0"):
+            with self.assertRaisesRegex(bootstrap.BootstrapError, "Pinned cargo 1.99.1"):
                 bootstrap.check(host="aarch64-apple-darwin", rustup_path="rustup")
 
     def test_unsupported_host_fails_before_running_tools(self):
@@ -113,11 +113,11 @@ class BootstrapTests(unittest.TestCase):
         with patch.object(bootstrap.shutil, "which", return_value="/safe/rustup"), \
              patch.object(bootstrap.subprocess, "run", side_effect=resolve), \
              patch.dict(bootstrap.os.environ, {"PATH": "/other/bin", "RUSTC": "/other/rustc"}):
-            cargo, environment = bootstrap.compiler_environment("1.99.0")
+            cargo, environment = bootstrap.compiler_environment("1.99.1")
         self.assertEqual(cargo, "/pinned/bin/cargo")
         self.assertEqual(environment["RUSTC"], "/pinned/bin/rustc")
         self.assertEqual(environment["RUSTDOC"], "/pinned/bin/rustdoc")
-        self.assertEqual(environment["RUSTUP_TOOLCHAIN"], "1.99.0")
+        self.assertEqual(environment["RUSTUP_TOOLCHAIN"], "1.99.1")
         self.assertEqual(environment["PATH"].split(bootstrap.os.pathsep)[0], "/pinned/bin")
 
     def test_invalid_tool_resolution_is_refused(self):
@@ -128,7 +128,7 @@ class BootstrapTests(unittest.TestCase):
                  patch.object(bootstrap.subprocess, "run", return_value=type(
                      "Result", (), {"returncode": code, "stdout": output})()):
                 with self.assertRaisesRegex(bootstrap.BootstrapError, "resolve pinned cargo"):
-                    bootstrap.compiler_environment("1.99.0")
+                    bootstrap.compiler_environment("1.99.1")
 
     def test_mixed_compiler_directories_are_refused(self):
         def resolve(command, **kwargs):
@@ -137,7 +137,7 @@ class BootstrapTests(unittest.TestCase):
         with patch.object(bootstrap.shutil, "which", return_value="/safe/rustup"), \
              patch.object(bootstrap.subprocess, "run", side_effect=resolve):
             with self.assertRaisesRegex(bootstrap.BootstrapError, "share one toolchain"):
-                bootstrap.compiler_environment("1.99.0")
+                bootstrap.compiler_environment("1.99.1")
 
     def test_core_suite_reports_submodule_setup_instructions(self):
         with patch.object(bootstrap, "check"), \

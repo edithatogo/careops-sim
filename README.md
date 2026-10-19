@@ -3,7 +3,7 @@
 [![CI](https://github.com/edithatogo/careops-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/edithatogo/careops-sim/actions/workflows/ci.yml)
 [![Session Guard](https://github.com/edithatogo/careops-sim/actions/workflows/agent-session.yml/badge.svg)](https://github.com/edithatogo/careops-sim/actions/workflows/agent-session.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE-APACHE)
-[![Rust: 1.99.0](https://img.shields.io/badge/rust-1.99.0-orange.svg)](rust-toolchain.toml)
+[![Rust: 1.99.1](https://img.shields.io/badge/rust-1.99.1-orange.svg)](rust-toolchain.toml)
 [![Platforms: Linux x86_64 | macOS ARM64](https://img.shields.io/badge/platform-Linux%20x86__64%20%7C%20macOS%20ARM64-lightgrey.svg)](conductor/dependency-policy.md#cross-platform-reproducibility-policy)
 [![Conductor Progress: 100%](https://img.shields.io/badge/progress-100%25%20(145%2F145%20tasks)-brightgreen.svg)](conductor/tracks.md)
 
@@ -46,7 +46,7 @@ follows its readiness gates, including the D2 notes in
 pages are the publication gate; they are not a statement that the remote is
 still missing.
 
-The workspace toolchain is Rust 1.99.0 (`rust-toolchain.toml`; `Cargo.toml`
+The workspace toolchain is Rust 1.99.1 (`rust-toolchain.toml`; `Cargo.toml`
 `rust-version` is `1.99`). From this checkout, with Python 3 installed:
 
 ```sh

@@ -25,7 +25,7 @@ class QualitySupportTests(unittest.TestCase):
         self.write(self.fixture_path, fixture)
         self.config = {
             "schema_version": 1,
-            "canonical_rust": "1.99.0",
+            "canonical_rust": "1.99.1",
             "default_msrv": "1.99",
             "packages": [
                 {"manifest": "Cargo.toml", "features": {}},
@@ -48,7 +48,7 @@ class QualitySupportTests(unittest.TestCase):
             "mutation": {"package": "careops-ed", "file": "crates/careops-ed/src/lib.rs",
                          "policy": "separate evidence"},
         }
-        self.write("rust-toolchain.toml", '[toolchain]\nchannel = "1.99.0"\n')
+        self.write("rust-toolchain.toml", '[toolchain]\nchannel = "1.99.1"\n')
         self.write("Cargo.toml", '[workspace]\nmembers = ["crates/careops-ed", "crates/careops-ed-cli"]\n\n'
                    '[workspace.package]\nrust-version = "1.99"\n\n[package]\nname = "careops-sim"\n')
         self.write("crates/careops-ed/Cargo.toml", '[package]\nname = "careops-ed"\nrust-version.workspace = true\n')
