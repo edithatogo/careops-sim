@@ -240,3 +240,16 @@ The candidate requires its own current-head Linux/macOS and context checks;
 prior canary success does not establish integrated-source acceptance. The Cargo
 lock, upstream pins, immutable action SHAs and declared minimum remain unchanged.
 
+
+
+## Project-owned code licence — 20 October 2026
+
+The project owner explicitly confirmed Apache-2.0 for project-owned code. The
+root LICENSE now contains the official Apache2 text; NOTICE and README record
+the scope. Cargo's existing Apache-2.0 metadata is unchanged. Third-party
+licences/notices, synthetic-data redistribution holds, source/submodule pins,
+clinical qualification and publication boundaries remain intact. This resolves
+the missing parent-code licence decision for native package preparation; it does
+not establish complete distribution notice coverage, package/runtime acceptance
+or signed release qualification. Continue the existing native-package candidate
+with those checks before any normal protected merge.
