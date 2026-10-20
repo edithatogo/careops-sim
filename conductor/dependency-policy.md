@@ -1,6 +1,22 @@
 # Current dependency and toolchain policy
 
-## Canonical stable toolchain — 2026-10-04
+## Coordinated Rust 1.99.1 source candidate — 19 October 2026
+
+The authorised suite CI update proposes exact Rust 1.99.1 across active CI,
+bootstrap and quality policy. Its versioned official manifest and both supported
+host archive checksums are bound in `tools/bootstrap-profile.json`. Candidate
+canary PR #166 passed actual workspace tests, doctests and warnings-denied Clippy
+on stable 1.99.1 and dated beta/nightly; that evidence qualifies the candidate,
+not this later integrated source. Current-head hosted checks remain required.
+
+The parent declared minimum stays `rust-version = "1.99"`; Cargo.lock and both
+submodule pins are unchanged. Preview lanes are non-promoting and do not enable
+Miri or fuzz runtime qualification. Earlier dated audits below retain their
+actual versions and are historical where superseded by this candidate. Merge
+requires the compiler-provenance and bootstrap-binding prerequisites and all
+applicable current-head checks; no release or licence clearance is implied.
+
+## Historical canonical stable toolchain — 2026-10-04
 
 The Kairos owner directs the canonical development/integration toolchain to be the current stable Rust release: **1.99.0**, released 2026-10-01. Exact 1.99.0 pins in the toolchain, bootstrap profile and CI retain reproducibility; refresh these together promptly when a new stable release is adopted. This supersedes the historical 1.98.1 decision below. Prior receipts remain evidence for their actual compiler and source, and are not rewritten as 1.99.0 results.
 
@@ -144,7 +160,7 @@ Ahead of packaging, distribution, and release qualification (D4.1–D4.4), expli
 
 4. **Build and Dependency Boundary (Upstream Supply Chain to Binaries)**:
    - *Threat Surface*: Compromised transitive dependencies, malicious build scripts (`build.rs`), unpinned compiler toolchains, or registry poisoning.
-   - *Mitigations & Misuse Constraints*: Hermetic builds enforce the exact canonical Rust 1.99.0 toolchain and strictly locked lockfiles (`Cargo.lock` enforced via `--locked` in CI). Dependencies undergo continuous scanning via `cargo-deny` (advisories, bans, licenses, sources) and `cargo-audit`. Build scripts and procedural macros are forbidden from initiating network connections or executing untrusted ambient binaries.
+   - *Mitigations & Misuse Constraints*: Hermetic builds enforce the exact canonical Rust 1.99.1 toolchain and strictly locked lockfiles (`Cargo.lock` enforced via `--locked` in CI). Dependencies undergo continuous scanning via `cargo-deny` (advisories, bans, licenses, sources) and `cargo-audit`. Build scripts and procedural macros are forbidden from initiating network connections or executing untrusted ambient binaries.
 
 5. **Output and Privacy Boundary (Engine Telemetry to External Storage)**:
    - *Threat Surface*: Execution summaries, trace logs, statistical diagnostics, and performance benchmarks leaking sensitive operational or individual-level data.
@@ -209,7 +225,7 @@ Packaging, attestation, and distribution responsibilities are partitioned across
 | **Owner 25** | Version governance & semver patch increments | Governs semantic versioning contracts (`Cargo.toml`), tag taxonomy (`vX.Y.Z`), patch increment authorization, and immutable release lifecycle management. |
 | **Owner 28** | SPDX 2.3 SBOM generation & verification | Governs Software Bill of Materials (SPDX 2.3 JSON), component dependency graph capture, package verification codes, and external reference validation. |
 | **Owner 42** | License notices (Apache-2.0) & legal compliance | Governs statutory legal compliance, top-level `LICENSE` and `NOTICE` files, crate manifest license expressions (`Apache-2.0`), copyright headers, and third-party license audit clean-status via `cargo-deny`. |
-| **Owner 44** | Dependency lockfile integrity | Governs `Cargo.lock` reproducibility, exact dependency commit/version pins, canonical MSRV enforcement (`1.99.0`), and prevention of floating dependency ranges. |
+| **Owner 44** | Dependency lockfile integrity | Governs `Cargo.lock` reproducibility, exact dependency commit/version pins, canonical compiler enforcement (`1.99.1`; declared minimum remains 1.99), and prevention of floating dependency ranges. |
 
 ### Consumer-Side Verification Protocol
 
@@ -371,7 +387,7 @@ Following the successful completion and acceptance of Milestone G1 (Hardened nat
 1. **Version Freshness**:
    - *Scope*: Continuous audit of `Cargo.lock`, compiler toolchains, GitHub Actions workflows, and upstream submodule pins against reviewed baselines.
    - *Cadence & Execution*: Weekly candidate review; triggered via [`tools/refresh_versions.py`](../tools/refresh_versions.py) and [`tools/maintenance_scheduler.py`](../tools/maintenance_scheduler.py).
-   - *Invariants*: Canonical Rust toolchain is exact `1.99.0`; `libs/kairos` submodule pin must strictly match [`conductor/evidence/d2.4-kairos-contract.json`](evidence/d2.4-kairos-contract.json); CI workflow actions must resolve to immutable commit SHAs, never floating major tags (`@v4`, `@v7`).
+   - *Invariants*: Canonical Rust toolchain is exact `1.99.1`; `libs/kairos` submodule pin must strictly match [`conductor/evidence/d2.4-kairos-contract.json`](evidence/d2.4-kairos-contract.json); CI workflow actions must resolve to immutable commit SHAs, never floating major tags (`@v4`, `@v7`).
 2. **Documentation Drift**:
    - *Scope*: Real-time cross-validation of markdown links, CLI help flags, scenario schema definitions, and evidence registers against actual code and filesystem reality.
    - *Cadence & Execution*: Pre-commit and bi-weekly scheduled check; executed via [`tools/context.py check`](../tools/context.py) and schema validation scripts.
@@ -506,7 +522,7 @@ Task D5.3 establishes continuous quality surveillance, maintainer effort protect
    - Technical debt markers (`TODO`, `FIXME`, `HACK`, `XXX`, `DEPRECATED`) across all tracked source, documentation, and configuration files are systematically inventoried via [`tools/quality_tracker.py`](../tools/quality_tracker.py).
    - Weighted scoring is assigned per marker severity: `FIXME` (5), `HACK` (4), `XXX` (3), `TODO` (2), `DEPRECATED` (1).
 2. **Compiler Warning and Hygiene Deficits**:
-   - Zero-warning invariant on canonical stable Rust (`rustc 1.99.0` with `#![forbid(unsafe_code)]` and `-D warnings`).
+   - Zero-warning invariant on canonical stable Rust (`rustc 1.99.1` with `#![forbid(unsafe_code)]` and `-D warnings`).
    - Line coverage floor ($\ge 80.0\%$) and zero viable surviving mutant policy established in D3.3 are maintained on critical engine crates.
 3. **Hard Debt Threshold Ceilings**:
    - Repository-wide quality debt score must remain below the strict ceiling of **150 points**.

@@ -1,0 +1,272 @@
+name: Schema development candidates
+on:
+  pull_request:
+    paths: ['.github/workflows/schema-development-canary.yml', 'tests/test_schema_canary.py']
+  schedule:
+    - cron: '47 8 * * 5'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: schema-development-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  discover:
+    name: Discover published Python preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.discover.outputs.matrix }}
+    steps:
+      - id: source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Read qualified discovery tooling
+        id: policy
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: edithatogo/careops
+          ref: 6319d0c0c76ee672223c156abce9d4181c41aa9a
+          path: .artifacts/ci-preview-policy
+          persist-credentials: false
+          submodules: false
+      - id: bootstrap
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.15.0'
+      - name: Freeze manifest and select exact candidates
+        id: discover
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .artifacts/ci-preview
+          revision="$(gh api repos/actions/python-versions/commits/main --jq .sha)"
+          [[ "$revision" =~ ^[a-f0-9]{40}$ ]]
+          curl --fail --silent --show-error --location "https://raw.githubusercontent.com/actions/python-versions/$revision/versions-manifest.json" -o .artifacts/ci-preview/manifest.json
+          platform_version="$(python -c 'import platform; print(platform.freedesktop_os_release()["VERSION_ID"])')"
+          python .artifacts/ci-preview-policy/portfolio-scripts/ci_delivery.py runtime --platform-version "$platform_version" --manifest .artifacts/ci-preview/manifest.json --manifest-revision "$revision" --output .artifacts/ci-preview/discovery.json --github-output "$GITHUB_OUTPUT"
+          python - <<'PYCODE'
+          import json, os
+          from pathlib import Path
+          path = Path('.artifacts/ci-preview/discovery.json')
+          receipt = json.loads(path.read_text())
+          versions = ['3.14.8', '3.15.0']
+          if receipt['candidate']:
+              versions.append(receipt['candidate'].replace('-alpha.', 'a').replace('-beta.', 'b').replace('-rc.', 'rc'))
+          else:
+              receipt['runtimeTestOutcome'] = 'unavailable; no published qualifying preview'
+              path.write_text(json.dumps(receipt, indent=2) + '\n')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('matrix=' + json.dumps({'python': list(dict.fromkeys(versions))}) + '\n')
+          PYCODE
+      - name: Record terminal discovery evidence
+        if: always()
+        env:
+          SOURCE_OUTCOME: ${{ steps.source.outcome }}
+          POLICY_OUTCOME: ${{ steps.policy.outcome }}
+          BOOTSTRAP_OUTCOME: ${{ steps.bootstrap.outcome }}
+          DISCOVERY_OUTCOME: ${{ steps.discover.outcome }}
+        run: |
+          python3 - <<'PYCODE'
+          import json, os
+          from pathlib import Path
+          path = Path('.artifacts/ci-preview/discovery.json')
+          path.parent.mkdir(parents=True, exist_ok=True)
+          stages = {name: os.environ[name.upper() + '_OUTCOME'] for name in ['source', 'policy', 'bootstrap', 'discovery']}
+          raw = path.read_bytes() if path.is_file() else None
+          try:
+              receipt = json.loads(raw) if raw is not None else None
+              if not isinstance(receipt, dict) or receipt.get('state') not in ['unavailable', 'candidate-resolved'] or (receipt['state'] == 'unavailable' and receipt.get('candidate') is not None) or (receipt['state'] == 'candidate-resolved' and (not isinstance(receipt.get('candidate'), str) or not receipt['candidate'])):
+                  raise ValueError('Missing discovery evidence')
+          except (ValueError, TypeError):
+              receipt = None
+          failed = next((name for name, outcome in stages.items() if outcome == 'failure'), None)
+          complete = all(outcome == 'success' for outcome in stages.values())
+          invalid = complete and receipt is None
+          if not complete or invalid:
+              if raw is not None:
+                  path.with_suffix('.json.partial').write_bytes(raw)
+              state = ('evidence-invalid' if invalid else 'setup-failed' if failed in ['source', 'policy', 'bootstrap'] else 'discovery-failed' if failed else 'discovery-cancelled' if 'cancelled' in stages.values() else 'discovery-not-executed')
+              receipt = {'state': state, 'candidate': None}
+          receipt.update(discoveryStages=stages, discoveryFailedStage=failed,
+                         runtimeTestsExecuted=False, promoted=False,
+                         scope='discovery only; matrix qualification receipts are separate')
+          path.write_text(json.dumps(receipt, indent=2) + '\n')
+          if invalid:
+              raise SystemExit(1)
+          PYCODE
+      - name: Retain discovery and unavailable-preview evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: schema-runtime-discovery-${{ github.run_id }}
+          path: .artifacts/ci-preview/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+  qualify:
+    name: Schema candidate (${{ matrix.python }})
+    needs: discover
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    env:
+      CANDIDATE_PYTHON: ${{ matrix.python }}
+      SOURCE_COMMIT: ${{ github.sha }}
+    steps:
+      - name: Initialise bounded evidence location
+        id: initialize
+        run: echo "CANARY_ROOT=$RUNNER_TEMP/schema-development" >> "$GITHUB_ENV"
+      - id: source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          submodules: false
+      - id: bootstrap
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: '0.13.1'
+          enable-cache: false
+      - name: Prepare isolated candidate declarations
+        id: prepare
+        run: |
+          python3 - <<'PYCODE'
+          import os, re
+          from pathlib import Path
+          names = set()
+          for line in Path('requirements-schema-validation.txt').read_text().splitlines():
+              if not line.strip() or line.lstrip().startswith('#'):
+                  continue
+              match = re.fullmatch(r'([A-Za-z0-9][A-Za-z0-9._-]*)==([0-9][A-Za-z0-9.!+_-]*)', line.strip())
+              if match is None:
+                  raise SystemExit('Only exact registry declarations are eligible.')
+              name = re.sub(r'[-_.]+', '-', match[1]).lower()
+              if name in names:
+                  raise SystemExit('Duplicate distribution.')
+              names.add(name)
+          if names != {'attrs', 'jsonschema', 'jsonschema-specifications', 'referencing', 'rpds-py'}:
+              raise SystemExit('Review the changed schema dependency boundary.')
+          root = Path(os.environ['CANARY_ROOT'])
+          root.mkdir(parents=True, exist_ok=True)
+          (root / 'candidate.in').write_text('\n'.join(sorted(names)) + '\n')
+          PYCODE
+      - name: Resolve development dependencies with integrity hashes
+        id: resolve
+        run: uv pip compile "$CANARY_ROOT/candidate.in" --python-version "$CANDIDATE_PYTHON" --universal --prerelease allow --upgrade --generate-hashes --no-header --no-annotate --output-file "$CANARY_ROOT/candidate.lock"
+      - name: Install verified candidate wheels
+        id: install
+        run: |
+          uv venv --python "$CANDIDATE_PYTHON" "$CANARY_ROOT/venv"
+          uv pip install --python "$CANARY_ROOT/venv/bin/python" --require-hashes --only-binary=:all: -r "$CANARY_ROOT/candidate.lock"
+      - name: Inventory the actual target interpreter
+        id: inventory
+        run: |
+          "$CANARY_ROOT/venv/bin/python" - <<'PYCODE'
+          import importlib.metadata, json, os, platform, re
+          from pathlib import Path
+          packages = {}
+          for item in importlib.metadata.distributions():
+              name = item.metadata.get('Name', '')
+              if re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]*', name) is None or re.fullmatch(r'[0-9][A-Za-z0-9.!+_-]*', item.version) is None:
+                  raise SystemExit('Invalid installed distribution metadata.')
+              name = re.sub(r'[-_.]+', '-', name).lower()
+              if name in packages:
+                  raise SystemExit('Duplicate installed distribution.')
+              packages[name] = item.version
+          if not {'attrs', 'jsonschema', 'jsonschema-specifications', 'referencing', 'rpds-py'} <= set(packages):
+              raise SystemExit('Required schema dependency missing.')
+          root = Path(os.environ['CANARY_ROOT'])
+          (root / 'installed.json').write_text(json.dumps({'python': platform.python_version(), 'packages': dict(sorted(packages.items()))}, indent=2) + '\n')
+          # Audit actual installed target versions, avoiding host-evaluated markers.
+          (root / 'installed-requirements.txt').write_text(''.join(f'{name}=={version}\n' for name, version in sorted(packages.items())))
+          PYCODE
+      - name: Exercise all affected schema validators
+        id: tests
+        run: |
+          for pattern in test_source_packet_record.py test_source_verification_schema.py test_ed_profile_pack_schema.py test_des_catalogue.py test_source_acceptance.py test_parameter_validation.py test_ed_capacity.py test_ed_profile_pack_negative_cases.py test_abm_catalogue.py; do
+            "$CANARY_ROOT/venv/bin/python" -m unittest discover -s tests -p "$pattern" -v
+          done
+      - name: Read qualified audit-tool lock
+        id: policy
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: edithatogo/careops
+          ref: 6319d0c0c76ee672223c156abce9d4181c41aa9a
+          path: .artifacts/ci-preview-policy
+          persist-credentials: false
+          submodules: false
+      - name: Audit actual installed candidate versions
+        id: audit
+        run: |
+          uv venv --python 3.14.8 "$CANARY_ROOT/audit-venv"
+          uv pip install --python "$CANARY_ROOT/audit-venv/bin/python" --require-hashes --only-binary=:all: -r .artifacts/ci-preview-policy/requirements-ci.lock
+          "$CANARY_ROOT/audit-venv/bin/python" -m pip_audit --disable-pip --no-deps -r "$CANARY_ROOT/installed-requirements.txt"
+      - name: Verify tracked source and canonical pins were preserved
+        id: canonical
+        run: git diff --exit-code
+      - name: Record honest terminal qualification
+        if: always()
+        env:
+          INITIALIZE_OUTCOME: ${{ steps.initialize.outcome }}
+          SOURCE_OUTCOME: ${{ steps.source.outcome }}
+          BOOTSTRAP_OUTCOME: ${{ steps.bootstrap.outcome }}
+          PREPARE_OUTCOME: ${{ steps.prepare.outcome }}
+          RESOLVE_OUTCOME: ${{ steps.resolve.outcome }}
+          INSTALL_OUTCOME: ${{ steps.install.outcome }}
+          INVENTORY_OUTCOME: ${{ steps.inventory.outcome }}
+          TESTS_OUTCOME: ${{ steps.tests.outcome }}
+          POLICY_OUTCOME: ${{ steps.policy.outcome }}
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+          CANONICAL_OUTCOME: ${{ steps.canonical.outcome }}
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path(os.environ.get('CANARY_ROOT', str(Path(os.environ['RUNNER_TEMP']) / 'schema-development')))
+          root.mkdir(parents=True, exist_ok=True)
+          stages = {name: os.environ[name.upper() + '_OUTCOME'] for name in ['initialize', 'source', 'bootstrap', 'prepare', 'resolve', 'install', 'inventory', 'tests', 'policy', 'audit', 'canonical']}
+          failed = next((name for name, value in stages.items() if value == 'failure'), None)
+          if failed in ['initialize', 'source', 'bootstrap', 'policy']:
+              state = 'setup-blocked'
+          elif failed == 'prepare':
+              state = 'preparation-failure'
+          elif failed:
+              state = 'executed-failure'
+          elif 'cancelled' in stages.values():
+              state = 'cancelled'
+          elif all(value == 'success' for value in stages.values()):
+              state = 'qualified-schema-candidate'
+          else:
+              state = 'not-executed'
+          hashes = {}
+          installed = None
+          try:
+              for name in ['candidate.lock', 'installed.json', 'installed-requirements.txt']:
+                  path = root / name
+                  hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+              if (root / 'installed.json').exists():
+                  installed = json.loads((root / 'installed.json').read_text())
+              if state == 'qualified-schema-candidate' and (not all(hashes.values()) or installed['python'] != os.environ['CANDIDATE_PYTHON'] or not {'attrs', 'jsonschema', 'jsonschema-specifications', 'referencing', 'rpds-py'} <= set(installed['packages'])):
+                  state = 'evidence-missing-or-runtime-mismatch'
+          except (OSError, ValueError, KeyError, TypeError):
+              state = 'evidence-invalid'
+          value = {'sourceCommit': os.environ['SOURCE_COMMIT'], 'candidatePython': os.environ['CANDIDATE_PYTHON'], 'state': state, 'failedStage': failed, 'stages': stages, 'sha256': hashes, 'installed': installed, 'promoted': False, 'nativeWrites': False, 'scope': 'schema helpers only; Rust engine and native release qualification remain separate'}
+          (root / 'qualification.json').write_text(json.dumps(value, indent=2) + '\n')
+          PYCODE
+      - name: Preserve candidate graph and execution evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: schema-candidate-${{ matrix.python }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/schema-development/candidate.in
+            ${{ runner.temp }}/schema-development/candidate.lock
+            ${{ runner.temp }}/schema-development/installed.json
+            ${{ runner.temp }}/schema-development/installed-requirements.txt
+            ${{ runner.temp }}/schema-development/qualification.json
+          if-no-files-found: error
+          retention-days: 14

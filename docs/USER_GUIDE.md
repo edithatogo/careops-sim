@@ -46,7 +46,7 @@ CareOps Sim is a high-performance, deterministic discrete-event simulation (DES)
 
 ### System Prerequisites
 
-- **Rust Toolchain**: Rust 1.99.0 (pinned via `rust-toolchain.toml`).
+- **Rust Toolchain**: Rust 1.99.1 (pinned via `rust-toolchain.toml`).
 - **Cargo**: Included with the Rust toolchain.
 - **Python**: Python 3.10+ (required only for running regression and evidence validation tools).
 
@@ -450,7 +450,7 @@ All input issues can be resolved purely by editing the input JSON configuration 
 
 ### Tier 1 Supported Platforms
 
-The following platforms are continuously verified under the project's quality harness with Rust 1.99.0:
+The following table records earlier Rust 1.99.0 platform qualification. The current exact pin is 1.99.1; qualification of this source revision requires its own hosted checks:
 
 | Platform Triple | Operating System | Architecture | Toolchain | Verification Status |
 |---|---|---|---|---|

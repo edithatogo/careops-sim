@@ -19,11 +19,11 @@ No modifications to the Rust codebase are necessary to configure, execute, compa
 
 ### 2.1 Toolchain Prerequisites
 
-Ensure that the standard Rust toolchain (Rust 1.99.0) is active:
+Ensure that the standard Rust toolchain (Rust 1.99.1) is active:
 
 ```bash
 rustc --version
-# Expected: rustc 1.99.0 (...)
+# Expected: rustc 1.99.1 (...)
 ```
 
 ### 2.2 Building the CLI Binary

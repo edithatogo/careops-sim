@@ -435,3 +435,25 @@ fn test_api_runner_batch_cli_arrow_export() {
     assert!(spatial_content.contains("spatial.test.rev1"));
     assert!(spatial_content.starts_with("route,traversals,mean_duration_ticks,spatial_revision\n"));
 }
+
+#[test]
+fn test_export_records_actual_compiler_identity() {
+    let scenario = load_nominal_scenario();
+    let config = BatchConfig {
+        batch_id: "compiler-provenance".to_string(),
+        base_seed: 54321,
+        replications: 1,
+        num_workers: 1,
+        ..Default::default()
+    };
+    let document = run_batch_with_workers(&scenario, &config, None, None, None).expect("batch");
+    let bundle = generate_arrow_export_bundle(&scenario, &document, None, None).expect("export");
+    let compiler = env!("CAREOPS_ED_BUILD_COMPILER");
+    let output = std::process::Command::new(compiler)
+        .arg("--version")
+        .output()
+        .expect("observe compiler independently");
+    assert!(output.status.success());
+    let observed = String::from_utf8(output.stdout).expect("compiler version text");
+    assert_eq!(bundle.provenance.toolchain, observed.trim());
+}
