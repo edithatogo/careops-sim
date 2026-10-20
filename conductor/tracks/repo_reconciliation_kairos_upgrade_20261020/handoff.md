@@ -1,5 +1,14 @@
-# Handoff: Repository status reconciliation and Kairos upgrade
+# Planning handoff
 
-Status: Proposed.
+20 October 2026: revised plan incorporates [CC-01–CC-08](../../design/composition-contracts-20261020.md).
+All implementation tasks remain unchecked. User authorised planning incorporation;
+this is not spec/runtime/clinical acceptance. Resolve current upstream owners,
+exact revisions and capability receipts before binding a worker packet.
 
-Upon completion of phases R0–R3, the repository tracking state will be 100% synchronized, the harness environment verified, and the Kairos engine upgraded to Wave 10. This prepares the foundation for multi-domain core abstraction (`careops_core_domain_abstractions_20261020`) and the birthing suite delivery (`birthing_suite_delivery_20261020`).
+The first proof is a small ED/ward/community fixture, followed by a birthing/theatre
+fixture and A7 evidence join. B0 evidence intake is independent of core delivery.
+Preserve ED replay, existing source pins, jurisdiction-neutral code and versioned
+profiles. Do not infer atomic grants from conditions or delivery from transfer.
+
+Historical proposal is retained in the planning baseline commit. Current plan,
+specification and test matrix supersede its unconditional capability assumptions.

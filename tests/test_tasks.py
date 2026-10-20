@@ -13,6 +13,41 @@ def task(name,deps=(),paths=('src',),accepted=False):
     return {'id':name,'dependencies':list(deps),'write_reservations':list(paths),'accepted':accepted}
 
 class SchedulingTests(unittest.TestCase):
+    def test_composition_join_preserves_independent_evidence_and_runtime_gates(self):
+        by_id = {t['id']: t for t in tasks.derive(tasks.ROOT)['tasks']}
+        self.assertEqual(by_id['B0.1']['dependencies'], [])
+        self.assertIn('R3.4', by_id['A0.1']['dependencies'])
+        self.assertIn('A5.4', by_id['B1.1']['dependencies'])
+        self.assertIn('A6.4', by_id['B7.1']['dependencies'])
+        self.assertEqual(set(by_id['A7.1']['dependencies']), {'A6.4', 'B7.4'})
+        self.assertIn('libs/kairos', by_id['R2.1']['write_reservations'])
+        self.assertIn('crates/careops-core', by_id['A1.1']['write_reservations'])
+        self.assertIn('crates/careops-birthing', by_id['B1.1']['write_reservations'])
+
+    def test_unnumbered_proposal_fails_with_actionable_error(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            track = root / 'conductor/tracks/proposal'
+            track.mkdir(parents=True)
+            (track / 'metadata.json').write_text(json.dumps({
+                'track_id': 'proposal', 'phase_dependencies': {'B0': []},
+            }))
+            (track / 'plan.md').write_text('## B0 — Evidence\n\n- [ ] Task: Intake\n')
+            with self.assertRaisesRegex(ValueError, 'task requires a numbered ID'):
+                tasks.derive(root)
+
+    def test_empty_declared_phase_is_rejected_deliberately(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            track = root / 'conductor/tracks/proposal'
+            track.mkdir(parents=True)
+            (track / 'metadata.json').write_text(json.dumps({
+                'track_id': 'proposal', 'phase_dependencies': {'R0': []},
+            }))
+            (track / 'plan.md').write_text('## R0 — Reconciliation\n')
+            with self.assertRaisesRegex(ValueError, 'phase has no numbered tasks'):
+                tasks.derive(root)
+
     def catalog(self):
         return {'tasks':[task('D0.1',accepted=True), task('Q0.1',['D0.1'],['queue']),
                          task('C0.1',['D0.1'],['arrow']),task('E0.1',['Q0.1','C0.1'],['ed'])]}

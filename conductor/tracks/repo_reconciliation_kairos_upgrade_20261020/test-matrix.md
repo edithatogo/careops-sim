@@ -1,8 +1,11 @@
-# Test matrix: Repository status reconciliation and Kairos upgrade
+# Test matrix
 
-| Phase | Automated Check | Manual Verification |
+| Phase | Required verification | Evidence boundary |
 | --- | --- | --- |
-| R0 | `python3 tools/context.py check` returns 0 errors | Verify `tracks.md` and `index.md` reflect 100% completion |
-| R1 | `python3 -m unittest discover -s tests -v` with harness venv | Confirm all python tests pass without missing modules |
-| R2 | `cargo check --workspace --tests` | Verify zero compiler errors or warnings against upgraded Kairos |
-| R3 | `cargo test --workspace` and replay benchmarks | Replay trace checksum comparison against reference baseline |
+| R0 | Reconcile registry, index and resume state against exact-scope receipts; retain historical acceptance and expose contradictions rather than declare all capabilities verified. Inventory the pinned Kairos consumer APIs and candidate mainline; distinguish contract, implemented code, exercised runtime and operational acceptance. Record parallel audit findings and exact revisions. Review numbered plan tasks, ownership, external capability gates and task catalog; require context/catalog integrity before dispatch. | Retain failing controls and executed receipts; planned checks are not passes. |
+| R1 | Audit the existing harness environment and jsonschema resolution without changing global Python or dependencies. Run the Python harness regressions and context/task/MVP validators; record commands, hashes and failures. Freeze ED, Q/C, physical IO and checkpoint/recovery source/input/output baselines, replay version and rollback procedure before a candidate pin change. | Retain failing controls and executed receipts; planned checks are not passes. |
+| R2 | Select an immutable candidate after reviewing code, compatibility and current hosted evidence; f0d30e2 is an inspected candidate, not an automatic upgrade target. Exercise required consumer APIs: event conditions, allocation semantics and official Arrow IPC/Parquet interoperability with an independent reader; an enum or custom serialization is insufficient. Run relevant Rust consumer checks against the candidate in isolation. Keep Metal, distributed transport and advanced solvers separate unless required and exercised by this scope. | Retain failing controls and executed receipts; planned checks are not passes. |
+| R3 | Run full affected Rust tests and preserved Q/C, IO, ED replay/holdout comparisons against the frozen baseline; explain intentional versioned differences and reject unexplained drift. Advance the parent pin only after required gates pass; otherwise retain the working pin and record precise missing capabilities and supported bounded alternatives. Record candidate decision, rollback rehearsal, limitations and owner handoffs; do not mark an unavailable capability passed. | Retain failing controls and executed receipts; planned checks are not passes. |
+
+Commands are resolved against real targets at packet binding; no speculative test executable is an acceptance result.
+See [composition fixture oracles](../../design/composition-contracts-20261020.md#first-acceptance-scenarios).

@@ -1,7 +1,14 @@
-# Handoff: Generic birthing suite simulation delivery
+# Planning handoff
 
-Status: Proposed.
+20 October 2026: revised plan incorporates [CC-01–CC-08](../../design/composition-contracts-20261020.md).
+All implementation tasks remain unchecked. User authorised planning incorporation;
+this is not spec/runtime/clinical acceptance. Resolve current upstream owners,
+exact revisions and capability receipts before binding a worker packet.
 
-Prerequisites: `careops_core_domain_abstractions_20261020:A6` complete and accepted.
+The first proof is a small ED/ward/community fixture, followed by a birthing/theatre
+fixture and A7 evidence join. B0 evidence intake is independent of core delivery.
+Preserve ED replay, existing source pins, jurisdiction-neutral code and versioned
+profiles. Do not infer atomic grants from conditions or delivery from transfer.
 
-Upon completion of phases B0–B7, the CareOps framework will feature a fully qualified, discrete-event and agent-based Birthing Suite simulation with linked mother-infant entities, capability spaces, 1:1 midwifery staffing, emergency escalation, and decoupled egress sink routing. This completes the Generic Birthing Suite baseline, unlocking subsequent CHHHS local adaptation and surgery integration.
+Historical proposal is retained in the planning baseline commit. Current plan,
+specification and test matrix supersede its unconditional capability assumptions.

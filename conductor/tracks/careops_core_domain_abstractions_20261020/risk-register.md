@@ -1,8 +1,10 @@
-# Risk register: Multi-domain core simulation abstractions and egress boundaries
+# Risk register
 
-| Risk | Impact | Mitigation |
-| --- | --- | --- |
-| Refactoring `careops-ed` alters event scheduling order or breaks deterministic replay | Loss of qualified milestone G1 baseline | Phase A6 regression gate with byte-by-byte fixture replay check before PR acceptance |
-| Dynamic pathway engine introduces runtime overhead | Simulation throughput drops | Use index-based contiguous vector representation (`kairo-ecs-state`) with zero allocations in inner event loops |
-| Multi-role team allocation causes deadlocks when multiple procedures contend for doctors/midwives | Simulation hangs | Leverage Kairos `ConditionWait` atomic acquisition or strict priority-based resource ordering |
-| Egress sink boundary leaks memory or drops entities | Causal accounting violation | EgressSink must emit explicit terminal or handover events with strict entity conservation accounting |
+| Risk | Mitigation / stop condition |
+| --- | --- |
+| Completed labels exceed exercised capability | Require exact-source runtime and independent reader/device/transport receipts for the specific consumer |
+| Universal categories encode unsupported clinical rules | Versioned jurisdiction/site policies; source review; urgency separate from preemption and hazard |
+| Partial resource acquisition or transfer duplicates | Failure-atomic bundle or explicit approximation; idempotency, expiry, rollback and per-event conservation |
+| Extraction changes unrelated random draws or ED results | Compatibility adapter, stable stream ownership and unchanged baseline replay |
+| Missing data mistaken for absence or causal evidence | Observation/censoring model, provenance, held-out validation and identifiability limits |
+| Parallel ownership or source drift | Isolated claimed paths, input hashes and rebind on changes; no automatic takeover |

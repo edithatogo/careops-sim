@@ -40,3 +40,10 @@
 
 - **Zero Private Patient Data**: All checked-in test fixtures, CI benchmarks, and default examples must utilize synthetic data or appropriately aggregated public statistics (e.g. AIHW, Queensland Perinatal reports). Never commit identifiable patient data, confidential clinical notes, or restricted institutional records to Git.
 - **Site CAD & Capacity Governance**: Treat detailed hospital CAD drawings, physical security blueprints, and private institutional staffing data as governed external inputs with recorded access boundaries and licensing provenance.
+
+## Composition qualification
+
+Apply [CC-01–CC-08](design/composition-contracts-20261020.md). Report uncertainty
+when estimable and explain deterministic cases or insufficient evidence rather
+than manufacture confidence intervals. Policy profiles must identify source,
+version and applicability. No classification alone permits active interruption.

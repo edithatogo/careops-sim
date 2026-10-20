@@ -15,6 +15,8 @@
 - [Workflow](workflow.md)
 - [Track registry](tracks.md)
 - [Product expansion roadmap](roadmap.md)
+- [Composition contracts and fixture gates](design/composition-contracts-20261020.md)
+- [Related repository interfaces](design/related-repository-boundaries-20261020.md)
 - [Universal triage & priority framework](design/universal-triage-priority-framework.md)
 - [Transport, retrieval & boundary flows](design/transport-retrieval-interfacility-flow.md)
 - [Generic ED public evidence shortlist](generic-ed-evidence.md)
@@ -24,19 +26,19 @@
 
 | Track | Specification | Phased implementation plan | Status |
 | --- | --- | --- | --- |
-| Repository reconciliation & Kairos upgrade | [Specification](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md) | [Plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md) | Proposed; ready to implement |
-| Multi-domain core abstractions & boundaries | [Specification](tracks/careops_core_domain_abstractions_20261020/spec.md) | [Plan](tracks/careops_core_domain_abstractions_20261020/plan.md) | Proposed; blocked on repo reconciliation |
-| Generic birthing suite delivery | [Specification](tracks/birthing_suite_delivery_20261020/spec.md) | [Plan](tracks/birthing_suite_delivery_20261020/plan.md) | Proposed; blocked on core abstractions |
-| ED parameters and example inputs | [Specification](tracks/ed_parameter_evidence_20260927/spec.md) | [Plan](tracks/ed_parameter_evidence_20260927/plan.md) | Research intake complete; delivery pending |
-| Development readiness | [Specification](tracks/development_readiness_20260925/spec.md) | [Plan](tracks/development_readiness_20260925/plan.md) | Local audit/bootstrap implemented; remaining work planned |
-| Generic ED delivery | [Specification](tracks/generic_ed_delivery_20260925/spec.md) | [Plan](tracks/generic_ed_delivery_20260925/plan.md) | Research intake complete; delivery pending |
+| Repository reconciliation & Kairos upgrade | [Specification](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md) | [Plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md) | Planned; R0 capability/status reconciliation first |
+| Multi-domain core abstractions & boundaries | [Specification](tracks/careops_core_domain_abstractions_20261020/spec.md) | [Plan](tracks/careops_core_domain_abstractions_20261020/plan.md) | Planned; R3 baseline gate before implementation |
+| Generic birthing suite delivery | [Specification](tracks/birthing_suite_delivery_20261020/spec.md) | [Plan](tracks/birthing_suite_delivery_20261020/plan.md) | Planned; B0 evidence intake independent, B1 after A5 |
+| ED parameters and example inputs | [Specification](tracks/ed_parameter_evidence_20260927/spec.md) | [Plan](tracks/ed_parameter_evidence_20260927/plan.md) | All plan tasks checked; capability scope reconciled in R0 |
+| Development readiness | [Specification](tracks/development_readiness_20260925/spec.md) | [Plan](tracks/development_readiness_20260925/plan.md) | All plan tasks checked; historical evidence retained |
+| Generic ED delivery | [Specification](tracks/generic_ed_delivery_20260925/spec.md) | [Plan](tracks/generic_ed_delivery_20260925/plan.md) | All plan tasks checked; capability scope reconciled in R0 |
 | DES queues and preemption | [Specification](tracks/des_queue_preemption_20260925/spec.md) | [Plan](tracks/des_queue_preemption_20260925/plan.md) | Q0–Q5 experimental development accepted; release and ED MVP separate |
-| Empirical calibration and validation | [Specification](tracks/empirical_calibration_20260925/spec.md) | [Plan](tracks/empirical_calibration_20260925/plan.md) | Research incorporated; contract review and delivery pending |
+| Empirical calibration and validation | [Specification](tracks/empirical_calibration_20260925/spec.md) | [Plan](tracks/empirical_calibration_20260925/plan.md) | All plan tasks checked; historical evidence retained |
 
 These tracks cover parent ED delivery and changes owned by existing Kairos tracks.
 They do not declare new upstream IDs or change upstream completion records.
-The local audit/context bootstrap is implemented; simulation implementation and
-full development/release acceptance remain outstanding. Earlier product discovery
+The original five plans contain 145 checked tasks. Their source/runtime scope is
+reconciled in R0; new composition plans do not certify broader acceptance. Earlier product discovery
 remains available in
 [the product discovery document](../docs/product-draft.md).
 
@@ -56,7 +58,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
 
 ## Complete MVP worker decomposition
 
-The [Luna MVP workpack](execution/mvp/README.md) covers all 81 MVP parent tasks with 251
+The [Luna MVP workpack](execution/mvp/README.md) covers all 82 MVP parent tasks with 258
 bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind reviewed
 context/commands just before dispatch. No autonomous execution or model
 qualification is claimed.

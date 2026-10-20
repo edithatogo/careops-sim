@@ -19,6 +19,11 @@ SCOPES = {
     'C': ['libs/kairos/crates/kairo-ecs-calibration', 'libs/kairos/crates/kairo-ecs-arrow'],
     'E': ['crates/careops-ed', 'tests/ed'],
     'P': ['model-inputs/ed'],
+    'R': ['conductor', 'tools', 'tests', 'libs/kairos'],
+    'A': ['conductor', 'Cargo.toml', 'Cargo.lock', 'crates/careops-core',
+          'crates/careops-ed', 'tests', 'profiles'],
+    'B': ['conductor', 'Cargo.toml', 'Cargo.lock', 'crates/careops-birthing',
+          'tests', 'profiles'],
 }
 COORDINATOR_TASKS = {'C2.0','D1.2','D2.2','D4.1','D5.2','E5.1','E6.1','E7.1','E8.1','P3.2','P3.3'}
 OVERRIDES = {
@@ -68,7 +73,8 @@ TASK_OVERRIDES = {
 
 def key(task):
     prefix, phase, number = re.fullmatch(r'([A-Z])(\d+)\.(\d+)', task['id']).groups()
-    return ({'D': 0, 'P': 1, 'Q': 2, 'C': 3, 'E': 4}.get(prefix, 9), int(phase), int(number))
+    return ({'D': 0, 'P': 1, 'Q': 2, 'C': 3, 'E': 4, 'R': 5,
+             'A': 6, 'B': 7}.get(prefix, 9), int(phase), int(number))
 
 
 def derive(root):
@@ -97,6 +103,10 @@ def derive(root):
                 phase = header[1]
             match = re.match(r'- \[([ x])\] ([A-Z]\d+\.\d+) (.*)', lines[i])
             if not match:
+                if phase and re.match(r'- \[[ x~]\]', lines[i]):
+                    raise ValueError(
+                        f'{plan}:{i + 1}: task requires a numbered ID and '
+                        'supported [ ] or [x] status')
                 i += 1
                 continue
             source_line = i + 1
@@ -152,6 +162,9 @@ def derive(root):
             if not isinstance(dependencies, list) or not all(isinstance(d, str) for d in dependencies):
                 raise ValueError(f'Invalid task dependency override: {task_id}')
         for phase, dependencies in meta['phase_dependencies'].items():
+            if not phase_tasks.get(f"{meta['track_id']}:{phase}"):
+                raise ValueError(
+                    f"{meta['track_id']}:{phase}: phase has no numbered tasks")
             current = phase_tasks[f"{meta['track_id']}:{phase}"][0]
             for dependency in dependencies:
                 by_id[current]['dependencies'].append(phase_tasks[f"{meta['track_id']}:{dependency}"][-1])

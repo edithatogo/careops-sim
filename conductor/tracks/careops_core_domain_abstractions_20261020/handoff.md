@@ -1,7 +1,14 @@
-# Handoff: Multi-domain core simulation abstractions and egress boundaries
+# Planning handoff
 
-Status: Proposed.
+20 October 2026: revised plan incorporates [CC-01–CC-08](../../design/composition-contracts-20261020.md).
+All implementation tasks remain unchecked. User authorised planning incorporation;
+this is not spec/runtime/clinical acceptance. Resolve current upstream owners,
+exact revisions and capability receipts before binding a worker packet.
 
-Prerequisites: `repo_reconciliation_kairos_upgrade_20261020:R3` complete and accepted.
+The first proof is a small ED/ward/community fixture, followed by a birthing/theatre
+fixture and A7 evidence join. B0 evidence intake is independent of core delivery.
+Preserve ED replay, existing source pins, jurisdiction-neutral code and versioned
+profiles. Do not infer atomic grants from conditions or delivery from transfer.
 
-Upon completion of phases A0–A6, `careops-core` provides the reusable, domain-neutral clinical engine. `careops-ed` is successfully decoupled, and the birthing suite delivery (`birthing_suite_delivery_20261020`) can immediately consume `careops-core` to construct the birthing simulation.
+Historical proposal is retained in the planning baseline commit. Current plan,
+specification and test matrix supersede its unconditional capability assumptions.

@@ -1,5 +1,10 @@
 # Track registry
 
+Current planning revision: R0 reconciles historical labels and runtime scope.
+Original plans contain 145 checked tasks; the new R/A/B plans remain pending.
+[Composition contracts](design/composition-contracts-20261020.md) govern the new work.
+Registry prose below retains historical handoffs until R0 evidence reconciliation.
+
 - [x] **DES queues and preemption** — `des_queue_preemption_20260925`
   ([index](tracks/des_queue_preemption_20260925/index.md),
   [spec](tracks/des_queue_preemption_20260925/spec.md),
@@ -33,7 +38,7 @@ formal Q0/C0 contracts; E0 unlocks D2 GitHub/CI, then Q1/C1 can proceed.
 - [ ] **Repository status reconciliation and Kairos upgrade** — `repo_reconciliation_kairos_upgrade_20261020`
   ([index](tracks/repo_reconciliation_kairos_upgrade_20261020/index.md),
   [spec](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md),
-  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). Proposed. Reconciles registry tracking state, audits harness python environment, and upgrades `libs/kairos` to latest Wave 10 mainline.
+  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). Proposed. Reconciles capability/status evidence, audits the harness and qualifies a bounded Kairos candidate; retains the working pin if required gates fail.
 
 - [ ] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
   ([index](tracks/careops_core_domain_abstractions_20261020/index.md),
