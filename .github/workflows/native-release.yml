@@ -1,0 +1,165 @@
+name: Native CLI release candidate
+on:
+  pull_request:
+    paths: ['.github/workflows/native-release.yml', 'tools/package_native_release.py', 'tests/test_native_release_package.py', 'Cargo.toml', 'Cargo.lock', 'crates/**', 'libs/kairos', 'LICENSE', 'NOTICE', 'rust-toolchain.toml']
+  push:
+    branches: [main]
+    paths: ['.github/workflows/native-release.yml', 'tools/package_native_release.py', 'tests/test_native_release_package.py', 'Cargo.toml', 'Cargo.lock', 'crates/**', 'libs/kairos', 'LICENSE', 'NOTICE', 'rust-toolchain.toml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: native-release-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  build:
+    name: Compile, package and exercise actual native CLI
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.14.8'
+      - name: Verify packaging refusal and integrity regressions
+        run: python -m unittest discover -s tests -p test_native_release_package.py -v
+      - name: Compile once using the canonical locked Rust lane
+        run: |
+          toolchain=$(python -c 'import tomllib; print(tomllib.load(open("rust-toolchain.toml", "rb"))["toolchain"]["channel"])')
+          rustup toolchain install "$toolchain" --profile minimal
+          rustup run "$toolchain" rustc -vV
+          rustup run "$toolchain" cargo build --locked --release --package careops-ed-cli --bin careops-ed
+      - name: Package compiled bytes without rehearsal substitutions
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: |
+          git diff --exit-code
+          python tools/package_native_release.py --binary target/release/careops-ed --license LICENSE --notice project=NOTICE --notice kairos/LICENSE=libs/kairos/LICENSE --notice kairos/LICENSE-APACHE=libs/kairos/LICENSE-APACHE --notice kairos/LICENSE-MIT=libs/kairos/LICENSE-MIT --notice kairos/LICENSE.md=libs/kairos/LICENSE.md --scenario crates/careops-ed/examples/nominal_mvp.json --source-commit "$SOURCE_COMMIT" --created-epoch "$(git show -s --format=%ct "$SOURCE_COMMIT")" --output dist/careops-sim-linux-x64.zip
+          cp Cargo.lock dist/resolved-workspace.Cargo.lock
+      - name: Exercise the unpacked CLI outside the source tree
+        run: |
+          mkdir -p "$RUNNER_TEMP/native-consumer"
+          unzip -q dist/careops-sim-linux-x64.zip -d "$RUNNER_TEMP/native-consumer"
+          cd "$RUNNER_TEMP/native-consumer" || exit 1
+          bin/careops-ed --help > help.txt
+          grep -F 'Usage: careops-ed' help.txt
+          bin/careops-ed validate examples/nominal_mvp.json
+          bin/careops-ed run examples/nominal_mvp.json --seed 42 --output result.json
+          bin/careops-ed run examples/nominal_mvp.json --seed 42 --output result-repeat.json
+          cmp result.json result-repeat.json
+          printf '{}\n' > invalid.json
+          invalid_status=0
+          bin/careops-ed validate invalid.json > invalid-result.txt 2>&1 || invalid_status=$?
+          test "$invalid_status" -eq 4
+          grep -F "MALFORMED_CONFIG (4)" invalid-result.txt
+          python - <<'PYCODE'
+          import hashlib, json
+          from pathlib import Path
+          scenario_path = Path('examples/nominal_mvp.json')
+          scenario = json.loads(scenario_path.read_text())
+          result = json.loads(Path('result.json').read_text())
+          manifest, summary = result['manifest'], result['summary']
+          assert manifest['input_sha256'] == hashlib.sha256(scenario_path.read_bytes()).hexdigest()
+          assert manifest['seed'] == summary['seed'] == 42
+          assert manifest['scenario_id'] == summary['scenario_id'] == scenario['scenario_id']
+          assert summary['arrivals'] == summary['started'] == summary['completed'] == 5
+          assert summary['unfinished'] == 0 and len(summary['patients']) == 5
+          assert {p['patient_id'] for p in summary['patients']} == {f'patient-{n:03}' for n in range(1, 6)}
+          assert all(p['status'] == 'completed' and p['arrival_tick'] <= p['start_tick'] <= p['completion_tick'] for p in summary['patients'])
+          assert result['validation_taxonomy']['provenance_class'] == 'synthetic'
+          assert result['validation_taxonomy']['validation_scope'] == 'none'
+          PYCODE
+          cp result.json "$GITHUB_WORKSPACE/dist/consumer-result.json"
+      - name: Read immutable qualified artifact tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: edithatogo/careops
+          ref: 6319d0c0c76ee672223c156abce9d4181c41aa9a
+          path: .artifacts/ci-release-policy
+          persist-credentials: false
+          submodules: false
+      - name: Inventory exact compiled package bytes
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: python .artifacts/ci-release-policy/portfolio-scripts/artifact_sbom.py --artifact dist/careops-sim-linux-x64.zip --name careops-sim-linux-x64 --source-commit "$SOURCE_COMMIT" --created-epoch "$(git show -s --format=%ct "$SOURCE_COMMIT")" --output dist/careops-sim.spdx.json
+      - name: Preserve actual package and source resolution inventory
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: careops-sim-linux-x64
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
+  attest-package:
+    name: Attest main source package
+    needs: [build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write # Federated signing for the exact previously built package.
+      attestations: write # Store package provenance and SPDX signatures only.
+    steps:
+      - name: Download the package built once by this run
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: careops-sim-linux-x64
+          path: candidate
+      - name: Select the qualified verification runtime
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.14.8'
+      - name: Independently compare downloaded package with its inventory
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: |
+          python - <<'PYCODE'
+          import hashlib, json, os, zipfile
+          from pathlib import Path
+          package = Path('candidate/careops-sim-linux-x64.zip')
+          document = json.loads(Path('candidate/careops-sim.spdx.json').read_text())
+          assert document['packages'][0]['sourceInfo'] == 'Source commit: ' + os.environ['SOURCE_COMMIT']
+          assert document['packages'][0]['checksums'][0]['checksumValue'] == hashlib.sha256(package.read_bytes()).hexdigest()
+          with zipfile.ZipFile(package) as archive:
+              entries = [entry for entry in archive.infolist() if not entry.is_dir()]
+              assert len({entry.filename for entry in entries}) == len(entries)
+              actual = {entry.filename: hashlib.sha256(archive.read(entry)).hexdigest() for entry in entries}
+          declared = {entry['fileName'].removeprefix('./'): next(c['checksumValue'] for c in entry['checksums'] if c['algorithm'] == 'SHA256') for entry in document['files']}
+          assert actual and len(declared) == len(document['files']) and actual == declared
+          print('Exact downloaded archive and all file digests match the inventory.')
+          PYCODE
+      - name: Attest build provenance
+        id: provenance
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
+        with:
+          subject-path: candidate/careops-sim-linux-x64.zip
+          create-storage-record: false
+      - name: Attest exact artifact inventory
+        id: sbom
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
+        with:
+          subject-path: candidate/careops-sim-linux-x64.zip
+          sbom-path: candidate/careops-sim.spdx.json
+          create-storage-record: false
+      - name: Verify exact source and workflow signatures
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_COMMIT: ${{ github.sha }}
+          PROVENANCE_BUNDLE: ${{ steps.provenance.outputs.bundle-path }}
+          SBOM_BUNDLE: ${{ steps.sbom.outputs.bundle-path }}
+        run: |
+          cp "$PROVENANCE_BUNDLE" candidate/build-attestation.jsonl
+          cp "$SBOM_BUNDLE" candidate/sbom-attestation.jsonl
+          gh attestation verify candidate/careops-sim-linux-x64.zip --bundle "$PROVENANCE_BUNDLE" --repo edithatogo/careops-sim --signer-workflow edithatogo/careops-sim/.github/workflows/native-release.yml --source-ref refs/heads/main --source-digest "$SOURCE_COMMIT" --signer-digest "$SOURCE_COMMIT" --deny-self-hosted-runners --format json > candidate/provenance-verification.json
+          gh attestation verify candidate/careops-sim-linux-x64.zip --bundle "$SBOM_BUNDLE" --repo edithatogo/careops-sim --signer-workflow edithatogo/careops-sim/.github/workflows/native-release.yml --source-ref refs/heads/main --source-digest "$SOURCE_COMMIT" --signer-digest "$SOURCE_COMMIT" --deny-self-hosted-runners --predicate-type https://spdx.dev/Document/v2.3 --format json > candidate/sbom-verification.json
+      - name: Preserve exact package and signature evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: careops-sim-attested-candidate-${{ github.sha }}
+          path: candidate/
+          if-no-files-found: error
+          retention-days: 30
