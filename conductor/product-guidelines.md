@@ -1,42 +1,42 @@
-# Product guidelines
+# Product Guidelines & Engineering Standards
 
-## Audience and use
+## 1. Audience & Purpose
 
-- Write for ED clinicians, operations leads and analysts comparing operational
-  scenarios. Define technical terms when they affect interpretation.
-- Present CareOps Sim as a scenario-planning and analysis tool. Do not frame its
-  outputs as clinical advice, individual patient predictions or staffing
-  directives.
-- Keep the generic ED usable without Cairns-specific or private data. Treat a
-  Cairns profile as a later, separately evidenced adaptation.
+- **Target Users**: Health service executives, clinical directors, hospital operations leads, healthcare planners, and operational researchers comparing capacity, workforce, and demand-flow scenarios.
+- **Decision Support, Not Clinical Directives**: Present CareOps Sim strictly as an operational scenario-planning and systems-analysis platform. Outputs must never be framed as clinical diagnostic advice, individual patient outcome predictions, or automated staffing directives.
+- **Universal Applicability**: Keep all simulation models usable across multiple jurisdictions (Queensland, other Australian states, New Zealand, the UK, Canada, and international health systems). Use Cairns/CHHHS as a concrete reference profile pack, not an embedded default in the engine code.
 
-## Results and evidence
+---
 
-- Make scenario inputs, units, assumptions, random seeds, model revision and
-  execution backend available with exported results.
-- Distinguish synthetic examples, public evidence, user-supplied empirical data
-  and locally validated observations. Preserve source and transformation
-  provenance where known.
-- Report uncertainty and limitations with comparative results. Do not imply
-  empirical calibration, clinical validity or operational fitness until the
-  relevant evidence and acceptance gates have passed.
-- Prefer clear operational measures: waiting time, length of stay, throughput,
-  queue/resource use and patient-flow outcomes.
+## 2. Universal Abstraction & Code Hygiene Rules
 
-## Scope and interaction
+- **Zero Hardcoded Regional Identifiers in Rust Crates**:
+  - Domain crates (`careops-core`, `careops-ed`, `careops-birthing`, `careops-surgery`, `careops-wards`, `careops-clinics`, `careops-hospital`, `careops-network`) must **NEVER** contain hardcoded names of specific hospitals, cities, health districts, or regional ambulance providers in struct names, enum variants, or business logic.
+  - *Incorrect*: `enum EmergencyProvider { Qas, Rfds }`, `struct ChhhsNetwork`, `fn route_to_cairns_ed()`.
+  - *Correct*: `struct EmergencyMedicalServiceProfile`, `struct RegionalHealthNetwork`, `fn route_to_facility(id: FacilityId)`.
+- **Jurisdictional & Site Profiling via Versioned Packs**:
+  - All local triage conventions (ATS, MTS, CTAS, ESI), urgency guidelines (CPC, ESPI, RTT), funding parameters (NHRA NEP/NWAU, NHS PbR), facility inventories, and transit distances belong exclusively in structured configuration files under `profiles/jurisdictions/` and `profiles/sites/`.
+- **Clean Architectural Layering**:
+  - Keep low-level simulation engine mechanics in [Kairos](../libs/kairos).
+  - Keep domain-neutral healthcare primitives in `careops-core`.
+  - Keep clinical unit logic in modular crates (`careops-ed`, `careops-birthing`, etc.).
+  - Keep whole-campus coordination in `careops-hospital` and regional network routing in `careops-network`.
 
-- Prioritize a reproducible, configurable, headless generic ED MVP and exportable
-  results before dashboard or visualization work.
-- Keep site-specific policies and profiles distinct from reusable simulation
-  engine behavior.
-- Expose capacity, staffing, acuity, diagnostics and boarding assumptions in
-  understandable scenario configuration rather than hiding them in code.
-- Later interfaces should make comparisons, provenance and uncertainty easy to
-  inspect; do not make visual rendering a prerequisite for simulation use.
+---
 
-## Privacy and governance
+## 3. Results, Reproducibility & Uncertainty
 
-- Use synthetic or appropriately open data in checked-in examples and public
-  automation. Never commit patient-identifiable or confidential clinical data.
-- Treat CAD/floor-plan content and operational capacity details as governed
-  inputs; record their source, validation status and permitted use.
+- **Provenance First**: All simulation runs must record their scenario inputs, random seeds, software revisions, hardware backend, and data version in Arrow IPC and Parquet metadata.
+- **Evidence Tier Taxonomy**: Clearly distinguish synthetic test cases, public statistical distributions, user-supplied empirical data, and locally validated site observations. Source and transformation provenance must be preserved across the calibration pipeline.
+- **Uncertainty & Sensitivity**: Always report confidence intervals and variance metrics with comparative scenario results. Never claim empirical calibration or operational fitness until the corresponding Conductor verification gates have formally passed.
+- **Standardized Operational Metrics**: Report standardized healthcare operational indicators:
+  - Patient flow: waiting times, length of stay (LOS), time-to-decision, boarding duration.
+  - Resource utilization: room occupancy, midwife/nurse-to-patient ratios, surgical session utilization.
+  - Access performance: triage target compliance, emergency surgery decision-to-incision intervals, and elective waitlist breach rates.
+
+---
+
+## 4. Privacy, Security & Data Governance
+
+- **Zero Private Patient Data**: All checked-in test fixtures, CI benchmarks, and default examples must utilize synthetic data or appropriately aggregated public statistics (e.g. AIHW, Queensland Perinatal reports). Never commit identifiable patient data, confidential clinical notes, or restricted institutional records to Git.
+- **Site CAD & Capacity Governance**: Treat detailed hospital CAD drawings, physical security blueprints, and private institutional staffing data as governed external inputs with recorded access boundaries and licensing provenance.

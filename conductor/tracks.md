@@ -30,6 +30,21 @@ formal Q0/C0 contracts; E0 unlocks D2 GitHub/CI, then Q1/C1 can proceed.
   immediately; P1 DES and P2 ABM evidence run independently, joining at P3.
   E0/C0 consume P0, C2 consumes P3, E1 consumes P4, and C6 consumes P5.
 
+- [ ] **Repository status reconciliation and Kairos upgrade** — `repo_reconciliation_kairos_upgrade_20261020`
+  ([index](tracks/repo_reconciliation_kairos_upgrade_20261020/index.md),
+  [spec](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md),
+  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). Proposed. Reconciles registry tracking state, audits harness python environment, and upgrades `libs/kairos` to latest Wave 10 mainline.
+
+- [ ] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
+  ([index](tracks/careops_core_domain_abstractions_20261020/index.md),
+  [spec](tracks/careops_core_domain_abstractions_20261020/spec.md),
+  [plan](tracks/careops_core_domain_abstractions_20261020/plan.md)). Proposed. Extracts dynamic stage graphs, capability-based rooms, multi-role procedural staffing, decoupled egress handover boundaries, and linked entity pairs into `careops-core`.
+
+- [ ] **Generic birthing suite simulation delivery** — `birthing_suite_delivery_20261020`
+  ([index](tracks/birthing_suite_delivery_20261020/index.md),
+  [spec](tracks/birthing_suite_delivery_20261020/spec.md),
+  [plan](tracks/birthing_suite_delivery_20261020/plan.md)). Proposed. Modular birthing suite simulation crate (`careops-birthing`) with labor progression, dynamic neonate spawning, LDR suites, 1:1 midwifery staffing, acute CS preemption, and decoupled outbox egress routing.
+
 ## Research intake completed
 
 All requested research themes have responses; embedded content is available.

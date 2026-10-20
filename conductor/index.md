@@ -15,6 +15,8 @@
 - [Workflow](workflow.md)
 - [Track registry](tracks.md)
 - [Product expansion roadmap](roadmap.md)
+- [Universal triage & priority framework](design/universal-triage-priority-framework.md)
+- [Transport, retrieval & boundary flows](design/transport-retrieval-interfacility-flow.md)
 - [Generic ED public evidence shortlist](generic-ed-evidence.md)
 - [Kairos enhancement programme and dependency map](kairos-enhancements.md)
 
@@ -22,6 +24,9 @@
 
 | Track | Specification | Phased implementation plan | Status |
 | --- | --- | --- | --- |
+| Repository reconciliation & Kairos upgrade | [Specification](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md) | [Plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md) | Proposed; ready to implement |
+| Multi-domain core abstractions & boundaries | [Specification](tracks/careops_core_domain_abstractions_20261020/spec.md) | [Plan](tracks/careops_core_domain_abstractions_20261020/plan.md) | Proposed; blocked on repo reconciliation |
+| Generic birthing suite delivery | [Specification](tracks/birthing_suite_delivery_20261020/spec.md) | [Plan](tracks/birthing_suite_delivery_20261020/plan.md) | Proposed; blocked on core abstractions |
 | ED parameters and example inputs | [Specification](tracks/ed_parameter_evidence_20260927/spec.md) | [Plan](tracks/ed_parameter_evidence_20260927/plan.md) | Research intake complete; delivery pending |
 | Development readiness | [Specification](tracks/development_readiness_20260925/spec.md) | [Plan](tracks/development_readiness_20260925/plan.md) | Local audit/bootstrap implemented; remaining work planned |
 | Generic ED delivery | [Specification](tracks/generic_ed_delivery_20260925/spec.md) | [Plan](tracks/generic_ed_delivery_20260925/plan.md) | Research intake complete; delivery pending |

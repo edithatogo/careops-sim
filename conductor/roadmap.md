@@ -1,17 +1,32 @@
-# Product expansion roadmap
+# Product Expansion Roadmap & Milestone Masterplan
 
-User direction recorded on 2026-09-25. This is sequencing and scope guidance,
-not a set of implementation tracks or a delivery commitment.
+This document establishes the master delivery progression for the CareOps Sim whole-of-health simulation system, guiding multi-scale modeling from individual clinical units up to a multi-hospital regional network.
 
-| Order | Model scope | Data progression |
-| --- | --- | --- |
-| 1 | Emergency department | Generic/public baseline → Cairns Emergency Department, within CHHHS |
-| 2 | Surgery | Generic/public baseline → CHHHS example |
-| 3 | Birthing suites | Generic/public baseline → CHHHS example |
-| 4 | Outpatient clinics | Generic/public baseline → CHHHS example |
-| 5 | Waitlist management | Generic/public baseline → CHHHS example |
-| 6 | Whole of hospital | Generic/public baseline → CHHHS example |
-| 7 | Whole of health | Generic/public baseline → CHHHS example |
+## Master Milestone Sequence (M0 to M6)
+
+| Milestone | Scope | CareOps Sim Package / Track | Upstream Kairos Engine Enabler |
+|---|---|---|---|
+| **M0** | **Engine Reconciliation & Baseline** | `repo_reconciliation_kairos_upgrade_20261020` | Waves 9 & 10 (Apple Silicon MetalBackend, Apache Arrow zero-copy FFI, SimPy parity) |
+| **M1** | **Multi-Domain Core Abstractions** | `careops_core_domain_abstractions_20261020` (`careops-core`) | Track 67 (Linked Entities), Track 68 (Boundary Channels), Track 69 (Competing Risks) |
+| **M2** | **Acute Episodic Units** | `careops-ed` (G1 baseline) & `birthing_suite_delivery_20261020` (`careops-birthing`) | `ConditionWait` team co-allocation & `PreemptiveResource` |
+| **M3** | **Surgical Suite & Inpatient Ward Flow** | `careops-surgery` (Theatres, PACU, Day Surgery) & `careops-wards` (Acute, ICU, Postnatal, Subacute) | `Store<T>` equipment packs, surgical tray turnover, bed-blocking backpressure |
+| **M4** | **Ambulatory Services, Procedural Spaces & Registries** | `careops-clinics` (Specialist Outpatients), `careops-procedural` (Endoscopy, Cath Lab), and `careops-waitlist` | Asynchronous stock-and-flow registry waitlists, Cat 1/2/3 breach scoring |
+| **M5** | **Whole-of-Hospital Campus Orchestration** | `careops-hospital` (Campus coordination, central bed management, imaging/pathology transversal services) | Multi-unit composite state, causal provenance, CoW snapshots |
+| **M6** | **Regional Health Network & Policy Integration** | `careops-network` (Multi-hospital CHHHS network, road/air retrieval streams, interstate/external flows, `nhra_gt` ABF funding) | `kairo-ecs-pdes` (LP per hospital), `kairo-ecs-grpc`/`mpi`, `kairo-ecs-game-theory` |
+
+---
+
+## Universal Triage, Transport & Boundary Architecture
+
+Every milestone builds upon shared architectural foundations:
+1. **Universal Triage & Priority**: Coherent mapping across emergency (ATS 1–5), acute emergency surgery (Cat 1–4), elective surgery (Cat 1–3), specialist outpatient clinics (CPC Cat 1–3), and retrieval urgency (Priority 1–3). Details in [Universal Triage Framework](design/universal-triage-priority-framework.md).
+2. **Multi-Modal Transport & Retrieval**: Modeling road ambulances, non-acute transport vans, rotary rescue helicopters, fixed-wing air ambulances (RFDS), taxis/rideshares, and private vehicles, staffed by EMTs, ACPs, CCPs, or medical retrieval teams. Details in [Transport & Retrieval Design](design/transport-retrieval-interfacility-flow.md).
+3. **Cross-Border Inflows/Outflows**: District boundary flows including intra-district rural escalations/repatriations, neighbouring HHS referrals (Torres and Cape HHS), interstate quaternary transfers, and international/tourist presentations.
+4. **Activity-Based Funding & Game-Theoretic Policy**: Operational decision modeling (e.g. elective cancellation vs emergency backlog clearing) connected to the National Health Reform Agreement (NHRA) funding caps and NEP/NWAU pricing via `nhra_gt` and Kairos game theory solvers.
+
+---
+
+## Data Progression Strategy
 
 For each stage, establish a reproducible generic model using public data and open
 examples where available, with clearly labelled synthetic assumptions where
