@@ -85,6 +85,11 @@ For gpt-6-luna execution through the MVP, use the
 
 ## Licenses, notices, and citation
 
+Project-owned code is licensed under **Apache-2.0**, confirmed by the project
+owner on 20 October 2026. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+Third-party software retains its own licences and attribution requirements;
+separately governed data and research content are not relicensed by this decision.
+
 Workspace package metadata declares SPDX `Apache-2.0`:
 
 - root [`Cargo.toml`](Cargo.toml) `[workspace.package].license`
@@ -93,7 +98,7 @@ Workspace package metadata declares SPDX `Apache-2.0`:
 
 [`deny.toml`](deny.toml) allows dependency licenses `MIT`, `Apache-2.0`, `BSD-3-Clause`, and `Unicode-3.0`. Parent Rust and Python sources have no SPDX file headers.
 
-Root `CITATION.cff` is present for software citation. Distribution packaging and release rehearsals bundle `LICENSE-APACHE` and `NOTICE` via `tools/release_rehearsal.py`. The [P4 pack manifest](model-inputs/ed/profiles/p4-pack-manifest.json) records parent redistribution as `not_established` and keeps Kairos and Conductor licenses inside those submodules. [E0.2](conductor/evidence/e0.2-local-acceptance-20261002.md) records the Cargo Apache-2.0 fields as repeated Kairos workspace metadata. [D2.3](conductor/evidence/d2.3-policy-20261003.md) added the Cargo fields so `cargo deny` can check licenses.
+Root `CITATION.cff` is present for software citation. Distribution packaging and release rehearsals bundle `LICENSE-APACHE` and `NOTICE` via `tools/release_rehearsal.py`. The [P4 pack manifest](model-inputs/ed/profiles/p4-pack-manifest.json) retains its existing data-artifact redistribution holds; this code-only licence decision does not clear them. Kairos and Conductor licences remain inside those submodules. [E0.2](conductor/evidence/e0.2-local-acceptance-20261002.md) records the Cargo Apache-2.0 fields as repeated Kairos workspace metadata. [D2.3](conductor/evidence/d2.3-policy-20261003.md) added the Cargo fields so `cargo deny` can check licenses.
 
 Pinned submodules (initialize with `git submodule update --init --recursive`):
 
