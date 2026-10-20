@@ -1,0 +1,58 @@
+# Kairos capability reconciliation and abstraction plan — 20 October 2026
+
+## Current decision
+
+This maintainer-requested addendum updates the enhancement/readiness plan without editing the active roadmap owner's registry, task DAG, new domain tracks or draft upgrade packet. It is not a pin change or a claim that their work has been integrated. Baseline: CareOps `8ca0e5ecec2a41a86ebce32361adbde08dd191d3`; Kairos pin `44261eb5cf8275f132f63a3396903d116d701dbe`; compared with Kairos main `f0d30e28c3299dcdb6ca138d95319ecaaf29a54a`. The paired Kairos change adds `conductor/capability-reconciliation-20261020.md` with detailed source evidence and an owner plan; that file may remain on its review branch until integration.
+
+**Do not advance the pin solely because main is newer or its registry says Done.** The pin is not an ancestor of that main revision; their merge base is `384e8546d69f9cbf2746fcb2ab646263256e6dec`. The pin contains real `kairo-ecs-arrow-io` using Arrow/Parquet 60.0.0, calibration and extensive Flow/ABM transit/checkpoint contracts absent from the audited main tree. A direct replacement can lose qualified capabilities. Historical Q/C/D acceptance remains bounded by its recorded revision and receipts.
+
+## Integration leaves for the current roadmap owner
+
+These leaves supplement the proposed repository-reconciliation/Kairos-upgrade and CareOps-core-domain-abstractions tracks. The owner should map them into its existing task IDs/DAG; this addendum does not create duplicate tracks or dispatch runtime work.
+
+- [ ] **C-R0 — inventory before upgrade:** compare crate/module symbols, features, schemas, fixtures, Cargo dependencies, replay/checkpoint contracts and retained Q/C/ED receipts between both revisions. Record missing equivalents explicitly; distinguish alternative implementations from history deletion.
+- [ ] **C-R1 — preserving revision:** coordinate Kairos owners 03/04/21/22/25 to integrate missing qualified capability or prove a replacement; retain current pin until a candidate passes physical Arrow/Parquet reader interoperability, Q/C behavioral suites, ED consumer API parity, checkpoint/recovery and rollback. No date/hash-only upgrade acceptance.
+- [ ] **C-R2 — correct capability assumptions:** main's Metal backend executes CPU fallback, Python optional ctypes loads a version function but not a native scheduler, and AllOf/AnyOf declarations do not implement atomic waits. Draft plans must consume evidence-qualified capability gates, not those names or historical Done labels.
+- [ ] **C-R3 — audit E6/E8 receipts:** `e62_wgpu_wgsl_device_path.rs` contains literal WGSL and constructed device metadata; `e83_multinode_cluster_execution.rs` uses in-process threads/mpsc and synthetic efficiency. Keep these as contract tests; require actual device submission and physically distinct hosts with measured times before E6/E8 acceptance.
+- [ ] **C-R4 — generic experiment services first:** adapt `batch_runner` and `api_runner` orchestration to existing Kairos experiment interfaces: seed partitioning, worker invariance, progress/cancel, manifests, resume and deterministic recovery. Maintain CareOps facade and compare before/after traces across 1/2/4 workers and interrupted runs.
+- [ ] **C-R5 — allocation/work mechanisms next:** review operations' shifts, held work, handover, preemption, eligibility and dispatch. Extract generic leases/state transitions/policy hooks only after acquire-all, cancellation, rollback and stale-completion semantics pass. `claim_atomic_multi_resource` is unsupported; do not build a plan assuming atomic allocation is already available.
+- [ ] **C-R6 — two-consumer boundary proof:** exercise each proposed generic mechanism with ED plus a distinct consumer (initially nonclinical logistics fixture; qualify a separate domain adapter before broad adoption). Retain healthcare policies/types in CareOps; preserve old adapters until parity and recovery pass. Do not move merely similar code before shared semantics are demonstrated.
+- [ ] **C-R7 — qualification receipts:** bind commands, cwd, source/submodule hashes, toolchain, deterministic input/seed, host/device identity, exit codes and raw artifact checksums. Repository/contract tests, native execution, operational acceptance and clinical validation remain separate.
+
+## Ownership boundary
+
+| Belongs in Kairos if qualified | Remains in CareOps core/domain/site layers |
+| --- | --- |
+| Deterministic execution, stream/seed partitioning, reusable experiment lifecycle | Patient and clinical pathway semantics; clinical validation policy |
+| Atomic allocations, generic work continuation, interruption and dispatch hooks | Clinical triage vocabulary, priority mappings, staffing/clinical eligibility rules |
+| Calibration mechanics, metrics, trace/checkpoint/provenance contracts | Empirical sources, clinical interpretation, site parameter mappings |
+| Generic entity relations and policy-neutral resource identities | Maternal-neonatal linkage rules, healthcare capabilities, specialty adapters |
+
+Already-upstream Flow/calibration on the current pin should be reconciled rather than extracted twice. Do not promote the count-conditioned synthetic arrival generator to a Poisson model without a separate statistical implementation and oracle. Avoid a new common framework where an existing primitive or adapter suffices.
+
+## Free execution plan: three distinct hosts
+
+1. **Mac (verified M1 Max, 32 GiB):** run native contracts and actual Metal via a reviewed wgpu/Metal implementation. Gate on real kernel dispatch/readback, device identity, CPU parity and measured timings; CPU fallback tests cannot qualify E6.
+2. **Pleiades NAS (verified x86_64 Linux i3-N300, approximately 32 GiB, Docker, one NUMA node):** Linux/x86 consumer tests, real affinity, container OpenModelica/FMU and single-node Slurm integration. Use as a CPU transport peer after runtime compatibility checks. It does not prove multi-NUMA locality, NVIDIA execution or a parallel filesystem.
+3. **Separate Pleiades CUDA PC (user-reported):** first verify OS/architecture, GPU, driver/toolkit, memory and remote execution access; this audit's SSH probe timed out. Then actual CUDA buffers/kernel/CPU parity, cleanup and timing. The existing SSH alias `pleiades` routes to the NAS; qualify separate host identities before any dispatch.
+4. **Two-host E8:** real transport plus failure injection/restart, deterministic trace parity and measured speedup/efficiency. A process launcher, a single-node Slurm run or thread pool alone is insufficient. Mixed OS/architecture launch needs explicit wire/runtime qualification.
+
+Use free [wgpu](https://wgpu.rs/), [Colima](https://github.com/abiosoft/colima), documented [OpenModelica macOS container/source routes](https://openmodelica.org/download/download-mac/), [Open MPI](https://docs.open-mpi.org/en/main/launching-apps/ssh.html), and [Slurm](https://slurm.schedmd.com/quickstart_admin.html) as applicable. Do not assume an OpenModelica macOS cask or Linux container GPU passthrough exists. No software was installed remotely and no host settings were changed for this plan.
+
+## Review and coordination
+
+The main checkout's uncommitted roadmap/domain work was left intact. Existing advisory claims, including expired Kairos solver/ensemble reservations, were not recovered or taken over. This change owns only this addendum and links in `kairos-enhancements.md` / `module-readiness.md`. The roadmap owner retains its task registry and draft upgrade/domain packets; incorporation into those owned files remains an explicit integration handoff. No messages were sent to other chats.
+
+Documentation-only review: no pin/API/runtime/clinical-policy changes. Acceptance of this addendum does not close the leaves above or establish GPU/cluster readiness. Run `python3 tools/tasks.py check` and `python3 tools/context.py check` on the isolated checkout with the exact pinned submodules populated; report hosted validation separately.
+
+## Planning validation receipt
+
+Date: 2026-10-20. Working directory: `/Volumes/PortableSSD/codex-worktrees/careops-capability-plans-20261020`. Base commit: `8ca0e5ecec2a41a86ebce32361adbde08dd191d3`. Tools: Python 3.15.0. Deterministic seed: not applicable (documentation validators). Table hashes cover concatenated stdout and stderr of the actual commands; this table is the retained summary artifact, not a substitute for hosted logs. Source inputs are the planning diff against this base; integration must bind the final commit from the PR.
+
+| Command | Exit | Output SHA-256 |
+| --- | --- | --- |
+| `git diff --check` | 0 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `python3 tools/tasks.py check` | 0 | `7f502d933e08ab53d2495da2c611315cca2f96b9564f51ec1e280004a26209ad` |
+| `python3 tools/context.py check` | 0 | `faa4774b819524edd59271a87ae20bf55b4a174deed581102e95783acb417fc0` |
+
+Full runtime CI was not rerun for these documentation-only changes. Hosted checks and owner lifecycle reconciliation remain separate.

@@ -1,5 +1,7 @@
 # Kairos module readiness and ED delivery audit
 
+> **Current planning update — 20 October 2026:** see the [capability reconciliation and abstraction plan](design/kairos-capability-reconciliation-20261020.md). The September baseline below is historical. Q/C/D and bounded native ED evidence have since advanced, but a newer Kairos main pin is not a safe drop-in replacement: preserve qualified IO/Flow/calibration, correct GPU/cluster assumptions, and qualify Mac, NAS and the separate CUDA computer independently. The active roadmap owner retains registry/DAG integration.
+
 Audit: 2026-09-25, Kairos `fae901558f07b7b717a676adbafbe2cdc78dea1c`.
 The two original plans are necessary but insufficient for a completed ED library.
 They omitted explicit ED pathway delivery, release qualification and several
