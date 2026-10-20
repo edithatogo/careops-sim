@@ -3,12 +3,12 @@
 import argparse
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import stat
 import zipfile
 
 
-def package(binary: Path, license_file: Path, output: Path, source: str, epoch: int, scenario: Path):
+def package(binary: Path, license_file: Path, output: Path, source: str, epoch: int, scenario: Path, *, notices: dict[str, Path]):
     import re
     if not re.fullmatch(r'[a-f0-9]{40}', source):
         raise ValueError('An exact source revision is required.')
@@ -29,12 +29,31 @@ def package(binary: Path, license_file: Path, output: Path, source: str, epoch: 
     timestamp = datetime.fromtimestamp(epoch, timezone.utc)
     if not 1980 <= timestamp.year <= 2107:
         raise ValueError('Timestamp is outside the ZIP format range.')
-    manifest = {'sourceCommit': source, 'binarySha256': hashlib.sha256(data).hexdigest(),
+    if not notices or 'project' not in notices:
+        raise ValueError('The project notice and explicit upstream notices are required.')
+    notice_bytes = {}
+    for name, path in notices.items():
+        identity = PurePosixPath(name)
+        if (not name or not identity.parts or identity.is_absolute() or identity.as_posix() != name
+                or any(part in ('.', '..') for part in identity.parts)
+                or ":" in name or chr(92) in name):
+            raise ValueError('Unsafe notice archive identity.')
+        if path.is_symlink() or not path.is_file():
+            raise ValueError('An original regular notice file is required.')
+        content = path.read_bytes()
+        if not content.strip():
+            raise ValueError('Empty notices are not release evidence.')
+        notice_bytes[name] = content
+    manifest = {'noticeSha256': {name: hashlib.sha256(content).hexdigest()
+                                for name, content in sorted(notice_bytes.items())},
+                'noticeScope': 'Explicit project and pinned upstream notices; not a complete binary dependency closure.',
+                'sourceCommit': source, 'binarySha256': hashlib.sha256(data).hexdigest(),
                 'scope': 'Actual native CLI package; runtime qualification and signatures are separate.'}
     json.loads(scenario.read_text())
     files = {'bin/careops-ed': data, 'LICENSE': license_file.read_bytes(),
              'examples/nominal_mvp.json': scenario.read_bytes(),
              'build.json': (json.dumps(manifest, sort_keys=True, indent=2) + '\n').encode()}
+    files.update({'notices/' + name: content for name, content in notice_bytes.items()})
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open('xb') as stream, zipfile.ZipFile(stream, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
         for name, content in sorted(files.items()):
@@ -51,11 +70,18 @@ def main():
     parser.add_argument('--binary', type=Path, required=True)
     parser.add_argument('--license', type=Path, required=True)
     parser.add_argument('--scenario', type=Path, required=True)
+    parser.add_argument('--notice', action='append', required=True, metavar='NAME=PATH')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--source-commit', required=True)
     parser.add_argument('--created-epoch', type=int, required=True)
     args = parser.parse_args()
-    package(args.binary, args.license, args.output, args.source_commit, args.created_epoch, args.scenario)
+    notices = {}
+    for item in args.notice:
+        name, separator, path = item.partition('=')
+        if not separator or not path or name in notices:
+            parser.error('Each notice requires a unique NAME=PATH.')
+        notices[name] = Path(path)
+    package(args.binary, args.license, args.output, args.source_commit, args.created_epoch, args.scenario, notices=notices)
 
 
 if __name__ == '__main__':

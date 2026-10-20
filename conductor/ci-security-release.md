@@ -272,3 +272,17 @@ the missing parent-code licence decision for native package preparation; it does
 not establish complete distribution notice coverage, package/runtime acceptance
 or signed release qualification. Continue the existing native-package candidate
 with those checks before any normal protected merge.
+
+
+### Licensed native candidate follow-up — 20 October 2026
+
+PR172 merged after all13 applicable checks passed at64d1425. Sim's previous main
+CI39258580773 also finished successfully. The existing native release candidate
+now includes that qualified main, canonical Rust1.99.1 and immutable CareOps
+policy6319d0c. It packages the exact project NOTICE and retained pinned Kairos
+licence texts, with per-notice SHA256s and refusal of missing, linked, empty or
+unsafe notice identities. This is explicit notice preservation, not a claim of
+complete binary dependency closure or a blanket licence for data. Existing
+source-resolution Cargo.lock evidence stays separate from the package SBOM.
+Current-head native build, unpacked consumer and post-main signatures must still
+pass before package qualification. No previous Rust1.99.0 result is relabelled.

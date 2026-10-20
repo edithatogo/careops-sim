@@ -1,10 +1,10 @@
 name: Native CLI release candidate
 on:
   pull_request:
-    paths: ['.github/workflows/native-release.yml', 'tools/package_native_release.py', 'tests/test_native_release_package.py', 'Cargo.toml', 'Cargo.lock', 'crates/**', 'libs/kairos', 'LICENSE']
+    paths: ['.github/workflows/native-release.yml', 'tools/package_native_release.py', 'tests/test_native_release_package.py', 'Cargo.toml', 'Cargo.lock', 'crates/**', 'libs/kairos', 'LICENSE', 'NOTICE', 'rust-toolchain.toml']
   push:
     branches: [main]
-    paths: ['.github/workflows/native-release.yml', 'tools/package_native_release.py', 'tests/test_native_release_package.py', 'Cargo.toml', 'Cargo.lock', 'crates/**', 'libs/kairos', 'LICENSE']
+    paths: ['.github/workflows/native-release.yml', 'tools/package_native_release.py', 'tests/test_native_release_package.py', 'Cargo.toml', 'Cargo.lock', 'crates/**', 'libs/kairos', 'LICENSE', 'NOTICE', 'rust-toolchain.toml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -28,15 +28,16 @@ jobs:
         run: python -m unittest discover -s tests -p test_native_release_package.py -v
       - name: Compile once using the canonical locked Rust lane
         run: |
-          rustup toolchain install 1.99.0 --profile minimal
-          rustup run 1.99.0 rustc -vV
-          rustup run 1.99.0 cargo build --locked --release --package careops-ed-cli --bin careops-ed
+          toolchain=$(python -c 'import tomllib; print(tomllib.load(open("rust-toolchain.toml", "rb"))["toolchain"]["channel"])')
+          rustup toolchain install "$toolchain" --profile minimal
+          rustup run "$toolchain" rustc -vV
+          rustup run "$toolchain" cargo build --locked --release --package careops-ed-cli --bin careops-ed
       - name: Package compiled bytes without rehearsal substitutions
         env:
           SOURCE_COMMIT: ${{ github.sha }}
         run: |
           git diff --exit-code
-          python tools/package_native_release.py --binary target/release/careops-ed --license LICENSE --scenario crates/careops-ed/examples/nominal_mvp.json --source-commit "$SOURCE_COMMIT" --created-epoch "$(git show -s --format=%ct "$SOURCE_COMMIT")" --output dist/careops-sim-linux-x64.zip
+          python tools/package_native_release.py --binary target/release/careops-ed --license LICENSE --notice project=NOTICE --notice kairos/LICENSE=libs/kairos/LICENSE --notice kairos/LICENSE-APACHE=libs/kairos/LICENSE-APACHE --notice kairos/LICENSE-MIT=libs/kairos/LICENSE-MIT --notice kairos/LICENSE.md=libs/kairos/LICENSE.md --scenario crates/careops-ed/examples/nominal_mvp.json --source-commit "$SOURCE_COMMIT" --created-epoch "$(git show -s --format=%ct "$SOURCE_COMMIT")" --output dist/careops-sim-linux-x64.zip
           cp Cargo.lock dist/resolved-workspace.Cargo.lock
       - name: Exercise the unpacked CLI outside the source tree
         run: |
@@ -53,7 +54,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: edithatogo/careops
-          ref: 1373e971013724dfaa268e215a45505bb89300cd
+          ref: 6319d0c0c76ee672223c156abce9d4181c41aa9a
           path: .artifacts/ci-release-policy
           persist-credentials: false
           submodules: false
