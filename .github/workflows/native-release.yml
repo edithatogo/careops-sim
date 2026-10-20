@@ -53,7 +53,8 @@ jobs:
           printf '{}\n' > invalid.json
           invalid_status=0
           bin/careops-ed validate invalid.json > invalid-result.txt 2>&1 || invalid_status=$?
-          test "$invalid_status" -eq 2
+          test "$invalid_status" -eq 4
+          grep -F "MALFORMED_CONFIG (4)" invalid-result.txt
           python - <<'PYCODE'
           import hashlib, json
           from pathlib import Path
