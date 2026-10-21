@@ -1,5 +1,10 @@
 # Track registry
 
+Current planning revision: R0 reconciles historical labels and runtime scope.
+Original plans contain 145 checked tasks; the new R/A/B plans remain pending.
+[Composition contracts](design/composition-contracts-20261020.md) govern the new work.
+Registry prose below retains historical handoffs until R0 evidence reconciliation.
+
 - [x] **DES queues and preemption** — `des_queue_preemption_20260925`
   ([index](tracks/des_queue_preemption_20260925/index.md),
   [spec](tracks/des_queue_preemption_20260925/spec.md),
@@ -29,6 +34,21 @@ formal Q0/C0 contracts; E0 unlocks D2 GitHub/CI, then Q1/C1 can proceed.
   [plan](tracks/ed_parameter_evidence_20260927/plan.md)). Proposed. P0 can start
   immediately; P1 DES and P2 ABM evidence run independently, joining at P3.
   E0/C0 consume P0, C2 consumes P3, E1 consumes P4, and C6 consumes P5.
+
+- [ ] **Repository status reconciliation and Kairos upgrade** — `repo_reconciliation_kairos_upgrade_20261020`
+  ([index](tracks/repo_reconciliation_kairos_upgrade_20261020/index.md),
+  [spec](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md),
+  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). Proposed. Reconciles capability/status evidence, audits the harness and qualifies a bounded Kairos candidate; retains the working pin if required gates fail.
+
+- [ ] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
+  ([index](tracks/careops_core_domain_abstractions_20261020/index.md),
+  [spec](tracks/careops_core_domain_abstractions_20261020/spec.md),
+  [plan](tracks/careops_core_domain_abstractions_20261020/plan.md)). Proposed. Extracts dynamic stage graphs, capability-based rooms, multi-role procedural staffing, decoupled egress handover boundaries, and linked entity pairs into `careops-core`.
+
+- [ ] **Generic birthing suite simulation delivery** — `birthing_suite_delivery_20261020`
+  ([index](tracks/birthing_suite_delivery_20261020/index.md),
+  [spec](tracks/birthing_suite_delivery_20261020/spec.md),
+  [plan](tracks/birthing_suite_delivery_20261020/plan.md)). Proposed. Modular birthing suite simulation crate (`careops-birthing`) with labor progression, dynamic neonate spawning, LDR suites, 1:1 midwifery staffing, acute CS preemption, and decoupled outbox egress routing.
 
 ## Research intake completed
 

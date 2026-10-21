@@ -1,61 +1,77 @@
 # Product expansion roadmap
 
-User direction recorded on 2026-09-25. This is sequencing and scope guidance,
-not a set of implementation tracks or a delivery commitment.
+20 October 2026 planning revision. Preserve generic/public baselines, separate
+jurisdiction/site profiles and evidence-qualified delivery. The original five
+track checklists are complete; broader capability claims require R0 reconciliation.
 
-| Order | Model scope | Data progression |
+| Milestone | Scope | Sequence / evidence |
 | --- | --- | --- |
-| 1 | Emergency department | Generic/public baseline → Cairns Emergency Department, within CHHHS |
-| 2 | Surgery | Generic/public baseline → CHHHS example |
-| 3 | Birthing suites | Generic/public baseline → CHHHS example |
-| 4 | Outpatient clinics | Generic/public baseline → CHHHS example |
-| 5 | Waitlist management | Generic/public baseline → CHHHS example |
-| 6 | Whole of hospital | Generic/public baseline → CHHHS example |
-| 7 | Whole of health | Generic/public baseline → CHHHS example |
+| M0 | Reconciliation and baseline | R0–R3: exact-source capability audit, harness and ED baseline, bounded candidate qualification; retain working Kairos pin if required gates fail |
+| M1 | Small shared healthcare contracts | A0–A5: identity, progression/policy clocks, effective capacity, team bundles, transfer lifecycle and relationships |
+| M2a | First cross-service fixture | A6: ED → minimal ward → community; discharge readiness, backpressure, transfer and conservation proof |
+| M2b | Second consumer and shared join | B0 evidence intake may start independently; B1–B7 birthing → bounded theatre → maternal/infant destinations; A7 joins both and observation/evaluation contracts |
+| M3 | Surgery and inpatient flow | Full theatres/PACU/day surgery and acute/ICU/postnatal/subacute wards; shared staff, equipment and downstream constraints |
+| M4 | Ambulatory/procedural/waitlist services | Clinics, endoscopy/cath lab, appointments, recurring contacts, waitlist eligibility/pause/reassessment/cancellation clocks |
+| M5 | Hospital orchestration | Bed management, shared diagnostics, order/specimen/result lifecycle, workforce calendars, inventory/sterilisation/maintenance where justified |
+| M6 | Network and policy evaluation | Transfers and retrieval, public/private/community boundaries; single-process reference first, distributed mappings measured later; offline fiscal exchange before coupled optimisation |
 
-For each stage, establish a reproducible generic model using public data and open
-examples where available, with clearly labelled synthetic assumptions where
-necessary. Then refine through a separate CHHHS example profile supported by
-available local data and validation. The ED adaptation specifically targets
-Cairns Emergency Department. Public-data availability and local access are not
-assumed to provide the detailed timestamps needed for micro-level calibration.
+The new birthing slice is an early second consumer; full surgical delivery remains
+M3. Its bounded theatre callback is required for birth/completion metrics, not a
+claim that the complete surgical model exists.
 
-Keep generic model logic, data mappings, parameter sets and site-specific policies
-separate, with provenance for each. CHHHS/Cairns adaptation must not overwrite the
-generic baseline or turn a local assumption into a universal engine default.
-Compare the generic and local versions explicitly as evidence improves.
+## Common contracts and owners
 
-The framework combines DES and ABM with extension points for later methods. Core
-contracts expose time, entities/components, events, model adapters and versioned
-outputs; clinical pathways, site rules and presentation remain separate. Future
-methods must integrate with deterministic scheduling, seed/state ownership and
-verification contracts rather than creating a competing clock or state store.
-Do not add speculative solver/plugin machinery before a concrete method needs it.
+[CC-01–CC-08](design/composition-contracts-20261020.md) define required semantics
+and two acceptance fixtures. [Related repository boundaries](design/related-repository-boundaries-20261020.md)
+cover Kairos, the CareOps portfolio, NHRA and the NWAU wrapper.
 
-The Kairos queue/calibration enhancement tracks support reuse through neutral resource/
-task identities, configurable policies and empirical mappings. Acceptance remains
-general engine primitives plus generic ED synthetic fixtures. Whole-system
-composition and other clinical domain models are not implementation work here.
+Kairos 01/03/59/64 own candidate entity/resource mechanisms; 21/22/66 own reusable
+experiment/observation mechanisms; 04/62 own format interoperability; 25 owns API
+compatibility. Resolve live IDs and ownership at dispatch. Parallel local commit `0157d0cb60932b3cda86761954e1d0d9efebd55c` registers
+67 (relationships), 68 (channels) and 69 (competing risks). Reuse those pending
+tracks; their registration does not certify runtime or justify pin promotion.
 
-Create detailed tracks for later stages only when requested. No detailed tracks
-for stages 2–7 have been created.
+Keep clinical priorities and operator names in versioned profiles. A shared
+priority representation does not equate classification systems or confer safe
+interruption permission. Event conditions do not imply atomic resource grants.
+Use [priority policy](design/universal-triage-priority-framework.md) and
+[transfer boundaries](design/transport-retrieval-interfacility-flow.md).
 
-## Conditional Kairos event-kind registry
+## Data and qualification
 
-After the headless MVP and native v1, evaluate a global event-kind registry or
-typed namespaces if actual cross-runtime collisions or validation requirements
-arise. This is an exploratory candidate, not an MVP or v1 dependency. Track 01
-and Track 25 should assess migration of `EventKind::Custom(u32)` and its Arrow,
-FFI and CLI representations before committing to a global contract. Until then,
-FlowRuntime uses the locally reserved 4000–4003 range in the Kairos core contract.
+Build generic reproducible models with public data and labelled synthetic
+assumptions; qualify CHHHS/Cairns profiles separately. Preserve source versions,
+units, transformations, included/excluded observations and parameter uncertainty.
+Aggregate data alone may not identify micro-level hazards or causal policy effects.
 
-## Later spatial and live visualization requirement
+Every addition requires conservation, replay, failure/recovery and appropriate
+observation validation. Keep latent patient state, available observations and
+policy actions separate. Preserve working ED adapters until replacements pass
+baseline parity and rollback checks. CPU composition is independently useful;
+GPU, PDES and distributed execution each need their own runtime evidence.
 
-The [spatial capability plan](spatial-visualization.md) records capture/CAD → a shared versioned
-floor-plan package → PixiJS visualization and Kairos simulation, connected through
-WebSocket state sync. Early native development uses synthetic graphs; full capture/
-CAD adapters are separately qualified later. The backend remains authoritative.
+## Later domain candidates
 
-## Post-MVP reuse review
+Mental health, rehabilitation, palliative care and hospital-at-home extend the
+same identities and boundaries to long episodes, recurrent contact and community
+constraints. Reserve detailed tracks until a concrete requirement and evidence
+source exist. No speculative plugin framework is required.
 
-After functional MVP E2 acceptance, [review delivered capabilities for reuse in Kairos](design/post-mvp-kairos-abstraction-review.md). Keep ED policies and site profiles separate; extract only capabilities supported by neutral contracts and concrete cross-domain evidence. This review does not add an MVP prerequisite or authorize speculative framework work.
+Spatial capture, CAD, shared floor plans and live UI remain governed by the
+[spatial plan](spatial-visualization.md). Evaluate typed event namespaces if
+composition demonstrates collisions; coordinate with Kairos 01/25 rather than
+creating another event registry. Preserve the [post-MVP reuse review](design/post-mvp-kairos-abstraction-review.md)
+extraction and compatibility gates.
+
+## Parallel audit alignment
+
+The 20 October capability audit is retained separately at CareOps commit
+`356f54b` and Kairos commit `0cdc9ac`. R0 consumes its findings; no registry
+Done label overrides missing runtime evidence. Preserve the qualified Q/C,
+physical IO and checkpoint capabilities of the current pin when considering
+mainline. Inventory reusable experiment orchestration first (seed partitioning,
+worker invariance, progress/cancel, manifests and recovery), then extract only
+small neutral mechanisms with a second consumer and parity proof. This reuse
+lane can proceed independently of domain resource implementation; it is not a
+new prerequisite for the headless ED model. Continue hardware qualification
+through the audit's Mac/NAS/CUDA plan, separately from composition acceptance.

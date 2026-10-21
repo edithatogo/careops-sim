@@ -1,63 +1,42 @@
-# Product context
+# CareOps Sim product context
 
-CareOps Sim — Emergency Department supports ED clinicians, operations leads and
-analysts comparing staffing, capacity and patient-flow scenarios. The approved
-vision covers arrivals, triage, assessment, treatment, discharge and admission;
-the initial configurable model includes acuity, diagnostics and admission
-boarding. Results include waiting times, length of stay, throughput and resource
-use, available through reproducible batch runs, exports and a future interactive
-dashboard.
+CareOps Sim supports operational scenario comparison across clinical units,
+hospitals and regional health networks, using Rust-native Kairos mechanics.
+Generic/public models precede separately qualified jurisdiction/site profiles;
+Cairns/CHHHS is a reference profile, not an engine default.
 
-## Current planning increment
+## Model scope
 
-Enhance Kairos (KairoECS) with reusable, Rust-native ECS resource queues,
-preemption, empirical trace ingestion, dual-fidelity execution, shadow replay and
-calibration/validation metrics. Reduce model boilerplate while preserving
-scheduler determinism. Keep ED-specific policies and data mappings in CareOps.
+- Units: ED, birthing, surgery/PACU, inpatient/ICU/postnatal/subacute care, outpatient/procedural services and waiting lists.
+- Hospitals: bed management, shared diagnostics, workforce calendars, transport, equipment and service availability.
+- Networks: escalation/repatriation, retrieval, public/private hospitals, primary care/private specialists, urgent care, aged/disability care and community follow-up.
+- Later consumers: mental health, rehabilitation, palliative care and hospital-at-home.
+- Policy evaluation: explicit activity, cost, funding, outcome and equity measures; qualified offline NHRA exchange before coupled strategic models.
 
-Prioritize existing Kairos designs and owners. Use recent source revisions with
-explicit pins and compatibility evidence. Establish sequential correctness and
-local multicore replication before accelerated or distributed execution. Apple
-Metal validation follows the existing wgpu/WGSL plan; replacing that route needs
-an evidence-backed architecture decision.
+## Current increment
 
-This increment produces specifications and implementation plans. It does not
-claim to implement the simulation, calibrate real hospital data, validate an ED
-model, or complete the wider interactive product-design process.
+Reconcile original completed checklists against exact-scope evidence, qualify
+Kairos candidates without forced pin upgrades, then extract small shared
+healthcare contracts through ED/ward/community and birthing/theatre fixtures.
+The [roadmap](roadmap.md) defines sequencing; [CC-01–CC-08](design/composition-contracts-20261020.md)
+define identity, transfer ownership, allocation, progression, capacity, policy
+clocks, reproducibility and observation/evaluation requirements.
 
-## General framework and expansion
+Keep urgency, complexity, target accounting and safe interruption distinct.
+Source local classification systems, crew permissions, numerical thresholds and
+parameter distributions through versioned packs. Do not infer clinical suitability
+or causal effects from administrative categories or synthetic conformance.
 
-Build a generalisable DES/ABM framework with extension points for future methods.
-Keep reusable engines, model adapters and site profiles separate. Start with a
-generic ED informed by public data/open examples, then adapt a distinct profile
-to Cairns Emergency Department within CHHHS. Do not require private Cairns data to
-build or run the generic model.
+## Architecture and acceptance
 
-Then proceed in order through surgery, birthing suites, outpatient clinics,
-waitlist management, whole of hospital and whole of health. Each starts generic/
-public, then iterates to CHHHS. [The roadmap](roadmap.md) records sequencing;
-later-domain detailed tracks are deferred.
+Kairos owns neutral engine primitives; careops-core owns common healthcare
+semantics; domain crates own clinical workflows; profiles own local rules/data.
+Preserve one clock/state authority, stable random streams and ED compatibility.
+Reuse the existing calibration and experiment contracts. No Python/Julia runtime
+is introduced into the Rust operational engine by optional policy adapters.
 
-
-## Development and delivery extension
-
-The readiness audit adds a tested local context harness and explicit delivery
-tracks for the generic ED library, dashboard and existing backend profiles.
-[Module readiness](module-readiness.md) distinguishes these completion levels.
-The engine/model implementations remain planned; current local verification
-covers baseline Kairos tests and the context harness only.
-
-## MVP-first priority
-
-First deliver a working headless generic ED with configurable resource counts,
-capacity/staffing, patient flow and reproducible numeric results. Locations/zones
-and simple route distances support spatial behavior as needed. Visual floor plans,
-CAD/capture, animation, spatial overlays and WebSocket UI integration come later.
-E1/E2 provide runnable slices; E3 evolves usability, and C6/D4/E4 harden/qualify
-the library. E5 is a later interface milestone, not the first point of usefulness.
-
-## Authoritative delivery sequence
-
-[Functional MVP → hardened native v1 → extensions](delivery-contract.md) defines the
-required features and acceptance recipes. E2 is the functional headless MVP; E4
-is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.
+Original 145 plan tasks are checked complete; no fresh runtime or clinical
+requalification follows from that count. New R/A/B plans are pending.
+Hardware acceleration, distributed execution, publication and clinical deployment
+retain separate acceptance. See [delivery contract](delivery-contract.md),
+[readiness map](module-readiness.md) and [related repositories](design/related-repository-boundaries-20261020.md).
