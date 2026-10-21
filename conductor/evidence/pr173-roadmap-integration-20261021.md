@@ -1,5 +1,15 @@
 # PR173 roadmap integration — 21 October 2026
 
+## Repository scope
+
+This simulation plan applies to **careops-sim**, whose source checkout is
+`/Users/doughnut/Documents/careops-sim` (GitHub `edithatogo/careops-sim`).
+Kairos is its separately owned upstream simulation engine. The distinct
+`/Volumes/PortableSSD/GitHub/careops` portfolio repository is not the target of
+these C-R0–C-R7 recommendations. No change to that repository is made by this
+21 October incorporation. Older shorthand “CareOps” here denotes careops-sim
+unless a paragraph explicitly identifies the separate portfolio repository.
+
 Planning base: `576f50bf871c12194db62c5b2e05dab8e5d87a0b`.
 Reviewed local PR173 addendum at `942f78b` (after `5456965`), including C-R0–C-R7
 and further owner/acceptance refinements. Input SHA-256: `1241f4991ea56260584c404e9778b3c9e3035ffb32ff477061b05b070768f69b`.
@@ -74,3 +84,8 @@ Compared old/new task records: all accepted flags and dependency edges unchanged
 Checked transitive A0.2-before-A3.1 ordering and independent B0.1; both passed.
 Historical acceptance remains 145 checked / 80 pending. No runtime tests, device
 workloads, hosted CI, merges or remote publishing were performed in this slice.
+
+Repository naming clarification followed integration commit `07a67fd` in a
+separate bounded documentation commit. After clarification, task catalog and
+context validation (225 tasks; 1,452 local links) and diff whitespace checks passed.
+No dependency or accepted-status change was made.

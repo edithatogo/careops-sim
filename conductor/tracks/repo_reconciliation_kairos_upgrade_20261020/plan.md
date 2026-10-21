@@ -1,5 +1,15 @@
 # Implementation plan: Repository status reconciliation and Kairos upgrade
 
+## Repository scope
+
+This simulation plan applies to **careops-sim**, whose source checkout is
+`/Users/doughnut/Documents/careops-sim` (GitHub `edithatogo/careops-sim`).
+Kairos is its separately owned upstream simulation engine. The distinct
+`/Volumes/PortableSSD/GitHub/careops` portfolio repository is not the target of
+these C-R0–C-R7 recommendations. No change to that repository is made by this
+21 October incorporation. Older shorthand “CareOps” here denotes careops-sim
+unless a paragraph explicitly identifies the separate portfolio repository.
+
 Status: planned revision; no implementation acceptance in this change.
 
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
