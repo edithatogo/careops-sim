@@ -1,0 +1,73 @@
+{
+  "parent_source": "c3c47abbc4321b1f12a48a9bcecc47747d507d09",
+  "kairos_pin": "44261eb5cf8275f132f63a3396903d116d701dbe",
+  "source_sha256": {
+    "crates/careops-ed/tests/e62_wgpu_wgsl_device_path.rs": "070f78d0c0022a4d16d0a9ac65d3a2d5acf34ec14baee8c9e0176c7b8e41da6e",
+    "crates/careops-ed/tests/e63_metal_benchmark_parity.rs": "f0f05d7bdcb4c42290544765af2fb51dc17fb47100d838fdd8352987fb3e3f5a",
+    "crates/careops-ed/tests/e83_multinode_cluster_execution.rs": "fa602a8b2a0e9f17c0d6c46ebdd42ebc112ddd21f63b13202508b21705d20225",
+    "crates/careops-ed/Cargo.toml": "19674824de350de9d11a40c4ef970bfc259ad62bc3b76b3a80b6e578b3b94abd",
+    "conductor/evidence/e6.4-phase-acceptance-20261017.md": "6a06d7f19c1d874cb5d41aab74e15444e3f675db79268c920c0f2bf0e2c7536f",
+    "conductor/evidence/e8.4-phase-acceptance-20261017.md": "6fccdea64338480b210ef7fda5804f0856c3c091523b94758d6f288e5b26d02c",
+    "conductor/evidence/pr173-roadmap-integration-20261021.md": "6da60a9cbe0c4c9517cfe7377e5ed34c8b98a1adca5daade3bc0fda64703f414",
+    "conductor/tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md": "4cdf961af8c2434506638023f35a15aa222de24946ec4a8b7814cefbe0569777"
+  },
+  "observations": [
+    {
+      "case": "E6.2-local-state",
+      "path": "crates/careops-ed/tests/e62_wgpu_wgsl_device_path.rs",
+      "sites": [
+        {
+          "line": 714,
+          "text": "self.execution_count += 1;"
+        },
+        {
+          "line": 716,
+          "text": "fence.signal();"
+        },
+        {
+          "line": 1242,
+          "text": "unsignaled_fence.signal();"
+        }
+      ],
+      "classification": "source-level contract fixture; no physical receipt"
+    },
+    {
+      "case": "E6.3-supplied-timing",
+      "path": "crates/careops-ed/tests/e63_metal_benchmark_parity.rs",
+      "sites": [
+        {
+          "line": 272,
+          "text": "let kernel_execution_ns = 12_500;"
+        },
+        {
+          "line": 296,
+          "text": "let cpu_time_per_iter_ns = 180_000u64; // 180us CPU multicore"
+        }
+      ],
+      "classification": "source-level contract fixture; no physical receipt"
+    },
+    {
+      "case": "E8.3-local-threads",
+      "path": "crates/careops-ed/tests/e83_multinode_cluster_execution.rs",
+      "sites": [
+        {
+          "line": 29,
+          "text": "use std::sync::mpsc::channel;"
+        },
+        {
+          "line": 147,
+          "text": "let h_node0 = thread::spawn(move || {"
+        },
+        {
+          "line": 192,
+          "text": "let h_node1 = thread::spawn(move || {"
+        },
+        {
+          "line": 227,
+          "text": "1.0 / (self.node_count as f64)"
+        }
+      ],
+      "classification": "source-level contract fixture; no physical receipt"
+    }
+  ]
+}
