@@ -5,7 +5,7 @@
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Rust: 1.99.1](https://img.shields.io/badge/rust-1.99.1-orange.svg)](rust-toolchain.toml)
 [![Platforms: Linux x86_64 | macOS ARM64](https://img.shields.io/badge/platform-Linux%20x86__64%20%7C%20macOS%20ARM64-lightgrey.svg)](conductor/dependency-policy.md#cross-platform-reproducibility-policy)
-[![Conductor: 149 checked / 225 tasks](https://img.shields.io/badge/plan-149%20checked%20%2F%20225%20tasks-blue.svg)](conductor/tracks.md)
+[![Conductor: 153 checked / 225 tasks](https://img.shields.io/badge/plan-153%20checked%20%2F%20225%20tasks-blue.svg)](conductor/tracks.md)
 
 A planned Rust-native generic emergency-department simulation using Kairos/KairoECS
 DES and ABM. Generic/public or explicitly synthetic inputs first; Cairns later.
@@ -25,7 +25,7 @@ See [delivery scope and acceptance](conductor/delivery-contract.md) and
 ## Current state
 
 The plan contains **225 tasks across eight tracks**: 145 historical checkboxes
-are retained, four R0 reconciliation tasks are accepted on the development branch, and 76 reconciliation/composition
+are retained, eight R0/R1 reconciliation and baseline tasks are accepted on the development branch, and 72 reconciliation/composition
 tasks remain pending. This is a plan
 count, not overall runtime or product completion. R0 reconciles exact capability
 receipts; constructed GPU metadata and in-process cluster fixtures do not establish

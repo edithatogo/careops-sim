@@ -10,7 +10,8 @@ these C-R0–C-R7 recommendations. No change to that repository is made by this
 21 October incorporation. Older shorthand “CareOps” here denotes careops-sim
 unless a paragraph explicitly identifies the separate portfolio repository.
 
-Status: R0 accepted at its reconciliation/source-evidence boundary on the development branch; R1–R3 remain pending.
+Status: R0 reconciliation and R1 local CPU/IO/recovery baseline independently accepted on the development branch; R2–R3 remain pending.
+See [independent R1 review](../../evidence/r1-independent-review-20261021/README.md).
 See [independent R0 review](../../evidence/r0.4-independent-review-20261021/README.md).
 See [R0.1 evidence](../../evidence/r0.1-reconciliation-20261021/README.md).
 
@@ -28,10 +29,10 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 
 ## R1 — Harness and regression baseline
 
-- [ ] R1.1 Audit the existing harness environment and jsonschema resolution without changing global Python or dependencies.
-- [ ] R1.2 Run the Python harness regressions and context/task/MVP validators; record commands, hashes and failures.
-- [ ] R1.3 Freeze ED, Q/C, physical IO and checkpoint/recovery source/input/output baselines, replay version and rollback procedure before a candidate pin change.
-- [ ] R1.4 Conductor — review and verify phase (workflow.md).
+- [x] R1.1 Audit the existing harness environment and jsonschema resolution without changing global Python or dependencies.
+- [x] R1.2 Run the Python harness regressions and context/task/MVP validators; record commands, hashes and failures.
+- [x] R1.3 Freeze ED, Q/C, physical IO and checkpoint/recovery source/input/output baselines, replay version and rollback procedure before a candidate pin change.
+- [x] R1.4 Conductor — review and verify phase (workflow.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
 

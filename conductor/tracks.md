@@ -40,7 +40,7 @@ R/A/B DAG and reviewed packets.
 - [~] **Repository status reconciliation and Kairos upgrade** — `repo_reconciliation_kairos_upgrade_20261020`
   ([index](tracks/repo_reconciliation_kairos_upgrade_20261020/index.md),
   [spec](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md),
-  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). In progress: R0 accepted at the reconciliation/source-evidence boundary on the development branch; R1 baseline next. Reconciles capability/status evidence, audits the harness and qualifies a bounded Kairos candidate; retains the working pin if required gates fail.
+  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). In progress: R0 reconciliation and R1 local CPU/IO/recovery baseline accepted on the development branch; R2 candidate-owner gate next. Reconciles capability/status evidence, audits the harness and qualifies a bounded Kairos candidate; retains the working pin if required gates fail.
 
 - [ ] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
   ([index](tracks/careops_core_domain_abstractions_20261020/index.md),
