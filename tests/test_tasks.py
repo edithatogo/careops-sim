@@ -36,6 +36,38 @@ class SchedulingTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'task requires a numbered ID'):
                 tasks.derive(root)
 
+    def test_malformed_checkbox_is_not_hidden_by_a_valid_sibling(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            track = root / 'conductor/tracks/proposal'
+            track.mkdir(parents=True)
+            (track / 'metadata.json').write_text(json.dumps({
+                'track_id': 'proposal', 'phase_dependencies': {'R0': []},
+            }))
+            for checkbox in ('- [X]', '- [-]', '- [?]', '- []', '- [done]',
+                             '* [ ]', '+ [x]'):
+                with self.subTest(checkbox=checkbox):
+                    (track / 'plan.md').write_text(
+                        '## R0 — Reconciliation\n\n- [ ] R0.1 Valid task\n'
+                        f'{checkbox} R0.2 Must not disappear\n')
+                    with self.assertRaisesRegex(ValueError, 'task requires a numbered ID'):
+                        tasks.derive(root)
+
+    def test_markdown_link_bullet_is_not_a_checkbox(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            track = root / 'conductor/tracks/proposal'
+            track.mkdir(parents=True)
+            (track / 'metadata.json').write_text(json.dumps({
+                'track_id': 'proposal', 'phase_dependencies': {'R0': []},
+            }))
+            (track / 'plan.md').write_text(
+                '## R0 — Reconciliation\n\n- [x] R0.1 Valid task\n'
+                '- [Reference](spec.md)\n- [ ] R0.2 Pending task\n')
+            derived = tasks.derive(root)['tasks']
+            self.assertEqual([t['id'] for t in derived], ['R0.1', 'R0.2'])
+            self.assertEqual([t['accepted'] for t in derived], [True, False])
+
     def test_empty_declared_phase_is_rejected_deliberately(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

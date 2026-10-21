@@ -103,7 +103,7 @@ def derive(root):
                 phase = header[1]
             match = re.match(r'- \[([ x])\] ([A-Z]\d+\.\d+) (.*)', lines[i])
             if not match:
-                if phase and re.match(r'- \[[ x~]\]', lines[i]):
+                if phase and re.match(r'[-+*]\s+\[[^\]\r\n]*\](?:\s|$)', lines[i]):
                     raise ValueError(
                         f'{plan}:{i + 1}: task requires a numbered ID and '
                         'supported [ ] or [x] status')
