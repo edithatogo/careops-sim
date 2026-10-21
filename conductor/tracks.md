@@ -1,14 +1,17 @@
 # Track registry
 
-Current planning revision: R0 reconciles historical labels and runtime scope.
-Original plans contain 145 checked tasks; the new R/A/B plans remain pending.
-[Composition contracts](design/composition-contracts-20261020.md) govern the new work.
-Registry prose below retains historical handoffs until R0 evidence reconciliation.
+Current reconciliation: [R0.1 evidence](evidence/r0.1-reconciliation-20261021/README.md).
+The merged baseline is careops-sim `ea42fcf` and Kairos planning main `55b20e7`;
+the careops-sim runtime pin remains `44261eb`. Historical plan checkboxes are
+preserved and are not fresh runtime, hardware or clinical qualification.
+`[x]` below records the stated historical closeout scope; `[~]` retains an active
+reconciliation or capability gap. Metadata and scoped receipts explain the boundary.
+The separate careops portfolio repository is outside this work.
 
 - [x] **DES queues and preemption** — `des_queue_preemption_20260925`
   ([index](tracks/des_queue_preemption_20260925/index.md),
   [spec](tracks/des_queue_preemption_20260925/spec.md),
-  [plan](tracks/des_queue_preemption_20260925/plan.md)). Q0–Q5 accepted for experimental queue development; upstream owner 03. Independent Q5.4 replay, evidence/risk disposition, release notes and governance review passed with exact-head native and child hosted gates. Preserves C1.4/Q5.2; child PR219 stays stacked/draft and formal release/security, stable API, advanced backend, checkpoint and clinical/MVP gates remain separate. Parent local gates passed. At source preparation, the committed-pin check, hosted parent CI and merge readback await publication; this registry does not assert a completed parent merge.
+  [plan](tracks/des_queue_preemption_20260925/plan.md)). Q0–Q5 retain accepted experimental queue development under owner 03, per [Q5.4 receipt](evidence/q5.4-completion-20261005/README.md). Its source/child PR/parent-publication statements describe 5 October, not current dispatch. Portable checkpoints, advanced backends, release/security and clinical/MVP acceptance remain separately scoped; R0.2 inventories the pinned consumer contracts.
 - [x] **Empirical calibration and validation** — `empirical_calibration_20260925`
   ([index](tracks/empirical_calibration_20260925/index.md),
   [spec](tracks/empirical_calibration_20260925/spec.md),
@@ -21,24 +24,23 @@ Registry prose below retains historical handoffs until R0 evidence reconciliatio
 - [~] **Generic ED library delivery** — `generic_ed_delivery_20260925`
   ([index](tracks/generic_ed_delivery_20260925/index.md),
   [spec](tracks/generic_ed_delivery_20260925/spec.md),
-  [plan](tracks/generic_ed_delivery_20260925/plan.md)). E0–E4 complete and accepted; Milestone G1 (Hardened native v1) qualified per [E4.4 Phase Acceptance](evidence/e4.4-phase-acceptance-20261016.md) and [E4.4 Phase Evidence](evidence/e4.4-phase-evidence-20261016.md). Headless ED DES/ABM, verification vs clinical validation taxonomy distinction, sensitivity/identifiability surfaces, held-out Macro/Micro evaluation, multi-day ED benchmarks (>540k steps/sec), leak-free heap soak, executable documentation, and fresh consumer delivery contract qualified. Phase E5 dashboard, E6 Metal, E7 PDES, and E8 distributed execution remain downstream. No later clinical-domain tracks.
+  [plan](tracks/generic_ed_delivery_20260925/plan.md)). E0–E8 have historical checked tasks and dated [E4.4](evidence/e4.4-phase-acceptance-20261016.md) through [E8.4](evidence/e8.4-phase-acceptance-20261017.md) receipts. Keep the track in progress for capability reconciliation: historical E6/E8 hardware claims are disputed by the [merged audit](design/kairos-capability-reconciliation-20261020.md). R0.3 audits their exact scope; R2.3 requires actual device/multi-host receipts if consumed. Do not restart E5 from this registry or treat a 100% historical headline as operational acceptance.
 
 [Readiness and capability coverage](module-readiness.md) defines completion levels.
 Metadata carries explicit local phase dependencies and cross-track milestone
-edges; `python3 tools/context.py check` checks targets/cycles. Start D0/D1 before
-formal Q0/C0 contracts; E0 unlocks D2 GitHub/CI, then Q1/C1 can proceed.
+edges; `python3 tools/context.py check` checks targets/cycles. Historical D/Q/C/E
+entry sequences remain in their plans; current dispatch follows the unchecked
+R/A/B DAG and reviewed packets.
 
-- [~] **ED parameters, example inputs, ranges and distributions** — `ed_parameter_evidence_20260927`
+- [x] **ED parameters, example inputs, ranges and distributions** — `ed_parameter_evidence_20260927`
   ([index](tracks/ed_parameter_evidence_20260927/index.md),
   [spec](tracks/ed_parameter_evidence_20260927/spec.md),
-  [plan](tracks/ed_parameter_evidence_20260927/plan.md)). Proposed. P0 can start
-  immediately; P1 DES and P2 ABM evidence run independently, joining at P3.
-  E0/C0 consume P0, C2 consumes P3, E1 consumes P4, and C6 consumes P5.
+  [plan](tracks/ed_parameter_evidence_20260927/plan.md)). P0–P5 retain historical acceptance at the generic catalogue/model coverage boundary per [P5.4](evidence/p5.4-phase-acceptance-20261015.md). This does not establish empirical hospital validity or Cairns-specific values. The former P0-first proposal is superseded; use R0.2 for current source qualification.
 
-- [ ] **Repository status reconciliation and Kairos upgrade** — `repo_reconciliation_kairos_upgrade_20261020`
+- [~] **Repository status reconciliation and Kairos upgrade** — `repo_reconciliation_kairos_upgrade_20261020`
   ([index](tracks/repo_reconciliation_kairos_upgrade_20261020/index.md),
   [spec](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md),
-  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). Proposed. Reconciles capability/status evidence, audits the harness and qualifies a bounded Kairos candidate; retains the working pin if required gates fail.
+  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). In progress: R0.1 accepted at the dispatch-state reconciliation boundary; R0.2/R0.3 and R0.4 remain pending. Reconciles capability/status evidence, audits the harness and qualifies a bounded Kairos candidate; retains the working pin if required gates fail.
 
 - [ ] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
   ([index](tracks/careops_core_domain_abstractions_20261020/index.md),
@@ -53,10 +55,10 @@ formal Q0/C0 contracts; E0 unlocks D2 GitHub/CI, then Q1/C1 can proceed.
 ## Research intake completed
 
 All requested research themes have responses; embedded content is available.
-Remaining tasks verify sources, resolve conflicts, fill specific gaps and deliver
-tested outputs. See [research handoff and next steps](research/research-handoff.md).
-D3 development review is complete; D4 awaits its release entry dependencies.
-No broad new research round is a prerequisite. Track checkboxes continue to represent full delivery acceptance.
+Historical intake and P5 generic coverage are accepted within their dated scope.
+New source/profile gaps remain separately qualified work. See [research handoff and next steps](research/research-handoff.md).
+D0–D5 retain their dated development closeout; no D4 restart is inferred.
+No broad new research round is a prerequisite. Track checkboxes retain only their explicitly stated acceptance scope.
 
 ## Authoritative delivery sequence
 

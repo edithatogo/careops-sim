@@ -27,14 +27,14 @@
 
 | Track | Specification | Phased implementation plan | Status |
 | --- | --- | --- | --- |
-| Repository reconciliation & Kairos upgrade | [Specification](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md) | [Plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md) | Planned; R0 capability/status reconciliation first |
+| Repository reconciliation & Kairos upgrade | [Specification](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md) | [Plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md) | In progress; R0.1 reconciled, R0.2 capability inventory next |
 | Multi-domain core abstractions & boundaries | [Specification](tracks/careops_core_domain_abstractions_20261020/spec.md) | [Plan](tracks/careops_core_domain_abstractions_20261020/plan.md) | Planned; R3 baseline gate before implementation |
 | Generic birthing suite delivery | [Specification](tracks/birthing_suite_delivery_20261020/spec.md) | [Plan](tracks/birthing_suite_delivery_20261020/plan.md) | Planned; B0 evidence intake independent, B1 after A5 |
-| ED parameters and example inputs | [Specification](tracks/ed_parameter_evidence_20260927/spec.md) | [Plan](tracks/ed_parameter_evidence_20260927/plan.md) | All plan tasks checked; capability scope reconciled in R0 |
-| Development readiness | [Specification](tracks/development_readiness_20260925/spec.md) | [Plan](tracks/development_readiness_20260925/plan.md) | All plan tasks checked; historical evidence retained |
-| Generic ED delivery | [Specification](tracks/generic_ed_delivery_20260925/spec.md) | [Plan](tracks/generic_ed_delivery_20260925/plan.md) | All plan tasks checked; capability scope reconciled in R0 |
+| ED parameters and example inputs | [Specification](tracks/ed_parameter_evidence_20260927/spec.md) | [Plan](tracks/ed_parameter_evidence_20260927/plan.md) | Historical plan tasks checked; capability scope still subject to R0 |
+| Development readiness | [Specification](tracks/development_readiness_20260925/spec.md) | [Plan](tracks/development_readiness_20260925/plan.md) | Historical plan tasks checked; dated evidence retained |
+| Generic ED delivery | [Specification](tracks/generic_ed_delivery_20260925/spec.md) | [Plan](tracks/generic_ed_delivery_20260925/plan.md) | Historical plan tasks checked; capability scope still subject to R0 |
 | DES queues and preemption | [Specification](tracks/des_queue_preemption_20260925/spec.md) | [Plan](tracks/des_queue_preemption_20260925/plan.md) | Q0–Q5 experimental development accepted; release and ED MVP separate |
-| Empirical calibration and validation | [Specification](tracks/empirical_calibration_20260925/spec.md) | [Plan](tracks/empirical_calibration_20260925/plan.md) | All plan tasks checked; historical evidence retained |
+| Empirical calibration and validation | [Specification](tracks/empirical_calibration_20260925/spec.md) | [Plan](tracks/empirical_calibration_20260925/plan.md) | Historical plan tasks checked; dated evidence retained |
 
 These tracks cover parent ED delivery and changes owned by existing Kairos tracks.
 They do not declare new upstream IDs or change upstream completion records.
@@ -45,7 +45,9 @@ remains available in
 
 Latest research: [reports 26–30 integration](research/ed-research-incorporation-26-30-20260927.md); reports 23–25 are verified duplicates.
 
-Current status and execution order: [research handoff](research/research-handoff.md).
+Current dispatch: [resume state](current-state.json) and the unchecked task DAG.
+The [research handoff](research/research-handoff.md) is historical intake context,
+not a competing dispatch queue. [R0.1 reconciliation](evidence/r0.1-reconciliation-20261021/README.md) records source and evidence boundaries.
 
 Later capability: [spatial capture, shared floor plan and live state sync](spatial-visualization.md).
 

@@ -1,9 +1,12 @@
 # Handoff
 
-Track added on 2026-09-27 at user request; all implementation/research tasks open.
-Next: P0 scope/taxonomy/schema. P1 DES and P2 ABM evidence collection can proceed
-in parallel after P0. Freeze joint sampling in P3 and example pack in P4. Validate
-against actual E2/C5 in P5, then hand off to C6.
+P0–P5 were accepted at the generic ED catalogue coverage boundary on 15 October,
+per [P5.4 closeout](../../evidence/p5.4-phase-acceptance-20261015.md).
+The 27 September P0-first proposal is historical and does not schedule new work.
+C6 has its own dated closeout. Current next work is the R0 reconciliation and
+capability inventory in [resume state](../../current-state.json).
+This handoff alignment changes no task checkbox or runtime result and grants no
+empirical hospital, clinical or Cairns-specific acceptance.
 
 Do not wait for private Cairns data to establish the generic pack; do not fabricate
 parameter values. Preserve source citations, transformations, licensing, units,

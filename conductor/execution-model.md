@@ -1,6 +1,6 @@
 # Serial, parallel and smaller-model execution
 
-The five tracks share one task graph and one acceptance standard. Choose
+The eight tracks share one task graph and one acceptance standard. Choose
 `serial` with one worker, or `parallel` with a bounded worker count. No separate
 parallel implementation plan, weakened test suite or reordered simulation events
 is introduced. Development-agent parallelism is distinct from simulated PDES.
@@ -169,7 +169,7 @@ about architecture or actual simulation readiness.
 
 ## Complete MVP worker decomposition
 
-The [Luna MVP workpack](execution/mvp/README.md) covers all 80 MVP parent tasks with 241
+The [Luna MVP workpack](execution/mvp/README.md) covers all 82 MVP parent tasks with 258
 bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind reviewed
 context/commands just before dispatch. No autonomous execution or model
 qualification is claimed.
