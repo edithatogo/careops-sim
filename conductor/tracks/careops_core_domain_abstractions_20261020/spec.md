@@ -30,3 +30,14 @@ Clinical models stay in domain crates; neutral engine mechanics use existing
 Kairos owners. No full ward, theatre, diagnostic or network implementation is
 required for these boundary fixtures. No stable public API, hardware acceptance,
 clinical deployment or fiscal optimisation is implied.
+
+## PR173 acceptance refinements
+
+A0 first qualifies a small experiment lifecycle extraction with existing Kairos
+owners, ED/logistics parity, transactional publication and crash recovery. A3 then
+qualifies generic work/allocation semantics. Two-consumer evidence and an actual
+independent domain adapter precede broad adoption; clinical meaning stays here.
+A1/A4/A5 explicitly test hazard-age/draw ownership, transfer logical idempotency
+and relationship/lifetime separation. Whole-track 64/66 labels and broad 67–69
+ownership do not replace exact capability receipts and disjoint writer packets.
+See the [task mapping](../../evidence/pr173-roadmap-integration-20261021.md).

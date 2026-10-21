@@ -15,3 +15,13 @@ code, pins or accepted statuses. Follow [CC-01–CC-08](../../design/composition
 Kairos mechanics require their existing owner and exact-revision qualification;
 healthcare semantics and site profiles remain in CareOps. Cross-repository writes
 use separate leases and commits. Preserve parallel audit ownership.
+
+## PR173 incorporation — 21 October 2026
+
+[Integration record](../../evidence/pr173-roadmap-integration-20261021.md) maps
+C-R0–C-R7 to existing task IDs. Resolve overlapping Kairos 67/68/69 and existing
+owners at exact-file/interface scope; registration and an empty lease store do
+not authorise takeover. Bind only the required capabilities of 64/66, with public
+API/checkpoint/schema compatibility proof. Broad catalog reservations remain
+conservative planning bounds; runtime leaves need separate reviewed packets.
+Do not edit the parallel PR173 addendum, enhancement/readiness links or PR266.

@@ -12,3 +12,12 @@ profiles. Do not infer atomic grants from conditions or delivery from transfer.
 
 Historical proposal is retained in the planning baseline commit. Current plan,
 specification and test matrix supersede its unconditional capability assumptions.
+
+## 21 October follow-up
+
+PR173 C-R0–C-R7 and its review refinements are now mapped into this branch's
+numbered plans and derived catalog; see the [integration record](../../evidence/pr173-roadmap-integration-20261021.md).
+The original checkout's divergent uncommitted proposals are preserved and are not
+reported as integrated. R0 must reconcile them before dispatch from that checkout.
+This incorporation is local planning only; no PR merge, pin change or hardware
+qualification occurred. Existing unchecked tasks remain unchecked.

@@ -24,3 +24,13 @@ candidate decision and usable baseline, including an explicit retain-pin decisio
 any missing capability stays an external dispatch gate for its consumer task.
 
 See [composition contracts](../../design/composition-contracts-20261020.md).
+
+## PR173 acceptance refinements
+
+R0 reconciles conflicting planning copies and contract-only E6/E8 evidence.
+R2 requires a capability-preserving integration across divergent Kairos history,
+including Q/C, physical IO and checkpoint equivalence. Mac Metal, separate CUDA PC
+and physical Mac/NAS execution each require their own native receipts; hardware
+is not a headless dependency unless consumed. R3 rejects stale/mismatched receipts.
+The [C-R0–C-R7 mapping](../../evidence/pr173-roadmap-integration-20261021.md) is part
+of the acceptance specification; no existing checked hardware claim is expanded.

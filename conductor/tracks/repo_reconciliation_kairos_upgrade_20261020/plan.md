@@ -7,9 +7,9 @@ Dispatch requires reviewed packets, upstream capability readback and the single-
 
 ## R0 — Status and capability evidence reconciliation
 
-- [ ] R0.1 Reconcile registry, index and resume state against exact-scope receipts; retain historical acceptance and expose contradictions rather than declare all capabilities verified.
-- [ ] R0.2 Inventory the pinned Kairos consumer APIs and candidate mainline; distinguish contract, implemented code, exercised runtime and operational acceptance. Record parallel audit findings and exact revisions.
-- [ ] R0.3 Review numbered plan tasks, ownership, external capability gates and task catalog; require context/catalog integrity before dispatch.
+- [ ] R0.1 Reconcile registry, index and resume state against exact-scope receipts and divergent planning copies; preserve uncommitted proposals, record the reviewed integration revision and remove conflicting dispatch assumptions before binding. Retain historical acceptance without promoting it to broader capability proof.
+- [ ] R0.2 Inventory pinned and candidate Kairos symbols, features, Cargo dependencies, schemas, fixtures and Q/C/ED replay/checkpoint receipts; verify ancestry and missing equivalents, not just version labels. Classify contract, implemented code, exercised runtime and operational acceptance separately.
+- [ ] R0.3 Map PR173 C-R0–C-R7 into these tasks; audit E6/E8 receipts, retaining e62 constructed metadata/WGSL/buffer-state tests and e83 threads/mpsc with synthetic efficiency as contract evidence only. Reconcile ownership and catalog integrity; historical checked tasks do not certify real hardware.
 - [ ] R0.4 Conductor — review and verify phase (workflow.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
@@ -25,9 +25,9 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 
 ## R2 — Bounded Kairos candidate qualification
 
-- [ ] R2.1 Select an immutable candidate after reviewing code, compatibility and current hosted evidence; f0d30e2 is an inspected candidate, not an automatic upgrade target.
-- [ ] R2.2 Exercise required consumer APIs: event conditions, allocation semantics and official Arrow IPC/Parquet interoperability with an independent reader; an enum or custom serialization is insufficient.
-- [ ] R2.3 Run relevant Rust consumer checks against the candidate in isolation. Keep Metal, distributed transport and advanced solvers separate unless required and exercised by this scope.
+- [ ] R2.1 Select an immutable capability-preserving candidate with Kairos owners 03/04/21/22/25; integrate missing qualified functionality or prove a replacement. f0d30e2 is a divergent inspected revision, not an automatic upgrade target. Recheck exact source, feature set and compatibility at binding.
+- [ ] R2.2 Exercise required consumer APIs: scheduler event waits, allocation/cancellation/rollback and independent official Arrow IPC/Parquet reader interoperability. Requalify native Python execution if consumed; an enum, version-only ctypes probe, custom payload or unsupported claim_atomic_multi_resource is insufficient.
+- [ ] R2.3 Run required Rust consumer checks in isolation. Map optional E6/E8 acceptance to real Mac Metal kernel submission/readback and CPU parity; a separately identified CUDA PC with verified access/GPU/toolchain; and physically distinct Mac/NAS transport peers with failure/restart and measured timings. Reverify host identity: the historical pleiades alias targeted the NAS. Separate initialization/transfer/compute cost, equal-workload throughput/latency, memory limits and cancellation/recovery; mock metadata, CPU fallback and threads never satisfy device or multi-host gates. Hardware qualification stays outside the headless pin gate unless actually consumed.
 - [ ] R2.4 Conductor — review and verify phase (workflow.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
@@ -36,7 +36,7 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 
 - [ ] R3.1 Run full affected Rust tests and preserved Q/C, IO, ED replay/holdout comparisons against the frozen baseline; explain intentional versioned differences and reject unexplained drift.
 - [ ] R3.2 Advance the parent pin only after required gates pass; otherwise retain the working pin and record precise missing capabilities and supported bounded alternatives.
-- [ ] R3.3 Record candidate decision, rollback rehearsal, limitations and owner handoffs; do not mark an unavailable capability passed.
+- [ ] R3.3 Record candidate decision, rollback rehearsal and owner handoffs with command argv/cwd, immutable source/submodule/feature hashes, compiler/toolchain, seed/input hashes, host/backend/device identity, exit status and retained raw artifact checksums. Reject missing, stale or mismatched receipts; document unavailable capability without passing it.
 - [ ] R3.4 Conductor — review and verify phase (workflow.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
