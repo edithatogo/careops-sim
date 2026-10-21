@@ -1,0 +1,125 @@
+{
+  "base_commit": "8dff0fa4fb46e028eaa7227a144c79611e9ab3e2",
+  "scope": "R0.1 planning integrity; no runtime acceptance",
+  "checked_at": "2026-10-21T04:45:59.514110+00:00",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r01-20261021",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "log": "context.log",
+      "sha256": "c330f90188163a86ea9970b6e8a1fee362d5daffbe340cbdbc7c3fc2729fe642"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r01-20261021",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "log": "tasks.log",
+      "sha256": "e716c64f63ce4d00b7675e976f3629d11d5c2e59d13a90ea4b79002ccf9d5c2c"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r01-20261021",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "log": "mvp.log",
+      "sha256": "3c7b9a3062f62964126c8db247833e935b8557a4baeffb7a30525cbe5f410966"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests.test_tasks",
+        "tests.test_context"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r01-20261021",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "log": "planning-regressions.log",
+      "sha256": "780b0c4a8ac6c0b3cd3a1d54c887d167b9d0d88a486953b7657e24d841bbc5be"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "packet-check",
+        "/tmp/careops-r01-stale-packet.json"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r01-20261021",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "log": "reject-stale-packet.log",
+      "sha256": "e60d9f240bf253d5c5624d823565217cec0f9fc49f97d7ad2874084080b55556"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r01-20261021",
+      "exit_code": 0,
+      "log": "final-context.log",
+      "sha256": "9761c0b60eaf9b7f99c875f0a302920f72406a97794abfdb7cda4876cccbff8f"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r01-20261021",
+      "exit_code": 0,
+      "log": "final-tasks.log",
+      "sha256": "e716c64f63ce4d00b7675e976f3629d11d5c2e59d13a90ea4b79002ccf9d5c2c"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r01-20261021",
+      "exit_code": 0,
+      "log": "final-mvp.log",
+      "sha256": "3c7b9a3062f62964126c8db247833e935b8557a4baeffb7a30525cbe5f410966"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r01-20261021",
+      "exit_code": 0,
+      "log": "final-diff.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "final_status_oracle": {
+    "only_changed_acceptance": [
+      "R0.1"
+    ],
+    "historical_acceptance_flags_preserved": 145,
+    "checked": 146,
+    "pending": 79,
+    "next_serial_preparation_candidate": "R0.2",
+    "runtime_pin_unchanged": "44261eb5cf8275f132f63a3396903d116d701dbe"
+  },
+  "reviewed_at": "2026-10-21T04:46:58.129564+00:00"
+}
