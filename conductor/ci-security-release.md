@@ -42,7 +42,7 @@ platform/toolchain/provenance ([nextest guidance](https://nexte.st/docs/ci-featu
 
 ## D3: harden as behavior lands
 
-Use the pinned Rust 1.99.0 lane for active builds, tests, benchmarks and policy
+Use the pinned Rust 1.99.1 candidate lane for active builds, tests, benchmarks and policy
 checks. Miri and libFuzzer AddressSanitizer runtime jobs are unavailable under the
 current owner policy because they require nightly; prior dated-nightly results
 remain historical and are not current qualification. This unavailability does
@@ -91,3 +91,198 @@ freshness, test duration, flaky-rate, performance drift, unresolved risks and
 maintainer intervention rate. Fix proposals stay scoped; secrets/permissions/
 publishing changes do not auto-merge. Pause/retry/lease controls prevent repeated
 agent jobs from fighting over files. No jobs are enabled in this planning audit.
+
+## Actual native CLI package qualification — 19 October 2026
+
+The existing release rehearsal can substitute a shell stub when a built CLI is
+missing. Its fixtures and historical evidence are retained, but cannot establish
+an actual native release. The native release workflow instead compiles the CLI
+once with locked dependencies and Rust 1.99.0, packages those exact executable
+bytes with the source licence and nominal example, then unpacks and executes
+help, validation and a seeded simulation outside the source tree. Missing files,
+scripts, links and existing output revisions are refused by the new packager.
+
+A qualified immutable CareOps tool inventories every archive file. The workspace
+Cargo.lock is retained separately as source-resolution evidence, not a claim of
+exact binary dependency closure. Main-only OIDC jobs sign the previously built
+archive and its SPDX inventory, then verify repository, workflow, source, signer
+and main ref. PRs do not receive signing permissions. Hosted build, consumer and
+signature results are required before claiming qualification; wider platform,
+reproducibility and operational release gates remain separate.
+
+
+## Cargo lock regeneration and SHA-2 qualification — 19 October 2026
+
+Renovate PR158 changed the SHA-2 declaration without regenerating Cargo.lock;
+its locked native checks correctly refused that stale source. The official
+registry identifies 0.11.1 as the latest release including development versions.
+The candidate pins that exact version, uses Rust 1.99.0 and updates only workspace
+resolution and newly required transitive packages; the Kairos pin is unchanged.
+
+The Cargo lock workflow automatically regenerates required resolution on source
+PRs, main pushes, weekly schedules and manual dispatch. It runs native tests and
+the existing dependency policy, retains the exact candidate and honest stage
+receipt even on failure, and refuses source checks whose committed lock differs.
+It never commits a repair or promotes a dependency. Three actual-workflow
+regressions exercise failure receipts, lock-byte binding and stale-lock refusal.
+The first hosted full harness found the rollback validator still expecting
+SHA-2 0.10.9. Advance only its exact SHA-2 pin to 0.11.1 with the reviewed
+manifest/lock candidate; existing tamper/refusal and restoration tests remain.
+All applicable current-head native and source gates remain required before merge.
+
+## Scheduled schema development qualification — 19 October 2026
+
+The schema development candidate tests run weekly or manually, independently of the
+canonical Rust 1.99.0 lane. It tests exact Python 3.14.8 and 3.15.0, plus a published
+next-runtime preview selected from an immutable discovery manifest. An absent
+preview is recorded as unavailable; it is not a successful preview execution.
+
+Candidate declarations are isolated from source pins and resolved with prereleases
+allowed, universal integrity hashes and wheel-only installation. Nine affected
+schema regression groups execute on each actual candidate interpreter. Security
+auditing uses that interpreter's installed distribution inventory, so environment
+markers cannot silently exclude a target dependency when the audit tools run on
+Python 3.14.8. Execution receipts bind runtime, package inventory and lock hashes;
+setup failures, missing evidence and failed tests cannot qualify a candidate.
+Four regression tests exercise the actual preparation, discovery and receipt code.
+The first main dispatch exposed a missing required discovery CLI argument before
+any candidate execution. The corrected call passes the explicit GitHub output
+file. Relevant PRs now exercise discovery against the pinned shared tool; only
+schedule/manual events execute development dependency candidates. An early
+discovery failure is setup failure, not successful preview qualification.
+
+Candidate artifacts never promote versions or change native objects. Promotion
+requires a separately reviewed exact-pin update and all applicable hosted checks.
+This schema-only lane does not qualify a Rust engine or native release.
+
+## Suite source CI maintenance — 19 October 2026
+
+The CareOps suite CI goal owns this isolated source-workflow update. Retain Rust
+1.99.0 bindings, Kairos/Conductor pins, domain tests and the fail-closed Required
+checks aggregate. Adopt immutable current checkout/artifact actions and reviewed
+checksum-bound Zizmor1.31.1. Add the qualified immutable shared source-security
+workflow alongside existing Rust dependency/licence and scoped policy checks.
+
+Install schema-validation tools from a universal hash lock. PR/push qualification
+regenerates the exact declarations, installs only verified wheels in an isolated
+Python3.14.8 environment, runs all nine affected schema regression groups, audits dependencies using the immutable suite
+audit-tool hash lock, and refuses uncommitted lock
+repair. Scheduled/manual runs retain candidate lock and actual stage outcomes,
+without source promotion. The existing full harness/native gates remain intact;
+weekly lock qualification avoids duplicating unrelated native builds. New check protection follows successful hosted
+qualification; no existing required/native gate is waived. Development runtime
+canaries, actual release SBOM/signatures and optional-interface qualification
+remain open suite work; this update does not reopen or recertify accepted MVP
+tasks or Kairos native releases.
+
+Local preparation evidence: five hash-locked packages install in a fresh exact
+Python3.14.8 environment, lock regeneration is byte-identical, and an altered
+candidate is refused by the actual guard. Dependency audit reports no known
+vulnerabilities; actionlint and pedantic Zizmor pass. A full670-case harness run
+found one stale artifact-pin assertion, now repaired to read the reviewed tool
+manifest while retaining failure-report preservation assertions. Targeted repair
+and actual workflow receipt/guard regressions pass. Fresh hosted full-suite and
+native gates, policy binary execution and protection readback remain required;
+no full current-head hosted qualification is inferred from these local results.
+
+First hosted PR159 result: Rust/Linux/macOS tests, fmt/clippy/default/doctest,
+policy and shared security passed. Context failed before tests because the
+runner-selected Python3.12 required a conditional dependency outside the3.14
+lock; schema qualification passed its81cases but audit-tool setup failed because
+pinned PyYAML6.0.3 has no usable Python3.15 wheel under wheel-only installation.
+Explicitly select the already-qualified3.14.8 schema runtime in context and the
+isolated audit environment. Preserve hashes, wheel-only installation and exact
+tool versions; do not treat these setup failures as advisory/test failures or
+claim current-head hosted qualification before rerun.
+
+## Next exact schema backend candidate
+
+Official PyPI metadata identifies RPDS2026.9.1 as newer than the existing
+2026.5.1 schema backend; the other four exact schema packages have no newer
+published version or later development candidate in this observation. Prepare
+only that RPDS pin and regenerate the universal integrity lock in an isolated
+worktree. Qualify all nine schema validator groups and dependency audit with
+verified wheels on exactPython3.14.8; retain the other four package versions.
+This candidate follows PR159 and is not adopted by that source-CI repair. Full
+current-head hosted/domain checks and normal protected merge remain necessary
+before promotion; no Rust engine/submodule or native acceptance change implied.
+
+Candidate local evidence: a fresh verified-wheel Python3.14.8 install selects
+RPDS2026.9.1 while preserving the other four package versions. All81cases across
+the nine affected schema groups pass, and dependency audit reports no known
+vulnerabilities. Hosted current-head/full-domain qualification remains pending.
+
+## Isolated Rust development qualification — 19 October 2026
+
+The suite CI goal adds a separate weekly/manual and source-PR canary for newer
+stable patches, beta and nightly compilers. Official manifests are frozen by date,
+SHA256 and full compiler commit. Qualification re-fetches the dated manifest and
+requires the installed release, compiler commit and native host to match before
+locked workspace tests, doctests and Clippy execute. Setup, compiler mismatch,
+test failures, source drift and invalid terminal evidence remain unqualified.
+Receipts retain exact commands, exit codes, log hashes and source identity.
+
+This bounded candidate lane preserves the exact canonical toolchain declared in
+`rust-toolchain.toml`,
+Cargo lock, engine/submodule pins and ordinary native gates. It does not enable
+Miri/libFuzzer, change accepted native evidence, grant a licence or promote any
+candidate. A later exact-pin adoption must synchronize canonical policy, manifests
+and CI and pass all affected current-head checks. The existing single-file
+Rust1.99.1 proposal fails the maintenance scheduler's canonical-pin check; that
+failure is not evidence of a compiler or simulation regression.
+
+Local preparation passes9identity/receipt/setup/test/drift regressions, workflow
+syntax and pedantic security lint. Real official discovery freezes Rust1.99.1,
+beta1.100.0-beta.7 and nightly1.101.0 with full compiler commits and dated manifest
+SHA256 verification. This is discovery and infrastructure evidence; actual
+candidate native execution and hosted current-head gates remain pending.
+
+
+### Schema discovery terminal evidence — 19 October 2026
+
+The source candidate adopts qualified immutable CareOps f0e8db2 across source
+security, schema lock and canary helper checkouts. An always-run discovery step
+records setup/discovery failure, cancellation or missing execution even when no
+receipt was produced. Partial evidence is preserved; apparent successful discovery
+without a valid receipt fails. Discovery alone never claims runtime tests.
+Focused tests execute the actual workflow terminal script; hosted current-head
+qualification remains required. Rust pins, schema locks and domain tests remain
+unchanged. Revert the source refs and terminal-step change together for recovery.
+
+
+### Coordinated compiler source proposal — 19 October 2026
+
+Rust 1.99.1 is synchronized across active CI, bootstrap and quality tools.
+Official manifest and supported-host checksum bindings are in the bootstrap
+profile. Historical runs above remain tied to their actual Rust 1.99.0 sources.
+The candidate requires its own current-head Linux/macOS and context checks;
+prior canary success does not establish integrated-source acceptance. The Cargo
+lock, upstream pins, immutable action SHAs and declared minimum remain unchanged.
+
+
+
+## Project-owned code licence — 20 October 2026
+
+The project owner explicitly confirmed Apache-2.0 for project-owned code. The
+root LICENSE now contains the official Apache2 text; NOTICE and README record
+the scope. Cargo's existing Apache-2.0 metadata is unchanged. Third-party
+licences/notices, synthetic-data redistribution holds, source/submodule pins,
+clinical qualification and publication boundaries remain intact. This resolves
+the missing parent-code licence decision for native package preparation; it does
+not establish complete distribution notice coverage, package/runtime acceptance
+or signed release qualification. Continue the existing native-package candidate
+with those checks before any normal protected merge.
+
+
+### Licensed native candidate follow-up — 20 October 2026
+
+PR172 merged after all13 applicable checks passed at64d1425. Sim's previous main
+CI39258580773 also finished successfully. The existing native release candidate
+now includes that qualified main, canonical Rust1.99.1 and immutable CareOps
+policy6319d0c. It packages the exact project NOTICE and retained pinned Kairos
+licence texts, with per-notice SHA256s and refusal of missing, linked, empty or
+unsafe notice identities. This is explicit notice preservation, not a claim of
+complete binary dependency closure or a blanket licence for data. Existing
+source-resolution Cargo.lock evidence stays separate from the package SBOM.
+Current-head native build, unpacked consumer and post-main signatures must still
+pass before package qualification. No previous Rust1.99.0 result is relabelled.

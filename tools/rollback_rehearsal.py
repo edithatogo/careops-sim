@@ -47,7 +47,7 @@ DEFAULT_TARGET_COMMIT: str = "44261eb5cf8275f132f63a3396903d116d701dbe"
 DEFAULT_CARGO_PINS: dict[str, str] = {
     "serde": "1.0.229",
     "serde_json": "1.0.151",
-    "sha2": "0.10.9",
+    "sha2": "0.11.1",
     "kairo-ecs-core": "0.0.0",
     "kairo-ecs-rng": "0.0.0",
     "kairo-ecs-types": "0.0.0",

@@ -3,6 +3,7 @@
 
 import argparse
 import json
+import os
 import platform
 import re
 import shutil
@@ -111,6 +112,30 @@ def check(profile_path=PROFILE_PATH, host=None, rustup_path=None):
     print(f"Rust {version} ready for {host} (rustc and cargo verified via rustup).")
 
 
+def compiler_environment(toolchain):
+    """Bind Cargo's subprocesses to the selected compiler, irrespective of PATH."""
+    rustup = shutil.which("rustup")
+    if not rustup:
+        raise BootstrapError("rustup was not found on PATH")
+    tools = {}
+    for name in ("cargo", "rustc", "rustdoc"):
+        result = subprocess.run(
+            [rustup, "which", "--toolchain", toolchain, name],
+            capture_output=True, text=True, check=False,
+        )
+        path = Path(result.stdout.strip())
+        if result.returncode or not path.is_absolute() or path.name != name:
+            raise BootstrapError(f"Could not resolve pinned {name} through rustup")
+        tools[name] = path
+    if len({path.parent for path in tools.values()}) != 1:
+        raise BootstrapError("Pinned Cargo and compiler paths must share one toolchain bin directory")
+    environment = os.environ.copy()
+    environment.update(RUSTUP_TOOLCHAIN=toolchain, RUSTC=str(tools["rustc"]),
+                       RUSTDOC=str(tools["rustdoc"]))
+    environment["PATH"] = str(tools["cargo"].parent) + os.pathsep + environment.get("PATH", "")
+    return str(tools["cargo"]), environment
+
+
 def test_core(profile_path=PROFILE_PATH):
     """Verify the pinned Rust tools, then run Kairos' locked core test suite."""
     check(profile_path=profile_path)
@@ -124,11 +149,12 @@ def test_core(profile_path=PROFILE_PATH):
 
     profile = json.loads(Path(profile_path).read_text(encoding="utf-8"))
     toolchain = profile["rustup_toolchain"]
-    command = ["rustup", "run", toolchain, "cargo", "test", "--locked"]
+    cargo, environment = compiler_environment(toolchain)
+    command = [cargo, "test", "--locked"]
     for package in CORE_PACKAGES:
         command.extend(("-p", package))
     try:
-        result = subprocess.run(command, cwd=KAIROS_PATH, check=False)
+        result = subprocess.run(command, cwd=KAIROS_PATH, env=environment, check=False)
     except OSError as exc:
         raise BootstrapError(f"Could not run pinned Cargo test suite: {exc}") from exc
     if result.returncode:

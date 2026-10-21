@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import re
 import unittest
@@ -29,17 +30,17 @@ class D34CiTests(unittest.TestCase):
 
         step = context[benchmark:retention]
         self.assertNotIn("if:", step)
-        self.assertIn("rustup toolchain install 1.99.0 --profile minimal", step)
+        self.assertIn("rustup toolchain install 1.99.1 --profile minimal", step)
         self.assertIn(
             "cargo build --locked --release --package careops-ed-cli",
             step,
         )
         for binding in (
-            'rustc_path="$(rustup which rustc --toolchain 1.99.0)"',
-            'rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"',
-            'cargo_path="$(rustup which cargo --toolchain 1.99.0)"',
+            'rustc_path="$(rustup which rustc --toolchain 1.99.1)"',
+            'rustdoc_path="$(rustup which rustdoc --toolchain 1.99.1)"',
+            'cargo_path="$(rustup which cargo --toolchain 1.99.1)"',
             'toolchain_bin="$(dirname "$rustc_path")"',
-            'export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"',
+            'export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.1 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"',
             'test "$(command -v rustc)" = "$rustc_path"',
             'test "$(command -v rustdoc)" = "$rustdoc_path"',
             'test "$(command -v cargo)" = "$cargo_path"',
@@ -59,10 +60,8 @@ class D34CiTests(unittest.TestCase):
         retention = context.split("- name: Retain D3.4 benchmark report", 1)[1]
         step = retention.split("      - name:", 1)[0]
         self.assertIn("if: always()", step)
-        self.assertIn(
-            "uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
-            step,
-        )
+        pins = json.loads((WORKFLOW.parents[2] / "tools/ci-tools.json").read_text())
+        self.assertIn("uses: actions/upload-artifact@" + pins["actions"]["upload-artifact"], step)
         self.assertIn("name: d34-benchmarks-${{ github.run_id }}", step)
         self.assertIn("path: .artifacts/ci/d34/report.json", step)
         self.assertIn("if-no-files-found: error", step)

@@ -16,6 +16,7 @@
 - [Track registry](tracks.md)
 - [Product expansion roadmap](roadmap.md)
 - [Composition contracts and fixture gates](design/composition-contracts-20261020.md)
+- [Reconciled proposals and integration](design/inter-agent-coordination-20261020.md)
 - [Related repository interfaces](design/related-repository-boundaries-20261020.md)
 - [Universal triage & priority framework](design/universal-triage-priority-framework.md)
 - [Transport, retrieval & boundary flows](design/transport-retrieval-interfacility-flow.md)

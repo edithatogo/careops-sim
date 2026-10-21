@@ -1,0 +1,15 @@
+name: Shared source security
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: source-security-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  security:
+    uses: edithatogo/careops/.github/workflows/reusable-source-security.yml@6319d0c0c76ee672223c156abce9d4181c41aa9a
+    with:
+      policy-revision: 6319d0c0c76ee672223c156abce9d4181c41aa9a

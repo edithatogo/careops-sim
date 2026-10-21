@@ -342,11 +342,11 @@ def run_suite(binary: Path, output_file: Path) -> dict:
         measurements.append(record)
         if record["repeat_summary_sha256"] != summaries[1_000][0]:
             raise BenchmarkError(f"soak summary differs at repetition {repeat + 1}")
-    rustc = subprocess.run(["rustup", "run", "1.99.0", "rustc", "--version", "--verbose"], check=True,
+    rustc = subprocess.run(["rustup", "run", "1.99.1", "rustc", "--version", "--verbose"], check=True,
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=5)
-    cargo = subprocess.run(["rustup", "run", "1.99.0", "cargo", "--version"], check=True,
+    cargo = subprocess.run(["rustup", "run", "1.99.1", "cargo", "--version"], check=True,
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=5)
-    if not rustc.stdout.startswith(b"rustc 1.99.0 ") or not cargo.stdout.startswith(b"cargo 1.99.0 "):
+    if not rustc.stdout.startswith(b"rustc 1.99.1 ") or not cargo.stdout.startswith(b"cargo 1.99.1 "):
         raise BenchmarkError("canonical compiler/Cargo identity mismatch")
     result = {"schema_version": 1, "source_commit": _git_head(),
               "harness_command": [sys.executable, str(Path(__file__).resolve()),

@@ -12,11 +12,11 @@ PINS = json.loads((ROOT / 'tools/ci-tools.json').read_text())
 
 
 def validate_rust_toolchain(environ=None):
-    """Return canonical Cargo only when every active Rust binding is 1.99.0."""
+    """Return canonical Cargo only when every active Rust binding is 1.99.1."""
     environ = os.environ if environ is None else environ
-    expected_toolchain = '1.99.0'
+    expected_toolchain = '1.99.1'
     if environ.get('RUSTUP_TOOLCHAIN') != expected_toolchain:
-        raise RuntimeError('RUSTUP_TOOLCHAIN must be exactly 1.99.0')
+        raise RuntimeError('RUSTUP_TOOLCHAIN must be exactly 1.99.1')
     rustc = environ.get('RUSTC', '')
     rustdoc = environ.get('RUSTDOC', '')
     if not rustc or not rustdoc or not Path(rustc).is_absolute() or not Path(rustdoc).is_absolute():
@@ -28,22 +28,22 @@ def validate_rust_toolchain(environ=None):
     for name, expected_path in expected_paths.items():
         resolved = shutil.which(name, path=environ.get('PATH'))
         if resolved is None or os.path.realpath(resolved) != os.path.realpath(expected_path):
-            raise RuntimeError(f'PATH-resolved {name} does not match canonical Rust 1.99.0 toolchain')
+            raise RuntimeError(f'PATH-resolved {name} does not match canonical Rust 1.99.1 toolchain')
         result = subprocess.run([expected_path, '--version'], capture_output=True, text=True)
         if result.returncode or not result.stdout.startswith(f'{name} {expected_toolchain} '):
-            raise RuntimeError(f'{name} executable is not Rust 1.99.0')
+            raise RuntimeError(f'{name} executable is not Rust 1.99.1')
     return expected_paths['cargo']
 
 
 def validate_workflow_toolchain(workflow=None):
-    """Reject Rust selectors outside the sole 1.99.0 lane and missing bindings."""
+    """Reject Rust selectors outside the sole 1.99.1 lane and missing bindings."""
     workflow = (ROOT / '.github/workflows/ci.yml').read_text() if workflow is None else workflow
     violations = []
     for pattern, description in (
         (r'\bcargo\s+\+\S+', 'cargo +toolchain overrides are forbidden'),
-        (r'rustup toolchain install (?!1\.99\.0\b)[^\s]+', 'only Rust 1.99.0 may be installed'),
-        (r'--toolchain\s+(?!1\.99\.0\b)[^\s]+', 'only Rust 1.99.0 toolchain selectors are allowed'),
-        (r'(?m)^.*\bRUSTUP_TOOLCHAIN(?:=|:\s*)(?!1\.99\.0\b)[^\s]+', 'only RUSTUP_TOOLCHAIN=1.99.0 is allowed'),
+        (r'rustup toolchain install (?!1\.99\.1\b)[^\s]+', 'only Rust 1.99.1 may be installed'),
+        (r'--toolchain\s+(?!1\.99\.1\b)[^\s]+', 'only Rust 1.99.1 toolchain selectors are allowed'),
+        (r'(?m)^.*\bRUSTUP_TOOLCHAIN(?:=|:\s*)(?!1\.99\.1\b)[^\s]+', 'only RUSTUP_TOOLCHAIN=1.99.1 is allowed'),
         (r'\b(?:cargo|rustc|rustdoc)\s+(?:\+)?(?:stable|beta|nightly|default)(?:\b|[-.]\d)', 'toolchain aliases are forbidden'),
         (r'\b(?:cargo|rustc|rustdoc)\s+\+(?:[0-9]+\.[0-9]+(?:\.[0-9]+)?)(?![^\s]*)', 'explicit cargo overrides are forbidden'),
         (r'\bcargo\s+fuzz\b|\bcargo\s+miri\b|--sanitizer\s+address', 'nightly-only runtime gates are unavailable'),
@@ -54,7 +54,7 @@ def validate_workflow_toolchain(workflow=None):
     for index in range(1, len(jobs), 2):
         name, body = jobs[index], jobs[index + 1]
         if re.search(r'\bcargo\b|\brustc\b|\brustdoc\b', body):
-            for required in ('RUSTUP_TOOLCHAIN=1.99.0', 'RUSTC', 'RUSTDOC', 'command -v cargo'):
+            for required in ('RUSTUP_TOOLCHAIN=1.99.1', 'RUSTC', 'RUSTDOC', 'command -v cargo'):
                 if required not in body:
                     violations.append(f'{name} job is missing canonical tool binding: {required}')
     if 'cargo test --workspace --lib --bins --tests --locked' not in workflow:

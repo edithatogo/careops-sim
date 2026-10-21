@@ -2,10 +2,10 @@
 
 [![CI](https://github.com/edithatogo/careops-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/edithatogo/careops-sim/actions/workflows/ci.yml)
 [![Session Guard](https://github.com/edithatogo/careops-sim/actions/workflows/agent-session.yml/badge.svg)](https://github.com/edithatogo/careops-sim/actions/workflows/agent-session.yml)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE-APACHE)
-[![Rust: 1.99.0](https://img.shields.io/badge/rust-1.99.0-orange.svg)](rust-toolchain.toml)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Rust: 1.99.1](https://img.shields.io/badge/rust-1.99.1-orange.svg)](rust-toolchain.toml)
 [![Platforms: Linux x86_64 | macOS ARM64](https://img.shields.io/badge/platform-Linux%20x86__64%20%7C%20macOS%20ARM64-lightgrey.svg)](conductor/dependency-policy.md#cross-platform-reproducibility-policy)
-[![Conductor Progress: 100%](https://img.shields.io/badge/progress-100%25%20(145%2F145%20tasks)-brightgreen.svg)](conductor/tracks.md)
+[![Conductor: 145 checked / 225 tasks](https://img.shields.io/badge/plan-145%20checked%20%2F%20225%20tasks-blue.svg)](conductor/tracks.md)
 
 A planned Rust-native generic emergency-department simulation using Kairos/KairoECS
 DES and ABM. Generic/public or explicitly synthetic inputs first; Cairns later.
@@ -24,14 +24,17 @@ See [delivery scope and acceptance](conductor/delivery-contract.md) and
 
 ## Current state
 
-The codebase is at **100.0% overall completion** (all 145 of 145 task records accepted in Conductor DAG):
-- `empirical_calibration_20260925` (C0–C6): **100% complete** (32/32 tasks accepted; [C6.5 closeout](conductor/evidence/c6.5-phase-acceptance-20261016.md)).
-- `des_queue_preemption_20260925` (Q0–Q5): **100% complete** (25/25 tasks accepted).
-- `ed_parameter_evidence_20260927` (P0–P5): **100% complete** (24/24 tasks accepted).
-- `development_readiness_20260925` (D0–D5): **100% complete** (28/28 tasks accepted; [D5.4 closeout](conductor/evidence/d5.4-phase-acceptance-20261017.md)).
-- `generic_ed_delivery_20260925` (E0–E8): **100% complete** (36/36 tasks accepted; all milestones G1, G2, G3-Metal, G3-PDES, and G3-Dist closed; [E8.4 closeout](conductor/evidence/e8.4-phase-acceptance-20261017.md)).
+The plan contains **225 tasks across eight tracks**: 145 historical checkboxes
+are retained and 80 reconciliation/composition tasks are pending. This is a plan
+count, not overall runtime or product completion. R0 reconciles exact capability
+receipts; constructed GPU metadata and in-process cluster fixtures do not establish
+physical device or multi-host acceptance.
 
-All milestone gates (D0, D1, D2, D3, D4, D5, P1, P2, P3, P4, C1, C2, C3, C4, C5, G1, G2, G3-Metal, G3-PDES, G3-Dist) are formally verified and closed in [`conductor/current-state.json`](conductor/current-state.json).
+The corrected [roadmap](conductor/roadmap.md) and [resume state](conductor/current-state.json)
+start with capability-preserving Kairos reconciliation, then shared healthcare
+contracts and ED/birthing composition. See the [proposal reconciliation record](conductor/design/inter-agent-coordination-20261020.md)
+for preserved drafts and resolved conflicts. Historical C/Q/P/D/E evidence remains
+available in the track plans; no clinical or hardware acceptance is added here.
 
 Git is initialized. `libs/kairos` is a development pin (see `submodule_pins` in
 [`conductor/current-state.json`](conductor/current-state.json)). That pin can
@@ -46,7 +49,7 @@ follows its readiness gates, including the D2 notes in
 pages are the publication gate; they are not a statement that the remote is
 still missing.
 
-The workspace toolchain is Rust 1.99.0 (`rust-toolchain.toml`; `Cargo.toml`
+The workspace toolchain is Rust 1.99.1 (`rust-toolchain.toml`; `Cargo.toml`
 `rust-version` is `1.99`). From this checkout, with Python 3 installed:
 
 ```sh
@@ -85,6 +88,11 @@ For gpt-6-luna execution through the MVP, use the
 
 ## Licenses, notices, and citation
 
+Project-owned code is licensed under **Apache-2.0**, confirmed by the project
+owner on 20 October 2026. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+Third-party software retains its own licences and attribution requirements;
+separately governed data and research content are not relicensed by this decision.
+
 Workspace package metadata declares SPDX `Apache-2.0`:
 
 - root [`Cargo.toml`](Cargo.toml) `[workspace.package].license`
@@ -93,7 +101,7 @@ Workspace package metadata declares SPDX `Apache-2.0`:
 
 [`deny.toml`](deny.toml) allows dependency licenses `MIT`, `Apache-2.0`, `BSD-3-Clause`, and `Unicode-3.0`. Parent Rust and Python sources have no SPDX file headers.
 
-Root `CITATION.cff` is present for software citation. Distribution packaging and release rehearsals bundle `LICENSE-APACHE` and `NOTICE` via `tools/release_rehearsal.py`. The [P4 pack manifest](model-inputs/ed/profiles/p4-pack-manifest.json) records parent redistribution as `not_established` and keeps Kairos and Conductor licenses inside those submodules. [E0.2](conductor/evidence/e0.2-local-acceptance-20261002.md) records the Cargo Apache-2.0 fields as repeated Kairos workspace metadata. [D2.3](conductor/evidence/d2.3-policy-20261003.md) added the Cargo fields so `cargo deny` can check licenses.
+Root `CITATION.cff` is present for software citation. Distribution packaging and release rehearsals bundle `LICENSE-APACHE` and `NOTICE` via `tools/release_rehearsal.py`. The [P4 pack manifest](model-inputs/ed/profiles/p4-pack-manifest.json) retains its existing data-artifact redistribution holds; this code-only licence decision does not clear them. Kairos and Conductor licences remain inside those submodules. [E0.2](conductor/evidence/e0.2-local-acceptance-20261002.md) records the Cargo Apache-2.0 fields as repeated Kairos workspace metadata. [D2.3](conductor/evidence/d2.3-policy-20261003.md) added the Cargo fields so `cargo deny` can check licenses.
 
 Pinned submodules (initialize with `git submodule update --init --recursive`):
 

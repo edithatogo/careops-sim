@@ -23,7 +23,7 @@ jobs:
       context: ${{ steps.detect.outputs.context }}
       policy: ${{ steps.detect.outputs.policy }}
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -49,26 +49,26 @@ jobs:
     if: needs.scope.outputs.native == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
-      - name: Install Rust 1.99.0
-        run: rustup toolchain install 1.99.0 --profile minimal --component rustfmt
-      - name: Verify and export canonical Rust 1.99.0 tools
+      - name: Install Rust 1.99.1
+        run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt
+      - name: Verify and export canonical Rust 1.99.1 tools
         run: |
           set -euo pipefail
-          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
-          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
-          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          rustc_path="$(rustup which rustc --toolchain 1.99.1)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.1)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.1)"
           toolchain_bin="$(dirname "$rustc_path")"
           test "$(dirname "$rustdoc_path")" = "$toolchain_bin"
           test "$(dirname "$cargo_path")" = "$toolchain_bin"
-          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.1 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
           test "$(command -v rustc)" = "$rustc_path"
           test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
-          printf 'RUSTUP_TOOLCHAIN=1.99.0\nRUSTC=%s\nRUSTDOC=%s\n' "$rustc_path" "$rustdoc_path" >> "$GITHUB_ENV"
+          printf 'RUSTUP_TOOLCHAIN=1.99.1\nRUSTC=%s\nRUSTDOC=%s\n' "$rustc_path" "$rustdoc_path" >> "$GITHUB_ENV"
           echo "$toolchain_bin" >> "$GITHUB_PATH"
       - name: Format
         run: cargo fmt --all --check
@@ -80,26 +80,26 @@ jobs:
     if: needs.scope.outputs.native == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
-      - name: Install Rust 1.99.0
-        run: rustup toolchain install 1.99.0 --profile minimal --component clippy
-      - name: Verify and export canonical Rust 1.99.0 tools
+      - name: Install Rust 1.99.1
+        run: rustup toolchain install 1.99.1 --profile minimal --component clippy
+      - name: Verify and export canonical Rust 1.99.1 tools
         run: |
           set -euo pipefail
-          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
-          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
-          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          rustc_path="$(rustup which rustc --toolchain 1.99.1)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.1)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.1)"
           toolchain_bin="$(dirname "$rustc_path")"
           test "$(dirname "$rustdoc_path")" = "$toolchain_bin"
           test "$(dirname "$cargo_path")" = "$toolchain_bin"
-          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.1 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
           test "$(command -v rustc)" = "$rustc_path"
           test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
-          printf 'RUSTUP_TOOLCHAIN=1.99.0\nRUSTC=%s\nRUSTDOC=%s\n' "$rustc_path" "$rustdoc_path" >> "$GITHUB_ENV"
+          printf 'RUSTUP_TOOLCHAIN=1.99.1\nRUSTC=%s\nRUSTDOC=%s\n' "$rustc_path" "$rustdoc_path" >> "$GITHUB_ENV"
           echo "$toolchain_bin" >> "$GITHUB_PATH"
       - name: Clippy
         run: cargo clippy --locked --workspace --all-targets --all-features -- -D warnings
@@ -115,29 +115,29 @@ jobs:
         os: [ubuntu-24.04, macos-15]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
-      - name: Install Rust 1.99.0
+      - name: Install Rust 1.99.1
         run: |
           set -euo pipefail
           mkdir -p .artifacts/ci/nextest
-          rustup toolchain install 1.99.0 --profile minimal 2>&1 | tee .artifacts/ci/nextest/toolchain-install.log
+          rustup toolchain install 1.99.1 --profile minimal 2>&1 | tee .artifacts/ci/nextest/toolchain-install.log
       - name: Verify native host and export actual Rust tools
         env:
           EXPECTED_OS: ${{ matrix.os }}
         run: |
           set -euo pipefail
-          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
-          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
-          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          rustc_path="$(rustup which rustc --toolchain 1.99.1)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.1)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.1)"
           toolchain_bin="$(dirname "$rustc_path")"
           test -x "$rustc_path"
           test -x "$rustdoc_path"
           test -x "$cargo_path"
           export PATH="$toolchain_bin:$PATH"
-          export RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          export RUSTUP_TOOLCHAIN=1.99.1 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
           uname -a | tee .artifacts/ci/nextest/host.log
           rustc -vV | tee -a .artifacts/ci/nextest/host.log
           rustdoc --version | tee -a .artifacts/ci/nextest/host.log
@@ -153,7 +153,7 @@ jobs:
             grep -Fx 'host: x86_64-unknown-linux-gnu' .artifacts/ci/nextest/host.log
           fi
           {
-            echo "RUSTUP_TOOLCHAIN=1.99.0"
+            echo "RUSTUP_TOOLCHAIN=1.99.1"
             echo "RUSTC=$rustc_path"
             echo "RUSTDOC=$rustdoc_path"
           } >> "$GITHUB_ENV"
@@ -161,10 +161,10 @@ jobs:
       - name: Verify nextest discovery, failure handling and test suite
         run: |
           set -euo pipefail
-          python3 tools/nextest_ci.py --toolchain 1.99.0
+          python3 tools/nextest_ci.py --toolchain 1.99.1
       - name: Retain bounded failed native log
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: native-failure-${{ matrix.os }}
           path: |
@@ -181,32 +181,32 @@ jobs:
 
   default:
     timeout-minutes: 20
-    name: default (Rust 1.99.0, default features)
+    name: default (Rust 1.99.1, default features)
     needs: scope
     if: needs.scope.outputs.native == 'true'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
-      - name: Install Rust 1.99.0
+      - name: Install Rust 1.99.1
         run: |
           set -euo pipefail
           mkdir -p .artifacts/ci/default
-          rustup toolchain install 1.99.0 --profile minimal 2>&1 | tee .artifacts/ci/default/toolchain-install.log
-      - name: Resolve and verify canonical Rust 1.99.0 Linux tools
+          rustup toolchain install 1.99.1 --profile minimal 2>&1 | tee .artifacts/ci/default/toolchain-install.log
+      - name: Resolve and verify canonical Rust 1.99.1 Linux tools
         run: |
           set -euo pipefail
-          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
-          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
-          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          rustc_path="$(rustup which rustc --toolchain 1.99.1)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.1)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.1)"
           toolchain_bin="$(dirname "$rustc_path")"
           test -x "$rustc_path"
           test -x "$rustdoc_path"
           test -x "$cargo_path"
           export PATH="$toolchain_bin:$PATH"
-          export RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          export RUSTUP_TOOLCHAIN=1.99.1 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
           test "$(uname -s)" = Linux
           test "$(uname -m)" = x86_64
           test "$(command -v rustc)" = "$rustc_path"
@@ -217,7 +217,7 @@ jobs:
           rustdoc --version | tee -a .artifacts/ci/default/environment.log
           cargo -vV | tee -a .artifacts/ci/default/environment.log
           {
-            echo "RUSTUP_TOOLCHAIN=1.99.0"
+            echo "RUSTUP_TOOLCHAIN=1.99.1"
             echo "RUSTC=$rustc_path"
             echo "RUSTDOC=$rustdoc_path"
           } >> "$GITHUB_ENV"
@@ -229,7 +229,7 @@ jobs:
           cargo test --workspace --lib --bins --tests --locked 2>&1 | tee .artifacts/ci/default/tests.log
       - name: Retain bounded failed default-lane logs
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: default-failure-linux-x86_64
           path: |
@@ -246,26 +246,26 @@ jobs:
     if: needs.scope.outputs.native == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
-      - name: Install Rust 1.99.0
-        run: rustup toolchain install 1.99.0 --profile minimal
-      - name: Verify and export canonical Rust 1.99.0 tools
+      - name: Install Rust 1.99.1
+        run: rustup toolchain install 1.99.1 --profile minimal
+      - name: Verify and export canonical Rust 1.99.1 tools
         run: |
           set -euo pipefail
-          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
-          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
-          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          rustc_path="$(rustup which rustc --toolchain 1.99.1)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.1)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.1)"
           toolchain_bin="$(dirname "$rustc_path")"
           test "$(dirname "$rustdoc_path")" = "$toolchain_bin"
           test "$(dirname "$cargo_path")" = "$toolchain_bin"
-          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.1 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
           test "$(command -v rustc)" = "$rustc_path"
           test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
-          printf 'RUSTUP_TOOLCHAIN=1.99.0\nRUSTC=%s\nRUSTDOC=%s\n' "$rustc_path" "$rustdoc_path" >> "$GITHUB_ENV"
+          printf 'RUSTUP_TOOLCHAIN=1.99.1\nRUSTC=%s\nRUSTDOC=%s\n' "$rustc_path" "$rustdoc_path" >> "$GITHUB_ENV"
           echo "$toolchain_bin" >> "$GITHUB_PATH"
       - name: Documentation tests
         run: cargo test --doc --workspace --all-features --locked
@@ -277,11 +277,15 @@ jobs:
     if: needs.scope.outputs.context == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
           submodules: recursive
+      - name: Select the exact schema-validation runtime
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.15.0'
       - name: Check Conductor context and exact Kairos contract
         run: |
           python3 tools/check_kairos_pin.py
@@ -291,7 +295,7 @@ jobs:
       - name: Install locked harness dependencies
         run: |
           python3 -m venv .artifacts/ci/harness-venv
-          .artifacts/ci/harness-venv/bin/pip install -r requirements-schema-validation.txt
+          .artifacts/ci/harness-venv/bin/pip install --require-hashes --only-binary=:all: -r requirements-schema-validation.lock
       - name: Run harness and incompatible-pin regressions
         run: .artifacts/ci/harness-venv/bin/python -m unittest discover -s tests -v
       - name: Check reviewed support and flaky-test inventory
@@ -301,12 +305,12 @@ jobs:
       - name: Build and run representative ED benchmark
         run: |
           set -euo pipefail
-          rustup toolchain install 1.99.0 --profile minimal
-          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
-          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
-          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          rustup toolchain install 1.99.1 --profile minimal
+          rustc_path="$(rustup which rustc --toolchain 1.99.1)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.1)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.1)"
           toolchain_bin="$(dirname "$rustc_path")"
-          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.1 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
           test "$(command -v rustc)" = "$rustc_path"
           test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
@@ -314,7 +318,7 @@ jobs:
           python3 tools/ed_benchmarks.py --binary target/release/careops-ed --output .artifacts/ci/d34/report.json
       - name: Retain D3.4 benchmark report
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: d34-benchmarks-${{ github.run_id }}
           path: .artifacts/ci/d34/report.json
@@ -325,26 +329,26 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p .artifacts/ci/d33/bin
-          rustup toolchain install 1.99.0 --profile minimal --component llvm-tools
+          rustup toolchain install 1.99.1 --profile minimal --component llvm-tools
           archive=.artifacts/ci/d33/cargo-llvm-cov.tar.gz
           curl --fail --location --max-time 90 https://github.com/taiki-e/cargo-llvm-cov/releases/download/v0.9.1/cargo-llvm-cov-x86_64-unknown-linux-gnu.tar.gz --output "$archive"
           echo "b3f68e625481fed9b16444174f3fa5ebcdbde4a1878803a35eabe2dcefcdc41a  $archive" | sha256sum --check --strict
           tar -xzf "$archive" -C .artifacts/ci/d33/bin cargo-llvm-cov
           export PATH="$PWD/.artifacts/ci/d33/bin:$PATH"
           cargo-llvm-cov llvm-cov --version | grep -E '^cargo-llvm-cov 0\.9\.1($| )'
-          RUSTC="$(rustup which rustc --toolchain 1.99.0)"
-          RUSTDOC="$(rustup which rustdoc --toolchain 1.99.0)"
-          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          RUSTC="$(rustup which rustc --toolchain 1.99.1)"
+          RUSTDOC="$(rustup which rustdoc --toolchain 1.99.1)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.1)"
           toolchain_bin="$(dirname "$RUSTC")"
-          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC RUSTDOC
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.1 RUSTC RUSTDOC
           test "$(dirname "$RUSTDOC")" = "$toolchain_bin"
           test "$(dirname "$cargo_path")" = "$toolchain_bin"
           test "$(command -v rustc)" = "$RUSTC"
           test "$(command -v rustdoc)" = "$RUSTDOC"
           test "$(command -v cargo)" = "$cargo_path"
-          "$RUSTC" --version | grep -E '^rustc 1\.99\.0 '
-          "$RUSTDOC" --version | grep -E '^rustdoc 1\.99\.0 '
-          cargo -V | grep -E '^cargo 1\.99\.0 '
+          "$RUSTC" --version | grep -E '^rustc 1\.99\.1 '
+          "$RUSTDOC" --version | grep -E '^rustdoc 1\.99\.1 '
+          cargo -V | grep -E '^cargo 1\.99\.1 '
           cargo llvm-cov --locked --package careops-ed --all-features --all-targets --json --output-path .artifacts/ci/d33/coverage.json
           python3 tools/quality_metrics.py --coverage .artifacts/ci/d33/coverage.json --config .config/d33-quality-gates.json
       - name: Check current-source critical ED mutations
@@ -358,11 +362,11 @@ jobs:
           tar -xzf "$archive" -C .artifacts/ci/d33/bin cargo-mutants
           export PATH="$PWD/.artifacts/ci/d33/bin:$PATH"
           cargo-mutants mutants --version | grep -E '^cargo-mutants 27\.1\.0($| )'
-          RUSTC="$(rustup which rustc --toolchain 1.99.0)"
-          RUSTDOC="$(rustup which rustdoc --toolchain 1.99.0)"
-          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          RUSTC="$(rustup which rustc --toolchain 1.99.1)"
+          RUSTDOC="$(rustup which rustdoc --toolchain 1.99.1)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.1)"
           toolchain_bin="$(dirname "$RUSTC")"
-          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC RUSTDOC
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.1 RUSTC RUSTDOC
           test "$(dirname "$RUSTDOC")" = "$toolchain_bin"
           test "$(dirname "$cargo_path")" = "$toolchain_bin"
           test "$(command -v rustc)" = "$RUSTC"
@@ -376,11 +380,11 @@ jobs:
             cat .artifacts/ci/d33/mutations.log
             exit "$status"
           fi
-          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.1)"
           python3 tools/quality_mutations.py --outcomes .artifacts/ci/d33/mutations/mutants.out/outcomes.json --source crates/careops-ed/src/lib.rs --cargo "$cargo_path"
       - name: Retain bounded D3.3 quality evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: d33-quality-${{ github.run_id }}
           path: |
@@ -400,7 +404,7 @@ jobs:
     if: needs.scope.outputs.policy == 'true'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -410,16 +414,16 @@ jobs:
           mkdir -p .artifacts/ci/policy
           set -o pipefail
           python3 tools/install_ci_tools.py 2>&1 | tee .artifacts/ci/policy/install.log
-      - name: Install Rust 1.99.0
-        run: rustup toolchain install 1.99.0 --profile minimal
+      - name: Install Rust 1.99.1
+        run: rustup toolchain install 1.99.1 --profile minimal
       - name: Check all dependency, secret and workflow policies
         run: |
           set -euo pipefail
-          rustc_path="$(rustup which rustc --toolchain 1.99.0)"
-          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.0)"
-          cargo_path="$(rustup which cargo --toolchain 1.99.0)"
+          rustc_path="$(rustup which rustc --toolchain 1.99.1)"
+          rustdoc_path="$(rustup which rustdoc --toolchain 1.99.1)"
+          cargo_path="$(rustup which cargo --toolchain 1.99.1)"
           toolchain_bin="$(dirname "$rustc_path")"
-          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.0 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
+          export PATH="$toolchain_bin:$PATH" RUSTUP_TOOLCHAIN=1.99.1 RUSTC="$rustc_path" RUSTDOC="$rustdoc_path"
           test "$(command -v rustc)" = "$rustc_path"
           test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
@@ -427,7 +431,7 @@ jobs:
           cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check
       - name: Retain bounded failed policy logs
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: policy-failure
           path: .artifacts/ci/policy/

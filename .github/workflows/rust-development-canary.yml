@@ -1,0 +1,86 @@
+name: Rust development qualification
+on:
+  pull_request:
+    paths: ['.github/workflows/rust-development-canary.yml', 'tools/rust_development_canary.py', 'tests/test_rust_development_canary.py']
+  schedule:
+    - cron: '19 7 * * 6'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: rust-development-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  discover:
+    name: Freeze official Rust candidate identities
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.discover.outputs.matrix }}
+      available: ${{ steps.discover.outputs.available }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.15.0'
+      - name: Exercise identity and receipt refusal cases
+        run: python -m unittest discover -s tests -p test_rust_development_canary.py -v
+      - name: Freeze published stable patch, beta and nightly manifests
+        id: discover
+        run: python tools/rust_development_canary.py discover --output .artifacts/rust-canary/discovery --github-output "$GITHUB_OUTPUT"
+      - name: Record discovery terminal outcome
+        if: always()
+        env:
+          DISCOVERY_OUTCOME: ${{ steps.discover.outcome }}
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: python3 tools/rust_development_canary.py finalize-discovery --output .artifacts/rust-canary/discovery --outcome "$DISCOVERY_OUTCOME" --source "$SOURCE_COMMIT"
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: rust-candidate-discovery
+          path: .artifacts/rust-canary/discovery/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
+  candidate:
+    name: Rust candidate (${{ matrix.candidate.toolchain }})
+    needs: discover
+    if: ${{ always() && needs.discover.outputs.available == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          submodules: true
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.15.0'
+      - name: Bind the actual compiler and exercise locked native behavior
+        id: qualification
+        env:
+          RUST_CANARY_CANDIDATE: ${{ toJSON(matrix.candidate) }}
+        run: python tools/rust_development_canary.py qualify --output .artifacts/rust-canary/qualification
+      - name: Retain terminal outcome without candidate promotion
+        if: always()
+        env:
+          QUALIFICATION_OUTCOME: ${{ steps.qualification.outcome }}
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: python3 tools/rust_development_canary.py finalize --output .artifacts/rust-canary/qualification --outcome "$QUALIFICATION_OUTCOME" --source "$SOURCE_COMMIT"
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: rust-qualification-${{ matrix.candidate.toolchain }}
+          path: |
+            .artifacts/rust-canary/qualification/*.json
+            .artifacts/rust-canary/qualification/*.invalid
+            .artifacts/rust-canary/qualification/*.toml
+            .artifacts/rust-canary/qualification/*.log
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14

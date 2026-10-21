@@ -197,7 +197,7 @@ class CiWorkflowTests(unittest.TestCase):
     def test_unit_lane_does_not_repeat_documentation_tests(self):
         workflow = WORKFLOW.read_text()
         native = workflow.split("  test:\n", 1)[1].split("  doctest:\n", 1)[0]
-        self.assertIn("python3 tools/nextest_ci.py --toolchain 1.99.0", native)
+        self.assertIn("python3 tools/nextest_ci.py --toolchain 1.99.1", native)
         self.assertIn("test --doc --workspace --all-features --locked", workflow)
 
     def test_context_check_fetches_pinned_submodule_documents(self):
@@ -262,8 +262,8 @@ class CiWorkflowTests(unittest.TestCase):
         for quoted_key in ('"uses"', '"us\\u0065s"'):
             with self.subTest(quoted_key=quoted_key):
                 escaped_key_action = workflow.replace(
-                    "- name: Install Rust 1.99.0",
-                    f"- {quoted_key}: actions/setup-go@v6\n      - name: Install Rust 1.99.0",
+                    "- name: Install Rust 1.99.1",
+                    f"- {quoted_key}: actions/setup-go@v6\n      - name: Install Rust 1.99.1",
                     1,
                 )
                 self.assertIn(
@@ -272,8 +272,8 @@ class CiWorkflowTests(unittest.TestCase):
                 )
 
         nested_quoted_key_action = workflow.replace(
-            "- name: Install Rust 1.99.0",
-            '- name: Install Rust 1.99.0\n        "uses": actions/setup-go@v6',
+            "- name: Install Rust 1.99.1",
+            '- name: Install Rust 1.99.1\n        "uses": actions/setup-go@v6',
             1,
         )
         self.assertIn(
@@ -282,8 +282,8 @@ class CiWorkflowTests(unittest.TestCase):
         )
 
         tagged_key_action = workflow.replace(
-            "- name: Install Rust 1.99.0",
-            "- !!str uses: actions/setup-go@v6\n      - name: Install Rust 1.99.0",
+            "- name: Install Rust 1.99.1",
+            "- !!str uses: actions/setup-go@v6\n      - name: Install Rust 1.99.1",
             1,
         )
         self.assertIn(
@@ -454,7 +454,7 @@ class CiWorkflowTests(unittest.TestCase):
         active = workflow.split("  required:", 1)[0]
         self.assertNotRegex(active, r"cargo\s+\+")
         self.assertNotRegex(active, r"(?i)nightly|\bstable\b|\bbeta\b|rustup toolchain install 1\.(?:7[0-9]|8[0-8])")
-        self.assertGreaterEqual(active.count("RUSTUP_TOOLCHAIN=1.99.0"), 5)
+        self.assertGreaterEqual(active.count("RUSTUP_TOOLCHAIN=1.99.1"), 5)
         self.assertIn("cargo fmt --all --check", active)
         self.assertIn("cargo clippy --locked --workspace --all-targets --all-features -- -D warnings", active)
         self.assertIn("cargo test --doc --workspace --all-features --locked", active)
@@ -520,10 +520,10 @@ class CiWorkflowTests(unittest.TestCase):
 
 class RustToolchainBindingTests(unittest.TestCase):
     def setUp(self):
-        self.bin = "/toolchains/1.99.0/bin"
+        self.bin = "/toolchains/1.99.1/bin"
         self.env = {
             "PATH": self.bin + ":/usr/bin",
-            "RUSTUP_TOOLCHAIN": "1.99.0",
+            "RUSTUP_TOOLCHAIN": "1.99.1",
             "RUSTC": self.bin + "/rustc",
             "RUSTDOC": self.bin + "/rustdoc",
         }
@@ -532,7 +532,7 @@ class RustToolchainBindingTests(unittest.TestCase):
         resolved = {name: self.bin + "/" + name for name in ("rustc", "rustdoc", "cargo")}
         def run(argv, **kwargs):
             tool = argv[0].rsplit("/", 1)[-1]
-            output = {"rustc": "rustc 1.99.0 (test)\n", "rustdoc": "rustdoc 1.99.0 (test)\n", "cargo": "cargo 1.99.0 (test)\n"}[tool]
+            output = {"rustc": "rustc 1.99.1 (test)\n", "rustdoc": "rustdoc 1.99.1 (test)\n", "cargo": "cargo 1.99.1 (test)\n"}[tool]
             return subprocess.CompletedProcess(argv, 0, stdout=output, stderr="")
         with mock.patch.object(ci_policy.shutil, "which", side_effect=lambda name, path=None: resolved[name]), \
              mock.patch.object(ci_policy.subprocess, "run", side_effect=run):
@@ -561,9 +561,9 @@ class RustToolchainBindingTests(unittest.TestCase):
         missing_binding = workflow[:fmt_start] + fmt_job_without_rustdoc + workflow[fmt_end:]
         cases = (
             workflow.replace("cargo fmt --all --check", "cargo +stable fmt --all --check", 1),
-            workflow.replace("rustup toolchain install 1.99.0", "rustup toolchain install 1.88.0", 1),
-            workflow.replace("export PATH=\"$toolchain_bin:$PATH\" RUSTUP_TOOLCHAIN=1.99.0", "export PATH=\"$toolchain_bin:$PATH\" RUSTUP_TOOLCHAIN=nightly", 1),
-            workflow.replace("rustup which rustc --toolchain 1.99.0", "rustup which rustc --toolchain nightly", 1),
+            workflow.replace("rustup toolchain install 1.99.1", "rustup toolchain install 1.88.0", 1),
+            workflow.replace("export PATH=\"$toolchain_bin:$PATH\" RUSTUP_TOOLCHAIN=1.99.1", "export PATH=\"$toolchain_bin:$PATH\" RUSTUP_TOOLCHAIN=nightly", 1),
+            workflow.replace("rustup which rustc --toolchain 1.99.1", "rustup which rustc --toolchain nightly", 1),
             workflow.replace("cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check", "cargo deny check", 1),
             missing_binding,
         )

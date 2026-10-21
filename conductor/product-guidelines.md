@@ -28,7 +28,7 @@
 
 - **Provenance First**: All simulation runs must record their scenario inputs, random seeds, software revisions, hardware backend, and data version in Arrow IPC and Parquet metadata.
 - **Evidence Tier Taxonomy**: Clearly distinguish synthetic test cases, public statistical distributions, user-supplied empirical data, and locally validated site observations. Source and transformation provenance must be preserved across the calibration pipeline.
-- **Uncertainty & Sensitivity**: Always report confidence intervals and variance metrics with comparative scenario results. Never claim empirical calibration or operational fitness until the corresponding Conductor verification gates have formally passed.
+- **Uncertainty & Sensitivity**: Report justified uncertainty and variance metrics with comparative scenario results when estimable; explain deterministic cases and insufficient evidence. Never claim empirical calibration or operational fitness until the corresponding Conductor verification gates have formally passed.
 - **Standardized Operational Metrics**: Report standardized healthcare operational indicators:
   - Patient flow: waiting times, length of stay (LOS), time-to-decision, boarding duration.
   - Resource utilization: room occupancy, midwife/nurse-to-patient ratios, surgical session utilization.
