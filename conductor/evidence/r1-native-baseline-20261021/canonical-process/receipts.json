@@ -1,0 +1,110 @@
+[
+  {
+    "name": "c2-save",
+    "argv": [
+      "/private/tmp/careops-r1-native-20261021/target-1.99.1/debug/examples/c2_replay_demo",
+      "save",
+      "/private/tmp/careops-r1-process-canonical-20261021/checkpoint.json"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/private/tmp/careops-r1-process-canonical-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.6286489963531494,
+    "log": "/private/tmp/careops-r1-process-canonical-20261021/c2-save.log",
+    "log_sha256": "da556c7c1fdd5024d442eaa84b98700ea226c3681419bfc9d5d70e0060540f5e"
+  },
+  {
+    "name": "c2-restore-first",
+    "argv": [
+      "/private/tmp/careops-r1-native-20261021/target-1.99.1/debug/examples/c2_replay_demo",
+      "restore",
+      "/private/tmp/careops-r1-process-canonical-20261021/checkpoint.json"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/private/tmp/careops-r1-process-canonical-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.791100263595581,
+    "log": "/private/tmp/careops-r1-process-canonical-20261021/c2-restore-first.log",
+    "log_sha256": "3735a54c6ae7a5cd4b64092999779def5e4ece30ba74a3904c67607fd2428855"
+  },
+  {
+    "name": "c2-restore-second",
+    "argv": [
+      "/private/tmp/careops-r1-native-20261021/target-1.99.1/debug/examples/c2_replay_demo",
+      "restore",
+      "/private/tmp/careops-r1-process-canonical-20261021/checkpoint.json"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/private/tmp/careops-r1-process-canonical-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.9225978851318359,
+    "log": "/private/tmp/careops-r1-process-canonical-20261021/c2-restore-second.log",
+    "log_sha256": "3735a54c6ae7a5cd4b64092999779def5e4ece30ba74a3904c67607fd2428855"
+  },
+  {
+    "name": "c2-sentinel",
+    "argv": [
+      "/private/tmp/careops-r1-native-20261021/target-1.99.1/debug/examples/c2_replay_demo",
+      "save",
+      "/private/tmp/careops-r1-process-canonical-20261021/sentinel.json"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/private/tmp/careops-r1-process-canonical-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.05116081237792969,
+    "log": "/private/tmp/careops-r1-process-canonical-20261021/c2-sentinel.log",
+    "log_sha256": "ec52babacaf09db8701360ef0248ef30fdd44e1eebcf5e4d0b34e278a82544af"
+  },
+  {
+    "name": "c5-original-process",
+    "argv": [
+      "/opt/homebrew/bin/python3.14",
+      "scripts/qualify_c5.py",
+      "--binary",
+      "/private/tmp/careops-r1-native-20261021/target-1.99.0/debug/kairo-ecs-cli",
+      "--output",
+      "/private/tmp/careops-r1-process-canonical-20261021/c5-process"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.0",
+    "environment": {
+      "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+      "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/private/tmp/careops-r1-process-canonical-20261021/target-1.99.0"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 18.006449937820435,
+    "log": "/private/tmp/careops-r1-process-canonical-20261021/c5-original-process.log",
+    "log_sha256": "c41462ee9e97996b05e34708455ee3fab98f3e079e4e210e1f162530ce1fa4cd"
+  }
+]

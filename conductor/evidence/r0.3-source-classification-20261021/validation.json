@@ -1,0 +1,78 @@
+{
+  "source_revision": "c3c47abbc4321b1f12a48a9bcecc47747d507d09",
+  "source_manifest_sha256": "ec95ca69efc9eff18ca8e4a99adb424cb00e97166b09bb1c000b059c92dcc0cd",
+  "source_hash_positive": true,
+  "altered_source_hash_rejected": true,
+  "fresh_runtime_executed": false,
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021",
+      "exit_code": 0,
+      "log": "context.log",
+      "sha256": "7db5cff66329b4bc6540a243e5e1a07b7e20cebdbcf613df1d77f9bb2b14ea0c"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021",
+      "exit_code": 0,
+      "log": "tasks.log",
+      "sha256": "e716c64f63ce4d00b7675e976f3629d11d5c2e59d13a90ea4b79002ccf9d5c2c"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021",
+      "exit_code": 0,
+      "log": "mvp.log",
+      "sha256": "3c7b9a3062f62964126c8db247833e935b8557a4baeffb7a30525cbe5f410966"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021",
+      "exit_code": 0,
+      "log": "diff.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python3",
+        "conductor/evidence/r0.3-source-classification-20261021/verify_source.py",
+        "conductor/evidence/r0.3-source-classification-20261021/source-classification.json"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "log": "source-positive.log",
+      "sha256": "835b9f92958069022ba617aed84ccb65086cb72b92bb2895668730a52f0141f8"
+    },
+    {
+      "argv": [
+        "python3",
+        "conductor/evidence/r0.3-source-classification-20261021/verify_source.py",
+        "/tmp/r03-altered-source-manifest.json"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "log": "source-negative.log",
+      "sha256": "dd4273740bdeed8513c77ff98f697156f520c06a29e0b4e5dd94b7811a5e6ee7"
+    }
+  ],
+  "verifier_sha256": "dac32d1d79cb5d34b7bcbfae69194e11daef56859629bc8320c8f0d3774b1328"
+}

@@ -1,0 +1,272 @@
+[
+  {
+    "name": "reader-versions",
+    "argv": [
+      "/tmp/careops-r1-arrow-reader-20261021/bin/python",
+      "-c",
+      "import platform,pyarrow,numpy; print(platform.python_version(),pyarrow.__version__,numpy.__version__); assert platform.python_version()==\"3.14.8\"; assert pyarrow.__version__==\"25.0.1\"; assert numpy.__version__==\"2.5.3\""
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/tmp/careops-r1-io-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 3.7089579105377197,
+    "log": "/tmp/careops-r1-io-20261021/reader-versions.log",
+    "log_sha256": "cd7baa29999d261fb5a2c7aba83549ed1e9f22ee274a8cfd5c8b464ec2ae3759"
+  },
+  {
+    "name": "fixture-integrity",
+    "argv": [
+      "/tmp/careops-r1-arrow-reader-20261021/bin/python",
+      "crates/kairo-ecs-arrow-io/tests/fixtures/interop_v1/generate.py",
+      "--check"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/tmp/careops-r1-io-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 1.792280912399292,
+    "log": "/tmp/careops-r1-io-20261021/fixture-integrity.log",
+    "log_sha256": "0ac7a995610c2616d51b4d20d9e4ad663a430ed303b588e11e11f8ad0b293f6b"
+  },
+  {
+    "name": "arrow-io",
+    "argv": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "kairo-ecs-arrow-io",
+      "--all-features"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/tmp/careops-r1-io-20261021/target-1.99.1"
+    },
+    "extra_environment": {
+      "KAIROS_INTEROP_OUTDIR": "/tmp/careops-r1-io-20261021/interop",
+      "KAIROS_C11_PHYSICAL_OUTDIR": "/tmp/careops-r1-io-20261021/c11",
+      "C43_OUTPUT_DIR": "/tmp/careops-r1-io-20261021/c43",
+      "C44_DIAGNOSTICS_DIR": "/tmp/careops-r1-io-20261021/c44"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 84.35160303115845,
+    "log": "/tmp/careops-r1-io-20261021/arrow-io.log",
+    "log_sha256": "acc668214bbb3c8331a6033f9ddf795a0d606ffd60518e5d8529ca0139a7b142"
+  },
+  {
+    "name": "resource-lifecycle",
+    "argv": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "kairo-ecs-arrow",
+      "--features",
+      "resource-lifecycle-io"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/tmp/careops-r1-io-20261021/target-1.99.1"
+    },
+    "extra_environment": {
+      "KAIROS_INTEROP_OUTDIR": "/tmp/careops-r1-io-20261021/interop",
+      "KAIROS_C11_PHYSICAL_OUTDIR": "/tmp/careops-r1-io-20261021/c11",
+      "C43_OUTPUT_DIR": "/tmp/careops-r1-io-20261021/c43",
+      "C44_DIAGNOSTICS_DIR": "/tmp/careops-r1-io-20261021/c44"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 20.011368989944458,
+    "log": "/tmp/careops-r1-io-20261021/resource-lifecycle.log",
+    "log_sha256": "9dbd953c960c15cbca9113f218a00e07c0335ce4cdafdf49a2d9966f2cd7b805"
+  },
+  {
+    "name": "c43-native",
+    "argv": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "kairo-ecs-calibration",
+      "--no-default-features",
+      "--features",
+      "ipc,parquet",
+      "--test",
+      "arrow_output_c43",
+      "--test",
+      "sidecar_adapter_c43",
+      "--test",
+      "sidecar_pipeline_c43",
+      "c43_"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/tmp/careops-r1-io-20261021/target-1.99.1"
+    },
+    "extra_environment": {
+      "KAIROS_INTEROP_OUTDIR": "/tmp/careops-r1-io-20261021/interop",
+      "KAIROS_C11_PHYSICAL_OUTDIR": "/tmp/careops-r1-io-20261021/c11",
+      "C43_OUTPUT_DIR": "/tmp/careops-r1-io-20261021/c43",
+      "C44_DIAGNOSTICS_DIR": "/tmp/careops-r1-io-20261021/c44"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 14.527584075927734,
+    "log": "/tmp/careops-r1-io-20261021/c43-native.log",
+    "log_sha256": "c73ffbc18a342f114207ce363f869ff4c1ee5c6a556df41075e5484efd53e87a"
+  },
+  {
+    "name": "reader-controls",
+    "argv": [
+      "/tmp/careops-r1-arrow-reader-20261021/bin/python",
+      "conformance/c43/readback.py",
+      "--self-test"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/tmp/careops-r1-io-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 1.9801249504089355,
+    "log": "/tmp/careops-r1-io-20261021/reader-controls.log",
+    "log_sha256": "09c2470c67aa5e3aa2ac1c3f58fb4672943e199482c9ececa85119fefd37cde6"
+  },
+  {
+    "name": "c43-readback",
+    "argv": [
+      "/tmp/careops-r1-arrow-reader-20261021/bin/python",
+      "conformance/c43/readback.py",
+      "--require-manifests",
+      "--require-statistical-diagnostics",
+      "--mutation-controls",
+      "/tmp/careops-r1-io-20261021/c43"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/tmp/careops-r1-io-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 1.5001120567321777,
+    "log": "/tmp/careops-r1-io-20261021/c43-readback.log",
+    "log_sha256": "d36690ae587b5b93aef43b1681e56bf19e072c1dd131bf7c3e73416494f1ea5e"
+  },
+  {
+    "name": "diagnostics-overlap-and-ties",
+    "argv": [
+      "/tmp/careops-r1-arrow-reader-20261021/bin/python",
+      "conformance/c43/statistical_diagnostics.py",
+      "/tmp/careops-r1-io-20261021/c44/overlap-and-ties"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/tmp/careops-r1-io-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.11417126655578613,
+    "log": "/tmp/careops-r1-io-20261021/diagnostics-overlap-and-ties.log",
+    "log_sha256": "8ee5eeec3d3289dd8befc3393c02652f690cc5edccd7fb33312a798f0bb0d76a"
+  },
+  {
+    "name": "diagnostics-empty-and-insufficient",
+    "argv": [
+      "/tmp/careops-r1-arrow-reader-20261021/bin/python",
+      "conformance/c43/statistical_diagnostics.py",
+      "/tmp/careops-r1-io-20261021/c44/empty-and-insufficient"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/tmp/careops-r1-io-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.09397506713867188,
+    "log": "/tmp/careops-r1-io-20261021/diagnostics-empty-and-insufficient.log",
+    "log_sha256": "895a66aa123b3f35f98c5cad6be23c2d4eb03e2b9b673a0f9c66ff8fe0fa4a7d"
+  },
+  {
+    "name": "interop-readback",
+    "argv": [
+      "/tmp/careops-r1-arrow-reader-20261021/bin/python",
+      "crates/kairo-ecs-arrow-io/tests/fixtures/interop_v1/generate.py",
+      "--check-rust",
+      "/tmp/careops-r1-io-20261021/interop"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/tmp/careops-r1-io-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.41428613662719727,
+    "log": "/tmp/careops-r1-io-20261021/interop-readback.log",
+    "log_sha256": "19ca198b4840ebaf415d6a2c099f37e6e7e99135e07f973aa4abf6dad2ed4f5c"
+  },
+  {
+    "name": "c11-readback",
+    "argv": [
+      "/tmp/careops-r1-arrow-reader-20261021/bin/python",
+      "crates/kairo-ecs-arrow-io/tests/fixtures/calibration_physical_v2/generate.py",
+      "--check-rust",
+      "/tmp/careops-r1-io-20261021/c11"
+    ],
+    "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021/libs/kairos",
+    "toolchain": "1.99.1",
+    "environment": {
+      "RUSTC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustc",
+      "RUSTDOC": "/opt/homebrew/Cellar/rust/1.99.1/bin/rustdoc",
+      "CARGO_TARGET_DIR": "/tmp/careops-r1-io-20261021/target-1.99.1"
+    },
+    "extra_environment": {},
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.8099300861358643,
+    "log": "/tmp/careops-r1-io-20261021/c11-readback.log",
+    "log_sha256": "2748d07f9074a35d971023555874cef90e4be3ddfe9dbf46cb99b04f988c1114"
+  }
+]

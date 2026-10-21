@@ -1,0 +1,177 @@
+{
+  "scope": "R0.2 source inventory only",
+  "parent_head": "40c713f483c4fbc7b2a3f8a489fbf30bd2b09051",
+  "contract_sha256": "ddd4a4fe84651c5f24aaf85ecf3dc0e055c133a97f64d606dff2c47fab9a148f",
+  "collector_sha256": "33099537e10a9358d4ac2b8f4a92e0532abaafd8149b499c0b1a50799219b3d0",
+  "inventory_sha256": "023d1bf57c597024f8af2c265a68cda6358fa8f8a5f208d0435f30b77b83eccd",
+  "negative_controls": {
+    "self_comparison_summary": {
+      "reviewed_paths": 321,
+      "pinned_hash_mismatches": [],
+      "candidate_missing": 0,
+      "candidate_changed": 0
+    },
+    "mismatched_reviewed_pin_rejected": true
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "--version"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r02-20261021",
+      "started_at": "2026-10-21T04:49:57.948514+00:00",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "log": "python.log",
+      "sha256": "de183a36f9ecc1abe606eec329e402a966f7777399af1ffa220fa2c9aea4e435"
+    },
+    {
+      "argv": [
+        "git",
+        "--version"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r02-20261021",
+      "started_at": "2026-10-21T04:49:57.995901+00:00",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "log": "git-version.log",
+      "sha256": "2aa6da9ca331dc6de6fe72460146b9d1ebc22c8df24f3eb2a4c4f7c3c41b93ca"
+    },
+    {
+      "argv": [
+        "python3",
+        "conductor/evidence/r0.2-capability-inventory-20261021/collect_inventory.py",
+        "--parent",
+        ".",
+        "--kairos",
+        "/Volumes/PortableSSD/GitHub/kairos",
+        "--pinned",
+        "44261eb5cf8275f132f63a3396903d116d701dbe",
+        "--candidate",
+        "55b20e77eb9ca0df5a95b9e82c4fb815d3919a87",
+        "--output",
+        "/Volumes/PortableSSD/codex-worktrees/careops-r02-20261021/conductor/evidence/r0.2-capability-inventory-20261021/inventory.json"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r02-20261021",
+      "started_at": "2026-10-21T04:49:58.046224+00:00",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "log": "positive.log",
+      "sha256": "839633a5e2458a84d6eb9a27c3ffa27b53c6445cb26e72a9330b72292b338b4b"
+    },
+    {
+      "argv": [
+        "python3",
+        "conductor/evidence/r0.2-capability-inventory-20261021/collect_inventory.py",
+        "--parent",
+        ".",
+        "--kairos",
+        "/Volumes/PortableSSD/GitHub/kairos",
+        "--pinned",
+        "44261eb5cf8275f132f63a3396903d116d701dbe",
+        "--candidate",
+        "44261eb5cf8275f132f63a3396903d116d701dbe",
+        "--output",
+        "/tmp/careops-r02-self-comparison.json"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r02-20261021",
+      "started_at": "2026-10-21T04:50:54.867875+00:00",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "log": "self-comparison.log",
+      "sha256": "97869ffeae9c1a36f6e8240f453a32d38343814ee24ecff46ed538aaa4e31a04"
+    },
+    {
+      "argv": [
+        "python3",
+        "conductor/evidence/r0.2-capability-inventory-20261021/collect_inventory.py",
+        "--parent",
+        ".",
+        "--kairos",
+        "/Volumes/PortableSSD/GitHub/kairos",
+        "--pinned",
+        "55b20e77eb9ca0df5a95b9e82c4fb815d3919a87",
+        "--candidate",
+        "55b20e77eb9ca0df5a95b9e82c4fb815d3919a87",
+        "--output",
+        "/tmp/careops-r02-rejected.json"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r02-20261021",
+      "started_at": "2026-10-21T04:52:32.900967+00:00",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "log": "reject-unreviewed-pin.log",
+      "sha256": "21abcaf4cb28c9dea419e666593b02e32416ef2bd7dab61ad07615fc28f644a6"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/Volumes/PortableSSD/GitHub/kairos",
+        "merge-base",
+        "--is-ancestor",
+        "44261eb5cf8275f132f63a3396903d116d701dbe",
+        "55b20e77eb9ca0df5a95b9e82c4fb815d3919a87"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r02-20261021",
+      "started_at": "2026-10-21T04:52:33.241395+00:00",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "log": "lineage.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/Volumes/PortableSSD/GitHub/kairos",
+        "grep",
+        "-n",
+        "-E",
+        "FlowRuntime|FidelityAdapter|FlowCheckpointV4|read_ipc_file|write_parquet|claim_atomic_multi_resource",
+        "55b20e77eb9ca0df5a95b9e82c4fb815d3919a87",
+        "--",
+        "crates"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r02-20261021",
+      "started_at": "2026-10-21T04:52:33.278581+00:00",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "log": "selected-equivalent-search.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/Volumes/PortableSSD/GitHub/kairos",
+        "grep",
+        "-n",
+        "ConditionWait",
+        "55b20e77eb9ca0df5a95b9e82c4fb815d3919a87",
+        "--",
+        "crates"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r02-20261021",
+      "started_at": "2026-10-21T04:52:33.421209+00:00",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "log": "condition-sites.log",
+      "sha256": "e337d1114c10e6675c04beec4d0d257a2f0bd0dcec0d8d56899a081a1444dc23"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-r02-20261021",
+      "started_at": "2026-10-21T04:52:33.546209+00:00",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "log": "diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

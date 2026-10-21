@@ -35,12 +35,12 @@ R/A/B DAG and reviewed packets.
 - [x] **ED parameters, example inputs, ranges and distributions** — `ed_parameter_evidence_20260927`
   ([index](tracks/ed_parameter_evidence_20260927/index.md),
   [spec](tracks/ed_parameter_evidence_20260927/spec.md),
-  [plan](tracks/ed_parameter_evidence_20260927/plan.md)). P0–P5 retain historical acceptance at the generic catalogue/model coverage boundary per [P5.4](evidence/p5.4-phase-acceptance-20261015.md). This does not establish empirical hospital validity or Cairns-specific values. The former P0-first proposal is superseded; use R0.2 for current source qualification.
+  [plan](tracks/ed_parameter_evidence_20260927/plan.md)). P0–P5 retain historical acceptance at the generic catalogue/model coverage boundary per [P5.4](evidence/p5.4-phase-acceptance-20261015.md). This does not establish empirical hospital validity or Cairns-specific values. The former P0-first proposal is superseded; use the R0.2 inventory for current source qualification.
 
 - [~] **Repository status reconciliation and Kairos upgrade** — `repo_reconciliation_kairos_upgrade_20261020`
   ([index](tracks/repo_reconciliation_kairos_upgrade_20261020/index.md),
   [spec](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md),
-  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). In progress: R0.1 accepted at the dispatch-state reconciliation boundary; R0.2/R0.3 and R0.4 remain pending. Reconciles capability/status evidence, audits the harness and qualifies a bounded Kairos candidate; retains the working pin if required gates fail.
+  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). In progress: R0 reconciliation and R1 local CPU/IO/recovery baseline accepted on the development branch; R2 candidate-owner gate next. Reconciles capability/status evidence, audits the harness and qualifies a bounded Kairos candidate; retains the working pin if required gates fail.
 
 - [ ] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
   ([index](tracks/careops_core_domain_abstractions_20261020/index.md),

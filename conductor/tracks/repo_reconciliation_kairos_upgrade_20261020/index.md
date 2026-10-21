@@ -1,9 +1,9 @@
 # Repository status reconciliation and Kairos upgrade
 
-Status: in progress. R0.1 is accepted at the dispatch-state reconciliation
-boundary; R0.2 is the next preparation candidate. Full R0 review, runtime
-qualification and pin decisions remain pending. See the
-[R0.1 evidence](../../evidence/r0.1-reconciliation-20261021/README.md).
+Status: in progress. R0 reconciliation and R1 local CPU/IO/recovery baseline
+are independently accepted on the development branch; R2.1 candidate selection
+is next. Pin advancement and wider capability acceptance remain gated. See
+[R1 review](../../evidence/r1-independent-review-20261021/README.md).
 
 - [Specification](spec.md)
 - [Plan](plan.md)
