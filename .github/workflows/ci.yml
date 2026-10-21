@@ -271,7 +271,9 @@ jobs:
         run: cargo test --doc --workspace --all-features --locked
 
   context:
-    timeout-minutes: 20
+    # Run 39531482153 passed all 116 mutation outcomes at the old 20m limit.
+    # Allow harness, mutation validation, artifact upload and cleanup headroom.
+    timeout-minutes: 30
     name: context
     needs: scope
     if: needs.scope.outputs.context == 'true'

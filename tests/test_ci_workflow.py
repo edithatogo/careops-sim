@@ -183,12 +183,12 @@ class CiWorkflowTests(unittest.TestCase):
     def test_ci_budgets_and_cache_trust_boundary(self):
         workflow = WORKFLOW.read_text()
         jobs = workflow.split("jobs:\n", 1)[1]
-        blocks = re.split(r"^  [a-z_]+:\n", jobs, flags=re.MULTILINE)[1:]
+        blocks = re.findall(r"(?ms)^  ([a-z_]+):\n(.*?)(?=^  [a-z_]+:\n|\Z)", jobs)
         self.assertTrue(blocks)
-        for block in blocks:
+        for name, block in blocks:
             timeout = re.search(r"^    timeout-minutes: ([0-9]+)$", block, re.MULTILINE)
             self.assertIsNotNone(timeout)
-            self.assertLessEqual(int(timeout.group(1)), 20)
+            self.assertLessEqual(int(timeout.group(1)), 30 if name == "context" else 20)
             self.assertGreater(int(timeout.group(1)), 0)
         self.assertNotIn("actions/cache@", workflow)
         self.assertNotIn("pull_request_target", workflow)
