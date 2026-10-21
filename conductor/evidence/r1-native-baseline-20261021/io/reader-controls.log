@@ -1,0 +1,89 @@
+{
+  "controls": [
+    {
+      "file": "residual.ipc_file",
+      "id": "wrong_type",
+      "rejection": "ValueError: residual physical schema/type/order/nullability/metadata mismatch"
+    },
+    {
+      "file": "residual.ipc_stream",
+      "id": "mutated_u128",
+      "rejection": "ValueError: residual physical values/nulls differ from actual logical JSON"
+    },
+    {
+      "file": "residual.parquet",
+      "id": "required_null",
+      "rejection": "ValueError: residual physical schema/type/order/nullability/metadata mismatch"
+    },
+    {
+      "file": "residual.parquet",
+      "id": "wrong_metadata",
+      "rejection": "ValueError: residual physical schema/type/order/nullability/metadata mismatch"
+    }
+  ],
+  "logical_schema_validation": "bounded evaluator for unchanged C0 residual/metric definitions; fails closed on unsupported keywords",
+  "positive_oracle": "typed Arrow IPC file/stream and Parquet tables match independently frozen schemas and canonical logical records; residual 0-to-u128-max exact difference retained",
+  "pyarrow": "25.0.1",
+  "statistical_controls": {
+    "controls": [
+      "forged_tie_count",
+      "boolean_tie_count",
+      "forged_coverage_warning",
+      "endpoint_pair_mismatch",
+      "provenance_pair_mismatch",
+      "source_run_provenance_mismatch",
+      "omitted_source_seed_contract",
+      "mismatched_source_seed_contract",
+      "omitted_source_candidate",
+      "mismatched_source_candidate",
+      "mismatched_metric_candidate",
+      "missing_declared_groups",
+      "missing_diagnostics",
+      "invalid_nonzero_sample_count",
+      "invalid_non_null_tie_count",
+      "unverified_nonzero_sample_count",
+      "unverified_non_null_tie_count"
+    ],
+    "mutation_rejections": 17,
+    "positive_cases": [
+      {
+        "case": "computed_ties_cross_side_and_censoring",
+        "status": "pass"
+      },
+      {
+        "case": "empty_declared_group",
+        "status": "pass"
+      },
+      {
+        "case": "insufficient_population",
+        "status": "pass"
+      },
+      {
+        "case": "invalid_has_zero_counts_null_ties",
+        "status": "pass"
+      },
+      {
+        "case": "unverified_null_ties_retains_raw_warnings",
+        "status": "pass"
+      },
+      {
+        "case": "half_open_window_exclusion",
+        "status": "pass"
+      },
+      {
+        "case": "overlapping_raw_flags",
+        "status": "pass"
+      },
+      {
+        "case": "invalid_null_ties_zero_counts",
+        "status": "pass"
+      },
+      {
+        "case": "unverified_null_ties_zero_counts",
+        "status": "pass"
+      }
+    ],
+    "status": "pass"
+  },
+  "status": "pass"
+}
