@@ -12,7 +12,7 @@ These leaves supplement the proposed repository-reconciliation/Kairos-upgrade an
 
 - [ ] **C-R0 — inventory before upgrade:** compare crate/module symbols, features, schemas, fixtures, Cargo dependencies, replay/checkpoint contracts and retained Q/C/ED receipts between both revisions. Record missing equivalents explicitly; distinguish alternative implementations from history deletion.
 - [ ] **C-R1 — preserving revision:** coordinate Kairos owners 03/04/21/22/25 to integrate missing qualified capability or prove a replacement; retain current pin until a candidate passes physical Arrow/Parquet reader interoperability, Q/C behavioral suites, ED consumer API parity, checkpoint/recovery and rollback. No date/hash-only upgrade acceptance.
-- [ ] **C-R2 — correct capability assumptions:** main's Metal backend executes CPU fallback, Python optional ctypes loads a version function but not a native scheduler, and AllOf/AnyOf declarations do not implement atomic waits. Draft plans must consume evidence-qualified capability gates, not those names or historical Done labels.
+- [ ] **C-R2 — correct capability assumptions:** the audited main revision's Metal backend executes CPU fallback, Python optional ctypes loads a version function but not a native scheduler, and AllOf/AnyOf declarations do not implement atomic waits. Draft plans must consume evidence-qualified capability gates, not those names or historical Done labels.
 - [ ] **C-R3 — audit E6/E8 receipts:** `e62_wgpu_wgsl_device_path.rs` contains literal WGSL and constructed device metadata; `e83_multinode_cluster_execution.rs` uses in-process threads/mpsc and synthetic efficiency. Keep these as contract tests; require actual device submission and physically distinct hosts with measured times before E6/E8 acceptance.
 - [ ] **C-R4 — generic experiment services first:** adapt `batch_runner` and `api_runner` orchestration to existing Kairos experiment interfaces: seed partitioning, worker invariance, progress/cancel, manifests, resume and deterministic recovery. Maintain CareOps facade and compare before/after traces across 1/2/4 workers and interrupted runs.
 - [ ] **C-R5 — allocation/work mechanisms next:** review operations' shifts, held work, handover, preemption, eligibility and dispatch. Extract generic leases/state transitions/policy hooks only after acquire-all, cancellation, rollback and stale-completion semantics pass. `claim_atomic_multi_resource` is unsupported; do not build a plan assuming atomic allocation is already available.
@@ -41,7 +41,7 @@ Use free [wgpu](https://wgpu.rs/), [Colima](https://github.com/abiosoft/colima),
 
 ## Review and coordination
 
-The main checkout's uncommitted roadmap/domain work was left intact. Existing advisory claims, including expired Kairos solver/ensemble reservations, were not recovered or taken over. This change owns only this addendum and links in `kairos-enhancements.md` / `module-readiness.md`. The roadmap owner retains its task registry and draft upgrade/domain packets; incorporation into those owned files remains an explicit integration handoff. No messages were sent to other chats.
+The main checkout's uncommitted roadmap/domain work was left intact. Existing advisory claims, including expired Kairos solver/ensemble reservations, were not recovered or taken over. This change owns only this addendum and links in `kairos-enhancements.md` / `module-readiness.md`. The roadmap owner retains its task registry and draft upgrade/domain packets; incorporation into those owned files remains an explicit integration handoff. No messages were sent to other chats during the 20 October audit.
 
 Documentation-only review: no pin/API/runtime/clinical-policy changes. Acceptance of this addendum does not close the leaves above or establish GPU/cluster readiness. Run `python3 tools/tasks.py check` and `python3 tools/context.py check` on the isolated checkout with the exact pinned submodules populated; report hosted validation separately.
 
@@ -56,3 +56,13 @@ Date: 2026-10-20. Working directory: `/Volumes/PortableSSD/codex-worktrees/careo
 | `python3 tools/context.py check` | 0 | `faa4774b819524edd59271a87ae20bf55b4a174deed581102e95783acb417fc0` |
 
 Full runtime CI was not rerun for these documentation-only changes. Hosted checks and owner lifecycle reconciliation remain separate.
+
+## Review update — 21 October 2026
+
+The source and hardware findings above describe the explicit 20 October revisions/readbacks, not a fresh audit of remote main. GitHub CLI HTTPS requests, Git HTTPS/SSH fetches and the GitHub connector failed during this review; current remote heads, review threads, merge conflicts and hosted check results could not be verified. Do not mark either PR merge-ready from the local checks alone. No runtime capability or track closure is advanced by these review fixes.
+
+The maintainer explicitly authorized coordination, and the active roadmap owner received C-R0–C-R7 for incorporation into its existing plans/task DAG. The previously inspected owner branch already qualifies candidate selection and states that AllOf is not atomic allocation; the addendum does not imply those corrections are still absent everywhere. The specific generic-runner, hardware and receipt leaves require an explicit task mapping and integration commit.
+
+Paired source: [Kairos PR #266 audit](https://github.com/edithatogo/kairos/pull/266); [this CareOps PR #173](https://github.com/edithatogo/careops-sim/pull/173). The upstream path named above is a cross-repository reference, not an assumed local file on the current submodule pin.
+
+Local review verification on 21 October at parent `356f54b965daec47bd18269c635468443f523df1`: `git diff --check` passed; `tools/tasks.py check` passed for 145 records and `tools/context.py check` passed for 5 tracks, 34 milestones and 1,368 links. Working directory and validator toolchain are the same as the retained planning receipt above. No new tests were added for this prose/catalog correction. Source inspection reconfirmed the audited capability boundaries; full runtime CI was not rerun.
