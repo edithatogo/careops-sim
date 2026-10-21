@@ -10,7 +10,8 @@ these C-R0–C-R7 recommendations. No change to that repository is made by this
 21 October incorporation. Older shorthand “CareOps” here denotes careops-sim
 unless a paragraph explicitly identifies the separate portfolio repository.
 
-Status: R0.1 reconciliation accepted at its planning/evidence boundary; R0.2–R3 remain pending.
+Status: R0 accepted at its reconciliation/source-evidence boundary on the development branch; R1–R3 remain pending.
+See [independent R0 review](../../evidence/r0.4-independent-review-20261021/README.md).
 See [R0.1 evidence](../../evidence/r0.1-reconciliation-20261021/README.md).
 
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
@@ -19,9 +20,9 @@ Dispatch requires reviewed packets, upstream capability readback and the single-
 ## R0 — Status and capability evidence reconciliation
 
 - [x] R0.1 Reconcile registry, index and resume state against exact-scope receipts and divergent planning copies; preserve uncommitted proposals, record the reviewed integration revision and remove conflicting dispatch assumptions before binding. Retain historical acceptance without promoting it to broader capability proof.
-- [ ] R0.2 Inventory pinned and candidate Kairos symbols, features, Cargo dependencies, schemas, fixtures and Q/C/ED replay/checkpoint receipts; verify ancestry and missing equivalents, not just version labels. Classify contract, implemented code, exercised runtime and operational acceptance separately.
-- [ ] R0.3 Map PR173 C-R0–C-R7 into these tasks; audit E6/E8 receipts, retaining e62 constructed metadata/WGSL/buffer-state tests and e83 threads/mpsc with synthetic efficiency as contract evidence only. Reconcile ownership and catalog integrity; historical checked tasks do not certify real hardware.
-- [ ] R0.4 Conductor — review and verify phase (workflow.md).
+- [x] R0.2 Inventory pinned and candidate Kairos symbols, features, Cargo dependencies, schemas, fixtures and Q/C/ED replay/checkpoint receipts; verify ancestry and missing equivalents, not just version labels. Classify contract, implemented code, exercised runtime and operational acceptance separately.
+- [x] R0.3 Map PR173 C-R0–C-R7 into these tasks; audit E6/E8 receipts, retaining e62 constructed metadata/WGSL/buffer-state tests and e83 threads/mpsc with synthetic efficiency as contract evidence only. Reconcile ownership and catalog integrity; historical checked tasks do not certify real hardware.
+- [x] R0.4 Conductor — review and verify phase (workflow.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
 

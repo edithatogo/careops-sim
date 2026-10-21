@@ -27,7 +27,7 @@
 
 | Track | Specification | Phased implementation plan | Status |
 | --- | --- | --- | --- |
-| Repository reconciliation & Kairos upgrade | [Specification](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md) | [Plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md) | In progress; R0.1 reconciled, R0.2 capability inventory next |
+| Repository reconciliation & Kairos upgrade | [Specification](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md) | [Plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md) | In progress; R0 source reconciliation accepted on development branch, R1 baseline next |
 | Multi-domain core abstractions & boundaries | [Specification](tracks/careops_core_domain_abstractions_20261020/spec.md) | [Plan](tracks/careops_core_domain_abstractions_20261020/plan.md) | Planned; R3 baseline gate before implementation |
 | Generic birthing suite delivery | [Specification](tracks/birthing_suite_delivery_20261020/spec.md) | [Plan](tracks/birthing_suite_delivery_20261020/plan.md) | Planned; B0 evidence intake independent, B1 after A5 |
 | ED parameters and example inputs | [Specification](tracks/ed_parameter_evidence_20260927/spec.md) | [Plan](tracks/ed_parameter_evidence_20260927/plan.md) | Historical plan tasks checked; capability scope still subject to R0 |
