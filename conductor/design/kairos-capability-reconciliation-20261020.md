@@ -66,3 +66,36 @@ The maintainer explicitly authorized coordination, and the active roadmap owner 
 Paired source: [Kairos PR #266 audit](https://github.com/edithatogo/kairos/pull/266); [this CareOps PR #173](https://github.com/edithatogo/careops-sim/pull/173). The upstream path named above is a cross-repository reference, not an assumed local file on the current submodule pin.
 
 Local review verification on 21 October at parent `356f54b965daec47bd18269c635468443f523df1`: `git diff --check` passed; `tools/tasks.py check` passed for 145 records and `tools/context.py check` passed for 5 tracks, 34 milestones and 1,368 links. Working directory and validator toolchain are the same as the retained planning receipt above. No new tests were added for this prose/catalog correction. Source inspection reconfirmed the audited capability boundaries; full runtime CI was not rerun.
+
+## Further refinements — 21 October 2026
+
+### Reconcile executable plans before expanding scope
+
+Read-only inspection found divergent planning copies: CareOps main checkout at `fc4fdd6` with uncommitted plans still prescribes an automatic `f0d30e2` upgrade (R2.1) and AllOf/AnyOf atomic team allocation (A3.2). The contracts worktree at `576f50b` instead qualifies candidate selection and explicitly rejects AllOf as an allocator. The uncommitted `inter-agent-coordination-20261020.md` claims all active agents are aligned; that is not established by these conflicting copies. Preserve both versions and let the existing roadmap owner integrate the reviewed corrections and regenerate/check its task catalog. A clean lease store alone is not permission to overwrite uncommitted proposals.
+
+The local child branch `codex/careops-domain-capabilities-20261020` at `0157d0c` does register proposed Tracks 67–69. This is a branch-specific fact, not a change to the audit's 67-track mainline baseline or proof of remote acceptance. Tracks 68 and 69 both claim the whole DES crate; Track 67 overlaps existing core/state/ABM owners. Before dispatch, map exact files and interfaces to one writer, record owner handoffs, and qualify prerequisites from disputed Tracks 64/66. Do not infer that every new track needs all of Track 66: identify the particular RNG/experiment contract it consumes. The specs' non-breaking assertions are acceptance targets until public API/checkpoint/schema compatibility is demonstrated.
+
+### Small acceptance refinements, using existing tasks
+
+| Existing owner / plan | Refinement | Minimum behavioral oracle |
+| --- | --- | --- |
+| Kairos 29 + CareOps R0/R2 | Keep lifecycle status separate from exercised capability; bind each consumed capability to immutable source, feature set, host/backend, command, input and retained output | Missing, mismatched or stale evidence leaves upgrade blocked; a zero-exit structural validator cannot certify physical IO, GPU, MPI or clinical fitness |
+| Kairos 03/22 + CareOps C-R4/A0 | First extraction is a small experiment lifecycle interface, preserving CareOps facade; benchmark whether further movement is worthwhile | Same results for 1/2/4 workers and restart; cancellation never publishes partial output as complete; manifest points only to committed output; crash between output write and completion record is recoverable |
+| Kairos 03/64 + CareOps A3 | Freeze allocation commit and cancellation rules before a shared resource framework | Contending requests, timeout at grant time, partial failure and preemption conserve claims after every event; explicitly distinguish atomic bundle grant from staged acquisition |
+| Proposed 67 + CareOps A5 | Separate typed relationships from ownership/destruction policy; support one-to-many and independent lifetimes | Removing a parent relationship cannot implicitly destroy a surviving dependent; stale handles, cycles, duplicate spawn, deterministic IDs/streams and checkpoint restore are tested with neutral and clinical adapters |
+| Proposed 68 + CareOps A4 | Keep transfer semantics independent of transport; start with one scheduler and typed commands | Duplicate/reordered acknowledgements, cancellation after reservation, expiry at arrival and restart preserve exactly one domain transition per operation ID; avoid claims of network exactly-once delivery |
+| Proposed 69 + CareOps A1/B1 | Define elapsed-age/residual-time semantics, covariate changes and RNG draw ownership before a generic hazard engine | Analytic exponential competing-risk reference, zero-hazard case, tie ordering, unchanged-covariate invariance, time-varying reference and censoring tests; failed calibration is not fixed by resampling unrelated clocks |
+| Kairos 52/55 + CareOps E6/E8 | Require explicit backend provenance and measured benefit before promotion | CPU fallback cannot satisfy device acceptance; initialization/transfer/compute timings separated; throughput and latency compared at equal workload; include memory limits and cancellation/recovery, not only ideal output parity |
+
+CC-01–CC-08 in CareOps already cover identity, transfer, allocation, progression, capacity, policy/clocks, reproducibility and observation. Reuse those contracts; the rows above refine implementation oracles rather than create another competing framework. Keep scientific/clinical parameter validation in its existing domain process. Retain the headless CPU baseline as usable delivery while optional acceleration remains unqualified.
+
+### Execution order and coordination boundary
+
+1. Reconcile planning copies and status claims; establish exact-file ownership and capability dependencies.
+2. Preserve the current qualified pin and freeze consumer/IO/recovery baselines.
+3. Implement and qualify one neutral primitive with two concrete consumers, then migrate the adapter incrementally.
+4. Qualify native device and physically distributed execution separately; promote only measured, supported capabilities.
+
+These refinements were sent to the existing CareOps roadmap chat under the maintainer's coordination authorization. Message delivery is not confirmed plan incorporation; retain task mappings and the integration commit before reporting completion. No new runtime tracks, source edits, pin changes or takeovers were made by this refinement. GitHub readback still timed out, so remote branch/PR status is not inferred from local refs.
+
+Refinement validation: documentation diff against `545696596e721aee19bd217f5c7d949a7eb8f888`, in the same worktree/toolchain as the planning receipt. On 21 October, `git diff --check` and task catalog and context validators (145 tasks; 1,368 links) exited 0. These checks validate document structure, not the proposed runtime oracles.
