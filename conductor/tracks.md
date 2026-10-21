@@ -35,7 +35,7 @@ formal Q0/C0 contracts; E0 unlocks D2 GitHub/CI, then Q1/C1 can proceed.
   immediately; P1 DES and P2 ABM evidence run independently, joining at P3.
   E0/C0 consume P0, C2 consumes P3, E1 consumes P4, and C6 consumes P5.
 
-- [ ] **Repository status reconciliation and Kairos upgrade** — `repo_reconciliation_kairos_upgrade_20261020`
+- [~] **Repository status reconciliation and Kairos upgrade** — `repo_reconciliation_kairos_upgrade_20261020`
   ([index](tracks/repo_reconciliation_kairos_upgrade_20261020/index.md),
   [spec](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md),
   [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). Proposed. Reconciles capability/status evidence, audits the harness and qualifies a bounded Kairos candidate; retains the working pin if required gates fail.
