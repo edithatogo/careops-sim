@@ -178,3 +178,11 @@ manifest, and join geometry to a dated as-operated capacity/capability register.
 Drawing accuracy, operational currency and permissions require separate checks.
 First later visualization replays completed native runs; live WebSocket control
 is a subsequent profile. See [appraisal and qualifications](research/cad-replay-appraisal.md).
+
+## Renderer and routing adoption decision — 22 October 2026
+
+The [library adoption programme](library-adoption.md) selects petgraph for generic Kairos routing and Three.js for one orthographic/perspective CareOps viewer. This supersedes the future PixiJS renderer choice only after measured parity and disadvantage review; existing geometry/topology, authority, units, identity, accessibility and live-sync requirements remain. CAD import remains separately qualified future work.
+
+## Regional transport scope — 22 October 2026
+
+[Robustness-first programme](robust-dependencies.md) adds conditional geographic road movement and regional map consumers. MapLibre complements Three.js only for a proven regional requirement. SUMO is conditional on traffic interactions; Rapier deferred. Clinical handover, road arrival and bay arrival remain distinct, with one movement authority and validated coordinate transforms.

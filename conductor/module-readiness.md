@@ -224,3 +224,19 @@ reviews the phase evidence and risk/release notes; full queue phase remains open
 ## Q5.4 queue development closeout — 2026-10-05
 
 [Q5.4 evidence](evidence/q5.4-completion-20261005/README.md) closes the queue track through Q0–Q5 at governance pin `8cd03c8f791ae58b33e5cc61b244071937a839ac`, preserving accepted C1.4/Q5.2 and unchanged runtime source eae890b. Independent replay, corrected ledger review and exact-head native Linux/macOS plus reported child checks passed. This satisfies the queue development prerequisite; calibration, generic ED implementation, quality/release and clinical/MVP gates still require their own acceptance. No global G1/ED-ready claim follows. Child PR219 remains stacked/draft.
+
+## Library adoption planning — 22 October 2026
+
+[Five separate adoption tracks](library-adoption.md) follow Polars R14. All are proposed; no capability is newly accepted. Metadata orders local phases; upstream gates require explicit accepted Kairos receipts. Existing native-v1 gates still apply to visual/spatial work.
+
+## Robustness-first dependency registration — 22 October 2026
+
+[Programme](robust-dependencies.md) prioritises accepted Kairos 74–78 before feature expansion. [Manual receipt register](dependency-handoffs.json) does not certify upstream delivery. Three new application tracks are conditional: Valhalla, MapLibre and SUMO; Rapier deferred. Existing active Polars phase unchanged.
+
+## Dependency sequencing refinement
+
+See [current sequencing](dependency-sequencing.md): bounded sha2/tempfile/proptest before Polars acceptance; thiserror after CLI foundation and before RNG; diagnostics/concurrency/state-machine additions conditional. No implementation acceptance.
+
+## Validation/tooling refinement
+
+[Sequencing](dependency-sequencing.md) registers Criterion reuse, schema-validation gates and conditional ODE/WebSocket work. No runtime acceptance.
