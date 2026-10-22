@@ -4607,6 +4607,4711 @@
       "phase_acceptance_source": "conductor/tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md#R3"
     },
     {
+      "id": "R10.1",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R10",
+      "objective": "Verify Kairos Track 70 Phase 4 accepted immutable commit, checks and receipt manifest; refuse pin adoption on status labels alone. This external gate remains unresolved at registration.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R3.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R10"
+    },
+    {
+      "id": "R10.2",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R10",
+      "objective": "Inventory ED/birthing/shared/script table paths, join cardinality, metrics/denominators, fixtures and consumers; record baseline traces and resource measurements.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R10.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R10"
+    },
+    {
+      "id": "R10.3",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R10",
+      "objective": "Add failing reference tests for existing statistical definitions and trace-once exports; update parent Kairos pin and lockfiles only to the accepted compatible upstream commit.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R10.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R10"
+    },
+    {
+      "id": "R10.4",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R10",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R10.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 10
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R10"
+    },
+    {
+      "id": "R11.1",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R11",
+      "objective": "Add failing run-invocation-count, bounded-buffer/backpressure, disk-error and checkpoint-resume duplicate/loss tests.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R10.4",
+        "R52.3",
+        "R55.3",
+        "R61.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R11"
+    },
+    {
+      "id": "R11.2",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R11",
+      "objective": "Capture required tables during original replications and write bounded per-replication parts using Kairos data facilities; remove export-time reruns.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R11.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R11"
+    },
+    {
+      "id": "R11.3",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R11",
+      "objective": "Bind trace part IDs/watermarks to restart state and publish manifest last; preserve exact event/RNG behaviour across worker counts and restarts.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R11.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 16
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R11"
+    },
+    {
+      "id": "R11.4",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R11",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R11.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 17
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R11"
+    },
+    {
+      "id": "R12.1",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R12",
+      "objective": "Add analytical tests for weighted versus unweighted estimands, ddof/intervals, censoring, empty/singleton, null/nonfinite, skew and duplicate/missing join keys.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R11.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R12"
+    },
+    {
+      "id": "R12.2",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R12",
+      "objective": "Replace applicable ED and birthing batch transformations, joins, summaries, repeated statistics and calibration-trace preparation with Polars expressions; keep online/domain logic authoritative.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R12.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 22
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R12"
+    },
+    {
+      "id": "R12.3",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R12",
+      "objective": "Use existing modules for domain definitions and Kairos for generic interchange; extract shared helpers only for actual duplicate consumers, not speculative frameworks.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R12.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 23
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R12"
+    },
+    {
+      "id": "R12.4",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R12",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R12.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 24
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R12"
+    },
+    {
+      "id": "R13.1",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R13",
+      "objective": "Add independent-reader tests for real Parquet/Zstd and IPC, explicit CSV quoting/limb fields, effective input hashes and incomplete manifest rejection.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R12.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 28
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R13"
+    },
+    {
+      "id": "R13.2",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R13",
+      "objective": "Replace JSON full-table bundles/schema DDL/manual CSV output with versioned Parquet tables plus provenance manifests; migrate CLIs and every known downstream fixture/script.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R13.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 29
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R13"
+    },
+    {
+      "id": "R13.3",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R13",
+      "objective": "Regenerate owned synthetic fixtures, preserve historical files, remove old alpha data APIs/readers and document clean-break run/output instructions.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R13.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 30
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R13"
+    },
+    {
+      "id": "R13.4",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R13",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R13.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 31
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R13"
+    },
+    {
+      "id": "R14.1",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R14",
+      "objective": "Run native domain/replay/restart/numerical/interchange lanes and existing performance gates; measure small/large ensembles, output latency, peak RSS, thread contention and build size.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R13.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 35
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R14"
+    },
+    {
+      "id": "R14.2",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R14",
+      "objective": "Audit net maintained-code deletion and all retained candidates; remove obsolete compatibility and duplicate paths and reconcile docs without claiming clinical acceptance.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R14.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 36
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R14"
+    },
+    {
+      "id": "R14.3",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R14",
+      "objective": "Record accepted parent and Kairos commits, hosted/local evidence distinctions, rollback instructions and exact pin/schema/library receipts; close only after full consumer validation.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R14.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 37
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R14"
+    },
+    {
+      "id": "R14.4",
+      "track_id": "polars_data_processing_20261022",
+      "phase": "R14",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R14.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "line": 38
+      },
+      "context_paths": [
+        "conductor/tracks/polars_data_processing_20261022/spec.md",
+        "conductor/tracks/polars_data_processing_20261022/plan.md",
+        "conductor/tracks/polars_data_processing_20261022/test-matrix.md",
+        "conductor/tracks/polars_data_processing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/polars_data_processing_20261022/plan.md#R14"
+    },
+    {
+      "id": "R20.1",
+      "track_id": "rand_rng_adoption_20261022",
+      "phase": "R20",
+      "objective": "Verify the entry receipts and ownership handoffs; reject missing/stale upstream or downstream evidence before any pin/dependency/runtime change.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R14.4",
+        "R58.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/rand_rng_adoption_20261022/spec.md",
+        "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "conductor/tracks/rand_rng_adoption_20261022/test-matrix.md",
+        "conductor/tracks/rand_rng_adoption_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/rand_rng_adoption_20261022/plan.md#R20"
+    },
+    {
+      "id": "R20.2",
+      "track_id": "rand_rng_adoption_20261022",
+      "phase": "R20",
+      "objective": "Inventory actual replace/retain candidates and freeze baseline contracts, fixtures, costs and supported targets; qualify exact pins/features, licences/advisories and compatibility.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R20.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/rand_rng_adoption_20261022/spec.md",
+        "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "conductor/tracks/rand_rng_adoption_20261022/test-matrix.md",
+        "conductor/tracks/rand_rng_adoption_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/rand_rng_adoption_20261022/plan.md#R20"
+    },
+    {
+      "id": "R20.3",
+      "track_id": "rand_rng_adoption_20261022",
+      "phase": "R20",
+      "objective": "Freeze canonical stream derivation, versioned checkpoint/manifest API and reviewed MSRV change; add failing known-answer, isolation and malformed-checkpoint tests.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R20.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/rand_rng_adoption_20261022/spec.md",
+        "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "conductor/tracks/rand_rng_adoption_20261022/test-matrix.md",
+        "conductor/tracks/rand_rng_adoption_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/rand_rng_adoption_20261022/plan.md#R20"
+    },
+    {
+      "id": "R20.4",
+      "track_id": "rand_rng_adoption_20261022",
+      "phase": "R20",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R20.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "line": 10
+      },
+      "context_paths": [
+        "conductor/tracks/rand_rng_adoption_20261022/spec.md",
+        "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "conductor/tracks/rand_rng_adoption_20261022/test-matrix.md",
+        "conductor/tracks/rand_rng_adoption_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/rand_rng_adoption_20261022/plan.md#R20"
+    },
+    {
+      "id": "R21.1",
+      "track_id": "rand_rng_adoption_20261022",
+      "phase": "R21",
+      "objective": "Adopt the accepted Kairos Track 71 commit and RNG API in all CareOps consumers; migrate parent provenance/checkpoints and remove any parent duplicate generator. Do not implement a second ChaCha wrapper or alter upstream code in this parent track.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R20.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/rand_rng_adoption_20261022/spec.md",
+        "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "conductor/tracks/rand_rng_adoption_20261022/test-matrix.md",
+        "conductor/tracks/rand_rng_adoption_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/rand_rng_adoption_20261022/plan.md#R21"
+    },
+    {
+      "id": "R21.2",
+      "track_id": "rand_rng_adoption_20261022",
+      "phase": "R21",
+      "objective": "Update consumers and independent baseline receipts; remove legacy generator code and document intentional trajectory break.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R21.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/rand_rng_adoption_20261022/spec.md",
+        "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "conductor/tracks/rand_rng_adoption_20261022/test-matrix.md",
+        "conductor/tracks/rand_rng_adoption_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/rand_rng_adoption_20261022/plan.md#R21"
+    },
+    {
+      "id": "R21.3",
+      "track_id": "rand_rng_adoption_20261022",
+      "phase": "R21",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R21.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "line": 16
+      },
+      "context_paths": [
+        "conductor/tracks/rand_rng_adoption_20261022/spec.md",
+        "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "conductor/tracks/rand_rng_adoption_20261022/test-matrix.md",
+        "conductor/tracks/rand_rng_adoption_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/rand_rng_adoption_20261022/plan.md#R21"
+    },
+    {
+      "id": "R22.1",
+      "track_id": "rand_rng_adoption_20261022",
+      "phase": "R22",
+      "objective": "Run every test-matrix oracle and applicable full native/browser lanes; resolve regressions and record raw evidence.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R21.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/rand_rng_adoption_20261022/spec.md",
+        "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "conductor/tracks/rand_rng_adoption_20261022/test-matrix.md",
+        "conductor/tracks/rand_rng_adoption_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/rand_rng_adoption_20261022/plan.md#R22"
+    },
+    {
+      "id": "R22.2",
+      "track_id": "rand_rng_adoption_20261022",
+      "phase": "R22",
+      "objective": "Audit deleted/retained production code, update compatibility/user documentation and record rollback plus exact accepted commit/pin receipts.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R22.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/rand_rng_adoption_20261022/spec.md",
+        "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "conductor/tracks/rand_rng_adoption_20261022/test-matrix.md",
+        "conductor/tracks/rand_rng_adoption_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/rand_rng_adoption_20261022/plan.md#R22"
+    },
+    {
+      "id": "R22.3",
+      "track_id": "rand_rng_adoption_20261022",
+      "phase": "R22",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R22.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "line": 22
+      },
+      "context_paths": [
+        "conductor/tracks/rand_rng_adoption_20261022/spec.md",
+        "conductor/tracks/rand_rng_adoption_20261022/plan.md",
+        "conductor/tracks/rand_rng_adoption_20261022/test-matrix.md",
+        "conductor/tracks/rand_rng_adoption_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/rand_rng_adoption_20261022/plan.md#R22"
+    },
+    {
+      "id": "R23.1",
+      "track_id": "rand_distr_sampling_20261022",
+      "phase": "R23",
+      "objective": "Verify the entry receipts and ownership handoffs; reject missing/stale upstream or downstream evidence before any pin/dependency/runtime change.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R22.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/rand_distr_sampling_20261022/spec.md",
+        "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "conductor/tracks/rand_distr_sampling_20261022/test-matrix.md",
+        "conductor/tracks/rand_distr_sampling_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/rand_distr_sampling_20261022/plan.md#R23"
+    },
+    {
+      "id": "R23.2",
+      "track_id": "rand_distr_sampling_20261022",
+      "phase": "R23",
+      "objective": "Inventory actual replace/retain candidates and freeze baseline contracts, fixtures, costs and supported targets; qualify exact pins/features, licences/advisories and compatibility.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R23.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/rand_distr_sampling_20261022/spec.md",
+        "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "conductor/tracks/rand_distr_sampling_20261022/test-matrix.md",
+        "conductor/tracks/rand_distr_sampling_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/rand_distr_sampling_20261022/plan.md#R23"
+    },
+    {
+      "id": "R23.3",
+      "track_id": "rand_distr_sampling_20261022",
+      "phase": "R23",
+      "objective": "Inventory production samplers; specify replace/retain decisions, units/support and deliberate corrections; add independent statistical and hazard tests before replacement.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R23.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/rand_distr_sampling_20261022/spec.md",
+        "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "conductor/tracks/rand_distr_sampling_20261022/test-matrix.md",
+        "conductor/tracks/rand_distr_sampling_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/rand_distr_sampling_20261022/plan.md#R23"
+    },
+    {
+      "id": "R23.4",
+      "track_id": "rand_distr_sampling_20261022",
+      "phase": "R23",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R23.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "line": 10
+      },
+      "context_paths": [
+        "conductor/tracks/rand_distr_sampling_20261022/spec.md",
+        "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "conductor/tracks/rand_distr_sampling_20261022/test-matrix.md",
+        "conductor/tracks/rand_distr_sampling_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/rand_distr_sampling_20261022/plan.md#R23"
+    },
+    {
+      "id": "R24.1",
+      "track_id": "rand_distr_sampling_20261022",
+      "phase": "R24",
+      "objective": "Adopt the accepted Kairos Track 72 commit and sampling APIs; replace applicable parent production samplers with these facilities or direct library distributions only where parent-owned policy requires them. Do not duplicate generic upstream samplers.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R23.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/rand_distr_sampling_20261022/spec.md",
+        "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "conductor/tracks/rand_distr_sampling_20261022/test-matrix.md",
+        "conductor/tracks/rand_distr_sampling_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/rand_distr_sampling_20261022/plan.md#R24"
+    },
+    {
+      "id": "R24.2",
+      "track_id": "rand_distr_sampling_20261022",
+      "phase": "R24",
+      "objective": "Migrate checkpoint/provenance and consumers; establish new sampling baselines and document target-specific reproducibility limits.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R24.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/rand_distr_sampling_20261022/spec.md",
+        "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "conductor/tracks/rand_distr_sampling_20261022/test-matrix.md",
+        "conductor/tracks/rand_distr_sampling_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/rand_distr_sampling_20261022/plan.md#R24"
+    },
+    {
+      "id": "R24.3",
+      "track_id": "rand_distr_sampling_20261022",
+      "phase": "R24",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R24.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "line": 16
+      },
+      "context_paths": [
+        "conductor/tracks/rand_distr_sampling_20261022/spec.md",
+        "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "conductor/tracks/rand_distr_sampling_20261022/test-matrix.md",
+        "conductor/tracks/rand_distr_sampling_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/rand_distr_sampling_20261022/plan.md#R24"
+    },
+    {
+      "id": "R25.1",
+      "track_id": "rand_distr_sampling_20261022",
+      "phase": "R25",
+      "objective": "Run every test-matrix oracle and applicable full native/browser lanes; resolve regressions and record raw evidence.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R24.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/rand_distr_sampling_20261022/spec.md",
+        "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "conductor/tracks/rand_distr_sampling_20261022/test-matrix.md",
+        "conductor/tracks/rand_distr_sampling_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/rand_distr_sampling_20261022/plan.md#R25"
+    },
+    {
+      "id": "R25.2",
+      "track_id": "rand_distr_sampling_20261022",
+      "phase": "R25",
+      "objective": "Audit deleted/retained production code, update compatibility/user documentation and record rollback plus exact accepted commit/pin receipts.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R25.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/rand_distr_sampling_20261022/spec.md",
+        "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "conductor/tracks/rand_distr_sampling_20261022/test-matrix.md",
+        "conductor/tracks/rand_distr_sampling_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/rand_distr_sampling_20261022/plan.md#R25"
+    },
+    {
+      "id": "R25.3",
+      "track_id": "rand_distr_sampling_20261022",
+      "phase": "R25",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R25.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "line": 22
+      },
+      "context_paths": [
+        "conductor/tracks/rand_distr_sampling_20261022/spec.md",
+        "conductor/tracks/rand_distr_sampling_20261022/plan.md",
+        "conductor/tracks/rand_distr_sampling_20261022/test-matrix.md",
+        "conductor/tracks/rand_distr_sampling_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/rand_distr_sampling_20261022/plan.md#R25"
+    },
+    {
+      "id": "R26.1",
+      "track_id": "echarts_dashboard_20261022",
+      "phase": "R26",
+      "objective": "Verify the entry receipts and ownership handoffs; reject missing/stale upstream or downstream evidence before any pin/dependency/runtime change.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R25.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/echarts_dashboard_20261022/spec.md",
+        "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "conductor/tracks/echarts_dashboard_20261022/test-matrix.md",
+        "conductor/tracks/echarts_dashboard_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/echarts_dashboard_20261022/plan.md#R26"
+    },
+    {
+      "id": "R26.2",
+      "track_id": "echarts_dashboard_20261022",
+      "phase": "R26",
+      "objective": "Inventory actual replace/retain candidates and freeze baseline contracts, fixtures, costs and supported targets; qualify exact pins/features, licences/advisories and compatibility.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R26.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/echarts_dashboard_20261022/spec.md",
+        "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "conductor/tracks/echarts_dashboard_20261022/test-matrix.md",
+        "conductor/tracks/echarts_dashboard_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/echarts_dashboard_20261022/plan.md#R26"
+    },
+    {
+      "id": "R26.3",
+      "track_id": "echarts_dashboard_20261022",
+      "phase": "R26",
+      "objective": "Inventory actual dashboard charts and data contracts; freeze representative fixtures and performance/accessibility baseline; add failing value and browser tests.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R26.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/echarts_dashboard_20261022/spec.md",
+        "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "conductor/tracks/echarts_dashboard_20261022/test-matrix.md",
+        "conductor/tracks/echarts_dashboard_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/echarts_dashboard_20261022/plan.md#R26"
+    },
+    {
+      "id": "R26.4",
+      "track_id": "echarts_dashboard_20261022",
+      "phase": "R26",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R26.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "line": 10
+      },
+      "context_paths": [
+        "conductor/tracks/echarts_dashboard_20261022/spec.md",
+        "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "conductor/tracks/echarts_dashboard_20261022/test-matrix.md",
+        "conductor/tracks/echarts_dashboard_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/echarts_dashboard_20261022/plan.md#R26"
+    },
+    {
+      "id": "R27.1",
+      "track_id": "echarts_dashboard_20261022",
+      "phase": "R27",
+      "objective": "Integrate selectively imported ECharts with typed analytical payloads for distributions, time series, heatmaps and comparisons; add controls, tables and exports.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R26.4",
+        "R67.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/echarts_dashboard_20261022/spec.md",
+        "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "conductor/tracks/echarts_dashboard_20261022/test-matrix.md",
+        "conductor/tracks/echarts_dashboard_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/echarts_dashboard_20261022/plan.md#R27"
+    },
+    {
+      "id": "R27.2",
+      "track_id": "echarts_dashboard_20261022",
+      "phase": "R27",
+      "objective": "Remove superseded chart code and qualify browser lifecycle/security/accessibility and bundle/runtime costs.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R27.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/echarts_dashboard_20261022/spec.md",
+        "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "conductor/tracks/echarts_dashboard_20261022/test-matrix.md",
+        "conductor/tracks/echarts_dashboard_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/echarts_dashboard_20261022/plan.md#R27"
+    },
+    {
+      "id": "R27.3",
+      "track_id": "echarts_dashboard_20261022",
+      "phase": "R27",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R27.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "line": 16
+      },
+      "context_paths": [
+        "conductor/tracks/echarts_dashboard_20261022/spec.md",
+        "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "conductor/tracks/echarts_dashboard_20261022/test-matrix.md",
+        "conductor/tracks/echarts_dashboard_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/echarts_dashboard_20261022/plan.md#R27"
+    },
+    {
+      "id": "R28.1",
+      "track_id": "echarts_dashboard_20261022",
+      "phase": "R28",
+      "objective": "Run every test-matrix oracle and applicable full native/browser lanes; resolve regressions and record raw evidence.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R27.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/echarts_dashboard_20261022/spec.md",
+        "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "conductor/tracks/echarts_dashboard_20261022/test-matrix.md",
+        "conductor/tracks/echarts_dashboard_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/echarts_dashboard_20261022/plan.md#R28"
+    },
+    {
+      "id": "R28.2",
+      "track_id": "echarts_dashboard_20261022",
+      "phase": "R28",
+      "objective": "Audit deleted/retained production code, update compatibility/user documentation and record rollback plus exact accepted commit/pin receipts.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R28.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/echarts_dashboard_20261022/spec.md",
+        "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "conductor/tracks/echarts_dashboard_20261022/test-matrix.md",
+        "conductor/tracks/echarts_dashboard_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/echarts_dashboard_20261022/plan.md#R28"
+    },
+    {
+      "id": "R28.3",
+      "track_id": "echarts_dashboard_20261022",
+      "phase": "R28",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R28.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "line": 22
+      },
+      "context_paths": [
+        "conductor/tracks/echarts_dashboard_20261022/spec.md",
+        "conductor/tracks/echarts_dashboard_20261022/plan.md",
+        "conductor/tracks/echarts_dashboard_20261022/test-matrix.md",
+        "conductor/tracks/echarts_dashboard_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/echarts_dashboard_20261022/plan.md#R28"
+    },
+    {
+      "id": "R29.1",
+      "track_id": "petgraph_spatial_routing_20261022",
+      "phase": "R29",
+      "objective": "Verify the entry receipts and ownership handoffs; reject missing/stale upstream or downstream evidence before any pin/dependency/runtime change.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R28.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/petgraph_spatial_routing_20261022/spec.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/test-matrix.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md#R29"
+    },
+    {
+      "id": "R29.2",
+      "track_id": "petgraph_spatial_routing_20261022",
+      "phase": "R29",
+      "objective": "Inventory actual replace/retain candidates and freeze baseline contracts, fixtures, costs and supported targets; qualify exact pins/features, licences/advisories and compatibility.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R29.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/petgraph_spatial_routing_20261022/spec.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/test-matrix.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md#R29"
+    },
+    {
+      "id": "R29.3",
+      "track_id": "petgraph_spatial_routing_20261022",
+      "phase": "R29",
+      "objective": "Freeze generic topology/identity/cost/tie/no-route API and CareOps mapping contract; add independent small-graph, access and multi-floor tests.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R29.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/petgraph_spatial_routing_20261022/spec.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/test-matrix.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md#R29"
+    },
+    {
+      "id": "R29.4",
+      "track_id": "petgraph_spatial_routing_20261022",
+      "phase": "R29",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R29.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "line": 10
+      },
+      "context_paths": [
+        "conductor/tracks/petgraph_spatial_routing_20261022/spec.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/test-matrix.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md#R29"
+    },
+    {
+      "id": "R30.1",
+      "track_id": "petgraph_spatial_routing_20261022",
+      "phase": "R30",
+      "objective": "Adopt the accepted Kairos Track 73 commit and generic routing API; implement CareOps profile-to-topology/access mappings and synthetic multi-floor fixtures. Do not build a second petgraph routing engine in CareOps.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R29.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/petgraph_spatial_routing_20261022/spec.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/test-matrix.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md#R30"
+    },
+    {
+      "id": "R30.2",
+      "track_id": "petgraph_spatial_routing_20261022",
+      "phase": "R30",
+      "objective": "Migrate actual graph consumers and synthetic CareOps adapters after accepted upstream handoff; remove superseded adjacency/algorithm code only where replaced.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R30.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/petgraph_spatial_routing_20261022/spec.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/test-matrix.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md#R30"
+    },
+    {
+      "id": "R30.3",
+      "track_id": "petgraph_spatial_routing_20261022",
+      "phase": "R30",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R30.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "line": 16
+      },
+      "context_paths": [
+        "conductor/tracks/petgraph_spatial_routing_20261022/spec.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/test-matrix.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md#R30"
+    },
+    {
+      "id": "R31.1",
+      "track_id": "petgraph_spatial_routing_20261022",
+      "phase": "R31",
+      "objective": "Run every test-matrix oracle and applicable full native/browser lanes; resolve regressions and record raw evidence.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R30.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/petgraph_spatial_routing_20261022/spec.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/test-matrix.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md#R31"
+    },
+    {
+      "id": "R31.2",
+      "track_id": "petgraph_spatial_routing_20261022",
+      "phase": "R31",
+      "objective": "Audit deleted/retained production code, update compatibility/user documentation and record rollback plus exact accepted commit/pin receipts.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R31.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/petgraph_spatial_routing_20261022/spec.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/test-matrix.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md#R31"
+    },
+    {
+      "id": "R31.3",
+      "track_id": "petgraph_spatial_routing_20261022",
+      "phase": "R31",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R31.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "line": 22
+      },
+      "context_paths": [
+        "conductor/tracks/petgraph_spatial_routing_20261022/spec.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/plan.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/test-matrix.md",
+        "conductor/tracks/petgraph_spatial_routing_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/petgraph_spatial_routing_20261022/plan.md#R31"
+    },
+    {
+      "id": "R32.1",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R32",
+      "objective": "Verify the entry receipts and ownership handoffs; reject missing/stale upstream or downstream evidence before any pin/dependency/runtime change.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R31.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R32"
+    },
+    {
+      "id": "R32.2",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R32",
+      "objective": "Inventory actual replace/retain candidates and freeze baseline contracts, fixtures, costs and supported targets; qualify exact pins/features, licences/advisories and compatibility.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R32.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R32"
+    },
+    {
+      "id": "R32.3",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R32",
+      "objective": "Freeze actual SVG/Pixi behaviour, accessibility and device/fixture cost baselines; add browser parity and lossless-identity tests.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R32.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R32"
+    },
+    {
+      "id": "R32.4",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R32",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R32.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 10
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R32"
+    },
+    {
+      "id": "R33.1",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R33",
+      "objective": "Implement WebGL2 orthographic scene, selection/labels/overlays/floors/replay and accessible controls; preserve authoritative state boundaries.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R32.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R33"
+    },
+    {
+      "id": "R33.2",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R33",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R33.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R33"
+    },
+    {
+      "id": "R34.1",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R34",
+      "objective": "Add perspective/multi-floor visibility and live recovery using the same scene; qualify gap/revision handling and clearly labelled interpolation.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R33.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 19
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R34"
+    },
+    {
+      "id": "R34.2",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R34",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R34.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R34"
+    },
+    {
+      "id": "R35.1",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R35",
+      "objective": "Review measured disadvantages, delete replaced renderer/dependencies only after parity, and record recovery plus no-GPU accessible-state behaviour.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R34.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 24
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R35"
+    },
+    {
+      "id": "R35.2",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R35",
+      "objective": "Run every test-matrix oracle and applicable full native/browser lanes; resolve regressions and record raw evidence.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R35.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 25
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R35"
+    },
+    {
+      "id": "R35.3",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R35",
+      "objective": "Audit deleted/retained production code, update compatibility/user documentation and record rollback plus exact accepted commit/pin receipts.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R35.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 26
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R35"
+    },
+    {
+      "id": "R35.4",
+      "track_id": "threejs_spatial_viewer_20261022",
+      "phase": "R35",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, record blockers/receipts and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R35.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "line": 27
+      },
+      "context_paths": [
+        "conductor/tracks/threejs_spatial_viewer_20261022/spec.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/plan.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/test-matrix.md",
+        "conductor/tracks/threejs_spatial_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/threejs_spatial_viewer_20261022/plan.md#R35"
+    },
+    {
+      "id": "R40.1",
+      "track_id": "valhalla_transport_20261022",
+      "phase": "R40",
+      "objective": "Verify prerequisite and external receipts plus an accepted consumer question; stop if calibrated simpler models suffice.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R31.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/valhalla_transport_20261022/spec.md",
+        "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "conductor/tracks/valhalla_transport_20261022/test-matrix.md",
+        "conductor/tracks/valhalla_transport_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/valhalla_transport_20261022/plan.md#R40"
+    },
+    {
+      "id": "R40.2",
+      "track_id": "valhalla_transport_20261022",
+      "phase": "R40",
+      "objective": "Qualify exact dependency/version/features/licence/targets and inputs; freeze baseline costs, failure cases and independent oracle. Record adopt/defer/reject before implementation.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R40.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/valhalla_transport_20261022/spec.md",
+        "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "conductor/tracks/valhalla_transport_20261022/test-matrix.md",
+        "conductor/tracks/valhalla_transport_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/valhalla_transport_20261022/plan.md#R40"
+    },
+    {
+      "id": "R40.3",
+      "track_id": "valhalla_transport_20261022",
+      "phase": "R40",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record accepted fixes, evidence and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R40.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/valhalla_transport_20261022/spec.md",
+        "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "conductor/tracks/valhalla_transport_20261022/test-matrix.md",
+        "conductor/tracks/valhalla_transport_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/valhalla_transport_20261022/plan.md#R40"
+    },
+    {
+      "id": "R41.1",
+      "track_id": "valhalla_transport_20261022",
+      "phase": "R41",
+      "objective": "Only after accepted adopt decision, add failing behavioural/negative tests and implement the bounded owner contract.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R40.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "line": 13
+      },
+      "context_paths": [
+        "conductor/tracks/valhalla_transport_20261022/spec.md",
+        "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "conductor/tracks/valhalla_transport_20261022/test-matrix.md",
+        "conductor/tracks/valhalla_transport_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/valhalla_transport_20261022/plan.md#R41"
+    },
+    {
+      "id": "R41.2",
+      "track_id": "valhalla_transport_20261022",
+      "phase": "R41",
+      "objective": "Prove recovery, provenance and reproducibility; remove superseded code only after qualified parity, without duplicate authority.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R41.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/valhalla_transport_20261022/spec.md",
+        "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "conductor/tracks/valhalla_transport_20261022/test-matrix.md",
+        "conductor/tracks/valhalla_transport_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/valhalla_transport_20261022/plan.md#R41"
+    },
+    {
+      "id": "R41.3",
+      "track_id": "valhalla_transport_20261022",
+      "phase": "R41",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record accepted fixes, evidence and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R41.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/valhalla_transport_20261022/spec.md",
+        "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "conductor/tracks/valhalla_transport_20261022/test-matrix.md",
+        "conductor/tracks/valhalla_transport_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/valhalla_transport_20261022/plan.md#R41"
+    },
+    {
+      "id": "R42.1",
+      "track_id": "valhalla_transport_20261022",
+      "phase": "R42",
+      "objective": "Run independent native/browser/service gates and measure full wrapper/operational cost against frozen budgets.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R41.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "line": 19
+      },
+      "context_paths": [
+        "conductor/tracks/valhalla_transport_20261022/spec.md",
+        "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "conductor/tracks/valhalla_transport_20261022/test-matrix.md",
+        "conductor/tracks/valhalla_transport_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/valhalla_transport_20261022/plan.md#R42"
+    },
+    {
+      "id": "R42.2",
+      "track_id": "valhalla_transport_20261022",
+      "phase": "R42",
+      "objective": "Record exact accepted commits/pins/versions and consumer evidence, limitations and rollback; keep conditional modes unaccepted until proven.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R42.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/valhalla_transport_20261022/spec.md",
+        "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "conductor/tracks/valhalla_transport_20261022/test-matrix.md",
+        "conductor/tracks/valhalla_transport_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/valhalla_transport_20261022/plan.md#R42"
+    },
+    {
+      "id": "R42.3",
+      "track_id": "valhalla_transport_20261022",
+      "phase": "R42",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record accepted fixes, evidence and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R42.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/valhalla_transport_20261022/spec.md",
+        "conductor/tracks/valhalla_transport_20261022/plan.md",
+        "conductor/tracks/valhalla_transport_20261022/test-matrix.md",
+        "conductor/tracks/valhalla_transport_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/valhalla_transport_20261022/plan.md#R42"
+    },
+    {
+      "id": "R43.1",
+      "track_id": "maplibre_regional_viewer_20261022",
+      "phase": "R43",
+      "objective": "Verify prerequisite and external receipts plus an accepted consumer question; stop if calibrated simpler models suffice.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R35.4",
+        "R42.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/maplibre_regional_viewer_20261022/spec.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/test-matrix.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md#R43"
+    },
+    {
+      "id": "R43.2",
+      "track_id": "maplibre_regional_viewer_20261022",
+      "phase": "R43",
+      "objective": "Qualify exact dependency/version/features/licence/targets and inputs; freeze baseline costs, failure cases and independent oracle. Record adopt/defer/reject before implementation.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R43.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/maplibre_regional_viewer_20261022/spec.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/test-matrix.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md#R43"
+    },
+    {
+      "id": "R43.3",
+      "track_id": "maplibre_regional_viewer_20261022",
+      "phase": "R43",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record accepted fixes, evidence and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R43.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/maplibre_regional_viewer_20261022/spec.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/test-matrix.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md#R43"
+    },
+    {
+      "id": "R44.1",
+      "track_id": "maplibre_regional_viewer_20261022",
+      "phase": "R44",
+      "objective": "Only after accepted adopt decision, add failing behavioural/negative tests and implement the bounded owner contract.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R43.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "line": 13
+      },
+      "context_paths": [
+        "conductor/tracks/maplibre_regional_viewer_20261022/spec.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/test-matrix.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md#R44"
+    },
+    {
+      "id": "R44.2",
+      "track_id": "maplibre_regional_viewer_20261022",
+      "phase": "R44",
+      "objective": "Prove recovery, provenance and reproducibility; remove superseded code only after qualified parity, without duplicate authority.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R44.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/maplibre_regional_viewer_20261022/spec.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/test-matrix.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md#R44"
+    },
+    {
+      "id": "R44.3",
+      "track_id": "maplibre_regional_viewer_20261022",
+      "phase": "R44",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record accepted fixes, evidence and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R44.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/maplibre_regional_viewer_20261022/spec.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/test-matrix.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md#R44"
+    },
+    {
+      "id": "R45.1",
+      "track_id": "maplibre_regional_viewer_20261022",
+      "phase": "R45",
+      "objective": "Run independent native/browser/service gates and measure full wrapper/operational cost against frozen budgets.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R44.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "line": 19
+      },
+      "context_paths": [
+        "conductor/tracks/maplibre_regional_viewer_20261022/spec.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/test-matrix.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md#R45"
+    },
+    {
+      "id": "R45.2",
+      "track_id": "maplibre_regional_viewer_20261022",
+      "phase": "R45",
+      "objective": "Record exact accepted commits/pins/versions and consumer evidence, limitations and rollback; keep conditional modes unaccepted until proven.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R45.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/maplibre_regional_viewer_20261022/spec.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/test-matrix.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md#R45"
+    },
+    {
+      "id": "R45.3",
+      "track_id": "maplibre_regional_viewer_20261022",
+      "phase": "R45",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record accepted fixes, evidence and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R45.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/maplibre_regional_viewer_20261022/spec.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/plan.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/test-matrix.md",
+        "conductor/tracks/maplibre_regional_viewer_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/maplibre_regional_viewer_20261022/plan.md#R45"
+    },
+    {
+      "id": "R46.1",
+      "track_id": "sumo_traffic_qualification_20261022",
+      "phase": "R46",
+      "objective": "Verify prerequisite and external receipts plus an accepted consumer question; stop if calibrated simpler models suffice.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R42.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/sumo_traffic_qualification_20261022/spec.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/test-matrix.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md#R46"
+    },
+    {
+      "id": "R46.2",
+      "track_id": "sumo_traffic_qualification_20261022",
+      "phase": "R46",
+      "objective": "Qualify exact dependency/version/features/licence/targets and inputs; freeze baseline costs, failure cases and independent oracle. Record adopt/defer/reject before implementation.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R46.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/sumo_traffic_qualification_20261022/spec.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/test-matrix.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md#R46"
+    },
+    {
+      "id": "R46.3",
+      "track_id": "sumo_traffic_qualification_20261022",
+      "phase": "R46",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record accepted fixes, evidence and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R46.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/sumo_traffic_qualification_20261022/spec.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/test-matrix.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md#R46"
+    },
+    {
+      "id": "R47.1",
+      "track_id": "sumo_traffic_qualification_20261022",
+      "phase": "R47",
+      "objective": "Only after accepted need, implement and qualify offline traffic scenarios first; live coupling needs a separate recorded value decision and exact clock/authority/recovery tests before its implementation.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R46.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "line": 13
+      },
+      "context_paths": [
+        "conductor/tracks/sumo_traffic_qualification_20261022/spec.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/test-matrix.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md#R47"
+    },
+    {
+      "id": "R47.2",
+      "track_id": "sumo_traffic_qualification_20261022",
+      "phase": "R47",
+      "objective": "Prove recovery, provenance and reproducibility; remove superseded code only after qualified parity, without duplicate authority.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R47.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/sumo_traffic_qualification_20261022/spec.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/test-matrix.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md#R47"
+    },
+    {
+      "id": "R47.3",
+      "track_id": "sumo_traffic_qualification_20261022",
+      "phase": "R47",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record accepted fixes, evidence and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R47.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/sumo_traffic_qualification_20261022/spec.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/test-matrix.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md#R47"
+    },
+    {
+      "id": "R48.1",
+      "track_id": "sumo_traffic_qualification_20261022",
+      "phase": "R48",
+      "objective": "Run independent native/browser/service gates and measure full wrapper/operational cost against frozen budgets.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R47.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "line": 19
+      },
+      "context_paths": [
+        "conductor/tracks/sumo_traffic_qualification_20261022/spec.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/test-matrix.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md#R48"
+    },
+    {
+      "id": "R48.2",
+      "track_id": "sumo_traffic_qualification_20261022",
+      "phase": "R48",
+      "objective": "Record exact accepted commits/pins/versions and consumer evidence, limitations and rollback; keep conditional modes unaccepted until proven.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R48.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/sumo_traffic_qualification_20261022/spec.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/test-matrix.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md#R48"
+    },
+    {
+      "id": "R48.3",
+      "track_id": "sumo_traffic_qualification_20261022",
+      "phase": "R48",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record accepted fixes, evidence and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R48.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/sumo_traffic_qualification_20261022/spec.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/plan.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/test-matrix.md",
+        "conductor/tracks/sumo_traffic_qualification_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/sumo_traffic_qualification_20261022/plan.md#R48"
+    },
+    {
+      "id": "R50.1",
+      "track_id": "sha2_integrity_20261022",
+      "phase": "R50",
+      "objective": "Verify upstream receipt and local prerequisites; inventory direct consumers and retained/deleted paths.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [],
+      "source": {
+        "path": "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/sha2_integrity_20261022/spec.md",
+        "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "conductor/tracks/sha2_integrity_20261022/test-matrix.md",
+        "conductor/tracks/sha2_integrity_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/sha2_integrity_20261022/plan.md#R50"
+    },
+    {
+      "id": "R50.2",
+      "track_id": "sha2_integrity_20261022",
+      "phase": "R50",
+      "objective": "Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R50.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/sha2_integrity_20261022/spec.md",
+        "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "conductor/tracks/sha2_integrity_20261022/test-matrix.md",
+        "conductor/tracks/sha2_integrity_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/sha2_integrity_20261022/plan.md#R50"
+    },
+    {
+      "id": "R50.3",
+      "track_id": "sha2_integrity_20261022",
+      "phase": "R50",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R50.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/sha2_integrity_20261022/spec.md",
+        "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "conductor/tracks/sha2_integrity_20261022/test-matrix.md",
+        "conductor/tracks/sha2_integrity_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/sha2_integrity_20261022/plan.md#R50"
+    },
+    {
+      "id": "R51.1",
+      "track_id": "sha2_integrity_20261022",
+      "phase": "R51",
+      "objective": "Add failing independent contract and recovery tests before replacement.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R50.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "line": 13
+      },
+      "context_paths": [
+        "conductor/tracks/sha2_integrity_20261022/spec.md",
+        "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "conductor/tracks/sha2_integrity_20261022/test-matrix.md",
+        "conductor/tracks/sha2_integrity_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/sha2_integrity_20261022/plan.md#R51"
+    },
+    {
+      "id": "R51.2",
+      "track_id": "sha2_integrity_20261022",
+      "phase": "R51",
+      "objective": "Replace only named machinery; delete duplicates, preserve semantic validation and version intentional changes.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R51.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/sha2_integrity_20261022/spec.md",
+        "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "conductor/tracks/sha2_integrity_20261022/test-matrix.md",
+        "conductor/tracks/sha2_integrity_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/sha2_integrity_20261022/plan.md#R51"
+    },
+    {
+      "id": "R51.3",
+      "track_id": "sha2_integrity_20261022",
+      "phase": "R51",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R51.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/sha2_integrity_20261022/spec.md",
+        "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "conductor/tracks/sha2_integrity_20261022/test-matrix.md",
+        "conductor/tracks/sha2_integrity_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/sha2_integrity_20261022/plan.md#R51"
+    },
+    {
+      "id": "R52.1",
+      "track_id": "sha2_integrity_20261022",
+      "phase": "R52",
+      "objective": "Run independent oracle, mutation/recovery controls and measure net maintenance/build/runtime cost.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R51.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "line": 19
+      },
+      "context_paths": [
+        "conductor/tracks/sha2_integrity_20261022/spec.md",
+        "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "conductor/tracks/sha2_integrity_20261022/test-matrix.md",
+        "conductor/tracks/sha2_integrity_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/sha2_integrity_20261022/plan.md#R52"
+    },
+    {
+      "id": "R52.2",
+      "track_id": "sha2_integrity_20261022",
+      "phase": "R52",
+      "objective": "Record accepted immutable parent/upstream commits, exact features, receipts and remaining Polars obligations.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R52.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/sha2_integrity_20261022/spec.md",
+        "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "conductor/tracks/sha2_integrity_20261022/test-matrix.md",
+        "conductor/tracks/sha2_integrity_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/sha2_integrity_20261022/plan.md#R52"
+    },
+    {
+      "id": "R52.3",
+      "track_id": "sha2_integrity_20261022",
+      "phase": "R52",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R52.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/sha2_integrity_20261022/spec.md",
+        "conductor/tracks/sha2_integrity_20261022/plan.md",
+        "conductor/tracks/sha2_integrity_20261022/test-matrix.md",
+        "conductor/tracks/sha2_integrity_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/sha2_integrity_20261022/plan.md#R52"
+    },
+    {
+      "id": "R53.1",
+      "track_id": "tempfile_publication_20261022",
+      "phase": "R53",
+      "objective": "Verify upstream receipt and local prerequisites; inventory direct consumers and retained/deleted paths.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [],
+      "source": {
+        "path": "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/tempfile_publication_20261022/spec.md",
+        "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "conductor/tracks/tempfile_publication_20261022/test-matrix.md",
+        "conductor/tracks/tempfile_publication_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/tempfile_publication_20261022/plan.md#R53"
+    },
+    {
+      "id": "R53.2",
+      "track_id": "tempfile_publication_20261022",
+      "phase": "R53",
+      "objective": "Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R53.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/tempfile_publication_20261022/spec.md",
+        "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "conductor/tracks/tempfile_publication_20261022/test-matrix.md",
+        "conductor/tracks/tempfile_publication_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/tempfile_publication_20261022/plan.md#R53"
+    },
+    {
+      "id": "R53.3",
+      "track_id": "tempfile_publication_20261022",
+      "phase": "R53",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R53.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/tempfile_publication_20261022/spec.md",
+        "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "conductor/tracks/tempfile_publication_20261022/test-matrix.md",
+        "conductor/tracks/tempfile_publication_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/tempfile_publication_20261022/plan.md#R53"
+    },
+    {
+      "id": "R54.1",
+      "track_id": "tempfile_publication_20261022",
+      "phase": "R54",
+      "objective": "Add failing independent contract and recovery tests before replacement.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R53.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "line": 13
+      },
+      "context_paths": [
+        "conductor/tracks/tempfile_publication_20261022/spec.md",
+        "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "conductor/tracks/tempfile_publication_20261022/test-matrix.md",
+        "conductor/tracks/tempfile_publication_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/tempfile_publication_20261022/plan.md#R54"
+    },
+    {
+      "id": "R54.2",
+      "track_id": "tempfile_publication_20261022",
+      "phase": "R54",
+      "objective": "Replace only named machinery; delete duplicates, preserve semantic validation and version intentional changes.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R54.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/tempfile_publication_20261022/spec.md",
+        "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "conductor/tracks/tempfile_publication_20261022/test-matrix.md",
+        "conductor/tracks/tempfile_publication_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/tempfile_publication_20261022/plan.md#R54"
+    },
+    {
+      "id": "R54.3",
+      "track_id": "tempfile_publication_20261022",
+      "phase": "R54",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R54.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/tempfile_publication_20261022/spec.md",
+        "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "conductor/tracks/tempfile_publication_20261022/test-matrix.md",
+        "conductor/tracks/tempfile_publication_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/tempfile_publication_20261022/plan.md#R54"
+    },
+    {
+      "id": "R55.1",
+      "track_id": "tempfile_publication_20261022",
+      "phase": "R55",
+      "objective": "Run independent oracle, mutation/recovery controls and measure net maintenance/build/runtime cost.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R54.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "line": 19
+      },
+      "context_paths": [
+        "conductor/tracks/tempfile_publication_20261022/spec.md",
+        "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "conductor/tracks/tempfile_publication_20261022/test-matrix.md",
+        "conductor/tracks/tempfile_publication_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/tempfile_publication_20261022/plan.md#R55"
+    },
+    {
+      "id": "R55.2",
+      "track_id": "tempfile_publication_20261022",
+      "phase": "R55",
+      "objective": "Record accepted immutable parent/upstream commits, exact features, receipts and remaining Polars obligations.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R55.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/tempfile_publication_20261022/spec.md",
+        "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "conductor/tracks/tempfile_publication_20261022/test-matrix.md",
+        "conductor/tracks/tempfile_publication_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/tempfile_publication_20261022/plan.md#R55"
+    },
+    {
+      "id": "R55.3",
+      "track_id": "tempfile_publication_20261022",
+      "phase": "R55",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R55.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/tempfile_publication_20261022/spec.md",
+        "conductor/tracks/tempfile_publication_20261022/plan.md",
+        "conductor/tracks/tempfile_publication_20261022/test-matrix.md",
+        "conductor/tracks/tempfile_publication_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/tempfile_publication_20261022/plan.md#R55"
+    },
+    {
+      "id": "R56.1",
+      "track_id": "thiserror_contracts_20261022",
+      "phase": "R56",
+      "objective": "Verify upstream receipt and local prerequisites; inventory direct consumers and retained/deleted paths.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R14.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/thiserror_contracts_20261022/spec.md",
+        "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "conductor/tracks/thiserror_contracts_20261022/test-matrix.md",
+        "conductor/tracks/thiserror_contracts_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/thiserror_contracts_20261022/plan.md#R56"
+    },
+    {
+      "id": "R56.2",
+      "track_id": "thiserror_contracts_20261022",
+      "phase": "R56",
+      "objective": "Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R56.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/thiserror_contracts_20261022/spec.md",
+        "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "conductor/tracks/thiserror_contracts_20261022/test-matrix.md",
+        "conductor/tracks/thiserror_contracts_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/thiserror_contracts_20261022/plan.md#R56"
+    },
+    {
+      "id": "R56.3",
+      "track_id": "thiserror_contracts_20261022",
+      "phase": "R56",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R56.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/thiserror_contracts_20261022/spec.md",
+        "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "conductor/tracks/thiserror_contracts_20261022/test-matrix.md",
+        "conductor/tracks/thiserror_contracts_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/thiserror_contracts_20261022/plan.md#R56"
+    },
+    {
+      "id": "R57.1",
+      "track_id": "thiserror_contracts_20261022",
+      "phase": "R57",
+      "objective": "Add failing independent contract and recovery tests before replacement.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R56.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "line": 13
+      },
+      "context_paths": [
+        "conductor/tracks/thiserror_contracts_20261022/spec.md",
+        "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "conductor/tracks/thiserror_contracts_20261022/test-matrix.md",
+        "conductor/tracks/thiserror_contracts_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/thiserror_contracts_20261022/plan.md#R57"
+    },
+    {
+      "id": "R57.2",
+      "track_id": "thiserror_contracts_20261022",
+      "phase": "R57",
+      "objective": "Replace only named machinery; delete duplicates, preserve semantic validation and version intentional changes.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R57.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/thiserror_contracts_20261022/spec.md",
+        "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "conductor/tracks/thiserror_contracts_20261022/test-matrix.md",
+        "conductor/tracks/thiserror_contracts_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/thiserror_contracts_20261022/plan.md#R57"
+    },
+    {
+      "id": "R57.3",
+      "track_id": "thiserror_contracts_20261022",
+      "phase": "R57",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R57.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/thiserror_contracts_20261022/spec.md",
+        "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "conductor/tracks/thiserror_contracts_20261022/test-matrix.md",
+        "conductor/tracks/thiserror_contracts_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/thiserror_contracts_20261022/plan.md#R57"
+    },
+    {
+      "id": "R58.1",
+      "track_id": "thiserror_contracts_20261022",
+      "phase": "R58",
+      "objective": "Run independent oracle, mutation/recovery controls and measure net maintenance/build/runtime cost.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R57.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "line": 19
+      },
+      "context_paths": [
+        "conductor/tracks/thiserror_contracts_20261022/spec.md",
+        "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "conductor/tracks/thiserror_contracts_20261022/test-matrix.md",
+        "conductor/tracks/thiserror_contracts_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/thiserror_contracts_20261022/plan.md#R58"
+    },
+    {
+      "id": "R58.2",
+      "track_id": "thiserror_contracts_20261022",
+      "phase": "R58",
+      "objective": "Record accepted immutable parent/upstream commits, exact features, receipts and remaining Polars obligations.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R58.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/thiserror_contracts_20261022/spec.md",
+        "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "conductor/tracks/thiserror_contracts_20261022/test-matrix.md",
+        "conductor/tracks/thiserror_contracts_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/thiserror_contracts_20261022/plan.md#R58"
+    },
+    {
+      "id": "R58.3",
+      "track_id": "thiserror_contracts_20261022",
+      "phase": "R58",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R58.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/thiserror_contracts_20261022/spec.md",
+        "conductor/tracks/thiserror_contracts_20261022/plan.md",
+        "conductor/tracks/thiserror_contracts_20261022/test-matrix.md",
+        "conductor/tracks/thiserror_contracts_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/thiserror_contracts_20261022/plan.md#R58"
+    },
+    {
+      "id": "R59.1",
+      "track_id": "proptest_invariants_20261022",
+      "phase": "R59",
+      "objective": "Verify upstream receipt and local prerequisites; inventory direct consumers and retained/deleted paths.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [],
+      "source": {
+        "path": "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/proptest_invariants_20261022/spec.md",
+        "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "conductor/tracks/proptest_invariants_20261022/test-matrix.md",
+        "conductor/tracks/proptest_invariants_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/proptest_invariants_20261022/plan.md#R59"
+    },
+    {
+      "id": "R59.2",
+      "track_id": "proptest_invariants_20261022",
+      "phase": "R59",
+      "objective": "Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R59.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/proptest_invariants_20261022/spec.md",
+        "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "conductor/tracks/proptest_invariants_20261022/test-matrix.md",
+        "conductor/tracks/proptest_invariants_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/proptest_invariants_20261022/plan.md#R59"
+    },
+    {
+      "id": "R59.3",
+      "track_id": "proptest_invariants_20261022",
+      "phase": "R59",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R59.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/proptest_invariants_20261022/spec.md",
+        "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "conductor/tracks/proptest_invariants_20261022/test-matrix.md",
+        "conductor/tracks/proptest_invariants_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/proptest_invariants_20261022/plan.md#R59"
+    },
+    {
+      "id": "R60.1",
+      "track_id": "proptest_invariants_20261022",
+      "phase": "R60",
+      "objective": "Add failing independent contract and recovery tests before replacement.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R59.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "line": 13
+      },
+      "context_paths": [
+        "conductor/tracks/proptest_invariants_20261022/spec.md",
+        "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "conductor/tracks/proptest_invariants_20261022/test-matrix.md",
+        "conductor/tracks/proptest_invariants_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/proptest_invariants_20261022/plan.md#R60"
+    },
+    {
+      "id": "R60.2",
+      "track_id": "proptest_invariants_20261022",
+      "phase": "R60",
+      "objective": "Replace only named machinery; delete duplicates, preserve semantic validation and version intentional changes.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R60.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/proptest_invariants_20261022/spec.md",
+        "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "conductor/tracks/proptest_invariants_20261022/test-matrix.md",
+        "conductor/tracks/proptest_invariants_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/proptest_invariants_20261022/plan.md#R60"
+    },
+    {
+      "id": "R60.3",
+      "track_id": "proptest_invariants_20261022",
+      "phase": "R60",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R60.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/proptest_invariants_20261022/spec.md",
+        "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "conductor/tracks/proptest_invariants_20261022/test-matrix.md",
+        "conductor/tracks/proptest_invariants_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/proptest_invariants_20261022/plan.md#R60"
+    },
+    {
+      "id": "R61.1",
+      "track_id": "proptest_invariants_20261022",
+      "phase": "R61",
+      "objective": "Run independent oracle, mutation/recovery controls and measure net maintenance/build/runtime cost.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R60.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "line": 19
+      },
+      "context_paths": [
+        "conductor/tracks/proptest_invariants_20261022/spec.md",
+        "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "conductor/tracks/proptest_invariants_20261022/test-matrix.md",
+        "conductor/tracks/proptest_invariants_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/proptest_invariants_20261022/plan.md#R61"
+    },
+    {
+      "id": "R61.2",
+      "track_id": "proptest_invariants_20261022",
+      "phase": "R61",
+      "objective": "Record accepted immutable parent/upstream commits, exact features, receipts and remaining Polars obligations.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R61.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/proptest_invariants_20261022/spec.md",
+        "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "conductor/tracks/proptest_invariants_20261022/test-matrix.md",
+        "conductor/tracks/proptest_invariants_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/proptest_invariants_20261022/plan.md#R61"
+    },
+    {
+      "id": "R61.3",
+      "track_id": "proptest_invariants_20261022",
+      "phase": "R61",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R61.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/proptest_invariants_20261022/spec.md",
+        "conductor/tracks/proptest_invariants_20261022/plan.md",
+        "conductor/tracks/proptest_invariants_20261022/test-matrix.md",
+        "conductor/tracks/proptest_invariants_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/proptest_invariants_20261022/plan.md#R61"
+    },
+    {
+      "id": "R62.1",
+      "track_id": "jsonschema_validation_20261022",
+      "phase": "R62",
+      "objective": "Verify local and upstream receipts, current owners and actual consumer; inventory replace/retain scope.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R14.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/jsonschema_validation_20261022/spec.md",
+        "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "conductor/tracks/jsonschema_validation_20261022/test-matrix.md",
+        "conductor/tracks/jsonschema_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/jsonschema_validation_20261022/plan.md#R62"
+    },
+    {
+      "id": "R62.2",
+      "track_id": "jsonschema_validation_20261022",
+      "phase": "R62",
+      "objective": "Qualify dependency or existing-tooling baseline, shared corpus, exact options/features, and value/cost decision.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R62.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/jsonschema_validation_20261022/spec.md",
+        "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "conductor/tracks/jsonschema_validation_20261022/test-matrix.md",
+        "conductor/tracks/jsonschema_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/jsonschema_validation_20261022/plan.md#R62"
+    },
+    {
+      "id": "R62.3",
+      "track_id": "jsonschema_validation_20261022",
+      "phase": "R62",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record fixes and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R62.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/jsonschema_validation_20261022/spec.md",
+        "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "conductor/tracks/jsonschema_validation_20261022/test-matrix.md",
+        "conductor/tracks/jsonschema_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/jsonschema_validation_20261022/plan.md#R62"
+    },
+    {
+      "id": "R63.1",
+      "track_id": "jsonschema_validation_20261022",
+      "phase": "R63",
+      "objective": "Write failing independent behavioural/negative tests and establish compatibility decisions.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R62.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "line": 13
+      },
+      "context_paths": [
+        "conductor/tracks/jsonschema_validation_20261022/spec.md",
+        "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "conductor/tracks/jsonschema_validation_20261022/test-matrix.md",
+        "conductor/tracks/jsonschema_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/jsonschema_validation_20261022/plan.md#R63"
+    },
+    {
+      "id": "R63.2",
+      "track_id": "jsonschema_validation_20261022",
+      "phase": "R63",
+      "objective": "Implement only the qualified scope; remove demonstrated duplication and retain semantic checks and receipt consumers.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R63.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/jsonschema_validation_20261022/spec.md",
+        "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "conductor/tracks/jsonschema_validation_20261022/test-matrix.md",
+        "conductor/tracks/jsonschema_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/jsonschema_validation_20261022/plan.md#R63"
+    },
+    {
+      "id": "R63.3",
+      "track_id": "jsonschema_validation_20261022",
+      "phase": "R63",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record fixes and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R63.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/jsonschema_validation_20261022/spec.md",
+        "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "conductor/tracks/jsonschema_validation_20261022/test-matrix.md",
+        "conductor/tracks/jsonschema_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/jsonschema_validation_20261022/plan.md#R63"
+    },
+    {
+      "id": "R64.1",
+      "track_id": "jsonschema_validation_20261022",
+      "phase": "R64",
+      "objective": "Run independent native/browser/benchmark tests and cost measurements against frozen budgets.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R63.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "line": 19
+      },
+      "context_paths": [
+        "conductor/tracks/jsonschema_validation_20261022/spec.md",
+        "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "conductor/tracks/jsonschema_validation_20261022/test-matrix.md",
+        "conductor/tracks/jsonschema_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/jsonschema_validation_20261022/plan.md#R64"
+    },
+    {
+      "id": "R64.2",
+      "track_id": "jsonschema_validation_20261022",
+      "phase": "R64",
+      "objective": "Record exact accepted commit, hashes/options/features, downstream obligations and no-go/defer limitations.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R64.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/jsonschema_validation_20261022/spec.md",
+        "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "conductor/tracks/jsonschema_validation_20261022/test-matrix.md",
+        "conductor/tracks/jsonschema_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/jsonschema_validation_20261022/plan.md#R64"
+    },
+    {
+      "id": "R64.3",
+      "track_id": "jsonschema_validation_20261022",
+      "phase": "R64",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record fixes and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R64.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/jsonschema_validation_20261022/spec.md",
+        "conductor/tracks/jsonschema_validation_20261022/plan.md",
+        "conductor/tracks/jsonschema_validation_20261022/test-matrix.md",
+        "conductor/tracks/jsonschema_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/jsonschema_validation_20261022/plan.md#R64"
+    },
+    {
+      "id": "R65.1",
+      "track_id": "ajv_dashboard_validation_20261022",
+      "phase": "R65",
+      "objective": "Verify local and upstream receipts, current owners and actual consumer; inventory replace/retain scope.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R64.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/ajv_dashboard_validation_20261022/spec.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/test-matrix.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md#R65"
+    },
+    {
+      "id": "R65.2",
+      "track_id": "ajv_dashboard_validation_20261022",
+      "phase": "R65",
+      "objective": "Qualify dependency or existing-tooling baseline, shared corpus, exact options/features, and value/cost decision.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R65.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/ajv_dashboard_validation_20261022/spec.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/test-matrix.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md#R65"
+    },
+    {
+      "id": "R65.3",
+      "track_id": "ajv_dashboard_validation_20261022",
+      "phase": "R65",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record fixes and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R65.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/ajv_dashboard_validation_20261022/spec.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/test-matrix.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md#R65"
+    },
+    {
+      "id": "R66.1",
+      "track_id": "ajv_dashboard_validation_20261022",
+      "phase": "R66",
+      "objective": "Write failing independent behavioural/negative tests and establish compatibility decisions.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R65.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "line": 13
+      },
+      "context_paths": [
+        "conductor/tracks/ajv_dashboard_validation_20261022/spec.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/test-matrix.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md#R66"
+    },
+    {
+      "id": "R66.2",
+      "track_id": "ajv_dashboard_validation_20261022",
+      "phase": "R66",
+      "objective": "Implement only the qualified scope; remove demonstrated duplication and retain semantic checks and receipt consumers.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R66.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/ajv_dashboard_validation_20261022/spec.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/test-matrix.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md#R66"
+    },
+    {
+      "id": "R66.3",
+      "track_id": "ajv_dashboard_validation_20261022",
+      "phase": "R66",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record fixes and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R66.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/ajv_dashboard_validation_20261022/spec.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/test-matrix.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md#R66"
+    },
+    {
+      "id": "R67.1",
+      "track_id": "ajv_dashboard_validation_20261022",
+      "phase": "R67",
+      "objective": "Run independent native/browser/benchmark tests and cost measurements against frozen budgets.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R66.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "line": 19
+      },
+      "context_paths": [
+        "conductor/tracks/ajv_dashboard_validation_20261022/spec.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/test-matrix.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md#R67"
+    },
+    {
+      "id": "R67.2",
+      "track_id": "ajv_dashboard_validation_20261022",
+      "phase": "R67",
+      "objective": "Record exact accepted commit, hashes/options/features, downstream obligations and no-go/defer limitations.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R67.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/ajv_dashboard_validation_20261022/spec.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/test-matrix.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md#R67"
+    },
+    {
+      "id": "R67.3",
+      "track_id": "ajv_dashboard_validation_20261022",
+      "phase": "R67",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record fixes and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R67.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/ajv_dashboard_validation_20261022/spec.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/plan.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/test-matrix.md",
+        "conductor/tracks/ajv_dashboard_validation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/ajv_dashboard_validation_20261022/plan.md#R67"
+    },
+    {
+      "id": "R68.1",
+      "track_id": "criterion_benchmark_consolidation_20261022",
+      "phase": "R68",
+      "objective": "Verify local and upstream receipts, current owners and actual consumer; inventory replace/retain scope.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [],
+      "source": {
+        "path": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "line": 7
+      },
+      "context_paths": [
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/spec.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/test-matrix.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md#R68"
+    },
+    {
+      "id": "R68.2",
+      "track_id": "criterion_benchmark_consolidation_20261022",
+      "phase": "R68",
+      "objective": "Qualify dependency or existing-tooling baseline, shared corpus, exact options/features, and value/cost decision.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R68.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "line": 8
+      },
+      "context_paths": [
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/spec.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/test-matrix.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md#R68"
+    },
+    {
+      "id": "R68.3",
+      "track_id": "criterion_benchmark_consolidation_20261022",
+      "phase": "R68",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record fixes and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R68.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "line": 9
+      },
+      "context_paths": [
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/spec.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/test-matrix.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md#R68"
+    },
+    {
+      "id": "R69.1",
+      "track_id": "criterion_benchmark_consolidation_20261022",
+      "phase": "R69",
+      "objective": "Write failing independent behavioural/negative tests and establish compatibility decisions.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R68.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "line": 13
+      },
+      "context_paths": [
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/spec.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/test-matrix.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md#R69"
+    },
+    {
+      "id": "R69.2",
+      "track_id": "criterion_benchmark_consolidation_20261022",
+      "phase": "R69",
+      "objective": "Implement only the qualified scope; remove demonstrated duplication and retain semantic checks and receipt consumers.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "R69.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "line": 14
+      },
+      "context_paths": [
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/spec.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/test-matrix.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md#R69"
+    },
+    {
+      "id": "R69.3",
+      "track_id": "criterion_benchmark_consolidation_20261022",
+      "phase": "R69",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record fixes and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R69.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "line": 15
+      },
+      "context_paths": [
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/spec.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/test-matrix.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md#R69"
+    },
+    {
+      "id": "R70.1",
+      "track_id": "criterion_benchmark_consolidation_20261022",
+      "phase": "R70",
+      "objective": "Run independent native/browser/benchmark tests and cost measurements against frozen budgets.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R69.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "line": 19
+      },
+      "context_paths": [
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/spec.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/test-matrix.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md#R70"
+    },
+    {
+      "id": "R70.2",
+      "track_id": "criterion_benchmark_consolidation_20261022",
+      "phase": "R70",
+      "objective": "Record exact accepted commit, hashes/options/features, downstream obligations and no-go/defer limitations.",
+      "kind": "contract_decision",
+      "accepted": false,
+      "dependencies": [
+        "R70.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "line": 20
+      },
+      "context_paths": [
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/spec.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/test-matrix.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor",
+        "tools",
+        "tests",
+        "libs/kairos"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md#R70"
+    },
+    {
+      "id": "R70.3",
+      "track_id": "criterion_benchmark_consolidation_20261022",
+      "phase": "R70",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); record fixes and explicit next-phase decision.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "R70.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "line": 21
+      },
+      "context_paths": [
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/spec.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/test-matrix.md",
+        "conductor/tracks/criterion_benchmark_consolidation_20261022/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/criterion_benchmark_consolidation_20261022/plan.md#R70"
+    },
+    {
       "id": "A0.1",
       "track_id": "careops_core_domain_abstractions_20261020",
       "phase": "A0",

@@ -1,0 +1,43 @@
+{
+  "track_id": "echarts_dashboard_20261022",
+  "title": "Apache ECharts analytical dashboard adoption",
+  "type": "feature",
+  "status": "proposed",
+  "created_at": "2026-10-22",
+  "updated_at": "2026-10-22",
+  "spec_approved": true,
+  "implementation_started": false,
+  "accepted_phases": [],
+  "approval_basis": "User-approved adoption plan; explicit separate library/dependency tracks. No runtime acceptance.",
+  "library": "echarts",
+  "active_phase": null,
+  "phase_dependencies": {
+    "R26": [],
+    "R27": [
+      "R26"
+    ],
+    "R28": [
+      "R27"
+    ]
+  },
+  "milestone_dependencies": [
+    {
+      "milestone": "R26",
+      "requires": "rand_distr_sampling_20261022:R25"
+    },
+    {
+      "milestone": "R27",
+      "requires": "ajv_dashboard_validation_20261022:R67"
+    }
+  ],
+  "external_dependencies": [
+    {
+      "repository": "kairos",
+      "track": "78",
+      "phase": "2",
+      "status": "unresolved",
+      "gate_task": "R26.1",
+      "required_receipt": "Accepted Rayon robustness track and parent consumer verification after sampling R25"
+    }
+  ]
+}

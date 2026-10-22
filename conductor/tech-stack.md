@@ -46,3 +46,19 @@ The [spatial capability plan](spatial-visualization.md) records capture/CAD → 
 floor-plan package → PixiJS visualization and Kairos simulation, connected through
 WebSocket state sync. Early native development uses synthetic graphs; full capture/
 CAD adapters are separately qualified later. The backend remains authoritative.
+
+## Approved future library adoption
+
+[Programme](library-adoption.md) supersedes the permanent PixiJS target for future qualified viewer work: Three.js orthographic then multi-floor, with parity-gated retirement. ECharts owns analytical charts; Kairos owns rand/rand_distr/petgraph integration. These are planned dependencies, not installed capabilities. The existing renderer remains until replacement acceptance.
+
+## Robustness-first qualification — 22 October 2026
+
+[Programme](robust-dependencies.md) records separate dependency tracks and conditional alternatives. These are planned choices, not installed capabilities. Reconcile MSRV from current source/CI in both repositories; old 1.76 prose is not a fresh manifest readback. No automatic non-Rust service adoption.
+
+## Dependency sequencing refinement
+
+See [current sequencing](dependency-sequencing.md): bounded sha2/tempfile/proptest before Polars acceptance; thiserror after CLI foundation and before RNG; diagnostics/concurrency/state-machine additions conditional. No implementation acceptance.
+
+## Validation/tooling refinement
+
+[Sequencing](dependency-sequencing.md) registers Criterion reuse, schema-validation gates and conditional ODE/WebSocket work. No runtime acceptance.

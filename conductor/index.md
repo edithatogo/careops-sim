@@ -65,3 +65,19 @@ The [Luna MVP workpack](execution/mvp/README.md) covers all 82 MVP parent tasks 
 bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind reviewed
 context/commands just before dispatch. No autonomous execution or model
 qualification is claimed.
+
+## Planned Polars migration
+
+[CareOps migration](tracks/polars_data_processing_20261022/index.md) follows accepted Kairos Track 70. Planning registered; implementation not started.
+
+## Separate library adoption tracks
+
+[Library adoption programme](library-adoption.md) registers rand, rand_distr, ECharts, petgraph and Three.js separately, after accepted Polars delivery in both repositories. All implementation remains pending.
+
+## Robustness-first dependency decisions
+
+[Separate dependency tracks and sequencing](robust-dependencies.md) prioritise existing-system robustness. [Value gates](dependency-value-policy.md) prevent adoption for its own sake. SUMO conditional; Rapier deferred.
+
+- [Dependency sequencing and prerequisite gates](dependency-sequencing.md)
+
+[Validation/tooling planning review](validation-tooling-review.md)

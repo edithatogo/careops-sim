@@ -65,3 +65,58 @@ No broad new research round is a prerequisite. Track checkboxes retain only thei
 [Functional MVP → hardened native v1 → extensions](delivery-contract.md) defines the
 required features and acceptance recipes. E2 is the functional headless MVP; E4
 is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.
+
+---
+- [ ] **Track: CareOps whole-layer Polars migration** — Proposed; requires accepted Kairos Track 70 Phase 4. [Track](tracks/polars_data_processing_20261022/index.md).
+
+---
+- [ ] **Track: rand deterministic RNG adoption** — Proposed; implementation not started. [Track](tracks/rand_rng_adoption_20261022/index.md).
+
+---
+- [ ] **Track: rand_distr statistical sampling adoption** — Proposed; implementation not started. [Track](tracks/rand_distr_sampling_20261022/index.md).
+
+---
+- [ ] **Track: Apache ECharts analytical dashboard adoption** — Proposed; implementation not started. [Track](tracks/echarts_dashboard_20261022/index.md).
+
+---
+- [ ] **Track: petgraph spatial topology and routing adoption** — Proposed; implementation not started. [Track](tracks/petgraph_spatial_routing_20261022/index.md).
+
+---
+- [ ] **Track: Three.js unified spatial viewer adoption** — Proposed; implementation not started. [Track](tracks/threejs_spatial_viewer_20261022/index.md).
+
+---
+- [ ] **Track: Valhalla road-route qualification** — Proposed, conditional value gate unresolved. [Track](tracks/valhalla_transport_20261022/index.md).
+
+---
+- [ ] **Track: MapLibre regional transport viewer** — Proposed, conditional value gate unresolved. [Track](tracks/maplibre_regional_viewer_20261022/index.md).
+
+---
+- [ ] **Track: Conditional SUMO traffic co-simulation** — Proposed, conditional value gate unresolved. [Track](tracks/sumo_traffic_qualification_20261022/index.md).
+
+---
+- [ ] **Track: CareOps sha2**
+  - Link: [sha2_integrity_20261022](tracks/sha2_integrity_20261022/index.md)
+
+---
+- [ ] **Track: CareOps tempfile**
+  - Link: [tempfile_publication_20261022](tracks/tempfile_publication_20261022/index.md)
+
+---
+- [ ] **Track: CareOps thiserror**
+  - Link: [thiserror_contracts_20261022](tracks/thiserror_contracts_20261022/index.md)
+
+---
+- [ ] **Track: CareOps proptest**
+  - Link: [proptest_invariants_20261022](tracks/proptest_invariants_20261022/index.md)
+
+---
+- [ ] **Track: CareOps jsonschema new-dependency-qualification**
+  - Link: [jsonschema_validation_20261022](tracks/jsonschema_validation_20261022/index.md)
+
+---
+- [ ] **Track: CareOps ajv new-dependency-qualification**
+  - Link: [ajv_dashboard_validation_20261022](tracks/ajv_dashboard_validation_20261022/index.md)
+
+---
+- [ ] **Track: CareOps criterion existing-tooling**
+  - Link: [criterion_benchmark_consolidation_20261022](tracks/criterion_benchmark_consolidation_20261022/index.md)
