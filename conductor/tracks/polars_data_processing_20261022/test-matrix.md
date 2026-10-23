@@ -12,3 +12,5 @@ All runtime rows below are required future tests, not tests already implemented 
 | phase-closeout-check | Conductor review, fixes, clean source, exact receipts; unavailable hardware/hosted checks remain unavailable |
 
 Planning validators: `python3 tools/context.py check`; `python3 tools/tasks.py build` then `python3 tools/tasks.py check`. Runtime: `cargo test --workspace --locked`, targeted ED/birthing tests, `python3 -m unittest discover -s tests -v`, independent-reader and existing performance gates. Execute inherited upstream phase validators only against the accepted initialized submodule; never count missing tools as a pass.
+
+Inventory gate: each digest/staging/property target has a source path, owner, removal or retention decision and, where required, an exact dependent task and receipt/oracle. No affected dispatch with unresolved required work. Unrelated tasks remain eligible; all existing runtime acceptance oracles remain mandatory.

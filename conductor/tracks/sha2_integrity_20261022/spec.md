@@ -4,11 +4,11 @@ Planned only. Apply [value policy](../../dependency-value-policy.md) and [sequen
 
 ## Inputs and dependencies
 
-Accepted Kairos Track 93 Phase 2 receipt; local milestones none. Do not wait for Polars to finish when this track is its prerequisite.
+Accepted Kairos Track 93 Phase 2 receipt; local milestones none. Do not block all Polars work on this track; qualify any required receipt before the named dependent migration task.
 
 ## Outputs and contract
 
-Replace sha256_simple (which is not SHA-256) only where retained contracts require SHA-256. Delete the obsolete pseudo-Parquet codec through Track 70 rather than repairing it into a parallel format. Qualify standard SHA-256 primitives and retained consumers before Track 70; do not require completed Polars outputs for this track to close. Version any changed digest/format contract; preserve historical artifacts and reject incompatible formats explicitly. Keep noncryptographic identity hashes and RNG stream assignments unchanged. CareOps already declares sha2 but still maintains handwritten SHA-256: package presence is not migration.
+Replace sha256_simple (which is not SHA-256) only where retained contracts require SHA-256. Delete the obsolete pseudo-Parquet codec through Track 70 rather than repairing it into a parallel format. Qualify standard SHA-256 primitives and retained consumers before the specific migration task that needs them; do not require completed Polars outputs for this track to close. Version any changed digest/format contract; preserve historical artifacts and reject incompatible formats explicitly. Keep noncryptographic identity hashes and RNG stream assignments unchanged. CareOps already declares sha2 but still maintains handwritten SHA-256: package presence is not migration.
 
 ## Ownership
 

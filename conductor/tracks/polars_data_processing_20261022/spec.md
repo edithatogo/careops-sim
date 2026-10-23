@@ -64,7 +64,7 @@ Record command, cwd, commit, toolchain, exact dependency/features, seed/input ha
 
 ## Dependency sequencing refinement — 22 October 2026
 
-R10 upstream entry remains. Before R11 starts require parent sha2 R52, tempfile R55 and proptest R61 accepted receipts. These parent prerequisite tracks have no dependency on completed Polars, preventing a cycle. R11/R13 retain real-format interruption, durability and resume tests; prerequisite acceptance is not output acceptance.
+Track 70 starts with Phase 0 inventory and migration-boundary decisions; Tracks 93/94/96 are not blanket entry or runtime-migration prerequisites. For each digest, staging or property-test target, record its path, owner and disposition: removed by Polars, retained and required for a named migration task, or independent. Before dispatching an affected task, record the exact prerequisite task/receipt and acceptance oracle in the owning plan and dispatch packet (and the CareOps task graph where representable). Unresolved required work blocks that task only; unrelated migration work may proceed under existing ownership and contract gates. Do not retrofit code scheduled for deletion. If no targets remain, record a reviewed scope-elimination decision without claiming adoption. Required integrity, durability, interoperability, replay and independent test evidence remain mandatory in Polars. Separate dependency tracks and current owner handoffs remain in force.
 
 ## Remote-baseline reconciliation
 
