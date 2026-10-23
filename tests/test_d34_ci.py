@@ -48,7 +48,7 @@ class D34CiTests(unittest.TestCase):
             with self.subTest(binding=binding):
                 self.assertIn(binding, step)
         self.assertIn(
-            "python3 tools/ed_benchmarks.py --binary target/release/careops-ed "
+            '"$CAREOPS_PYTHON" tools/ed_benchmarks.py --binary target/release/careops-ed '
             "--output .artifacts/ci/d34/report.json",
             step,
         )

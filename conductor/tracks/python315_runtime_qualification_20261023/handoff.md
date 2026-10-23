@@ -29,3 +29,7 @@ All seven parent Python workflows now verify a repository-local `.venv` after so
 ## Focused test and workflow regression policy
 
 Native unittest selectors remain the default. Repository instructions now specify focused files/classes/methods during edits, broader selection for dependency/configuration/schema/fixture or unknown impact, per-worktree caches and unchanged full milestone/integration/security gates. Future pytest cache modes have explicit semantics and do not imply zero-test proof; no global retries or skip/xfail speed workaround. Seven runtime/CI-binding cases and 22 workflow contract cases pass; see [selector receipt](selector-evidence/receipt.json). Pytest plugins are not introduced into this unittest repository without a demonstrated lane and separate exact-version qualification. The full harness is running and is not yet accepted.
+
+## Full harness reconciliation
+
+The full 717-test local harness executed on Python 3.15.1 (342 seconds). It found one assertion and 12 subtest errors, all in three workflow fixture files that still selected/asserted `python3` instead of the verified `CAREOPS_PYTHON` command. Updating those fixture bindings preserves the actual inline receipt scripts and their first-failure/unexecuted-stage checks. All eight tests in the three affected files now pass. See [full output and focused-fix receipt](full-suite-reconciliation/receipt.json). Retained successful unaffected evidence avoids another edit-loop full run; final full hosted integration remains mandatory.
