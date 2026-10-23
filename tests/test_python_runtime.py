@@ -47,6 +47,27 @@ class LocalPythonTests(unittest.TestCase):
             self.assertEqual(marker.read_text(), 'in-flight recovery state')
             self.assertEqual((root / '.venv/pyvenv.cfg').read_bytes(), config)
 
+    @unittest.skipIf(os.name == 'nt', 'POSIX bootstrap symlinks are not a Windows capability')
+    def test_bootstrap_through_external_symlink_retains_the_standard_library(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            shim = root / 'bin/python3.15'
+            shim.parent.mkdir()
+            shim.symlink_to(Path(sys._base_executable).resolve())
+            project = root / 'project'
+            project.mkdir()
+            result = subprocess.run([str(shim), str(SCRIPT), '--root', str(project)],
+                                    text=True, capture_output=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            receipt = json.loads(result.stdout)
+            self.assertEqual(receipt['version'], '3.15.1')
+            self.assertEqual(Path(receipt['prefix']), project / '.venv')
+            child = subprocess.run([receipt['executable'], '-I', '-c',
+                                    'import encodings, json, pathlib, sys; print(sys.prefix)'],
+                                   text=True, capture_output=True)
+            self.assertEqual(child.returncode, 0, child.stderr)
+            self.assertEqual(child.stdout.strip(), str(project / '.venv'))
+
     def test_existing_unmanaged_environment_is_not_replaced(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
