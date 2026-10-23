@@ -1,5 +1,10 @@
 # CareOps Sim: working map
 
+Use the repo-local Python 3.15.1 interpreter for every Python command below.
+Create an isolated `.venv` with `uv venv --python 3.15.1`, verify it using
+`.venv/bin/python tools/python_runtime.py`, then activate it or use that explicit
+interpreter path. Preserve existing environments until their consumers stop.
+
 Read `conductor/index.md`, then run `python3 tools/context.py resume`.
 Also read `conductor/execution-model.md` for serial/parallel scheduling and bounded
 worker packets; run `python3 tools/tasks.py check`.

@@ -22,11 +22,11 @@ def step_script(name):
     part = part.split('\n      - ', 1)[0]
     script = textwrap.dedent(part.split('        run: |\n', 1)[1])
     script = script.replace('"$CANARY_ROOT/venv/bin/python"', shlex.quote(sys.executable), 1)
-    return re.sub(r'(?m)^python3(?=\s)', lambda _: shlex.quote(sys.executable), script, count=1)
+    return re.sub(r'(?m)^(?:python3|"\$CAREOPS_PYTHON")(?=\s)', lambda _: shlex.quote(sys.executable), script, count=1)
 
 
 def environment(root):
-    return {'CANARY_ROOT': str(root / 'candidate'), 'RUNNER_TEMP': str(root),
+    return {'CANARY_ROOT': str(root / 'candidate'), 'RUNNER_TEMP': str(root), 'GITHUB_WORKSPACE': str(root),
             'SOURCE_COMMIT': 'a' * 40, 'CANDIDATE_PYTHON': platform.python_version(),
             **{stage.upper() + '_OUTCOME': 'success' for stage in STAGES}}
 
@@ -106,7 +106,7 @@ class SchemaCanaryTests(unittest.TestCase):
                     del env['CANARY_ROOT']
                 result = execute('Record honest terminal qualification', root, env)
                 self.assertEqual(result.returncode, 0, result.stderr)
-                output = root / ('schema-development' if failed == 'initialize' else 'candidate')
+                output = root / ('.artifacts/schema-development' if failed == 'initialize' else 'candidate')
                 receipt = json.loads((output / 'qualification.json').read_text())
                 self.assertNotEqual(receipt['state'], 'qualified-schema-candidate')
                 self.assertIs(receipt['promoted'], False)
@@ -114,7 +114,7 @@ class SchemaCanaryTests(unittest.TestCase):
 
     def test_actual_discovery_matrix_records_unavailable_and_normalises_preview(self):
         full = step_script('Freeze manifest and select exact candidates')
-        code = full.split("python - <<'PYCODE'\n", 1)[1].rsplit('\nPYCODE', 1)[0]
+        code = full.split("\"$CAREOPS_PYTHON\" - <<'PYCODE'\n", 1)[1].rsplit('\nPYCODE', 1)[0]
         for candidate, expected in [(None, ['3.15.1']), ('3.16.0-alpha.1', ['3.15.1']), ('3.15.2-rc.1', ['3.15.1', '3.15.2rc1']), ('3.15.2;bad', ['3.15.1'])]:
             with self.subTest(candidate=candidate), tempfile.TemporaryDirectory() as temporary:
                 root = Path(temporary)

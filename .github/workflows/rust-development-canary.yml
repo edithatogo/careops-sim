@@ -25,17 +25,22 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.15.1'
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - name: Exercise identity and receipt refusal cases
-        run: python -m unittest discover -s tests -p test_rust_development_canary.py -v
+        run: |
+          "$CAREOPS_PYTHON" -m unittest discover -s tests -p test_rust_development_canary.py -v
       - name: Freeze published stable patch, beta and nightly manifests
         id: discover
-        run: python tools/rust_development_canary.py discover --output .artifacts/rust-canary/discovery --github-output "$GITHUB_OUTPUT"
+        run: |
+          "$CAREOPS_PYTHON" tools/rust_development_canary.py discover --output .artifacts/rust-canary/discovery --github-output "$GITHUB_OUTPUT"
       - name: Record discovery terminal outcome
         if: always()
         env:
           DISCOVERY_OUTCOME: ${{ steps.discover.outcome }}
           SOURCE_COMMIT: ${{ github.sha }}
-        run: python3 tools/rust_development_canary.py finalize-discovery --output .artifacts/rust-canary/discovery --outcome "$DISCOVERY_OUTCOME" --source "$SOURCE_COMMIT"
+        run: |
+          "$CAREOPS_PYTHON" tools/rust_development_canary.py finalize-discovery --output .artifacts/rust-canary/discovery --outcome "$DISCOVERY_OUTCOME" --source "$SOURCE_COMMIT"
       - if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -61,17 +66,21 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.15.1'
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - name: Bind the actual compiler and exercise locked native behavior
         id: qualification
         env:
           RUST_CANARY_CANDIDATE: ${{ toJSON(matrix.candidate) }}
-        run: python tools/rust_development_canary.py qualify --output .artifacts/rust-canary/qualification
+        run: |
+          "$CAREOPS_PYTHON" tools/rust_development_canary.py qualify --output .artifacts/rust-canary/qualification
       - name: Retain terminal outcome without candidate promotion
         if: always()
         env:
           QUALIFICATION_OUTCOME: ${{ steps.qualification.outcome }}
           SOURCE_COMMIT: ${{ github.sha }}
-        run: python3 tools/rust_development_canary.py finalize --output .artifacts/rust-canary/qualification --outcome "$QUALIFICATION_OUTCOME" --source "$SOURCE_COMMIT"
+        run: |
+          "$CAREOPS_PYTHON" tools/rust_development_canary.py finalize --output .artifacts/rust-canary/qualification --outcome "$QUALIFICATION_OUTCOME" --source "$SOURCE_COMMIT"
       - if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

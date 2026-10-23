@@ -1,0 +1,68 @@
+{
+  "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-python315-conductor",
+  "base_commit": "ca5bcbdd89797cb8d9f93dca6983396ee0bd14c6",
+  "runtime": "Python 3.15.1",
+  "scope": "Local runtime guard and workflow binding; hosted/main acceptance pending.",
+  "results": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_schema_canary.py",
+        "-v"
+      ],
+      "exit_status": 0,
+      "output": "conductor/tracks/python315_runtime_qualification_20261023/local-runtime-evidence/check-1.log",
+      "sha256": "37d70c536bcc864b2a3c865536a1bcaf291dbb0577751ae8d4a58171dde7e2b5"
+    },
+    {
+      "argv": [
+        "actionlint",
+        "-oneline",
+        ".github/workflows/agent-harness.yml",
+        ".github/workflows/cargo-lock-refresh.yml",
+        ".github/workflows/ci.yml",
+        ".github/workflows/native-release.yml",
+        ".github/workflows/rust-development-canary.yml",
+        ".github/workflows/schema-development-canary.yml",
+        ".github/workflows/schema-lock-refresh.yml",
+        ".github/workflows/source-security.yml"
+      ],
+      "exit_status": 0,
+      "output": "conductor/tracks/python315_runtime_qualification_20261023/local-runtime-evidence/check-2.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_status": 0,
+      "output": "conductor/tracks/python315_runtime_qualification_20261023/local-runtime-evidence/check-3.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "source_hashes": {
+    "tools/python_runtime.py": "3cb51f85f79f39ee5e5c7254514eca0fee14e5dd5c56b56a94bfeca8855b0ed1",
+    "tests/test_python_runtime.py": "31ac0d71d67607822817bd398a851aa3624d5f12c63cec537c85876a248ec831",
+    "tests/test_schema_canary.py": "f76cc38ee23e7c53bac2bdb253713a61528a5d596925e96d62b2c817ce4c6014",
+    ".github/workflows/agent-harness.yml": "02b14f6328cdd75b66395f021340c2bf2e26d7d6d66c3aa9b40c1742da1f9996",
+    ".github/workflows/cargo-lock-refresh.yml": "6c4fdb7f42111a2dac30b58dd1ce0253c56ff9291279c141c7cf33d8690f53fa",
+    ".github/workflows/ci.yml": "c463558c6a74284b0ca11634d0f706cf1a0c5c4feac697923ee8b6d4d9237f2a",
+    ".github/workflows/native-release.yml": "df07e7bb99a43906fd951b621735c7c260b543d31bfb38a6b9c73e99aa9e4201",
+    ".github/workflows/rust-development-canary.yml": "1fdc54e1f54621689b839e411158ef27be6f47196abff6a0ca67fc87809db3fe",
+    ".github/workflows/schema-development-canary.yml": "e5b301fee49429e20726914bdae7297ccc89241c4b982ba7d08ab2f2944fbb67",
+    ".github/workflows/schema-lock-refresh.yml": "f2167ca341dd8311c1258230393d344ba6f4dbd1cf686876b5631cd5837e1b24",
+    ".github/workflows/source-security.yml": "17af1dc1d0b34aed5a705ff37c717df4cbccf7bb17f1b6693833556e977ebc77"
+  },
+  "retained_logs": {
+    "conductor/tracks/python315_runtime_qualification_20261023/local-runtime-evidence/red.log": "699e5ef19b2d1488ea4d5cab85b972ca605490974d6d84e8a4b21f83196f7667",
+    "conductor/tracks/python315_runtime_qualification_20261023/local-runtime-evidence/runtime-tests.log": "dd7dc703b938e2c80ba784fdca355c3c01bf7d8049795d7209bc61fa36e2daa4"
+  }
+}

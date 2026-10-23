@@ -22,6 +22,12 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - id: bootstrap
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.15.1'
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - name: Read qualified discovery tooling
         id: policy
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -31,10 +37,6 @@ jobs:
           path: .artifacts/ci-preview-policy
           persist-credentials: false
           submodules: false
-      - id: bootstrap
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: '3.15.1'
       - name: Freeze manifest and select exact candidates
         id: discover
         env:
@@ -44,9 +46,9 @@ jobs:
           revision="$(gh api repos/actions/python-versions/commits/main --jq .sha)"
           [[ "$revision" =~ ^[a-f0-9]{40}$ ]]
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/actions/python-versions/$revision/versions-manifest.json" -o .artifacts/ci-preview/manifest.json
-          platform_version="$(python -c 'import platform; print(platform.freedesktop_os_release()["VERSION_ID"])')"
-          python .artifacts/ci-preview-policy/portfolio-scripts/ci_delivery.py runtime --platform-version "$platform_version" --manifest .artifacts/ci-preview/manifest.json --manifest-revision "$revision" --output .artifacts/ci-preview/discovery.json --github-output "$GITHUB_OUTPUT"
-          python - <<'PYCODE'
+          platform_version="$("$CAREOPS_PYTHON" -c 'import platform; print(platform.freedesktop_os_release()["VERSION_ID"])')"
+          "$CAREOPS_PYTHON" .artifacts/ci-preview-policy/portfolio-scripts/ci_delivery.py runtime --platform-version "$platform_version" --manifest .artifacts/ci-preview/manifest.json --manifest-revision "$revision" --output .artifacts/ci-preview/discovery.json --github-output "$GITHUB_OUTPUT"
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import json, os
           from pathlib import Path
           path = Path('.artifacts/ci-preview/discovery.json')
@@ -72,7 +74,7 @@ jobs:
           BOOTSTRAP_OUTCOME: ${{ steps.bootstrap.outcome }}
           DISCOVERY_OUTCOME: ${{ steps.discover.outcome }}
         run: |
-          python3 - <<'PYCODE'
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import json, os
           from pathlib import Path
           path = Path('.artifacts/ci-preview/discovery.json')
@@ -122,17 +124,19 @@ jobs:
       CANDIDATE_PYTHON: ${{ matrix.python }}
       SOURCE_COMMIT: ${{ github.sha }}
     steps:
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.15.1"
       - name: Initialise bounded evidence location
         id: initialize
-        run: echo "CANARY_ROOT=$RUNNER_TEMP/schema-development" >> "$GITHUB_ENV"
+        run: echo "CANARY_ROOT=$GITHUB_WORKSPACE/.artifacts/schema-development" >> "$GITHUB_ENV"
       - id: source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.15.1"
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - id: bootstrap
         uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
@@ -141,7 +145,7 @@ jobs:
       - name: Prepare isolated candidate declarations
         id: prepare
         run: |
-          python3 - <<'PYCODE'
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import os, re
           from pathlib import Path
           if not re.fullmatch(r'3\.15\.\d+(?:(?:a|b|rc)\d+)?', os.environ['CANDIDATE_PYTHON']):
@@ -232,10 +236,10 @@ jobs:
           AUDIT_OUTCOME: ${{ steps.audit.outcome }}
           CANONICAL_OUTCOME: ${{ steps.canonical.outcome }}
         run: |
-          python3 - <<'PYCODE'
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import hashlib, json, os
           from pathlib import Path
-          root = Path(os.environ.get('CANARY_ROOT', str(Path(os.environ['RUNNER_TEMP']) / 'schema-development')))
+          root = Path(os.environ.get('CANARY_ROOT', str(Path(os.environ['GITHUB_WORKSPACE']) / '.artifacts/schema-development')))
           root.mkdir(parents=True, exist_ok=True)
           stages = {name: os.environ[name.upper() + '_OUTCOME'] for name in ['initialize', 'source', 'bootstrap', 'prepare', 'resolve', 'install', 'inventory', 'tests', 'policy', 'audit', 'canonical']}
           failed = next((name for name, value in stages.items() if value == 'failure'), None)
@@ -272,10 +276,10 @@ jobs:
         with:
           name: schema-candidate-${{ matrix.python }}-${{ github.run_id }}
           path: |
-            ${{ runner.temp }}/schema-development/candidate.in
-            ${{ runner.temp }}/schema-development/candidate.lock
-            ${{ runner.temp }}/schema-development/installed.json
-            ${{ runner.temp }}/schema-development/installed-requirements.txt
-            ${{ runner.temp }}/schema-development/qualification.json
+            ${{ github.workspace }}/.artifacts/schema-development/candidate.in
+            ${{ github.workspace }}/.artifacts/schema-development/candidate.lock
+            ${{ github.workspace }}/.artifacts/schema-development/installed.json
+            ${{ github.workspace }}/.artifacts/schema-development/installed-requirements.txt
+            ${{ github.workspace }}/.artifacts/schema-development/qualification.json
           if-no-files-found: error
           retention-days: 14

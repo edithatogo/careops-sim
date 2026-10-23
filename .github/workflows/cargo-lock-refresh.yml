@@ -21,13 +21,15 @@ jobs:
     env:
       RUSTUP_TOOLCHAIN: 1.99.1
     steps:
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.15.1"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.15.1"
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - name: Install canonical Rust lane
         run: rustup toolchain install 1.99.1 --profile minimal
       - name: Regenerate required workspace dependency changes
@@ -45,7 +47,7 @@ jobs:
       - name: Audit regenerated resolution under existing source and licence policy
         id: audit
         run: |
-          python3 tools/install_ci_tools.py
+          "$CAREOPS_PYTHON" tools/install_ci_tools.py
           .artifacts/ci/bin/cargo-deny --version
           .artifacts/ci/bin/cargo-deny --manifest-path Cargo.toml --locked check
       - name: Refuse uncommitted lock repair in source checks
@@ -63,7 +65,7 @@ jobs:
           AUDIT_OUTCOME: ${{ steps.audit.outcome }}
           COMMITTED_OUTCOME: ${{ steps.committed.outcome }}
         run: |
-          python3 - <<'PYCODE'
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import hashlib, json, os
           from pathlib import Path
           root = Path('.artifacts/ci-suite')
