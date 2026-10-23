@@ -1,5 +1,8 @@
 # P4 synthetic profile pack guide
 
+From the repository root, create the required environment with `uv venv --python 3.15.1 .venv` only when `.venv` is absent. Verify it with `.venv/bin/python tools/python_runtime.py`, then use `.venv/bin/python` for the commands below. Do not replace an existing or in-flight environment; the guard rejects an unqualified one. Windows uses `.venv\Scripts\python.exe`.
+
+
 This guide describes the three version-1 P4 JSON data packs in this directory:
 `p4-minimal-pack.json`, `p4-nominal-pack.json`, and `p4-surge-pack.json`.
 They are compact, invented examples for the input shape and its checks. The
@@ -103,8 +106,8 @@ constraints. It is a separate command from P4 semantic validation, which checks
 cross-field relationships. Run both for the same pack; for example:
 
 ```sh
-python3 tools/validate_ed_profile_pack.py model-inputs/ed/profiles/p4-nominal-pack.json
-python3 tools/validate_ed_profile_pack_semantics.py model-inputs/ed/profiles/p4-nominal-pack.json
+.venv/bin/python tools/validate_ed_profile_pack.py model-inputs/ed/profiles/p4-nominal-pack.json
+.venv/bin/python tools/validate_ed_profile_pack_semantics.py model-inputs/ed/profiles/p4-nominal-pack.json
 ```
 
 The structural validator checks the P4 and referenced capacity/location schemas
@@ -115,7 +118,7 @@ and provenance. Neither command executes the profile. To check that the checked-
 in artifacts still match the exact-byte manifest, run:
 
 ```sh
-python3 tools/validate_ed_profile_manifest.py model-inputs/ed/profiles/p4-pack-manifest.json
+.venv/bin/python tools/validate_ed_profile_manifest.py model-inputs/ed/profiles/p4-pack-manifest.json
 ```
 
 To explore a change, copy a pack to a new, clearly named file such as
