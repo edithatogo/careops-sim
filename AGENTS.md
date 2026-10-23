@@ -34,7 +34,13 @@ source before resuming. It is context, not authority to mark work complete.
 - `python3 tools/tasks.py ready --mode serial` or `--mode parallel --workers 4`:
   preparation candidates only; coordinator reserves/reviews before dispatch.
 - `python3 tools/context.py check`: planning/context integrity, not runtime tests.
-- `python3 -m unittest discover -s tests -v`: local harness regression tests.
+- Start with the affected unittest file/class/method, for example
+  `.venv/bin/python -m unittest discover -s tests -p test_python_runtime.py -v`.
+  Use `.venv/bin/python -m unittest discover -s tests -v` for a coherent milestone
+  and integration, rather than repeating the full suite after each edit.
+- Reuse unchanged evidence only after checking source, dependencies, test config,
+  schemas and fixtures. Unknown impact requires broader validation. Keep caches
+  isolated per worktree/environment; focused success is scoped evidence.
 - `python3 tools/refresh_versions.py`: network read-only dependency candidates;
   review its changed snapshot. It never installs or upgrades packages.
 - Run targeted native tests in Kairos; commands and gates live in active plans.

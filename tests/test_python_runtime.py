@@ -31,8 +31,12 @@ class LocalPythonTests(unittest.TestCase):
             marker = root / '.venv' / 'preserve-me'
             marker.write_text('in-flight recovery state')
             config = (root / '.venv/pyvenv.cfg').read_bytes()
-            second = self.invoke(root)
+            path_output = root / 'github-path'
+            env_output = root / 'github-env'
+            second = self.invoke(root, '--github', env=dict(os.environ, GITHUB_PATH=str(path_output), GITHUB_ENV=str(env_output)))
             self.assertEqual(second.returncode, 0, second.stderr)
+            self.assertEqual(path_output.read_text().strip(), str(Path(executable).parent))
+            self.assertIn('CAREOPS_PYTHON=' + executable, env_output.read_text())
             self.assertEqual(marker.read_text(), 'in-flight recovery state')
             self.assertEqual((root / '.venv/pyvenv.cfg').read_bytes(), config)
 
@@ -91,6 +95,21 @@ class LocalPythonTests(unittest.TestCase):
             result = self.invoke(root, '--github', env=env)
             self.assertNotEqual(result.returncode, 0)
             self.assertFalse(output.exists())
+
+    def test_python_jobs_bootstrap_after_source_and_use_verified_runtime(self):
+        import re
+        for workflow in sorted((ROOT / '.github/workflows').glob('*.yml')):
+            for job in re.split(r'(?m)(?=^  [A-Za-z0-9_-]+:\n)', workflow.read_text()):
+                if 'actions/setup-python@' not in job:
+                    continue
+                with self.subTest(workflow=workflow.name, job=job.splitlines()[0]):
+                    self.assertIn('python-version:', job)
+                    self.assertIn('3.15.1', job)
+                    self.assertLess(job.index('actions/checkout@'), job.index('actions/setup-python@'))
+                    guard = 'run: python tools/python_runtime.py --github'
+                    self.assertLess(job.index('actions/setup-python@'), job.index(guard))
+                    self.assertIn('"$CAREOPS_PYTHON"', job)
+                    self.assertNotRegex(job.replace(guard, ''), r'(?m)^\s+(?:run: )?python3?\s')
 
 
 if __name__ == '__main__':
