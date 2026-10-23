@@ -15,3 +15,9 @@ Candidate local success is not current-head, hosted, main or environment-handove
 ## Registration review
 
 Conductor review found no remaining in-scope planning issues after correcting required handoff markers and local metadata status. No implementation checkbox was completed. [Validation receipt](registration-evidence/receipt.json) retains the tested staged-tree identity, exact commands, cwd, Python runtime, exit codes and output hashes. The existing expensive candidate qualification was not repeated. The shared conversation goal remains active; main/runtime acceptance is still pending.
+
+## Candidate reconciliation
+
+The original `0aee0d2` migration candidate applied cleanly to the current-main-based planning branch. Its original worktree and qualification evidence remain preserved. Fresh schema canary tests (8), task catalogue and context validation pass with the explicit local Python 3.15.1 interpreter and the hash-locked schema dependencies; see [integration receipt](integration-evidence/receipt.json). The first test attempt lacked the schema dependencies in the fresh local environment and failed the required-distribution check; the locked install resolved that setup failure.
+
+The active-use audit found that selecting 3.15.1 with setup-python does not yet bind all workflow helper execution to a repository-local environment. Complete that binding, verify actual child runtime and preserve failure reporting before claiming runtime migration acceptance. This commit preserves the earlier candidate rather than claiming the gap is closed. No implementation phase is accepted, and no Kairos pin changes.

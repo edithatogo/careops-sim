@@ -1,0 +1,57 @@
+{
+  "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-python315-conductor",
+  "base_commit": "e6ff60ce4607b0bf07df9b63a819b179cb4fc71e",
+  "source_candidate": "0aee0d20ae1b2aef6b2ce34a1b3baef585c8ed45",
+  "tested_staged_tree": "0a5842e25f600dbd45ef5e58007c66779edc5f15",
+  "runtime": "Python 3.15.1",
+  "results": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_schema_canary.py",
+        "-v"
+      ],
+      "exit_status": 0,
+      "output": "conductor/tracks/python315_runtime_qualification_20261023/integration-evidence/check-1.log",
+      "sha256": "9bdede270ccd639152e44dd80490ce7996c9238b8623082132497a41b1c9a90c"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "check"
+      ],
+      "exit_status": 0,
+      "output": "conductor/tracks/python315_runtime_qualification_20261023/integration-evidence/check-2.log",
+      "sha256": "ab8b9f02b3213a06d5ea7abe5c5c139318dcecab9d957cb97570eaa7024af7d3"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/context.py",
+        "check"
+      ],
+      "exit_status": 0,
+      "output": "conductor/tracks/python315_runtime_qualification_20261023/integration-evidence/check-3.log",
+      "sha256": "bf2f05e07fa5bdef0c5a944b83e1c77a7ea33f9aab13e4ea044f79818bed6417"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exit_status": 0,
+      "output": "conductor/tracks/python315_runtime_qualification_20261023/integration-evidence/check-4.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "acceptance": "Candidate reconciliation only. Repository-local CI execution and hosted/main/handover proof remain outstanding."
+}

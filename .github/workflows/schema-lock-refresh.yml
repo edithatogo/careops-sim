@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.15.1"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -31,11 +34,11 @@ jobs:
         id: resolve
         run: |
           mkdir -p .artifacts/ci-suite
-          uv pip compile requirements-schema-validation.txt --python-version 3.14 --universal --generate-hashes --no-header --no-annotate --output-file .artifacts/ci-suite/requirements-schema-validation.lock
+          uv pip compile requirements-schema-validation.txt --python-version 3.15.1 --universal --generate-hashes --no-header --no-annotate --output-file .artifacts/ci-suite/requirements-schema-validation.lock
       - name: Install candidate in an isolated exact runtime
         id: install
         run: |
-          uv venv --python 3.14.8 .artifacts/ci-suite/schema-venv
+          uv venv --python 3.15.1 .artifacts/ci-suite/schema-venv
           uv pip install --python .artifacts/ci-suite/schema-venv/bin/python --require-hashes --only-binary=:all: -r .artifacts/ci-suite/requirements-schema-validation.lock
       - name: Exercise every affected schema validator and negative fixture group
         id: tests
@@ -54,7 +57,7 @@ jobs:
       - name: Audit schema dependencies using hash-locked qualification tools
         id: audit
         run: |
-          uv venv --python 3.14.8 .artifacts/ci-suite/audit-venv
+          uv venv --python 3.15.1 .artifacts/ci-suite/audit-venv
           uv pip install --python .artifacts/ci-suite/audit-venv/bin/python --require-hashes --only-binary=:all: -r .artifacts/ci-suite/policy/requirements-ci.lock
           .artifacts/ci-suite/audit-venv/bin/python -m pip_audit --disable-pip --no-deps -r .artifacts/ci-suite/requirements-schema-validation.lock
       - name: Refuse uncommitted lock repair in source checks

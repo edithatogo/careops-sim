@@ -34,7 +34,7 @@ jobs:
       - id: bootstrap
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: '3.15.0'
+          python-version: '3.15.1'
       - name: Freeze manifest and select exact candidates
         id: discover
         env:
@@ -51,12 +51,16 @@ jobs:
           from pathlib import Path
           path = Path('.artifacts/ci-preview/discovery.json')
           receipt = json.loads(path.read_text())
-          versions = ['3.14.8', '3.15.0']
-          if receipt['candidate']:
-              versions.append(receipt['candidate'].replace('-alpha.', 'a').replace('-beta.', 'b').replace('-rc.', 'rc'))
+          versions = ['3.15.1']
+          candidate = receipt.get('candidate')
+          if candidate and __import__('re').fullmatch(r'3\.15\.\d+(?:-(?:alpha|beta|rc)\.\d+)?', candidate):
+              versions.append(candidate.replace('-alpha.', 'a').replace('-beta.', 'b').replace('-rc.', 'rc'))
           else:
-              receipt['runtimeTestOutcome'] = 'unavailable; no published qualifying preview'
-              path.write_text(json.dumps(receipt, indent=2) + '\n')
+              receipt['runtimeTestOutcome'] = 'unavailable; no qualifying preview in required Python 3.15 line'
+              receipt['excludedCandidate'] = candidate
+              receipt['candidate'] = None
+          receipt['requiredPythonLine'] = '3.15'
+          path.write_text(json.dumps(receipt, indent=2) + '\n')
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write('matrix=' + json.dumps({'python': list(dict.fromkeys(versions))}) + '\n')
           PYCODE
@@ -118,6 +122,9 @@ jobs:
       CANDIDATE_PYTHON: ${{ matrix.python }}
       SOURCE_COMMIT: ${{ github.sha }}
     steps:
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.15.1"
       - name: Initialise bounded evidence location
         id: initialize
         run: echo "CANARY_ROOT=$RUNNER_TEMP/schema-development" >> "$GITHUB_ENV"
@@ -137,6 +144,8 @@ jobs:
           python3 - <<'PYCODE'
           import os, re
           from pathlib import Path
+          if not re.fullmatch(r'3\.15\.\d+(?:(?:a|b|rc)\d+)?', os.environ['CANDIDATE_PYTHON']):
+              raise SystemExit('Candidate runtime must remain in the human-selected Python 3.15 line')
           names = set()
           for line in Path('requirements-schema-validation.txt').read_text().splitlines():
               if not line.strip() or line.lstrip().startswith('#'):
@@ -202,7 +211,7 @@ jobs:
       - name: Audit actual installed candidate versions
         id: audit
         run: |
-          uv venv --python 3.14.8 "$CANARY_ROOT/audit-venv"
+          uv venv --python 3.15.1 "$CANARY_ROOT/audit-venv"
           uv pip install --python "$CANARY_ROOT/audit-venv/bin/python" --require-hashes --only-binary=:all: -r .artifacts/ci-preview-policy/requirements-ci.lock
           "$CANARY_ROOT/audit-venv/bin/python" -m pip_audit --disable-pip --no-deps -r "$CANARY_ROOT/installed-requirements.txt"
       - name: Verify tracked source and canonical pins were preserved

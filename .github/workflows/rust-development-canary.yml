@@ -24,7 +24,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: '3.15.0'
+          python-version: '3.15.1'
       - name: Exercise identity and receipt refusal cases
         run: python -m unittest discover -s tests -p test_rust_development_canary.py -v
       - name: Freeze published stable patch, beta and nightly manifests
@@ -60,7 +60,7 @@ jobs:
           submodules: true
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: '3.15.0'
+          python-version: '3.15.1'
       - name: Bind the actual compiler and exercise locked native behavior
         id: qualification
         env:

@@ -3,6 +3,7 @@ import hashlib
 import json
 from pathlib import Path
 import platform
+import re
 import shlex
 import subprocess
 import sys
@@ -21,7 +22,7 @@ def step_script(name):
     part = part.split('\n      - ', 1)[0]
     script = textwrap.dedent(part.split('        run: |\n', 1)[1])
     script = script.replace('"$CANARY_ROOT/venv/bin/python"', shlex.quote(sys.executable), 1)
-    return script.replace('python3', shlex.quote(sys.executable), 1)
+    return re.sub(r'(?m)^python3(?=\s)', lambda _: shlex.quote(sys.executable), script, count=1)
 
 
 def environment(root):
@@ -49,6 +50,16 @@ class SchemaCanaryTests(unittest.TestCase):
             for extra in [b'unknown-package==1\n', b'attrs==26.1.0\n', b'--index-url https://example.invalid\n']:
                 path.write_bytes(source + extra)
                 self.assertNotEqual(execute('Prepare isolated candidate declarations', root, env).returncode, 0)
+
+    def test_preparation_rejects_runtime_outside_required_line(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'requirements-schema-validation.txt').write_bytes((ROOT / 'requirements-schema-validation.txt').read_bytes())
+            env = environment(root)
+            env['CANDIDATE_PYTHON'] = '3.16.0a1'
+            result = execute('Prepare isolated candidate declarations', root, env)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('human-selected Python 3.15 line', result.stderr)
 
     def test_actual_interpreter_inventory_and_receipt_bind_the_candidate(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -104,7 +115,7 @@ class SchemaCanaryTests(unittest.TestCase):
     def test_actual_discovery_matrix_records_unavailable_and_normalises_preview(self):
         full = step_script('Freeze manifest and select exact candidates')
         code = full.split("python - <<'PYCODE'\n", 1)[1].rsplit('\nPYCODE', 1)[0]
-        for candidate, expected in [(None, ['3.14.8', '3.15.0']), ('3.16.0-alpha.1', ['3.14.8', '3.15.0', '3.16.0a1'])]:
+        for candidate, expected in [(None, ['3.15.1']), ('3.16.0-alpha.1', ['3.15.1']), ('3.15.2-rc.1', ['3.15.1', '3.15.2rc1']), ('3.15.2;bad', ['3.15.1'])]:
             with self.subTest(candidate=candidate), tempfile.TemporaryDirectory() as temporary:
                 root = Path(temporary)
                 path = root / '.artifacts/ci-preview/discovery.json'
@@ -113,7 +124,8 @@ class SchemaCanaryTests(unittest.TestCase):
                 output = root / 'outputs'
                 subprocess.run([sys.executable, '-c', code], cwd=root, env={'GITHUB_OUTPUT': str(output)}, check=True, capture_output=True)
                 self.assertEqual(json.loads(output.read_text().split('=', 1)[1])['python'], expected)
-                if candidate is None:
+                if candidate != '3.15.2-rc.1':
+                    self.assertIsNone(json.loads(path.read_text())['candidate'])
                     self.assertIn('unavailable', json.loads(path.read_text())['runtimeTestOutcome'])
 
 
