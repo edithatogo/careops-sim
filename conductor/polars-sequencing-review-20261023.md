@@ -27,3 +27,5 @@ Tool versions: Python 3.15.0; PowerShell 7.6.8.
 Publication worktree: careops-publish-sequencing; original review and its historical tool versions above are preserved. Fresh validation uses the explicitly selected repo-local .venv/bin/python, verified as Python 3.15.1. The diff remains confined to Conductor planning and preserves runtime sources, submodule pins, implementation checkboxes and acceptance status.
 
 Reconciled against main dc3aecb0c2a3fa32d2e475d9d319374945b97a47. Exact existing submodule pins initialized without updates. Fresh tools/tasks.py check and tools/context.py check pass: 387 tasks, 24 tracks, 105 milestones. Focused unittest discovery passes test_tasks.py (34 tests) and test_context.py (11 tests). git diff --check passes. Runtime suites are not rerun for the documentation-only slice; required hosted PR checks remain mandatory.
+
+PR review identified stale precedence wording in dependency-value-policy.md. Corrected in both repositories so the higher-precedence value policy also requires inventory-first, task-specific gates. Acceptance obligations and separate tracks are unchanged.
