@@ -48,19 +48,11 @@ jobs:
           for pattern in test_source_packet_record.py test_source_verification_schema.py test_ed_profile_pack_schema.py test_des_catalogue.py test_source_acceptance.py test_parameter_validation.py test_ed_capacity.py test_ed_profile_pack_negative_cases.py test_abm_catalogue.py; do
             .artifacts/ci-suite/schema-venv/bin/python -m unittest discover -s tests -p "$pattern" -v
           done
-      - name: Read qualified immutable audit tool lock
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: edithatogo/careops
-          ref: 30df4953ea87c8915b4a525fc671a4c9857c3f7f
-          path: .artifacts/ci-suite/policy
-          persist-credentials: false
-          submodules: false
       - name: Audit schema dependencies using hash-locked qualification tools
         id: audit
         run: |
           uv venv --python 3.15.1 .artifacts/ci-suite/audit-venv
-          uv pip install --python .artifacts/ci-suite/audit-venv/bin/python --require-hashes --only-binary=:all: -r .artifacts/ci-suite/policy/requirements-ci.lock
+          uv pip install --python .artifacts/ci-suite/audit-venv/bin/python --require-hashes --only-binary=:all: -r requirements-schema-audit.lock
           .artifacts/ci-suite/audit-venv/bin/python -m pip_audit --disable-pip --no-deps -r .artifacts/ci-suite/requirements-schema-validation.lock
       - name: Refuse uncommitted lock repair in source checks
         id: committed
@@ -89,6 +81,7 @@ jobs:
               'auditOutcome': os.environ['AUDIT_OUTCOME'],
               'committedLockOutcome': os.environ['COMMITTED_OUTCOME'],
               'lockSha256': hashlib.sha256(lock.read_bytes()).hexdigest() if lock.exists() else None,
+              'auditLockSha256': hashlib.sha256(Path('requirements-schema-audit.lock').read_bytes()).hexdigest() if Path('requirements-schema-audit.lock').is_file() else None,
               'promoted': False,
               'scope': 'nine affected schema regression groups; full harness and dedicated Rust gates remain separate',
           }

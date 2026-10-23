@@ -43,11 +43,13 @@ class SchemaCiTests(unittest.TestCase):
             root.mkdir(parents=True)
             data = b'fictional candidate bytes\n'
             (root / 'requirements-schema-validation.lock').write_bytes(data)
+            (Path(temporary) / 'requirements-schema-audit.lock').write_bytes(b'fictional audit lock\n')
             env = {name: 'success' for name in ['RESOLVE_OUTCOME', 'INSTALL_OUTCOME', 'TEST_OUTCOME', 'AUDIT_OUTCOME', 'COMMITTED_OUTCOME']}
             env['GITHUB_SHA'] = 'b' * 40
             subprocess.run(['/bin/bash', '-euc', receipt_script()], cwd=temporary, env=env, check=True, capture_output=True)
             receipt = json.loads((root / 'qualification.json').read_text())
             self.assertEqual(receipt['lockSha256'], hashlib.sha256(data).hexdigest())
+            self.assertEqual(receipt['auditLockSha256'], hashlib.sha256(b'fictional audit lock\n').hexdigest())
             self.assertEqual(receipt['sourceCommit'], 'b' * 40)
             self.assertIs(receipt['promoted'], False)
 

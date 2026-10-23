@@ -203,20 +203,14 @@ jobs:
           for pattern in test_source_packet_record.py test_source_verification_schema.py test_ed_profile_pack_schema.py test_des_catalogue.py test_source_acceptance.py test_parameter_validation.py test_ed_capacity.py test_ed_profile_pack_negative_cases.py test_abm_catalogue.py; do
             "$CANARY_ROOT/venv/bin/python" -m unittest discover -s tests -p "$pattern" -v
           done
-      - name: Read qualified audit-tool lock
+      - name: Verify committed purpose-specific audit lock
         id: policy
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: edithatogo/careops
-          ref: 30df4953ea87c8915b4a525fc671a4c9857c3f7f
-          path: .artifacts/ci-preview-policy
-          persist-credentials: false
-          submodules: false
+        run: test -s requirements-schema-audit.lock
       - name: Audit actual installed candidate versions
         id: audit
         run: |
           uv venv --python 3.15.1 "$CANARY_ROOT/audit-venv"
-          uv pip install --python "$CANARY_ROOT/audit-venv/bin/python" --require-hashes --only-binary=:all: -r .artifacts/ci-preview-policy/requirements-ci.lock
+          uv pip install --python "$CANARY_ROOT/audit-venv/bin/python" --require-hashes --only-binary=:all: -r requirements-schema-audit.lock
           "$CANARY_ROOT/audit-venv/bin/python" -m pip_audit --disable-pip --no-deps -r "$CANARY_ROOT/installed-requirements.txt"
       - name: Verify tracked source and canonical pins were preserved
         id: canonical
