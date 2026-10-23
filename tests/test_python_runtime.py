@@ -19,8 +19,15 @@ class LocalPythonTests(unittest.TestCase):
     def test_real_environment_child_and_reuse_preserve_existing_files(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
+            # A fresh CI checkout has no uv-generated inner ignore file.
+            # The repository must ignore the entire environment itself.
+            (root / '.gitignore').write_bytes((ROOT / '.gitignore').read_bytes())
+            subprocess.run(['git', 'init', '-q', str(root)], check=True)
+            subprocess.run(['git', '-C', str(root), 'add', '.gitignore'], check=True)
+            subprocess.run(['git', '-C', str(root), '-c', 'user.name=Runtime Test', '-c', 'user.email=runtime@example.invalid', 'commit', '-qm', 'fixture'], check=True)
             result = self.invoke(root)
             self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(subprocess.check_output(['git', '-C', str(root), 'status', '--porcelain'], text=True), '')
             receipt = json.loads(result.stdout)
             self.assertEqual(receipt['version'], '3.15.1')
             self.assertEqual(Path(receipt['prefix']), root / '.venv')

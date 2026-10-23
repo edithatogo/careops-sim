@@ -10,7 +10,7 @@ This is an active-use inventory and evidence map, not completion. [Hashed invent
 | Dependencies | Five exact schema roots and hash lock; fresh wheel-only install on local 3.15.1 passes; previous latest qualification retained | Hosted platform execution |
 | Parent package/container defaults | No tracked parent pyproject or Dockerfile exists; Rust native packaging invokes qualified helper | Hosted package workflow proof |
 | Pinned Kairos/Conductor sources | Independent repositories/owners; preserve exact gitlinks | Kairos migration and existing pin reconciliation remain separate |
-| Shared security | `source-security.yml` pins CareOps policy `6319d0c...`; direct readback shows Python 3.15.0 and base environment. Current upstream main readback is `c18b43b...` with 3.15.1 but still no repo-local guard | Upstream owner qualification, accepted immutable pin and real runtime/prefix proof |
+| Shared security | `source-security.yml` now pins owner-qualified CareOps policy `30df4953...` selecting 3.15.1 and its qualified audit lock; shared workflow still lacks a repo-local guard | Upstream owner qualification, accepted immutable pin and real runtime/prefix proof |
 | Historical/synthetic versions | Dated evidence and intentional version-negative fixtures retained | Never used as active execution defaults |
 
 The full 717-test local run found only three old command-spelling fixtures; their eight focused tests pass after correction. Final full integration, clean release/security gates and safe environment handover remain required. No RNG/clinical/domain policy, native source, private history or Kairos runtime pin changed.

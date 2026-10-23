@@ -1,0 +1,38 @@
+{
+  "base_commit": "5de5145c3f5845545c9cb75460933d37c4afade5",
+  "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-python315-conductor",
+  "runtime": "Python 3.15.1",
+  "hosted_head": "5de5145c3f5845545c9cb75460933d37c4afade5",
+  "initial_hosted_runs": {
+    "ci": 39958429801,
+    "security": 39958430148,
+    "schema_lock": 39958429847,
+    "rust_canaries": 39958429702
+  },
+  "diagnoses": [
+    "Root .venv was not ignored: fresh EnvBuilder environments do not receive uv inner ignore files, causing source snapshot rejection. Real Git fixture now proves no source dirtiness.",
+    "Audit lock at older policy ref requires a wheel unavailable on 3.15; owner-qualified 30df4953 policy contains the qualified current audit graph.",
+    "One generic-api-key finding is verified SHA256 of unchanged tests/ed/test_e31_cli_api_suite.py; exact historical fingerprint recorded, no rule or path-wide exception."
+  ],
+  "checks": [
+    {
+      "command": ".venv/bin/python -m unittest discover -s tests -p test_python_runtime.py -v",
+      "count": 7,
+      "exit_status": 0
+    },
+    {
+      "command": "actionlint -oneline .github/workflows/*.yml",
+      "exit_status": 0
+    },
+    {
+      "command": "gitleaks git . --log-opts=--all --redact --no-banner --report-format json --report-path /tmp/careops-python315-gitleaks-fixed.json",
+      "exit_status": 0
+    }
+  ],
+  "logs": {
+    "conductor/tracks/python315_runtime_qualification_20261023/hosted-fix-evidence/gitleaks.log": "bf166b50a48f979dfd0235f69f04a41735693c302db0715fd076f9c10ae848b7",
+    "conductor/tracks/python315_runtime_qualification_20261023/hosted-fix-evidence/runtime-tests.log": "33c3a9069dc3edbc92774dedf40d096d8cb138620cb00a9a193ebb2778a0db1a",
+    "conductor/tracks/python315_runtime_qualification_20261023/hosted-fix-evidence/actionlint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "remaining": "Final updated-head hosted/main proof, safe handover, and independently owned shared security repo-local prefix guard."
+}

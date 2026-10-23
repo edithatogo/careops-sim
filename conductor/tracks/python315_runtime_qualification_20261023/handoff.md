@@ -33,3 +33,9 @@ Native unittest selectors remain the default. Repository instructions now specif
 ## Full harness reconciliation
 
 The full 717-test local harness executed on Python 3.15.1 (342 seconds). It found one assertion and 12 subtest errors, all in three workflow fixture files that still selected/asserted `python3` instead of the verified `CAREOPS_PYTHON` command. Updating those fixture bindings preserves the actual inline receipt scripts and their first-failure/unexecuted-stage checks. All eight tests in the three affected files now pass. See [full output and focused-fix receipt](full-suite-reconciliation/receipt.json). Retained successful unaffected evidence avoids another edit-loop full run; final full hosted integration remains mandatory.
+
+## First hosted findings and corrections
+
+PR #178 executes actual Python 3.15.1 and local prefixes on Linux/macOS, with native Linux/macOS tests and native CLI package smoke passing on the first head. The first hosted checks exposed a missing root `.venv` ignore rule (Rust source snapshot rejected fresh environment files), an older shared wheel-only audit lock incompatible with 3.15, and one verified source-digest false positive. The exact digest was recomputed from the named source file; only its historical fingerprint is recorded. No scanner rule or broad path waiver.
+
+The root ignore and real Git fixture fix source cleanliness; parent policy references now use owner-qualified `30df4953ea87c8915b4a525fc671a4c9857c3f7f` (3.15.1/current audit lock). Seven focused runtime cases, actionlint and full-history gitleaks pass locally. See [hosted-fix evidence](hosted-fix-evidence/receipt.json). The shared security workflow still needs independent repo-local prefix proof, and updated-head checks/main/handover remain open.
