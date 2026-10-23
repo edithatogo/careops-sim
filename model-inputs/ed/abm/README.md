@@ -1,5 +1,8 @@
 # Proposed ED ABM parameter catalogue
 
+From the repository root, create the required environment with `uv venv --python 3.15.1 .venv` only when `.venv` is absent. Verify it with `.venv/bin/python tools/python_runtime.py`, then use `.venv/bin/python` for the commands below. Do not replace an existing or in-flight environment; the guard rejects an unqualified one. Windows uses `.venv\Scripts\python.exe`.
+
+
 These schema-v1 catalogues list the ABM inputs and evidence/gap state for P2.3.
 They are not executable profiles, calibrated values or a validated generic ED
 behavior model.
@@ -33,9 +36,9 @@ accounting. It is not a clinical or operational estimate.
 Run from the repository root:
 
 ```sh
-python3 tools/validate_abm_catalogue.py
-python3 tools/validate_abm_example.py
-python3 -m unittest discover -s tests -p 'test_abm_*.py' -v
+.venv/bin/python tools/validate_abm_catalogue.py
+.venv/bin/python tools/validate_abm_example.py
+.venv/bin/python -m unittest discover -s tests -p 'test_abm_*.py' -v
 ```
 
 Passing these checks establishes catalogue structure and example arithmetic

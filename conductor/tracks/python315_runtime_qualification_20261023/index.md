@@ -1,6 +1,6 @@
 # Python 3.15 migration
 
-Candidate; current-main acceptance pending.
+Completed for retained CareOps Sim at main `43ea6902c5cb0ac7bf6089e986d73aa4ac91d55f`; [acceptance evidence](closeout-evidence.json) and [review](review-report.md). Kairos and domain acceptance remain separate.
 
 - [Specification](spec.md)
 - [Numbered plan](plan.md)

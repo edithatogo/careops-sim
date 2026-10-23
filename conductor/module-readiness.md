@@ -243,4 +243,4 @@ See [current sequencing](dependency-sequencing.md): Polars inventory first, with
 
 ## Python runtime qualification — 23 October 2026
 
-[Python 3.15 migration and qualification](tracks/python315_runtime_qualification_20261023/index.md) preserves existing candidate `0aee0d2` and local test evidence. R71–R74 cover reconciliation, qualification, required PR/main proof and safe handover. No Kairos pin advance or simulation acceptance follows.
+[Python 3.15 migration and qualification](tracks/python315_runtime_qualification_20261023/index.md) preserves existing candidate `0aee0d2` and local test evidence. R71–R74 runtime implementation and safe handover are accepted at main `43ea690` through PRs #178/#179, with final repo-local Python 3.15.1 and eight guard controls. Conductor closeout documentation is under PR #180 review/checks. No Kairos pin advance or simulation acceptance follows.

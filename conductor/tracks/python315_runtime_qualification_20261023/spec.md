@@ -1,6 +1,6 @@
 # Python 3.15 runtime migration and qualification
 
-Maturity: candidate; main-branch migration and operational handover are unaccepted.
+Maturity: runtime migration and local handover accepted at main `43ea690` through PRs #178/#179. Conductor closeout documentation remains subject to PR #180 review/checks. No engine pin or domain acceptance follows.
 
 ## Objective
 
