@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-24",
+  "baseCommit": "839cb443ce5cd9170f63bab972d64951faf2d9eb",
+  "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-python315-conductor",
+  "python": "3.15.1",
+  "firstFailure": {
+    "command": "PYTHONPATH=tests .venv/bin/python -m unittest test_python_runtime.LocalPythonTests.test_bootstrap_through_external_symlink_retains_the_standard_library -v",
+    "exit": 1,
+    "cause": "Copied external POSIX executable shim cannot locate encodings/stdlib during ensurepip; reproduced after actual clean retained-main setup failed."
+  },
+  "qualification": {
+    "command": ".venv/bin/python -m unittest discover -s tests -p test_python_runtime.py -v",
+    "exit": 0,
+    "passed": 8
+  },
+  "sources": [
+    {
+      "path": "tools/python_runtime.py",
+      "sha256": "814234724a55a19637383ae081c705a02654a5990a98e51784e8809bc43bb0b4"
+    },
+    {
+      "path": "tests/test_python_runtime.py",
+      "sha256": "a642a6b7c3988d9fe73c0c489da806548f45b2a955865582b55b67f0fb7bf0bc"
+    }
+  ],
+  "boundaries": "Candidate local proof only. Existing environments preserved; no source/private/Polars/Kairos pin changes. Windows retains copy behavior. Actual hosted/main readback pending."
+}
