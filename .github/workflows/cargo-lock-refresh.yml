@@ -65,6 +65,21 @@ jobs:
           AUDIT_OUTCOME: ${{ steps.audit.outcome }}
           COMMITTED_OUTCOME: ${{ steps.committed.outcome }}
         run: |
+          if [[ -z "${CAREOPS_PYTHON:-}" || ! -x "${CAREOPS_PYTHON:-}" ]]; then
+            terminal_root=".artifacts/ci-suite"
+            mkdir -p "$terminal_root"
+            terminal_stages='{'
+            terminal_separator=''
+            for terminal_stage in RESOLVE_OUTCOME INSTALL_OUTCOME TEST_OUTCOME AUDIT_OUTCOME COMMITTED_OUTCOME; do
+              terminal_outcome="${!terminal_stage:-skipped}"
+              case "$terminal_outcome" in success|failure|cancelled|skipped) ;; *) terminal_outcome=unknown ;; esac
+              terminal_stages+="$terminal_separator\"$terminal_stage\":\"$terminal_outcome\""
+              terminal_separator=','
+            done
+            terminal_stages+='}'
+            printf '{"state":"setup-blocked","reason":"verified repository-local Python unavailable","runtimeTestsExecuted":false,"promoted":false,"nativeWrites":false,"stages":%s}\n' "$terminal_stages" > "$terminal_root/qualification.json"
+            exit 0
+          fi
           "$CAREOPS_PYTHON" - <<'PYCODE'
           import hashlib, json, os
           from pathlib import Path

@@ -30,6 +30,7 @@ class CargoLockCiTests(unittest.TestCase):
             with self.subTest(stage=stage), tempfile.TemporaryDirectory() as temporary:
                 outcomes = ['success' if i < position else 'failure' if i == position else 'skipped' for i in range(len(stages))]
                 env = dict(zip(names, outcomes))
+                env['CAREOPS_PYTHON'] = sys.executable
                 env['GITHUB_SHA'] = 'a' * 40
                 subprocess.run(['/bin/bash', '-euc', receipt_script()], cwd=temporary, env=env, check=True, capture_output=True)
                 receipt = json.loads((Path(temporary) / '.artifacts/ci-suite/qualification.json').read_text())
@@ -44,6 +45,7 @@ class CargoLockCiTests(unittest.TestCase):
             data = b'fictional candidate bytes\n'
             (root / 'Cargo.lock').write_bytes(data)
             env = {name: 'success' for name in ['RESOLVE_OUTCOME', 'INSTALL_OUTCOME', 'TEST_OUTCOME', 'AUDIT_OUTCOME', 'COMMITTED_OUTCOME']}
+            env['CAREOPS_PYTHON'] = sys.executable
             env['GITHUB_SHA'] = 'b' * 40
             subprocess.run(['/bin/bash', '-euc', receipt_script()], cwd=temporary, env=env, check=True, capture_output=True)
             receipt = json.loads((root / 'qualification.json').read_text())

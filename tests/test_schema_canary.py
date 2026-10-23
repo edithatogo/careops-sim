@@ -26,13 +26,13 @@ def step_script(name):
 
 
 def environment(root):
-    return {'CANARY_ROOT': str(root / 'candidate'), 'RUNNER_TEMP': str(root), 'GITHUB_WORKSPACE': str(root),
+    return {'CAREOPS_PYTHON': sys.executable, 'CANARY_ROOT': str(root / 'candidate'), 'RUNNER_TEMP': str(root), 'GITHUB_WORKSPACE': str(root),
             'SOURCE_COMMIT': 'a' * 40, 'CANDIDATE_PYTHON': platform.python_version(),
             **{stage.upper() + '_OUTCOME': 'success' for stage in STAGES}}
 
 
 def execute(name, root, env):
-    return subprocess.run(['/bin/bash', '-euc', step_script(name)], cwd=root, env=env, capture_output=True, text=True)
+    return subprocess.run(['/bin/bash', '-euc', step_script(name)], cwd=root, env={'CAREOPS_PYTHON': sys.executable, **env}, capture_output=True, text=True)
 
 
 class SchemaCanaryTests(unittest.TestCase):
@@ -120,13 +120,17 @@ class SchemaCanaryTests(unittest.TestCase):
                 root = Path(temporary)
                 path = root / '.artifacts/ci-preview/discovery.json'
                 path.parent.mkdir(parents=True)
-                path.write_text(json.dumps({'candidate': candidate}))
+                path.write_text(json.dumps({'candidate': candidate, 'state': 'candidate-resolved' if candidate else 'unavailable'}))
                 output = root / 'outputs'
                 subprocess.run([sys.executable, '-c', code], cwd=root, env={'GITHUB_OUTPUT': str(output)}, check=True, capture_output=True)
                 self.assertEqual(json.loads(output.read_text().split('=', 1)[1])['python'], expected)
                 if candidate != '3.15.2-rc.1':
+                    self.assertEqual(json.loads(path.read_text())['state'], 'unavailable')
                     self.assertIsNone(json.loads(path.read_text())['candidate'])
                     self.assertIn('unavailable', json.loads(path.read_text())['runtimeTestOutcome'])
+                env = {name.upper() + '_OUTCOME': 'success' for name in ['source', 'policy', 'bootstrap', 'discovery']}
+                result = execute('Record terminal discovery evidence', root, env)
+                self.assertEqual(result.returncode, 0, result.stderr)
 
 
     def test_discovery_failure_always_emits_terminal_receipt_and_preserves_partial(self):

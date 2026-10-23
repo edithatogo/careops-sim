@@ -40,6 +40,21 @@ jobs:
           DISCOVERY_OUTCOME: ${{ steps.discover.outcome }}
           SOURCE_COMMIT: ${{ github.sha }}
         run: |
+          if [[ -z "${CAREOPS_PYTHON:-}" || ! -x "${CAREOPS_PYTHON:-}" ]]; then
+            terminal_root=".artifacts/rust-canary/discovery"
+            mkdir -p "$terminal_root"
+            terminal_stages='{'
+            terminal_separator=''
+            for terminal_stage in DISCOVERY_OUTCOME; do
+              terminal_outcome="${!terminal_stage:-skipped}"
+              case "$terminal_outcome" in success|failure|cancelled|skipped) ;; *) terminal_outcome=unknown ;; esac
+              terminal_stages+="$terminal_separator\"$terminal_stage\":\"$terminal_outcome\""
+              terminal_separator=','
+            done
+            terminal_stages+='}'
+            printf '{"state":"setup-blocked","reason":"verified repository-local Python unavailable","runtimeTestsExecuted":false,"promoted":false,"nativeWrites":false,"stages":%s}\n' "$terminal_stages" > "$terminal_root/discovery.json"
+            exit 0
+          fi
           "$CAREOPS_PYTHON" tools/rust_development_canary.py finalize-discovery --output .artifacts/rust-canary/discovery --outcome "$DISCOVERY_OUTCOME" --source "$SOURCE_COMMIT"
       - if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -80,6 +95,21 @@ jobs:
           QUALIFICATION_OUTCOME: ${{ steps.qualification.outcome }}
           SOURCE_COMMIT: ${{ github.sha }}
         run: |
+          if [[ -z "${CAREOPS_PYTHON:-}" || ! -x "${CAREOPS_PYTHON:-}" ]]; then
+            terminal_root=".artifacts/rust-canary/qualification"
+            mkdir -p "$terminal_root"
+            terminal_stages='{'
+            terminal_separator=''
+            for terminal_stage in QUALIFICATION_OUTCOME; do
+              terminal_outcome="${!terminal_stage:-skipped}"
+              case "$terminal_outcome" in success|failure|cancelled|skipped) ;; *) terminal_outcome=unknown ;; esac
+              terminal_stages+="$terminal_separator\"$terminal_stage\":\"$terminal_outcome\""
+              terminal_separator=','
+            done
+            terminal_stages+='}'
+            printf '{"state":"setup-blocked","reason":"verified repository-local Python unavailable","runtimeTestsExecuted":false,"promoted":false,"nativeWrites":false,"stages":%s}\n' "$terminal_stages" > "$terminal_root/qualification.json"
+            exit 0
+          fi
           "$CAREOPS_PYTHON" tools/rust_development_canary.py finalize --output .artifacts/rust-canary/qualification --outcome "$QUALIFICATION_OUTCOME" --source "$SOURCE_COMMIT"
       - if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

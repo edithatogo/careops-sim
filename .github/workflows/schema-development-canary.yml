@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: edithatogo/careops
-          ref: 30df4953ea87c8915b4a525fc671a4c9857c3f7f
+          ref: 5cf006bce6c37c0c15db5d35055e302701a500ad
           path: .artifacts/ci-preview-policy
           persist-credentials: false
           submodules: false
@@ -61,6 +61,7 @@ jobs:
               receipt['runtimeTestOutcome'] = 'unavailable; no qualifying preview in required Python 3.15 line'
               receipt['excludedCandidate'] = candidate
               receipt['candidate'] = None
+              receipt['state'] = 'unavailable'
           receipt['requiredPythonLine'] = '3.15'
           path.write_text(json.dumps(receipt, indent=2) + '\n')
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
@@ -74,6 +75,21 @@ jobs:
           BOOTSTRAP_OUTCOME: ${{ steps.bootstrap.outcome }}
           DISCOVERY_OUTCOME: ${{ steps.discover.outcome }}
         run: |
+          if [[ -z "${CAREOPS_PYTHON:-}" || ! -x "${CAREOPS_PYTHON:-}" ]]; then
+            terminal_root=".artifacts/ci-preview"
+            mkdir -p "$terminal_root"
+            terminal_stages='{'
+            terminal_separator=''
+            for terminal_stage in SOURCE_OUTCOME POLICY_OUTCOME BOOTSTRAP_OUTCOME DISCOVERY_OUTCOME; do
+              terminal_outcome="${!terminal_stage:-skipped}"
+              case "$terminal_outcome" in success|failure|cancelled|skipped) ;; *) terminal_outcome=unknown ;; esac
+              terminal_stages+="$terminal_separator\"$terminal_stage\":\"$terminal_outcome\""
+              terminal_separator=','
+            done
+            terminal_stages+='}'
+            printf '{"state":"setup-blocked","reason":"verified repository-local Python unavailable","runtimeTestsExecuted":false,"promoted":false,"nativeWrites":false,"stages":%s}\n' "$terminal_stages" > "$terminal_root/discovery.json"
+            exit 0
+          fi
           "$CAREOPS_PYTHON" - <<'PYCODE'
           import json, os
           from pathlib import Path
@@ -230,6 +246,21 @@ jobs:
           AUDIT_OUTCOME: ${{ steps.audit.outcome }}
           CANONICAL_OUTCOME: ${{ steps.canonical.outcome }}
         run: |
+          if [[ -z "${CAREOPS_PYTHON:-}" || ! -x "${CAREOPS_PYTHON:-}" ]]; then
+            terminal_root="${CANARY_ROOT:-${GITHUB_WORKSPACE:-.}/.artifacts/schema-development}"
+            mkdir -p "$terminal_root"
+            terminal_stages='{'
+            terminal_separator=''
+            for terminal_stage in INITIALIZE_OUTCOME SOURCE_OUTCOME BOOTSTRAP_OUTCOME PREPARE_OUTCOME RESOLVE_OUTCOME INSTALL_OUTCOME INVENTORY_OUTCOME TESTS_OUTCOME POLICY_OUTCOME AUDIT_OUTCOME CANONICAL_OUTCOME; do
+              terminal_outcome="${!terminal_stage:-skipped}"
+              case "$terminal_outcome" in success|failure|cancelled|skipped) ;; *) terminal_outcome=unknown ;; esac
+              terminal_stages+="$terminal_separator\"$terminal_stage\":\"$terminal_outcome\""
+              terminal_separator=','
+            done
+            terminal_stages+='}'
+            printf '{"state":"setup-blocked","reason":"verified repository-local Python unavailable","runtimeTestsExecuted":false,"promoted":false,"nativeWrites":false,"stages":%s}\n' "$terminal_stages" > "$terminal_root/qualification.json"
+            exit 0
+          fi
           "$CAREOPS_PYTHON" - <<'PYCODE'
           import hashlib, json, os
           from pathlib import Path
