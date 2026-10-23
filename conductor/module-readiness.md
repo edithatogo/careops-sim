@@ -240,3 +240,7 @@ See [current sequencing](dependency-sequencing.md): Polars inventory first, with
 ## Validation/tooling refinement
 
 [Sequencing](dependency-sequencing.md) registers Criterion reuse, schema-validation gates and conditional ODE/WebSocket work. No runtime acceptance.
+
+## Python runtime qualification — 23 October 2026
+
+[Python 3.15 migration and qualification](tracks/python315_runtime_qualification_20261023/index.md) preserves existing candidate `0aee0d2` and local test evidence. R71–R74 cover reconciliation, qualification, required PR/main proof and safe handover. No Kairos pin advance or simulation acceptance follows.

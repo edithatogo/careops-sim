@@ -1,5 +1,10 @@
 # CareOps Sim: working map
 
+Use the repo-local Python 3.15.1 interpreter for every Python command below.
+Create an isolated `.venv` with `uv venv --python 3.15.1`, verify it using
+`.venv/bin/python tools/python_runtime.py`, then activate it or use that explicit
+interpreter path. Preserve existing environments until their consumers stop.
+
 Read `conductor/index.md`, then run `python3 tools/context.py resume`.
 Also read `conductor/execution-model.md` for serial/parallel scheduling and bounded
 worker packets; run `python3 tools/tasks.py check`.
@@ -29,7 +34,13 @@ source before resuming. It is context, not authority to mark work complete.
 - `python3 tools/tasks.py ready --mode serial` or `--mode parallel --workers 4`:
   preparation candidates only; coordinator reserves/reviews before dispatch.
 - `python3 tools/context.py check`: planning/context integrity, not runtime tests.
-- `python3 -m unittest discover -s tests -v`: local harness regression tests.
+- Start with the affected unittest file/class/method, for example
+  `.venv/bin/python -m unittest discover -s tests -p test_python_runtime.py -v`.
+  Use `.venv/bin/python -m unittest discover -s tests -v` for a coherent milestone
+  and integration, rather than repeating the full suite after each edit.
+- Reuse unchanged evidence only after checking source, dependencies, test config,
+  schemas and fixtures. Unknown impact requires broader validation. Keep caches
+  isolated per worktree/environment; focused success is scoped evidence.
 - `python3 tools/refresh_versions.py`: network read-only dependency candidates;
   review its changed snapshot. It never installs or upgrades packages.
 - Run targeted native tests in Kairos; commands and gates live in active plans.

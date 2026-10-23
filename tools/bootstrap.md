@@ -1,3 +1,5 @@
+Use the verified repo-local Python 3.15.1 environment: `.venv/bin/python tools/python_runtime.py`. Activate it before the following commands or substitute `.venv/bin/python` explicitly. Preserve in-flight environments until their consumers stop.
+
 # Rust toolchain preflight
 
 Run `python3 tools/bootstrap.py --check` before native Rust work. The command

@@ -22,19 +22,21 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - id: bootstrap
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.15.1'
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - name: Read qualified discovery tooling
         id: policy
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: edithatogo/careops
-          ref: 6319d0c0c76ee672223c156abce9d4181c41aa9a
+          ref: 5cf006bce6c37c0c15db5d35055e302701a500ad
           path: .artifacts/ci-preview-policy
           persist-credentials: false
           submodules: false
-      - id: bootstrap
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: '3.15.0'
       - name: Freeze manifest and select exact candidates
         id: discover
         env:
@@ -44,19 +46,24 @@ jobs:
           revision="$(gh api repos/actions/python-versions/commits/main --jq .sha)"
           [[ "$revision" =~ ^[a-f0-9]{40}$ ]]
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/actions/python-versions/$revision/versions-manifest.json" -o .artifacts/ci-preview/manifest.json
-          platform_version="$(python -c 'import platform; print(platform.freedesktop_os_release()["VERSION_ID"])')"
-          python .artifacts/ci-preview-policy/portfolio-scripts/ci_delivery.py runtime --platform-version "$platform_version" --manifest .artifacts/ci-preview/manifest.json --manifest-revision "$revision" --output .artifacts/ci-preview/discovery.json --github-output "$GITHUB_OUTPUT"
-          python - <<'PYCODE'
+          platform_version="$("$CAREOPS_PYTHON" -c 'import platform; print(platform.freedesktop_os_release()["VERSION_ID"])')"
+          "$CAREOPS_PYTHON" .artifacts/ci-preview-policy/portfolio-scripts/ci_delivery.py runtime --platform-version "$platform_version" --manifest .artifacts/ci-preview/manifest.json --manifest-revision "$revision" --output .artifacts/ci-preview/discovery.json --github-output "$GITHUB_OUTPUT"
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import json, os
           from pathlib import Path
           path = Path('.artifacts/ci-preview/discovery.json')
           receipt = json.loads(path.read_text())
-          versions = ['3.14.8', '3.15.0']
-          if receipt['candidate']:
-              versions.append(receipt['candidate'].replace('-alpha.', 'a').replace('-beta.', 'b').replace('-rc.', 'rc'))
+          versions = ['3.15.1']
+          candidate = receipt.get('candidate')
+          if candidate and __import__('re').fullmatch(r'3\.15\.\d+(?:-(?:alpha|beta|rc)\.\d+)?', candidate):
+              versions.append(candidate.replace('-alpha.', 'a').replace('-beta.', 'b').replace('-rc.', 'rc'))
           else:
-              receipt['runtimeTestOutcome'] = 'unavailable; no published qualifying preview'
-              path.write_text(json.dumps(receipt, indent=2) + '\n')
+              receipt['runtimeTestOutcome'] = 'unavailable; no qualifying preview in required Python 3.15 line'
+              receipt['excludedCandidate'] = candidate
+              receipt['candidate'] = None
+              receipt['state'] = 'unavailable'
+          receipt['requiredPythonLine'] = '3.15'
+          path.write_text(json.dumps(receipt, indent=2) + '\n')
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write('matrix=' + json.dumps({'python': list(dict.fromkeys(versions))}) + '\n')
           PYCODE
@@ -68,7 +75,22 @@ jobs:
           BOOTSTRAP_OUTCOME: ${{ steps.bootstrap.outcome }}
           DISCOVERY_OUTCOME: ${{ steps.discover.outcome }}
         run: |
-          python3 - <<'PYCODE'
+          if [[ -z "${CAREOPS_PYTHON:-}" || ! -x "${CAREOPS_PYTHON:-}" ]]; then
+            terminal_root=".artifacts/ci-preview"
+            mkdir -p "$terminal_root"
+            terminal_stages='{'
+            terminal_separator=''
+            for terminal_stage in SOURCE_OUTCOME POLICY_OUTCOME BOOTSTRAP_OUTCOME DISCOVERY_OUTCOME; do
+              terminal_outcome="${!terminal_stage:-skipped}"
+              case "$terminal_outcome" in success|failure|cancelled|skipped) ;; *) terminal_outcome=unknown ;; esac
+              terminal_stages+="$terminal_separator\"$terminal_stage\":\"$terminal_outcome\""
+              terminal_separator=','
+            done
+            terminal_stages+='}'
+            printf '{"state":"setup-blocked","reason":"verified repository-local Python unavailable","runtimeTestsExecuted":false,"promoted":false,"nativeWrites":false,"stages":%s}\n' "$terminal_stages" > "$terminal_root/discovery.json"
+            exit 0
+          fi
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import json, os
           from pathlib import Path
           path = Path('.artifacts/ci-preview/discovery.json')
@@ -120,12 +142,17 @@ jobs:
     steps:
       - name: Initialise bounded evidence location
         id: initialize
-        run: echo "CANARY_ROOT=$RUNNER_TEMP/schema-development" >> "$GITHUB_ENV"
+        run: echo "CANARY_ROOT=$GITHUB_WORKSPACE/.artifacts/schema-development" >> "$GITHUB_ENV"
       - id: source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.15.1"
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - id: bootstrap
         uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
@@ -134,9 +161,11 @@ jobs:
       - name: Prepare isolated candidate declarations
         id: prepare
         run: |
-          python3 - <<'PYCODE'
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import os, re
           from pathlib import Path
+          if not re.fullmatch(r'3\.15\.\d+(?:(?:a|b|rc)\d+)?', os.environ['CANDIDATE_PYTHON']):
+              raise SystemExit('Candidate runtime must remain in the human-selected Python 3.15 line')
           names = set()
           for line in Path('requirements-schema-validation.txt').read_text().splitlines():
               if not line.strip() or line.lstrip().startswith('#'):
@@ -190,20 +219,14 @@ jobs:
           for pattern in test_source_packet_record.py test_source_verification_schema.py test_ed_profile_pack_schema.py test_des_catalogue.py test_source_acceptance.py test_parameter_validation.py test_ed_capacity.py test_ed_profile_pack_negative_cases.py test_abm_catalogue.py; do
             "$CANARY_ROOT/venv/bin/python" -m unittest discover -s tests -p "$pattern" -v
           done
-      - name: Read qualified audit-tool lock
+      - name: Verify committed purpose-specific audit lock
         id: policy
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: edithatogo/careops
-          ref: 6319d0c0c76ee672223c156abce9d4181c41aa9a
-          path: .artifacts/ci-preview-policy
-          persist-credentials: false
-          submodules: false
+        run: test -s requirements-schema-audit.lock
       - name: Audit actual installed candidate versions
         id: audit
         run: |
-          uv venv --python 3.14.8 "$CANARY_ROOT/audit-venv"
-          uv pip install --python "$CANARY_ROOT/audit-venv/bin/python" --require-hashes --only-binary=:all: -r .artifacts/ci-preview-policy/requirements-ci.lock
+          uv venv --python 3.15.1 "$CANARY_ROOT/audit-venv"
+          uv pip install --python "$CANARY_ROOT/audit-venv/bin/python" --require-hashes --only-binary=:all: -r requirements-schema-audit.lock
           "$CANARY_ROOT/audit-venv/bin/python" -m pip_audit --disable-pip --no-deps -r "$CANARY_ROOT/installed-requirements.txt"
       - name: Verify tracked source and canonical pins were preserved
         id: canonical
@@ -223,10 +246,25 @@ jobs:
           AUDIT_OUTCOME: ${{ steps.audit.outcome }}
           CANONICAL_OUTCOME: ${{ steps.canonical.outcome }}
         run: |
-          python3 - <<'PYCODE'
+          if [[ -z "${CAREOPS_PYTHON:-}" || ! -x "${CAREOPS_PYTHON:-}" ]]; then
+            terminal_root="${CANARY_ROOT:-${GITHUB_WORKSPACE:-.}/.artifacts/schema-development}"
+            mkdir -p "$terminal_root"
+            terminal_stages='{'
+            terminal_separator=''
+            for terminal_stage in INITIALIZE_OUTCOME SOURCE_OUTCOME BOOTSTRAP_OUTCOME PREPARE_OUTCOME RESOLVE_OUTCOME INSTALL_OUTCOME INVENTORY_OUTCOME TESTS_OUTCOME POLICY_OUTCOME AUDIT_OUTCOME CANONICAL_OUTCOME; do
+              terminal_outcome="${!terminal_stage:-skipped}"
+              case "$terminal_outcome" in success|failure|cancelled|skipped) ;; *) terminal_outcome=unknown ;; esac
+              terminal_stages+="$terminal_separator\"$terminal_stage\":\"$terminal_outcome\""
+              terminal_separator=','
+            done
+            terminal_stages+='}'
+            printf '{"state":"setup-blocked","reason":"verified repository-local Python unavailable","runtimeTestsExecuted":false,"promoted":false,"nativeWrites":false,"stages":%s}\n' "$terminal_stages" > "$terminal_root/qualification.json"
+            exit 0
+          fi
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import hashlib, json, os
           from pathlib import Path
-          root = Path(os.environ.get('CANARY_ROOT', str(Path(os.environ['RUNNER_TEMP']) / 'schema-development')))
+          root = Path(os.environ.get('CANARY_ROOT', str(Path(os.environ['GITHUB_WORKSPACE']) / '.artifacts/schema-development')))
           root.mkdir(parents=True, exist_ok=True)
           stages = {name: os.environ[name.upper() + '_OUTCOME'] for name in ['initialize', 'source', 'bootstrap', 'prepare', 'resolve', 'install', 'inventory', 'tests', 'policy', 'audit', 'canonical']}
           failed = next((name for name, value in stages.items() if value == 'failure'), None)
@@ -263,10 +301,10 @@ jobs:
         with:
           name: schema-candidate-${{ matrix.python }}-${{ github.run_id }}
           path: |
-            ${{ runner.temp }}/schema-development/candidate.in
-            ${{ runner.temp }}/schema-development/candidate.lock
-            ${{ runner.temp }}/schema-development/installed.json
-            ${{ runner.temp }}/schema-development/installed-requirements.txt
-            ${{ runner.temp }}/schema-development/qualification.json
+            ${{ github.workspace }}/.artifacts/schema-development/candidate.in
+            ${{ github.workspace }}/.artifacts/schema-development/candidate.lock
+            ${{ github.workspace }}/.artifacts/schema-development/installed.json
+            ${{ github.workspace }}/.artifacts/schema-development/installed-requirements.txt
+            ${{ github.workspace }}/.artifacts/schema-development/qualification.json
           if-no-files-found: error
           retention-days: 14

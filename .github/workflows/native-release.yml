@@ -23,12 +23,15 @@ jobs:
           submodules: recursive
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: '3.14.8'
+          python-version: '3.15.1'
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - name: Verify packaging refusal and integrity regressions
-        run: python -m unittest discover -s tests -p test_native_release_package.py -v
+        run: |
+          "$CAREOPS_PYTHON" -m unittest discover -s tests -p test_native_release_package.py -v
       - name: Compile once using the canonical locked Rust lane
         run: |
-          toolchain=$(python -c 'import tomllib; print(tomllib.load(open("rust-toolchain.toml", "rb"))["toolchain"]["channel"])')
+          toolchain=$("$CAREOPS_PYTHON" -c 'import tomllib; print(tomllib.load(open("rust-toolchain.toml", "rb"))["toolchain"]["channel"])')
           rustup toolchain install "$toolchain" --profile minimal
           rustup run "$toolchain" rustc -vV
           rustup run "$toolchain" cargo build --locked --release --package careops-ed-cli --bin careops-ed
@@ -37,7 +40,7 @@ jobs:
           SOURCE_COMMIT: ${{ github.sha }}
         run: |
           git diff --exit-code
-          python tools/package_native_release.py --binary target/release/careops-ed --license LICENSE --notice project=NOTICE --notice kairos/LICENSE=libs/kairos/LICENSE --notice kairos/LICENSE-APACHE=libs/kairos/LICENSE-APACHE --notice kairos/LICENSE-MIT=libs/kairos/LICENSE-MIT --notice kairos/LICENSE.md=libs/kairos/LICENSE.md --scenario crates/careops-ed/examples/nominal_mvp.json --source-commit "$SOURCE_COMMIT" --created-epoch "$(git show -s --format=%ct "$SOURCE_COMMIT")" --output dist/careops-sim-linux-x64.zip
+          "$CAREOPS_PYTHON" tools/package_native_release.py --binary target/release/careops-ed --license LICENSE --notice project=NOTICE --notice kairos/LICENSE=libs/kairos/LICENSE --notice kairos/LICENSE-APACHE=libs/kairos/LICENSE-APACHE --notice kairos/LICENSE-MIT=libs/kairos/LICENSE-MIT --notice kairos/LICENSE.md=libs/kairos/LICENSE.md --scenario crates/careops-ed/examples/nominal_mvp.json --source-commit "$SOURCE_COMMIT" --created-epoch "$(git show -s --format=%ct "$SOURCE_COMMIT")" --output dist/careops-sim-linux-x64.zip
           cp Cargo.lock dist/resolved-workspace.Cargo.lock
       - name: Exercise the unpacked CLI outside the source tree
         run: |
@@ -55,7 +58,7 @@ jobs:
           bin/careops-ed validate invalid.json > invalid-result.txt 2>&1 || invalid_status=$?
           test "$invalid_status" -eq 4
           grep -F "MALFORMED_CONFIG (4)" invalid-result.txt
-          python - <<'PYCODE'
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import hashlib, json
           from pathlib import Path
           scenario_path = Path('examples/nominal_mvp.json')
@@ -77,14 +80,15 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: edithatogo/careops
-          ref: 6319d0c0c76ee672223c156abce9d4181c41aa9a
+          ref: 5cf006bce6c37c0c15db5d35055e302701a500ad
           path: .artifacts/ci-release-policy
           persist-credentials: false
           submodules: false
       - name: Inventory exact compiled package bytes
         env:
           SOURCE_COMMIT: ${{ github.sha }}
-        run: python .artifacts/ci-release-policy/portfolio-scripts/artifact_sbom.py --artifact dist/careops-sim-linux-x64.zip --name careops-sim-linux-x64 --source-commit "$SOURCE_COMMIT" --created-epoch "$(git show -s --format=%ct "$SOURCE_COMMIT")" --output dist/careops-sim.spdx.json
+        run: |
+          "$CAREOPS_PYTHON" .artifacts/ci-release-policy/portfolio-scripts/artifact_sbom.py --artifact dist/careops-sim-linux-x64.zip --name careops-sim-linux-x64 --source-commit "$SOURCE_COMMIT" --created-epoch "$(git show -s --format=%ct "$SOURCE_COMMIT")" --output dist/careops-sim.spdx.json
       - name: Preserve actual package and source resolution inventory
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -103,20 +107,25 @@ jobs:
       id-token: write # Federated signing for the exact previously built package.
       attestations: write # Store package provenance and SPDX signatures only.
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Select the qualified verification runtime
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.15.1'
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - name: Download the package built once by this run
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           name: careops-sim-linux-x64
           path: candidate
-      - name: Select the qualified verification runtime
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
-        with:
-          python-version: '3.14.8'
       - name: Independently compare downloaded package with its inventory
         env:
           SOURCE_COMMIT: ${{ github.sha }}
         run: |
-          python - <<'PYCODE'
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import hashlib, json, os, zipfile
           from pathlib import Path
           package = Path('candidate/careops-sim-linux-x64.zip')

@@ -23,6 +23,11 @@ jobs:
         with:
           persist-credentials: false
           submodules: true
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.15.1"
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
           version: '0.13.1'
@@ -31,11 +36,11 @@ jobs:
         id: resolve
         run: |
           mkdir -p .artifacts/ci-suite
-          uv pip compile requirements-schema-validation.txt --python-version 3.14 --universal --generate-hashes --no-header --no-annotate --output-file .artifacts/ci-suite/requirements-schema-validation.lock
+          uv pip compile requirements-schema-validation.txt --python-version 3.15.1 --universal --generate-hashes --no-header --no-annotate --output-file .artifacts/ci-suite/requirements-schema-validation.lock
       - name: Install candidate in an isolated exact runtime
         id: install
         run: |
-          uv venv --python 3.14.8 .artifacts/ci-suite/schema-venv
+          uv venv --python 3.15.1 .artifacts/ci-suite/schema-venv
           uv pip install --python .artifacts/ci-suite/schema-venv/bin/python --require-hashes --only-binary=:all: -r .artifacts/ci-suite/requirements-schema-validation.lock
       - name: Exercise every affected schema validator and negative fixture group
         id: tests
@@ -43,19 +48,11 @@ jobs:
           for pattern in test_source_packet_record.py test_source_verification_schema.py test_ed_profile_pack_schema.py test_des_catalogue.py test_source_acceptance.py test_parameter_validation.py test_ed_capacity.py test_ed_profile_pack_negative_cases.py test_abm_catalogue.py; do
             .artifacts/ci-suite/schema-venv/bin/python -m unittest discover -s tests -p "$pattern" -v
           done
-      - name: Read qualified immutable audit tool lock
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: edithatogo/careops
-          ref: 6319d0c0c76ee672223c156abce9d4181c41aa9a
-          path: .artifacts/ci-suite/policy
-          persist-credentials: false
-          submodules: false
       - name: Audit schema dependencies using hash-locked qualification tools
         id: audit
         run: |
-          uv venv --python 3.14.8 .artifacts/ci-suite/audit-venv
-          uv pip install --python .artifacts/ci-suite/audit-venv/bin/python --require-hashes --only-binary=:all: -r .artifacts/ci-suite/policy/requirements-ci.lock
+          uv venv --python 3.15.1 .artifacts/ci-suite/audit-venv
+          uv pip install --python .artifacts/ci-suite/audit-venv/bin/python --require-hashes --only-binary=:all: -r requirements-schema-audit.lock
           .artifacts/ci-suite/audit-venv/bin/python -m pip_audit --disable-pip --no-deps -r .artifacts/ci-suite/requirements-schema-validation.lock
       - name: Refuse uncommitted lock repair in source checks
         id: committed
@@ -70,7 +67,22 @@ jobs:
           AUDIT_OUTCOME: ${{ steps.audit.outcome }}
           COMMITTED_OUTCOME: ${{ steps.committed.outcome }}
         run: |
-          python3 - <<'PYCODE'
+          if [[ -z "${CAREOPS_PYTHON:-}" || ! -x "${CAREOPS_PYTHON:-}" ]]; then
+            terminal_root=".artifacts/ci-suite"
+            mkdir -p "$terminal_root"
+            terminal_stages='{'
+            terminal_separator=''
+            for terminal_stage in RESOLVE_OUTCOME INSTALL_OUTCOME TEST_OUTCOME AUDIT_OUTCOME COMMITTED_OUTCOME; do
+              terminal_outcome="${!terminal_stage:-skipped}"
+              case "$terminal_outcome" in success|failure|cancelled|skipped) ;; *) terminal_outcome=unknown ;; esac
+              terminal_stages+="$terminal_separator\"$terminal_stage\":\"$terminal_outcome\""
+              terminal_separator=','
+            done
+            terminal_stages+='}'
+            printf '{"state":"setup-blocked","reason":"verified repository-local Python unavailable","runtimeTestsExecuted":false,"promoted":false,"nativeWrites":false,"stages":%s}\n' "$terminal_stages" > "$terminal_root/qualification.json"
+            exit 0
+          fi
+          "$CAREOPS_PYTHON" - <<'PYCODE'
           import hashlib, json, os
           from pathlib import Path
           root = Path('.artifacts/ci-suite')
@@ -84,6 +96,7 @@ jobs:
               'auditOutcome': os.environ['AUDIT_OUTCOME'],
               'committedLockOutcome': os.environ['COMMITTED_OUTCOME'],
               'lockSha256': hashlib.sha256(lock.read_bytes()).hexdigest() if lock.exists() else None,
+              'auditLockSha256': hashlib.sha256(Path('requirements-schema-audit.lock').read_bytes()).hexdigest() if Path('requirements-schema-audit.lock').is_file() else None,
               'promoted': False,
               'scope': 'nine affected schema regression groups; full harness and dedicated Rust gates remain separate',
           }

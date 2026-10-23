@@ -27,6 +27,11 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.15.1"
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - id: detect
         name: Detect CI lane scope
         env:
@@ -40,7 +45,7 @@ jobs:
             base="$PUSH_BASE_SHA"
           fi
           head="$(git rev-parse HEAD 2>/dev/null || true)"
-          python3 tools/ci_scope.py --base "$base" --head "$head" --output "$GITHUB_OUTPUT"
+          "$CAREOPS_PYTHON" tools/ci_scope.py --base "$base" --head "$head" --output "$GITHUB_OUTPUT"
 
   fmt:
     timeout-minutes: 10
@@ -119,6 +124,11 @@ jobs:
         with:
           persist-credentials: false
           submodules: recursive
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.15.1"
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - name: Install Rust 1.99.1
         run: |
           set -euo pipefail
@@ -161,7 +171,7 @@ jobs:
       - name: Verify nextest discovery, failure handling and test suite
         run: |
           set -euo pipefail
-          python3 tools/nextest_ci.py --toolchain 1.99.1
+          "$CAREOPS_PYTHON" tools/nextest_ci.py --toolchain 1.99.1
       - name: Retain bounded failed native log
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -287,23 +297,25 @@ jobs:
       - name: Select the exact schema-validation runtime
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: '3.15.0'
+          python-version: '3.15.1'
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - name: Check Conductor context and exact Kairos contract
         run: |
-          python3 tools/check_kairos_pin.py
-          python3 tools/context.py check
-          python3 tools/tasks.py check
-          python3 tools/mvp.py check
+          "$CAREOPS_PYTHON" tools/check_kairos_pin.py
+          "$CAREOPS_PYTHON" tools/context.py check
+          "$CAREOPS_PYTHON" tools/tasks.py check
+          "$CAREOPS_PYTHON" tools/mvp.py check
       - name: Install locked harness dependencies
         run: |
-          python3 -m venv .artifacts/ci/harness-venv
-          .artifacts/ci/harness-venv/bin/pip install --require-hashes --only-binary=:all: -r requirements-schema-validation.lock
+          "$CAREOPS_PYTHON" -m pip install --require-hashes --only-binary=:all: -r requirements-schema-validation.lock
       - name: Run harness and incompatible-pin regressions
-        run: .artifacts/ci/harness-venv/bin/python -m unittest discover -s tests -v
+        run: |
+          "$CAREOPS_PYTHON" -m unittest discover -s tests -v
       - name: Check reviewed support and flaky-test inventory
         run: |
-          python3 tools/quality_support.py --root .
-          python3 tools/quality_flakes.py --config .config/d33-quality-gates.json
+          "$CAREOPS_PYTHON" tools/quality_support.py --root .
+          "$CAREOPS_PYTHON" tools/quality_flakes.py --config .config/d33-quality-gates.json
       - name: Build and run representative ED benchmark
         run: |
           set -euo pipefail
@@ -317,7 +329,7 @@ jobs:
           test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
           cargo build --locked --release --package careops-ed-cli
-          python3 tools/ed_benchmarks.py --binary target/release/careops-ed --output .artifacts/ci/d34/report.json
+          "$CAREOPS_PYTHON" tools/ed_benchmarks.py --binary target/release/careops-ed --output .artifacts/ci/d34/report.json
       - name: Retain D3.4 benchmark report
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -352,7 +364,7 @@ jobs:
           "$RUSTDOC" --version | grep -E '^rustdoc 1\.99\.1 '
           cargo -V | grep -E '^cargo 1\.99\.1 '
           cargo llvm-cov --locked --package careops-ed --all-features --all-targets --json --output-path .artifacts/ci/d33/coverage.json
-          python3 tools/quality_metrics.py --coverage .artifacts/ci/d33/coverage.json --config .config/d33-quality-gates.json
+          "$CAREOPS_PYTHON" tools/quality_metrics.py --coverage .artifacts/ci/d33/coverage.json --config .config/d33-quality-gates.json
       - name: Check current-source critical ED mutations
         if: needs.scope.outputs.native == 'true'
         run: |
@@ -383,7 +395,7 @@ jobs:
             exit "$status"
           fi
           cargo_path="$(rustup which cargo --toolchain 1.99.1)"
-          python3 tools/quality_mutations.py --outcomes .artifacts/ci/d33/mutations/mutants.out/outcomes.json --source crates/careops-ed/src/lib.rs --cargo "$cargo_path"
+          "$CAREOPS_PYTHON" tools/quality_mutations.py --outcomes .artifacts/ci/d33/mutations/mutants.out/outcomes.json --source crates/careops-ed/src/lib.rs --cargo "$cargo_path"
       - name: Retain bounded D3.3 quality evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -411,11 +423,16 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
           submodules: recursive
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.15.1"
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
       - name: Install reviewed checksum-bound policy binaries
         run: |
           mkdir -p .artifacts/ci/policy
           set -o pipefail
-          python3 tools/install_ci_tools.py 2>&1 | tee .artifacts/ci/policy/install.log
+          "$CAREOPS_PYTHON" tools/install_ci_tools.py 2>&1 | tee .artifacts/ci/policy/install.log
       - name: Install Rust 1.99.1
         run: rustup toolchain install 1.99.1 --profile minimal
       - name: Check all dependency, secret and workflow policies
@@ -429,7 +446,7 @@ jobs:
           test "$(command -v rustc)" = "$rustc_path"
           test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
-          python3 tools/ci_policy.py
+          "$CAREOPS_PYTHON" tools/ci_policy.py
           cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check
       - name: Retain bounded failed policy logs
         if: failure()

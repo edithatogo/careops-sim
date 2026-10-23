@@ -11,7 +11,7 @@ governed by `conductor/tracks/development_readiness_20260925/plan.md#D5.3`:
   - Strictly prohibits autonomous publication or git pushing.
 
 Python standard library ONLY (no external dependencies).
-Compatible with Python 3.12+ and `.artifacts/ci/harness-venv/bin/python`.
+Uses the verified repository-local Python 3.15.1 interpreter (`.venv/bin/python`).
 """
 
 from __future__ import annotations

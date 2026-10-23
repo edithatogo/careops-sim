@@ -18,7 +18,7 @@ def receipt_script():
     step = WORKFLOW.read_text().split('      - name: Record actual terminal outcomes without promotion\n', 1)[1]
     step = step.split('      - name: Preserve regenerated lock and execution receipt', 1)[0]
     script = textwrap.dedent(step.split('        run: |\n', 1)[1])
-    return script.replace('python3', shlex.quote(sys.executable), 1)
+    return re.sub(r'(?m)^\"\$CAREOPS_PYTHON\"(?=\s)', lambda _: shlex.quote(sys.executable), script, count=1)
 
 
 class SchemaCiTests(unittest.TestCase):
@@ -30,6 +30,7 @@ class SchemaCiTests(unittest.TestCase):
             with self.subTest(stage=stage), tempfile.TemporaryDirectory() as temporary:
                 outcomes = ['success' if i < position else 'failure' if i == position else 'skipped' for i in range(len(stages))]
                 env = dict(zip(names, outcomes))
+                env['CAREOPS_PYTHON'] = sys.executable
                 env['GITHUB_SHA'] = 'a' * 40
                 subprocess.run(['/bin/bash', '-euc', receipt_script()], cwd=temporary, env=env, check=True, capture_output=True)
                 receipt = json.loads((Path(temporary) / '.artifacts/ci-suite/qualification.json').read_text())
@@ -43,11 +44,14 @@ class SchemaCiTests(unittest.TestCase):
             root.mkdir(parents=True)
             data = b'fictional candidate bytes\n'
             (root / 'requirements-schema-validation.lock').write_bytes(data)
+            (Path(temporary) / 'requirements-schema-audit.lock').write_bytes(b'fictional audit lock\n')
             env = {name: 'success' for name in ['RESOLVE_OUTCOME', 'INSTALL_OUTCOME', 'TEST_OUTCOME', 'AUDIT_OUTCOME', 'COMMITTED_OUTCOME']}
+            env['CAREOPS_PYTHON'] = sys.executable
             env['GITHUB_SHA'] = 'b' * 40
             subprocess.run(['/bin/bash', '-euc', receipt_script()], cwd=temporary, env=env, check=True, capture_output=True)
             receipt = json.loads((root / 'qualification.json').read_text())
             self.assertEqual(receipt['lockSha256'], hashlib.sha256(data).hexdigest())
+            self.assertEqual(receipt['auditLockSha256'], hashlib.sha256(b'fictional audit lock\n').hexdigest())
             self.assertEqual(receipt['sourceCommit'], 'b' * 40)
             self.assertIs(receipt['promoted'], False)
 
