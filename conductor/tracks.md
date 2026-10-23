@@ -120,3 +120,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
 ---
 - [ ] **Track: CareOps criterion existing-tooling**
   - Link: [criterion_benchmark_consolidation_20261022](tracks/criterion_benchmark_consolidation_20261022/index.md)
+
+## Inventory-first Polars sequencing — 23 October 2026
+
+Polars inventory leads; sha2/tempfile/proptest are separate tracks with gates only on demonstrated dependent migration tasks. See [sequencing](dependency-sequencing.md). All implementation and acceptance statuses remain unchanged.
