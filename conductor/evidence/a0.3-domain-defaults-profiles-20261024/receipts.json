@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-10-24T10:55:04Z",
+  "task_id": "A0.3",
+  "description": "Minimal careops-core slice with clinical/site defaults outside Kairos, layered JurisdictionProfile/SiteProfile schema and loader tests, and contract-negative cases.",
+  "tests": {
+    "profile_loader_tests": {
+      "exit_code": 0,
+      "duration_ms": 713.1275839929003,
+      "status": "PASS"
+    },
+    "contract_negative_tests": {
+      "exit_code": 0,
+      "duration_ms": 438.5894159786403,
+      "status": "PASS"
+    },
+    "careops_core_full": {
+      "exit_code": 0,
+      "duration_ms": 2196.7438329884317,
+      "status": "PASS"
+    }
+  },
+  "contract_negative_matrix": {
+    "CC-01": "Recycled raw ECS generation/indices cannot be treated as longitudinal PersonId; duplicate episode IDs rejected; dependent infant survives parent discharge.",
+    "CC-02": "Transfer state machine rejects invalid jumps; origin resource release rejected prior to HandoverComplete; duplicate departures rejected.",
+    "CC-03": "Staged bundle allocation rolls back on partial acquisition failure; non-atomic AllOf join; non-interruptible procedures cannot be preempted by triage urgency alone.",
+    "CC-05": "Cleaning capacity state cannot transition directly to Occupied; maintenance closures cannot silently evict active clinical patients.",
+    "CC-06": "Decision agents cannot observe latent future outcomes; immediate service zero-target clock avoids division-by-zero; administrative clock pauses do not freeze clinical progression hazard clocks.",
+    "status": "VERIFIED"
+  },
+  "layering_precedence": {
+    "base_defaults": "Defined in careops-core (e.g. ATS targets 1-5, default cleaning ticks = 30)",
+    "jurisdiction_override": "JurisdictionProfile specifies policy clocks & regional cleaning/boarding targets",
+    "site_override": "SiteProfile specifies local facility capacity, beds, and turnover overrides (e.g. 20 ticks)",
+    "runtime_override": "RuntimeOverrides takes highest precedence over site and jurisdiction (e.g. 12 ticks)",
+    "precedence_order": "Base Defaults < JurisdictionProfile < SiteProfile < RuntimeOverrides",
+    "status": "VERIFIED"
+  }
+}

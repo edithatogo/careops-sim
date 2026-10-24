@@ -2,3 +2,4 @@
 //! and experiment lifecycle abstractions.
 
 pub mod experiment;
+pub mod profile;
