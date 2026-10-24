@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/careops-ed", "crates/careops-ed-cli"]
+members = ["crates/careops-core", "crates/careops-ed", "crates/careops-ed-cli"]
 
 [workspace.package]
 edition = "2021"
@@ -17,6 +17,7 @@ license.workspace = true
 publish = false
 
 [workspace.dependencies]
+careops-core = { path = "crates/careops-core" }
 kairo-ecs-rng = { path = "libs/kairos/crates/kairo-ecs-rng" }
 kairo-ecs-core = { path = "libs/kairos/crates/kairo-ecs-core" }
 kairo-ecs-types = { path = "libs/kairos/crates/kairo-ecs-types" }

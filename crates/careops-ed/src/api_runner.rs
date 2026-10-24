@@ -8,12 +8,9 @@
 //! - Structured exports in JSON, CSV, and Arrow schema metadata (`export`).
 //! - Bounded CLI dispatcher with fresh-user walkthrough and reference scenario selection.
 
-use std::collections::HashSet;
 use std::fmt::{Display, Formatter};
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
 
@@ -354,26 +351,7 @@ impl Default for RunOptions {
 }
 
 /// Cooperative cancellation token.
-#[derive(Clone, Default)]
-pub struct CancellationToken {
-    cancelled: Arc<AtomicBool>,
-}
-
-impl CancellationToken {
-    pub fn new() -> Self {
-        Self {
-            cancelled: Arc::new(AtomicBool::new(false)),
-        }
-    }
-
-    pub fn cancel(&self) {
-        self.cancelled.store(true, Ordering::SeqCst);
-    }
-
-    pub fn is_cancelled(&self) -> bool {
-        self.cancelled.load(Ordering::SeqCst)
-    }
-}
+pub use careops_core::experiment::CancellationToken;
 
 /// Artifact marker written when a run is aborted or interrupted.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -565,16 +543,7 @@ pub fn run_experiment(
 }
 
 /// Seed and replication allocation using deterministic 64-bit stride.
-pub fn allocate_replication_seeds(base_seed: u64, replications: usize) -> Vec<u64> {
-    let mut seeds = Vec::with_capacity(replications);
-    let mut seen = HashSet::new();
-    for r in 0..replications {
-        let seed = base_seed.wrapping_add((r as u64).wrapping_mul(0x9E3779B97F4A7C15));
-        assert!(seen.insert(seed), "replication seeds must be unique");
-        seeds.push(seed);
-    }
-    seeds
-}
+pub use careops_core::experiment::allocate_replication_seeds;
 
 /// Metric comparison with standardized units, denominators, and uncertainty.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
