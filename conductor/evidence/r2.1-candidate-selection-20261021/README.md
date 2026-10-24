@@ -1,6 +1,6 @@
 # R2.1 — proposed source-preserving candidate
 
-**Status: ready for independent packet/owner review; R2.1 remains unchecked.**
+**Status: R2.1 candidate selection executed and verified; gate-result.json confirmed candidate_for_qualification at 8282b1ab; pin 44261eb retained.**
 This preparation starts at merged careops-sim `5de9e4ef81d5da96f048ee18e7170354d9247c26`, after PR174 and PR175 merged in order. The parent runtime pin remains **44261eb5cf8275f132f63a3396903d116d701dbe**. No Kairos source, manifest, dependency lock, fixture, protected plan/status record or gitlink was edited.
 
 ## Proposed candidate and alternatives
