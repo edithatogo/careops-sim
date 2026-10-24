@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Small read-only project context/check harness. No agents, installs or writes."""
 import argparse
+from datetime import date
 import json
 from pathlib import Path
 import re
@@ -15,6 +16,76 @@ def git(root, *args):
     if run.returncode:
         raise ValueError(run.stderr.strip() or 'git command failed')
     return run.stdout.strip()
+
+
+def validate_dependency_handoffs(root):
+    """Structural review checks only; no upstream/runtime acceptance assertion."""
+    errors = []
+    try:
+        data = json.loads((root/'conductor/dependency-handoffs.json').read_text())
+        if not isinstance(data, dict) or data.get('schema_version') != 1:
+            raise ValueError('unsupported register schema')
+        rows = data.get('receipts')
+        if not isinstance(rows, list) or not rows:
+            raise ValueError('receipts must be a nonempty list')
+        seen = set()
+        outcomes = {'no_action', 'pin_update_and_verification',
+                    'bounded_adaptation', 'implementation_track'}
+        for row in rows:
+            if not isinstance(row, dict):
+                raise ValueError('receipt must be an object')
+            key = row.get('owner_track')
+            if not isinstance(key, str) or not re.fullmatch(r'\d{2,3}-[a-z0-9-]+', key):
+                raise ValueError('invalid owner_track')
+            if key in seen:
+                errors.append(f'Duplicate dependency owner_track: {key}')
+            seen.add(key)
+            if row.get('direct_dependency_disposition') not in {'undetermined', 'unnecessary', 'existing', 'proposed'}:
+                errors.append(f'{key}: invalid direct dependency disposition')
+            review = row.get('impact_review')
+            if not isinstance(review, dict):
+                errors.append(f'{key}: missing impact_review')
+                continue
+            status = review.get('status')
+            if status not in {'pending', 'complete', 'stale'}:
+                errors.append(f'{key}: invalid review status')
+            outcome = review.get('outcome')
+            if outcome is not None and (not isinstance(outcome, str) or outcome not in outcomes):
+                errors.append(f'{key}: invalid review outcome')
+            for field in ('implications', 'opportunities', 'evidence'):
+                value = review.get(field)
+                if not isinstance(value, list) or any(not isinstance(v, str) or not v.strip() for v in value):
+                    errors.append(f'{key}: {field} must be a list of nonempty strings')
+            follow = review.get('follow_up')
+            if follow is not None:
+                # Local track identifiers or bounded packet files; no path escape.
+                valid = False
+                if isinstance(follow, str) and follow.strip():
+                    for candidate in (root/'conductor/tracks'/follow/'spec.md', root/follow):
+                        if candidate.resolve().is_relative_to(root.resolve()) and candidate.is_file():
+                            valid = True
+                if not valid:
+                    errors.append(f'{key}: unresolved local follow-up')
+            if status == 'complete':
+                for field in ('upstream_decision', 'reviewer', 'consumer_context', 'rationale'):
+                    value = review.get(field)
+                    if not isinstance(value, str) or not value.strip():
+                        errors.append(f'{key}: completed review needs {field}')
+                if not re.fullmatch(r'[0-9a-f]{40}', str(review.get('upstream_commit', ''))):
+                    errors.append(f'{key}: completed review needs immutable upstream commit')
+                try:
+                    date.fromisoformat(review.get('reviewed_at'))
+                except (TypeError, ValueError):
+                    errors.append(f'{key}: completed review needs ISO review date')
+                if not isinstance(outcome, str) or outcome not in outcomes:
+                    errors.append(f'{key}: completed review needs outcome')
+                if not review.get('evidence'):
+                    errors.append(f'{key}: completed review needs evidence')
+                if outcome != 'no_action' and not follow:
+                    errors.append(f'{key}: actionable review needs owned follow-up')
+    except (OSError, ValueError, TypeError) as error:
+        errors.append(f'Dependency handoff register invalid: {error}')
+    return errors
 
 def validate(root, check_git=True):
     errors = []
@@ -94,6 +165,7 @@ def main():
     parser.add_argument('command',choices=('resume','check'))
     args=parser.parse_args()
     result=validate(ROOT)
+    result['errors'].extend(validate_dependency_handoffs(ROOT))
     if args.command=='resume':
         state=json.loads((ROOT/'conductor/current-state.json').read_text())
         print(json.dumps({k:state[k] for k in ('active_track','active_phase','next_action','context_paths')},indent=2))
