@@ -1,0 +1,104 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling getrandom v0.3.4
+   Compiling zerocopy v0.8.48
+   Compiling quote v1.0.45
+   Compiling serde_core v1.0.228
+   Compiling serde_json v1.0.149
+   Compiling num-traits v0.2.19
+   Compiling serde v1.0.228
+   Compiling rand_core v0.9.5
+   Compiling rand_xorshift v0.4.0
+   Compiling rand v0.9.5
+   Compiling syn v2.0.117
+   Compiling serde_derive v1.0.228
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.9.0
+   Compiling proptest v1.11.0
+   Compiling kairo-ecs-core v0.0.0 (/Users/doughnut/Documents/careops-sim/libs/kairos/crates/kairo-ecs-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.03s
+     Running unittests src/lib.rs (target/debug/deps/kairo_ecs_core-d0390fae2976a02b)
+
+running 17 tests
+test tests::cancellation_rejects_unknown_and_dispatched_events ... ok
+test tests::cancellation_skips_event_without_reordering_rest ... ok
+test tests::cancelled_future_event_does_not_force_limit_after_active_events_finish ... ok
+test tests::core_status_codes_match_the_ffi_contract ... ok
+test tests::dispatches_by_time_priority_then_sequence ... ok
+test tests::facade_exposes_scheduler_stats_snapshot ... ok
+test tests::facade_maps_cancellation_and_limit_statuses ... ok
+test tests::facade_reports_invalid_priority_without_scheduling ... ok
+test tests::facade_schedules_steps_and_exposes_status_codes ... ok
+test tests::recording_scheduler_exposes_cancel_run_and_state ... ok
+test tests::run_for_with_zero_limit_reports_limit_reached ... ok
+test tests::run_for_is_bounded ... ok
+test tests::run_until_or_for_does_not_dispatch_past_time_limit_with_remaining_budget ... ok
+test tests::run_until_or_for_reports_limit_reached_when_event_budget_is_exhausted_first ... ok
+test tests::run_until_or_for_stops_on_bounds ... ok
+test tests::run_until_stops_at_time_limit ... ok
+test tests::scheduler_stats_track_scheduled_cancelled_dispatched_and_pending ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/conformance_fixtures.rs (target/debug/deps/conformance_fixtures-0a93f079ab528f88)
+
+running 4 tests
+test conformance_cancellation ... ok
+test conformance_deterministic_ordering ... ok
+test conformance_rng_replay ... ok
+test conformance_zero_delay_guard ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/integration.rs (target/debug/deps/integration-f4181709a1b25cd7)
+
+running 8 tests
+test test_empty_scheduler ... ok
+test test_cancel_then_schedule ... ok
+test test_run_for_bounds ... ok
+test test_run_until_bounds ... ok
+test test_trace_recorder ... ok
+test test_zero_delay_guard ... ok
+test test_deterministic_replay ... ok
+test test_large_event_count ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/scheduler_checkpoint_v1.rs (target/debug/deps/scheduler_checkpoint_v1-1635e12de2b52151)
+
+running 5 tests
+test preserves_physical_tombstones_and_original_queue_continuation ... ok
+test empty_scheduler_checkpoint_roundtrips_and_continues ... ok
+test prune_frontier_round_trips_after_dispatch_and_preserves_tie_sequence ... ok
+test near_wrap_generation_frontier_keeps_next_identifier_and_order ... ok
+test rejects_invalid_checkpoint_invariants_with_exact_errors ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/scheduler_preview_v1.rs (target/debug/deps/scheduler_preview_v1-b93f0b4db337d042)
+
+running 7 tests
+test all_fields_and_copied_snapshot_match_exact_dispatch ... ok
+test cancelled_future_only_queue_is_empty_not_limit_reached ... ok
+test cancelled_heads_are_pruned_without_stats_or_time_changes ... ok
+test empty_preview_preserves_all_stats ... ok
+test preview_then_cancel_exposes_next_live_identity ... ok
+test ordering_is_time_then_priority_then_insertion_sequence ... ok
+test scheduling_can_change_preview_without_consuming_old_head ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/scheduler_properties.rs (target/debug/deps/scheduler_properties-3f2e9ce27804dfbc)
+
+running 3 tests
+test repeated_equal_priority_events_keep_their_insertion_sequence ... ok
+test generated_events_follow_time_priority_and_insertion_order ... ok
+test generated_cancellations_remove_only_selected_events ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+   Doc-tests kairo_ecs_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
