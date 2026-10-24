@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "task_id": "R3.3",
+  "track_id": "repo_reconciliation_kairos_upgrade_20261020",
+  "timestamp_utc": "2026-10-24T09:20:10Z",
+  "status": "accepted",
+  "candidate_decision": {
+    "action": "RETAIN_PIN",
+    "retained_pin": "44261eb5cf8275f132f63a3396903d116d701dbe",
+    "qualified_candidate": "8282b1ab45669a667bda3be2862272447544ba44",
+    "candidate_upstream_ref": "origin/codex/e61-numeric-batch-profiling-oracle-20261017",
+    "basis": "spec.md line 22 explicit retain-pin decision; headless simulation contracts satisfied 100% with zero drift"
+  },
+  "rollback_rehearsal": {
+    "status": "PASS",
+    "procedure": "git revert <pin_commit> && git submodule update --init libs/kairos",
+    "isolation": "Executed in detached temporary worktree (/private/tmp/careops-r33-rollback-rehearsal-run)",
+    "verified_pins": {
+      "initial": "44261eb5cf8275f132f63a3396903d116d701dbe",
+      "advanced": "8282b1ab45669a667bda3be2862272447544ba44",
+      "reverted": "44261eb5cf8275f132f63a3396903d116d701dbe",
+      "submodule_head": "44261eb5cf8275f132f63a3396903d116d701dbe"
+    },
+    "receipt_file": "conductor/evidence/r3.3-decision-rollback-provenance-20261024/rollback-rehearsal-receipt.json"
+  },
+  "owner_handoffs": {
+    "CareOps_Coordinator": {
+      "responsibility": "Top-level Conductor registry consistency, submodule pin coordination, and phase acceptance",
+      "scope": "conductor/*, parent Cargo.toml, submodule gitlinks"
+    },
+    "Kairos_Track01_03_59_64": {
+      "responsibility": "Neutral scheduling, resource bundle allocation, and event ordering mechanics",
+      "scope": "libs/kairos/crates/kairo-ecs-core, libs/kairos/crates/kairo-ecs-des"
+    },
+    "Kairos_Track04_62": {
+      "responsibility": "Interoperable Arrow 60 / Parquet 60 physical reader/writer implementations",
+      "scope": "libs/kairos/crates/kairo-ecs-arrow-io, libs/kairos/crates/kairo-ecs-arrow"
+    },
+    "Kairos_Track21_22_66": {
+      "responsibility": "Calibration pipelines, C2 replay journals, and observation mathematics",
+      "scope": "libs/kairos/crates/kairo-ecs-calibration, libs/kairos/crates/kairo-ecs-abm"
+    },
+    "Kairos_Track25": {
+      "responsibility": "Public API stability, semver conformance, and backward compatibility",
+      "scope": "libs/kairos Cargo.toml workspace and public exports"
+    },
+    "Kairos_Track32_35": {
+      "responsibility": "Device and distributed acceleration mechanisms (Metal/CUDA/MPI)",
+      "scope": "libs/kairos/crates/kairo-ecs-gpu, libs/kairos/crates/kairo-ecs-mpi",
+      "status": "OPEN_EXTERNAL_GATES (E6/E8 unverified release blockers)"
+    },
+    "CareOps_Core": {
+      "responsibility": "Linked patient, person, and episode identity (CC-01)",
+      "scope": "crates/careops-core"
+    },
+    "CareOps_ED": {
+      "responsibility": "Emergency care clinical semantics, triage urgency mappings, and transit routing",
+      "scope": "crates/careops-ed, crates/careops-ed-cli"
+    }
+  },
+  "environment_provenance": {
+    "host": "Apple M1 Max (32 GiB, Darwin 24.3.0 arm64)",
+    "compiler_rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "backend": "CPU native (no GPU or cluster runtime linked)",
+    "root_seed": 42,
+    "scenario_id": "nominal-ed-mvp",
+    "scenario_input_sha256": "71215b7ff4a2b47b38ace339cadac15a68c1c49c9738856ff742e9400c2ff9ae"
+  },
+  "raw_artifact_checksums": {
+    "ed_nominal_output_sha256": "2ef0b777a876a3eb79be7a873832d2012d92555776a3e6bb69c02580ecadbb3d",
+    "c2_checkpoint_sha256": "532acb205e99099300e1311160550308740885c0c52cfcab6db4b76d79c7244e"
+  },
+  "negative_controls_and_boundary_guards": {
+    "claim_atomic_multi_resource": "REJECTED (OperationalError::AtomicMultiResourceUnsupported)",
+    "unsupported_multi_role": "REJECTED (OperationalError::UnsupportedMultiRole)",
+    "sentinel_checkpoint_collision": "REJECTED (exit 1, uncorrupted sentinel bytes)",
+    "inaccessible_transit_edge": "REJECTED (OperationalError::EdgeInaccessible)",
+    "unreachable_transit_route": "REJECTED (OperationalError::RouteUnreachable)",
+    "mock_gpu_metadata": "REJECTED as device execution proof (E6 remains UNVERIFIED)",
+    "in_process_mpi_threads": "REJECTED as cluster transport proof (E8 remains UNVERIFIED)"
+  }
+}
