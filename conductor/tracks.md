@@ -42,10 +42,10 @@ R/A/B DAG and reviewed packets.
   [spec](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md),
   [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). Completed: R0 reconciliation, R1 local CPU/IO/recovery baseline, R2 candidate qualification, and R3 deterministic conformance and retain-pin decision accepted. Working pin 44261eb retained with zero drift; missing hardware capabilities E6/E8 classified as external dispatch gates.
 
-- [ ] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
+- [~] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
   ([index](tracks/careops_core_domain_abstractions_20261020/index.md),
   [spec](tracks/careops_core_domain_abstractions_20261020/spec.md),
-  [plan](tracks/careops_core_domain_abstractions_20261020/plan.md)). Proposed. Extracts dynamic stage graphs, capability-based rooms, multi-role procedural staffing, decoupled egress handover boundaries, and linked entity pairs into `careops-core`.
+  [plan](tracks/careops_core_domain_abstractions_20261020/plan.md)). In progress: Phase A0 small contracts, identities and extraction boundaries underway. Extracts dynamic stage graphs, capability-based rooms, multi-role procedural staffing, decoupled egress handover boundaries, and linked entity pairs into `careops-core`.
 
 - [ ] **Generic birthing suite simulation delivery** — `birthing_suite_delivery_20261020`
   ([index](tracks/birthing_suite_delivery_20261020/index.md),
