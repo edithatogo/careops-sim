@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "packet_id": "R2.1.source-candidate-selection",
+  "task_id": "R2.1",
+  "target_repo": ".",
+  "base_commit": "5de9e4ef81d5da96f048ee18e7170354d9247c26",
+  "model_role": "coordinator",
+  "model_candidate": "current-session",
+  "status": "prepared",
+  "objective": "Select a bounded immutable source candidate for subsequentqualification withoutchangingKairosgitlink or engine; bind consumerowners and freshregistryobservations.",
+  "context_paths": [
+    "AGENTS.md",
+    "conductor/tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md",
+    "conductor/tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md",
+    "conductor/tracks/repo_reconciliation_kairos_upgrade_20261020/agent-contract.md",
+    "conductor/evidence/r0.2-capability-inventory-20261021/collect_inventory.py",
+    "conductor/evidence/r2.1-candidate-selection-20261021/inspect_candidate.py"
+  ],
+  "context_budget_bytes": 24000,
+  "input_hashes": {
+    "AGENTS.md": "59539b2665459bff3ed7a8e8fa835ea1ab6263794e60b7a3a17babc816088ec8",
+    "conductor/tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md": "b9be52aa5dc918e59fe61db09544c993f5853533e29e633e620988c72eaec9a0",
+    "conductor/tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md": "f68d39b22bfaa38cb6c124b3090a70b7f7f894d11c8fa9880022f5e44223772f",
+    "conductor/tracks/repo_reconciliation_kairos_upgrade_20261020/agent-contract.md": "29cb8f2430e54fc4d34a2b49db7a0860880778785bc8914007af7af0047ff5f7",
+    "conductor/evidence/r0.2-capability-inventory-20261021/collect_inventory.py": "33099537e10a9358d4ac2b8f4a92e0532abaafd8149b499c0b1a50799219b3d0",
+    "conductor/evidence/r2.1-candidate-selection-20261021/inspect_candidate.py": "9e99a8d1095a61249689fbd864fe333ff766e5a20df5d9f3dbd5a905c7a03b46",
+    "conductor/evidence/d2.4-kairos-contract.json": "ddd4a4fe84651c5f24aaf85ecf3dc0e055c133a97f64d606dff2c47fab9a148f",
+    "conductor/dependency-policy.md": "2350eb68ef713bfba07f90757212d2296c8f002004bb64b6e95662c4d53351dc",
+    "conductor/evidence/r1-native-baseline-20261021/native/source-manifest.json": "8c3464ae53543b5d72446f127699129f36270c3ae414240a41a7ad22876581c1",
+    "conductor/evidence/r0.2-capability-inventory-20261021/inventory.json": "023d1bf57c597024f8af2c265a68cda6358fa8f8a5f208d0435f30b77b83eccd"
+  },
+  "write_paths": [
+    "conductor/evidence/r2.1-candidate-selection-20261021",
+    "conductor/evidence/dependency-candidates.json"
+  ],
+  "protected_paths": [
+    "libs",
+    "extensions",
+    "crates",
+    "Cargo.toml",
+    "Cargo.lock",
+    ".github",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json",
+    "conductor/tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/tracks/repo_reconciliation_kairos_upgrade_20261020/agent-contract.md",
+  "steps": [
+    "Verify exactbase/sourcepins/inputhashes and liveclaim.",
+    "Review refreshed33record report (inputpreparation alreadyexecuted; neveradopt candidateversions).",
+    "Execute existinginventory and inspected source-selection gate with explicitnegativecontrol.",
+    "Bind sourceownercontracts03/04/21/22/25 plus32; retain branchproof/diffs, allargv/cwd/exit/outputhashes.",
+    "Run integrity/pin gates and returnevidence forindependentreview; sharedstatusownedbycoordinatorafteracceptance."
+  ],
+  "verification": [
+    {
+      "name": "inventory",
+      "argv": [
+        "python3",
+        "conductor/evidence/r0.2-capability-inventory-20261021/collect_inventory.py",
+        "--parent",
+        ".",
+        "--kairos",
+        "/Volumes/PortableSSD/GitHub/kairos",
+        "--pinned",
+        "44261eb5cf8275f132f63a3396903d116d701dbe",
+        "--candidate",
+        "8282b1ab45669a667bda3be2862272447544ba44",
+        "--output",
+        "conductor/evidence/r2.1-candidate-selection-20261021/selected-inventory.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All321reviewed pin paths match candidate; crate features/dependencies/fixture inventory retained"
+    },
+    {
+      "name": "selection",
+      "argv": [
+        "python3",
+        "conductor/evidence/r2.1-candidate-selection-20261021/inspect_candidate.py",
+        "--repo",
+        "/Volumes/PortableSSD/GitHub/kairos",
+        "--candidate",
+        "8282b1ab45669a667bda3be2862272447544ba44",
+        "--inventory",
+        "conductor/evidence/r2.1-candidate-selection-20261021/selected-inventory.json",
+        "--output",
+        "conductor/evidence/r2.1-candidate-selection-20261021/selection.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Zero consumer/manifest/availability drift, pinancestor, only four optionalGPU files changed"
+    },
+    {
+      "name": "reject-divergent",
+      "argv": [
+        "python3",
+        "conductor/evidence/r2.1-candidate-selection-20261021/inspect_candidate.py",
+        "--repo",
+        "/Volumes/PortableSSD/GitHub/kairos",
+        "--candidate",
+        "55b20e77eb9ca0df5a95b9e82c4fb815d3919a87",
+        "--inventory",
+        "conductor/evidence/r0.2-capability-inventory-20261021/inventory.json",
+        "--output",
+        "conductor/evidence/r2.1-candidate-selection-20261021/rejected-main.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 2,
+      "oracle": "Divergentmain missingreviewedcapabilities must hold, despite inventoryprogramzeroexit"
+    },
+    {
+      "name": "context",
+      "argv": [
+        "python3",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "No broken links or metadata drift"
+    },
+    {
+      "name": "tasks",
+      "argv": [
+        "python3",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "225records and prerequisiteDAG consistent"
+    },
+    {
+      "name": "mvp",
+      "argv": [
+        "python3",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "82parents258leaves preserved"
+    },
+    {
+      "name": "pin",
+      "argv": [
+        "python3",
+        "tools/check_kairos_pin.py"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Committed/index/worktreepin and allreviewedsourcehashes unchanged"
+    },
+    {
+      "name": "diff",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Source and evidence text whitespace valid"
+    }
+  ],
+  "acceptance": [
+    "Remote branchproof resolves exactcandidateSHA and pinancestry.",
+    "321reviewed paths equal; allconsumedcrate source plus manifests/locks/availability unchanged; bounded4filedelta examined.",
+    "Divergentmain rejected by explicitselectiongate.",
+    "No runtime/host/APIrelease/pin qualification from sourceinventory or refresh.",
+    "Ownercontractreviews explicit; package/API/device gates remain separately scoped."
+  ],
+  "result_path": "conductor/evidence/r2.1-candidate-selection-20261021/README.md",
+  "stop_conditions": [
+    "Base/input/pin/claimdrift",
+    "Out-of-scopewrite",
+    "Missingownercontract or unavailable source",
+    "Unexpected candidate delta or failing oracle"
+  ],
+  "size_exception": "Coordinator source-selection packet has8bounded read-only checks including existing integrity gates and one expectednegative;2ownedoutputs, no runtime writes.",
+  "reviewer_chat": "01a15970-7778-7412-b77c-bafd22a2b5a3",
+  "review_status": "awaiting_independent_packet_review",
+  "preparation_exception": "Networkread-only report refresh alreadyexecuted underexplicitownedscope. Existingreport isoutput, not immutableinput; no manifest/dependency changes. Manualexacthashbinding against samecleanstartHEAD afterownedpreparation; no bind tool invoked on dirtycheckout."
+}
