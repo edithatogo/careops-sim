@@ -1,0 +1,450 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.40s
+     Running unittests src/lib.rs (target/debug/deps/careops_ed-f68234950de9ad1f)
+
+running 39 tests
+test arrivals::tests::unbiased_threshold_retry_and_bounded_exhaustion ... ok
+test disposition::tests::empty_population_validates_policy_and_returns_empty ... ok
+test arrivals::tests::empty_width_one_adjacent_bins_and_excluded_endpoints ... ok
+test arrivals::tests::independent_reference_and_generator_match_canonical_non_power_of_two_vector ... ok
+test arrivals::tests::sampling_error_returns_no_partial_schedule_and_validation_draws_nothing ... ok
+test arrivals::tests::exact_mode_acuity_counts_and_input_permutations_are_canonical ... ok
+test arrivals::tests::serde_rejects_unknown_fields_and_wrong_acuity_array_length ... ok
+test disposition::tests::no_one_and_repeated_diagnostics_use_actual_completion_times ... ok
+test disposition::tests::patient_service_and_decision_binding_permutations_preserve_output ... ok
+test disposition::tests::generator_template_service_and_decision_compose ... ok
+test disposition::tests::invalid_policy_bindings_and_non_full_pathway_reject ... ok
+test arrivals::tests::rejects_each_configuration_error_variant ... ok
+test disposition::tests::sampled_service_duration_drives_provisional_observation_tick ... ok
+test disposition::tests::treatment_completion_reveals_only_at_exact_tick_and_never_changes_pathway ... ok
+test pathway::tests::discrete_selection_is_canonical_bounded_and_exact_at_bucket_boundaries ... ok
+test pathway::tests::distinct_stage_pool_capacities_keep_fcfs_queues_independent ... ok
+test pathway::tests::class_eligibility_and_capacity_consistency_mutations_are_rejected ... ok
+test pathway::tests::empty_population_still_validates_capacity_profile ... ok
+test pathway::tests::generated_arrivals_bind_only_exact_templates_and_preserve_fields ... ok
+test pathway::tests::patient_binding_and_support_permutations_preserve_full_results ... ok
+test pathway::tests::queued_and_active_episodes_are_censored_at_horizon ... ok
+test pathway::tests::generator_adapter_preserves_values_through_template_and_runtime ... ok
+test pathway::tests::invalid_patient_and_stage_mutations_are_rejected ... ok
+test pathway::tests::exact_horizon_completion_grants_next_stage_at_horizon_and_censors_it_at_zero ... ok
+test pathway::tests::fixed_pipeline_preserves_legacy_and_adds_diagnostics_treatment_continuation ... ok
+test pathway::tests::root11_diagnostic_and_treatment_sampling_matches_independent_stream_vectors ... ok
+test pathway::tests::second_diagnostic_repeat_is_censored_when_active_or_queued_at_horizon ... ok
+test pathway::tests::same_tick_completion_and_arrivals_enqueue_before_deterministic_fcfs_grants ... ok
+test pathway::tests::service_bindings_distributions_and_stage_bounds_reject_invalid_inputs ... ok
+test pathway::tests::queued_at_horizon_episode_is_sampled_once_and_capacity_delay_does_not_change_samples ... ok
+test pathway::tests::supplied_two_stage_work_has_exact_non_queue_intervals_and_stable_ids ... ok
+test tests::accepted_e01_synthetic_case_maps_to_the_e0_single_work_slice ... ok
+test pathway::tests::whole_path_sampling_reaches_all_support_buckets_from_independent_seeds ... ok
+test tests::processes_completion_at_the_horizon_and_leaves_late_work_unfinished ... ok
+test tests::repeated_runs_are_identical ... ok
+test pathway::tests::triage_reveals_acuity_and_fcfs_ignores_acuity_priority ... ok
+test pathway::tests::very_long_service_is_censored_without_completion_overflow ... ok
+test arrivals::tests::accepts_limit_and_rejects_one_above_before_sampling ... ok
+test pathway::tests::documented_patient_profile_and_template_bounds_are_enforced ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+
+     Running tests/c61_ed_fixture_verification.rs (target/debug/deps/c61_ed_fixture_verification-cbdd23d2586067ee)
+
+running 8 tests
+test test_c61_dynamic_1_arrivals_and_acuity_priority_dispatch ... ok
+test test_c61_dynamic_3_diagnostics_bay_held_and_premature_release_rejected ... ok
+test test_c61_dynamic_4_urgent_preemption_work_conservation_and_resume ... ok
+test test_c61_dynamic_5_bed_cleaning_unavailability_and_restoration ... ok
+test test_c61_dynamic_6_boarding_retained_occupancy_until_transfer ... ok
+test test_c61_hand_computable_one_server_queue_oracle ... ok
+test test_c61_trace_export_calibration_compatible_records ... ok
+test test_c61_dynamic_2_staff_zones_and_task_allocation ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/c62_macro_micro_holdout_comparison.rs (target/debug/deps/c62_macro_micro_holdout_comparison-ead6a12a20f59138)
+
+running 3 tests
+test test_orthogonal_exogenous_vs_generative_arrivals_macro_micro ... ok
+test test_macro_micro_holdout_comparison_through_api_runner ... ok
+test test_stochastic_and_structural_uncertainty_reporting ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/c63_compatibility_replay_performance.rs (target/debug/deps/c63_compatibility_replay_performance-22da286b9866a20e)
+
+running 4 tests
+test test_feature_api_manifest_compatibility ... ok
+test test_validity_limits_and_diagnostics ... ok
+test test_deterministic_replay_and_worker_concurrency ... ok
+test test_performance_benchmarks_and_scaling ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/c64_handoff_contracts.rs (target/debug/deps/c64_handoff_contracts-19c5a7427a0a312c)
+
+running 4 tests
+test test_snapshot_stream_and_slow_consumer_backpressure ... ok
+test test_wasm_compatible_payload_and_tick_bounds ... ok
+test test_visualization_render_rate_invariance ... ok
+test test_distributed_and_pdes_export_bundle_compatibility ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/d34_scheduler_bounds.rs (target/debug/deps/d34_scheduler_bounds-db4da1600cfc6c18)
+
+running 3 tests
+test cancel_removes_a_scheduled_event_once_and_keeps_live_order ... ok
+test ed_rejects_zero_duration_work_without_claiming_graceful_cancellation ... ok
+test same_tick_work_stops_at_budget_and_continues_on_the_next_call ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/d3_display_regression.rs (target/debug/deps/d3_display_regression-6ef34827aa7df9c6)
+
+running 1 test
+test simulation_error_display_preserves_validation_context ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/d3_regressions.rs (target/debug/deps/d3_regressions-f869911444991790)
+
+running 4 tests
+test malformed_inputs_never_enter_the_runner ... ok
+test seed_change_is_reported_without_inventing_stochastic_behavior ... ok
+test horizon_conserves_queued_and_running_work ... ok
+test fifo_and_metric_accounting_match_an_independent_recurrence ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/d3_validator_mutation_regressions.rs (target/debug/deps/d3_validator_mutation_regressions-bb80e0f9351f4743)
+
+running 10 tests
+test resource_unknown_availability_requires_null_counts_and_a_reason ... ok
+test profile_metadata_and_aggregate_shape_are_checked_one_field_at_a_time ... ok
+test resource_counts_enforce_positive_and_physical_boundaries ... ok
+test equipment_reason_rules_match_each_status ... ok
+test identifiers_must_be_nonempty_and_already_trimmed ... ok
+test staff_count_status_requires_the_matching_value_and_reason ... ok
+test routes_require_resolved_locations_and_nonnegative_metre_distance ... ok
+test resource_known_availability_requires_both_counts_and_no_reason ... ok
+test eligibility_and_required_resource_classes_are_checked_independently ... ok
+test aggregate_physical_and_availability_counts_have_distinct_status_rules ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/e12_arrivals_states_conformance.rs (target/debug/deps/e12_arrivals_states_conformance-99ed0f087930e5ed)
+
+running 2 tests
+test test_seeded_time_varying_arrivals_determinism_and_stability ... ok
+test test_clinical_states_pathway_execution_and_queue_isolation ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/e12_fixture_components.rs (target/debug/deps/e12_fixture_components-f95845d335d55abb)
+
+running 3 tests
+test extreme_fixtures_bind_only_triage_projection ... ok
+test invalid_fixture_cases_reject_and_single_mutation_repairs ... ok
+test endpoint_fixtures_bind_native_component_projections ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/e13_boarding_exits.rs (target/debug/deps/e13_boarding_exits-47f853acdfcea7fd)
+
+running 8 tests
+test optional_abandonment_is_explicit_and_disabled_policy_stays_off ... ok
+test horizon_edge_censors_unfinished_transfer_without_causal_claims ... ok
+test test_expired_or_incompatible_bed_offer_is_not_consumed ... ok
+test test_disabled_or_empty_policy_never_silently_activates_transfer ... ok
+test recurrent_care_continues_until_physical_departure_without_staff_reservation ... ok
+test test_single_bed_offer_cannot_be_consumed_twice ... ok
+test test_wrong_destination_cannot_accept ... ok
+test test_all_23_endpoint_fixtures_match_oracle_exactly ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/e21_operational_constraints.rs (target/debug/deps/e21_operational_constraints-8bcb2813a7698484)
+
+running 6 tests
+test blocked_diagnostics_and_boarding_do_not_free_capacity ... ok
+test breaks_and_shift_shrink_keep_in_flight_work ... ok
+test cleaning_and_reservation_keep_a_bay_exclusive ... ok
+test handover_moves_the_assignment_without_dropping_work ... ok
+test ineligible_or_off_zone_staff_cannot_claim ... ok
+test preemption_needs_higher_acuity_and_consent_and_keeps_work ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/e22_dispatch_fidelity_constraints.rs (target/debug/deps/e22_dispatch_fidelity_constraints-65dcce4ba58da738)
+
+running 4 tests
+test test_macro_micro_fidelity_authoritative_state_and_edge_transit ... ok
+test test_phased_resource_claims_rejects_atomic_multi_resource ... ok
+test test_dispatch_selection_urgency_fifo_and_ties ... ok
+test test_unsupported_multi_role_rejection_and_composite_team ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/e23_composite_fixture_and_boundaries.rs (target/debug/deps/e23_composite_fixture_and_boundaries-8ce063827c214101)
+
+running 13 tests
+test test_st004_retained_care_and_no_fulltime_nurse_default ... ok
+test test_st006_receiver_staff_sensitivity ... ok
+test test_st005_saturated_offload_and_crew_release ... ok
+test test_st003_retained_occupancy_until_departure ... ok
+test test_st002_unused_offers_and_lifetime_policy ... ok
+test test_macro_micro_synthetic_graph_transit ... ok
+test test_st001_compatible_offers ... ok
+test test_composite_ed_fixture_simultaneous_arrivals_and_invariants ... ok
+test test_composite_ed_fixture_preemption_and_work_conservation ... ok
+test test_st007_unsupported_multi_role_procedure_enforcement ... ok
+test test_st008_prohibited_causal_ward_policy_claims ... ok
+test test_st009_no_implicit_deterioration_hazard_default ... ok
+test test_csv_export_and_capacity_comparison_oracle ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/e31_public_api_tests.rs (target/debug/deps/e31_public_api_tests-2a8f343443c2e5dd)
+
+running 19 tests
+test test_cli_fresh_user_walkthrough_help ... ok
+test test_cli_missing_command_returns_usage_error ... ok
+test test_replication_seed_allocation_uniqueness ... ok
+test test_run_experiment_cancellation_and_recovery_inspection ... ok
+test test_cli_validate_scenario ... ok
+test test_run_experiment_horizon_override ... ok
+test test_run_experiment_nominal_success ... ok
+test test_run_experiment_seed_override ... ok
+test test_compare_runs_nominal_vs_constrained ... ok
+test test_export_document_formats ... ok
+test test_run_experiment_overwrite_protection ... ok
+test test_compare_runs_incompatible_time_units ... ok
+test test_run_experiment_simulated_disk_full ... ok
+test test_sha256_hex_matches_known_standard ... ok
+test test_validate_scenario_invalid_json ... ok
+test test_validate_scenario_source_malformed_rejected ... ok
+test test_validate_scenario_source_nominal ... ok
+test test_validate_scenario_zero_horizon ... ok
+test test_cli_run_and_compare_lifecycle ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/e32_batch_and_checkpoint_tests.rs (target/debug/deps/e32_batch_and_checkpoint_tests-4bc27a43a54b43f1)
+
+running 9 tests
+test test_compute_batch_aggregates_empty ... ok
+test test_batch_config_default ... ok
+test test_load_completed_batch_rejections ... ok
+test test_batch_progress_tracking ... ok
+test test_resume_already_finished_checkpoint ... ok
+test test_batch_cancellation_and_partial_artifact ... ok
+test test_batch_checkpointing_interval ... ok
+test test_batch_worker_deterministic_equivalence ... ok
+test test_checkpoint_resumption_produces_identical_baseline ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/e33_arrow_parquet_spatial_tests.rs (target/debug/deps/e33_arrow_parquet_spatial_tests-53e8f997bd12448f)
+
+running 9 tests
+test test_statistical_uncertainty_calculator ... ok
+test test_trajectory_interpolation_and_position_kinds ... ok
+test test_arrow_schemas_and_parquet_ddl ... ok
+test test_censored_and_unfinished_counts ... ok
+test test_api_runner_batch_cli_arrow_export ... ok
+test test_spatial_summary_and_csv_export ... ok
+test test_worker_equivalence_for_arrow_bundles ... ok
+test test_checkpoint_resumption_bundle_equivalence ... ok
+test test_export_records_actual_compiler_identity ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+
+     Running tests/e41_analytic_limiting_cases.rs (target/debug/deps/e41_analytic_limiting_cases-d1541adf1c02e15e)
+
+running 6 tests
+test test_terminal_patient_conservation_law ... ok
+test test_invariant_micro_zero_route_equivalence_to_macro ... ok
+test test_limiting_case_deterministic_single_server_dd1 ... ok
+test test_known_queue_fixture_priority_preemption_work_conservation ... ok
+test test_limiting_case_no_contention_infinite_capacity ... ok
+test test_differential_capacity_monotonicity ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/e42_heldout_macro_micro_benchmarks.rs (target/debug/deps/e42_heldout_macro_micro_benchmarks-6372e2d12ca1275f)
+
+running 3 tests
+test test_heldout_macro_micro_evaluation_disjoint_cohorts ... ok
+test test_stochastic_vs_structural_uncertainty ... ok
+test test_representative_demand_memory_and_leak_benchmarks ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running tests/e42_sensitivity_identifiability_warmup.rs (target/debug/deps/e42_sensitivity_identifiability_warmup-9cb004ea27e332a8)
+
+running 6 tests
+test test_observation_window_and_boundary_censoring ... ok
+test test_identifiability_and_ridge_detection ... ok
+test test_sensitivity_response_surfaces ... ok
+test test_warmup_transient_detection_and_exclusion ... ok
+test test_representative_demand_memory_and_leak_benchmark ... ok
+test test_profile_specific_validity_limits ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/e43_downstream_consumer.rs (target/debug/deps/e43_downstream_consumer-4f3f306af76eca9a)
+
+running 5 tests
+test test_downstream_compare_runs_units_denominators_uncertainty ... ok
+test test_downstream_parse_scenario_json_nominal_and_rejections ... ok
+test test_downstream_exports_arrow_csv_and_calibration_traces ... ok
+test test_downstream_run_experiment_atomic_and_overwrite ... ok
+test test_downstream_package_dry_run_and_license_verification ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.43s
+
+     Running tests/e51_snapshot_command_abi.rs (target/debug/deps/e51_snapshot_command_abi-d6cb1fea029d7592)
+
+running 8 tests
+test tests::test_spatial_revision_mismatch_rejection ... ok
+test tests::test_sequencing_gap_detection_and_resync_trigger ... ok
+test tests::test_idempotent_command_deduplication ... ok
+test tests::test_ffi_buffer_lifetime_and_wasm_parity ... ok
+test tests::test_error_envelope_serialization ... ok
+test tests::test_wide_integer_lossless_roundtrip_beyond_53bits ... ok
+test tests::test_snapshot_and_delta_serialization_contract ... ok
+test tests::test_cancellation_and_progress_flow ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/e61_batch_numeric_workloads.rs (target/debug/deps/e61_batch_numeric_workloads-43f166096c500df2)
+
+running 6 tests
+test tests::test_error_conditions_fail_closed ... ok
+test tests::test_presorted_equal_w1_vs_weighted_unequal_w1_separation ... ok
+test tests::test_batched_spatial_transit_10k_agents_precision_oracle ... ok
+test tests::test_hardware_fallback_seamless_delegation ... ok
+test tests::test_ks_maximum_distance_triage_to_bed ... ok
+test tests::test_parameter_candidate_scoring_32_configs_and_decision_stability ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+
+     Running tests/e62_wgpu_wgsl_device_path.rs (target/debug/deps/e62_wgpu_wgsl_device_path-8f178a4fc87b92bc)
+
+running 5 tests
+test tests::test_deterministic_fallback_on_unsupported_hardware ... ok
+test tests::test_device_transfer_and_resident_buffer_contracts ... ok
+test tests::test_device_driver_compiler_metadata_capture ... ok
+test tests::test_wgsl_shader_pipeline_interface_verification ... ok
+test tests::test_cpu_owned_queue_arbitration_invariance ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/e63_metal_benchmark_parity.rs (target/debug/deps/e63_metal_benchmark_parity-bb9c6cacb40d5d8e)
+
+running 7 tests
+test tests::test_01_percentile_computation_and_distribution ... ok
+test tests::test_02_latency_stage_decomposition_and_total_accounting ... ok
+test tests::test_03_resident_chain_speedup_and_vram_amortization ... ok
+test tests::test_04_experimental_status_retention_discipline ... ok
+test tests::test_05_hardware_unavailable_graceful_cpu_fallback ... ok
+test tests::test_07_mlx_comparative_adr_evaluation ... ok
+test tests::test_06_cpu_queue_arbitration_invariance_under_load ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/e71_pdes_partition_lookahead.rs (target/debug/deps/e71_pdes_partition_lookahead-fa68801d9b4e9882)
+
+running 6 tests
+test tests::test_01_ed_lp_partition_and_strict_resource_ownership ... ok
+test tests::test_02_resource_conflict_detection ... ok
+test tests::test_03_certified_lookahead_vs_empirical_quantiles ... ok
+test tests::test_04_zero_lookahead_cycle_failure_and_deadlock_detection ... ok
+test tests::test_05_in_flight_message_accounting_and_gvt_consensus ... ok
+test tests::test_06_serial_oracle_observable_state_parity ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/e72_pdes_flow_scheduler.rs (target/debug/deps/e72_pdes_flow_scheduler-d01410ee2b9107e2)
+
+running 5 tests
+test tests::test_01_conservative_lp_initialization_and_disjoint_capacity ... ok
+test tests::test_04_deterministic_rng_stream_independence ... ok
+test tests::test_02_null_message_advancement_and_deadlock_freedom ... ok
+test tests::test_03_lookahead_causal_advance_across_hops ... ok
+test tests::test_05_multi_worker_threaded_channel_simulation ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/e73_threaded_pdes_execution.rs (target/debug/deps/e73_threaded_pdes_execution-25f2ecc54e95e409)
+
+running 5 tests
+test tests::test_05_checkpoint_state_serialization ... ok
+test tests::test_03_negative_scaling_regime_documentation ... ok
+test tests::test_01_threaded_execution_patient_conservation ... ok
+test tests::test_04_state_vs_trace_parity_distinction ... ok
+test tests::test_02_slow_worker_resilience_and_causality_preservation ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/e81_distributed_transport_contracts.rs (target/debug/deps/e81_distributed_transport_contracts-1108388906dca904)
+
+running 5 tests
+test tests::test_04_sequencing_gap_detection_and_resync_trigger ... ok
+test tests::test_01_cluster_topology_mapping_and_quorum ... ok
+test tests::test_02_heartbeat_failure_detection ... ok
+test tests::test_03_packet_serialization_roundtrip ... ok
+test tests::test_05_quorum_loss_blocks_split_brain ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/e82_distributed_coordinator_gvt.rs (target/debug/deps/e82_distributed_coordinator_gvt-46d59c0d75e3464e)
+
+running 4 tests
+test tests::test_04_cluster_routing_and_lp_migration ... ok
+test tests::test_03_gvt_monotonicity_guarantee ... ok
+test tests::test_02_mattern_gvt_inconsistent_cut_rejection ... ok
+test tests::test_01_mattern_gvt_consensus_consistent_cut ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/e83_multinode_cluster_execution.rs (target/debug/deps/e83_multinode_cluster_execution-6be783f8110ac01c)
+
+running 4 tests
+test tests::test_01_multinode_execution_and_causality ... ok
+test tests::test_03_packet_drop_recovery_and_resync ... ok
+test tests::test_04_cluster_scaleout_efficiency_documentation ... ok
+test tests::test_02_network_delay_and_jitter_tolerance ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/pathway_conformance.rs (target/debug/deps/pathway_conformance-673a0e3957bfeee6)
+
+running 8 tests
+test test_saturated_arrival_demand_and_queue_formation ... ok
+test test_zero_service_duration_rejection ... ok
+test test_each_acuity_and_pathway_mix ... ok
+test test_one_patient_run_trace_and_intervals ... ok
+test test_long_service_and_horizon_clipping ... ok
+test test_endpoint_count_conservation_exhaustive_grid ... ok
+test test_impossible_resource_configuration ... ok
+test test_empty_run_conformance ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/scenario_validation.rs (target/debug/deps/scenario_validation-47b21932e20a0e18)
+
+running 7 tests
+test rejects_unsupported_time_unit ... ok
+test rejects_unsupported_schema_version_with_clear_diagnostic ... ok
+test rejects_bad_route_units_and_unknown_capacity ... ok
+test rejects_missing_required_inputs_and_extra_fields ... ok
+test validates_optional_p0_equipment_status_and_reason ... ok
+test rejects_zero_horizon_and_zero_work ... ok
+test rejects_nonpositive_capacity_and_unresolved_references ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests careops_ed
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

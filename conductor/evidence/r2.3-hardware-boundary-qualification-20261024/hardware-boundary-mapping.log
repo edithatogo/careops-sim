@@ -1,0 +1,25 @@
+=== Host Identity and Hardware Boundary Audit ===
+1. Local Host: Pleiades-M1-14-MBP.local (Darwin arm64 27.0.0)
+   - Hardware: Apple Silicon (ARM64)
+   - Metal runtime: Local Metal device available on host OS; unconfigured in candidate kairo-ecs-gpu crate
+   - Consumer dependency: careops-sim and careops-ed execute headlessly without GPU or MPI imports
+
+2. Historical Pleiades Host Audit:
+   - SSH alias 'pleiades' targeted local network NAS (Intel x86_64 i3-N300, Docker single-node)
+   - Pleiades is NOT a CUDA workstation; NVIDIA GPU execution cannot be dispatched to pleiades
+
+3. Remote CUDA PC / Accelerator Probe:
+   - Verified via Google Colab CLI (session kairos-cuda-t4 / ephemeral probe)
+   - Remote Device: NVIDIA Tesla T4, Driver 580.82.07, CUDA 12.8, 15,360 MiB VRAM
+   - Remote OS: Linux 6.6.137+ x86_64 (glibc 2.35)
+   - Standalone PTX kernel test (abm_step_kernel) demonstrated real device kernel dispatch/readback
+   - Candidate kairo-ecs-gpu crate does NOT link cudarc or PTX runtime; availability returns BackendNotConfigured
+
+4. Distributed Transport Audit (kairo-ecs-mpi):
+   - Uses std::thread and std::sync::mpsc channels in a single operating system process
+   - No physical network sockets or multi-host transport peers (Mac/NAS) implemented in candidate
+
+5. Conductor Acceptance Classification:
+   - E6 (Metal/CUDA real kernel dispatch & CPU parity): UNVERIFIED / BLOCKED (open release blocker)
+   - E8 (Multi-host physical transport & fault recovery): UNVERIFIED / BLOCKED (open release blocker)
+   - Headless simulation pin gate: PASS (clean separation; no headless dependency on E6/E8)
