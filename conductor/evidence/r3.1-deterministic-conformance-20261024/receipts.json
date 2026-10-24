@@ -1,0 +1,265 @@
+{
+  "timestamp_utc": "2026-10-24T09:13:19Z",
+  "candidate": "8282b1ab45669a667bda3be2862272447544ba44",
+  "pin": "44261eb5cf8275f132f63a3396903d116d701dbe",
+  "overall_status": "PASS",
+  "steps_count": 13,
+  "steps_passed": 13,
+  "receipts": [
+    {
+      "name": "parent-workspace-full",
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace",
+        "--all-features"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 12.609,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/parent-workspace-full.log",
+      "log_sha256": "4958e01222af58e083b6ed4a2fbf7f723abc07ce1e130bd44007601c2596d636",
+      "status": "PASS"
+    },
+    {
+      "name": "flow-q-c-suite",
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-des",
+        "-p",
+        "kairo-ecs-abm",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "kairo-ecs-calibration/flow,kairo-ecs-abm/test-support"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim/libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 31.989,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/flow-q-c-suite.log",
+      "log_sha256": "e9123580b2449fd9e0d86cddcbf8dd82c45486e4755e677362dcff2a10a3d722",
+      "status": "PASS"
+    },
+    {
+      "name": "arrow-io-ipc-parquet",
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-arrow-io",
+        "--all-features"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim/libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 3.299,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/arrow-io-ipc-parquet.log",
+      "log_sha256": "0fd60faeb0ca1a4a96d8c6ae336d9901a94df48c1cfec902585ee30be2e41063",
+      "status": "PASS"
+    },
+    {
+      "name": "arrow-telemetry-lifecycle",
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-arrow",
+        "--features",
+        "resource-lifecycle-io"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim/libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 0.891,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/arrow-telemetry-lifecycle.log",
+      "log_sha256": "7d09ed6b1d881cf3d2f4cd0f1f3132bab297ee607e110aaa26ff1b573feea616",
+      "status": "PASS"
+    },
+    {
+      "name": "calibration-c43-outputs",
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--no-default-features",
+        "--features",
+        "ipc,parquet",
+        "--test",
+        "arrow_output_c43",
+        "--test",
+        "sidecar_adapter_c43",
+        "--test",
+        "sidecar_pipeline_c43",
+        "c43_"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim/libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 0.866,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/calibration-c43-outputs.log",
+      "log_sha256": "f33a1cc48f8db4693115d5dbbadb16a7d9ee44de94cbaed21bcd9f59d51dda75",
+      "status": "PASS"
+    },
+    {
+      "name": "c2-build-replay-demo",
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "kairo-ecs-calibration",
+        "--features",
+        "flow,kairo-ecs-abm/test-support",
+        "--example",
+        "c2_replay_demo"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim/libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 0.196,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/c2-build-replay-demo.log",
+      "log_sha256": "c92508a29848820f033cd2ea015c85dde0953c88b07cc967ce34b7c08f610549",
+      "status": "PASS"
+    },
+    {
+      "name": "c2-demo-save",
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim/libs/kairos/target/debug/examples/c2_replay_demo",
+        "save",
+        "/private/tmp/careops-r31-conformance/c2-demo/checkpoint.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim/libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 0.533,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/c2-demo-save.log",
+      "log_sha256": "fa5be4440c80a7f595c784a8eea206739cfd6a0ce65c1c62f2b8a287c013cb8e",
+      "status": "PASS"
+    },
+    {
+      "name": "c2-demo-restore-1",
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim/libs/kairos/target/debug/examples/c2_replay_demo",
+        "restore",
+        "/private/tmp/careops-r31-conformance/c2-demo/checkpoint.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim/libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 0.143,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/c2-demo-restore-1.log",
+      "log_sha256": "3735a54c6ae7a5cd4b64092999779def5e4ece30ba74a3904c67607fd2428855",
+      "status": "PASS"
+    },
+    {
+      "name": "c2-demo-restore-2",
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim/libs/kairos/target/debug/examples/c2_replay_demo",
+        "restore",
+        "/private/tmp/careops-r31-conformance/c2-demo/checkpoint.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim/libs/kairos",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 0.186,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/c2-demo-restore-2.log",
+      "log_sha256": "3735a54c6ae7a5cd4b64092999779def5e4ece30ba74a3904c67607fd2428855",
+      "status": "PASS"
+    },
+    {
+      "name": "c2-demo-sentinel-rejection",
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim/libs/kairos/target/debug/examples/c2_replay_demo",
+        "save",
+        "/private/tmp/careops-r31-conformance/c2-demo/sentinel.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim/libs/kairos",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "elapsed_seconds": 0.018,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/c2-demo-sentinel-rejection.log",
+      "log_sha256": "ec52babacaf09db8701360ef0248ef30fdd44e1eebcf5e4d0b34e278a82544af",
+      "status": "PASS"
+    },
+    {
+      "name": "ed-cli-build",
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "careops-ed-cli"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 0.229,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/ed-cli-build.log",
+      "log_sha256": "fecede7c2157efe2f16c8c8b9dce94b0fb4dd384dca8207046c8bf7636eb0ffe",
+      "status": "PASS"
+    },
+    {
+      "name": "ed-run-first",
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim/target/debug/careops-ed",
+        "run",
+        "/Users/doughnut/Documents/careops-sim/crates/careops-ed/examples/nominal_mvp.json",
+        "--seed",
+        "42",
+        "--output",
+        "/private/tmp/careops-r31-conformance/ed-runs/first.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 0.132,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/ed-run-first.log",
+      "log_sha256": "fe39074728d8cbf05a2989682e53fd5aebe732b4bc63fa7de596a916a55010ed",
+      "status": "PASS"
+    },
+    {
+      "name": "ed-run-second",
+      "argv": [
+        "/Users/doughnut/Documents/careops-sim/target/debug/careops-ed",
+        "run",
+        "/Users/doughnut/Documents/careops-sim/crates/careops-ed/examples/nominal_mvp.json",
+        "--seed",
+        "42",
+        "--output",
+        "/private/tmp/careops-r31-conformance/ed-runs/second.json"
+      ],
+      "cwd": "/Users/doughnut/Documents/careops-sim",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "elapsed_seconds": 0.027,
+      "log_path": "conductor/evidence/r3.1-deterministic-conformance-20261024/ed-run-second.log",
+      "log_sha256": "b425f3899f78701e3f1c44b43163f3d0c5d0e648e3a5b67a9837e4b5b4ece918",
+      "status": "PASS"
+    }
+  ],
+  "conformance_controls": {
+    "parent_workspace_passed": 296,
+    "parent_workspace_failed": 0,
+    "flow_qc_passed": 969,
+    "flow_qc_ignored": 6,
+    "flow_qc_failed": 0,
+    "arrow_io_passed": 31,
+    "arrow_telemetry_passed": 31,
+    "calibration_c43_passed": 22,
+    "c2_restore_repeatable": true,
+    "c2_sentinel_collision_rejected": true,
+    "ed_repeat_byte_identical": true,
+    "ed_baseline_summary_identical": true,
+    "unexplained_drift_detected": false
+  }
+}
