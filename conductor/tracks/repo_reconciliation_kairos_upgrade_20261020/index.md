@@ -1,9 +1,10 @@
 # Repository status reconciliation and Kairos upgrade
 
-Status: in progress. R0 reconciliation and R1 local CPU/IO/recovery baseline
-are independently accepted on the development branch; R2.1 candidate selection
-is next. Pin advancement and wider capability acceptance remain gated. See
-[R1 review](../../evidence/r1-independent-review-20261021/README.md).
+Status: complete. R0 reconciliation, R1 local baseline, R2 candidate
+qualification, and R3 deterministic conformance/retain-pin decision are
+accepted. The 44261eb pin is retained; missing E6/E8 hardware capabilities are
+external dispatch gates. See [R3 review](../../evidence/r0.4-independent-review-20261021/README.md)
+and [R1 review](../../evidence/r1-independent-review-20261021/README.md).
 
 - [Specification](spec.md)
 - [Plan](plan.md)

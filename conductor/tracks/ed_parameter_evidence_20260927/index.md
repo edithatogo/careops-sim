@@ -1,6 +1,8 @@
 # ED parameter and example-input evidence
 
-Status: proposed.
+Status: complete for the historical P0–P5 generic catalogue/model coverage
+scope. This does not establish empirical hospital validity or Cairns-specific
+values; see the registry and P5.4 receipt.
 
 - [Specification](spec.md)
 - [Plan](plan.md)

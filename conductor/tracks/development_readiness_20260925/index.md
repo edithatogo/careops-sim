@@ -1,6 +1,7 @@
 # Development readiness and hardened delivery
 
-Status: in_progress.
+Status: complete. D0–D5 are accepted within the dated development-readiness
+scope; see the D5.4 phase acceptance and evidence receipts.
 
 - [Specification](spec.md)
 - [Plan](plan.md)

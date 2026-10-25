@@ -1,6 +1,6 @@
 # Multi-domain core simulation abstractions and egress boundaries
 
-Status: proposed.
+Status: in progress. A0 and A1.1/A1.2 are checked complete; A1.3 is next.
 
 - [Specification](spec.md)
 - [Plan](plan.md)

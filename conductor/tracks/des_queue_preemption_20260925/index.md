@@ -1,6 +1,8 @@
 # DES queues and preemption
 
-Status: proposed; ready for review. Target: Kairos submodule, upstream Track 03.
+Status: complete for the accepted Q0–Q5 experimental queue-development scope.
+Portable checkpoints, advanced backends, release/security and clinical/MVP
+acceptance remain separately scoped; see the registry and Q5.4 receipt.
 
 - [Specification](spec.md)
 - [Phased implementation plan](plan.md)
