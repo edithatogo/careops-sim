@@ -28,7 +28,7 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 
 - [x] A1.1 Write failing cases for branching/loop bounds, invalid transitions, progression during waiting, elapsed-age/residual-time and covariate changes, stale events, ties and zero-target accounting. Require analytic exponential competing-risk and zero-hazard controls, unchanged-covariate invariance, time-varying/censoring references and explicit draw ownership; failed calibration cannot resample unrelated clocks.
 - [x] A1.2 Implement a bounded configurable pathway adapter with independently scheduled patient progression; retain the ED compatibility path.
-- [ ] A1.3 Implement versioned classification and policy clocks with reassessment, pause semantics and separate urgency/target/priority/interruption rules; prohibit future-outcome access by decision policies.
+- [x] A1.3 Implement versioned classification and policy clocks with reassessment, pause semantics and separate urgency/target/priority/interruption rules; prohibit future-outcome access by decision policies. Accepted at `f46b369` per [A1.3 review evidence](../../evidence/a1.3-review-20261025/README.md).
 - [ ] A1.4 Conductor — review and verify phase (workflow.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
