@@ -21,7 +21,7 @@ coordination tracks; `tracks.md` is the human-readable index. Upstream
 2. Add behavior-focused failing tests; implement the smallest compatible change.
 3. Run targeted unit, integration, determinism and compatibility gates. Use
    representative benchmarks where behavior or performance can change.
-4. Run Conductor review and the phase's manual verification. Record commands,
+4. Run reviewer-agent/subagent Conductor review and the phase's manual verification. Record commands,
    toolchain, seed/configuration, input and artifact hashes, outcomes and gaps.
 5. Mark tasks complete only with evidence. Synchronize affected upstream plans,
    handoffs, `tracks.yaml`, `tracks.md`, `phase-closeout.yaml` and `status.md`, plus
@@ -65,10 +65,14 @@ Use [execution-model.md](execution-model.md) for either mode. The generated
 [task catalog](execution/tasks.json) covers every task and prerequisite. Validate
 with `python3 tools/tasks.py check` after plan changes. Source plans/metadata are
 authoritative; rebuild/review the catalog instead of editing it by hand.
-Workers execute reviewed bounded packets and return evidence; only the coordinator
-accepts integration and marks a checkbox. Phase closeouts remain required in both
-modes. Simpler models are qualified on fixed packet evals; architectural/statistical/
-security decisions cannot be inferred or silently changed by a worker.
+Workers execute reviewed bounded packets and return evidence; a reviewer agent or
+subagent examines the integrated commit, and only the coordinator accepts
+integration and marks a checkbox. A track's named owner is an assignment label,
+not a requirement for another human reviewer. Keep substantive clinical, legal,
+security, release and external-authority approvals where the decision itself
+requires them. Phase closeouts remain required in both modes. Simpler models are
+qualified on fixed packet evals; architectural/statistical/security decisions
+cannot be inferred or silently changed by a worker.
 
 ## Focused validation during implementation
 
