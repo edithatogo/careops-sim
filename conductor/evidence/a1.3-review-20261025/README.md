@@ -64,4 +64,4 @@ validation and a negative test for each field. The reviewer confirmed the fix an
 reported no remaining finding in that implementation/test scope.
 
 The subsequent A1 phase review also identified A1.2 defects and their fixes.
-This A1.3 receipt remains scoped to A1.3 and does not close the full track.
+The final A1 phase verification is recorded in [A1.4 phase review](../a1.4-phase-review-20261026/README.md). This A1.3 receipt remains scoped to A1.3 and does not close the full track.

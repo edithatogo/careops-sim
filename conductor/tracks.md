@@ -45,7 +45,7 @@ R/A/B DAG and reviewed packets.
 - [~] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
   ([index](tracks/careops_core_domain_abstractions_20261020/index.md),
   [spec](tracks/careops_core_domain_abstractions_20261020/spec.md),
-  [plan](tracks/careops_core_domain_abstractions_20261020/plan.md)). In progress: A0 is accepted and A1.1/A1.2 are checked complete; A1.3 is next for versioned classification and policy clocks. Later phases retain their stated dependencies and acceptance gates.
+  [plan](tracks/careops_core_domain_abstractions_20261020/plan.md)). In progress: A0 and A1 are accepted per [A1 phase review](evidence/a1.4-phase-review-20261026/README.md); A2.1 is next. A2–A7 retain their stated dependencies and acceptance gates.
 
 - [ ] **Generic birthing suite simulation delivery** — `birthing_suite_delivery_20261020`
   ([index](tracks/birthing_suite_delivery_20261020/index.md),
