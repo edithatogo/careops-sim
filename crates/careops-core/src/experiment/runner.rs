@@ -1,5 +1,6 @@
 //! Generic multi-worker experiment runner, progress tracking, checkpointing, and crash recovery.
 
+use std::collections::HashSet;
 use std::fs;
 use std::path::Path;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
@@ -28,6 +29,88 @@ pub trait IndexedReplication: Clone + Send + 'static {
     fn primary_metric(&self) -> f64 {
         0.0
     }
+}
+
+fn validate_replication_identity<R: IndexedReplication>(
+    replication: &R,
+    expected_index: usize,
+    expected_seed: u64,
+) -> Result<(), ExperimentError> {
+    if replication.replication_index() != expected_index || replication.seed() != expected_seed {
+        return Err(ExperimentError::new(
+            ExperimentErrorKind::ExecutionFailed,
+            format!(
+                "replication result identity mismatch: expected index {expected_index} and seed {expected_seed}, received index {} and seed {}",
+                replication.replication_index(),
+                replication.seed()
+            ),
+        ));
+    }
+    Ok(())
+}
+
+fn validate_checkpoint<R: IndexedReplication, M>(
+    checkpoint: &GenericBatchCheckpoint<R, M>,
+) -> Result<(), ExperimentError> {
+    let malformed = |message: String| {
+        ExperimentError::new(
+            ExperimentErrorKind::MalformedConfig,
+            format!("invalid checkpoint: {message}"),
+        )
+    };
+
+    if checkpoint.schema_version != 1 {
+        return Err(malformed(format!(
+            "unsupported schema version {}",
+            checkpoint.schema_version
+        )));
+    }
+    if checkpoint.total_replications == 0 {
+        return Err(malformed(
+            "total_replications must be greater than zero".to_string(),
+        ));
+    }
+
+    let seeds = allocate_replication_seeds(checkpoint.base_seed, checkpoint.total_replications);
+    let mut assigned_indices = HashSet::with_capacity(checkpoint.total_replications);
+    for replication in &checkpoint.completed_replications {
+        let index = replication.replication_index();
+        if index >= checkpoint.total_replications {
+            return Err(malformed(format!(
+                "completed replication index {index} is out of range"
+            )));
+        }
+        validate_replication_identity(replication, index, seeds[index])
+            .map_err(|error| malformed(error.message))?;
+        if !assigned_indices.insert(index) {
+            return Err(malformed(format!(
+                "completed replication index {index} is duplicated"
+            )));
+        }
+    }
+
+    for &index in &checkpoint.pending_indices {
+        if index >= checkpoint.total_replications {
+            return Err(malformed(format!(
+                "pending replication index {index} is out of range"
+            )));
+        }
+        if !assigned_indices.insert(index) {
+            return Err(malformed(format!(
+                "replication index {index} occurs more than once or is both completed and pending"
+            )));
+        }
+    }
+
+    if assigned_indices.len() != checkpoint.total_replications {
+        return Err(malformed(format!(
+            "completed and pending indices cover {} of {} replications",
+            assigned_indices.len(),
+            checkpoint.total_replications
+        )));
+    }
+
+    Ok(())
 }
 
 /// Progress snapshot of a running batch experiment.
@@ -163,6 +246,7 @@ where
                     };
 
                     let rep_res = runner_ref(idx, seed, &metadata_clone)?;
+                    validate_replication_identity(&rep_res, idx, seed)?;
 
                     {
                         let mut guard = results.lock().unwrap();
@@ -330,6 +414,8 @@ where
         )
     })?;
 
+    validate_checkpoint(&checkpoint)?;
+
     if checkpoint.pending_indices.is_empty() {
         // Already finished
         let partial_path = output_dir.join("batch_run.partial");
@@ -392,6 +478,7 @@ where
                     };
 
                     let rep_res = runner_ref(idx, seed, metadata_ref)?;
+                    validate_replication_identity(&rep_res, idx, seed)?;
 
                     {
                         let mut guard = results.lock().unwrap();
