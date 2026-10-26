@@ -17,4 +17,4 @@ The acceptance reviewer re-reviewed the fix and reported the P1 finding fixed wi
 - `rustup run 1.99.1 cargo test --locked -p careops-core` — passed, all core tests.
 - `cargo clippy --locked --workspace --all-targets --all-features -- -D warnings` with explicit Rust 1.99.1 tool paths — passed.
 
-The PR Actions run for commit `88135e4` is still required before merge.
+PR Actions on the updated branch are still required before merge.
