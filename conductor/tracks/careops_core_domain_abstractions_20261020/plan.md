@@ -87,3 +87,6 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 - [ ] A7.4 Conductor — review and verify phase (workflow.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
+
+## Phase: Review Fixes
+- [x] Task: Apply independent PR review suggestion for replication identity and checkpoint validation `88135e4`; see [integration review evidence](../../evidence/pr-183-review-fix-20261026/README.md).
