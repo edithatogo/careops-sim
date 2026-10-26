@@ -1,7 +1,7 @@
 //! Bounded configurable pathway adapter with independently scheduled clinical progression (CC-04, CC-06, CC-07).
 
-use std::collections::{HashMap, VecDeque};
 use serde::{Deserialize, Serialize};
+use std::collections::{HashMap, VecDeque};
 
 use super::error::PathwayError;
 use super::progression::CompetingRiskModel;
@@ -17,6 +17,9 @@ pub struct PathwayPatientSpec {
     pub acuity: u8,
     pub covariates: HashMap<String, f64>,
     pub planned_stage_durations: HashMap<StageId, u64>,
+    /// Explicit branch choices keyed by the stage being completed.
+    #[serde(default)]
+    pub stage_route_choices: HashMap<StageId, StageId>,
     pub base_seed: u64,
 }
 
@@ -177,6 +180,7 @@ impl ConfigurablePathwayAdapter {
                 for arrival in new_arrivals {
                     let idx = patient_states.len();
                     let initial_stage = arrival.initial_stage.clone();
+                    self.graph.is_terminal(&initial_stage)?;
                     let initial_acuity = arrival.acuity;
                     let base_seed = arrival.base_seed;
 
@@ -195,7 +199,10 @@ impl ConfigurablePathwayAdapter {
                         censored: false,
                     };
                     patient_states.push(state);
-                    stage_queues.entry(initial_stage).or_default().push_back(idx);
+                    stage_queues
+                        .entry(initial_stage)
+                        .or_default()
+                        .push_back(idx);
                 }
             }
 
@@ -206,19 +213,19 @@ impl ConfigurablePathwayAdapter {
                     if state.completed || state.censored {
                         continue;
                     }
-                    // Evaluate deterioration hazard for this tick
-                    let hazard = model.total_hazard(&state.spec.covariates);
-                    if hazard > 0.0 {
-                        // Sample using dedicated progression stream
-                        let u = state.streams.progression_stream.next_uniform();
-                        if u < (hazard / 100.0) && state.current_acuity > 1 {
-                            // Clinical deterioration: increase urgency (lower ATS category number)
+                    if state.current_acuity > 1 {
+                        if let Some(cause) = model.sample_event(
+                            &state.spec.covariates,
+                            &mut state.streams.progression_stream,
+                        )? {
+                            // A sampled cause is preserved for audit; acuity is the bounded
+                            // observable progression dimension in this adapter.
                             let prev = state.current_acuity;
                             state.current_acuity -= 1;
                             state.progression_logs.push(ClinicalProgressionLog {
                                 tick: current_tick,
                                 patient_id: state.spec.patient_id.clone(),
-                                cause: "clinical_deterioration".to_string(),
+                                cause,
                                 previous_acuity: prev,
                                 new_acuity: state.current_acuity,
                             });
@@ -251,24 +258,32 @@ impl ConfigurablePathwayAdapter {
                         queue_entry_tick: p.queue_entry_tick,
                         start_tick: p.service_start_tick,
                         completion_tick: Some(current_tick),
-                        observed_duration_ticks: current_tick - p.service_start_tick.unwrap_or(current_tick),
+                        observed_duration_ticks: current_tick
+                            - p.service_start_tick.unwrap_or(current_tick),
                         is_censored: false,
                     };
                     p.stage_records.push(record);
 
                     // Determine next stage transition
-                    let next_stage_opt = self.determine_next_stage(p);
+                    let next_stage_opt = self.determine_next_stage(p)?;
                     match next_stage_opt {
                         Some(next_stage) => {
-                            let reps = p.stage_repetitions.entry(p.current_stage.clone()).or_insert(0);
-                            self.graph.validate_transition(&p.current_stage, &next_stage, *reps)?;
+                            let reps = p
+                                .stage_repetitions
+                                .entry(p.current_stage.clone())
+                                .or_insert(0);
+                            self.graph
+                                .validate_transition(&p.current_stage, &next_stage, *reps)?;
                             if p.current_stage == next_stage {
                                 *reps += 1;
                             }
                             p.current_stage = next_stage.clone();
                             p.queue_entry_tick = current_tick;
                             p.service_start_tick = None;
-                            stage_queues.entry(next_stage).or_default().push_back(finished_idx);
+                            stage_queues
+                                .entry(next_stage)
+                                .or_default()
+                                .push_back(finished_idx);
                         }
                         None => {
                             // Completed full pathway
@@ -280,7 +295,11 @@ impl ConfigurablePathwayAdapter {
 
             // 4. Grant capacity to queued patients (FCFS per stage)
             for (stage_id, queue) in &mut stage_queues {
-                let capacity = self.stage_capacities.get(stage_id).copied().unwrap_or(usize::MAX);
+                let capacity = self
+                    .stage_capacities
+                    .get(stage_id)
+                    .copied()
+                    .unwrap_or(usize::MAX);
                 let active = stage_active.entry(stage_id.clone()).or_default();
 
                 while active.len() < capacity && !queue.is_empty() {
@@ -313,7 +332,8 @@ impl ConfigurablePathwayAdapter {
                             queue_entry_tick: p.queue_entry_tick,
                             start_tick: p.service_start_tick,
                             completion_tick: None,
-                            observed_duration_ticks: current_tick.saturating_sub(p.service_start_tick.unwrap_or(p.queue_entry_tick)),
+                            observed_duration_ticks: current_tick
+                                .saturating_sub(p.service_start_tick.unwrap_or(p.queue_entry_tick)),
                             is_censored: true,
                         };
                         p.stage_records.push(record);
@@ -341,22 +361,59 @@ impl ConfigurablePathwayAdapter {
     }
 
     /// Determines the next stage for a patient finishing their current stage.
-    fn determine_next_stage(&self, patient: &ActivePatientState) -> Option<StageId> {
-        let current = patient.current_stage.0.as_str();
-        match current {
-            "triage" => Some(StageId::new("assessment")),
-            "assessment" => {
-                // If patient needs diagnostics (e.g. planned diagnostic duration provided)
-                if patient.spec.planned_stage_durations.contains_key(&StageId::new("diagnostics")) {
-                    Some(StageId::new("diagnostics"))
-                } else {
-                    Some(StageId::new("treatment"))
-                }
-            }
-            "diagnostics" => Some(StageId::new("treatment")),
-            "treatment" => Some(StageId::new("discharge")),
-            "discharge" => None, // Terminal
-            _ => None,
+    fn determine_next_stage(
+        &self,
+        patient: &ActivePatientState,
+    ) -> Result<Option<StageId>, PathwayError> {
+        let current = &patient.current_stage;
+        if self.graph.is_terminal(current)? {
+            return Ok(None);
+        }
+        let transitions = self.graph.outgoing_transitions(current)?;
+        if transitions.is_empty() {
+            return Err(PathwayError::new(
+                super::error::PathwayErrorKind::InvalidTransition,
+                format!(
+                    "non-terminal stage '{}' has no outgoing transition",
+                    current.0
+                ),
+            ));
+        }
+        if let Some(choice) = patient.spec.stage_route_choices.get(current) {
+            self.graph.validate_transition(
+                current,
+                choice,
+                patient.stage_repetitions.get(current).copied().unwrap_or(0),
+            )?;
+            return Ok(Some(choice.clone()));
+        }
+        if transitions.len() == 1 {
+            return Ok(transitions.into_iter().next());
+        }
+
+        // Planned durations act as explicit route hints for compatibility with the
+        // original ED adapter. Ambiguous branches must be supplied in
+        // stage_route_choices instead of inferred from domain-specific stage names.
+        let hinted: Vec<_> = transitions
+            .into_iter()
+            .filter(|stage| patient.spec.planned_stage_durations.contains_key(stage))
+            .collect();
+        match hinted.as_slice() {
+            [choice] => Ok(Some(choice.clone())),
+            [] => Err(PathwayError::new(
+                super::error::PathwayErrorKind::InvalidTransition,
+                format!(
+                    "branch at '{}' requires an explicit route choice",
+                    current.0
+                ),
+            )),
+            _ => Err(PathwayError::new(
+                super::error::PathwayErrorKind::InvalidTransition,
+                format!(
+                    "branch at '{}' has multiple planned routes; choose one explicitly",
+                    current.0
+                ),
+            )),
         }
     }
 }

@@ -1,9 +1,10 @@
 //! Independent clinical progression, proportional hazards, and competing risks (CC-04).
 
-use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 use super::error::{PathwayError, PathwayErrorKind};
+use super::streams::SubsystemStream;
 
 /// Competing hazard rate definition.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -54,6 +55,70 @@ impl CompetingRiskModel {
     /// Total hazard rate under given covariates: Lambda = sum(lambda_i).
     pub fn total_hazard(&self, covariates: &HashMap<String, f64>) -> f64 {
         self.hazards.iter().map(|h| h.evaluate(covariates)).sum()
+    }
+
+    /// Samples at most one event over a unit interval and then its competing cause.
+    /// The first progression-stream draw determines whether any event occurs using
+    /// `1 - exp(-total_hazard)`; a second draw selects the cause proportionally.
+    pub fn sample_event(
+        &self,
+        covariates: &HashMap<String, f64>,
+        stream: &mut SubsystemStream,
+    ) -> Result<Option<String>, PathwayError> {
+        let rates = self.effective_rates(covariates)?;
+        let total: f64 = rates.iter().map(|(_, rate)| rate).sum();
+        if total == 0.0 {
+            return Ok(None);
+        }
+        if total.is_nan() {
+            return Err(PathwayError::new(
+                PathwayErrorKind::InvalidCovariate,
+                "total progression hazard is not finite",
+            ));
+        }
+        let event_probability = -(-total).exp_m1();
+        if stream.next_uniform() >= event_probability {
+            return Ok(None);
+        }
+        let max_rate = rates.iter().map(|(_, rate)| *rate).fold(0.0, f64::max);
+        let scaled_total: f64 = rates.iter().map(|(_, rate)| rate / max_rate).sum();
+        let threshold = stream.next_uniform() * scaled_total;
+        let mut cumulative = 0.0;
+        for (cause, rate) in &rates {
+            cumulative += rate / max_rate;
+            if threshold < cumulative {
+                return Ok(Some(cause.clone()));
+            }
+        }
+        // Floating-point rounding at the upper boundary resolves to the last
+        // positive cause and cannot create an event without a cause.
+        Ok(rates
+            .iter()
+            .rev()
+            .find(|(_, rate)| *rate > 0.0)
+            .map(|(cause, _)| cause.clone()))
+    }
+
+    fn effective_rates(
+        &self,
+        covariates: &HashMap<String, f64>,
+    ) -> Result<Vec<(String, f64)>, PathwayError> {
+        self.hazards
+            .iter()
+            .map(|hazard| {
+                let rate = hazard.evaluate(covariates);
+                if !rate.is_finite() || rate < 0.0 {
+                    return Err(PathwayError::new(
+                        PathwayErrorKind::InvalidCovariate,
+                        format!(
+                            "hazard for cause '{}' must be finite and nonnegative",
+                            hazard.cause_id
+                        ),
+                    ));
+                }
+                Ok((hazard.cause_id.clone(), rate))
+            })
+            .collect()
     }
 
     /// Analytic cause probabilities: P(cause_i wins) = lambda_i / sum(lambda_j).

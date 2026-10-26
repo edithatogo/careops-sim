@@ -1,7 +1,7 @@
 //! Configurable directed stage graph with strict transition validation and bounded cycles (CC-04).
 
-use std::collections::{HashMap, HashSet};
 use serde::{Deserialize, Serialize};
+use std::collections::{HashMap, HashSet};
 
 use super::error::{PathwayError, PathwayErrorKind};
 
@@ -50,6 +50,37 @@ impl StageGraph {
             .insert(to.clone());
     }
 
+    /// Returns the registered outgoing transitions in stable stage-ID order.
+    pub fn outgoing_transitions(&self, from: &StageId) -> Result<Vec<StageId>, PathwayError> {
+        if !self.nodes.contains_key(from) {
+            return Err(PathwayError::new(
+                PathwayErrorKind::InvalidTransition,
+                format!("stage '{}' is not registered in stage graph", from.0),
+            ));
+        }
+        let mut transitions: Vec<_> = self
+            .allowed_transitions
+            .get(from)
+            .into_iter()
+            .flat_map(|targets| targets.iter().cloned())
+            .collect();
+        transitions.sort_by(|left, right| left.0.cmp(&right.0));
+        Ok(transitions)
+    }
+
+    /// Returns whether a registered stage is terminal.
+    pub fn is_terminal(&self, stage: &StageId) -> Result<bool, PathwayError> {
+        self.nodes
+            .get(stage)
+            .map(|node| node.is_terminal)
+            .ok_or_else(|| {
+                PathwayError::new(
+                    PathwayErrorKind::InvalidTransition,
+                    format!("stage '{}' is not registered in stage graph", stage.0),
+                )
+            })
+    }
+
     /// Validates whether a transition from `from` to `to` is permitted.
     pub fn validate_transition(
         &self,
@@ -67,7 +98,10 @@ impl StageGraph {
         if !self.nodes.contains_key(to) {
             return Err(PathwayError::new(
                 PathwayErrorKind::InvalidTransition,
-                format!("destination stage '{}' is not registered in stage graph", to.0),
+                format!(
+                    "destination stage '{}' is not registered in stage graph",
+                    to.0
+                ),
             ));
         }
 
@@ -80,7 +114,10 @@ impl StageGraph {
         if !allowed {
             return Err(PathwayError::new(
                 PathwayErrorKind::InvalidTransition,
-                format!("transition from '{}' to '{}' is not permitted", from.0, to.0),
+                format!(
+                    "transition from '{}' to '{}' is not permitted",
+                    from.0, to.0
+                ),
             ));
         }
 
@@ -92,7 +129,9 @@ impl StageGraph {
                     PathwayErrorKind::LoopBoundExceeded,
                     format!(
                         "stage '{}' repetition limit of {} exceeded (attempted {})",
-                        from.0, node.max_repetitions, current_repetition_count + 1
+                        from.0,
+                        node.max_repetitions,
+                        current_repetition_count + 1
                     ),
                 ));
             }
