@@ -237,7 +237,7 @@ impl ConfigurablePathwayAdapter {
             }
 
             // 3. Complete active work finishing at current_tick
-            for (_stage_id, active_indices) in &mut stage_active {
+            for active_indices in stage_active.values_mut() {
                 let mut finished_indices = Vec::new();
                 for &idx in active_indices.iter() {
                     let p = &mut patient_states[idx];

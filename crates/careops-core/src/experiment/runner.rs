@@ -82,6 +82,7 @@ pub struct GenericBatchRunDocument<R, A, M = ()> {
 }
 
 /// Executes a batch of replications across independent CPU worker threads.
+#[allow(clippy::too_many_arguments)] // Distinct controls preserve the runner's public lifecycle contract.
 pub fn run_generic_batch<R, M, F>(
     batch_id: &str,
     base_seed: u64,
@@ -429,9 +430,7 @@ where
         Ok(())
     });
 
-    if let Err(e) = worker_result {
-        return Err(e);
-    }
+    worker_result?;
 
     let mut new_results = Arc::try_unwrap(newly_completed)
         .ok()
