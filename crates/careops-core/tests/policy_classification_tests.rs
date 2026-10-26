@@ -31,6 +31,30 @@ fn assessment_captures_profile_version_and_provenance_and_history_is_append_only
 }
 
 #[test]
+fn assessment_rejects_missing_version_and_provenance_metadata() {
+    let mut profiles = Vec::new();
+    let mut profile = JurisdictionProfile::default();
+    profile.urgency_scheme.scheme_id = "  ".into();
+    profiles.push(profile);
+    let mut profile = JurisdictionProfile::default();
+    profile.urgency_scheme.version.clear();
+    profiles.push(profile);
+    let mut profile = JurisdictionProfile::default();
+    profile.effective_date.clear();
+    profiles.push(profile);
+    let mut profile = JurisdictionProfile::default();
+    profile.provenance.source_authority = "  ".into();
+    profiles.push(profile);
+    let mut profile = JurisdictionProfile::default();
+    profile.provenance.citation.clear();
+    profiles.push(profile);
+
+    for profile in profiles {
+        assert!(VersionedUrgencyAssessment::from_profile(&profile, 2, 4).is_err());
+    }
+}
+
+#[test]
 fn policy_clock_preserves_elapsed_across_pause_and_reassessment() {
     let mut clock = VersionedPolicyClock::new("wait", "v1", 10, true);
     assert_eq!(clock.state(), PolicyClockState::NotStarted);

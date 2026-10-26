@@ -1,7 +1,7 @@
 //! Jurisdiction-level policy profiles and clinical targets (CC-06).
 
-use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 use super::error::{ProfileError, ProfileErrorKind};
 use super::provenance::ProfileProvenance;
@@ -124,7 +124,8 @@ impl JurisdictionProfile {
                 clock_id: "nehrt_4hour_target".to_string(),
                 target_duration_ticks: 240,
                 pausable: false,
-                description: "National Emergency Access Target (NEAT/NEHRT) 4-hour departure clock".to_string(),
+                description: "National Emergency Access Target (NEAT/NEHRT) 4-hour departure clock"
+                    .to_string(),
             },
         );
 
@@ -155,6 +156,30 @@ impl JurisdictionProfile {
                 ProfileErrorKind::ValidationFailed,
                 "jurisdiction_id cannot be empty",
             ));
+        }
+
+        for (field, value) in [
+            ("effective_date", self.effective_date.as_str()),
+            (
+                "urgency_scheme.scheme_id",
+                self.urgency_scheme.scheme_id.as_str(),
+            ),
+            (
+                "urgency_scheme.version",
+                self.urgency_scheme.version.as_str(),
+            ),
+            (
+                "provenance.source_authority",
+                self.provenance.source_authority.as_str(),
+            ),
+            ("provenance.citation", self.provenance.citation.as_str()),
+        ] {
+            if value.trim().is_empty() {
+                return Err(ProfileError::new(
+                    ProfileErrorKind::ValidationFailed,
+                    format!("{field} cannot be empty"),
+                ));
+            }
         }
 
         if self.urgency_scheme.targets.is_empty() {
