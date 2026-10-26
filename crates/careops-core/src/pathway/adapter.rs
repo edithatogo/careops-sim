@@ -208,27 +208,29 @@ impl ConfigurablePathwayAdapter {
 
             // 2. Evaluate independent clinical progression for ALL incomplete patients (CC-04)
             // (Progression occurs whether patient is queued waiting or receiving active service)
-            if let Some(ref model) = self.progression_model {
-                for state in &mut patient_states {
-                    if state.completed || state.censored {
-                        continue;
-                    }
-                    if state.current_acuity > 1 {
-                        if let Some(cause) = model.sample_event(
-                            &state.spec.covariates,
-                            &mut state.streams.progression_stream,
-                        )? {
-                            // A sampled cause is preserved for audit; acuity is the bounded
-                            // observable progression dimension in this adapter.
-                            let prev = state.current_acuity;
-                            state.current_acuity -= 1;
-                            state.progression_logs.push(ClinicalProgressionLog {
-                                tick: current_tick,
-                                patient_id: state.spec.patient_id.clone(),
-                                cause,
-                                previous_acuity: prev,
-                                new_acuity: state.current_acuity,
-                            });
+            if current_tick < self.horizon_ticks {
+                if let Some(ref model) = self.progression_model {
+                    for state in &mut patient_states {
+                        if state.completed || state.censored {
+                            continue;
+                        }
+                        if state.current_acuity > 1 {
+                            if let Some(cause) = model.sample_event(
+                                &state.spec.covariates,
+                                &mut state.streams.progression_stream,
+                            )? {
+                                // A sampled cause is preserved for audit; acuity is the bounded
+                                // observable progression dimension in this adapter.
+                                let prev = state.current_acuity;
+                                state.current_acuity -= 1;
+                                state.progression_logs.push(ClinicalProgressionLog {
+                                    tick: current_tick,
+                                    patient_id: state.spec.patient_id.clone(),
+                                    cause,
+                                    previous_acuity: prev,
+                                    new_acuity: state.current_acuity,
+                                });
+                            }
                         }
                     }
                 }

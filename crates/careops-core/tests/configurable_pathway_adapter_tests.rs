@@ -248,11 +248,31 @@ fn runtime_competing_risks_use_exponential_event_probability_and_preserve_cause(
     };
 
     let outcomes = adapter.run_simulation(&[patient]).unwrap();
-    assert_eq!(outcomes[0].progression_logs.len(), 2);
-    assert!(
-        outcomes[0]
-            .progression_logs
-            .iter()
-            .all(|event| event.cause == "dominant_cause")
-    );
+    assert_eq!(outcomes[0].progression_logs.len(), 1);
+    assert_eq!(outcomes[0].progression_logs[0].tick, 0);
+    assert_eq!(outcomes[0].progression_logs[0].cause, "dominant_cause");
+}
+
+#[test]
+fn progression_does_not_advance_at_or_beyond_the_horizon() {
+    let graph = ConfigurablePathwayAdapter::build_ed_canonical_graph();
+    let mut adapter = ConfigurablePathwayAdapter::new(graph, 1);
+    adapter.set_stage_capacity(StageId::new("triage"), 0);
+    let mut model = CompetingRiskModel::new();
+    model.add_hazard(HazardRate::new("deterioration", 50.0));
+    adapter.set_progression_model(model);
+    let patient = PathwayPatientSpec {
+        patient_id: "arrival-at-horizon".into(),
+        arrival_tick: 1,
+        initial_stage: StageId::new("triage"),
+        acuity: 3,
+        covariates: HashMap::new(),
+        planned_stage_durations: HashMap::new(),
+        stage_route_choices: HashMap::new(),
+        base_seed: 99,
+    };
+
+    let outcomes = adapter.run_simulation(&[patient]).unwrap();
+    assert!(outcomes[0].is_censored);
+    assert!(outcomes[0].progression_logs.is_empty());
 }
