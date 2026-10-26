@@ -1,6 +1,8 @@
 # Empirical calibration and validation
 
-Status: proposed; ready for review. Target: Kairos submodule, upstream Track 21.
+Status: complete for the accepted C0–C6 calibration and validation scope.
+Real-world hospital validation and downstream hardware/UI gates remain separate;
+see the registry and C6.5 phase acceptance.
 
 - [Specification](spec.md)
 - [Phased implementation plan](plan.md)

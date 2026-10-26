@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-10-24T10:39:33Z",
+  "task_id": "A0.2",
+  "description": "Generic experiment runner extraction, CareOps facade preservation, two-consumer proof, worker invariance, cancellation safety, and crash recovery.",
+  "tests": {
+    "careops_core_lib": {
+      "exit_code": 0,
+      "duration_ms": 2629.9461249727756,
+      "status": "PASS"
+    },
+    "logistics_consumer": {
+      "exit_code": 0,
+      "duration_ms": 126.20987498667091,
+      "status": "PASS"
+    },
+    "ed_e32_batch_tests": {
+      "exit_code": 0,
+      "duration_ms": 120.20058400230482,
+      "status": "PASS"
+    }
+  },
+  "benchmarks": {},
+  "invariance": {
+    "ed_consumer": {
+      "status": "VERIFIED",
+      "replications": 8,
+      "worker_invariance_1_vs_2": true,
+      "worker_invariance_1_vs_4": true,
+      "timings_ms": {
+        "1": 264.714000019012,
+        "2": 220.8661249896977,
+        "4": 198.8103749754373
+      }
+    }
+  },
+  "cancellation": {
+    "ed_consumer": {
+      "status": "VERIFIED",
+      "partial_marker_written": true,
+      "final_json_never_published": true,
+      "exit_code": 0
+    }
+  },
+  "crash_recovery": {
+    "ed_consumer": {
+      "status": "VERIFIED",
+      "zero_duplicate_work": true,
+      "matches_unbroken_baseline": true,
+      "exit_code": 0
+    }
+  }
+}

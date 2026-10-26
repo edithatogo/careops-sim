@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-10-24T11:23:16Z",
+  "task_id": "A1.1",
+  "description": "Failing cases and mathematical oracles for branching/loop bounds, invalid transitions, progression during waiting, covariate changes, stale events, ties, zero-targets, analytic competing risks, and draw ownership.",
+  "tests": {
+    "pathway_failing_cases_tests": {
+      "exit_code": 0,
+      "duration_ms": 519.9299580126535,
+      "status": "PASS"
+    },
+    "careops_core_full": {
+      "exit_code": 0,
+      "duration_ms": 1105.2397080056835,
+      "status": "PASS"
+    }
+  },
+  "invariants_matrix": {
+    "branching_loop_bounds": "Max repetition limits enforced; cycles exceeding bound fail closed with LoopBoundExceeded.",
+    "invalid_transitions": "Unregistered stages and disjoint stage jumps fail closed with InvalidTransition.",
+    "progression_during_waiting": "Clinical hazard accumulates independently of physical server/bed allocation (CC-04).",
+    "elapsed_age_residual_time": "Proportional hazard scaling recalculates residual time on covariate changes without discontinuity.",
+    "stale_events_ties": "Stale events rejected on patient generation increment; deterministic tie-breaking by (tick, priority, event_id, patient_id).",
+    "zero_target_accounting": "Immediate service targets (0 ticks) evaluate breach ratio cleanly without NaN or division by zero (CC-06).",
+    "analytic_competing_risks": "Competing hazard probabilities match exact theoretical fractions (lambda_i / lambda_total); zero hazard halts progression.",
+    "unchanged_covariates": "Unchanged covariates produce bit-identical hazard rates across evaluations.",
+    "right_censoring": "Events scheduled past horizon are clamped and right-censored without unauthorized state changes.",
+    "draw_ownership": "Decoupled RNG streams (Progression, Service, Routing) ensure retries/calibration of one subsystem cannot leak into another (CC-07).",
+    "status": "VERIFIED"
+  }
+}

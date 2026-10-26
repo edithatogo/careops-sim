@@ -13,11 +13,14 @@ is introduced. Development-agent parallelism is distinct from simulated PDES.
 - **Worker:** executes one approved packet. `gpt-6-luna` is the intended initial
   smaller-model candidate for bounded code/test/docs tasks. Use existing configured
   settings or explicit session choices; the planner does not change model settings.
-- **Reviewer/integrator:** verifies scope, evidence and acceptance against the
-  integrated commit. Review may be another agent or a fresh context of the same
-  single agent in serial mode. Independence of evidence matters more than agent
-  count. Contract/statistical/security decisions need an appropriately capable
-  reviewer, rather than an assumed model capability.
+- **Reviewer agent/subagent:** separately examines scope, evidence and acceptance
+  against the integrated commit, using the relevant contract, tests and evidence
+  oracle. Record the exact commit, reviewer role, review lens and findings. Do not
+  require a different human to hold a named owner role or approve ordinary track
+  closeout. The single human coordinator integrates and accepts the result.
+  Contract, statistical and security review must use an appropriately capable
+  agent/skill; agent agreement alone is not proof, and existing human approvals
+  for clinical, legal, release or external authority decisions remain distinct.
 
 Architecture and ambiguous modeling decisions are coordinator work. A smaller
 model may implement a settled contract but must not invent scheduler semantics,

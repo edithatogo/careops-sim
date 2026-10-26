@@ -1,0 +1,29 @@
+diff --git a/crates/kairo-ecs-gpu/src/compute.rs b/crates/kairo-ecs-gpu/src/compute.rs
+index 3d9f25c..5d6d833 100644
+--- a/crates/kairo-ecs-gpu/src/compute.rs
++++ b/crates/kairo-ecs-gpu/src/compute.rs
+@@ -276,6 +276,7 @@ pub enum GpuComputeError {
+ pub enum GpuBackendAvailability {
+     CpuFallback,
+     BackendNotConfigured(&'static str),
++    RealDevice,
+ }
+ 
+ #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+@@ -307,6 +308,16 @@ impl GpuBackendCapabilities {
+             supports_unified_memory: false,
+         }
+     }
++
++    pub const fn real_device(backend_name: &'static str, max_workgroup_size: u32) -> Self {
++        Self {
++            backend_name,
++            availability: GpuBackendAvailability::RealDevice,
++            max_workgroup_size,
++            supports_zero_copy_borrow: true,
++            supports_unified_memory: true,
++        }
++    }
+ }
+ 
+ /// Backend-independent GPU compute contract.

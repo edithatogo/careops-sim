@@ -7,7 +7,9 @@ bounded worker packets before dispatch; gpt-6-luna is a candidate worker, not an
 assumed authority for unresolved contracts or acceptance decisions.
 
 Status: bootstrap slice implemented; remaining work planned. All phase completion
-requires [workflow](../../workflow.md), evidence and relevant upstream owner review.
+requires [workflow](../../workflow.md), evidence and reviewer-agent/subagent review
+against relevant upstream contracts. Upstream ownership labels do not create an
+additional human review gate; separately required external approvals remain explicit.
 
 
 ## Research already completed and remaining acceptance

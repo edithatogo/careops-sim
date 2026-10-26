@@ -10,26 +10,27 @@ these C-R0–C-R7 recommendations. No change to that repository is made by this
 21 October incorporation. Older shorthand “CareOps” here denotes careops-sim
 unless a paragraph explicitly identifies the separate portfolio repository.
 
-Status: planned revision; no implementation acceptance in this change.
+Status: implementation in progress. A0 and A1 are accepted; A2 is the next phase.
 
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
 Dispatch requires reviewed packets, upstream capability readback and the single-maintainer harness.
 
 ## A0 — Small contracts, identities and extraction boundaries
 
-- [ ] A0.1 Freeze CC-01 through CC-08, stable identities, virtual clock, schema versions and stream ownership. Map each consumed Kairos 64/66 capability to exact evidence rather than whole-track completion; resolve 67 core/state/ABM overlap and 68/69 DES overlap to exact-file writers and contract handoffs before dispatch. Public API/checkpoint/schema compatibility remains an acceptance gate.
-- [ ] A0.2 Qualify the first small extraction from batch_runner/api_runner using existing Kairos experiment interfaces before resource extraction: seed partitioning, worker invariance, progress/cancel, manifests, resume and recovery. Preserve the CareOps facade; prove ED plus a nonclinical logistics consumer, 1/2/4 worker and restart parity. Cancellation cannot publish partial output as complete; recover a crash between output write and completion record. Benchmark further movement before broad extraction; bind separate upstream owner packets.
-- [ ] A0.3 Define the minimal careops-core slice with clinical/site defaults outside Kairos; write contract-negative cases and layered JurisdictionProfile/SiteProfile schema and loader tests (precedence, missing source, incompatible version). Retain old adapters until compatibility and recovery pass; qualify a separate real domain adapter before broad generic adoption.
-- [ ] A0.4 Conductor — review and verify phase (workflow.md).
+- [x] A0.1 Freeze CC-01 through CC-08, stable identities, virtual clock, schema versions and stream ownership. Map each consumed Kairos 64/66 capability to exact evidence rather than whole-track completion; resolve 67 core/state/ABM overlap and 68/69 DES overlap to exact-file writers and contract handoffs before dispatch. Public API/checkpoint/schema compatibility remains an acceptance gate.
+- [x] A0.2 Qualify the first small extraction from batch_runner/api_runner using existing Kairos experiment interfaces before resource extraction: seed partitioning, worker invariance, progress/cancel, manifests, resume and recovery. Preserve the CareOps facade; prove ED plus a nonclinical logistics consumer, 1/2/4 worker and restart parity. Cancellation cannot publish partial output as complete; recover a crash between output write and completion record. Benchmark further movement before broad extraction; bind separate upstream owner packets.
+- [x] A0.3 Define the minimal careops-core slice with clinical/site defaults outside Kairos; write contract-negative cases and layered JurisdictionProfile/SiteProfile schema and loader tests (precedence, missing source, incompatible version). Retain old adapters until compatibility and recovery pass; qualify a separate real domain adapter before broad generic adoption.
+- [x] A0.4 Conductor — review and verify phase (workflow.md); the later integration finding was addressed at `88135e4` with [review evidence](../../evidence/pr-183-review-fix-20261026/README.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
 
 ## A1 — Pathways, clinical progression and policy clocks
 
-- [ ] A1.1 Write failing cases for branching/loop bounds, invalid transitions, progression during waiting, elapsed-age/residual-time and covariate changes, stale events, ties and zero-target accounting. Require analytic exponential competing-risk and zero-hazard controls, unchanged-covariate invariance, time-varying/censoring references and explicit draw ownership; failed calibration cannot resample unrelated clocks.
-- [ ] A1.2 Implement a bounded configurable pathway adapter with independently scheduled patient progression; retain the ED compatibility path.
-- [ ] A1.3 Implement versioned classification and policy clocks with reassessment, pause semantics and separate urgency/target/priority/interruption rules; prohibit future-outcome access by decision policies.
-- [ ] A1.4 Conductor — review and verify phase (workflow.md).
+- [x] A1.1 Write failing cases for branching/loop bounds, invalid transitions, progression during waiting, elapsed-age/residual-time and covariate changes, stale events, ties and zero-target accounting. Require analytic exponential competing-risk and zero-hazard controls, unchanged-covariate invariance, time-varying/censoring references and explicit draw ownership; failed calibration cannot resample unrelated clocks.
+- [x] A1.2 Implement a bounded configurable pathway adapter with independently scheduled patient progression; retain the ED compatibility path.
+- [x] A1.3 Implement versioned classification and policy clocks with reassessment, pause semantics and separate urgency/target/priority/interruption rules; prohibit future-outcome access by decision policies. Accepted at `f46b369` per [A1.3 review evidence](../../evidence/a1.3-review-20261025/README.md).
+- [x] A1.4 Conductor — review and verify phase (workflow.md). Accepted at
+  `312a238` per [A1 phase review](../../evidence/a1.4-phase-review-20261026/README.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
 

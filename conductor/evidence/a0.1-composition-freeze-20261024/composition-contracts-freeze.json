@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "task_id": "A0.1",
+  "track_id": "careops_core_domain_abstractions_20261020",
+  "timestamp_utc": "2026-10-24T09:52:10Z",
+  "status": "accepted",
+  "frozen_contracts": {
+    "CC-01": {
+      "title": "Person and episode identity",
+      "semantics": "Stable synthetic PersonId; distinct ReferralId, EncounterId, AdmissionId, TransferId. Typed one-to-many relationships (Person to multiple ServiceEpisodes). Recycled ECS generation/indices are isolated from longitudinal clinical identities.",
+      "schema_version": "careops-identity-v1",
+      "status": "frozen"
+    },
+    "CC-02": {
+      "title": "Transfer lifecycle",
+      "semantics": "Ten explicit states: Requested, Offered, Reserved, Departing, InTransit, Arrived, HandoverComplete, Rejected, Cancelled, Expired. TransferOperationId with idempotent logical effects. Originating resources retained until authoritative HandoverComplete event.",
+      "schema_version": "careops-transfer-envelope-v1",
+      "status": "frozen"
+    },
+    "CC-03": {
+      "title": "Resource bundle allocation and safe interruption",
+      "semantics": "Explicit team/room/equipment bundles. Staged sequential claims with rollback on partial failure; AllOf/AnyOf are event joins, not atomic resource allocators. Contention, expiry, and preemption policies without silent eviction.",
+      "schema_version": "careops-bundle-v1",
+      "status": "frozen"
+    },
+    "CC-04": {
+      "title": "Independent clinical progression",
+      "semantics": "Patient clinical state evolves independently while waiting, boarding, or traveling. Discrete competing risks with deterministic tie-breaking. Reassessment does not resample unrelated clocks.",
+      "schema_version": "careops-progression-v1",
+      "status": "frozen"
+    },
+    "CC-05": {
+      "title": "Effective capacity and calendars",
+      "semantics": "Eight states: Physical, Equipped, Staffed, Open, Reserved, Occupied, Cleaning, Unavailable. Maintenance, turnover, and operational calendars without silent eviction of active clinical care.",
+      "schema_version": "careops-capacity-v1",
+      "status": "frozen"
+    },
+    "CC-06": {
+      "title": "Virtual clocks and policy isolation",
+      "semantics": "Single virtual clock with explicit integer Tick units. Strict isolation between triage urgency, operational priority, target clock thresholds, and interruption eligibility. Decision policies cannot observe latent future outcomes.",
+      "schema_version": "careops-clock-v1",
+      "status": "frozen"
+    },
+    "CC-07": {
+      "title": "Reproducible composition",
+      "semantics": "Hierarchical random stream namespaces (RootRng, PersonStream, ModuleStream, WorkerStream). Deterministic event ordering and cross-worker equivalence (1, 2, 4 worker threads produce byte-identical or trace-identical results).",
+      "schema_version": "careops-rng-stream-v1",
+      "status": "frozen"
+    },
+    "CC-08": {
+      "title": "Observation and evaluation",
+      "semantics": "Latent state vs observed state distinction. Explicit handling of delays, missingness, interval/right censoring. Separate ledgers for activity, clinical outcomes, financial costs, and equity.",
+      "schema_version": "careops-evaluation-v1",
+      "status": "frozen"
+    }
+  },
+  "consumed_kairos_capability_mapping": {
+    "Track_64_Resource_Bundles": {
+      "exact_capabilities": [
+        "Phased resource acquisition with rollback on failure",
+        "Rejection of atomic multi-resource claims (claim_atomic_multi_resource)",
+        "ATS urgency dispatch and priority queue ordering"
+      ],
+      "evidence_logs": [
+        {
+          "path": "conductor/evidence/r2.2-consumer-api-qualification-20261024/careops-ed-e22-dispatch-fidelity.log",
+          "sha256": "04ed97510e96b58a3135ee09d3faf8f22178eeecf345cad658b5b66c30d21369"
+        },
+        {
+          "path": "conductor/evidence/r2.2-consumer-api-qualification-20261024/scheduler-event-waits-core.log",
+          "sha256": "490842fe33ec90518381381dcd7fbaaa3e51dec1882b3ab6c7e082fcf8bfe56e"
+        }
+      ],
+      "status": "VERIFIED_EVIDENCE_MAPPED"
+    },
+    "Track_66_Observation_Mathematics": {
+      "exact_capabilities": [
+        "C43 Arrow tabular outputs",
+        "Calibration sidecar adapter and residual pipeline",
+        "Permutation-invariant residual scoring"
+      ],
+      "evidence_logs": [
+        {
+          "path": "conductor/evidence/r2.2-consumer-api-qualification-20261024/calibration-c43-outputs.log",
+          "sha256": "b18757b9708704b2112d643532241d2fd03deb957a4b8acac1c196da4e6faf4f"
+        },
+        {
+          "path": "conductor/evidence/r3.1-deterministic-conformance-20261024/flow-q-c-suite.log",
+          "sha256": "e9123580b2449fd9e0d86cddcbf8dd82c45486e4755e677362dcff2a10a3d722"
+        }
+      ],
+      "status": "VERIFIED_EVIDENCE_MAPPED"
+    }
+  },
+  "file_writer_overlap_resolution": {
+    "Track_67_Linked_Entities": {
+      "description": "Core / State / ABM Entity Overlap",
+      "upstream_kairos_writers": [
+        "libs/kairos/crates/kairo-ecs-core/src/relationship/",
+        "libs/kairos/crates/kairo-ecs-abm/src/spatial/"
+      ],
+      "careops_core_writers": [
+        "crates/careops-core/src/identity/person.rs",
+        "crates/careops-core/src/identity/encounter.rs",
+        "crates/careops-core/src/identity/maternal_infant.rs"
+      ],
+      "contract_handoff": "Kairos maintains neutral ECS Entity/Component relationships; CareOps Core owns healthcare person longitudinal history and maternal-infant linkage."
+    },
+    "Track_68_Boundary_Channels": {
+      "description": "DES Event Channels & Boundary Egress Overlap",
+      "upstream_kairos_writers": [
+        "libs/kairos/crates/kairo-ecs-des/src/channel/",
+        "libs/kairos/crates/kairo-ecs-des/src/queue/"
+      ],
+      "careops_core_writers": [
+        "crates/careops-core/src/egress/transfer.rs",
+        "crates/careops-core/src/egress/handover.rs",
+        "crates/careops-core/src/egress/outbox.rs"
+      ],
+      "contract_handoff": "Kairos maintains discrete event queue dispatch; CareOps Core owns inter-facility transfer lifecycle and clinical handover protocols."
+    },
+    "Track_69_Competing_Risks": {
+      "description": "DES Competing Risks & Clinical Progression Overlap",
+      "upstream_kairos_writers": [
+        "libs/kairos/crates/kairo-ecs-des/src/competing_risks/",
+        "libs/kairos/crates/kairo-ecs-rng/"
+      ],
+      "careops_core_writers": [
+        "crates/careops-core/src/progression/stage.rs",
+        "crates/careops-core/src/progression/hazard.rs",
+        "crates/careops-core/src/progression/reassessment.rs"
+      ],
+      "contract_handoff": "Kairos maintains numeric hazard sampling and stream partitioning; CareOps Core owns healthcare clinical stage graphs, triage urgency, and disease progression models."
+    }
+  },
+  "public_compatibility_gates": {
+    "arrow_schema": "Arrow 60 / Parquet 60 verified",
+    "c2_replay_journal": "kairos-c2-replay-journal-v1 verified",
+    "nominal_ed_mvp": "schema_version 1 verified (seed 42, horizon 20)",
+    "careops_core_slice": "minimal standalone crate slice with zero breaking changes to existing careops-ed"
+  }
+}

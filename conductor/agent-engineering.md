@@ -23,8 +23,11 @@ launch agents, grant permissions, install tools or approve completed work.
    ownership, acceptance tests and stop condition. Bound tool/log output and time.
 4. Implement/test locally; gather machine-readable traces, fixture differences,
    compiler diagnostics and benchmark artifacts. UI slices use browser evidence.
-5. Review against an independent oracle and acceptance contract. A fresh reviewer
-   context can challenge a diff; agreement between agents is not proof.
+5. Have a reviewer agent or subagent examine the integrated diff against an
+   independent oracle and acceptance contract. Record the reviewer role, exact
+   commit, review scope and findings. Agreement between agents is not proof, and
+   named track owners describe responsibility rather than a required human
+   review seat. The single human remains scope-setter and integrator.
 6. Checkpoint facts, attempted commands/results, decisions, unresolved risks and
    next action. Record commit, task ID, tool/model identity when available, schema/
    seed/input hashes and evidence paths; exclude credentials/private records.

@@ -37,15 +37,15 @@ R/A/B DAG and reviewed packets.
   [spec](tracks/ed_parameter_evidence_20260927/spec.md),
   [plan](tracks/ed_parameter_evidence_20260927/plan.md)). P0–P5 retain historical acceptance at the generic catalogue/model coverage boundary per [P5.4](evidence/p5.4-phase-acceptance-20261015.md). This does not establish empirical hospital validity or Cairns-specific values. The former P0-first proposal is superseded; use the R0.2 inventory for current source qualification.
 
-- [~] **Repository status reconciliation and Kairos upgrade** — `repo_reconciliation_kairos_upgrade_20261020`
+- [x] **Repository status reconciliation and Kairos upgrade** — `repo_reconciliation_kairos_upgrade_20261020`
   ([index](tracks/repo_reconciliation_kairos_upgrade_20261020/index.md),
   [spec](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md),
-  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). In progress: R0 reconciliation and R1 local CPU/IO/recovery baseline accepted on the development branch; R2 candidate-owner gate next. Reconciles capability/status evidence, audits the harness and qualifies a bounded Kairos candidate; retains the working pin if required gates fail.
+  [plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md)). Completed: R0 reconciliation, R1 local CPU/IO/recovery baseline, R2 candidate qualification, and R3 deterministic conformance and retain-pin decision accepted. Working pin 44261eb retained with zero drift; missing hardware capabilities E6/E8 classified as external dispatch gates.
 
-- [ ] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
+- [~] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
   ([index](tracks/careops_core_domain_abstractions_20261020/index.md),
   [spec](tracks/careops_core_domain_abstractions_20261020/spec.md),
-  [plan](tracks/careops_core_domain_abstractions_20261020/plan.md)). Proposed. Extracts dynamic stage graphs, capability-based rooms, multi-role procedural staffing, decoupled egress handover boundaries, and linked entity pairs into `careops-core`.
+  [plan](tracks/careops_core_domain_abstractions_20261020/plan.md)). In progress: A0 and A1 are accepted per [A1 phase review](evidence/a1.4-phase-review-20261026/README.md); A2.1 is next. A2–A7 retain their stated dependencies and acceptance gates.
 
 - [ ] **Generic birthing suite simulation delivery** — `birthing_suite_delivery_20261020`
   ([index](tracks/birthing_suite_delivery_20261020/index.md),

@@ -140,7 +140,7 @@ the staff-policy adapter. Integrated runtime-ledger leaf accepted at `5cc8250`; 
 The test-only Q4 urgent-interruption integration is locally accepted at exact
 Kairos pin `6053d8d`; see [its Rust 1.99.0 evidence](../../evidence/c2.4-q4-interruption-rust199-20261007/README.md).
 Standalone synthetic accounting remains in [the manual ledger evidence](../../evidence/c2-manual-ledger-20261007/README.md).
-C2.4 phase review and Track03 owner review remain open. Hosted checks, portable
+C2.4 phase review and Track03 reviewer-agent review remain open. Hosted checks, portable
 checkpoint/restart, release, and clinical acceptance also remain open.
 Dependency readiness does not grant parallel writes: overlapping path claims
 remain serial. All C2.1 original oracles remain mandatory; a fixed-duration
@@ -149,7 +149,7 @@ satisfy paired acceptance. See [the test-first join decision](../../decisions/AD
 
 Exit: C-02 has standalone fixtures and a locally accepted integrated Q4
 urgent-interruption runtime leaf. Q4.5 is accepted and integrated. Track03
-owner/phase review and the remaining hosted, portable-checkpoint, release, and
+reviewer-agent/phase review and the remaining hosted, portable-checkpoint, release, and
 clinical gates remain required before this phase can pass.
 Amendment 2026-10-12: Track03 owner disposition is `accepted with follow-up`
 ([packet](../../evidence/c2.4-track03-owner-review-rust199-20261007/review-packet.md));

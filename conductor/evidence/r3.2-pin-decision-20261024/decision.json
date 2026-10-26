@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "task_id": "R3.2",
+  "track_id": "repo_reconciliation_kairos_upgrade_20261020",
+  "decision": "RETAIN_PIN",
+  "retained_pin": "44261eb5cf8275f132f63a3396903d116d701dbe",
+  "qualified_candidate": "8282b1ab45669a667bda3be2862272447544ba44",
+  "timestamp_utc": "2026-10-24T09:16:30Z",
+  "status": "accepted",
+  "disposition": "Working pin 44261eb5cf8275f132f63a3396903d116d701dbe is retained. Headless DES/ABM simulation, Arrow IPC/Parquet interop, C2 replay repeatability, and ED clinical dispatch pass 100% with zero drift. In accordance with spec.md line 22, no source pin changes occur in this planning revision; unverified hardware capabilities E6 (Metal/CUDA) and E8 (Multi-host transport) remain external dispatch gates for optional consumer tracks.",
+  "justification": {
+    "headless_conformance": "Working pin satisfies all consumer contracts with zero drift across 296 workspace tests and 969 Q/C flow tests.",
+    "candidate_delta": "Candidate 8282b1ab is 1 commit ahead of 44261eb, modifying only crates/kairo-ecs-gpu (adding numeric_batch.rs profiling oracle). Core scheduling, arrow-io, calibration, and ED logic are byte-identical.",
+    "hardware_gate_isolation": "Real Metal/CUDA GPU device execution and physical multi-host MPI transport remain unconfigured in the candidate; advancing the pin does not provide real hardware execution and would conflate headless readiness with hardware qualification.",
+    "specification_conformance": "Track spec.md line 22 explicitly stipulates: 'No source pin changes occur in this planning revision. R3 closes on an evidenced candidate decision and usable baseline, including an explicit retain-pin decision'."
+  },
+  "missing_capabilities_and_external_gates": [
+    {
+      "capability": "Real GPU acceleration (Metal / CUDA kernel dispatch)",
+      "track": "E6",
+      "status": "UNVERIFIED_RELEASE_BLOCKER",
+      "resolution": "Remains external dispatch gate for optional track E6. Headless simulation does not consume GPU."
+    },
+    {
+      "capability": "Multi-host physical cluster transport (MPI)",
+      "track": "E8",
+      "status": "UNVERIFIED_RELEASE_BLOCKER",
+      "resolution": "Remains external dispatch gate for optional track E8. In-process thread emulator is insufficient for cluster gates."
+    }
+  ],
+  "supported_bounded_alternatives": [
+    "Deterministic CPU-native DES/ABM simulation with stream/seed partitioning",
+    "Phased resource acquisition with automatic rollback on partial failure (AtomicMultiResource unsupported)",
+    "Sealed replay journals (kairos-c2-replay-journal-v1) with fail-closed sentinel collision rejection",
+    "Official Arrow IPC streams and Parquet physical reader/writers with schema limit guards"
+  ]
+}
