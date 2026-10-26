@@ -20,7 +20,7 @@ Dispatch requires reviewed packets, upstream capability readback and the single-
 - [x] A0.1 Freeze CC-01 through CC-08, stable identities, virtual clock, schema versions and stream ownership. Map each consumed Kairos 64/66 capability to exact evidence rather than whole-track completion; resolve 67 core/state/ABM overlap and 68/69 DES overlap to exact-file writers and contract handoffs before dispatch. Public API/checkpoint/schema compatibility remains an acceptance gate.
 - [x] A0.2 Qualify the first small extraction from batch_runner/api_runner using existing Kairos experiment interfaces before resource extraction: seed partitioning, worker invariance, progress/cancel, manifests, resume and recovery. Preserve the CareOps facade; prove ED plus a nonclinical logistics consumer, 1/2/4 worker and restart parity. Cancellation cannot publish partial output as complete; recover a crash between output write and completion record. Benchmark further movement before broad extraction; bind separate upstream owner packets.
 - [x] A0.3 Define the minimal careops-core slice with clinical/site defaults outside Kairos; write contract-negative cases and layered JurisdictionProfile/SiteProfile schema and loader tests (precedence, missing source, incompatible version). Retain old adapters until compatibility and recovery pass; qualify a separate real domain adapter before broad generic adoption.
-- [x] A0.4 Conductor — review and verify phase (workflow.md).
+- [x] A0.4 Conductor — review and verify phase (workflow.md); the later integration finding was addressed at `88135e4` with [review evidence](../../evidence/pr-183-review-fix-20261026/README.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
 
@@ -87,6 +87,3 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 - [ ] A7.4 Conductor — review and verify phase (workflow.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
-
-## Phase: Review Fixes
-- [x] Task: Apply independent PR review suggestion for replication identity and checkpoint validation `88135e4`; see [integration review evidence](../../evidence/pr-183-review-fix-20261026/README.md).
