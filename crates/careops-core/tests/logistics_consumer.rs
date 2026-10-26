@@ -9,15 +9,15 @@
 
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::sync::atomic::Ordering;
 use std::sync::Arc;
+use std::sync::atomic::Ordering;
 
 use serde::{Deserialize, Serialize};
 
 use careops_core::experiment::{
-    atomic_write_file, current_epoch_ms, resume_generic_batch, run_generic_batch,
     CancellationToken, ExperimentError, ExperimentErrorKind, GenericBatchRunDocument,
-    IndexedReplication,
+    IndexedReplication, atomic_write_file, current_epoch_ms, resume_generic_batch,
+    run_generic_batch,
 };
 
 /// Configuration for package sorting hub simulation.
@@ -130,8 +130,7 @@ pub fn simulate_logistics_hub(
         let capacity = config.num_docks * config.dock_rate_per_tick;
         let can_process = queue.len().min(capacity);
         if can_process > 0 {
-            dock_busy_ticks +=
-                (can_process + config.dock_rate_per_tick - 1) / config.dock_rate_per_tick;
+            dock_busy_ticks += can_process.div_ceil(config.dock_rate_per_tick);
             for _ in 0..can_process {
                 let arrival_tick = queue.remove(0);
                 let latency =
