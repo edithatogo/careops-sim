@@ -32,7 +32,7 @@ record the target duration; this was corrected and verified before acceptance.
 | --- | --- |
 | Focused `careops-core` selectors (classification, pathway, profiles, contract negatives) | PASS — 38 tests |
 | `careops-ed` pathway conformance | PASS — 8 tests |
-| Full `careops-core` and `careops-ed` package suites at `f46b369` | PASS — complete log at [full-package-tests.log](../../../.artifacts/a1.3-policy-clocks/full-package-tests.log) |
+| Full `careops-core` and `careops-ed` package suites at `f46b369` | Historically recorded PASS. The referenced log was stored under the ignored local `.artifacts/` directory and is not present in this source checkout; this historical run is not independently reproducible from this checkout. |
 | Targeted `rustfmt --check` on all A1.3-owned Rust paths | PASS |
 | `cargo fmt --all -- --check` | FAIL — existing formatting differences in unrelated workspace files; none were retained as changes |
 | `git diff --check` | PASS |
@@ -54,3 +54,14 @@ package-test logs, and the worker result contract are under
 
 This accepts A1.3 only. It does not establish clinical validity, operational
 acceptance or completion of the core-abstractions track.
+
+## Follow-up review — 26 October 2026
+
+A reviewer agent re-examined the implementation at the integrated source branch
+and found that blank urgency scheme ID/version, effective date, source authority,
+or citation could be copied into an assessment. Commit `884dd19` adds nonblank
+validation and a negative test for each field. The reviewer confirmed the fix and
+reported no remaining finding in that implementation/test scope.
+
+The subsequent A1 phase review also identified A1.2 defects and their fixes.
+This A1.3 receipt remains scoped to A1.3 and does not close the full track.
