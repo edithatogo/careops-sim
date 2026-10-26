@@ -16,8 +16,8 @@ use serde::{Deserialize, Serialize};
 
 use careops_core::experiment::{
     atomic_write_file, current_epoch_ms, resume_generic_batch, run_generic_batch,
-    CancellationToken, ExperimentError, ExperimentErrorKind,
-    GenericBatchRunDocument, IndexedReplication,
+    CancellationToken, ExperimentError, ExperimentErrorKind, GenericBatchRunDocument,
+    IndexedReplication,
 };
 
 /// Configuration for package sorting hub simulation.
@@ -130,10 +130,12 @@ pub fn simulate_logistics_hub(
         let capacity = config.num_docks * config.dock_rate_per_tick;
         let can_process = queue.len().min(capacity);
         if can_process > 0 {
-            dock_busy_ticks += (can_process + config.dock_rate_per_tick - 1) / config.dock_rate_per_tick;
+            dock_busy_ticks +=
+                (can_process + config.dock_rate_per_tick - 1) / config.dock_rate_per_tick;
             for _ in 0..can_process {
                 let arrival_tick = queue.remove(0);
-                let latency = (current_tick - arrival_tick) as f64 * 10.0 + (rng.next_range(5, 20) as f64);
+                let latency =
+                    (current_tick - arrival_tick) as f64 * 10.0 + (rng.next_range(5, 20) as f64);
                 latencies.push(latency);
                 packages_departed += 1;
             }
@@ -222,9 +224,8 @@ fn test_logistics_worker_invariance_1_2_4() {
     let base_seed = 1001;
     let replications = 8;
 
-    let runner_fn = |idx: usize, seed: u64, meta: &LogisticsConfig| {
-        simulate_logistics_hub(meta, idx, seed)
-    };
+    let runner_fn =
+        |idx: usize, seed: u64, meta: &LogisticsConfig| simulate_logistics_hub(meta, idx, seed);
 
     // Run with 1 worker
     let res_1 = run_generic_batch::<LogisticsReplicationResult, LogisticsConfig, _>(
@@ -238,7 +239,8 @@ fn test_logistics_worker_invariance_1_2_4() {
         None,
         None,
         runner_fn,
-    ).expect("1 worker run must succeed");
+    )
+    .expect("1 worker run must succeed");
 
     // Run with 2 workers
     let res_2 = run_generic_batch::<LogisticsReplicationResult, LogisticsConfig, _>(
@@ -252,7 +254,8 @@ fn test_logistics_worker_invariance_1_2_4() {
         None,
         None,
         runner_fn,
-    ).expect("2 worker run must succeed");
+    )
+    .expect("2 worker run must succeed");
 
     // Run with 4 workers
     let res_4 = run_generic_batch::<LogisticsReplicationResult, LogisticsConfig, _>(
@@ -266,11 +269,18 @@ fn test_logistics_worker_invariance_1_2_4() {
         None,
         None,
         runner_fn,
-    ).expect("4 worker run must succeed");
+    )
+    .expect("4 worker run must succeed");
 
     assert_eq!(res_1.len(), replications);
-    assert_eq!(res_1, res_2, "1-worker and 2-worker results must be bit-identical");
-    assert_eq!(res_1, res_4, "1-worker and 4-worker results must be bit-identical");
+    assert_eq!(
+        res_1, res_2,
+        "1-worker and 2-worker results must be bit-identical"
+    );
+    assert_eq!(
+        res_1, res_4,
+        "1-worker and 4-worker results must be bit-identical"
+    );
 
     let agg_1 = compute_logistics_aggregates(&res_1);
     let agg_4 = compute_logistics_aggregates(&res_4);
@@ -286,9 +296,8 @@ fn test_logistics_cancellation_safety() {
     // Cancel prior to dispatch
     token.cancel();
 
-    let runner_fn = |idx: usize, seed: u64, meta: &LogisticsConfig| {
-        simulate_logistics_hub(meta, idx, seed)
-    };
+    let runner_fn =
+        |idx: usize, seed: u64, meta: &LogisticsConfig| simulate_logistics_hub(meta, idx, seed);
 
     let res = run_generic_batch::<LogisticsReplicationResult, LogisticsConfig, _>(
         "batch-cancelled",
@@ -309,7 +318,10 @@ fn test_logistics_cancellation_safety() {
 
     // Verify batch_run.json was NOT published
     let final_path = temp_dir.path().join("batch_run.json");
-    assert!(!final_path.exists(), "batch_run.json must never be published on cancellation");
+    assert!(
+        !final_path.exists(),
+        "batch_run.json must never be published on cancellation"
+    );
 }
 
 #[test]
@@ -320,9 +332,8 @@ fn test_logistics_checkpoint_and_resume_recovery() {
     let replications = 6;
 
     // First: Run unbroken batch to obtain authoritative baseline
-    let runner_fn = |idx: usize, seed: u64, meta: &LogisticsConfig| {
-        simulate_logistics_hub(meta, idx, seed)
-    };
+    let runner_fn =
+        |idx: usize, seed: u64, meta: &LogisticsConfig| simulate_logistics_hub(meta, idx, seed);
 
     let baseline = run_generic_batch::<LogisticsReplicationResult, LogisticsConfig, _>(
         "batch-baseline",
@@ -335,7 +346,8 @@ fn test_logistics_checkpoint_and_resume_recovery() {
         None,
         None,
         runner_fn,
-    ).expect("baseline batch must succeed");
+    )
+    .expect("baseline batch must succeed");
 
     // Second: Run with checkpoint interval 2, but simulate crash/interruption after 2 replications
     let cancel_token = CancellationToken::new();
@@ -366,23 +378,30 @@ fn test_logistics_checkpoint_and_resume_recovery() {
 
     assert!(partial_res.is_err(), "simulated crashed run must fail");
     let checkpoint_path = temp_dir.path().join("checkpoint.json");
-    assert!(checkpoint_path.exists(), "checkpoint.json must have been written");
+    assert!(
+        checkpoint_path.exists(),
+        "checkpoint.json must have been written"
+    );
     let partial_marker = temp_dir.path().join("batch_run.partial");
     assert!(partial_marker.exists(), "batch_run.partial must be present");
-    assert!(!temp_dir.path().join("batch_run.json").exists(), "batch_run.json must not exist yet");
+    assert!(
+        !temp_dir.path().join("batch_run.json").exists(),
+        "batch_run.json must not exist yet"
+    );
 
     // Third: Resume from checkpoint
-    let (chk, resumed_results) = resume_generic_batch::<LogisticsReplicationResult, LogisticsConfig, _>(
-        &checkpoint_path,
-        2,
-        temp_dir.path(),
-        None,
-        None,
-        runner_fn,
-    ).expect("resumption must succeed");
+    let (chk, resumed_results) = resume_generic_batch::<
+        LogisticsReplicationResult,
+        LogisticsConfig,
+        _,
+    >(&checkpoint_path, 2, temp_dir.path(), None, None, runner_fn)
+    .expect("resumption must succeed");
 
     assert_eq!(resumed_results.len(), replications);
-    assert_eq!(resumed_results, baseline, "resumed batch must produce identical results to baseline with zero duplicate work");
+    assert_eq!(
+        resumed_results, baseline,
+        "resumed batch must produce identical results to baseline with zero duplicate work"
+    );
     assert_eq!(chk.metadata, cfg, "metadata must be restored accurately");
 
     // Now write final document and verify partial marker is removed
@@ -404,5 +423,8 @@ fn test_logistics_checkpoint_and_resume_recovery() {
     atomic_write_file(&final_path, &doc_bytes).expect("atomic write must succeed");
 
     assert!(final_path.exists());
-    assert!(!temp_dir.path().join("batch_run.partial").exists(), "batch_run.partial must be removed on clean completion");
+    assert!(
+        !temp_dir.path().join("batch_run.partial").exists(),
+        "batch_run.partial must be removed on clean completion"
+    );
 }

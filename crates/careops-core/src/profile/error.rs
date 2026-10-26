@@ -1,7 +1,7 @@
 //! Error definitions for profile loading, schema validation, and precedence resolution.
 
-use std::fmt::{Display, Formatter};
 use serde::{Deserialize, Serialize};
+use std::fmt::{Display, Formatter};
 
 /// Categorical kinds of profile errors.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]

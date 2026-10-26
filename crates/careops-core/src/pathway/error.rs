@@ -1,7 +1,7 @@
 //! Error definitions for clinical pathways, progression, and policy clocks (CC-04, CC-06).
 
-use std::fmt::{Display, Formatter};
 use serde::{Deserialize, Serialize};
+use std::fmt::{Display, Formatter};
 
 /// Categorical kinds of pathway and progression errors.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]

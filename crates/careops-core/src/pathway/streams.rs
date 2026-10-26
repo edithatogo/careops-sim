@@ -2,8 +2,8 @@
 
 /// Namespace domain tags ensuring disjoint stream seeds.
 pub const STREAM_DOMAIN_PROGRESSION: u64 = 0x5052_4F47_5245_5353; // "PROGRESS"
-pub const STREAM_DOMAIN_SERVICE: u64     = 0x5345_5256_4943_4553; // "SERVICES"
-pub const STREAM_DOMAIN_ROUTING: u64     = 0x524F_5554_494E_4753; // "ROUTINGS"
+pub const STREAM_DOMAIN_SERVICE: u64 = 0x5345_5256_4943_4553; // "SERVICES"
+pub const STREAM_DOMAIN_ROUTING: u64 = 0x524F_5554_494E_4753; // "ROUTINGS"
 
 /// Simple deterministic splitmix pseudo-random stream.
 #[derive(Clone, Debug, PartialEq)]
@@ -15,7 +15,9 @@ pub struct SubsystemStream {
 
 impl SubsystemStream {
     pub fn new(base_seed: u64, domain_tag: u64) -> Self {
-        let initial_state = base_seed.wrapping_add(domain_tag).wrapping_mul(0x9E3779B97F4A7C15);
+        let initial_state = base_seed
+            .wrapping_add(domain_tag)
+            .wrapping_mul(0x9E3779B97F4A7C15);
         Self {
             domain_tag,
             draw_count: 0,

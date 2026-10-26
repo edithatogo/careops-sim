@@ -40,7 +40,9 @@ pub struct ProfileLoader;
 
 impl ProfileLoader {
     /// Loads and parses a `JurisdictionProfile` from JSON text.
-    pub fn load_jurisdiction_from_json(json_str: &str) -> Result<JurisdictionProfile, ProfileError> {
+    pub fn load_jurisdiction_from_json(
+        json_str: &str,
+    ) -> Result<JurisdictionProfile, ProfileError> {
         let profile: JurisdictionProfile = serde_json::from_str(json_str).map_err(|e| {
             ProfileError::new(
                 ProfileErrorKind::MalformedFormat,
@@ -120,31 +122,46 @@ impl ProfileLoader {
         }
 
         let mut audit = Vec::new();
-        audit.push(format!("Base: jurisdiction '{}'", jurisdiction.jurisdiction_id));
+        audit.push(format!(
+            "Base: jurisdiction '{}'",
+            jurisdiction.jurisdiction_id
+        ));
         audit.push(format!("Site: '{}' ({})", site.site_id, site.name));
 
         // 1. Cleaning ticks precedence: Runtime Override > Site > Jurisdiction Default
-        let effective_cleaning = if let Some(override_val) = run_overrides.and_then(|r| r.cleaning_ticks) {
-            audit.push(format!("cleaning_ticks: overridden by runtime ({override_val} ticks)"));
-            override_val
-        } else if let Some(site_val) = site.turnover_cleaning_ticks {
-            audit.push(format!("cleaning_ticks: set by site profile ({site_val} ticks)"));
-            site_val
-        } else {
-            let jur_val = jurisdiction.policies.default_cleaning_ticks;
-            audit.push(format!("cleaning_ticks: set by jurisdiction default ({jur_val} ticks)"));
-            jur_val
-        };
+        let effective_cleaning =
+            if let Some(override_val) = run_overrides.and_then(|r| r.cleaning_ticks) {
+                audit.push(format!(
+                    "cleaning_ticks: overridden by runtime ({override_val} ticks)"
+                ));
+                override_val
+            } else if let Some(site_val) = site.turnover_cleaning_ticks {
+                audit.push(format!(
+                    "cleaning_ticks: set by site profile ({site_val} ticks)"
+                ));
+                site_val
+            } else {
+                let jur_val = jurisdiction.policies.default_cleaning_ticks;
+                audit.push(format!(
+                    "cleaning_ticks: set by jurisdiction default ({jur_val} ticks)"
+                ));
+                jur_val
+            };
 
         // 2. Max boarding ticks before escalation: Runtime Override > Jurisdiction Default
-        let effective_boarding = if let Some(override_val) = run_overrides.and_then(|r| r.max_boarding_ticks) {
-            audit.push(format!("max_boarding_ticks: overridden by runtime ({override_val} ticks)"));
-            override_val
-        } else {
-            let jur_val = jurisdiction.policies.max_boarding_ticks_before_escalation;
-            audit.push(format!("max_boarding_ticks: set by jurisdiction policy ({jur_val} ticks)"));
-            jur_val
-        };
+        let effective_boarding =
+            if let Some(override_val) = run_overrides.and_then(|r| r.max_boarding_ticks) {
+                audit.push(format!(
+                    "max_boarding_ticks: overridden by runtime ({override_val} ticks)"
+                ));
+                override_val
+            } else {
+                let jur_val = jurisdiction.policies.max_boarding_ticks_before_escalation;
+                audit.push(format!(
+                    "max_boarding_ticks: set by jurisdiction policy ({jur_val} ticks)"
+                ));
+                jur_val
+            };
 
         // 3. Parameters merging with layered precedence: Site params overlay Jurisdiction, Runtime overlays both
         let mut resolved_params = HashMap::new();

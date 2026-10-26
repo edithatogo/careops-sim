@@ -57,7 +57,10 @@ fn test_cc01_negative_recycled_ecs_handle_cannot_be_person_id() {
         generation: u32,
     }
 
-    let mut ecs_pool = vec![RawEcsHandle { index: 1, generation: 1 }];
+    let mut ecs_pool = vec![RawEcsHandle {
+        index: 1,
+        generation: 1,
+    }];
     let first_patient_entity = ecs_pool.pop().unwrap();
 
     // Entity is destroyed and recycled with incremented generation
@@ -71,7 +74,10 @@ fn test_cc01_negative_recycled_ecs_handle_cannot_be_person_id() {
     let p1 = SyntheticPersonId(10001);
     let p2 = SyntheticPersonId(10002);
 
-    assert_ne!(p1, p2, "distinct patients must have distinct SyntheticPersonIds");
+    assert_ne!(
+        p1, p2,
+        "distinct patients must have distinct SyntheticPersonIds"
+    );
     assert_eq!(
         first_patient_entity.index, recycled_entity.index,
         "raw ECS entity indices recycle across lifetimes"
@@ -131,9 +137,18 @@ fn test_cc01_negative_dependent_infant_survives_parent_discharge() {
     }
 
     // Verify infant remains active and not implicitly destroyed
-    let infant = registry.get(&infant_id).expect("infant must exist in registry");
-    assert!(infant.is_active, "infant must remain active independently after mother discharge");
-    assert_eq!(infant.parent_id, Some(mother_id), "relationship linkage preserved");
+    let infant = registry
+        .get(&infant_id)
+        .expect("infant must exist in registry");
+    assert!(
+        infant.is_active,
+        "infant must remain active independently after mother discharge"
+    );
+    assert_eq!(
+        infant.parent_id,
+        Some(mother_id),
+        "relationship linkage preserved"
+    );
 }
 
 // -----------------------------------------------------------------------------
@@ -158,13 +173,22 @@ fn test_cc02_negative_invalid_transfer_state_transitions() {
     }
 
     // Negative: Requested jumping straight to InTransit without reservation is rejected
-    assert!(!can_transition(TransferState::Requested, TransferState::InTransit));
+    assert!(!can_transition(
+        TransferState::Requested,
+        TransferState::InTransit
+    ));
 
     // Negative: InTransit jumping directly to HandoverComplete without arrival is rejected
-    assert!(!can_transition(TransferState::InTransit, TransferState::HandoverComplete));
+    assert!(!can_transition(
+        TransferState::InTransit,
+        TransferState::HandoverComplete
+    ));
 
     // Negative: Departing jumping to HandoverComplete is rejected
-    assert!(!can_transition(TransferState::Departing, TransferState::HandoverComplete));
+    assert!(!can_transition(
+        TransferState::Departing,
+        TransferState::HandoverComplete
+    ));
 }
 
 #[test]
@@ -236,8 +260,14 @@ fn test_cc03_negative_partial_bundle_allocation_requires_rollback() {
 
     let res = allocate_bundle(&mut pool, &mut bay_acquired);
     assert!(res.is_err());
-    assert!(!bay_acquired, "bay must be rolled back on partial bundle failure");
-    assert_eq!(pool.bays_available, 2, "bay count must be restored to original");
+    assert!(
+        !bay_acquired,
+        "bay must be rolled back on partial bundle failure"
+    );
+    assert_eq!(
+        pool.bays_available, 2,
+        "bay count must be restored to original"
+    );
 }
 
 #[test]
@@ -253,7 +283,9 @@ fn test_cc03_negative_active_procedure_cannot_be_interrupted_by_triage_urgency()
         is_active: true,
     };
 
-    let attempt_preemption = |proc: &mut ProcedureState, requested_ats_category: u8| -> Result<(), &'static str> {
+    let attempt_preemption = |proc: &mut ProcedureState,
+                              requested_ats_category: u8|
+     -> Result<(), &'static str> {
         if !proc.is_interruptible {
             return Err("procedure is marked non-interruptible; preemption rejected regardless of ATS acuity");
         }
@@ -341,7 +373,9 @@ fn test_cc06_negative_decision_policy_cannot_observe_latent_future_outcomes() {
     // Decision function deciding dispatch priority
     let dispatch_policy = |e: &EpisodeRecord, observe_latent: bool| -> Result<u8, &'static str> {
         if observe_latent {
-            return Err("decision policy prohibited from accessing latent future state (CC-06 violation)");
+            return Err(
+                "decision policy prohibited from accessing latent future state (CC-06 violation)",
+            );
         }
         // Valid policy uses only observable triage urgency and current tick
         Ok(e.triage_urgency)

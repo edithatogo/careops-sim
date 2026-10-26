@@ -10,7 +10,7 @@ pub use cancellation::CancellationToken;
 pub use error::{ExperimentError, ExperimentErrorKind};
 pub use io::atomic_write_file;
 pub use runner::{
-    current_epoch_ms, run_generic_batch, resume_generic_batch, BatchProgress, GenericBatchCheckpoint,
-    GenericBatchRunDocument, IndexedReplication, PartialBatchMarker,
+    current_epoch_ms, resume_generic_batch, run_generic_batch, BatchProgress,
+    GenericBatchCheckpoint, GenericBatchRunDocument, IndexedReplication, PartialBatchMarker,
 };
 pub use seed::allocate_replication_seeds;

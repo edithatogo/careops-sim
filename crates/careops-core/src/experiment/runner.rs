@@ -194,8 +194,9 @@ where
                             let guard = results.lock().unwrap();
                             let done_indices: std::collections::HashSet<usize> =
                                 guard.iter().map(|r| r.replication_index()).collect();
-                            let pending: Vec<usize> =
-                                (0..replications).filter(|i| !done_indices.contains(i)).collect();
+                            let pending: Vec<usize> = (0..replications)
+                                .filter(|i| !done_indices.contains(i))
+                                .collect();
 
                             let mut done_reps = guard.clone();
                             done_reps.sort_by_key(|r| r.replication_index());
@@ -318,9 +319,8 @@ where
         ));
     }
 
-    let bytes = fs::read(checkpoint_path).map_err(|e| {
-        ExperimentError::new(ExperimentErrorKind::FileNotFound, e.to_string())
-    })?;
+    let bytes = fs::read(checkpoint_path)
+        .map_err(|e| ExperimentError::new(ExperimentErrorKind::FileNotFound, e.to_string()))?;
 
     let checkpoint: GenericBatchCheckpoint<R, M> = serde_json::from_slice(&bytes).map_err(|e| {
         ExperimentError::new(
@@ -353,7 +353,11 @@ where
 
     let effective_workers = num_workers.max(1);
     let prev_completed_count = checkpoint.completed_replications.len();
-    let prev_sum: f64 = checkpoint.completed_replications.iter().map(|r| r.primary_metric()).sum();
+    let prev_sum: f64 = checkpoint
+        .completed_replications
+        .iter()
+        .map(|r| r.primary_metric())
+        .sum();
     let batch_id_ref = &checkpoint.batch_id;
     let metadata_ref = &checkpoint.metadata;
 
@@ -407,7 +411,9 @@ where
                             batch_id: batch_id_ref.clone(),
                             total_replications: checkpoint.total_replications,
                             completed_replications: total_done,
-                            percent_complete: (total_done as f64 / checkpoint.total_replications as f64) * 100.0,
+                            percent_complete: (total_done as f64
+                                / checkpoint.total_replications as f64)
+                                * 100.0,
                             running_metric,
                         });
                     }

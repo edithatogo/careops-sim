@@ -25,6 +25,6 @@ pub use error::{PathwayError, PathwayErrorKind};
 pub use progression::{CompetingRiskModel, HazardRate};
 pub use stage::{StageGraph, StageId, StageNode};
 pub use streams::{
-    PathwayRngStreams, STREAM_DOMAIN_PROGRESSION, STREAM_DOMAIN_ROUTING, STREAM_DOMAIN_SERVICE,
-    SubsystemStream,
+    PathwayRngStreams, SubsystemStream, STREAM_DOMAIN_PROGRESSION, STREAM_DOMAIN_ROUTING,
+    STREAM_DOMAIN_SERVICE,
 };

@@ -9,8 +9,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 use careops_core::profile::{
-    JurisdictionProfile, ProfileErrorKind, ProfileLoader,
-    RuntimeOverrides, SiteProfile, SiteType,
+    JurisdictionProfile, ProfileErrorKind, ProfileLoader, RuntimeOverrides, SiteProfile, SiteType,
 };
 
 struct TempDir {
@@ -39,13 +38,18 @@ impl Drop for TempDir {
 #[test]
 fn test_default_profiles_pass_validation() {
     let jur = JurisdictionProfile::default_australian_jurisdiction();
-    jur.validate().expect("default jurisdiction profile must be valid");
+    jur.validate()
+        .expect("default jurisdiction profile must be valid");
 
     let tertiary = SiteProfile::default_tertiary_hospital(&jur.jurisdiction_id);
-    tertiary.validate().expect("default tertiary site profile must be valid");
+    tertiary
+        .validate()
+        .expect("default tertiary site profile must be valid");
 
     let regional = SiteProfile::default_regional_hospital(&jur.jurisdiction_id);
-    regional.validate().expect("default regional site profile must be valid");
+    regional
+        .validate()
+        .expect("default regional site profile must be valid");
 }
 
 #[test]
@@ -53,15 +57,22 @@ fn test_layered_precedence_resolution() {
     let jur = JurisdictionProfile::default_australian_jurisdiction();
     let mut site_with_override = SiteProfile::default_tertiary_hospital(&jur.jurisdiction_id);
     site_with_override.turnover_cleaning_ticks = Some(20);
-    site_with_override.local_parameters.insert("param_a".to_string(), "site_val_a".to_string());
-    site_with_override.local_parameters.insert("param_b".to_string(), "site_val_b".to_string());
+    site_with_override
+        .local_parameters
+        .insert("param_a".to_string(), "site_val_a".to_string());
+    site_with_override
+        .local_parameters
+        .insert("param_b".to_string(), "site_val_b".to_string());
 
     // 1. Site overrides Jurisdiction default (20 ticks vs 30 ticks)
     let layered_site = ProfileLoader::resolve_layered_profile(&jur, &site_with_override, None)
         .expect("layering must succeed");
     assert_eq!(layered_site.effective_cleaning_ticks, 20);
     assert_eq!(layered_site.effective_max_boarding_ticks, 240); // from jurisdiction
-    assert_eq!(layered_site.resolved_parameters.get("param_a").unwrap(), "site_val_a");
+    assert_eq!(
+        layered_site.resolved_parameters.get("param_a").unwrap(),
+        "site_val_a"
+    );
 
     // 2. Site without override inherits Jurisdiction default (30 ticks)
     let mut site_without_override = SiteProfile::default_regional_hospital(&jur.jurisdiction_id);
@@ -74,14 +85,23 @@ fn test_layered_precedence_resolution() {
     let mut run_overrides = RuntimeOverrides::default();
     run_overrides.cleaning_ticks = Some(12);
     run_overrides.max_boarding_ticks = Some(180);
-    run_overrides.parameters.insert("param_a".to_string(), "runtime_override_a".to_string());
+    run_overrides
+        .parameters
+        .insert("param_a".to_string(), "runtime_override_a".to_string());
 
-    let layered_run = ProfileLoader::resolve_layered_profile(&jur, &site_with_override, Some(&run_overrides))
-        .expect("layering with runtime overrides must succeed");
+    let layered_run =
+        ProfileLoader::resolve_layered_profile(&jur, &site_with_override, Some(&run_overrides))
+            .expect("layering with runtime overrides must succeed");
     assert_eq!(layered_run.effective_cleaning_ticks, 12);
     assert_eq!(layered_run.effective_max_boarding_ticks, 180);
-    assert_eq!(layered_run.resolved_parameters.get("param_a").unwrap(), "runtime_override_a");
-    assert_eq!(layered_run.resolved_parameters.get("param_b").unwrap(), "site_val_b");
+    assert_eq!(
+        layered_run.resolved_parameters.get("param_a").unwrap(),
+        "runtime_override_a"
+    );
+    assert_eq!(
+        layered_run.resolved_parameters.get("param_b").unwrap(),
+        "site_val_b"
+    );
 }
 
 #[test]
@@ -115,7 +135,10 @@ fn test_incompatible_schema_version_fails_closed() {
     let site_json = serde_json::to_string(&site).unwrap();
     let res_site = ProfileLoader::load_site_from_json(&site_json);
     assert!(res_site.is_err());
-    assert_eq!(res_site.unwrap_err().kind, ProfileErrorKind::IncompatibleVersion);
+    assert_eq!(
+        res_site.unwrap_err().kind,
+        ProfileErrorKind::IncompatibleVersion
+    );
 }
 
 #[test]
@@ -127,7 +150,9 @@ fn test_jurisdiction_mismatch_fails_closed() {
     assert!(res.is_err());
     let err = res.unwrap_err();
     assert_eq!(err.kind, ProfileErrorKind::JurisdictionMismatch);
-    assert!(err.message.contains("references jurisdiction 'au-qld-metro'"));
+    assert!(err
+        .message
+        .contains("references jurisdiction 'au-qld-metro'"));
 }
 
 #[test]
@@ -139,7 +164,10 @@ fn test_malformed_json_fails_closed() {
 
     let res_site = ProfileLoader::load_site_from_json(malformed);
     assert!(res_site.is_err());
-    assert_eq!(res_site.unwrap_err().kind, ProfileErrorKind::MalformedFormat);
+    assert_eq!(
+        res_site.unwrap_err().kind,
+        ProfileErrorKind::MalformedFormat
+    );
 }
 
 #[test]
@@ -170,8 +198,8 @@ fn test_file_loader_roundtrip() {
 
     let loaded_jur = ProfileLoader::load_jurisdiction_from_file(&jur_path)
         .expect("file loading jurisdiction must succeed");
-    let loaded_site = ProfileLoader::load_site_from_file(&site_path)
-        .expect("file loading site must succeed");
+    let loaded_site =
+        ProfileLoader::load_site_from_file(&site_path).expect("file loading site must succeed");
 
     assert_eq!(loaded_jur, jur);
     assert_eq!(loaded_site, site);

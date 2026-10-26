@@ -54,12 +54,19 @@ fn test_pathway_branching_and_loop_bounds_exceeded_fails_closed() {
     graph.add_transition(&s_repeat_diagnostic, &s_repeat_diagnostic); // Self loop
 
     // Repetition 0 and 1 are allowed
-    assert!(graph.validate_transition(&s_repeat_diagnostic, &s_repeat_diagnostic, 0).is_ok());
-    assert!(graph.validate_transition(&s_repeat_diagnostic, &s_repeat_diagnostic, 1).is_ok());
+    assert!(graph
+        .validate_transition(&s_repeat_diagnostic, &s_repeat_diagnostic, 0)
+        .is_ok());
+    assert!(graph
+        .validate_transition(&s_repeat_diagnostic, &s_repeat_diagnostic, 1)
+        .is_ok());
 
     // Repetition 2 exceeds max_repetitions (2) -> must fail closed!
     let res = graph.validate_transition(&s_repeat_diagnostic, &s_repeat_diagnostic, 2);
-    assert!(res.is_err(), "loop count exceeding max_repetitions must fail closed");
+    assert!(
+        res.is_err(),
+        "loop count exceeding max_repetitions must fail closed"
+    );
     let err = res.unwrap_err();
     assert_eq!(err.kind, PathwayErrorKind::LoopBoundExceeded);
     assert!(err.message.contains("repetition limit of 2 exceeded"));
@@ -100,20 +107,27 @@ fn test_pathway_invalid_unregistered_transition_fails_closed() {
 
     // Valid transitions
     assert!(graph.validate_transition(&s_arrival, &s_triage, 0).is_ok());
-    assert!(graph.validate_transition(&s_triage, &s_discharge, 0).is_ok());
+    assert!(graph
+        .validate_transition(&s_triage, &s_discharge, 0)
+        .is_ok());
 
     // Invalid transition: Arrival skipping triage directly to Discharge
     let res = graph.validate_transition(&s_arrival, &s_discharge, 0);
     assert!(res.is_err());
     let err = res.unwrap_err();
     assert_eq!(err.kind, PathwayErrorKind::InvalidTransition);
-    assert!(err.message.contains("transition from 'arrival' to 'discharge' is not permitted"));
+    assert!(err
+        .message
+        .contains("transition from 'arrival' to 'discharge' is not permitted"));
 
     // Invalid transition: Unregistered stage node
     let s_ghost = StageId::new("unregistered_stage");
     let res_ghost = graph.validate_transition(&s_triage, &s_ghost, 0);
     assert!(res_ghost.is_err());
-    assert_eq!(res_ghost.unwrap_err().kind, PathwayErrorKind::InvalidTransition);
+    assert_eq!(
+        res_ghost.unwrap_err().kind,
+        PathwayErrorKind::InvalidTransition
+    );
 }
 
 // -----------------------------------------------------------------------------
@@ -319,7 +333,10 @@ fn test_unchanged_covariate_invariance_produces_identical_hazard() {
 
     let total_1 = model.total_hazard(&covs);
     let total_2 = model.total_hazard(&covs);
-    assert_eq!(total_1, total_2, "unchanged covariates must produce strictly invariant hazard");
+    assert_eq!(
+        total_1, total_2,
+        "unchanged covariates must produce strictly invariant hazard"
+    );
 }
 
 // -----------------------------------------------------------------------------
@@ -359,7 +376,10 @@ fn test_right_censoring_at_horizon_prevents_unauthorized_state_transition() {
     advance_to_horizon(&mut ep, horizon_ticks, scheduled_completion_tick);
     assert!(ep.censored, "event past horizon must be right-censored");
     assert!(!ep.completed, "censored event must NOT be marked complete");
-    assert_eq!(ep.observed_ticks, 100, "observed work must be clamped to horizon");
+    assert_eq!(
+        ep.observed_ticks, 100,
+        "observed work must be clamped to horizon"
+    );
 }
 
 // -----------------------------------------------------------------------------
@@ -384,7 +404,11 @@ fn test_explicit_draw_ownership_prevents_leakage_between_subsystems() {
 
     for _ in 0..10 {
         draws_baseline.push(streams_baseline.progression_stream.next_exponential(0.05));
-        draws_with_activity.push(streams_with_service_activity.progression_stream.next_exponential(0.05));
+        draws_with_activity.push(
+            streams_with_service_activity
+                .progression_stream
+                .next_exponential(0.05),
+        );
     }
 
     // The progression stream draws MUST be 100% bit-identical despite heavy service/routing draws!

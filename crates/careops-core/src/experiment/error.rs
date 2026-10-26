@@ -1,7 +1,7 @@
 //! Structured error types for experiment lifecycle and execution.
 
-use std::fmt::{Display, Formatter};
 use serde::{Deserialize, Serialize};
+use std::fmt::{Display, Formatter};
 
 /// Categorical kinds of experiment errors.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]

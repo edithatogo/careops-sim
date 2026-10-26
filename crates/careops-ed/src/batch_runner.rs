@@ -12,9 +12,7 @@ use std::path::Path;
 
 use serde::{Deserialize, Serialize};
 
-use crate::disposition::api_runner::{
-    CancellationToken, ExitCodeDef, ValidationError,
-};
+use crate::disposition::api_runner::{CancellationToken, ExitCodeDef, ValidationError};
 use crate::{run_scenario, ScenarioConfig};
 
 pub use careops_core::experiment::allocate_replication_seeds;
@@ -133,12 +131,8 @@ pub struct BatchRunDocument {
 
 /// Atomically writes content to path via temporary staging file.
 pub fn atomic_write_file(path: &Path, content: &[u8]) -> Result<(), ValidationError> {
-    careops_core::experiment::atomic_write_file(path, content).map_err(|e| {
-        ValidationError::new(
-            ExitCodeDef::OutputWriteFailed,
-            e.message,
-        )
-    })
+    careops_core::experiment::atomic_write_file(path, content)
+        .map_err(|e| ValidationError::new(ExitCodeDef::OutputWriteFailed, e.message))
 }
 
 /// Executes a single replication of a scenario given its index and seed.
@@ -241,20 +235,32 @@ pub fn run_batch_with_workers(
         horizon_override: config.horizon_override,
     };
 
-    let runner_fn = |idx: usize, seed: u64, meta: &EdBatchMetadata| -> Result<ReplicationResult, careops_core::experiment::ExperimentError> {
-        execute_single_replication(scenario, idx, seed, meta.horizon_override)
-            .map_err(|e| careops_core::experiment::ExperimentError::new(
+    let runner_fn = |idx: usize,
+                     seed: u64,
+                     meta: &EdBatchMetadata|
+     -> Result<ReplicationResult, careops_core::experiment::ExperimentError> {
+        execute_single_replication(scenario, idx, seed, meta.horizon_override).map_err(|e| {
+            careops_core::experiment::ExperimentError::new(
                 match e.code {
-                    ExitCodeDef::Interrupted => careops_core::experiment::ExperimentErrorKind::Interrupted,
-                    ExitCodeDef::OutputWriteFailed => careops_core::experiment::ExperimentErrorKind::OutputWriteFailed,
-                    ExitCodeDef::MalformedConfig => careops_core::experiment::ExperimentErrorKind::MalformedConfig,
+                    ExitCodeDef::Interrupted => {
+                        careops_core::experiment::ExperimentErrorKind::Interrupted
+                    }
+                    ExitCodeDef::OutputWriteFailed => {
+                        careops_core::experiment::ExperimentErrorKind::OutputWriteFailed
+                    }
+                    ExitCodeDef::MalformedConfig => {
+                        careops_core::experiment::ExperimentErrorKind::MalformedConfig
+                    }
                     _ => careops_core::experiment::ExperimentErrorKind::ExecutionFailed,
                 },
                 e.message,
-            ))
+            )
+        })
     };
 
-    let cb_ref = progress_adapter.as_ref().map(|f| f as &(dyn Fn(careops_core::experiment::BatchProgress) + Send + Sync));
+    let cb_ref = progress_adapter
+        .as_ref()
+        .map(|f| f as &(dyn Fn(careops_core::experiment::BatchProgress) + Send + Sync));
 
     let results = careops_core::experiment::run_generic_batch(
         &config.batch_id,
@@ -267,12 +273,19 @@ pub fn run_batch_with_workers(
         cancel_token,
         cb_ref,
         runner_fn,
-    ).map_err(|e| {
+    )
+    .map_err(|e| {
         let code = match e.kind {
             careops_core::experiment::ExperimentErrorKind::Interrupted => ExitCodeDef::Interrupted,
-            careops_core::experiment::ExperimentErrorKind::MalformedConfig => ExitCodeDef::MalformedConfig,
-            careops_core::experiment::ExperimentErrorKind::FileNotFound => ExitCodeDef::FileNotFound,
-            careops_core::experiment::ExperimentErrorKind::OutputWriteFailed => ExitCodeDef::OutputWriteFailed,
+            careops_core::experiment::ExperimentErrorKind::MalformedConfig => {
+                ExitCodeDef::MalformedConfig
+            }
+            careops_core::experiment::ExperimentErrorKind::FileNotFound => {
+                ExitCodeDef::FileNotFound
+            }
+            careops_core::experiment::ExperimentErrorKind::OutputWriteFailed => {
+                ExitCodeDef::OutputWriteFailed
+            }
             _ => ExitCodeDef::SimulationFailed,
         };
         ValidationError::new(code, e.message)
@@ -320,36 +333,56 @@ pub fn resume_batch_from_checkpoint(
     output_dir: &Path,
     cancel_token: Option<&CancellationToken>,
 ) -> Result<BatchRunDocument, ValidationError> {
-    let runner_fn = |idx: usize, seed: u64, meta: &EdBatchMetadata| -> Result<ReplicationResult, careops_core::experiment::ExperimentError> {
-        execute_single_replication(scenario, idx, seed, meta.horizon_override)
-            .map_err(|e| careops_core::experiment::ExperimentError::new(
+    let runner_fn = |idx: usize,
+                     seed: u64,
+                     meta: &EdBatchMetadata|
+     -> Result<ReplicationResult, careops_core::experiment::ExperimentError> {
+        execute_single_replication(scenario, idx, seed, meta.horizon_override).map_err(|e| {
+            careops_core::experiment::ExperimentError::new(
                 match e.code {
-                    ExitCodeDef::Interrupted => careops_core::experiment::ExperimentErrorKind::Interrupted,
-                    ExitCodeDef::OutputWriteFailed => careops_core::experiment::ExperimentErrorKind::OutputWriteFailed,
-                    ExitCodeDef::MalformedConfig => careops_core::experiment::ExperimentErrorKind::MalformedConfig,
+                    ExitCodeDef::Interrupted => {
+                        careops_core::experiment::ExperimentErrorKind::Interrupted
+                    }
+                    ExitCodeDef::OutputWriteFailed => {
+                        careops_core::experiment::ExperimentErrorKind::OutputWriteFailed
+                    }
+                    ExitCodeDef::MalformedConfig => {
+                        careops_core::experiment::ExperimentErrorKind::MalformedConfig
+                    }
                     _ => careops_core::experiment::ExperimentErrorKind::ExecutionFailed,
                 },
                 e.message,
-            ))
+            )
+        })
     };
 
-    let (checkpoint, all_results) = careops_core::experiment::resume_generic_batch::<ReplicationResult, EdBatchMetadata, _>(
-        checkpoint_path,
-        num_workers,
-        output_dir,
-        cancel_token,
-        None,
-        runner_fn,
-    ).map_err(|e| {
-        let code = match e.kind {
-            careops_core::experiment::ExperimentErrorKind::Interrupted => ExitCodeDef::Interrupted,
-            careops_core::experiment::ExperimentErrorKind::MalformedConfig => ExitCodeDef::MalformedConfig,
-            careops_core::experiment::ExperimentErrorKind::FileNotFound => ExitCodeDef::FileNotFound,
-            careops_core::experiment::ExperimentErrorKind::OutputWriteFailed => ExitCodeDef::OutputWriteFailed,
-            _ => ExitCodeDef::SimulationFailed,
-        };
-        ValidationError::new(code, e.message)
-    })?;
+    let (checkpoint, all_results) =
+        careops_core::experiment::resume_generic_batch::<ReplicationResult, EdBatchMetadata, _>(
+            checkpoint_path,
+            num_workers,
+            output_dir,
+            cancel_token,
+            None,
+            runner_fn,
+        )
+        .map_err(|e| {
+            let code = match e.kind {
+                careops_core::experiment::ExperimentErrorKind::Interrupted => {
+                    ExitCodeDef::Interrupted
+                }
+                careops_core::experiment::ExperimentErrorKind::MalformedConfig => {
+                    ExitCodeDef::MalformedConfig
+                }
+                careops_core::experiment::ExperimentErrorKind::FileNotFound => {
+                    ExitCodeDef::FileNotFound
+                }
+                careops_core::experiment::ExperimentErrorKind::OutputWriteFailed => {
+                    ExitCodeDef::OutputWriteFailed
+                }
+                _ => ExitCodeDef::SimulationFailed,
+            };
+            ValidationError::new(code, e.message)
+        })?;
 
     let total_reps = all_results.len();
     let (mean_wait, std_error, completion_rate) = compute_batch_aggregates(&all_results);

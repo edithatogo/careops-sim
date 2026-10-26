@@ -1,7 +1,7 @@
 //! Facility site profiles, capacity configurations, and site-level overrides (CC-05).
 
-use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 use super::error::{ProfileError, ProfileErrorKind};
 use super::provenance::ProfileProvenance;
@@ -34,7 +34,7 @@ impl Default for SiteCapacityProfile {
             subacute_consult_rooms: 12,
             short_stay_beds: 16,
             nominal_nurse_ratio: 0.25,      // 1 nurse per 4 acute patients
-            nominal_physician_ratio: 0.125,  // 1 doctor per 8 acute patients
+            nominal_physician_ratio: 0.125, // 1 doctor per 8 acute patients
         }
     }
 }

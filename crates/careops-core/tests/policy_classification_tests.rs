@@ -23,11 +23,9 @@ fn assessment_captures_profile_version_and_provenance_and_history_is_append_only
     assert_eq!(history.assessments().len(), 2);
     assert_eq!(history.assessments()[0], first);
     assert_eq!(history.assessments()[1].scheme_version, "2027.1");
-    assert!(
-        history
-            .reassess(VersionedUrgencyAssessment::from_profile(&profile, 4, 7).unwrap())
-            .is_err()
-    );
+    assert!(history
+        .reassess(VersionedUrgencyAssessment::from_profile(&profile, 4, 7).unwrap())
+        .is_err());
 }
 
 #[test]
