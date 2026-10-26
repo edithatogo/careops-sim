@@ -5,6 +5,7 @@
 //! - Error handling: Missing source file, incompatible schema version, jurisdiction mismatch, malformed JSON.
 //! - Profile validation: Monotonic ATS targets, non-empty IDs.
 
+use std::collections::HashMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -82,12 +83,12 @@ fn test_layered_precedence_resolution() {
     assert_eq!(layered_jur.effective_cleaning_ticks, 30); // from jurisdiction default
 
     // 3. Runtime override overrides both Site and Jurisdiction (12 ticks)
-    let mut run_overrides = RuntimeOverrides::default();
-    run_overrides.cleaning_ticks = Some(12);
-    run_overrides.max_boarding_ticks = Some(180);
-    run_overrides
-        .parameters
-        .insert("param_a".to_string(), "runtime_override_a".to_string());
+    let run_overrides = RuntimeOverrides {
+        cleaning_ticks: Some(12),
+        max_boarding_ticks: Some(180),
+        parameters: HashMap::from([("param_a".to_string(), "runtime_override_a".to_string())]),
+        ..RuntimeOverrides::default()
+    };
 
     let layered_run =
         ProfileLoader::resolve_layered_profile(&jur, &site_with_override, Some(&run_overrides))
@@ -150,9 +151,10 @@ fn test_jurisdiction_mismatch_fails_closed() {
     assert!(res.is_err());
     let err = res.unwrap_err();
     assert_eq!(err.kind, ProfileErrorKind::JurisdictionMismatch);
-    assert!(err
-        .message
-        .contains("references jurisdiction 'au-qld-metro'"));
+    assert!(
+        err.message
+            .contains("references jurisdiction 'au-qld-metro'")
+    );
 }
 
 #[test]

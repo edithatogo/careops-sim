@@ -54,12 +54,16 @@ fn test_pathway_branching_and_loop_bounds_exceeded_fails_closed() {
     graph.add_transition(&s_repeat_diagnostic, &s_repeat_diagnostic); // Self loop
 
     // Repetition 0 and 1 are allowed
-    assert!(graph
-        .validate_transition(&s_repeat_diagnostic, &s_repeat_diagnostic, 0)
-        .is_ok());
-    assert!(graph
-        .validate_transition(&s_repeat_diagnostic, &s_repeat_diagnostic, 1)
-        .is_ok());
+    assert!(
+        graph
+            .validate_transition(&s_repeat_diagnostic, &s_repeat_diagnostic, 0)
+            .is_ok()
+    );
+    assert!(
+        graph
+            .validate_transition(&s_repeat_diagnostic, &s_repeat_diagnostic, 1)
+            .is_ok()
+    );
 
     // Repetition 2 exceeds max_repetitions (2) -> must fail closed!
     let res = graph.validate_transition(&s_repeat_diagnostic, &s_repeat_diagnostic, 2);
@@ -107,18 +111,21 @@ fn test_pathway_invalid_unregistered_transition_fails_closed() {
 
     // Valid transitions
     assert!(graph.validate_transition(&s_arrival, &s_triage, 0).is_ok());
-    assert!(graph
-        .validate_transition(&s_triage, &s_discharge, 0)
-        .is_ok());
+    assert!(
+        graph
+            .validate_transition(&s_triage, &s_discharge, 0)
+            .is_ok()
+    );
 
     // Invalid transition: Arrival skipping triage directly to Discharge
     let res = graph.validate_transition(&s_arrival, &s_discharge, 0);
     assert!(res.is_err());
     let err = res.unwrap_err();
     assert_eq!(err.kind, PathwayErrorKind::InvalidTransition);
-    assert!(err
-        .message
-        .contains("transition from 'arrival' to 'discharge' is not permitted"));
+    assert!(
+        err.message
+            .contains("transition from 'arrival' to 'discharge' is not permitted")
+    );
 
     // Invalid transition: Unregistered stage node
     let s_ghost = StageId::new("unregistered_stage");
@@ -176,7 +183,7 @@ fn test_residual_time_rescaling_on_covariate_change_conserves_hazard() {
     let mut deterioration_hazard = HazardRate::new("deterioration", 0.01);
     deterioration_hazard
         .covariate_coefficients
-        .insert("acuity_score".to_string(), 0.693147); // ln(2) -> doubling hazard per unit
+        .insert("acuity_score".to_string(), std::f64::consts::LN_2); // ln(2) -> doubling hazard per unit
     model.add_hazard(deterioration_hazard);
 
     let mut old_covariates = HashMap::new();
@@ -252,7 +259,7 @@ fn test_deterministic_multi_key_event_tie_breaking() {
         description: "Event 3".to_string(),
     };
 
-    let mut list = vec![e1.clone(), e2.clone(), e3.clone()];
+    let mut list = [e1.clone(), e2.clone(), e3.clone()];
     list.sort();
 
     // Correct deterministic order: e3 (prio 1, id 4) -> e2 (prio 1, id 5) -> e1 (prio 2, id 10)

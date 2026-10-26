@@ -159,17 +159,17 @@ fn test_cc01_negative_dependent_infant_survives_parent_discharge() {
 fn test_cc02_negative_invalid_transfer_state_transitions() {
     // CC-02: Valid progression is Requested -> Offered -> Reserved -> Departing -> InTransit -> Arrived -> HandoverComplete
     fn can_transition(from: TransferState, to: TransferState) -> bool {
-        match (from, to) {
-            (TransferState::Requested, TransferState::Offered) => true,
-            (TransferState::Offered, TransferState::Reserved) => true,
-            (TransferState::Offered, TransferState::Rejected) => true,
-            (TransferState::Reserved, TransferState::Departing) => true,
-            (TransferState::Reserved, TransferState::Cancelled) => true,
-            (TransferState::Departing, TransferState::InTransit) => true,
-            (TransferState::InTransit, TransferState::Arrived) => true,
-            (TransferState::Arrived, TransferState::HandoverComplete) => true,
-            _ => false,
-        }
+        matches!(
+            (from, to),
+            (TransferState::Requested, TransferState::Offered)
+                | (TransferState::Offered, TransferState::Reserved)
+                | (TransferState::Offered, TransferState::Rejected)
+                | (TransferState::Reserved, TransferState::Departing)
+                | (TransferState::Reserved, TransferState::Cancelled)
+                | (TransferState::Departing, TransferState::InTransit)
+                | (TransferState::InTransit, TransferState::Arrived)
+                | (TransferState::Arrived, TransferState::HandoverComplete)
+        )
     }
 
     // Negative: Requested jumping straight to InTransit without reservation is rejected
@@ -287,7 +287,9 @@ fn test_cc03_negative_active_procedure_cannot_be_interrupted_by_triage_urgency()
                               requested_ats_category: u8|
      -> Result<(), &'static str> {
         if !proc.is_interruptible {
-            return Err("procedure is marked non-interruptible; preemption rejected regardless of ATS acuity");
+            return Err(
+                "procedure is marked non-interruptible; preemption rejected regardless of ATS acuity",
+            );
         }
         if requested_ats_category == 1 {
             proc.is_active = false;
