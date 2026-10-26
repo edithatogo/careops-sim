@@ -81,3 +81,7 @@ qualification is claimed.
 - [Dependency sequencing and prerequisite gates](dependency-sequencing.md)
 
 [Validation/tooling planning review](validation-tooling-review.md)
+
+## Python runtime migration
+
+[Python 3.15 migration and qualification](tracks/python315_runtime_qualification_20261023/index.md) records accepted runtime implementation at main `43ea690` (PRs #178/#179), final Python 3.15.1 handover and eight guard controls. Conductor documentation review is tracked separately in PR #180.

@@ -1,5 +1,8 @@
 # DES evidence catalogue
 
+From the repository root, create the required environment with `uv venv --python 3.15.1 .venv` only when `.venv` is absent. Verify it with `.venv/bin/python tools/python_runtime.py`, then use `.venv/bin/python` for the commands below. Do not replace an existing or in-flight environment; the guard rejects an unqualified one. Windows uses `.venv\Scripts\python.exe`.
+
+
 Six proposed schema-v1 family collections cover 61 registered DES-facing IDs:
 `demand_case_mix.json` (11), `des_pathways.json` (17), `durations.json` (9),
 `resources.json` (14), `patient_behavior.json` (5), and
@@ -20,8 +23,8 @@ separate.
 Run from the repository root:
 
 ```sh
-python3 tools/validate_des_catalogue.py
-python3 -m unittest discover -s tests -p test_des_catalogue.py -v
+.venv/bin/python tools/validate_des_catalogue.py
+.venv/bin/python -m unittest discover -s tests -p test_des_catalogue.py -v
 ```
 
 The checker enforces family/ID coverage, units, source-reference hashes and

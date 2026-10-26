@@ -4,7 +4,7 @@ Planned only. Apply [value policy](../../dependency-value-policy.md) and [sequen
 
 ## Inputs and dependencies
 
-Accepted Kairos Track 96 Phase 2 receipt; local milestones none. Do not wait for Polars to finish when this track is its prerequisite.
+Accepted Kairos Track 96 Phase 2 receipt; local milestones none. Do not block all Polars work on this track; qualify any required receipt before the named dependent migration task.
 
 ## Outputs and contract
 

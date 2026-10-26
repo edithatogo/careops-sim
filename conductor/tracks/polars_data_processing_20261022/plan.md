@@ -5,7 +5,7 @@ All implementation work is pending. Write failing behavioural tests before repla
 ## R10 — Upstream entry and baseline
 
 - [ ] R10.1 Verify Kairos Track 70 Phase 4 accepted immutable commit, checks and receipt manifest; refuse pin adoption on status labels alone. This external gate remains unresolved at registration.
-- [ ] R10.2 Inventory ED/birthing/shared/script table paths, join cardinality, metrics/denominators, fixtures and consumers; record baseline traces and resource measurements.
+- [ ] R10.2 Inventory ED/birthing/shared/script table paths, join cardinality, metrics/denominators, fixtures and consumers; record baseline traces and resource measurements. Classify 93/94/96 (or paired parent) targets as removed/required/independent; record exact blocked migration task, owner, prerequisite receipt and oracle before affected dispatch. Record no-target decisions explicitly; do not mark adoption complete.
 - [ ] R10.3 Add failing reference tests for existing statistical definitions and trace-once exports; update parent Kairos pin and lockfiles only to the accepted compatible upstream commit.
 - [ ] R10.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.
 
@@ -43,7 +43,7 @@ R10.1 is a manual receipt-verification gate. The local task DAG cannot certify a
 
 ## Dependency sequencing refinement — 22 October 2026
 
-R10 upstream entry remains. Before R11 starts require parent sha2 R52, tempfile R55 and proptest R61 accepted receipts. These parent prerequisite tracks have no dependency on completed Polars, preventing a cycle. R11/R13 retain real-format interruption, durability and resume tests; prerequisite acceptance is not output acceptance.
+Track 70 starts with Phase 0 inventory and migration-boundary decisions; Tracks 93/94/96 are not blanket entry or runtime-migration prerequisites. For each digest, staging or property-test target, record its path, owner and disposition: removed by Polars, retained and required for a named migration task, or independent. Before dispatching an affected task, record the exact prerequisite task/receipt and acceptance oracle in the owning plan and dispatch packet (and the CareOps task graph where representable). Unresolved required work blocks that task only; unrelated migration work may proceed under existing ownership and contract gates. Do not retrofit code scheduled for deletion. If no targets remain, record a reviewed scope-elimination decision without claiming adoption. Required integrity, durability, interoperability, replay and independent test evidence remain mandatory in Polars. Separate dependency tracks and current owner handoffs remain in force.
 
 ## Remote-baseline reconciliation
 

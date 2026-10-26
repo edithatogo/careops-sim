@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest import mock
@@ -197,7 +198,7 @@ class CiWorkflowTests(unittest.TestCase):
     def test_unit_lane_does_not_repeat_documentation_tests(self):
         workflow = WORKFLOW.read_text()
         native = workflow.split("  test:\n", 1)[1].split("  doctest:\n", 1)[0]
-        self.assertIn("python3 tools/nextest_ci.py --toolchain 1.99.1", native)
+        self.assertIn('"$CAREOPS_PYTHON" tools/nextest_ci.py --toolchain 1.99.1', native)
         self.assertIn("test --doc --workspace --all-features --locked", workflow)
 
     def test_context_check_fetches_pinned_submodule_documents(self):
@@ -315,7 +316,7 @@ class CiWorkflowTests(unittest.TestCase):
         for selector in ("changed", "native", "context", "policy"):
             with self.subTest(selector=selector):
                 self.assertIn(f"{selector}: ${{{{ steps.detect.outputs.{selector} }}}}", scope_job)
-        self.assertIn("python3 tools/ci_scope.py --base", scope_job)
+        self.assertIn('"$CAREOPS_PYTHON" tools/ci_scope.py --base', scope_job)
         for job in ("fmt", "clippy", "test", "default", "doctest"):
             with self.subTest(job=job):
                 self.assertIn("if: needs.scope.outputs.native == 'true'", workflow_job(workflow, job))
@@ -431,7 +432,7 @@ class CiWorkflowTests(unittest.TestCase):
 
             output = root / "github-output"
             command = [
-                "python3", str(WORKFLOW.parents[2] / "tools" / "ci_scope.py"),
+                sys.executable, str(WORKFLOW.parents[2] / "tools" / "ci_scope.py"),
                 "--base", base, "--head", head, "--output", str(output),
             ]
             result = subprocess.run(command, cwd=repo, capture_output=True, text=True, check=False)
@@ -440,7 +441,7 @@ class CiWorkflowTests(unittest.TestCase):
 
             output.write_text("")
             unchanged = subprocess.run(
-                ["python3", command[1], "--base", head, "--head", head, "--output", str(output)],
+                [sys.executable, command[1], "--base", head, "--head", head, "--output", str(output)],
                 cwd=repo,
                 capture_output=True,
                 text=True,

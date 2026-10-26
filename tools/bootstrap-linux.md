@@ -1,5 +1,8 @@
 # Linux x86_64 bootstrap
 
+From the repository root, create the required environment with `uv venv --python 3.15.1 .venv` only when `.venv` is absent. Verify it with `.venv/bin/python tools/python_runtime.py`, then use `.venv/bin/python` for the commands below. Do not replace an existing or in-flight environment; the guard rejects an unqualified one. Windows uses `.venv\Scripts\python.exe`.
+
+
 The tested Linux profile is x86_64 GNU/Linux with glibc. Alpine/musl and
 unknown-libc hosts are rejected by `tools/bootstrap.py`. The recorded guest was
 Ubuntu 24.04.4 LTS; the test does not qualify every glibc distribution or
@@ -15,8 +18,8 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profil
 ```
 
 From a clean checkout with the Kairos submodule initialized, run
-`python3 tools/bootstrap.py --check` to verify the exact pinned compiler/Cargo
-and host tuple, then run `python3 tools/bootstrap.py --test-core` for the locked
+`.venv/bin/python tools/bootstrap.py --check` to verify the exact pinned compiler/Cargo
+and host tuple, then run `.venv/bin/python tools/bootstrap.py --test-core` for the locked
 `kairo-ecs-core`, `kairo-ecs-state`, `kairo-ecs-rng`, `kairo-ecs-des`, and
 `kairo-ecs-abm` test suites. Cargo may download locked crates into its cache;
 compilation writes under `libs/kairos/target` unless `CARGO_TARGET_DIR` is set.

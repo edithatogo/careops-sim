@@ -9,7 +9,7 @@ Evaluates optional repair and reviewer agents on held-out tasks:
   - Prohibits autonomous public publication.
 
 Python standard library ONLY (no external dependencies).
-Compatible with Python 3.12+ and `.artifacts/ci/harness-venv/bin/python`.
+Uses the verified repository-local Python 3.15.1 interpreter (`.venv/bin/python`).
 """
 
 from __future__ import annotations

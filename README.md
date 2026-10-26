@@ -131,3 +131,9 @@ If you use CareOps Sim in research, healthcare operational analysis, or software
 > Mordaunt, D. A., & CareOps Sim Contributors. (2026). *CareOps Sim: A Rust-Native Emergency Department Discrete-Event Simulation and Agent-Based Modeling System* (Version 0.1.0) [Computer software]. https://github.com/edithatogo/careops-sim
 
 Machine-readable citation metadata is provided in [`CITATION.cff`](CITATION.cff). Research evidence citations are retained in [`conductor/generic-ed-evidence.md`](conductor/generic-ed-evidence.md) and [`conductor/research/`](conductor/research/research-handoff.md).
+
+## Python runtime
+
+All active helper, build, test and CI environments require CPython 3.15.1. Create an isolated repo environment with `uv venv --python 3.15.1 .venv`; verify `.venv/bin/python --version` (Windows: `.venv\Scripts\python.exe`) and use that interpreter or activate it before commands. Install `requirements-schema-validation.lock` with `uv pip sync --python .venv/bin/python requirements-schema-validation.lock`. Discovery may qualify previews only in the 3.15 line; it must not automatically run 3.16. Historical receipts and synthetic version fixtures are retained. Never replace an environment while a process is using it.
+
+All active helper commands use the verified repository-local Python 3.15.1 environment. After creating `.venv` with `uv venv --python 3.15.1`, run `.venv/bin/python tools/python_runtime.py` to verify the actual runtime. Activate it (`source .venv/bin/activate`) before the documented `python3` commands, or invoke `.venv/bin/python` explicitly. CI exports the verified absolute interpreter as `CAREOPS_PYTHON`; existing environments are inspected without replacement.

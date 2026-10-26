@@ -1,3 +1,13 @@
+# Current Python runtime qualification — 23 October 2026
+
+Active parent helper, build, test and CI commands require verified repo-local
+Python 3.15.1. See [migration inventory](tracks/python315_runtime_qualification_20261023/inventory.md)
+and the current workflow source. The dated 19 October and earlier runtime/lock
+receipts below remain historical evidence; their Python 3.14/3.15.0 selections
+are superseded for active parent-owned execution. The pinned external shared
+security workflow still has a separately recorded runtime ownership gap; this
+track remains in progress until actual hosted/main and handover evidence closes it.
+
 # Phased CI, automation, quality and security
 
 ## D0/D1: fast local feedback

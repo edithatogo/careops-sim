@@ -30,10 +30,10 @@ One canonical track per dependency lives in its owning repository. Kairos owns g
 | Valhalla | [Track](tracks/valhalla_transport_20261022/index.md) | Conditional, later | petgraph_spatial_routing_20261022:R31 |
 | MapLibre GL JS | [Track](tracks/maplibre_regional_viewer_20261022/index.md) | Conditional, later | valhalla_transport_20261022:R42 + Three.js R35 |
 | SUMO | [Track](tracks/sumo_traffic_qualification_20261022/index.md) | Conditional, later | valhalla_transport_20261022:R42 |
-| sha2 | Kairos 93 | foundation | none; before 70 |
-| tempfile | Kairos 94 | foundation | none; before 70 |
+| sha2 | Kairos 93 | foundation | none; qualify retained targets during 70 inventory |
+| tempfile | Kairos 94 | foundation | none; qualify retained targets during 70 inventory |
 | thiserror | Kairos 95 | foundation | 77; before 71 |
-| proptest | Kairos 96 | foundation expansion | none; before 70 |
+| proptest | Kairos 96 | foundation expansion | none; qualify retained targets during 70 inventory |
 | tracing | Kairos 97 | conditional | 78 |
 | loom | Kairos 98 | evaluation | 78 |
 | proptest-state-machine | Kairos 99 | evaluation | 96 |
@@ -41,9 +41,9 @@ One canonical track per dependency lives in its owning repository. Kairos owns g
 
 ## Immediate serial priority
 
-Kairos 93/94/96 foundations → both accepted Polars migrations → Kairos 74 Serde → 75 serde_json → 76 TOML → 77 Clap → Kairos 95 / CareOps thiserror → existing Kairos 71/CareOps rand → existing Kairos 72/CareOps rand_distr → Kairos 78 Rayon plus parent consumer verification → existing ECharts → petgraph → Three.js.
+Kairos 70 inventory → task-specific 93/94/96 work where required → both accepted Polars migrations → Kairos 74 Serde → 75 serde_json → 76 TOML → 77 Clap → Kairos 95 / CareOps thiserror → existing Kairos 71/CareOps rand → existing Kairos 72/CareOps rand_distr → Kairos 78 Rayon plus parent consumer verification → existing ECharts → petgraph → Three.js.
 
-This is scheduling priority, not a claim every library technically depends on its predecessor. Polars already owns table processing; reconcile eliminated targets rather than rebuilding them. Track 74 entry checks CareOps R14; Track 78 entry checks CareOps R25; ECharts R26.1 checks Track 78. External gates cannot be proven by either local DAG alone. Polars now has bounded integrity/tempfile/property prerequisites; see the sequencing register.
+This is scheduling priority, not a claim every library technically depends on its predecessor. Polars already owns table processing; reconcile eliminated targets rather than rebuilding them. Track 74 entry checks CareOps R14; Track 78 entry checks CareOps R25; ECharts R26.1 checks Track 78. External gates cannot be proven by either local DAG alone. Polars retains integrity, durability and property-test obligations; dependency adoption gates only demonstrated affected tasks in the sequencing register.
 
 ## Bounded secondary work
 

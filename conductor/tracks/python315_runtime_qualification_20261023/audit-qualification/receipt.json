@@ -1,0 +1,91 @@
+{
+  "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-python315-conductor",
+  "base_commit": "6688d53fe4ffd313d490206de8edacacb78a5085",
+  "runtime": "Explicit repo-local Python 3.15.1; environment.json records actual version/prefix/packages",
+  "root_requirement": "pip-audit==2.10.1; published stable independently read from PyPI JSON matches shared qualified version",
+  "lock_sha256": "d07907582b29ec16e11fc4d976ea88b0fe886fabc6d649d42389d537e291eb42",
+  "results": [
+    {
+      "argv": [
+        "uv",
+        "pip",
+        "compile",
+        "/tmp/careops-python315-audit.in",
+        "--python-version",
+        "3.15.1",
+        "--universal",
+        "--generate-hashes",
+        "--no-header",
+        "--no-annotate",
+        "--output-file",
+        "/tmp/careops-python315-audit.lock"
+      ],
+      "exit_status": 0
+    },
+    {
+      "argv": [
+        "uv",
+        "pip",
+        "install",
+        "--python",
+        ".artifacts/python315/audit-qualification/bin/python",
+        "--require-hashes",
+        "--only-binary=:all:",
+        "-r",
+        "/tmp/careops-python315-audit.lock"
+      ],
+      "exit_status": 0
+    },
+    {
+      "argv": [
+        ".artifacts/python315/audit-qualification/bin/python",
+        "-m",
+        "pip_audit",
+        "--disable-pip",
+        "--no-deps",
+        "-r",
+        "requirements-schema-validation.lock"
+      ],
+      "exit_status": 0
+    },
+    {
+      "argv": [
+        ".artifacts/python315/audit-qualification/bin/python",
+        "-m",
+        "pip_audit",
+        "--disable-pip",
+        "--no-deps",
+        "-r",
+        ".artifacts/python315/audit-qualification/vulnerable-control.txt",
+        "--format",
+        "json"
+      ],
+      "expected_exit": 1,
+      "exit_status": 1,
+      "findings": 6
+    },
+    {
+      "focused_tests": {
+        "schema_receipts": 3,
+        "schema_canary": 8
+      },
+      "exit_status": 0
+    },
+    {
+      "actionlint": "two affected workflows",
+      "exit_status": 0
+    }
+  ],
+  "logs": {
+    "conductor/tracks/python315_runtime_qualification_20261023/audit-qualification/resolve.log": "24fbc4247b3821ceded3c4ecad456ff5654b032be9255049f69de75baa780877",
+    "conductor/tracks/python315_runtime_qualification_20261023/audit-qualification/vulnerable-control.json": "3de6a2e2158e01af1c0875f146fe0bf84bb9a17c4149270edf26c09f2bf9502a",
+    "conductor/tracks/python315_runtime_qualification_20261023/audit-qualification/receipt-tests.log": "d4e31c7a189af32318010da4c708e39a3c1673aab5ab6a998e09f0172c3f5443",
+    "conductor/tracks/python315_runtime_qualification_20261023/audit-qualification/canary-tests.log": "cd43790d98cfbd23d18842fe6333d0383e4cb84a14bdb1f5bf83cb4f8039b3a0",
+    "conductor/tracks/python315_runtime_qualification_20261023/audit-qualification/install.log": "2fac44e42c2bb3127070adcf75ee389ed1ca6329e5229d49eb8335ffb08dca10",
+    "conductor/tracks/python315_runtime_qualification_20261023/audit-qualification/environment.json": "9870e53852abdccb354c3338a9b5e3f7f9c31f9e4ee7e364e4eb8dcae2f54abd",
+    "conductor/tracks/python315_runtime_qualification_20261023/audit-qualification/vulnerable-control.stderr": "64f960f802fee60dec051cb1cfd49c626cfedfe87512cabd0581da2fd53ca576",
+    "conductor/tracks/python315_runtime_qualification_20261023/audit-qualification/actionlint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "conductor/tracks/python315_runtime_qualification_20261023/audit-qualification/schema-audit.log": "79d30422388543b2563e1dde76bb7e7857d7ef0c6fdf05c8c71598633ca07e1e"
+  },
+  "scope": "macOS ARM64 actual wheel-only qualification and positive/negative audit controls. Hosted Linux and final main acceptance remain pending."
+}

@@ -1,5 +1,8 @@
 # CareOps Sim v1.0 User Guide & Delivery Qualification
 
+From the repository root, create the required environment with `uv venv --python 3.15.1 .venv` only when `.venv` is absent. Verify it with `.venv/bin/python tools/python_runtime.py`, then use `.venv/bin/python` for the commands below. Do not replace an existing or in-flight environment; the guard rejects an unqualified one. Windows uses `.venv\Scripts\python.exe`.
+
+
 Comprehensive guide for fresh users to install, configure, execute, compare, export, and troubleshoot the Rust-native CareOps emergency department simulation engine (`careops-ed`).
 
 ---
@@ -500,16 +503,16 @@ cargo test --locked -p careops-ed
 cargo test --locked -p careops-ed-cli
 
 # 2. Verify Conductor context integrity and local link validity
-python3 tools/context.py check
+.venv/bin/python tools/context.py check
 
 # 3. Verify parameter catalogue and consumer scenario coverage
-python3 tools/validate_p5_consumer_coverage.py
+.venv/bin/python tools/validate_p5_consumer_coverage.py
 
 # 4. Verify fixed-seed repeatability across all scenario examples
-python3 tools/run_p52_example_smoke.py
+.venv/bin/python tools/run_p52_example_smoke.py
 
 # 5. Run the complete Python regression suite
-python3 -m unittest discover -s tests/ed -v
+.venv/bin/python -m unittest discover -s tests/ed -v
 ```
 
 All source code and documentation in CareOps Sim are licensed under the Apache License, Version 2.0 (`Apache-2.0`).

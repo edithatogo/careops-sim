@@ -1,0 +1,86 @@
+{
+  "cwd": "/Volumes/PortableSSD/codex-worktrees/careops-python315-conductor",
+  "base_commit": "483e8ab600ea8a02b07760d022d647d162abef6f",
+  "runtime": "Python 3.15.1",
+  "full_initial": {
+    "argv": [
+      ".venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "count": 717,
+    "exit_status": 1,
+    "elapsed_seconds": 342.095,
+    "failures": 1,
+    "subtest_errors": 12,
+    "cause": "Only three inline workflow fixture files retained the former python3 spelling; exported-runtime binding required fixture command selection updates."
+  },
+  "focused_after_fix": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_cargo_lock_ci.py",
+        "-v"
+      ],
+      "count": 3,
+      "exit_status": 0
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_schema_ci.py",
+        "-v"
+      ],
+      "count": 3,
+      "exit_status": 0
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_d34_ci.py",
+        "-v"
+      ],
+      "count": 2,
+      "exit_status": 0
+    }
+  ],
+  "logs": {
+    "full-initial.log": "14ab831bb4aa2df58644a87cb8a8de88103aba614f53c089b287e0a72f5b67d2",
+    "cargo-receipt-tests.log": "1849f6ec397954d8c7b0798f1620e195cdeed2829a1ddb07fabdba9bb3ed924d",
+    "schema-receipt-tests.log": "25532c42e935e74bed5e21e566db951ae3fc6021fa2e9810301121f75d63eec3",
+    "benchmark-wiring-tests.log": "b2c4cbf547a64d5531ab81d982e1b051fbdbce88d8522ab99037be976f36e548"
+  },
+  "acceptance": "Focused fixes pass; full final hosted integration remains required. No full-final-local pass claimed.",
+  "raw_output_preservation": "Full unittest output retains tool-emitted trailing whitespace and its recorded hash. Source whitespace check excludes only that raw log.",
+  "whitespace_command": [
+    "git",
+    "diff",
+    "--cached",
+    "--check",
+    "--",
+    ".",
+    ":!conductor/tracks/python315_runtime_qualification_20261023/full-suite-reconciliation/full-initial.log"
+  ]
+}
