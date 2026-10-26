@@ -151,10 +151,9 @@ fn test_jurisdiction_mismatch_fails_closed() {
     assert!(res.is_err());
     let err = res.unwrap_err();
     assert_eq!(err.kind, ProfileErrorKind::JurisdictionMismatch);
-    assert!(
-        err.message
-            .contains("references jurisdiction 'au-qld-metro'")
-    );
+    assert!(err
+        .message
+        .contains("references jurisdiction 'au-qld-metro'"));
 }
 
 #[test]

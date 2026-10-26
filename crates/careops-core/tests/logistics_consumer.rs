@@ -9,15 +9,15 @@
 
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::sync::Arc;
 use std::sync::atomic::Ordering;
+use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
 
 use careops_core::experiment::{
+    atomic_write_file, current_epoch_ms, resume_generic_batch, run_generic_batch,
     CancellationToken, ExperimentError, ExperimentErrorKind, GenericBatchRunDocument,
-    IndexedReplication, atomic_write_file, current_epoch_ms, resume_generic_batch,
-    run_generic_batch,
+    IndexedReplication,
 };
 
 /// Configuration for package sorting hub simulation.
