@@ -58,3 +58,6 @@ still follows the caller commit. Other workflow audits remain enabled.
 
 The directory-local Git attributes retain LF for text and detect binaries, so
 Windows checkout preserves the exact qualified helper bytes and checksums.
+
+Sim CI reuses its repository-owned `tools/python_runtime.py --github` bootstrap
+and exported `CAREOPS_PYTHON`; source checkout precedes runtime setup.

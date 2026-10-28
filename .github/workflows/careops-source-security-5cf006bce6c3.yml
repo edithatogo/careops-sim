@@ -15,33 +15,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        id: runtime
-        with:
-          python-version: '3.15.1'
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
           submodules: false
-      - name: Select and verify repository-local helper environment
-        env:
-          SELECTED_PYTHON: ${{ steps.runtime.outputs.python-path }}
-        run: |
-          if [ -e "$GITHUB_WORKSPACE/.venv-careops-ci" ] || [ -L "$GITHUB_WORKSPACE/.venv-careops-ci" ]; then
-            echo 'Refusing a pre-existing helper environment.' >&2
-            exit 1
-          fi
-          "$SELECTED_PYTHON" -I -m venv "$GITHUB_WORKSPACE/.venv-careops-ci"
-          "$GITHUB_WORKSPACE/.venv-careops-ci/bin/python" -I - <<'PYCODE'
-          import os, pathlib, sys
-          expected = pathlib.Path(os.environ['GITHUB_WORKSPACE']) / '.venv-careops-ci'
-          if sys.version_info[:3] != (3, 15, 1) or pathlib.Path(sys.prefix).resolve() != expected.resolve() or sys.prefix == sys.base_prefix:
-              raise SystemExit('Expected an isolated repository-local Python 3.15.1 helper environment.')
-          print(sys.version)
-          print('Verified repository-local helper environment.')
-          PYCODE
-          echo "$GITHUB_WORKSPACE/.venv-careops-ci/bin" >> "$GITHUB_PATH"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        id: runtime
+        with:
+          python-version: '3.15.1'
+      - name: Bootstrap the repository-owned verified runtime
+        run: python tools/python_runtime.py --github
       - name: Check caller full history for secrets
         env:
           GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
@@ -58,7 +42,7 @@ jobs:
           POLICY_REVISION: ${{ inputs.policy-revision }}
           EXPECTED_POLICY_REVISION: 5cf006bce6c37c0c15db5d35055e302701a500ad
         run: |
-          python -I - <<'PYCODE'
+          "$CAREOPS_PYTHON" -I - <<'PYCODE'
           import hashlib, json, os, pathlib
           root = pathlib.Path('.careops-security/shared/5cf006bce6c37c0c15db5d35055e302701a500ad')
           manifest = json.loads((root / 'provenance.json').read_text())
@@ -77,10 +61,12 @@ jobs:
       - name: Reject stale exact caller CI tool declarations
         run: |
           if [ -f requirements-ci.txt ]; then
-            python .careops-security/shared/5cf006bce6c37c0c15db5d35055e302701a500ad/portfolio-scripts/ci_delivery.py verify-lock --root .
+            "$CAREOPS_PYTHON" .careops-security/shared/5cf006bce6c37c0c15db5d35055e302701a500ad/portfolio-scripts/ci_delivery.py verify-lock --root .
           fi
-      - run: python -m pip install --require-hashes -r .careops-security/shared/5cf006bce6c37c0c15db5d35055e302701a500ad/requirements-ci.lock
-      - run: python .careops-security/shared/5cf006bce6c37c0c15db5d35055e302701a500ad/portfolio-scripts/check_workflow_pins.py
+      - run: |
+          "$CAREOPS_PYTHON" -m pip install --require-hashes -r .careops-security/shared/5cf006bce6c37c0c15db5d35055e302701a500ad/requirements-ci.lock
+      - run: |
+          "$CAREOPS_PYTHON" .careops-security/shared/5cf006bce6c37c0c15db5d35055e302701a500ad/portfolio-scripts/check_workflow_pins.py
       - name: Validate workflow syntax and security
         env:
           ACTIONLINT_SHA256: 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8

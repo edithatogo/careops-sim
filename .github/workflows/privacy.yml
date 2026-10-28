@@ -24,24 +24,20 @@ jobs:
         id: runtime
         with:
           python-version: '3.15.1'
-      - name: Create and verify repository-local Python
-        env:
-          SELECTED_PYTHON: ${{ steps.runtime.outputs.python-path }}
-        run: |
-          test ! -e .venv-careops-privacy
-          "$SELECTED_PYTHON" -I -m venv .venv-careops-privacy
-          .venv-careops-privacy/bin/python -I -c 'import pathlib, sys; assert sys.version_info[:3] == (3,15,1); assert pathlib.Path(sys.prefix).resolve() == pathlib.Path(".venv-careops-privacy").resolve(); assert sys.prefix != sys.base_prefix; print(sys.version)'
+      - name: Bootstrap the repository-owned verified runtime
+        run: python tools/python_runtime.py --github
       - name: Test privacy rejection and staged-content handling
-        run: .venv-careops-privacy/bin/python -I -m unittest discover -s .careops-security -p test_check.py -v
+        run: |
+          "$CAREOPS_PYTHON" -I -m unittest discover -s .careops-security -p test_check.py -v
       - name: Verify inventory and changed content
         env:
           BASE_REVISION: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
           if [[ "$BASE_REVISION" =~ ^[a-f0-9]{40}$ ]] && [[ "$BASE_REVISION" != 0000000000000000000000000000000000000000 ]]; then
             base=$(git merge-base HEAD "$BASE_REVISION")
-            .venv-careops-privacy/bin/python -I .careops-security/check.py --base "$base"
+            "$CAREOPS_PYTHON" -I .careops-security/check.py --base "$base"
           else
-            .venv-careops-privacy/bin/python -I .careops-security/check.py --all
+            "$CAREOPS_PYTHON" -I .careops-security/check.py --all
           fi
       - name: Scan complete history with verified Gitleaks
         env:
