@@ -55,3 +55,6 @@ Local reusable-workflow calls retain GitHub's supported `./` syntax. The exact
 Zizmor self-repository style suggestion is waived on these top-level calls
 because qualified actionlint 1.7.12 does not yet accept `$/`; the called source
 still follows the caller commit. Other workflow audits remain enabled.
+
+The directory-local Git attributes retain LF for text and detect binaries, so
+Windows checkout preserves the exact qualified helper bytes and checksums.
