@@ -6,7 +6,7 @@ The diff against main changes planning and task-parser validation only; no Rust
 runtime, source pin, dependency, CI policy or accepted checkbox is promoted.
 
 Original uncommitted proposals are preserved locally at
-`/Users/doughnut/.codex/reconciliation-snapshots/20261021-careops-sim-proposals.tar.gz`
+`${PRIVATE_HOME}/.codex/reconciliation-snapshots/20261021-careops-sim-proposals.tar.gz`
 Archive SHA-256: `8dc6f584fd686d516ae9e86ef2c58d82443a22a39e01f526692e6370eab19ff1`.
 The adjacent JSON manifest retains 36 per-file hashes. Original checkout files
 were not overwritten. Their conflicting assumptions are explicitly superseded
@@ -34,9 +34,9 @@ required. Independent review of the combined diff reported no careops-sim blocke
 - Test coverage: full existing Python harness, including task and failure-path tests.
 - Test results: 707 tests passed in167.458seconds, Python3.15.0/jsonschema4.26.0.
 
-Executed from `/Users/doughnut/.codex/worktrees/careops-roadmap-contracts/careops-sim`
+Executed from `${PRIVATE_HOME}/.codex/worktrees/careops-roadmap-contracts/careops-sim`
 using the existing qualified harness interpreter at
-`/Users/doughnut/Documents/careops-sim/.artifacts/ci/harness-venv/bin/python`:
+`${PRIVATE_HOME}/Documents/careops-sim/.artifacts/ci/harness-venv/bin/python`:
 `-m unittest discover -s tests -v`, exit0. Raw log:
 `/tmp/careops-merge-full-tests.log`, SHA-256 `66ced42de90e4e7b8e07d061c1f91e67a16300f9df3fd4948c7bce876011c30e`.
 Mock fixture output in that harness is not a native release/device/cluster receipt.

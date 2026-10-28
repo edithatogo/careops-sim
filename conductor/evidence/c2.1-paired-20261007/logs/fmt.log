@@ -1,5 +1,5 @@
 argv=rustup run 1.99.0 cargo fmt --all -- --check
-Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1244:
+Diff in ${PRIVATE_HOME}/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1244:
          assert_eq!(micro_submitted.decision().mode, FidelityMode::Micro);
          assert_eq!(macro_submitted.acquire_intent().scheduler_priority, 7);
          assert_eq!(micro_submitted.acquire_intent().scheduler_priority, 7);
@@ -16,7 +16,7 @@ Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementatio
  
          let macro_request = {
              let flow = &mut macro_flow;
-Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1314:
+Diff in ${PRIVATE_HOME}/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1314:
              micro_flow.work_progress(micro_submitted.work()).unwrap()
          );
          assert_eq!(
@@ -28,7 +28,7 @@ Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementatio
              WorkState::Completed
          );
          assert_eq!(
-Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1329:
+Diff in ${PRIVATE_HOME}/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1329:
              macro_flow.budget_snapshot().scheduler.scheduled_events,
              micro_flow.budget_snapshot().scheduler.scheduled_events
          );
@@ -48,7 +48,7 @@ FINAL argv=rustup run 1.99.0 cargo fmt --all -- --check
 FINAL_EXIT_STATUS=0
 
 LATEST argv=rustup run 1.99.0 cargo fmt --all -- --check
-Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1251:
+Diff in ${PRIVATE_HOME}/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1251:
              let flow = &mut macro_flow;
              let spec = flow.work(macro_submitted.work()).unwrap();
              assert_eq!(spec.context_type_key, "bridge.context");
@@ -60,7 +60,7 @@ Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementatio
              assert_eq!(spec.request, Some(macro_submitted.request()));
              let request = flow.request(macro_submitted.request()).unwrap();
              assert_eq!(request.resource, macro_resource);
-Diff in /Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1276:
+Diff in ${PRIVATE_HOME}/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos/crates/kairo-ecs-calibration/src/flow_bridge.rs:1276:
              let flow = &mut micro_flow;
              let spec = flow.work(micro_submitted.work()).unwrap();
              assert_eq!(spec.context_type_key, "bridge.context");

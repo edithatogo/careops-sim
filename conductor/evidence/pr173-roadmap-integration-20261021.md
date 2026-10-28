@@ -3,9 +3,9 @@
 ## Repository scope
 
 This simulation plan applies to **careops-sim**, whose source checkout is
-`/Users/doughnut/Documents/careops-sim` (GitHub `edithatogo/careops-sim`).
+`${PRIVATE_HOME}/Documents/careops-sim` (GitHub `edithatogo/careops-sim`).
 Kairos is its separately owned upstream simulation engine. The distinct
-`/Volumes/PortableSSD/GitHub/careops` portfolio repository is not the target of
+`${PRIVATE_VOLUME}/GitHub/careops` portfolio repository is not the target of
 these C-R0–C-R7 recommendations. No change to that repository is made by this
 21 October incorporation. Older shorthand “CareOps” here denotes careops-sim
 unless a paragraph explicitly identifies the separate portfolio repository.
@@ -63,7 +63,7 @@ idempotency and independent relationship/lifetime failure oracles.
 
 ## Validation
 
-Validation executed in `/Users/doughnut/.codex/worktrees/careops-roadmap-contracts/careops-sim` at planning base `576f50b` with `3.15.0` Python. Seeds are not applicable to structural planning validation.
+Validation executed in `${PRIVATE_HOME}/.codex/worktrees/careops-roadmap-contracts/careops-sim` at planning base `576f50b` with `3.15.0` Python. Seeds are not applicable to structural planning validation.
 All new implementation tasks remain unchecked; no source pin/runtime code changes.
 
 | Executed command | Exit | stdout + stderr SHA-256 |

@@ -34,7 +34,7 @@ Toolchain: `Python 3.15.0`.
 
 ## Final local validation receipts
 
-Working directory: `/Users/doughnut/.codex/worktrees/careops-roadmap-contracts/careops-sim`.
+Working directory: `${PRIVATE_HOME}/.codex/worktrees/careops-roadmap-contracts/careops-sim`.
 All commands below were executed after the parallel-audit alignment. Hashes
 identify retained local raw logs; they are not hosted evidence.
 

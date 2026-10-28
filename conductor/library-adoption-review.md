@@ -22,7 +22,7 @@ Kairos phase validator initially rejected missing standard handoff closeout mark
 
 ## Validation receipt — 2026-10-22
 
-Working directory: `/Volumes/PortableSSD/codex-worktrees/careops-library-adoption-20261022`. Base commit: `60f9aacc68750ddf0f8999c4f3c6b804edfb58c4`. Tooling: Python 3.11.6; PowerShell 7.6.7. Deterministic runtime seed: not applicable. Source revision: containing planning commit. No hosted CI, runtime acceptance or remote push claimed.
+Working directory: `${PRIVATE_VOLUME}/codex-worktrees/careops-library-adoption-20261022`. Base commit: `60f9aacc68750ddf0f8999c4f3c6b804edfb58c4`. Tooling: Python 3.11.6; PowerShell 7.6.7. Deterministic runtime seed: not applicable. Source revision: containing planning commit. No hosted CI, runtime acceptance or remote push claimed.
 
 - `python3 tools/tasks.py check`: exit 0; local log `/tmp/adoption-careops-tasks.log`; SHA-256 `26a3d3e865897cec46c0084fbe6146d063734b34954a3ff44af54593ddb741af`.
 - `python3 tools/context.py check`: exit 0; local log `/tmp/adoption-careops-context.log`; SHA-256 `c233f91dacdbf172c06a0ea5f8743a2a928ce49f8a00570ced9c1cf01984a010`.

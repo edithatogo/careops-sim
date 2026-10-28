@@ -11,7 +11,7 @@ This local integration advances C2.2 at Kairos `f1f510e6c9ff9c3923b63ad733c05c19
 
 ## Verification
 
-From `/Users/doughnut/Documents/careops-sim-session-worktrees/kairos-c22-admission-permit-20261006` at source commit `f1f510e6c9ff9c3923b63ad733c05c19c495b46c`:
+From `${PRIVATE_HOME}/Documents/careops-sim-session-worktrees/kairos-c22-admission-permit-20261006` at source commit `f1f510e6c9ff9c3923b63ad733c05c19c495b46c`:
 
 - `env CARGO_TARGET_DIR=/tmp/careops-sim-c22-policy-target rustup run 1.76.0 cargo test --locked -p kairo-ecs-des` — 246 passed, 0 failed, 1 existing ignored, across 26 targets.
 - `env CARGO_TARGET_DIR=/tmp/careops-sim-c22-policy-target rustup run 1.99.0 cargo clippy --locked -p kairo-ecs-des --all-targets -- -D warnings` — pass.

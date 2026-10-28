@@ -123,8 +123,8 @@ This tutorial demonstrates the delivery contract workflow: a fresh user inspects
 ### Step 1: Inspecting & Validating Scenario Configurations
 
 CareOps Sim provides pre-configured synthetic scenario profiles in `crates/careops-ed/examples/`:
-- [nominal_mvp.json](file:///Users/doughnut/.codex/worktrees/c2-transit-draw-oracle/careops-sim/crates/careops-ed/examples/nominal_mvp.json): 5 arrivals, 2 acute treatment bays, adequate nursing staff.
-- [surge_mvp.json](file:///Users/doughnut/.codex/worktrees/c2-transit-draw-oracle/careops-sim/crates/careops-ed/examples/surge_mvp.json): 10 high-acuity presentations arriving under constrained capacity (acute capacity reduced from 2 to 1 bay, nursing staff reduced to 2).
+- [nominal_mvp.json](file://${PRIVATE_HOME}/.codex/worktrees/c2-transit-draw-oracle/careops-sim/crates/careops-ed/examples/nominal_mvp.json): 5 arrivals, 2 acute treatment bays, adequate nursing staff.
+- [surge_mvp.json](file://${PRIVATE_HOME}/.codex/worktrees/c2-transit-draw-oracle/careops-sim/crates/careops-ed/examples/surge_mvp.json): 10 high-acuity presentations arriving under constrained capacity (acute capacity reduced from 2 to 1 bay, nursing staff reduced to 2).
 
 Validate both scenarios to confirm schema conformity:
 

@@ -1,9 +1,9 @@
 import os,json,subprocess,time,hashlib,pathlib
-root=pathlib.Path('/Volumes/PortableSSD/codex-worktrees/careops-r0-r1-20261021'); child=root/'libs/kairos'
+root=pathlib.Path('${PRIVATE_VOLUME}/codex-worktrees/careops-r0-r1-20261021'); child=root/'libs/kairos'
 out=pathlib.Path('/private/tmp/careops-r1-ed-output-20261021');out.mkdir(exist_ok=True)
 receipts=[]
 def run(name,args,cwd=child,tool='1.99.1',extra=None,expected=0):
- bindir='/opt/homebrew/Cellar/rust/1.99.1/bin' if tool=='1.99.1' else '/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin'
+ bindir='/opt/homebrew/Cellar/rust/1.99.1/bin' if tool=='1.99.1' else '${PRIVATE_HOME}/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin'
  env=os.environ.copy();env.update(PATH=bindir+':'+env['PATH'],RUSTC=bindir+'/rustc',RUSTDOC=bindir+'/rustdoc',CARGO_TARGET_DIR=str(out/('target-'+tool)))
  if extra:env.update(extra)
  start=time.time();log=out/(name+'.log')

@@ -17,7 +17,7 @@ acceptance.
 
 ## Exact local evidence
 
-Commands ran in `/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos`:
+Commands ran in `${PRIVATE_HOME}/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos`:
 
 - `rustup run 1.76.0 cargo test --locked -p kairo-ecs-des` — exit 0; downstream `fidelity_public_api` tests 2/2 passed. Full output: `native-test.log`.
 - `rustup run 1.99.0 cargo clippy --locked -p kairo-ecs-des --all-targets -- -D warnings` — exit 0. Full output: `strict-clippy.log`.

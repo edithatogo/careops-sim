@@ -24,7 +24,7 @@ overflow rollback remains covered by the existing seed-map test.
 
 ## Executed checks
 
-Working directory: `/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006`
+Working directory: `${PRIVATE_HOME}/Documents/careops-sim-session-worktrees/c2-implementation-20261006`
 
 | Command | Result | Log |
 |---|---:|---|

@@ -93,7 +93,7 @@ The parent task does not mark C2.3, C2.2, C2.1, or C2.4 complete.
 
 After updating the parent pin to `a514590e485bfb5aa4df675d13940d98f62b0b7b`,
 the coordinator reran all three gates from
-`/Users/doughnut/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos`
+`${PRIVATE_HOME}/Documents/careops-sim-session-worktrees/c2-implementation-20261006/libs/kairos`
 using `rustc 1.99.0 (b940084d7 2026-09-28)` and `cargo 1.99.0
 (5f94df478 2026-08-27)`. The locked ABM/calibration library tests exited 0
 (17 ABM, 78 calibration, 2 ignored), strict Clippy exited 0, and workspace

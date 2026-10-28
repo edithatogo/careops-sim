@@ -17,7 +17,7 @@ Split all direct dependencies rather than adopting stacks wholesale. Strongest e
 
 Planning-only coordinator review; not independent runtime acceptance.
 
-- Working directory: `/Volumes/PortableSSD/codex-worktrees/careops-robust-dependencies-20261022`
+- Working directory: `${PRIVATE_VOLUME}/codex-worktrees/careops-robust-dependencies-20261022`
 - Base commit: `f0cee755cc77362dbe6c7fc89bf65021de6548ad`; evidence applies to the planning diff committed with this report.
 - Tools: Python 3.11.6; PowerShell 7.6.7. No stochastic inputs or seeds apply.
 - `python3 tools/tasks.py build`: exit 0; local log `/tmp/robustness-c-build.log`; SHA-256 `b325e9feb283a5dd50cf2e6a840d67371fa1d1f70b1b2a8402eb3e6f5aaca3d7`.
