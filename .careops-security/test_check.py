@@ -88,4 +88,28 @@ class CommitPrivacyTests(unittest.TestCase):
         Path('.careops-security/policy.json').write_text('{"reviewedArtifacts":{}}');self.git('add','.careops-security/policy.json')
         self.assertIn(('document-or-binary-review-required','sample.txt'),privacy.check())
 
+class PushSelectionTests(unittest.TestCase):
+    def test_explicit_outgoing_objects_are_scanned(self):
+        import os
+        hook=Path(__file__).with_name('hooks')/'pre-push'
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)
+            subprocess.run(['git','init','-q',d],check=True)
+            tree=subprocess.check_output(['git','-C',d,'mktree'],input=b'').strip().decode()
+            command=['git','-C',d,'-c','user.name=Fictional','-c','user.email=fictional@example.invalid','commit-tree',tree]
+            oid=subprocess.check_output(command,input=b'fictional unreferenced commit\n').strip().decode()
+            binpath=root/'bin';binpath.mkdir();log=root/'calls'
+            for name in ['gitleaks','repo-python']:
+                f=binpath/name
+                f.write_text('#!/bin/sh\nprintf "%s\\n" "$@" >> "$CALL_LOG"\n')
+                f.chmod(0o755)
+            env=dict(os.environ,PATH=str(binpath)+os.pathsep+os.environ['PATH'],REPO_PYTHON=str(binpath/'repo-python'),CALL_LOG=str(log))
+            for base in ['0'*40,'1'*40]:
+                log.write_text('')
+                r=subprocess.run(['sh',str(hook.resolve())],cwd=d,env=env,input=f'HEAD {oid} refs/heads/test {base}\n',text=True,capture_output=True)
+                self.assertEqual(0,r.returncode,r.stderr)
+                calls=log.read_text().splitlines()
+                self.assertIn('--log-opts='+(oid if base=='0'*40 else base+'..'+oid),calls)
+                self.assertIn(oid,calls)
+
 if __name__=='__main__': unittest.main()
