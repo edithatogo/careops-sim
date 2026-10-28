@@ -10,7 +10,7 @@ First Kairos validation detected missing explicit phase/git-closeout commands in
 
 ## Evidence
 
-Working directory `/Volumes/PortableSSD/codex-worktrees/careops-validation-tooling-plan-20261022`; base `6393014d7eeb466b071390ce6cbf6d2c49bcc8d0`. Python 3.11.6, PowerShell 7.6.7. No stochastic inputs apply. Checks cover this planning diff.
+Working directory `${PRIVATE_VOLUME}/codex-worktrees/careops-validation-tooling-plan-20261022`; base `6393014d7eeb466b071390ce6cbf6d2c49bcc8d0`. Python 3.11.6, PowerShell 7.6.7. No stochastic inputs apply. Checks cover this planning diff.
 
 - `python3 tools/tasks.py check`: exit 0; `/tmp/tooling-c-tasks.log`; SHA-256 `5217b8be24cd0a3abc029658ac833404a4ccdc64f8941bfc98bb8f140bb31ca7`.
 - `python3 tools/context.py check`: exit 0; `/tmp/tooling-c-links.log`; SHA-256 `57286786b1838a1c2ce633bcf527ee1b9cc2dbc409fbb531a49145789ec8c1bd`.

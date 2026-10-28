@@ -1,6 +1,6 @@
 # Kairos capability reconciliation and abstraction plan — 20 October 2026
 
-**Repository scope:** This document concerns **kairos** and **careops-sim** (`/Users/doughnut/Documents/careops-sim`). The separate **careops** repository is outside scope. Earlier uses of “CareOps” in this audit meant the careops-sim simulation repository.
+**Repository scope:** This document concerns **kairos** and **careops-sim** (`${PRIVATE_HOME}/Documents/careops-sim`). The separate **careops** repository is outside scope. Earlier uses of “CareOps” in this audit meant the careops-sim simulation repository.
 
 ## Current decision
 
@@ -49,7 +49,7 @@ Documentation-only review: no pin/API/runtime/clinical-policy changes. Acceptanc
 
 ## Planning validation receipt
 
-Date: 2026-10-20. Working directory: `/Volumes/PortableSSD/codex-worktrees/careops-capability-plans-20261020`. Base commit: `8ca0e5ecec2a41a86ebce32361adbde08dd191d3`. Tools: Python 3.15.0. Deterministic seed: not applicable (documentation validators). Table hashes cover concatenated stdout and stderr of the actual commands; this table is the retained summary artifact, not a substitute for hosted logs. Source inputs are the planning diff against this base; integration must bind the final commit from the PR.
+Date: 2026-10-20. Working directory: `${PRIVATE_VOLUME}/codex-worktrees/careops-capability-plans-20261020`. Base commit: `8ca0e5ecec2a41a86ebce32361adbde08dd191d3`. Tools: Python 3.15.0. Deterministic seed: not applicable (documentation validators). Table hashes cover concatenated stdout and stderr of the actual commands; this table is the retained summary artifact, not a substitute for hosted logs. Source inputs are the planning diff against this base; integration must bind the final commit from the PR.
 
 | Command | Exit | Output SHA-256 |
 | --- | --- | --- |

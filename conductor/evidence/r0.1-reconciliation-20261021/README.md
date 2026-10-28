@@ -16,7 +16,7 @@ Status: R0.1 accepted after independent review; R0 phase acceptance remains pend
   archive bytes and the original checkout at readback. No original file was rewritten.
 - The existing local archive `20261021-careops-sim-proposals.tar.gz` has SHA-256
   `8dc6f584fd686d516ae9e86ef2c58d82443a22a39e01f526692e6370eab19ff1`.
-  It remains under `/Users/doughnut/.codex/reconciliation-snapshots/` with its
+  It remains under `${PRIVATE_HOME}/.codex/reconciliation-snapshots/` with its
   original manifest. The [preservation manifest](proposal-preservation.json)
   retains per-file archive/source/integrated hashes; do not overwrite later edits
   from this snapshot. Restore only into a separate recovery directory.

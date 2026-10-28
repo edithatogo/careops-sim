@@ -14,7 +14,7 @@ Planning-only revision follows the user decision to start Polars inventory and g
 
 ## Scope and evidence
 
-Working directory: `/Volumes/PortableSSD/codex-worktrees/careops-polars-sequencing`. Base commit: `dc3aecb0c2a3fa32d2e475d9d319374945b97a47`. Review performed in the coordinator session using the Conductor review procedure; not a separate-agent review. Tool versions are recorded below. No simulation seed applies to this documentation revision. Source changes and validation are reproducible from this commit; this file is the planning receipt. Full Rust CI and runtime tests skipped because only Conductor documents/metadata changed.
+Working directory: `${PRIVATE_VOLUME}/codex-worktrees/careops-polars-sequencing`. Base commit: `dc3aecb0c2a3fa32d2e475d9d319374945b97a47`. Review performed in the coordinator session using the Conductor review procedure; not a separate-agent review. Tool versions are recorded below. No simulation seed applies to this documentation revision. Source changes and validation are reproducible from this commit; this file is the planning receipt. Full Rust CI and runtime tests skipped because only Conductor documents/metadata changed.
 
 ## Review decisions
 

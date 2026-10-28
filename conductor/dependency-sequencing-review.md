@@ -12,7 +12,7 @@ Reviewed potential cycles, duplicate dependency ownership, old-sequence contradi
 
 ## Validation
 
-Working directory: `/Volumes/PortableSSD/codex-worktrees/careops-dependency-sequencing-20261022`. Base commit: `90e1e1d605a7199c84cc2609ab5cffe40e54bee2`. Python 3.11.6; PowerShell 7.6.7. No stochastic input applies to planning checks. Evidence applies to this committed planning diff.
+Working directory: `${PRIVATE_VOLUME}/codex-worktrees/careops-dependency-sequencing-20261022`. Base commit: `90e1e1d605a7199c84cc2609ab5cffe40e54bee2`. Python 3.11.6; PowerShell 7.6.7. No stochastic input applies to planning checks. Evidence applies to this committed planning diff.
 
 - `python3 tools/tasks.py check`: exit 0. Log `/tmp/sequence-c-tasks.log`; SHA-256 `1bdb96edde463deaea1eb08aadce917508925c7fe6db516066f67866be751213`.
 - `python3 tools/context.py check`: exit 0. Log `/tmp/sequence-c-context-check.log`; SHA-256 `b6241432859d8a3fc4696d50887d3697a7d6ef8d13b19570c96fd8d361ac77e0`.

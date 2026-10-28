@@ -2,7 +2,7 @@
   "schema_version": 1,
   "status": "blocked_gate_failure",
   "source_commit": "f4b5dbb4471005714565852b9237062f337b6592",
-  "working_directory": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+  "working_directory": "${PRIVATE_HOME}/.codex/worktrees/rust199-policy/careops-sim",
   "toolchain_policy": "Rust 1.99.0 only",
   "packet_sha256": "53fcb8098e0f421c765dfbf870a15a87a34a49e8a59c1fda980e49b947404c34",
   "input_hashes": {
@@ -37,7 +37,7 @@
         "test_ci_workflow.py",
         "-v"
       ],
-      "cwd": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+      "cwd": "${PRIVATE_HOME}/.codex/worktrees/rust199-policy/careops-sim",
       "expected_exit": 0,
       "started_utc": "2026-10-05T07:17:14.131536+00:00",
       "log_path": ".artifacts/rust199-ci-foundation/ci-workflow-tests.log",
@@ -52,9 +52,9 @@
       "argv": [
         "/bin/sh",
         "-ec",
-        "export PATH='/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin'; export RUSTUP_TOOLCHAIN=1.99.0 RUSTC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc RUSTDOC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc CARGO_TARGET_DIR=.artifacts/rust199-ci-foundation/target; test \"$(command -v rustc)\" = \"$RUSTC\"; test \"$(command -v rustdoc)\" = \"$RUSTDOC\"; test \"$(command -v cargo)\" = /Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo; test \"$RUSTUP_TOOLCHAIN\" = 1.99.0; cargo test --workspace --lib --bins --tests --locked"
+        "export PATH='${PRIVATE_HOME}/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin'; export RUSTUP_TOOLCHAIN=1.99.0 RUSTC=${PRIVATE_HOME}/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc RUSTDOC=${PRIVATE_HOME}/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc CARGO_TARGET_DIR=.artifacts/rust199-ci-foundation/target; test \"$(command -v rustc)\" = \"$RUSTC\"; test \"$(command -v rustdoc)\" = \"$RUSTDOC\"; test \"$(command -v cargo)\" = ${PRIVATE_HOME}/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/cargo; test \"$RUSTUP_TOOLCHAIN\" = 1.99.0; cargo test --workspace --lib --bins --tests --locked"
       ],
-      "cwd": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+      "cwd": "${PRIVATE_HOME}/.codex/worktrees/rust199-policy/careops-sim",
       "expected_exit": 0,
       "started_utc": "2026-10-05T07:17:15.219692+00:00",
       "log_path": ".artifacts/rust199-ci-foundation/default-feature-workspace-tests-rust199.log",
@@ -68,10 +68,10 @@
       "name": "full-python-harness-rust199-environment",
       "argv": [
         "/usr/bin/env",
-        "PATH=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin",
+        "PATH=${PRIVATE_HOME}/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin",
         "RUSTUP_TOOLCHAIN=1.99.0",
-        "RUSTC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
-        "RUSTDOC=/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
+        "RUSTC=${PRIVATE_HOME}/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+        "RUSTDOC=${PRIVATE_HOME}/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc",
         "/opt/homebrew/bin/python3",
         "-m",
         "unittest",
@@ -80,7 +80,7 @@
         "tests",
         "-v"
       ],
-      "cwd": "/Users/doughnut/.codex/worktrees/rust199-policy/careops-sim",
+      "cwd": "${PRIVATE_HOME}/.codex/worktrees/rust199-policy/careops-sim",
       "expected_exit": 0,
       "started_utc": "2026-10-05T07:17:27.299463+00:00",
       "log_path": ".artifacts/rust199-ci-foundation/full-python-harness-rust199-environment.log",
@@ -95,9 +95,9 @@
   "toolchain_binding": {
     "version": "1.99.0",
     "RUSTUP_TOOLCHAIN": "1.99.0",
-    "PATH_prefix": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin",
-    "RUSTC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
-    "RUSTDOC": "/Users/doughnut/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc"
+    "PATH_prefix": "${PRIVATE_HOME}/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin",
+    "RUSTC": "${PRIVATE_HOME}/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustc",
+    "RUSTDOC": "${PRIVATE_HOME}/.rustup/toolchains/1.99.0-aarch64-apple-darwin/bin/rustdoc"
   },
   "failure_summary": {
     "gate": "full-python-harness-rust199-environment",
