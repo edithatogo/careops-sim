@@ -1,0 +1,56 @@
+name: Privacy protection
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: privacy-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  privacy:
+    name: Privacy and secrets
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          submodules: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        id: runtime
+        with:
+          python-version: '3.15.1'
+      - name: Create and verify repository-local Python
+        env:
+          SELECTED_PYTHON: ${{ steps.runtime.outputs.python-path }}
+        run: |
+          test ! -e .venv-careops-privacy
+          "$SELECTED_PYTHON" -I -m venv .venv-careops-privacy
+          .venv-careops-privacy/bin/python -I -c 'import pathlib, sys; assert sys.version_info[:3] == (3,15,1); assert pathlib.Path(sys.prefix).resolve() == pathlib.Path(".venv-careops-privacy").resolve(); assert sys.prefix != sys.base_prefix; print(sys.version)'
+      - name: Test privacy rejection and staged-content handling
+        run: .venv-careops-privacy/bin/python -I -m unittest discover -s .careops-security -p test_check.py -v
+      - name: Verify inventory and changed content
+        env:
+          BASE_REVISION: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [[ "$BASE_REVISION" =~ ^[a-f0-9]{40}$ ]] && [[ "$BASE_REVISION" != 0000000000000000000000000000000000000000 ]]; then
+            base=$(git merge-base HEAD "$BASE_REVISION")
+            .venv-careops-privacy/bin/python -I .careops-security/check.py --base "$base"
+          else
+            .venv-careops-privacy/bin/python -I .careops-security/check.py --all
+          fi
+      - name: Scan complete history with verified Gitleaks
+        env:
+          GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+        run: |
+          curl --fail --silent --show-error --location https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz -o "$RUNNER_TEMP/gitleaks.tar.gz"
+          echo "$GITLEAKS_SHA256  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP" gitleaks
+          if ! "$RUNNER_TEMP/gitleaks" git . --log-opts=--all --gitleaks-ignore-path /dev/null --ignore-gitleaks-allow --redact --no-banner > "$RUNNER_TEMP/privacy-gitleaks.log" 2>&1; then
+            echo 'Secret scan failed. Inspect locally with redaction; matched content is withheld from CI logs.' >&2
+            exit 1
+          fi

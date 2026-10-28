@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+command -v gitleaks >/dev/null 2>&1 || { echo 'Gitleaks is required.' >&2; exit 1; }
+[ "$(git rev-parse --is-shallow-repository)" = false ] || { echo 'Fetch complete history before the pre-push audit.' >&2; exit 1; }
+gitleaks git . --log-opts=--all --gitleaks-ignore-path /dev/null --ignore-gitleaks-allow --redact --no-banner
+repo_python=${REPO_PYTHON:-.venv-careops-privacy/bin/python}
+[ -x "$repo_python" ] || { echo 'Create the repository-local privacy environment.' >&2; exit 1; }
+zero=0000000000000000000000000000000000000000
+while read -r local_ref local_oid remote_ref remote_oid; do
+    [ "$local_oid" = "$zero" ] && continue
+    if [ "$remote_oid" = "$zero" ]; then
+        "$repo_python" -I .careops-security/check.py --revision "$local_oid" --history
+    else
+        "$repo_python" -I .careops-security/check.py --revision "$local_oid" --base "$remote_oid"
+    fi
+done
