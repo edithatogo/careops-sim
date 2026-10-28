@@ -30,7 +30,8 @@ cannot approve sensitive text or credential files.
 
 The scanner rejects organisation health email addresses, private workstation
 paths, labelled numeric patient identifiers, private keys and common credential
-filenames. It requires review for documents, archives, images and other binary
+filenames. Private export/auth/cache directories are refused even when their paths
+are added to the inventory. It requires review for documents, archives, images and other binary
 files, and refuses files above 5 MiB. It logs rules and escaped paths only.
 These patterns do not identify every name, person, health record or confidential
 fact. Fictional text and structured CSV/JSON still require ordinary review.

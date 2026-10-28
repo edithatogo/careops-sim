@@ -76,6 +76,21 @@ def findings(path: str, blob: bytes, approvals: dict) -> list[str]:
     issues = []
     parts = PurePosixPath(path).parts
     name = parts[-1].lower()
+    private_parts = {
+        ".local",
+        ".flowagent",
+        ".auth",
+        "private",
+        "local-only",
+        "receipts",
+        "outputs",
+        "__pycache__",
+        "node_modules",
+    }
+    if private_parts.intersection(part.lower() for part in parts) or any(
+        part.lower().startswith(".venv") for part in parts
+    ):
+        issues.append("private-or-generated-directory")
     if name == ".env" or (
         name.startswith(".env.") and not name.endswith((".example", ".sample", ".template"))
     ):

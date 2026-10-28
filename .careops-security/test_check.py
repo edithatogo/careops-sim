@@ -41,6 +41,19 @@ class PrivacyTests(unittest.TestCase):
         self.assertIn("environment-file", privacy.findings(".env", b"A=B", {}))
         self.assertEqual([], privacy.findings(".env.example", b"A=placeholder", {}))
 
+    def test_private_directories_cannot_be_inventory_approved(self) -> None:
+        """Refuse private exports even if someone lists their paths in an inventory."""
+        for path in [
+            ".local/snapshot.json",
+            "private/export.csv",
+            "receipts/run.json",
+            ".venv/cache.txt",
+        ]:
+            with self.subTest(path=path):
+                self.assertIn(
+                    "private-or-generated-directory", privacy.findings(path, b"fictional", {})
+                )
+
     def test_document_review_is_exact(self) -> None:
         """Document review is exact."""
         blob = b"fictional document"
