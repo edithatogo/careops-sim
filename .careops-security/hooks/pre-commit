@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+command -v gitleaks >/dev/null 2>&1 || { echo 'Gitleaks is required.' >&2; exit 1; }
+git diff --cached --check
+gitleaks git . --pre-commit --staged --gitleaks-ignore-path /dev/null --ignore-gitleaks-allow --redact --no-banner
+repo_python=${REPO_PYTHON:-.venv-careops-privacy/bin/python}
+[ -x "$repo_python" ] || { echo 'Create the repository-local privacy environment; see .careops-security/README.md.' >&2; exit 1; }
+"$repo_python" -I .careops-security/check.py

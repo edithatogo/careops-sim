@@ -77,13 +77,15 @@ jobs:
           PYCODE
           cp result.json "$GITHUB_WORKSPACE/dist/consumer-result.json"
       - name: Read immutable qualified artifact tooling
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: edithatogo/careops
-          ref: 5cf006bce6c37c0c15db5d35055e302701a500ad
-          path: .artifacts/ci-release-policy
-          persist-credentials: false
-          submodules: false
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Exact source edithatogo/careops@5cf006bce6c37c0c15db5d35055e302701a500ad; inherited licence retained.
+          test ! -e "$GITHUB_WORKSPACE/.artifacts/ci-release-policy"
+          cd "$GITHUB_WORKSPACE/.careops-security/upstream/5cf006bce6c37c0c15db5d35055e302701a500ad"
+          sha256sum --check SHA256SUMS
+          mkdir -p "$GITHUB_WORKSPACE/.artifacts/ci-release-policy"
+          cp -R . "$GITHUB_WORKSPACE/.artifacts/ci-release-policy/"
       - name: Inventory exact compiled package bytes
         env:
           SOURCE_COMMIT: ${{ github.sha }}
