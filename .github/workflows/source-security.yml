@@ -10,6 +10,6 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   security:
-    uses: ./.github/workflows/careops-source-security-5cf006bce6c3.yml
+    uses: ./.github/workflows/careops-source-security-5cf006bce6c3.yml # zizmor: ignore[self-repository] -- actionlint 1.7.12 lacks $/ support; top-level local call uses this exact source revision
     with:
       policy-revision: 5cf006bce6c37c0c15db5d35055e302701a500ad

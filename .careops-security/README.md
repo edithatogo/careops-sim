@@ -49,3 +49,8 @@ deployments, and short artifact retention. Review collaborator/app access and
 workflow changes. Keep real exports, auth state and private receipts outside Git.
 An exposed credential needs revocation/rotation; private visibility and history
 cleanup cannot retract copies already downloaded.
+
+Local reusable-workflow calls retain GitHub's supported `./` syntax. The exact
+Zizmor self-repository style suggestion is waived on these top-level calls
+because qualified actionlint 1.7.12 does not yet accept `$/`; the called source
+still follows the caller commit. Other workflow audits remain enabled.
