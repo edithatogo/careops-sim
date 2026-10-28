@@ -61,3 +61,5 @@ Windows checkout preserves the exact qualified helper bytes and checksums.
 
 Sim CI reuses its repository-owned `tools/python_runtime.py --github` bootstrap
 and exported `CAREOPS_PYTHON`; source checkout precedes runtime setup.
+
+The profile-path guard also checks Windows drive paths, including spaced names, bare roots and JSON-escaped forms. Use portable/private-home placeholders in reusable documentation. Fictional regression cases verify both rejection and ordinary system-path acceptance.
