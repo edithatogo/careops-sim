@@ -3,7 +3,7 @@
   "packet_id": "R11.2.production-capture",
   "task_id": "R11.2",
   "target_repo": ".",
-  "base_commit": "445e72d65b0bad9cc98e4cc4807210539d26f52e",
+  "base_commit": "761e4ed15e3fc18c24de968ffdbbd5f1edaa5876",
   "model_role": "coordinator",
   "model_candidate": "session configured model",
   "objective": "Integrate Kairos Parquet/Zstd production capture with original batch execution and export; eliminate reruns and verify production readback, bounds, recovery and parity.",
@@ -18,7 +18,7 @@
   ],
   "input_hashes": {
     "conductor/tracks/polars_data_processing_20261022/spec.md": "ad164e7622813caae80b1e77e4df7a3886150ab60d53e57dcea6e7797ecb37d0",
-    "conductor/tracks/polars_data_processing_20261022/plan.md": "21f3c01dd1dd581fc38ceecf0cd13c05a3b8cbd278642ab21f2d116e38bb8614",
+    "conductor/tracks/polars_data_processing_20261022/plan.md": "495f1fe6f8aa7d970169d7bf22656c764190081db23773e71e5c462283ac4fc4",
     "libs/kairos/crates/kairo-ecs-arrow/src/polars_interop.rs": "6e450f7e8f15cb8660dd0d9d04443d09e2f1b084e9431f301ed379ce8bd63086"
   },
   "write_paths": [
@@ -37,7 +37,7 @@
     "conductor/current-state.json"
   ],
   "leaf_dependencies": [
-    "R11.1 test-authoring deliverable verified; plan bookkeeping acceptance is a separate coordinator closeout after candidate source commit."
+    "R11.1 authored-test deliverable accepted at local source761e4ed; R11.2 dependency-policy acceptance blocked."
   ],
   "interface_contract": "Real Parquet/Zstd parts through pinned Kairos writer; bounded synchronous capture, immutable disk source for export, completed manifest and hash validation; no simulator calls in export. Preserve scheduler/RNG and cancellation/progress. Old summary-only checkpoints cannot provide captured rows and must reject export. Production capture is native-only; minimal core remains Polars-free. R11.3 process-crash qualification and R13 complete output-schema replacement remain separate.",
   "steps": [
@@ -114,5 +114,6 @@
   "size_exception": "Coordinator owns parent native-data dependency admission and ED/CLI consumer integration; no Kairos pin/source changes. Existing default-native data support is gated out of minimal core; dedicated native tests and dependency qualification required.",
   "status": "prepared",
   "review": "Independent reviewer accepted bounded architecture and final fixes; no remaining implementation findings. Security/dependency and hosted acceptance explicitly withheld.",
-  "execution_status": "local behavior verified; dependency acceptance blocked"
+  "execution_status": "executed candidate; dependency-policy acceptance blocked; no next dispatch",
+  "initial_execution_base_commit": "445e72d65b0bad9cc98e4cc4807210539d26f52e"
 }
