@@ -2,12 +2,14 @@
   "track_id": "polars_data_processing_20261022",
   "title": "CareOps whole-layer Polars migration",
   "type": "refactor",
-  "status": "proposed",
+  "status": "in_progress",
   "created_at": "2026-10-22",
-  "updated_at": "2026-10-23",
+  "updated_at": "2026-10-30",
   "spec_approved": true,
-  "implementation_started": false,
-  "accepted_phases": [],
+  "implementation_started": true,
+  "accepted_phases": [
+    "R10"
+  ],
   "approval_basis": "User confirmed clean break, both repositories, Parquet default, bounded float differences; requested Conductor incorporation.",
   "phase_dependencies": {
     "R10": [],
@@ -35,11 +37,17 @@
       "repository": "kairos",
       "track": "70",
       "phase": "4",
-      "status": "unresolved",
+      "status": "accepted",
       "required_receipt": "accepted immutable commit plus interoperability and replay evidence",
-      "gate_task": "R10.1"
+      "gate_task": "R10.1",
+      "accepted_commit": "5692e6a9ee866131262d60103a84e2544dc51e4a",
+      "compatible_pin": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+      "receipt": "conductor/evidence/r103-remote-20261029/prerequisites.md"
     }
   ],
-  "active_phase": null,
-  "sequencing_basis": "User requested inventory-first Polars; supporting dependency work gates only demonstrated dependent tasks."
+  "active_phase": "R11",
+  "sequencing_basis": "User requested inventory-first Polars; supporting dependency work gates only demonstrated dependent tasks.",
+  "acceptance_evidence": "conductor/tracks/polars_data_processing_20261022/review-report.md",
+  "accepted_source_commit": "e65570b7a1046dafb15511ab5118b46b587f2f5d",
+  "next_phase_decision": "R11.1 preparation only; fresh exact-base packet and failing behavior oracles required. No R11 implementation or acceptance."
 }
