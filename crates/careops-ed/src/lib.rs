@@ -7,6 +7,8 @@
 #[doc(hidden)]
 pub mod arrivals;
 #[doc(hidden)]
+pub mod capture;
+#[doc(hidden)]
 pub mod disposition;
 #[doc(hidden)]
 pub mod pathway;
@@ -664,6 +666,15 @@ struct ResourceState {
 }
 
 pub fn run_scenario(scenario: &ScenarioConfig) -> Result<RunSummary, SimulationError> {
+    run_scenario_with_capture(scenario, &mut |_| Ok(()))
+}
+
+/// Emits original patient results synchronously after scheduler completion.
+/// A blocked callback stalls result production, not virtual-time scheduling.
+pub fn run_scenario_with_capture(
+    scenario: &ScenarioConfig,
+    capture: &mut dyn FnMut(&PatientResult) -> std::io::Result<()>,
+) -> Result<RunSummary, SimulationError> {
     #[cfg(test)]
     r111_trace_tests::observe_invocation(&scenario.scenario_id, scenario.seed);
     scenario
@@ -800,6 +811,8 @@ pub fn run_scenario(scenario: &ScenarioConfig) -> Result<RunSummary, SimulationE
                 PatientStatus::Unfinished
             },
         });
+        capture(results.last().expect("just appended a patient result"))
+            .map_err(|error| SimulationError(format!("capture failed: {error}")))?;
     }
     let arrivals = results.len();
     let started = results
