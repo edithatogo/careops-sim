@@ -58,8 +58,8 @@ cross-LP shared queues or zero-lookahead cycles; those cycles retain deadlock
 risk. Existing distributed scaffolds do not establish MPI/gRPC Flow execution.
 Track 32 owns future device parity; Metal queue execution is unsupported.
 
-The source-linked [migration guide](../../../libs/kairos/docs/flow/queue-migration.md)
-and [backend handoff](../../../libs/kairos/docs/flow/queue-backend-boundaries.md)
+The source-linked [migration guide](https://github.com/edithatogo/kairos/blob/44261eb5cf8275f132f63a3396903d116d701dbe/docs/flow/queue-migration.md)
+and [backend handoff](https://github.com/edithatogo/kairos/blob/44261eb5cf8275f132f63a3396903d116d701dbe/docs/flow/queue-backend-boundaries.md)
 connect these restrictions to existing owner records. Q5.4 phase closeout,
 Track 25/security/release, clinical calibration, MVP and advanced-backend
 acceptance remain separate.

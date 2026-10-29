@@ -292,7 +292,7 @@ are recorded in the [Q3 review and migration note](../../evidence/q3-owner01-tra
 The timed behavior is explicitly selected with `AcquireBuilder::timed_work`.
 Existing `for_work`/`submit_work` remain untimed context association. Legacy
 `DESContext`, FIFO `Resource` and existing ABM entry points retain their
-behavior. The frozen [Q3 contract](../../../libs/kairos/conductor/tracks/03-flow-des-trajectory-abm-behavior/q3-experimental-api-contract.md)
+behavior. The frozen [Q3 contract](https://github.com/edithatogo/kairos/blob/44261eb5cf8275f132f63a3396903d116d701dbe/conductor/tracks/03-flow-des-trajectory-abm-behavior/q3-experimental-api-contract.md)
 remains the behavior authority; this addendum changes no contract or policy.
 
 The review is a qualified coordinator disposition, not an external maintainer

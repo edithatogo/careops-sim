@@ -21,7 +21,7 @@ class QualitySupportTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         fixture = b'{"kind":"synthetic-arrow-fixture","version":2}\n'
         self.fixture_sha = hashlib.sha256(fixture).hexdigest()
-        self.fixture_path = "libs/kairos/crates/kairo-ecs-arrow-io/tests/fixtures/calibration_physical_v2/manifest.json"
+        self.fixture_path = "tests/fixtures/d33-calibration-physical-v2/manifest.json"
         self.write(self.fixture_path, fixture)
         self.config = {
             "schema_version": 1,
@@ -115,7 +115,7 @@ class QualitySupportTests(unittest.TestCase):
     def test_unpatched_schema_fixture_constants_match_reviewed_contract(self):
         self.assertEqual(
             quality_support.EXPECTED_FIXTURE_PATH,
-            "libs/kairos/crates/kairo-ecs-arrow-io/tests/fixtures/calibration_physical_v2/manifest.json",
+            "tests/fixtures/d33-calibration-physical-v2/manifest.json",
         )
         self.assertEqual(
             quality_support.EXPECTED_FIXTURE_SHA,
