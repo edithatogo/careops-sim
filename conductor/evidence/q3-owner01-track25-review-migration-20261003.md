@@ -34,7 +34,7 @@ These existing-enum/struct changes are not universally nonbreaking Rust semver
 additions. No new `non_exhaustive` policy, adapter or source-compatibility promise
 is invented by this review.
 
-The frozen [Q3 experimental contract](../../libs/kairos/conductor/tracks/03-flow-des-trajectory-abm-behavior/q3-experimental-api-contract.md)
+The frozen [Q3 experimental contract](https://github.com/edithatogo/kairos/blob/44261eb5cf8275f132f63a3396903d116d701dbe/conductor/tracks/03-flow-des-trajectory-abm-behavior/q3-experimental-api-contract.md)
 has SHA-256 `a593f30ac40127412cdb4a6b499ca7442c460dc5c3df7978e3906544cc7e2366`.
 Its accepted timed, interruption and notification semantics are unchanged.
 
