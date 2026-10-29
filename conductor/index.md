@@ -68,7 +68,7 @@ qualification is claimed.
 
 ## Planned Polars migration
 
-[CareOps migration](tracks/polars_data_processing_20261022/index.md) follows accepted Kairos Track 70. Planning registered; implementation not started.
+[CareOps migration](tracks/polars_data_processing_20261022/index.md) follows accepted Kairos Track 70. R10 entry/reference phase accepted for the bounded remote source; R11.1 preparation is next. Runtime replacement remains pending.
 
 ## Separate library adoption tracks
 

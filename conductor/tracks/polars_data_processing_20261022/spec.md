@@ -13,7 +13,7 @@ Inputs: current source, accepted simulation contracts, representative synthetic 
 Dependencies: Kairos Track 70 Phase 4 (external receipt gate).
 Owned implementation surfaces (prospective, require per-packet claims): crates/careops-ed/, crates/careops-ed-cli/, crates/careops-birthing/, crates/careops-birthing-cli/. Coordinator owns dependency manifests and consumer/CI/docs updates only with existing owner handoff. Blocked paths: scheduler/RNG/clinical semantics, unrelated tracks and active leases. Parallel-safe work: disjoint read-only review; shared manifest/FFI/registry writers serialize.
 
-Maturity: planned experimental alpha replacement; no implementation qualified.
+Maturity: R10 entry, inventory and reference baseline accepted for the bounded remote ED/core/CLI source. Experimental alpha runtime replacement remains unimplemented and unqualified.
 
 ## Decisions and boundaries
 
@@ -68,4 +68,4 @@ Track 70 starts with Phase 0 inventory and migration-boundary decisions; Tracks 
 
 ## Remote-baseline reconciliation
 
-R10 additionally requires accepted repository reconciliation R3. Preserve the reviewed 44261eb Kairos pin until the existing capability-preserving upgrade gates pass. Local candidate runtime/archival commits are preserved separately and are not acceptance evidence.
+R10 retains accepted repository reconciliation R3 as its entry prerequisite. The original 44261eb retention gate was satisfied by the bounded capability-preserving 0741026 bridge, accepted in PR #188 and recorded in PR #189. The old contract and receipts remain immutable historical evidence. Advanced local candidate runtime/archival commits remain separate and are not evidence of their remote integration.

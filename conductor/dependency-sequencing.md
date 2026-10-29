@@ -65,4 +65,4 @@ No ajv-cli, additional format plugin, transport framework or numerical backend i
 
 ## Remote-baseline reconciliation
 
-R10 additionally requires accepted repository reconciliation R3. Preserve the reviewed 44261eb Kairos pin until the existing capability-preserving upgrade gates pass. Local candidate runtime/archival commits are preserved separately and are not acceptance evidence.
+R10 retains accepted repository reconciliation R3 as its entry prerequisite. The original 44261eb retention gate was satisfied by the bounded capability-preserving 0741026 bridge, accepted in PR #188 and recorded in PR #189. The old contract and receipts remain immutable historical evidence. Advanced local candidate runtime/archival commits remain separate and are not evidence of their remote integration.

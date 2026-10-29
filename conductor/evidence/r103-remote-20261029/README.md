@@ -8,7 +8,7 @@ Local Rust workspace: 358 tests passed, zero failed/ignored; full Clippy passed.
 
 [Exact native-owner run](https://github.com/edithatogo/kairos/actions/runs/40874871055) passed 588 tests on each required host. The active contract now binds 207 exact source files and preserves the old contract through its immutable Git URL and SHA-256. Parent hosted checks passed at exact head `ef1f0b0`. [Prerequisite reconciliation](prerequisites.md) distinguishes remote inventory from advanced-only modules; R10.3 is accepted by the bounded code merge below; R10.4 remains open. Trace-once implementation remains R11.
 
-Reviewer-agent review: child0741026 modifies only the owner workflow; no actionable workflow issue. Parent diff contains no unrelated advanced implementation; statistical and row-reference assertions preserved. Remaining owner/contract/prerequisite/hosted gates explicitly retained.
+Reviewer-agent review: child0741026 modifies only the owner workflow; no actionable workflow issue. Parent diff contains no unrelated advanced implementation; statistical and row-reference assertions preserved. That initial review retained owner/contract/prerequisite/hosted gates; the accepted integration below subsequently satisfied them.
 
 Rollback: restore previous 44261eb gitlink, matching current-state metadata and the preserved previous active contract as one reviewed commit; preserve prior source and historical receipts. No release, clinical or hardware acceptance.
 
@@ -20,4 +20,4 @@ Hosted follow-up: the context job exposed the removed upstream D3.3 fixture path
 
 Hosted mutation accounting: 116 total, 111 caught, two reviewed equivalent misses, three unviable, zero timeouts; the unchanged source/catalog validator passed. ED library line coverage is 500/567 (88.18%). All 26 benchmark inputs and summary hashes match the frozen R10.2 baseline. The successful qualified Python run has 728 passes; the initial missing-jsonschema environment failure and earlier missing-fixture hosted failure remain recorded as failures.
 
-Independent reviewer found no actionable issue in the source packet or exact fixture relocation. This closes R10.3 for the bounded remote source. Advanced A2-A6/birthing implementation remains on its separate local branch; R10.4 and R11 remain open. This is source integration acceptance, not release, clinical or hardware acceptance. Next operation is the separate R10.4 gate.
+Independent reviewer found no actionable issue in the source packet or exact fixture relocation. This closes R10.3 for the bounded remote source. Advanced A2-A6/birthing implementation remains on its separate local branch; R10.4 is closed by the subsequent [phase review](../../tracks/polars_data_processing_20261022/review-report.md#r10-phase-review-and-acceptance--30-october-2026); R11 remains open. This is source integration acceptance, not release, clinical or hardware acceptance. The subsequent phase review permits R11.1 preparation only.

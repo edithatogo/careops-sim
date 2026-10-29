@@ -67,7 +67,7 @@ required features and acceptance recipes. E2 is the functional headless MVP; E4
 is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.
 
 ---
-- [ ] **Track: CareOps whole-layer Polars migration** — Proposed; requires accepted Kairos Track 70 Phase 4. [Track](tracks/polars_data_processing_20261022/index.md).
+- [~] **Track: CareOps whole-layer Polars migration** — R10 accepted for the bounded remote source; Track 70 receipt verified; R11.1 preparation next. Runtime replacement remains pending. [Track](tracks/polars_data_processing_20261022/index.md).
 
 ---
 - [ ] **Track: rand deterministic RNG adoption** — Proposed; implementation not started. [Track](tracks/rand_rng_adoption_20261022/index.md).

@@ -7,7 +7,7 @@ R10 entry and baseline are reconciled for the bounded remote packet. Runtime Pol
 - [x] R10.1 Verify accepted upstream Track 70 receipt and immutable compatible source. Canonical manifest 5692e6a, PR #304 40 passed/3 skipped and reconciliation PR #306 25 passed are retained in [remote prerequisite evidence](../../evidence/r103-remote-20261029/prerequisites.md). Exact bridge 0741026 passed 588 native tests on each required host; old and renewed contracts are retained.
 - [x] R10.2 Inventory current remote ED/core/CLI table and consumer paths, statistical definitions and supporting dependency targets; record the 26-case seed 7 baseline and input/summary parity. [Scoped inventory and evidence](../../evidence/r103-remote-20261029/prerequisites.md) explicitly excludes the unintegrated advanced identity/birthing lane. No real event-trace capture, production join cardinality or clinical acceptance is claimed.
 - [x] R10.3 Add reference tests and qualify compatible Kairos pin 0741026. Accepted by code PR #188 at 0db23f1: local 358 Rust tests, 728 Python tests, full Clippy, exact pin contract and 26 benchmark parity pass; child native owner passes both hosts. Final parent hosted head ef1f0b0 passes all required checks, including 116 accounted mutations and 88.18% ED line coverage. See [bounded remote packet](../../evidence/r103-remote-20261029/README.md). Trace invocation count and capture/removal remain R11.1/R11.2.
-- [ ] R10.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.
+- [x] R10.4 Conductor — phase review accepted against merged e65570b; stale coordination records reconciled, exact receipts and rejected/cross-owner work retained. [Phase review and acceptance](review-report.md#r10-phase-review-and-acceptance--30-october-2026) permits R11.1 preparation only, with fresh packet and failing behavioral oracles.
 
 ## R11 — Capture once and durable trace parts
 
@@ -47,4 +47,4 @@ Track 70 starts with Phase 0 inventory and migration-boundary decisions; Tracks 
 
 ## Remote-baseline reconciliation
 
-R10 additionally requires accepted repository reconciliation R3. Preserve the reviewed 44261eb Kairos pin until the existing capability-preserving upgrade gates pass. Local candidate runtime/archival commits are preserved separately and are not acceptance evidence.
+R10 retains accepted repository reconciliation R3 as its entry prerequisite. The original 44261eb retention gate was satisfied by the bounded capability-preserving 0741026 bridge, accepted in PR #188 and recorded in PR #189. The old contract and receipts remain immutable historical evidence. Advanced local candidate runtime/archival commits remain separate and are not evidence of their remote integration.

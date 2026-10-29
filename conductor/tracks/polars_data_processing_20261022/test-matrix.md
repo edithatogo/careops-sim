@@ -1,6 +1,6 @@
 # Test matrix
 
-All runtime rows below are required future tests, not tests already implemented or executed. First-phase tasks must create named native test targets/reader scripts and record their exact commands before implementation acceptance. Never substitute a broad green workspace run for a missing oracle.
+R10 reference and compatibility tests are accepted in the [phase review](review-report.md#r10-phase-review-and-acceptance--30-october-2026). The runtime migration rows below remain required future tests, not claims that those replacement oracles are implemented or executed. First-phase tasks must create named native test targets/reader scripts and record their exact commands before implementation acceptance. Never substitute a broad green workspace run for a missing oracle.
 
 | Gate | Cases and required evidence |
 |---|---|
