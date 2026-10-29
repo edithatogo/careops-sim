@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "packet_id": "R11.1.invocation-count-red",
+  "task_id": "R11.1",
+  "target_repo": ".",
+  "base_commit": "c8ac4171c8e9ff48852ccbcf8e7b77f0cdbaccba",
+  "model_role": "coordinator",
+  "model_candidate": "session configured model",
+  "objective": "Expose real export-time reruns through test-only invocation observation; prepare remaining trace behavior oracle contracts without fabricating production boundaries.",
+  "context_paths": [
+    "conductor/tracks/polars_data_processing_20261022/spec.md",
+    "conductor/tracks/polars_data_processing_20261022/plan.md",
+    "crates/careops-ed/src/batch_runner.rs",
+    "crates/careops-ed/src/arrow_export.rs",
+    "crates/careops-ed/examples/nominal_mvp.json",
+    "Cargo.lock",
+    "rust-toolchain.toml"
+  ],
+  "input_hashes": {
+    "conductor/tracks/polars_data_processing_20261022/spec.md": "ad164e7622813caae80b1e77e4df7a3886150ab60d53e57dcea6e7797ecb37d0",
+    "conductor/tracks/polars_data_processing_20261022/plan.md": "21f3c01dd1dd581fc38ceecf0cd13c05a3b8cbd278642ab21f2d116e38bb8614",
+    "crates/careops-ed/src/batch_runner.rs": "fee753a72054d56d8cae058fe334b287e8d20ec329ad56f551ab38d5aa759255",
+    "crates/careops-ed/src/arrow_export.rs": "b3a4615ae0e9a07d315e3b1027289e62cded68946bf0fed8b3106eed9b10edb9",
+    "crates/careops-ed/examples/nominal_mvp.json": "71215b7ff4a2b47b38ace339cadac15a68c1c49c9738856ff742e9400c2ff9ae",
+    "Cargo.lock": "f0900a0b1b9704c1c2d971947442e7fe68d0f22e15625f5c106e99e18f1cc882",
+    "rust-toolchain.toml": "eeb69f696d42b47412b674d0ab121c4d9b3c49ba67e181b348202ef7f4909507"
+  },
+  "write_paths": [
+    "crates/careops-ed/src/lib.rs",
+    "crates/careops-ed/src/r111_trace_tests.rs",
+    "conductor/tracks/polars_data_processing_20261022/r111-packet.json",
+    "conductor/tracks/polars_data_processing_20261022/handoff.md",
+    ".careops-security/inventory.json",
+    ".artifacts/r111"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "R10.4 accepted at c8ac4171c8e9ff48852ccbcf8e7b77f0cdbaccba"
+  ],
+  "interface_contract": "Existing run_batch_with_workers + generate_arrow_export_bundle must call real run_scenario once per replication total; test-only registry keyed by unique scenario_id observes entry without changing seeds, events, results or errors. Remaining trace contracts below require production seams before executable tests.",
+  "steps": [
+    "Bind immutable reviewed inputs and claim paths.",
+    "Add cfg(test)-only observer and 1/2/4-worker invocation oracles with row/seed parity assertions.",
+    "Run exact target: require compilation and behavioral failures at invocation assertions, not unrelated errors. Run observer positive controls and production compile check.",
+    "Record raw results; keep R11.1 unchecked and red branch unmerged."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.1",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--lib",
+        "r111_trace_tests::export_invokes_each_replication_once",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": ".",
+      "expected_exit": 101,
+      "oracle": "Three compiled tests fail only actual invocation equality: 8 vs4 calls, with original batch4 and output/seed parity verified before assertion."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.1",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--lib",
+        "r111_trace_tests::observer_"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Concurrent independent registry scopes and RAII cleanup pass."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.1",
+        "cargo",
+        "check",
+        "--locked",
+        "-p",
+        "careops-ed"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Production configuration compiles without test observer; not runtime or R11.1 acceptance."
+    }
+  ],
+  "acceptance": [
+    "Expected red evidence only; no skips, xfails, should_panic or altered goldens.",
+    "Do not mark R11.1 complete: backpressure, trace disk-error and trace checkpoint exact-once tests require reviewed real production boundaries."
+  ],
+  "result_path": ".artifacts/r111/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Missing prerequisite or undefined interface",
+    "Edit outside write_paths",
+    "Cannot establish the specified oracle"
+  ],
+  "size_exception": "Six owned path groups include the required security inventory and ignored evidence. One behavior, no runtime implementation; reviewer separately checks instrumentation.",
+  "status": "prepared",
+  "remaining_oracle_contracts": [
+    {
+      "id": "R11.1.backpressure",
+      "state": "not_dispatchable_missing_capture_seam",
+      "contract": "Configure positive record/byte capacity at real capture producer/consumer. A latch pauses consumer after receiving a real emitted batch; observe accepted minus acknowledged records/bytes within capacity and no producer advancement beyond documented in-flight allowance. Release latch; compare canonical rows, seeds/events to unblocked run. Deadlines only prevent hangs; handshake proves blocking. Do not count retained scenario/model collections as a capture queue.",
+      "required_interfaces": [
+        "producer emitted/accepted/acknowledged boundaries",
+        "configured record and byte capacity",
+        "consumer latch/fault injection"
+      ],
+      "implementation_tests": []
+    },
+    {
+      "id": "R11.1.trace-disk-errors",
+      "state": "not_dispatchable_missing_trace_writer",
+      "contract": "Inject write/flush/rename errors at actual trace part and completed-manifest publication. Require typed output failure, no completed manifest, prior committed parts unchanged and recoverable checkpoint; exercise partial writes and no retry of mutation. Real temporary filesystem collision is valid only at actual called trace path.",
+      "required_interfaces": [
+        "actual trace writer and publication boundaries",
+        "narrow IO fault injection"
+      ],
+      "implementation_tests": []
+    },
+    {
+      "id": "R11.1.trace-recovery",
+      "state": "not_dispatchable_missing_trace_checkpoint_binding",
+      "contract": "Generate genuine parts and checkpoint from original replications. Interrupt deterministically before/after part commit and watermark/manifest commit. Resume with 1/2/4 workers and prove one record per replication/sequence, no gaps and unchanged event/seed identities. Delete/corrupt a referenced committed part or duplicate sequence with conflicting hash: reject before simulation. Unreferenced staged/orphan parts follow reviewed recovery policy, never silently duplicate.",
+      "required_interfaces": [
+        "real partition identifiers and sequence watermarks",
+        "checkpoint-to-trace hash binding",
+        "publication-boundary interruption hook"
+      ],
+      "implementation_tests": []
+    }
+  ]
+}

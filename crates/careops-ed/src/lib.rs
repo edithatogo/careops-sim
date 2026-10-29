@@ -11,6 +11,9 @@ pub mod disposition;
 #[doc(hidden)]
 pub mod pathway;
 
+#[cfg(test)]
+mod r111_trace_tests;
+
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::error::Error;
 use std::fmt::{Display, Formatter};
@@ -661,6 +664,8 @@ struct ResourceState {
 }
 
 pub fn run_scenario(scenario: &ScenarioConfig) -> Result<RunSummary, SimulationError> {
+    #[cfg(test)]
+    r111_trace_tests::observe_invocation(&scenario.scenario_id, scenario.seed);
     scenario
         .validate()
         .map_err(|error| SimulationError(error.to_string()))?;
