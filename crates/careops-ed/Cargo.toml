@@ -12,3 +12,10 @@ kairo-ecs-core.workspace = true
 kairo-ecs-types.workspace = true
 serde.workspace = true
 serde_json.workspace = true
+kairo-ecs-arrow = { path = "../../libs/kairos/crates/kairo-ecs-arrow", features = ["polars-native"], optional = true }
+polars = { version = "=0.45.1", default-features = false, features = ["parquet"], optional = true }
+tempfile = { version = "3.17.1", optional = true }
+
+[features]
+default = ["native-data"]
+native-data = ["dep:kairo-ecs-arrow", "dep:polars", "dep:tempfile"]

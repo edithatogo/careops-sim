@@ -939,3 +939,9 @@ mod tests {
         assert_eq!(summary.unfinished, 0);
     }
 }
+
+#[cfg(feature = "native-data")]
+pub mod parquet_capture;
+
+#[cfg(feature = "native-data")]
+mod captured_batch;

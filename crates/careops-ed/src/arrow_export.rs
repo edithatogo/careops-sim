@@ -18,7 +18,9 @@ use serde::{Deserialize, Serialize};
 
 use crate::disposition::api_runner::{ExitCodeDef, ValidationError};
 use crate::disposition::batch_runner::BatchRunDocument;
-use crate::{PatientStatus, ScenarioConfig};
+#[cfg(feature = "native-data")]
+use crate::PatientStatus;
+use crate::ScenarioConfig;
 
 /// Position measurement kind distinguishing physical/arrival confirmation,
 /// simulated discrete event dispatch, and continuous in-transit trajectory interpolation.
@@ -39,6 +41,7 @@ pub struct RunProvenance {
     pub scenario_id: String,
     pub schema_version: u32,
     pub input_sha256: String,
+    pub parsed_input_sha256: String,
     pub time_unit: String,
     pub horizon_ticks: u64,
     pub base_seed: u64,
@@ -644,6 +647,7 @@ pub fn interpolate_patient_position(
 }
 
 /// Extracts location distance between two named locations from scenario routes.
+#[cfg(feature = "native-data")]
 fn lookup_route_distance(scenario: &ScenarioConfig, from: &str, to: &str) -> f64 {
     for route in &scenario.capacity_location.routes {
         if (route.from_location_id == from && route.to_location_id == to)
@@ -658,12 +662,15 @@ fn lookup_route_distance(scenario: &ScenarioConfig, from: &str, to: &str) -> f64
 
 /// Generates complete Arrow/Parquet export bundle with explicit denominators, uncertainty,
 /// spatial revision, transit records, and provenance.
+#[cfg(feature = "native-data")]
 pub fn generate_arrow_export_bundle(
     scenario: &ScenarioConfig,
     batch_doc: &BatchRunDocument,
     spatial_revision_override: Option<&str>,
     resumed_info: Option<(bool, Option<u64>)>,
 ) -> Result<ArrowExportBundle, ValidationError> {
+    let (capture_store, captured, capture_meta) =
+        crate::captured_batch::export_source(scenario, batch_doc)?;
     let spatial_revision = spatial_revision_override
         .unwrap_or("spatial.v1.synthetic-generic-ed")
         .to_string();
@@ -675,12 +682,14 @@ pub fn generate_arrow_export_bundle(
     let provenance = RunProvenance {
         scenario_id: batch_doc.scenario_id.clone(),
         schema_version: 1,
-        input_sha256: crate::disposition::api_runner::compute_sha256_hex(
-            scenario.scenario_id.as_bytes(),
-        ),
+        input_sha256: capture_meta.effective_input_sha256.clone(),
+        parsed_input_sha256: capture_meta.parsed_input_sha256.clone(),
         time_unit: scenario.time_unit.clone(),
-        horizon_ticks: scenario.horizon_ticks,
-        base_seed: replication_seeds.first().copied().unwrap_or(scenario.seed),
+        horizon_ticks: batch_doc
+            .replications
+            .first()
+            .map_or(scenario.horizon_ticks, |r| r.horizon_ticks),
+        base_seed: capture_meta.config.base_seed,
         replication_seeds,
         num_workers: batch_doc.num_workers,
         total_replications: batch_doc.total_replications,
@@ -722,13 +731,35 @@ pub fn generate_arrow_export_bundle(
     let mut location_visits: BTreeMap<String, usize> = BTreeMap::new();
 
     for rep in &batch_doc.replications {
-        // Run scenario to fetch full patient work trace for this replication
-        let mut rep_scen = scenario.clone();
-        rep_scen.seed = rep.seed;
-        let detailed_summary = crate::run_scenario(&rep_scen)
-            .map_err(|e| ValidationError::new(ExitCodeDef::SimulationFailed, e.to_string()))?;
-
-        for pat in &detailed_summary.patients {
+        #[cfg(feature = "native-data")]
+        let patient_rows = {
+            use crate::capture::PartStore;
+            let capture = captured
+                .iter()
+                .find(|r| r.summary.replication_index == rep.replication_index)
+                .ok_or_else(|| {
+                    ValidationError::new(
+                        ExitCodeDef::MalformedConfig,
+                        "missing captured replication",
+                    )
+                })?;
+            let mut rows = Vec::new();
+            for part in &capture.parts {
+                let bytes = capture_store
+                    .read_part(&part.name, capture_meta.limits.max_bytes)
+                    .map_err(crate::captured_batch::error)?;
+                rows.extend(
+                    capture_store
+                        .decode_part(&bytes)
+                        .map_err(crate::captured_batch::error)?
+                        .rows,
+                );
+            }
+            rows
+        };
+        #[cfg(not(feature = "native-data"))]
+        let patient_rows: Vec<crate::PatientResult> = Vec::new();
+        for pat in &patient_rows {
             let res_id = scenario
                 .patients
                 .iter()
@@ -932,7 +963,7 @@ pub fn generate_arrow_export_bundle(
         value: tp_mean,
         unit: "patients_per_tick".to_string(),
         denominator_name: "horizon_ticks".to_string(),
-        denominator_value: scenario.horizon_ticks as f64,
+        denominator_value: provenance.horizon_ticks as f64,
         uncertainty: tp_uncertainty,
         censored_count: total_unfinished,
         unfinished_count: total_unfinished,
@@ -1037,4 +1068,17 @@ pub fn export_spatial_summary_to_csv(summary: &SpatialSummary) -> String {
         ));
     }
     out
+}
+
+#[cfg(not(feature = "native-data"))]
+pub fn generate_arrow_export_bundle(
+    _scenario: &ScenarioConfig,
+    _batch_doc: &BatchRunDocument,
+    _spatial_revision_override: Option<&str>,
+    _resumed_info: Option<(bool, Option<u64>)>,
+) -> Result<ArrowExportBundle, ValidationError> {
+    Err(ValidationError::new(
+        ExitCodeDef::MalformedConfig,
+        "native-data capture required for export",
+    ))
 }

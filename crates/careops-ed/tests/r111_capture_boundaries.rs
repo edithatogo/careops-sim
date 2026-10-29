@@ -566,6 +566,7 @@ fn actual_codec_framing_controls_batch_split_and_byte_cap() {
     store.padding = 512;
     let rows = run_scenario(&scenario()).unwrap().patients;
     let sample = CaptureBatch {
+        time_unit: "ticks".into(),
         schema: "careops.ed.capture-boundary.v1".into(),
         run_id: config(1).batch_id,
         input_sha256: "0".repeat(64),

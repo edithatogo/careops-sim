@@ -127,6 +127,9 @@ pub struct BatchRunDocument {
     pub aggregate_std_error: f64,
     pub mean_completion_rate: f64,
     pub completed_at_epoch_ms: u64,
+    #[cfg(feature = "native-data")]
+    #[serde(default)]
+    pub capture: Option<crate::parquet_capture::CaptureSource>,
 }
 
 /// Atomically writes content to path via temporary staging file.
@@ -204,6 +207,7 @@ pub fn compute_batch_aggregates(results: &[ReplicationResult]) -> (f64, f64, f64
 }
 
 /// Executes a batch of replications across independent CPU worker threads.
+#[cfg(not(feature = "native-data"))]
 pub fn run_batch_with_workers(
     scenario: &ScenarioConfig,
     config: &BatchConfig,
@@ -306,6 +310,8 @@ pub fn run_batch_with_workers(
         aggregate_std_error: std_error,
         mean_completion_rate: completion_rate,
         completed_at_epoch_ms: current_epoch_ms(),
+        #[cfg(feature = "native-data")]
+        capture: None,
     };
 
     // Atomically persist final completed document if output_dir provided
@@ -333,6 +339,16 @@ pub fn resume_batch_from_checkpoint(
     output_dir: &Path,
     cancel_token: Option<&CancellationToken>,
 ) -> Result<BatchRunDocument, ValidationError> {
+    #[cfg(feature = "native-data")]
+    if crate::capture::read_checkpoint(checkpoint_path).is_ok() {
+        return crate::captured_batch::resume(
+            checkpoint_path,
+            scenario,
+            num_workers,
+            output_dir,
+            cancel_token,
+        );
+    }
     let runner_fn = |idx: usize,
                      seed: u64,
                      meta: &EdBatchMetadata|
@@ -399,6 +415,8 @@ pub fn resume_batch_from_checkpoint(
         aggregate_std_error: std_error,
         mean_completion_rate: completion_rate,
         completed_at_epoch_ms: current_epoch_ms(),
+        #[cfg(feature = "native-data")]
+        capture: None,
     };
 
     let final_path = output_dir.join("batch_run.json");
@@ -459,4 +477,21 @@ pub fn load_completed_batch(path: &Path) -> Result<BatchRunDocument, ValidationE
     }
 
     Ok(doc)
+}
+
+#[cfg(feature = "native-data")]
+pub fn run_batch_with_workers(
+    scenario: &ScenarioConfig,
+    config: &BatchConfig,
+    output_dir: Option<&Path>,
+    cancel_token: Option<&CancellationToken>,
+    progress_callback: Option<&(dyn Fn(BatchProgress) + Send + Sync)>,
+) -> Result<BatchRunDocument, ValidationError> {
+    crate::captured_batch::run(
+        scenario,
+        config,
+        output_dir,
+        cancel_token,
+        progress_callback,
+    )
 }

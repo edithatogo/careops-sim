@@ -94,6 +94,7 @@ pub struct CaptureBatch {
     pub schema: String,
     pub run_id: String,
     pub input_sha256: String,
+    pub time_unit: String,
     pub replication_index: usize,
     pub seed: u64,
     pub first_sequence: usize,
@@ -157,6 +158,7 @@ pub struct CaptureMetadata {
     pub capture_schema: String,
     pub codec_id: String,
     pub effective_input_sha256: String,
+    pub parsed_input_sha256: String,
     pub config: BatchConfig,
     pub limits: CaptureLimits,
 }
@@ -167,7 +169,7 @@ const SCHEMA: &str = "careops.ed.capture-boundary.v1";
 fn part_name(index: usize, sequence: usize) -> String {
     format!("rep-{index:08}-seq-{sequence:016}.part")
 }
-fn metadata(
+pub(crate) fn metadata(
     scenario: &ScenarioConfig,
     config: &BatchConfig,
     limits: CaptureLimits,
@@ -177,10 +179,16 @@ fn metadata(
     if config.replications == 0 {
         return Err(invalid("replications must be positive"));
     }
+    let mut effective = scenario.clone();
+    effective.horizon_ticks = config.horizon_override.unwrap_or(scenario.horizon_ticks);
+    effective.seed = config.base_seed;
     Ok(CaptureMetadata {
         capture_schema: SCHEMA.into(),
         codec_id: store.codec_id().into(),
         effective_input_sha256: compute_sha256_hex(
+            &serde_json::to_vec(&effective).map_err(invalid_json)?,
+        ),
+        parsed_input_sha256: compute_sha256_hex(
             &serde_json::to_vec(scenario).map_err(invalid_json)?,
         ),
         config: config.clone(),
@@ -275,6 +283,7 @@ fn execute(
             schema: SCHEMA.into(),
             run_id: meta.config.batch_id.clone(),
             input_sha256: meta.effective_input_sha256.clone(),
+            time_unit: scenario.time_unit.clone(),
             replication_index: index,
             seed,
             first_sequence: 0,
@@ -325,7 +334,7 @@ fn execute(
     })
 }
 
-fn validate_parts(
+pub(crate) fn validate_parts(
     results: &[CapturedReplication],
     meta: &CaptureMetadata,
     scenario: &ScenarioConfig,
@@ -371,7 +380,8 @@ fn validate_parts(
                 return Err(invalid("capture part hash or length mismatch"));
             }
             let batch = store.decode_part(&bytes)?;
-            if batch.schema != SCHEMA
+            if batch.time_unit != scenario.time_unit
+                || batch.schema != SCHEMA
                 || batch.run_id != meta.config.batch_id
                 || batch.input_sha256 != meta.effective_input_sha256
                 || batch.replication_index != result.summary.replication_index
@@ -447,7 +457,7 @@ fn validate_parts(
     Ok(())
 }
 
-fn read_checkpoint(path: &Path) -> Result<CaptureCheckpoint> {
+pub(crate) fn read_checkpoint(path: &Path) -> Result<CaptureCheckpoint> {
     let mut bytes = vec![];
     std::fs::File::open(path)
         .map_err(output)?
@@ -462,7 +472,8 @@ fn read_checkpoint(path: &Path) -> Result<CaptureCheckpoint> {
 fn check_binding(checkpoint: &CaptureCheckpoint, expected: &CaptureMetadata) -> Result<()> {
     let mut config = checkpoint.metadata.config.clone();
     config.num_workers = expected.config.num_workers;
-    if checkpoint.metadata.capture_schema != SCHEMA
+    if checkpoint.metadata.parsed_input_sha256 != expected.parsed_input_sha256
+        || checkpoint.metadata.capture_schema != SCHEMA
         || checkpoint.metadata.codec_id != expected.codec_id
         || checkpoint.metadata.limits != expected.limits
         || checkpoint.metadata.effective_input_sha256 != expected.effective_input_sha256
@@ -485,6 +496,19 @@ pub fn run_captured_batch(
     checkpoint_dir: &Path,
     store: &dyn PartStore,
 ) -> Result<Vec<CapturedReplication>> {
+    run_captured_batch_controlled(scenario, config, limits, checkpoint_dir, store, None, None)
+}
+
+#[allow(clippy::too_many_arguments)]
+pub fn run_captured_batch_controlled(
+    scenario: &ScenarioConfig,
+    config: &BatchConfig,
+    limits: CaptureLimits,
+    checkpoint_dir: &Path,
+    store: &dyn PartStore,
+    cancel: Option<&experiment::CancellationToken>,
+    progress: Option<&(dyn Fn(experiment::BatchProgress) + Send + Sync)>,
+) -> Result<Vec<CapturedReplication>> {
     let meta = metadata(scenario, config, limits, store)?;
     let checkpoint_path = checkpoint_dir.join("checkpoint.json");
     if checkpoint_path.exists() || store.is_complete()? || !store.part_names()?.is_empty() {
@@ -500,8 +524,8 @@ pub fn run_captured_batch(
         Some(1),
         meta.clone(),
         Some(checkpoint_dir),
-        None,
-        None,
+        cancel,
+        progress,
         |index, seed, m| execute(scenario, index, seed, m, store),
     )?;
     // The inherited generic runner treats checkpoint writes as best effort. A
@@ -523,6 +547,17 @@ pub fn resume_captured_batch(
     checkpoint_dir: &Path,
     store: &dyn PartStore,
 ) -> Result<Vec<CapturedReplication>> {
+    resume_captured_batch_controlled(scenario, config, limits, checkpoint_dir, store, None)
+}
+
+pub fn resume_captured_batch_controlled(
+    scenario: &ScenarioConfig,
+    config: &BatchConfig,
+    limits: CaptureLimits,
+    checkpoint_dir: &Path,
+    store: &dyn PartStore,
+    cancel: Option<&experiment::CancellationToken>,
+) -> Result<Vec<CapturedReplication>> {
     let meta = metadata(scenario, config, limits, store)?;
     if store.is_complete()? {
         return Err(invalid("completed capture cannot be overwritten"));
@@ -536,7 +571,7 @@ pub fn resume_captured_batch(
         &path,
         config.num_workers,
         checkpoint_dir,
-        None,
+        cancel,
         None,
         |index, seed, m| execute(scenario, index, seed, m, store),
     )?;
@@ -551,6 +586,57 @@ pub fn resume_captured_batch(
     experiment::atomic_write_file(
         &path,
         &serde_json::to_vec(&completed).map_err(invalid_json)?,
+    )?;
+    store.complete(&results)?;
+    Ok(results)
+}
+
+/// Executes one partition using the canonical index-derived seed. The caller owns
+/// a disjoint part namespace and must finalize the complete set before export.
+pub fn capture_replication(
+    scenario: &ScenarioConfig,
+    config: &BatchConfig,
+    limits: CaptureLimits,
+    store: &dyn PartStore,
+    index: usize,
+) -> Result<CapturedReplication> {
+    let meta = metadata(scenario, config, limits, store)?;
+    if index >= config.replications || store.is_complete()? {
+        return Err(invalid("invalid partition index or completed store"));
+    }
+    let seeds = experiment::allocate_replication_seeds(config.base_seed, config.replications);
+    execute(scenario, index, seeds[index], &meta, store)
+}
+
+/// Validates the entire genuine partition set before checkpoint/manifest commit.
+pub fn finalize_captured_replications(
+    scenario: &ScenarioConfig,
+    config: &BatchConfig,
+    limits: CaptureLimits,
+    checkpoint_dir: &Path,
+    store: &dyn PartStore,
+    mut results: Vec<CapturedReplication>,
+) -> Result<Vec<CapturedReplication>> {
+    if store.is_complete()? || results.len() != config.replications {
+        return Err(invalid("incomplete partition set or completed store"));
+    }
+    let meta = metadata(scenario, config, limits, store)?;
+    results.sort_by_key(|r| r.summary.replication_index);
+    validate_parts(&results, &meta, scenario, store)?;
+    let checkpoint = CaptureCheckpoint {
+        schema_version: 1,
+        batch_id: config.batch_id.clone(),
+        base_seed: config.base_seed,
+        total_replications: config.replications,
+        metadata: meta,
+        completed_replications: results.clone(),
+        pending_indices: vec![],
+        status: "complete".into(),
+        checkpoint_epoch_ms: experiment::current_epoch_ms(),
+    };
+    experiment::atomic_write_file(
+        &checkpoint_dir.join("checkpoint.json"),
+        &serde_json::to_vec(&checkpoint).map_err(invalid_json)?,
     )?;
     store.complete(&results)?;
     Ok(results)
