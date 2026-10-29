@@ -17,7 +17,7 @@ from typing import Any
 CANONICAL_RUST = "1.99.1"
 # Schema v1 retains the field name; this now enforces the sole declared floor.
 DEFAULT_MSRV = "1.99"
-EXPECTED_FIXTURE_PATH = "libs/kairos/crates/kairo-ecs-arrow-io/tests/fixtures/calibration_physical_v2/manifest.json"
+EXPECTED_FIXTURE_PATH = "tests/fixtures/d33-calibration-physical-v2/manifest.json"
 EXPECTED_FIXTURE_SHA = "e37ade3d61550e58273989fd12c46091ddfdd1f01eaf55a8eb76af72eb1d4082"
 EXPECTED_COVERAGE_FILE = "crates/careops-ed/src/lib.rs"
 EXPECTED_MUTATION_PACKAGE = "careops-ed"

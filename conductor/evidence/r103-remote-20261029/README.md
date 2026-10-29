@@ -11,3 +11,5 @@ Local Rust workspace: 358 tests passed, zero failed/ignored; full Clippy passed.
 Reviewer-agent review: child0741026 modifies only the owner workflow; no actionable workflow issue. Parent diff contains no unrelated advanced implementation; statistical and row-reference assertions preserved. Remaining owner/contract/prerequisite/hosted gates explicitly retained.
 
 Rollback: restore previous 44261eb gitlink, matching current-state metadata and the preserved previous active contract as one reviewed commit; preserve prior source and historical receipts. No release, clinical or hardware acceptance.
+
+Hosted follow-up: the context job exposed the removed upstream D3.3 fixture path after all 728 Python tests passed. The exact original manifest is now retained in parent test fixtures; expected hash and all negative guards are unchanged. The real support check failed before and passed after relocation; 21 focused tests pass. Reviewer found no actionable issue. Final hosted verification remains pending.
