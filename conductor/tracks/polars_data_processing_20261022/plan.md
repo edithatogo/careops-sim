@@ -1,12 +1,12 @@
 # Plan: CareOps whole-layer Polars migration
 
-All implementation work is pending. Write failing behavioural tests before replacement.
+R10 entry and baseline are reconciled for the bounded remote packet. Runtime Polars replacement remains pending; write failing behavioural tests before replacement.
 
 ## R10 — Upstream entry and baseline
 
-- [ ] R10.1 Verify Kairos Track 70 Phase 4 accepted immutable commit, checks and receipt manifest; refuse pin adoption on status labels alone. This external gate remains unresolved at registration.
-- [ ] R10.2 Inventory ED/birthing/shared/script table paths, join cardinality, metrics/denominators, fixtures and consumers; record baseline traces and resource measurements. Classify 93/94/96 (or paired parent) targets as removed/required/independent; record exact blocked migration task, owner, prerequisite receipt and oracle before affected dispatch. Record no-target decisions explicitly; do not mark adoption complete.
-- [ ] R10.3 Add failing reference tests for existing statistical definitions and trace-once exports; update parent Kairos pin and lockfiles only to the accepted compatible upstream commit.
+- [x] R10.1 Verify accepted upstream Track 70 receipt and immutable compatible source. Canonical manifest 5692e6a, PR #304 40 passed/3 skipped and reconciliation PR #306 25 passed are retained in [remote prerequisite evidence](../../evidence/r103-remote-20261029/prerequisites.md). Exact bridge 0741026 passed 588 native tests on each required host; old and renewed contracts are retained.
+- [x] R10.2 Inventory current remote ED/core/CLI table and consumer paths, statistical definitions and supporting dependency targets; record the 26-case seed 7 baseline and input/summary parity. [Scoped inventory and evidence](../../evidence/r103-remote-20261029/prerequisites.md) explicitly excludes the unintegrated advanced identity/birthing lane. No real event-trace capture, production join cardinality or clinical acceptance is claimed.
+- [ ] R10.3 Add reference tests and qualify compatible Kairos pin 0741026. Local 358 Rust tests,728 Python tests, full Clippy, exact pin contract and 26 benchmark parity pass; child native owner passes both hosts. Remote publication and final parent hosted checks remain pending. See [bounded remote packet](../../evidence/r103-remote-20261029/README.md). Trace invocation count and capture/removal remain R11.1/R11.2.
 - [ ] R10.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.
 
 ## R11 — Capture once and durable trace parts
