@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "packet_id": "A3.2.staged-allocation-core",
+  "task_id": "A3.2",
+  "target_repo": ".",
+  "base_commit": "79844d377b5d2af0179a24d0fba154a7deb4c018",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Implement a CareOps staged-allocation lifecycle that consumes single-resource grant/release outcomes, makes partial claims and rollback explicit, and never claims atomic multi-resource allocation.",
+  "context_paths": [
+    "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md",
+    "crates/careops-core/src/lib.rs",
+    "crates/careops-core/Cargo.toml",
+    "Cargo.toml",
+    "libs/kairos/crates/kairo-ecs-des/src/flow.rs"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md": "9b99a910c8693ef8a4f9cd4f8a0a1d6296061af136a140a8e138a24934ba368b",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "78aeff1986332ebc10aacc164f2f509abbce1f1daccde92c6c9620e926b471a3",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md": "40afbe039b58b81f682b19e1d102fdaa96f0d6d2de8b4e0eeacbf50fd4b5c088"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A3.2.staged-allocation-core.json",
+    "conductor/evidence/a3.2-staged-allocation-core-20261027/README.md",
+    "crates/careops-core/src/allocation.rs",
+    "crates/careops-core/src/lib.rs",
+    "crates/careops-core/tests/allocation_contract.rs",
+    "crates/careops-core/tests/allocation_kairos_conformance.rs",
+    "crates/careops-core/Cargo.toml",
+    "Cargo.toml",
+    "Cargo.lock"
+  ],
+  "protected_paths": [".git", "conductor/current-state.json", "conductor/execution/tasks.json", "crates/careops-ed", "libs/kairos"],
+  "leaf_dependencies": ["A3.1"],
+  "interface_contract": "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md",
+  "steps": [
+    "Add behavior-first tests for deterministic staged claim requests, contending operations, deadline-at-grant timeout precedence, rejection, cancellation, expiry, rollback release failures, late grants, stale completion, segment-boundary interruption, FIFO issuance and non-interruptible work.",
+    "Implement a bounded pure CareOps state machine around single-resource grant/release results; keep acquired leases visible until release acknowledgement and retain failed-release residuals.",
+    "Treat deadline <= grant time as timeout; late/stale grants become explicit orphan releases. Idempotent cancel/expire and stale completion must not mutate current work.",
+    "Implement in-process suspend/resume only at explicit segment boundary; do not claim portable checkpoint/restart or Kairos atomic bundles.",
+    "Add a dev-only pinned-Kairos conformance test: use a capacity-one Flow resource with two contending CareOps claim tokens, bind exact engine request/resource identities, prove only one active lease exists, then release and prove the queued request grants.",
+    "Run focused CareOps allocator and Kairos conformance tests, core clippy and formatting; record exact outputs and source hashes. Defer full workspace compatibility to A3.4."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-core", "--test", "allocation_contract", "--test", "allocation_kairos_conformance"], "cwd": ".", "expected_exit": 0, "oracle": "Staged lifecycle cases pass and a pinned-Kairos Flow contention fixture proves a capacity-one resource never has two active leases."},
+    {"argv": ["cargo", "clippy", "--locked", "-p", "careops-core", "--all-targets", "--", "-D", "warnings"], "cwd": ".", "expected_exit": 0, "oracle": "CareOps core targets pass clippy with warnings denied."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace Rust formatting is canonical."}
+  ],
+  "acceptance": [
+    "Every acquired lease remains visible until its release is acknowledged; failed rollback remains explicit and retryable.",
+    "Deadline-at-grant ties timeout; late grants are tracked and released rather than lost.",
+    "Cancellation, expiry, rejection and duplicate release/completion handling are idempotent or fail without state mutation.",
+    "Each accepted lease receipt matches the bound engine request identity, request revision and mapped resource identity.",
+    "A pinned-Kairos capacity-one contention fixture proves exclusive active leases and queued grant after release.",
+    "Request issuance order is deterministic FIFO among operations ready to issue their next claim; later arrivals cannot overtake an earlier ready waiter. This bounds only CareOps issuance and makes no guarantee about engine grants or capacity availability.",
+    "Urgency/priority is not an interruption input. Non-interruptible work rejects suspension without mutation; interruption occurs only between declared work segments and retains claims/progress through in-process suspend/resume.",
+    "No atomic multi-resource grant, portable checkpoint, ED schema/default, production dependency/runtime graph change, dependency upgrade, Kairos source or pin change is claimed; the test-only dependency on the exact pinned local Kairos crate is permitted."
+  ],
+  "result_path": "conductor/evidence/a3.2-staged-allocation-core-20261027/README.md",
+  "stop_conditions": ["Pinned Kairos API differs from ADR-0011", "True atomic multi-resource grant is required", "Could not retain residual claims after failed release", "Edit outside write_paths"],
+  "size_exception": "Reviewed bounded cross-file integration: A3.2 couples one CareOps coordinator module with a dev-only dependency and a pinned-Kairos conformance fixture. The exact write paths cover that module, its contract/conformance tests, and the minimum Cargo manifests/lock needed to verify real single-resource contention; no Kairos source or ED consumer files are included.",
+  "status": "prepared"
+}

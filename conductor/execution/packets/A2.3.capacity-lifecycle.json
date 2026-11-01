@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "packet_id": "A2.3.capacity-lifecycle",
+  "task_id": "A2.3",
+  "target_repo": ".",
+  "base_commit": "5a82acdf59ff7b107bae85581362ccdba8c86746",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Qualify capacity ceiling changes, maintenance and turnover as non-evicting aggregate state transitions, and preserve the distinction between unknown/unavailable capacity and zero demand.",
+  "context_paths": [
+    "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+    "conductor/evidence/a2.2-capacity-core-20261027/README.md",
+    "crates/careops-core/src/capacity.rs"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md": "73e1c420af8b8ce49b038685c2486f608a690ced1c4530a233fa0b7aabd0a913",
+    "conductor/evidence/a2.2-capacity-core-20261027/README.md": "daba694b81a2eeb3db61b3ead5c5a1f1b052e189a7a72db8e560274c357fd34d"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A2.3.capacity-lifecycle.json",
+    "crates/careops-core/src/capacity.rs",
+    "crates/careops-core/tests/capacity_contract.rs"
+  ],
+  "protected_paths": [".git", "Cargo.lock", "conductor/current-state.json", "conductor/execution/tasks.json", "crates/careops-ed", "libs/kairos"],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+  "steps": [
+    "Add focused cases for closure with active reservations/occupancy, maintenance marking/restoration, work-to-cleaning-to-free turnover, and zero demand versus known-zero/unknown capacity.",
+    "Run the focused capacity contract to observe the expected missing-method failure before implementation.",
+    "Implement checked aggregate disposition transitions and ceiling updates that preserve active counts; do not add scheduling, identity, or grant arbitration.",
+    "Run focused capacity tests, core clippy and formatting checks."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-core", "--test", "capacity_contract"], "cwd": ".", "expected_exit": 0, "oracle": "Capacity and lifecycle contract tests pass, including non-eviction and transition conservation."},
+    {"argv": ["cargo", "clippy", "--locked", "-p", "careops-core", "--all-targets", "--", "-D", "warnings"], "cwd": ".", "expected_exit": 0, "oracle": "All careops-core targets pass clippy with warnings denied."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace Rust formatting is canonical."}
+  ],
+  "acceptance": [
+    "Closure or staffing ceiling changes preserve reserved, occupied and cleaning counts even when no new capacity remains.",
+    "Maintenance and turnover transitions conserve equipped units, reject underflow/overflow, and leave state unchanged on rejected transitions.",
+    "Known-zero capacity with positive demand is distinct from zero demand and from unknown capacity.",
+    "No allocation arbitration, ED schema/default change, Kairos edit, dependency or lockfile change."
+  ],
+  "result_path": "crates/careops-core/tests/capacity_contract.rs",
+  "stop_conditions": ["Input/base drift", "Transition requires resource identity or grant arbitration", "Edit outside write_paths", "Could not preserve active dispositions"],
+  "size_exception": null,
+  "status": "prepared"
+}

@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "contract": "ADR-0014",
+  "cases": [
+    {
+      "id": "ID-01-stable-person",
+      "kind": "positive",
+      "scenario": "Create one person from a stable spawn event and resolve it after an ECS slot is recycled.",
+      "oracle": "PersonId remains unchanged and a recycled handle resolves only through its current generation.",
+      "expected": "same_person_identity_no_handle_alias"
+    },
+    {
+      "id": "ID-02-readmission",
+      "kind": "positive",
+      "scenario": "Close an episode and admit the same person again.",
+      "oracle": "Longitudinal identity is retained; the new episode is distinct and history remains queryable.",
+      "expected": "same_person_new_episode"
+    },
+    {
+      "id": "ID-03-concurrent-episodes",
+      "kind": "positive",
+      "scenario": "Open overlapping episodes for one person in two services.",
+      "oracle": "Both episodes belong to one person; no duplicate person is created.",
+      "expected": "one_person_two_episodes"
+    },
+    {
+      "id": "ID-04-episode-owner",
+      "kind": "negative",
+      "scenario": "Attach one episode to a second person after creation.",
+      "oracle": "Reject without changing either person's episode set or histories.",
+      "expected": "atomic_reject_single_owner"
+    },
+    {
+      "id": "ID-05-duplicate-episode",
+      "kind": "negative",
+      "scenario": "Create another episode with an already-used EpisodeId.",
+      "oracle": "Reject without changing person, episode, accounting or RNG state.",
+      "expected": "atomic_reject_global_episode_collision"
+    },
+    {
+      "id": "ID-06-recycled-handle",
+      "kind": "negative",
+      "scenario": "Resolve a stale ECS handle after its storage slot is reused for another entity.",
+      "oracle": "Stale handle cannot resolve to the replacement longitudinal identity.",
+      "expected": "stale_handle_rejected"
+    },
+    {
+      "id": "ID-07-parent-self-cycle",
+      "kind": "negative",
+      "scenario": "Add BirthParentOf(person, person).",
+      "oracle": "Reject atomically; no edge or accounting change.",
+      "expected": "atomic_reject_self_edge"
+    },
+    {
+      "id": "ID-08-parent-transitive-cycle",
+      "kind": "negative",
+      "scenario": "Add an edge that closes a path in BirthParentOf ancestry.",
+      "oracle": "Reject atomically; existing graph remains byte-equivalent.",
+      "expected": "atomic_reject_birth_cycle"
+    },
+    {
+      "id": "ID-09-unrelated-cycle",
+      "kind": "positive",
+      "scenario": "Create a cycle in an unrelated relation type whose contract permits cycles.",
+      "oracle": "BirthParentOf acyclicity does not become a global graph restriction.",
+      "expected": "typed_relation_specific_cycle_policy"
+    },
+    {
+      "id": "ID-10-duplicate-spawn-replay",
+      "kind": "positive",
+      "scenario": "Replay a SpawnEventId with an identical canonical payload.",
+      "oracle": "No duplicate person, episode, edge, lifecycle event, or accounting count.",
+      "expected": "idempotent_exact_replay"
+    },
+    {
+      "id": "ID-11-spawn-payload-conflict",
+      "kind": "negative",
+      "scenario": "Reuse a SpawnEventId with a different canonical payload.",
+      "oracle": "Reject atomically and preserve identity, lifecycle, accounting and RNG state.",
+      "expected": "atomic_reject_event_payload_conflict"
+    },
+    {
+      "id": "ID-12-distinct-spawn-person-collision",
+      "kind": "negative",
+      "scenario": "Use a different SpawnEventId to create an existing PersonId.",
+      "oracle": "Reject; a second event cannot take ownership of the identity.",
+      "expected": "atomic_reject_person_collision"
+    },
+    {
+      "id": "ID-13-relationship-removal",
+      "kind": "positive",
+      "scenario": "Remove a BirthParentOf edge while both persons and infant episodes exist.",
+      "oracle": "Only the edge is removed; persons, episodes, histories and other edges remain.",
+      "expected": "edge_only_removal"
+    },
+    {
+      "id": "ID-14-parent-episode-close",
+      "kind": "positive",
+      "scenario": "Close the parent's episode while an infant has an active episode.",
+      "oracle": "Infant progression and episode continue independently.",
+      "expected": "independent_episode_lifecycle"
+    },
+    {
+      "id": "ID-15-entry-exit-accounting",
+      "kind": "positive",
+      "scenario": "Apply service entry and exit for an existing person.",
+      "oracle": "Events affect service accounting, not longitudinal person creation/destruction.",
+      "expected": "person_conserved"
+    },
+    {
+      "id": "ID-16-explicit-death",
+      "kind": "positive",
+      "scenario": "Record explicit death, then query prior links and episodes.",
+      "oracle": "Death is terminal to new activity while identity and history remain addressable.",
+      "expected": "terminal_lifecycle_history_retained"
+    },
+    {
+      "id": "ID-17-operative-birth",
+      "kind": "positive",
+      "scenario": "Create parent/infant links for an operative birth event.",
+      "oracle": "Delivery mode does not alter identity namespace or cardinality.",
+      "expected": "one_birth_event_distinct_person_ids"
+    },
+    {
+      "id": "ID-18-multiple-birth",
+      "kind": "positive",
+      "scenario": "One BirthEventId creates two infants, each with its own PersonId and stream namespace.",
+      "oracle": "One-to-many parent links; infants have independent identities and streams.",
+      "expected": "one_event_two_infants_independent"
+    },
+    {
+      "id": "ID-19-deterministic-workers",
+      "kind": "positive",
+      "scenario": "Replay the same logical event history with 1, 2 and 4 workers and different traversal order.",
+      "oracle": "PersonIds, EpisodeIds, edge set and per-process draw streams are equivalent.",
+      "expected": "worker_and_traversal_invariant"
+    },
+    {
+      "id": "ID-20-rng-noninterference",
+      "kind": "negative",
+      "scenario": "Reject a conflicting spawn or relationship command between unrelated process events.",
+      "oracle": "Unrelated process random draws and event histories are unchanged.",
+      "expected": "rejection_does_not_perturb_rng"
+    },
+    {
+      "id": "ID-21-checkpoint-roundtrip",
+      "kind": "positive",
+      "scenario": "Checkpoint and restore with concurrent episodes, birth links, lifecycle state and replay keys.",
+      "oracle": "Identities, edges, terminal states and dedupe state round-trip exactly.",
+      "expected": "checkpoint_state_equivalent"
+    },
+    {
+      "id": "ID-22-checkpoint-suffix",
+      "kind": "positive",
+      "scenario": "Compare uninterrupted execution with checkpoint/restore followed by the same event suffix.",
+      "oracle": "Identity allocation, relationships, lifecycle counts and streams match.",
+      "expected": "resumed_suffix_equivalent"
+    },
+    {
+      "id": "ID-23-compensated-retry",
+      "kind": "positive",
+      "scenario": "Retry a lifecycle event after a modeled compensation/recovery boundary.",
+      "oracle": "Stable event key prevents duplicate identity or accounting effect.",
+      "expected": "retry_idempotent"
+    },
+    {
+      "id": "ID-24-conflict-order-permutation",
+      "kind": "positive",
+      "scenario": "Submit a fixed set of same-time identity commands, including two SpawnEventIds claiming one PersonId, in multiple arrival/traversal/worker orders.",
+      "oracle": "Canonical logical event order yields identical accepted/rejected event IDs, identity/relationship/lifecycle/accounting state and unrelated RNG streams for every permutation.",
+      "expected": "permutation_invariant_canonical_conflict_resolution"
+    },
+    {
+      "id": "ID-25-late-identity-event",
+      "kind": "negative",
+      "scenario": "Submit a new SpawnEventId whose logical time is already sealed by the identity ledger.",
+      "oracle": "Reject atomically; no identity, edge, lifecycle or accounting change; event ID remains unconsumed; RNG state is unchanged. Checkpoint replay, if separately requested, is a distinct operation.",
+      "expected": "atomic_late_event_rejection_without_consumption"
+    }
+  ]
+}

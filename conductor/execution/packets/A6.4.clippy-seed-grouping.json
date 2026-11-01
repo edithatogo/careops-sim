@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "packet_id": "A6.4.clippy-seed-grouping",
+  "task_id": "A6.4",
+  "target_repo": ".",
+  "base_commit": "b9f8462c62db11d5f0144533c8c8301bd9c6885a",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Resolve the A6.4 phase Clippy failure by grouping deterministic test seeds evenly and close a reviewer-identified identity-conservation assertion gap on the final transfer snapshot.",
+  "context_paths": [
+    "conductor/execution/packets/A6.4.phase-review.json",
+    "conductor/evidence/a6.3-composition-scheduler-parity-20261027/README.md",
+    "crates/careops-ed/tests/ed_ward_community_composition.rs"
+  ],
+  "input_hashes": {
+    "crates/careops-ed/tests/ed_ward_community_composition.rs": "06aa37fa5e1adf2ab2e276d913b530aebe800c616e210d26656a6785188da81d",
+    "conductor/execution/packets/A6.4.phase-review.json": "37e310684ee510c27ab0a27d299d2a952c93dc1fd9a450b6094fda4812610083"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A6.4.clippy-seed-grouping.json",
+    "crates/careops-ed/tests/ed_ward_community_composition.rs",
+    "conductor/evidence/a6.4-clippy-seed-grouping-20261027/README.md"
+  ],
+  "protected_paths": [".git", "Cargo.toml", "Cargo.lock", "crates/careops-core", "crates/careops-ed/src", "crates/careops-ed/examples", "libs/kairos", "profiles", "conductor/tracks", "conductor/current-state.json", "conductor/execution/tasks.json"],
+  "leaf_dependencies": ["A6.3"],
+  "interface_contract": "conductor/design/composition-contracts-20261020.md#CC-01; #CC-02; #CC-07; A6.4 reviewer-agent finding on final transfer identity conservation",
+  "steps": [
+    "Change the four irregular seed literals to the Clippy-recommended equal hexadecimal grouping without changing their numeric values.",
+    "Bind the final transfer snapshot in compose_nominal_replication and assert its person_id and episode_id equal the original ED identity, complementing the final owner and terminal-state assertions.",
+    "Run the focused ED composition test, focused ED test-target Clippy with warnings denied, formatting and diff checks; record outputs and hashes."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-ed", "--test", "ed_ward_community_composition"], "cwd": ".", "expected_exit": 0, "oracle": "All composition, ownership, worker-parity and recovery cases pass."},
+    {"argv": ["cargo", "clippy", "--locked", "-p", "careops-ed", "--test", "ed_ward_community_composition", "--", "-D", "warnings"], "cwd": ".", "expected_exit": 0, "oracle": "The edited ED integration target passes Clippy with warnings denied."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace formatting remains canonical."}
+  ],
+  "acceptance": [
+    "Test seed numeric values remain unchanged and have canonical equal digit grouping.",
+    "The completed ward-to-community transfer snapshot explicitly preserves the original person and episode IDs.",
+    "Focused test and Clippy commands pass; A6.4 will rerun full workspace gates on the corrected head."
+  ],
+  "result_path": "conductor/evidence/a6.4-clippy-seed-grouping-20261027/README.md",
+  "stop_conditions": ["Snapshot identity fields are unavailable", "Seed values would change", "Any edit escapes listed write paths"],
+  "size_exception": null,
+  "status": "prepared"
+}

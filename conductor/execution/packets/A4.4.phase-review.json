@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "A4.4.phase-review",
+  "task_id": "A4.4",
+  "target_repo": ".",
+  "base_commit": "095f79b17fc2472e1172af5960b2f0c20354b058",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Review and verify integrated A4.1-A4.3 transfer ownership and ward/community boundary behavior, including atomic apply and advance fixes, against ADR-0012/0013; reconcile registries and advance current-state to A5.1 only after all gates pass.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/agent-contract.md",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+    "conductor/decisions/ADR-0013-ward-community-boundary.md",
+    "conductor/execution/packets/A4.1.transfer-contract.json",
+    "conductor/execution/packets/A4.2.transfer-core.json",
+    "conductor/execution/packets/A4.3.ward-community-contract.json",
+    "conductor/execution/packets/A4.3.ward-community-model.json",
+    "conductor/evidence/a4.1-transfer-contract-20261027/README.md",
+    "conductor/evidence/a4.2-transfer-core-20261027/README.md",
+    "conductor/evidence/a4.3-ward-community-contract-20261027/README.md",
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/src/ward_community.rs",
+    "crates/careops-core/tests/transfer_contract.rs",
+    "crates/careops-core/tests/ward_community_contract.rs",
+    "conductor/execution/packets/A4.4.transfer-fix.json",
+    "conductor/evidence/a4.4-transfer-fix-20261027/README.md",
+    "conductor/execution/packets/A4.4.advance-fix.json",
+    "conductor/evidence/a4.4-advance-fix-20261027/README.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md": "070e599846f4b31e174902a31cff8fe819df1d0ba897a3a8195c366223da567c",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "c52cba526a34ec270438a8a09ec943f1035023f09204e8a0c718899a2c7d9fda",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md": "8a752e0e1c66d717e9d2a3fa412e0a69b9842e828a7dd2077bffa48ebf76b1c9",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/agent-contract.md": "972e357875ea9584e192eda69c0cc9b76394691fa7113598029bf02892bc2e4a",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md": "47b75af12339c469343166a5a2eace02058170679a65d3b36856482b7ebff7dc",
+    "conductor/decisions/ADR-0013-ward-community-boundary.md": "6c731c84c1307356f222cdfa60ee1e6dbcaeb1f26a9d5cefa567a8f21fde737f",
+    "conductor/evidence/a4.1-transfer-contract-20261027/README.md": "afdb5d7f1cd6c80dbc3d8705355b641365a38d738b643955e3d843dc348d5fab",
+    "conductor/evidence/a4.2-transfer-core-20261027/README.md": "f316cb060f298f2227831d42bd1ee022c75bfe036668a2eb3dd0aaf571b3a99a",
+    "conductor/evidence/a4.3-ward-community-contract-20261027/README.md": "b573fa7f3612087dc5afc7aa1b0bfe54064ea6d9a726bfde650cd8469b398257",
+    "conductor/execution/packets/A4.4.transfer-fix.json": "1f5f90e3d9a6116d0f5c533feddf8e7a872f11d43f250f10f48c68ef03f0abef",
+    "conductor/evidence/a4.4-transfer-fix-20261027/README.md": "0b4d9213dd5f666e7998ab5ec632cde9b66d93f9650e0608e060b2ca34887712",
+    "conductor/execution/packets/A4.4.advance-fix.json": "f7470bc011ac5846b556de5da01f57fdee4f236b3225781263d6b1f68015d940",
+    "conductor/evidence/a4.4-advance-fix-20261027/README.md": "0caea116924c6808cf9608fc8360a8b1371728981b09e45406430c908f525a36"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A4.4.phase-review.json",
+    "conductor/evidence/a4.4-phase-review-20261027/README.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/index.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/metadata.json",
+    "conductor/tracks.md",
+    "conductor/index.md",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/careops-core",
+    "crates/careops-ed",
+    "crates/careops-ed-cli",
+    "libs/kairos",
+    "profiles"
+  ],
+  "leaf_dependencies": [
+    "A4.1",
+    "A4.2",
+    "A4.3"
+  ],
+  "interface_contract": "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md; conductor/decisions/ADR-0013-ward-community-boundary.md",
+  "steps": [
+    "Review integrated A4.1-A4.3 source, tests, contracts and receipts, including both A4.4 atomicity fixes, against exact HEAD 095f79b17fc2472e1172af5960b2f0c20354b058.",
+    "Run locked workspace tests, workspace Clippy, formatting and Conductor integrity gates.",
+    "Obtain independent reviewer-agent/subagent phase review of exact integrated HEAD; report and resolve findings with a bounded fix packet if needed.",
+    "Record exact reviewed HEAD, reviewer findings, commands/toolchain/source hashes, results, limits and ownership boundaries.",
+    "Only after all gates pass, mark A4.4 accepted and A5.1 next in plan, indexes, registries, metadata and generated task catalog."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All parent and pinned Kairos workspace tests and doc-tests pass."
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace targets pass Clippy with warnings denied."
+    },
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting is canonical."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Generated task catalog has complete coverage, valid prerequisites and acyclic DAG."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Conductor context and local links validate."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "MVP parent/leaf joins and context hashes validate."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Phase-closeout changes have no whitespace errors."
+    }
+  ],
+  "acceptance": [
+    "Independent reviewer-agent/subagent reviewed exact integrated A4 HEAD and has no unresolved findings.",
+    "Workspace runtime/integrity commands pass, with output and relevant hashes recorded.",
+    "A4.1-A4.3 contracts are honored jointly; physical departure, resource claim release, handover, ED boarding and horizon censoring remain distinct.",
+    "No atomic multi-resource grant, clinical validation, operational acceptance, Kairos source/pin change or ED schema change is claimed.",
+    "A5.1 is the next incomplete task after phase closeout."
+  ],
+  "result_path": "conductor/evidence/a4.4-phase-review-20261027/README.md",
+  "stop_conditions": [
+    "Reviewed source or pin drifts",
+    "Reviewer identifies unresolved material finding",
+    "Any workspace or Conductor integration gate fails",
+    "Out-of-scope source or pin change appears"
+  ],
+  "size_exception": "Coordinator-only phase closeout: one evidence receipt plus the existing plan/index/registry/current-state/task-catalog join must be atomic to keep the accepted phase and next-task pointers consistent. Workspace gates are phase-level integration verification; no worker code implementation is authorized in this packet.",
+  "status": "prepared"
+}

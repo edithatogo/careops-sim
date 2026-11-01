@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "packet_id": "A5.4.phase-review",
+  "task_id": "A5.4",
+  "target_repo": ".",
+  "base_commit": "7b92bcede019f435021ca3127990e01051e11525",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Review and verify integrated A5.1-A5.3 identity, lifecycle, birth-message and destination behavior; reconcile the phase state only after all local integration gates and independent review pass.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/agent-contract.md",
+    "conductor/decisions/ADR-0014-person-episode-identity.md",
+    "conductor/decisions/ADR-0015-birth-message-and-destination-contract.md",
+    "conductor/evidence/a5.1-identity-contract-20261027/README.md",
+    "conductor/evidence/a5.2-identity-ledger-20261027/README.md",
+    "conductor/evidence/a5.3-birth-message-20261027/README.md",
+    "crates/careops-core/src/identity.rs",
+    "crates/careops-core/src/birth.rs",
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/tests/identity_contract.rs",
+    "crates/careops-core/tests/birth_message_contract.rs",
+    "crates/careops-ed/src/identity.rs",
+    "crates/careops-ed/tests/identity_relationship_contract.rs"
+  ],
+  "input_hashes": {
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "98546c3ac19fd905eb6de23e236918b5566f9075464aae22605550e7dd0f9d4b",
+    "conductor/evidence/a5.2-identity-ledger-20261027/README.md": "d0499d8177c8fdec3b4b1471618894c6264b704184623493bd8aec576dcf5825",
+    "conductor/evidence/a5.3-birth-message-20261027/README.md": "ac706d61a4956d9adb920f1909a7bbfdc1dea72c6ca30cd86f29dd3f3bcfb3d1"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A5.4.phase-review.json",
+    "conductor/evidence/a5.4-phase-review-20261027/README.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/index.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/metadata.json",
+    "conductor/tracks.md",
+    "conductor/index.md",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/careops-core",
+    "crates/careops-ed",
+    "crates/careops-ed-cli",
+    "libs/kairos",
+    "profiles"
+  ],
+  "leaf_dependencies": ["A5.1", "A5.2", "A5.3"],
+  "interface_contract": "conductor/decisions/ADR-0014-person-episode-identity.md; conductor/decisions/ADR-0015-birth-message-and-destination-contract.md; conductor/design/composition-contracts-20261020.md#CC-01; conductor/design/composition-contracts-20261020.md#CC-02; conductor/design/composition-contracts-20261020.md#CC-07",
+  "steps": [
+    "Review integrated A5.1-A5.3 source, tests, packets and receipts at the exact integrated HEAD against ADR-0014, ADR-0015 and composition invariants.",
+    "Run locked workspace tests, workspace Clippy, formatting and Conductor integrity gates.",
+    "Obtain independent reviewer-agent/subagent review of the exact integrated commit; fix and re-review all findings before acceptance.",
+    "Record exact reviewed HEAD, reviewer findings, commands, toolchain, output hashes, results and limits in phase evidence.",
+    "After all gates pass, mark A5.4 accepted and A6.1 next in the plan, index, registry, current state and generated task catalog."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "--workspace"], "cwd": ".", "expected_exit": 0, "oracle": "All CareOps parent and pinned Kairos workspace tests and doc-tests pass."},
+    {"argv": ["cargo", "clippy", "--locked", "--workspace", "--all-targets", "--", "-D", "warnings"], "cwd": ".", "expected_exit": 0, "oracle": "All workspace targets pass Clippy with warnings denied."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace formatting is canonical."},
+    {"argv": [".venv/bin/python", "tools/tasks.py", "check"], "cwd": ".", "expected_exit": 0, "oracle": "Generated task catalog covers all source tasks and has valid prerequisites/DAG."},
+    {"argv": [".venv/bin/python", "tools/context.py", "check"], "cwd": ".", "expected_exit": 0, "oracle": "Conductor local links and context integrity pass."},
+    {"argv": [".venv/bin/python", "tools/mvp.py", "check"], "cwd": ".", "expected_exit": 0, "oracle": "MVP task joins and context hashes pass."},
+    {"argv": ["git", "diff", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Phase evidence and closeout changes have no whitespace errors."}
+  ],
+  "acceptance": [
+    "A5.1 contract, A5.2 identity ledger and A5.3 birth-message behavior satisfy their accepted decision records jointly.",
+    "Independent reviewer-agent/subagent examined exact integrated source and has no unresolved findings.",
+    "Workspace tests, Clippy, formatting and Conductor integrity commands pass; receipts include output hashes and executed outcomes.",
+    "Birth message state restores against identity event history; explicit parent unlink preserves people and birth history; split destination intents do not claim atomic multi-recipient transfer.",
+    "Current-source absence of fetal entities is reported as not modeled; no fetal mapping or clinical validity is inferred.",
+    "No Kairos source or pin, ED external schema, hosted CI, release, real-patient identity or clinical/operational acceptance is claimed.",
+    "A6.1 is the next incomplete task only after coordinator acceptance and registry reconciliation."
+  ],
+  "result_path": "conductor/evidence/a5.4-phase-review-20261027/README.md",
+  "stop_conditions": [
+    "Reviewed source or Kairos pin drifts",
+    "Any workspace or Conductor gate fails",
+    "Reviewer finds unresolved material issue",
+    "Out-of-scope source or pin change appears"
+  ],
+  "size_exception": "Coordinator phase closeout: the evidence receipt and existing plan/index/metadata/registry/current-state/task-catalog join must be atomic. Full workspace tests and review are phase-level acceptance gates; no source implementation is authorized by this packet.",
+  "status": "prepared"
+}

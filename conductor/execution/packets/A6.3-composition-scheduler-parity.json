@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "packet_id": "A6.3.composition-scheduler-parity",
+  "task_id": "A6.3",
+  "target_repo": ".",
+  "base_commit": "950e0bfb739ee35a8e55d1a8b5701f96015dc067",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Exercise the accepted ED-to-ward-to-community synthetic composition sequentially within one process through generic batch workers and interruption recovery; assert conservation and stable independent stream namespaces.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/design/composition-contracts-20261020.md",
+    "crates/careops-core/src/experiment/runner.rs",
+    "crates/careops-core/src/pathway/streams.rs",
+    "crates/careops-core/tests/logistics_consumer.rs",
+    "crates/careops-core/tests/pathway_failing_cases_tests.rs",
+    "crates/careops-ed/tests/ed_ward_community_composition.rs"
+  ],
+  "input_hashes": {
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "d556394cd69736abc987618628fd4cd36df761ac0c748ef7422b3d84415522f8",
+    "conductor/design/composition-contracts-20261020.md": "4b83254e9ec17cbdd8c44790deda7bebf5893b3b46fc7f0eae2842af325d9249",
+    "crates/careops-ed/tests/ed_ward_community_composition.rs": "34c9ff97ec08221619bae63c60820cc09045531dcefb9a46412c68a54a933012",
+    "crates/careops-core/src/experiment/runner.rs": "584c74d85ac8161ec10d4a3b7c7fa6e0992749d234b242ca7267e06a107b9e23",
+    "crates/careops-core/src/pathway/streams.rs": "04c886c431388beb4899973ff745ce66a5e0a3b6742317b4a7cf1abf34ca231e",
+    "crates/careops-core/tests/logistics_consumer.rs": "a9768e876aaa891629dca9cd747944068cf746af72af6fb454e7bc76ef6803e4",
+    "crates/careops-core/tests/pathway_failing_cases_tests.rs": "b552b9ef51469b0ed42dc54e89d313c9d6ae7921b016b728132d0c2d6c9cc95c",
+    "crates/careops-ed/examples/nominal_mvp.json": "71215b7ff4a2b47b38ace339cadac15a68c1c49c9738856ff742e9400c2ff9ae"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A6.3-composition-scheduler-parity.json",
+    "crates/careops-ed/tests/ed_ward_community_composition.rs",
+    "conductor/evidence/a6.3-composition-scheduler-parity-20261027/README.md"
+  ],
+  "protected_paths": [".git", "Cargo.toml", "Cargo.lock", "crates/careops-core", "crates/careops-ed/src", "crates/careops-ed/examples", "libs/kairos", "profiles", "conductor/tracks", "conductor/current-state.json", "conductor/execution/tasks.json"],
+  "leaf_dependencies": ["A6.2"],
+  "interface_contract": "conductor/design/composition-contracts-20261020.md#CC-02; #CC-06; #CC-07; conductor/tracks/careops_core_domain_abstractions_20261020/plan.md#A6",
+  "steps": [
+    "Model one replication as the existing deterministic synthetic nominal ED run followed by identity binding and the accepted transfer-manager plus minimal ward/community lifecycle; derive an indexed, serializable result containing timing and ownership/claim conservation observations.",
+    "Run eight replications at 1, 2 and 4 generic workers with identical base seed; require complete ordered results and byte-identical serialized result lists.",
+    "Interrupt a one-worker six-replication batch after completed work with checkpoint interval 1; require checkpoint and partial marker, no completed document, then resume at two workers and compare exactly to uninterrupted baseline.",
+    "Pin the existing progression/service/routing namespace tags and prove service/routing draws do not alter progression draws; rerun existing explicit stream noninterference test.",
+    "Keep the subsystem composition within one replication callback and process. Assert the completed person's ownership and final community claim/accounting are conserved; do not imply a unified cross-domain event loop or introduce PDES partitioning."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-ed", "--test", "ed_ward_community_composition"], "cwd": ".", "expected_exit": 0, "oracle": "Composition worker-count/recovery, lifecycle conservation and stable namespace tests execute and pass."},
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-core", "--test", "pathway_failing_cases_tests", "--test", "logistics_consumer"], "cwd": ".", "expected_exit": 0, "oracle": "Existing exact stream noninterference and generic logistics worker/recovery contracts remain passing."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace formatting remains canonical."}
+  ],
+  "acceptance": [
+    "A fixed synthetic integrated ED-to-ward-to-community batch is identical at 1, 2 and 4 workers.",
+    "Interruption leaves resumable checkpoint evidence and no complete output; recovery is exactly equal to an uninterrupted baseline with no duplicate replication identities.",
+    "Person ownership, bed/place claims and transfer terminal state conserve one owner and one final occupied destination claim after successful handovers.",
+    "Independent pathway namespace tags remain fixed and unrelated service/routing draws do not perturb progression draws.",
+    "Hospital boundaries remain logical composition boundaries; tests use one process and batch-worker callback without claiming a shared cross-domain event loop, PDES, clinical validity, production scheduling or stochastic ED calibration."
+  ],
+  "result_path": "conductor/evidence/a6.3-composition-scheduler-parity-20261027/README.md",
+  "stop_conditions": ["Required composition or generic runner API is missing", "A lifecycle conservation invariant fails", "Output differs across worker count or resume", "Source inputs change from the bound hashes", "Any edit escapes the listed write paths"],
+  "size_exception": null,
+  "status": "prepared"
+}

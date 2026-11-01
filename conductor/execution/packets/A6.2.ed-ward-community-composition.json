@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "packet_id": "A6.2.ed-ward-community-composition",
+  "task_id": "A6.2",
+  "target_repo": ".",
+  "base_commit": "892efc0d7759c03bcb1c0564537ca001f798a6b0",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Build a deterministic synthetic ED-to-ward-to-community composition test using the public ED runner, ED identity adapter, core transfer manager and minimal ward/community model. Cover accepted handover and delayed discharge; rejected and expired offers; cancellation after destination reservation; and right-censoring at the horizon.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md",
+    "conductor/design/composition-contracts-20261020.md",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+    "conductor/decisions/ADR-0013-ward-community-boundary.md",
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/src/ward_community.rs",
+    "crates/careops-core/tests/transfer_contract.rs",
+    "crates/careops-core/tests/ward_community_contract.rs",
+    "crates/careops-ed/src/identity.rs",
+    "crates/careops-ed/src/lib.rs",
+    "crates/careops-ed/examples/nominal_mvp.json"
+  ],
+  "input_hashes": {
+    "crates/careops-core/src/transfer.rs": "3a6272de2ecbb7c2fea58720a703174660eac2f69e60e4f4c34e67107d92a601",
+    "crates/careops-core/src/ward_community.rs": "9c8bdea4615b4245a191c8b2e76f6f35d15cbcdbecc57e234fdd2638098dc846",
+    "crates/careops-ed/src/identity.rs": "8dd4dc89a6fcb169b8fba78279fedbaf6271c4c04911ac4cc819ae910de1d01b",
+    "crates/careops-ed/examples/nominal_mvp.json": "71215b7ff4a2b47b38ace339cadac15a68c1c49c9738856ff742e9400c2ff9ae",
+    "crates/careops-core/tests/ward_community_contract.rs": "ff734b473d7fd5d4a6b1e5a292b703950e63cbc63a18b04ce75fc09b2693b7d1"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A6.2.ed-ward-community-composition.json",
+    "crates/careops-ed/tests/ed_ward_community_composition.rs",
+    "conductor/evidence/a6.2-ed-ward-community-20261027/README.md"
+  ],
+  "protected_paths": [".git", "Cargo.toml", "Cargo.lock", "crates/careops-core", "crates/careops-ed/src", "crates/careops-ed/examples", "libs/kairos", "profiles"],
+  "leaf_dependencies": ["A6.1"],
+  "interface_contract": "conductor/design/composition-contracts-20261020.md#CC-02; conductor/design/composition-contracts-20261020.md#CC-04; conductor/design/composition-contracts-20261020.md#CC-07; conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md; conductor/decisions/ADR-0013-ward-community-boundary.md",
+  "steps": [
+    "Run the unchanged nominal ED fixture through run_scenario and use its completed synthetic patient ticks as scenario timing inputs; use EdIdentityAdapter to bind the patient to one stable person and episode.",
+    "Drive one TransferManager lifecycle from ED to ward and a second lifecycle from ward to community for the same person and episode, using deterministic message IDs and virtual ticks.",
+    "Use ward_community::simulate to derive actual departure, arrival, handover, delayed ED admission, boarding, and horizon-censoring expectations; assert transfer claims and person ownership at each boundary.",
+    "Add independent negative paths for rejected offer, offer expiry, and cancellation after reservation; assert the origin claim remains and destination claims are released.",
+    "Run the focused ED integration target, both existing core contract targets, formatting and diff integrity."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-ed", "--test", "ed_ward_community_composition"], "cwd": ".", "expected_exit": 0, "oracle": "All composition cases execute and assert identity, transfer ownership/claims, delay and horizon behavior."},
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-core", "--test", "transfer_contract", "--test", "ward_community_contract"], "cwd": ".", "expected_exit": 0, "oracle": "Existing transfer and ward/community contract coverage remains passing."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace formatting remains canonical."}
+  ],
+  "acceptance": [
+    "The same synthetic person and episode traverse ED to ward and ward to community without duplicate identity or premature origin release.",
+    "Actual departure follows both community-place and transport availability; arrival and handover occur at explicit delayed ticks.",
+    "Rejection, expiry and cancellation retain origin ownership and do not leak destination claims.",
+    "Horizon truncation is right-censored and keeps the origin claim until handover.",
+    "No full ward, clinical validity, production scheduling, or PDES partitioning is claimed."
+  ],
+  "result_path": "conductor/evidence/a6.2-ed-ward-community-20261027/README.md",
+  "stop_conditions": ["A required core API or transition is missing", "The same-scheduler conservation oracle cannot be expressed", "Unexpected schema changes are required", "Any edit escapes the listed write paths"],
+  "size_exception": null,
+  "status": "prepared"
+}

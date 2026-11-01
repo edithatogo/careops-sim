@@ -28,7 +28,7 @@
 | Track | Specification | Phased implementation plan | Status |
 | --- | --- | --- | --- |
 | Repository reconciliation & Kairos upgrade | [Specification](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md) | [Plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md) | Complete: R0–R3 accepted; pin 44261eb retained, with missing E6/E8 hardware capabilities kept as external dispatch gates |
-| Multi-domain core abstractions & boundaries | [Specification](tracks/careops_core_domain_abstractions_20261020/spec.md) | [Plan](tracks/careops_core_domain_abstractions_20261020/plan.md) | In progress: A0 and A1.1/A1.2 checked complete; A1.3 next |
+| Multi-domain core abstractions & boundaries | [Specification](tracks/careops_core_domain_abstractions_20261020/spec.md) | [Plan](tracks/careops_core_domain_abstractions_20261020/plan.md) | In progress: A0–A6 accepted locally; A7.1–A7.4 incomplete, with A7.1 gated on birthing B7.4 |
 | Generic birthing suite delivery | [Specification](tracks/birthing_suite_delivery_20261020/spec.md) | [Plan](tracks/birthing_suite_delivery_20261020/plan.md) | Planned; B0 evidence intake independent, B1 after A5 |
 | ED parameters and example inputs | [Specification](tracks/ed_parameter_evidence_20260927/spec.md) | [Plan](tracks/ed_parameter_evidence_20260927/plan.md) | Historical P0–P5 generic catalogue/model coverage accepted; Cairns-specific values and empirical hospital validity remain separate |
 | Development readiness | [Specification](tracks/development_readiness_20260925/spec.md) | [Plan](tracks/development_readiness_20260925/plan.md) | Historical plan tasks checked; dated evidence retained |

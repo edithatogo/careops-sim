@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "packet_id": "A5.3.birth-message",
+  "task_id": "A5.3",
+  "target_repo": ".",
+  "base_commit": "1cf65791a382b4b8165747e08283f99960e20938",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Implement a CareOps-owned idempotent multiple-birth registration contract with explicit per-recipient destinations, while documenting that fetal identity mapping is not modeled in current source.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/decisions/ADR-0014-person-episode-identity.md",
+    "conductor/decisions/ADR-0015-birth-message-and-destination-contract.md",
+    "conductor/design/composition-contracts-20261020.md",
+    "crates/careops-core/src/identity.rs",
+    "crates/careops-core/src/transfer.rs"
+  ],
+  "input_hashes": {
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "87537f3d7b598ca02e97ae4b2516e1ac70d17e5979812ad8db24d20153d5bd5e",
+    "conductor/decisions/ADR-0015-birth-message-and-destination-contract.md": "b5f04ff11051bcdd67d3341cfba5acfec66adfdf72a4e4feabf8b09a63064cc7"
+  },
+  "write_paths": [
+    "crates/careops-core/src/birth.rs",
+    "crates/careops-core/src/identity.rs",
+    "crates/careops-core/src/lib.rs",
+    "crates/careops-core/tests/birth_message_contract.rs",
+    "conductor/evidence/a5.3-birth-message-20261027/README.md"
+  ],
+  "protected_paths": [
+    ".git",
+    "libs/kairos",
+    "profiles",
+    "crates/careops-ed",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "leaf_dependencies": ["A5.2"],
+  "interface_contract": "conductor/decisions/ADR-0015-birth-message-and-destination-contract.md; conductor/decisions/ADR-0014-person-episode-identity.md; conductor/design/composition-contracts-20261020.md#CC-01; conductor/design/composition-contracts-20261020.md#CC-02",
+  "steps": [
+    "Add a typed BirthMessageId and payload that names the mother, birth event, infant ordinal/spawn/relationship event keys, maternal destination and each infant destination.",
+    "Apply a complete multiple-birth registration atomically against IdentityLedger; reject empty infant lists and validate message replay, message-ID payload conflict, unique birth event, unique infant ordinals and relationship integrity.",
+    "Return one stable person and destination intent per mother/infant; keep transfer operation ownership and failures independent per recipient.",
+    "Checkpoint and restore the birth-message ledger paired with the identity ledger; validate parent links against their original add-event records so a later explicit removal preserves valid birth history.",
+    "Document and test that current source has no fetal identity model; do not fabricate a fetal-to-newborn mapping. Keep any future mapping conditional on an explicit modeled fetal entity and provenance contract."
+  ],
+  "verification": [
+    {
+      "argv": ["cargo", "test", "--locked", "-p", "careops-core", "--test", "birth_message_contract"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Birth message replay is idempotent, payload/ordinal/empty-infant conflicts are atomic, multi-infant links and split destinations are retained, and restore rejects mismatched paired state while accepting a link later removed explicitly."
+    },
+    {
+      "argv": ["cargo", "clippy", "--locked", "-p", "careops-core", "--all-targets", "--", "-D", "warnings"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Core module and test targets satisfy workspace lint policy."
+    },
+    {
+      "argv": ["cargo", "fmt", "--all", "--", "--check"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting passes."
+    }
+  ],
+  "acceptance": [
+    "BirthMessageId is distinct from BirthEventId and from Kairos or transfer message identities.",
+    "Exact birth message retry returns the original result without identity mutation; changed payload under the same message ID rejects atomically.",
+    "One birth event maps to one message; at least one infant is required, and multiple infant ordinals create distinct person identities with BirthEventId and ordinal provenance and typed mother links.",
+    "Maternal and infant destination intents can differ and are represented per person; no all-or-none multi-recipient transfer or shared failure semantics are claimed.",
+    "Paired checkpoint restore verifies birth message records against corresponding IdentityLedger people and original relationship add events; a subsequent valid relationship removal does not invalidate the birth record.",
+    "Repository source inspection and tests confirm no pre-birth fetal identity entity/API currently exists; this track records fetal mapping as not modeled rather than claiming a transition.",
+    "No Kairos source or pin, ED external schema, site policy, empirical clinical validity or operational delivery is changed or claimed.",
+    "Reviewer-agent/subagent reviews the exact integrated commit against ADR-0015 and prior A5.2 interfaces; all findings are fixed and re-reviewed before coordinator acceptance."
+  ],
+  "result_path": "conductor/evidence/a5.3-birth-message-20261027/README.md",
+  "stop_conditions": [
+    "A5.2 identity or transfer API incompatibility",
+    "Cannot make multi-infant identity and parent-link updates atomic",
+    "Fetal-to-post-birth mapping is requested without an existing modeled fetal identity or an explicit design contract",
+    "Checkpoint state cannot be validated against identity event history",
+    "Out-of-scope Kairos, ED schema or profile change"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "packet_id": "A4.4.advance-fix",
+  "task_id": "A4.4",
+  "target_repo": ".",
+  "base_commit": "18151304d8d484466d8d1b28122f7ec48d753b5d",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Make public virtual-clock advancement transactional when expiry processing fails, preserving the full checkpoint on revision/resource/sequence errors.",
+  "context_paths": [
+    "AGENTS.md",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/tests/transfer_contract.rs"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md": "47b75af12339c469343166a5a2eace02058170679a65d3b36856482b7ebff7dc"
+  },
+  "write_paths": [
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/tests/transfer_contract.rs",
+    "conductor/execution/packets/A4.4.advance-fix.json",
+    "conductor/evidence/a4.4-advance-fix-20261027/README.md"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/careops-ed",
+    "crates/careops-ed-cli",
+    "libs/kairos",
+    "profiles",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "leaf_dependencies": [
+    "A4.2"
+  ],
+  "interface_contract": "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+  "steps": [
+    "Make public TransferManager::advance_to apply expiry processing against a cloned ledger and commit only on success.",
+    "Add restored-checkpoint regression with a due Requested expiry at revision u64::MAX; assert RevisionOverflow and exact checkpoint equality including now.",
+    "Retain valid expiry order and existing apply atomicity behavior.",
+    "Run focused transfer/ward-community tests, core Clippy with warnings denied, and formatting; obtain reviewer-agent review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "transfer_contract",
+        "--test",
+        "ward_community_contract"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Transfer and ward/community contracts pass including failed-expiry atomicity."
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "CareOps core targets pass Clippy with warnings denied."
+    },
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace Rust formatting is canonical."
+    }
+  ],
+  "acceptance": [
+    "Direct advance_to failure preserves the entire serialized ledger byte-for-byte.",
+    "apply failure remains transactional, while valid same-tick expiry continues to win before command handling.",
+    "No Kairos source/pin, ED schema, profile, dependency or clinical behavior changes."
+  ],
+  "result_path": "conductor/evidence/a4.4-advance-fix-20261027/README.md",
+  "stop_conditions": [
+    "ADR-0012 input drifts",
+    "Regression cannot restore a consistent overflow fixture",
+    "Focused tests or core gates fail",
+    "Out-of-scope files change"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}
