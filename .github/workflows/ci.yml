@@ -447,6 +447,7 @@ jobs:
           test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
           "$CAREOPS_PYTHON" tools/ci_policy.py
+          cargo deny --workspace --locked check
           cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check
       - name: Retain bounded failed policy logs
         if: failure()

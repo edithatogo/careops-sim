@@ -16,7 +16,7 @@ use crate::capture::{
 use crate::{PatientResult, PatientStatus};
 
 pub const PATIENT_SCHEMA: &str = "careops.ed.patient-result.v2";
-pub const CODEC: &str = "careops.ed.patient-result.v2/parquet-zstd/polars-0.45.1";
+pub const CODEC: &str = "careops.ed.patient-result.v2/parquet-zstd/polars-96439685";
 pub const DEFAULT_LIMITS: CaptureLimits = CaptureLimits {
     max_rows: 256,
     max_bytes: 4 * 1024 * 1024,
@@ -213,7 +213,7 @@ impl ParquetPartStore {
             );
             cols.push(Series::new(format!("{name}_lo").into(), values).into());
         }
-        DataFrame::new(cols).map_err(invalid)
+        DataFrame::new(n, cols).map_err(invalid)
     }
 }
 impl PartStore for ParquetPartStore {
