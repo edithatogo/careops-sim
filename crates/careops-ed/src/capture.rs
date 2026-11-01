@@ -373,7 +373,7 @@ pub(crate) fn validate_parts(
                 || part.bytes > limits.max_bytes
                 || !names.insert(part.name.clone())
             {
-                return Err(invalid("duplicate, unsafe or discontinuous capture part"));
+                return Err(invalid("duplicate, invalid or discontinuous capture part"));
             }
             let bytes = store.read_part(&part.name, limits.max_bytes)?;
             if bytes.len() != part.bytes || compute_sha256_hex(&bytes) != part.sha256 {

@@ -11,18 +11,19 @@ import sys
 
 
 SOURCE_FILE = "crates/careops-ed/src/lib.rs"
-SOURCE_SHA256 = "a79aa97f98e5585f622484691e42ba5725eff3a88b5276234b93eb8061cf591c"
-CATALOG_SHA256 = "0d35b878022a1750635ea3d1c2c19e8f2533bf278b194e3acdc16d00865bec4f"
+SOURCE_SHA256 = "9f5ef0d1905c2540786fe97df4033e8c32a908699e59c5226f45316a623e2c93"
+CATALOG_SHA256 = "ed16dd73d46d6369c031f1b65ee7a99391ed98f95ea80c4307aa7875f0f7c62b"
 MUTANTS_VERSION = "27.1.0"
-EXPECTED_TOTAL = 116
+EXPECTED_TOTAL = 117
 EQUIVALENT_MISSES = {
-    (746, 60): "crates/careops-ed/src/lib.rs:746:60: replace || with && in run_scenario",
-    (809, 43): "crates/careops-ed/src/lib.rs:809:43: replace || with && in run_scenario",
+    (762, 60): "crates/careops-ed/src/lib.rs:762:60: replace || with && in run_scenario_with_capture",
+    (827, 43): "crates/careops-ed/src/lib.rs:827:43: replace || with && in run_scenario_with_capture",
 }
 ORIGINAL_UNVIABLES = {
-    "crates/careops-ed/src/lib.rs:246:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:646:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:664:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:251:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:651:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:669:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:678:5: replace run_scenario_with_capture -> Result<RunSummary, SimulationError> with Ok(Default::default())",
 }
 _TOP_LEVEL_KEYS = {
     "cargo_mutants_version", "caught", "end_time", "missed", "outcomes",
@@ -294,8 +295,8 @@ def check_outcomes(document, source_bytes, catalog_bytes, *, expected_catalog_sh
         raise ValueError(f"outcome mutant set differs from pinned catalog; missing={missing[:3]!r}, extra={extra[:3]!r}")
     if counts["Timeout"] != 0:
         raise ValueError("timeout outcomes are not allowed")
-    if counts["Unviable"] > 3 or len(unviable_names) != counts["Unviable"]:
-        raise ValueError("at most three distinct original-baseline unviable mutants are allowed")
+    if counts["Unviable"] > len(ORIGINAL_UNVIABLES) or len(unviable_names) != counts["Unviable"]:
+        raise ValueError("only distinct catalog-bound unviable mutants are allowed")
     for key in ("caught", "missed", "unviable"):
         if counters[key] != counts[{"caught": "CaughtMutant", "missed": "MissedMutant", "unviable": "Unviable"}[key]]:
             raise ValueError(f"top-level {key} counter does not match outcome rows")
