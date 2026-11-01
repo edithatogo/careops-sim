@@ -70,7 +70,7 @@ fn parquet_is_zstd_typed_and_original_horizon_rows_match_across_workers() {
             let md = reader.get_metadata().unwrap();
             for rg in &md.row_groups {
                 for col in rg.columns_under_root_iter("patient_id").unwrap() {
-                    assert_eq!(format!("{:?}", col.compression()), "Zstd");
+                    assert_eq!(format!("{:?}", col.compression().unwrap()), "Zstd");
                 }
             }
             let df = reader.finish().unwrap();
