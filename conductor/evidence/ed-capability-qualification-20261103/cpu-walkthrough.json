@@ -166,5 +166,74 @@
       "stderr": "careops-ed: backend 'metal' is not integrated and qualified; inspect 'capabilities'\n"
     }
   ],
-  "artifact_path_redaction": "Private evidence root replaced by ${PRIVATE_EVIDENCE}; original exact command/readback receipt retained outside Git."
+  "artifact_path_redaction": "Private evidence root replaced by ${PRIVATE_EVIDENCE}; original exact command/readback receipt retained outside Git.",
+  "final_review_diagnostic_readback": {
+    "source": "18b6e8fff3f28a3034d7fe6b4f1405be1f555928",
+    "binary_sha256": "98ef6e17c74ac4420714ab6ed5664573baa3ab03e4d055829d21055a774ba85c",
+    "commands": [
+      {
+        "argv": [
+          "target/debug/careops-ed",
+          "run",
+          "crates/careops-ed/examples/nominal_mvp.json",
+          "--backend",
+          "cpu_replications"
+        ],
+        "expected_exit": 2,
+        "actual_exit": 2,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "careops-ed: backend 'cpu_replications' is not available for this command\n"
+      },
+      {
+        "argv": [
+          "target/debug/careops-ed",
+          "batch",
+          "crates/careops-ed/examples/nominal_mvp.json",
+          "--backend",
+          "cpu_serial"
+        ],
+        "expected_exit": 2,
+        "actual_exit": 2,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "careops-ed: backend 'cpu_serial' is not available for this command\n"
+      },
+      {
+        "argv": [
+          "target/debug/careops-ed",
+          "run",
+          "crates/careops-ed/examples/nominal_mvp.json",
+          "--backend",
+          "metal",
+          "--backend",
+          "cpu_serial"
+        ],
+        "expected_exit": 2,
+        "actual_exit": 2,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "careops-ed: --backend requires exactly one mode, once\n"
+      },
+      {
+        "argv": [
+          "target/debug/careops-ed",
+          "capabilities",
+          "--require",
+          "metal"
+        ],
+        "expected_exit": 8,
+        "actual_exit": 8,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "careops-ed: backend 'metal' is not integrated and qualified; inspect 'capabilities'\n"
+      },
+      {
+        "argv": [
+          "target/debug/careops-ed",
+          "capabilities"
+        ],
+        "expected_exit": 0,
+        "actual_exit": 0,
+        "stdout_sha256": "07c7c2287c5ff19e67f1dc9e4a1edad2d4cf79d9e8683cba49d97129c90c3cf1",
+        "stderr": ""
+      }
+    ]
+  }
 }

@@ -240,11 +240,18 @@ repair. E0–E8 checks and dated receipts remain historical; they do not satisfy
 current device, transport or ED integration gates. This phase does not transfer
 Kairos ownership or reopen the accepted CPU model.
 
-- [ ] E9.1 Audit exact parent/runtime sources against historical E6/E8 receipts; separate real mechanisms, host-local fixtures and missing ED integration.
-- [ ] E9.2 Expose versioned executable mode reporting and reject unsupported explicit modes before IO; preserve default CPU behavior with failing-then-passing controls.
-- [ ] E9.3 Qualify the supported CPU command/API/batch boundary and record exact upstream integration blockers and required device/protocol/fault/parity controls.
-- [ ] E9.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, retain current hardware/transport blockers and original owners.
+- [x] E9.1 Audit exact parent/runtime sources against historical E6/E8 receipts; separate real mechanisms, host-local fixtures and missing ED integration.
+- [x] E9.2 Expose versioned executable mode reporting and reject unsupported explicit modes before IO; preserve default CPU behavior with failing-then-passing controls.
+- [x] E9.3 Qualify the supported CPU command/API/batch boundary and record exact upstream integration blockers and required device/protocol/fault/parity controls.
+- [x] E9.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, retain current hardware/transport blockers and original owners.
 
 Exit: current capability truthfulness and supported CPU behavior qualified. Metal,
 within-run PDES and distributed release claims remain blocked until actual ED
 integration and their original runtime/performance/failure gates pass.
+
+E9 accepted at `18b6e8f`: independent committed review ready after two diagnostic
+fixes, 5 focused controls plus retained 37 API/batch/export tests, 766 hosted Python
+tests and all 15 applicable hosted checks plus expected main-only attestation skip.
+See [E9 acceptance](../../evidence/ed-capability-qualification-20261103/README.md).
+Generic ED remains in progress: historical E0–E8 checkboxes are preserved and
+current optional G3/backend acceptance remains blocked by the exact owner handoff.

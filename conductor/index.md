@@ -32,7 +32,7 @@
 | Generic birthing suite delivery | [Specification](tracks/birthing_suite_delivery_20261020/spec.md) | [Plan](tracks/birthing_suite_delivery_20261020/plan.md) | B0–B7 bounded engineering accepted; full specification and clinical/site/operational gates open |
 | ED parameters and example inputs | [Specification](tracks/ed_parameter_evidence_20260927/spec.md) | [Plan](tracks/ed_parameter_evidence_20260927/plan.md) | Historical P0–P5 generic catalogue/model coverage accepted; Cairns-specific values and empirical hospital validity remain separate |
 | Development readiness | [Specification](tracks/development_readiness_20260925/spec.md) | [Plan](tracks/development_readiness_20260925/plan.md) | Historical plan tasks checked; dated evidence retained |
-| Generic ED delivery | [Specification](tracks/generic_ed_delivery_20260925/spec.md) | [Plan](tracks/generic_ed_delivery_20260925/plan.md) | Historical E0–E8 checks retained; E9 current executable capability repair in progress, G3 modes unqualified |
+| Generic ED delivery | [Specification](tracks/generic_ed_delivery_20260925/spec.md) | [Plan](tracks/generic_ed_delivery_20260925/plan.md) | Historical E0–E8 checks retained; E9 CPU/CLI capability repair accepted at 18b6e8f; G3 modes unqualified |
 | DES queues and preemption | [Specification](tracks/des_queue_preemption_20260925/spec.md) | [Plan](tracks/des_queue_preemption_20260925/plan.md) | Q0–Q5 experimental development accepted; release and ED MVP separate |
 | Empirical calibration and validation | [Specification](tracks/empirical_calibration_20260925/spec.md) | [Plan](tracks/empirical_calibration_20260925/plan.md) | Historical plan tasks checked; dated evidence retained |
 

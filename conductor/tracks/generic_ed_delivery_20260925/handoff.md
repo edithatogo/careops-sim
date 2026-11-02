@@ -1,6 +1,6 @@
 # Handoff: Generic ED library delivery
 
-Status: E0–E8 historical receipts retained. Current capability reconciliation is in progress; E9 implements truthful ED mode selection. Optional G3 modes remain unqualified.
+Status: E0–E8 historical receipts retained. E9 current CPU/CLI capability repair is accepted at 18b6e8f. Optional G3 modes remain unqualified.
 Read [the plan](plan.md), [module readiness](../../module-readiness.md) and
 [development audit](../../evidence/development-audit.md) before starting.
 
@@ -25,8 +25,22 @@ in the advisory claim and [packet](../../execution/packets/ED.capabilities.json)
 Native tenant/authentication scope: none. Kairos remains read-only at07410266;
 all earlier worktree/source owners and dated assignments above are preserved.
 
-Next: independent committed review of E9 and hosted source gates; retain
+Next: final documentation-head gates and PR198 integration review; retain
 [upstream blockers](../../evidence/ed-capability-qualification-20261103/upstream-blockers.md).
 No rerun/restart of accepted E5 or new upstream mechanism work is dispatched.
 The old G1 receipt above is historical; native CPU/CLI verification is not
 clinical/site acceptance or a new public release.
+
+### Accepted E9 source and review — 3 November 2026
+
+Exact source 18b6e8f passed15 applicable hosted checks plus expected main-only
+attestation skip (CI41499579545). Independent reviewer ready with no remaining
+findings. Review fixes: validate all backend syntax before availability; classify
+a CPU mode used with the wrong command as usage2. Known unavailable modes still
+exit8 before IO. Both meaningful failing controls were retained before fixes;
+5 final focused tests and actual final CLI diagnostics pass.
+
+PR198 is draft, stacked on qualified/unmerged PR197; neither is merged here.
+Current CPU capability verification is not fresh G1 release or G3 acceptance.
+Legacy ED columnar export replacement remains with the separate Polars owner.
+Private exact command/output/ownership receipts are retained outside Git.
