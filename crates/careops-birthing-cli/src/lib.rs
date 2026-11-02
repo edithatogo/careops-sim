@@ -193,6 +193,9 @@ pub struct ReplicationManifest {
     pub schema_version: u32,
     pub input: BatchInput,
     pub effective_input_sha256: String,
+    /// Exact normalized UTF-8 bytes hashed by the writer. Readers parse these
+    /// and compare effective values without re-spelling floating-point numbers.
+    pub effective_input_json: String,
     pub runtime_revision: String,
     pub data_revision: String,
     pub tick_unit: String,
@@ -302,6 +305,7 @@ fn publish(
             schema_version: 1,
             input: input.clone(),
             effective_input_sha256: input.hash()?,
+            effective_input_json: serde_json::to_string(input)?,
             runtime_revision: RUNTIME_REVISION.into(),
             data_revision: DATA_REVISION.into(),
             tick_unit: "second".into(),
@@ -347,6 +351,8 @@ pub fn validate_replication(
         || !manifest.completed
         || manifest.input != *input
         || manifest.effective_input_sha256 != input.hash()?
+        || manifest.effective_input_json != serde_json::to_string(input)?
+        || hash(manifest.effective_input_json.as_bytes()) != manifest.effective_input_sha256
         || manifest.runtime_revision != RUNTIME_REVISION
         || manifest.data_revision != DATA_REVISION
         || manifest.tick_unit != "second"
@@ -421,6 +427,10 @@ pub fn validate_replication(
                 .ok_or("missing domain capture")?,
         )?;
         if record.sequence != (i + 1) as u64
+            || record.schema_version != SCHEMA_VERSION_V2
+            || record.time_scale != "ticks"
+            || record.status != EventStatus::Dispatched
+            || record.priority != 0
             || record.event_id.index != record.sequence
             || record.event_id.generation != 0
             || record.run_id != parquet.run_id

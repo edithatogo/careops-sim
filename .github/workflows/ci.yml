@@ -172,6 +172,15 @@ jobs:
         run: |
           set -euo pipefail
           "$CAREOPS_PYTHON" tools/nextest_ci.py --toolchain 1.99.1
+      - name: Independently read actual birthing IPC and Parquet
+        run: |
+          set -euo pipefail
+          "$CAREOPS_PYTHON" -m ensurepip
+          "$CAREOPS_PYTHON" -m pip install --only-binary=:all: --no-deps -r crates/careops-birthing-cli/requirements-reader.txt
+          mkdir -m700 .artifacts/ci/birthing-output
+          cargo run --locked --package careops-birthing-cli -- crates/careops-birthing-cli/fixtures/synthetic.json .artifacts/ci/birthing-output 4
+          "$CAREOPS_PYTHON" crates/careops-birthing-cli/read_batch.py .artifacts/ci/birthing-output crates/careops-birthing-cli/fixtures/synthetic.json
+          "$CAREOPS_PYTHON" crates/careops-birthing-cli/test_reader.py target/debug/careops-birthing
       - name: Retain bounded failed native log
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -281,9 +290,12 @@ jobs:
         run: cargo test --doc --workspace --all-features --locked
 
   context:
-    # Run 39531482153 passed all 116 mutation outcomes at the old 20m limit.
-    # Allow harness, mutation validation, artifact upload and cleanup headroom.
-    timeout-minutes: 30
+    # Reuse qualified PR191's finite native-data profile for this same heavy graph.
+    # Preserve the 180s per-mutant oracle, coverage floor and compiler concurrency.
+    timeout-minutes: 75
+    env:
+      CARGO_PROFILE_DEV_DEBUG: '0'
+      CARGO_PROFILE_TEST_DEBUG: '0'
     name: context
     needs: scope
     if: needs.scope.outputs.context == 'true'

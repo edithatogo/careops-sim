@@ -25,6 +25,73 @@ def digest(value):
     return hashlib.sha256(value).hexdigest()
 
 
+def fnv64(value):
+    result = 0xcbf29ce484222325
+    for byte in value:
+        result = ((result ^ byte) * 0x100000001b3) & ((1 << 64) - 1)
+    return f'{result:016x}'
+
+
+def validate_theatre(rows, expected_input):
+    cases = [row for row in rows if row['kind'] == 'theatre_case']
+    births = [row for row in rows if row['kind'] == 'birth' and row['data']['route'] == 'operative']
+    if len(cases) != expected_input['scenario']['days'] or len(births) != len(cases):
+        raise ValueError('missing operative timing/assessment records')
+    callback_fields = [('Accepted', 'accepted'), ('TransferDeparted', 'departed'),
+                       ('TransferArrived', 'arrived'), ('ServiceStarted', 'started'),
+                       ('ProcedureStarted', 'incision'), ('Birth', 'birth'),
+                       ('ServiceCompleted', 'completed'), ('RoomReady', 'cleaned')]
+    checked = 0
+    for record in cases:
+        case = record['data']
+        timings = case['timings']
+        if (case['episode'] != record['episode'] or timings['cancelled'] is not None
+                or not any(b['person'] == record['person'] and b['episode'] == record['episode']
+                           and b['tick'] == timings['birth'] for b in births)):
+            raise ValueError('operative birth is not paired with actual case')
+        ordered = [case['decision_tick']] + [timings[field] for _, field in callback_fields]
+        if any(t is None for t in ordered) or ordered != sorted(ordered):
+            raise ValueError('invalid operative timing order')
+        if len(case['callbacks']) != len(callback_fields):
+            raise ValueError('missing or duplicated actual callbacks')
+        for callback, field in callback_fields:
+            matched = [c for c in case['callbacks'] if c['callback'] == callback]
+            if len(matched) != 1 or matched[0]['tick'] != timings[field] or matched[0]['episode'] != record['episode']:
+                raise ValueError('callback does not match actual timing')
+        assessments = case['assessments']
+        if not assessments:
+            raise ValueError('missing observed assessment')
+        for name, field in [('transfer', 'departed'), ('incision', 'incision'), ('birth', 'birth')]:
+            metric = case['metrics'][name]
+            eligible = [a for a in assessments if a['observed_at_tick'] <= timings[field]]
+            if not eligible:
+                raise ValueError('metric has no available assessment')
+            assessment = max(eligible, key=lambda a: a['observed_at_tick'])
+            policy = assessment['policy']
+            urgency = assessment['urgency']
+            if (metric['assessment_tick'] != assessment['observed_at_tick']
+                    or metric['elapsed'] != timings[field] - case['decision_tick']
+                    or metric['policy_revision'] != policy['revision']
+                    or metric['scheme_version'] != policy['scheme_version']
+                    or assessment['elapsed_wait_ticks'] != assessment['observed_at_tick'] - case['decision_tick']
+                    or urgency['assessed_at_tick'] != assessment['observed_at_tick']
+                    or not urgency['effective_date'] or assessment['interruption'] != 'NotEligible'):
+                raise ValueError('metric/observed policy linkage mismatch')
+            for key in ['jurisdiction_id', 'scheme_id', 'scheme_version', 'source_authority', 'citation']:
+                if not policy[key] or urgency[key] != policy[key]:
+                    raise ValueError('missing or mismatched policy provenance')
+            rules = [r for r in policy['rules'] if r['category'] == urgency['category']]
+            if (len(rules) != 1 or rules[0]['targets'] != assessment['rule']['targets']
+                    or rules[0]['priority_rank'] != assessment['rule']['priority_rank']):
+                raise ValueError('assessment rule does not bind policy category')
+            target = assessment['rule']['targets'][name]
+            expected_breach = None if target is None else metric['elapsed'] > target
+            if metric['target'] != target or metric['breached'] != expected_breach:
+                raise ValueError('wrong target/zero-target/breach accounting')
+            checked += 1
+    return checked
+
+
 def read_batch(root, expected_input):
     batch = root / expected_input['batch_id']
     completed = load(batch / 'batch_manifest.json')
@@ -50,7 +117,9 @@ def read_batch(root, expected_input):
                 or native['status'] != 'Completed' or native['time_scale'] != 'second'
                 or native['replication_id'] != index or native['seed'] != result['seed']):
             raise ValueError("unbound source/input/completion metadata")
-        encoded_input = json.dumps(manifest['input'], separators=(',', ':'), ensure_ascii=False).encode()
+        encoded_input = manifest['effective_input_json'].encode('utf-8')
+        if json.loads(manifest['effective_input_json']) != expected_input:
+            raise ValueError("canonical effective input values differ")
         if manifest['effective_input_sha256'] != digest(encoded_input) or native['effective_input_hash'] != digest(encoded_input):
             raise ValueError("effective input digest mismatch")
         if not 1 <= len(manifest['ipc']) <= 64 or len(native['parts']) != len(manifest['ipc']):
@@ -72,6 +141,8 @@ def read_batch(root, expected_input):
             path = directory / parquet_part['file_name']
             if path.is_symlink() or path.stat().st_size > 8 * 1024 * 1024:
                 raise ValueError("unsupported Parquet file")
+            if fnv64(path.read_bytes()) != parquet_part['file_hash']:
+                raise ValueError('Parquet content hash mismatch')
             parquet = pq.ParquetFile(path)
             for row_group in range(parquet.metadata.num_row_groups):
                 for column in range(parquet.metadata.num_columns):
@@ -96,6 +167,8 @@ def read_batch(root, expected_input):
             if (record['schema_version'] != 2 or record['run_id'] != native['run_id']
                     or record['sequence'] != sequence or record['event_id_index'] != sequence
                     or record['event_id_gen'] != 0 or record['time_scale'] != 'ticks'
+                    or record['priority'] != 0
+                    or record['entity_id_gen'] != (0 if row['person'] else None)
                     or (record['time_ticks_hi'] << 64) + record['time_ticks_lo'] != row['tick']
                     or record['entity_id_index'] != (row['person'] or None)
                     or record['event_kind'] != row['kind'] or record['status'] != 'dispatched'):
@@ -111,7 +184,8 @@ def read_batch(root, expected_input):
         if any(row['data']['people'] != row['data']['open_episodes'] or row['data']['held_origin_claims'] != 0 for row in conservation):
             raise ValueError("conservation failure")
         reports.append({'index': index, 'seed': result['seed'], 'rows': len(rows),
-                        'canonical_sha256': canonical, 'births': len(births)})
+                        'canonical_sha256': canonical, 'births': len(births),
+                        'policy_metrics_checked': validate_theatre(rows, expected_input)})
     return {'reader': 'PyArrow', 'version': pa.__version__, 'replications': reports}
 
 

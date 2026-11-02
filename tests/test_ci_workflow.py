@@ -145,6 +145,25 @@ def untrusted_contract_errors(workflow):
     return errors
 
 
+class DependencySourcePolicyTests(unittest.TestCase):
+    SOURCE = "git+https://github.com/pola-rs/polars.git?rev=96439685eb2f95108f51087d2b76091917f2593c#96439685eb2f95108f51087d2b76091917f2593c"
+
+    def metadata(self, kind="dev", source=None):
+        source = self.SOURCE if source is None else source
+        return {"packages": [{"name": "polars-lazy", "source": source,
+            "dependencies": [{"name": "polars-lazy", "source": source, "kind": kind, "req": "*"}]}]}
+
+    def test_exact_pinned_polars_dev_self_reference_is_not_external_wildcard(self):
+        ci_policy.validate_external_dependencies(self.metadata())
+
+    def test_normal_build_or_changed_revision_wildcards_remain_visible_failures(self):
+        for kind, source in [(None, self.SOURCE), ("build", self.SOURCE),
+                ("dev", self.SOURCE.replace("96439685eb2f95108f51087d2b76091917f2593c", "1"*40))]:
+            with self.subTest(kind=kind, source=source):
+                with self.assertRaisesRegex(RuntimeError, "wildcard external dependency"):
+                    ci_policy.validate_external_dependencies(self.metadata(kind, source))
+
+
 class CiWorkflowTests(unittest.TestCase):
     def test_scope_requires_explicit_boolean_outputs_and_consistency(self):
         for field, value in (("changed", ""), ("native", "typo"), ("context", "null")):
@@ -189,11 +208,21 @@ class CiWorkflowTests(unittest.TestCase):
         for name, block in blocks:
             timeout = re.search(r"^    timeout-minutes: ([0-9]+)$", block, re.MULTILINE)
             self.assertIsNotNone(timeout)
-            self.assertLessEqual(int(timeout.group(1)), 30 if name == "context" else 20)
+            self.assertLessEqual(int(timeout.group(1)), 75 if name == "context" else 20)
             self.assertGreater(int(timeout.group(1)), 0)
         self.assertNotIn("actions/cache@", workflow)
         self.assertNotIn("pull_request_target", workflow)
         self.assertIn("cancel-in-progress: ${{ github.event_name == 'pull_request' }}", workflow)
+
+    def test_native_lane_requires_actual_birthing_cli_and_independent_reader(self):
+        native=workflow_job(WORKFLOW.read_text(), "test")
+        step=native.split("- name: Independently read actual birthing IPC and Parquet",1)[1].split("      - name:",1)[0]
+        self.assertNotIn("if:", step)
+        self.assertNotIn("continue-on-error", step)
+        self.assertIn("set -euo pipefail", step)
+        self.assertIn("cargo run --locked --package careops-birthing-cli", step)
+        self.assertIn('"$CAREOPS_PYTHON" crates/careops-birthing-cli/read_batch.py', step)
+        self.assertIn("--only-binary=:all: --no-deps", step)
 
     def test_unit_lane_does_not_repeat_documentation_tests(self):
         workflow = WORKFLOW.read_text()

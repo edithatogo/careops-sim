@@ -119,6 +119,96 @@ fn interrupted_attempt_is_preserved_and_completed_replications_are_reused() {
 }
 
 #[test]
+fn operative_capture_retains_all_metrics_and_their_policy_foreign_keys() {
+    let input = input();
+    for target in [0, 3, 30] {
+        let mut scenario = input.scenario.clone();
+        scenario.target_birth_seconds = target;
+        let rows = model::simulate(&scenario, 41, 1, 0).unwrap();
+        let cases: Vec<_> = rows.iter().filter(|r| r.kind == "theatre_case").collect();
+        assert_eq!(cases.len(), scenario.days as usize);
+        for case in cases {
+            for (name, timing) in [
+                ("transfer", "departed"),
+                ("incision", "incision"),
+                ("birth", "birth"),
+            ] {
+                let metric = &case.data["metrics"][name];
+                assert_eq!(
+                    metric["elapsed"].as_u64().unwrap(),
+                    case.data["timings"][timing].as_u64().unwrap()
+                        - case.data["decision_tick"].as_u64().unwrap()
+                );
+                let assessment = &case.data["assessments"][0];
+                assert_eq!(metric["assessment_tick"], assessment["observed_at_tick"]);
+                assert_eq!(
+                    metric["scheme_version"],
+                    assessment["policy"]["scheme_version"]
+                );
+                assert_eq!(metric["policy_revision"], assessment["policy"]["revision"]);
+                assert_eq!(assessment["urgency"]["effective_date"], "2026-11-03");
+            }
+            let birth = &case.data["metrics"]["birth"];
+            assert_eq!(
+                birth["breached"].as_bool().unwrap(),
+                birth["elapsed"].as_u64().unwrap() > target
+            );
+            for callback in [
+                "Accepted",
+                "TransferDeparted",
+                "TransferArrived",
+                "ServiceStarted",
+                "ProcedureStarted",
+                "Birth",
+                "ServiceCompleted",
+                "RoomReady",
+            ] {
+                assert!(case.data["callbacks"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .any(|c| c["callback"] == callback));
+            }
+        }
+    }
+}
+
+#[test]
+fn completed_formats_cannot_change_capture_status_even_with_updated_file_hashes() {
+    use kairo_ecs_arrow::{polars_interop as io, EventStatus};
+    let mut input = input();
+    input.replications = 1;
+    let root = private_root();
+    let result = run_batch(root.path(), &input, 1, false, None).unwrap();
+    let batch = root.path().join(&input.batch_id);
+    let directory = batch.join(&result[0].directory);
+    let domain_path = directory.join("birthing_manifest.json");
+    let native_path = directory.join("run_manifest.json");
+    let mut domain: serde_json::Value =
+        serde_json::from_slice(&std::fs::read(&domain_path).unwrap()).unwrap();
+    let mut native: serde_json::Value =
+        serde_json::from_slice(&std::fs::read(&native_path).unwrap()).unwrap();
+    let ipc_path = directory.join(domain["ipc"][0]["file"].as_str().unwrap());
+    let parquet_path = directory.join(native["parts"][0]["file_name"].as_str().unwrap());
+    let frame =
+        io::read_ipc_stream(std::io::Cursor::new(std::fs::read(&ipc_path).unwrap())).unwrap();
+    let mut rows = io::dataframe_to_records(&frame).unwrap();
+    rows[0].status = EventStatus::Error;
+    let mut changed = io::records_to_dataframe(&rows).unwrap();
+    let mut ipc = Vec::new();
+    io::write_ipc_stream(&mut changed, &mut ipc).unwrap();
+    let mut parquet = Vec::new();
+    io::write_parquet_zstd(&mut changed, &mut parquet).unwrap();
+    domain["ipc"][0]["sha256"] = careops_birthing_cli::hash(&ipc).into();
+    native["parts"][0]["file_hash"] = format!("{:016x}", io::calculate_checksum(&parquet)).into();
+    std::fs::write(ipc_path, ipc).unwrap();
+    std::fs::write(parquet_path, parquet).unwrap();
+    std::fs::write(domain_path, serde_json::to_vec(&domain).unwrap()).unwrap();
+    std::fs::write(native_path, serde_json::to_vec(&native).unwrap()).unwrap();
+    assert!(validate_replication(&batch, &result[0].directory, &input, 0, input.seed).is_err());
+}
+
+#[test]
 fn unknown_versions_units_and_unbounded_profiles_fail_before_output() {
     for mutate in [0, 1, 2, 3, 4, 5, 6] {
         let root = private_root();

@@ -39,10 +39,12 @@ reuse against prior/current logical origin claims until actual handover.
 Actual Parquet/Zstd and IPC stream parts preserve generic Schema v2 typed IDs,
 u128 tick limbs and original sequence, with domain capture in payload_ref.
 The required domain manifest declares tick=second, normalized effective input,
-component revisions and hashes. The generic file time_scale remains `ticks`;
+component revisions, exact normalized effective-input UTF-8 bytes and hashes. The generic file time_scale remains `ticks`;
 files alone do not establish a seconds mapping. Both formats are independently
 read with PyArrow26.0.0 and compared by capture sequence.
 
 This is a generic synthetic engineering fixture. It does not implement full
 postnatal/SCN/theatre internals, shared ED/birthing scheduling, cross-process
 transport, fetal identity, clinical validation, site acceptance or full-spec approval.
+
+Operative `theatre_case` records preserve the complete actual callback list, all timing fields, transfer/incision/birth metrics (including non-breaches and zero targets), and their assessment/policy provenance. The independent reader checks the foreign keys, elapsed values, policy identity/rules and breach decisions against those actual records.

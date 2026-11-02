@@ -65,6 +65,21 @@ def validate_workflow_toolchain(workflow=None):
         raise RuntimeError('; '.join(violations))
 
 
+def validate_external_dependencies(metadata):
+    for package in metadata["packages"]:
+        for dep in package["dependencies"]:
+            # Exact PR191 decision: Cargo reports these pinned same-checkout
+            # Polars dev self-references as Git edges. Normal/build/other-revision
+            # wildcards still fail, even when package/source names match.
+            self_reference = (dep["kind"] == "dev"
+                              and dep["name"] == package["name"]
+                              and dep["source"] == package["source"]
+                              and (dep["source"] or "").startswith("git+")
+                              and dep["source"].endswith("#96439685eb2f95108f51087d2b76091917f2593c"))
+            if dep["source"] is not None and dep["req"] == "*" and not self_reference:
+                raise RuntimeError("wildcard external dependency: " + dep["name"])
+
+
 def main():
     cargo = validate_rust_toolchain()
     validate_workflow_toolchain()
@@ -81,15 +96,7 @@ def main():
         if result.returncode or version not in result.stdout.split():
             raise RuntimeError('tool version mismatch: ' + argv[0])
     metadata = json.loads(subprocess.check_output([cargo, "metadata", "--locked", "--format-version", "1"], cwd=ROOT))
-    for package in metadata["packages"]:
-        for dep in package["dependencies"]:
-            # Cargo reports same-checkout path dev self-references in Git crates
-            # as Git dependencies. Their exact package source is already locked.
-            self_reference = (dep["name"] == package["name"]
-                              and (dep["source"] or "").startswith("git+")
-                              and dep["source"] == package["source"])
-            if dep["source"] is not None and dep["req"] == "*" and not self_reference:
-                raise RuntimeError("wildcard external dependency: " + dep["name"])
+    validate_external_dependencies(metadata)
     commands = [(['actionlint', '.github/workflows/ci.yml'], 'actionlint'),
                 (zizmor + ['--no-progress', '--offline', '--persona', 'auditor', '.github/workflows/ci.yml'], 'zizmor'),
                 (['gitleaks', 'git', '.', '--redact', '--no-banner'], 'gitleaks'),

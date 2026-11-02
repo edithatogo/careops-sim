@@ -144,6 +144,35 @@ fn policy(s: &Scenario) -> QueuePolicy {
         )]),
     }
 }
+fn metric_capture(metric: Option<&TargetMetric>) -> serde_json::Value {
+    metric.map_or(serde_json::Value::Null, |m|json!({"assessment_tick":m.assessment_tick,"elapsed":m.elapsed,
+        "target":m.target,"breached":m.breached,"policy_revision":m.policy_revision,"scheme_version":m.scheme_version}))
+}
+fn targets_capture(t: &Targets) -> serde_json::Value {
+    json!({"transfer":t.transfer,"incision":t.incision,"birth":t.birth})
+}
+fn theatre_capture(theatre: &TheatreService, key: u64) -> Result<serde_json::Value> {
+    let c = theatre.case(key).ok_or("missing completed theatre case")?;
+    let assessments:Vec<_>=c.assessments.iter().map(|a|json!({
+        "observed_at_tick":a.observed.observed_at_tick,"elapsed_wait_ticks":a.observed.elapsed_wait_ticks,
+        "urgency":a.observed.urgency,"interruption":format!("{:?}",a.interruption),
+        "rule":{"priority_rank":a.rule.priority_rank,"targets":targets_capture(&a.rule.targets)},
+        "policy":{"revision":a.policy.revision,"jurisdiction_id":a.policy.jurisdiction_id,"scheme_id":a.policy.scheme_id,
+            "scheme_version":a.policy.scheme_version,"source_authority":a.policy.source_authority,"citation":a.policy.citation,
+            "rules":a.policy.rules.iter().map(|(category,r)|json!({"category":category,"priority_rank":r.priority_rank,"targets":targets_capture(&r.targets)})).collect::<Vec<_>>()}
+    })).collect();
+    let t = &c.timings;
+    Ok(
+        json!({"case":key,"episode":c.initial.episode,"decision_tick":c.initial.decision_tick,
+            "timings":{"accepted":t.accepted,"departed":t.departed,"arrived":t.arrived,"started":t.started,"incision":t.incision,
+                "birth":t.birth,"completed":t.completed,"cancelled":t.cancelled,"cleaned":t.cleaned},
+            "metrics":{"transfer":metric_capture(c.metrics.transfer.as_ref()),"incision":metric_capture(c.metrics.incision.as_ref()),"birth":metric_capture(c.metrics.birth.as_ref())},
+            "assessments":assessments,
+            "resource_failures":c.resource_failures.iter().map(|f|json!({"tick":f.tick,"reason":f.reason})).collect::<Vec<_>>(),
+            "callbacks":theatre.events().iter().filter(|e|e.case_id==key).map(|e|json!({"callback":format!("{:?}",e.kind),"tick":e.tick,"episode":e.episode})).collect::<Vec<_>>()
+        }),
+    )
+}
 fn observed(s: &Scenario, tick: u64) -> ObservedPolicyState {
     ObservedPolicyState {
         observed_at_tick: tick,
@@ -898,6 +927,16 @@ pub fn simulate(
             }
         }
         let counts = ids.counts();
+        if operative {
+            emit(
+                &mut rows,
+                end,
+                mother.value(),
+                source_episode.value(),
+                "theatre_case",
+                theatre_capture(&theatre, key)?,
+            )?;
+        }
         emit(
             &mut rows,
             end,
