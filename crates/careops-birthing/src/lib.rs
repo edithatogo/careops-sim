@@ -13,6 +13,7 @@ pub mod delivery;
 pub mod spaces;
 pub mod team;
 pub mod theatre;
+pub mod transfers;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PatientState {
