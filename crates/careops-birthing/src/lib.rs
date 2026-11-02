@@ -9,6 +9,8 @@ use careops_core::pathway::{
 };
 use std::collections::{HashMap, HashSet};
 
+pub mod delivery;
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PatientState {
     NotInLabour,
