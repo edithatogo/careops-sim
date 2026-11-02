@@ -52,6 +52,8 @@ pub struct TransferBoundary {
     profile: RoutingProfile,
     roots: BTreeMap<TransferOperationId, BoundRoute>,
     manager: TransferManager,
+    departures: BTreeMap<TransferOperationId, u64>,
+    active_escorts: BTreeMap<u64, TransferOperationId>,
 }
 
 impl TransferBoundary {
@@ -156,6 +158,8 @@ impl TransferBoundary {
             profile,
             roots,
             manager: TransferManager::default(),
+            departures: BTreeMap::new(),
+            active_escorts: BTreeMap::new(),
         })
     }
     pub fn core(&self) -> &TransferManager {
@@ -237,10 +241,12 @@ impl TransferBoundary {
             _ => {}
         }
         let before = self.manager.events().len();
-        let mut candidate = self.manager.clone();
-        let outcome = candidate.apply(envelope).map_err(|e| e.to_string())?;
-        self.validate_effects(&candidate, before, identities, team)?;
-        self.manager = candidate;
+        let mut manager = self.manager.clone();
+        let outcome = manager.apply(envelope).map_err(|e| e.to_string())?;
+        let mut candidate = self.clone();
+        candidate.validate_effects(&manager, before, manager.now(), identities, team)?;
+        candidate.manager = manager;
+        *self = candidate;
         Ok(outcome)
     }
     pub fn advance_to(
@@ -250,10 +256,12 @@ impl TransferBoundary {
         team: &TeamAllocator,
     ) -> Result<(), String> {
         let before = self.manager.events().len();
-        let mut candidate = self.manager.clone();
-        candidate.advance_to(tick).map_err(|e| e.to_string())?;
-        self.validate_effects(&candidate, before, identities, team)?;
-        self.manager = candidate;
+        let mut manager = self.manager.clone();
+        manager.advance_to(tick).map_err(|e| e.to_string())?;
+        let mut candidate = self.clone();
+        candidate.validate_effects(&manager, before, tick, identities, team)?;
+        candidate.manager = manager;
+        *self = candidate;
         Ok(())
     }
     fn root_for<'a>(
@@ -296,9 +304,10 @@ impl TransferBoundary {
         Ok(())
     }
     fn validate_effects(
-        &self,
+        &mut self,
         manager: &TransferManager,
         before: usize,
+        applied_at: u64,
         identities: &identity::IdentityLedger,
         team: &TeamAllocator,
     ) -> Result<(), String> {
@@ -306,7 +315,7 @@ impl TransferBoundary {
             return Err("bounded transfer event limit exceeded".into());
         }
         for event in &manager.events()[before..] {
-            let root = self.root_for(manager, event.operation_id)?;
+            let root = self.root_for(manager, event.operation_id)?.clone();
             let person = identities
                 .person(root.plan.person)
                 .ok_or("unpaired transfer person")?;
@@ -317,7 +326,7 @@ impl TransferBoundary {
                 || episode.person_id != root.plan.person
                 || episode.service_id != root.request.origin_service
                 || episode.status != identity::EpisodeStatus::Open
-                || episode.entered_at > event.tick
+                || episode.entered_at > applied_at
             {
                 return Err("new transfer effect lacks live source-episode ownership".into());
             }
@@ -335,7 +344,7 @@ impl TransferBoundary {
                 if !destination.availability.as_ref().is_some_and(|windows| {
                     windows
                         .iter()
-                        .any(|w| w.start <= event.tick && event.tick < w.end)
+                        .any(|w| w.start <= applied_at && applied_at < w.end)
                 }) {
                     return Err("destination unavailable at applied reservation time".into());
                 }
@@ -345,24 +354,34 @@ impl TransferBoundary {
                 TransferEffect::Departed | TransferEffect::HandoverCompleted
             ) {
                 if let Some(escort) = root.plan.escort {
-                    let from = manager
-                        .events()
-                        .iter()
-                        .filter(|e| e.effect == TransferEffect::Departed)
-                        .filter(|e| {
-                            self.root_for(manager, e.operation_id)
-                                .is_ok_and(|r| r.plan.operation == root.plan.operation)
-                        })
-                        .map(|e| e.tick)
-                        .min()
-                        .ok_or("escort has no departure anchor")?;
+                    if event.effect == TransferEffect::Departed {
+                        if self
+                            .active_escorts
+                            .get(&escort.staff)
+                            .is_some_and(|op| *op != root.plan.operation)
+                        {
+                            return Err("escort already owns another active journey".into());
+                        }
+                        self.active_escorts
+                            .insert(escort.staff, root.plan.operation);
+                        self.departures
+                            .entry(root.plan.operation)
+                            .or_insert(applied_at);
+                    }
+                    let from = *self
+                        .departures
+                        .get(&root.plan.operation)
+                        .ok_or("escort has no actual departure anchor")?;
                     validate_escort(
                         team,
                         escort,
                         from,
-                        event.tick,
+                        applied_at,
                         event.effect == TransferEffect::Departed,
                     )?;
+                    if event.effect == TransferEffect::HandoverCompleted {
+                        self.active_escorts.remove(&escort.staff);
+                    }
                 }
             }
         }

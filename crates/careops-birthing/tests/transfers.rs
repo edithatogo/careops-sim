@@ -382,6 +382,138 @@ fn unavailable_or_undeclared_destination_capacity_never_grants_and_cancel_retain
 }
 
 #[test]
+fn escort_is_exclusive_across_active_split_journeys_but_reusable_after_handover() {
+    let (ids, delivery, profile, mut plans, team) = fixture();
+    plans[0].escort = plans[2].escort;
+    let mut boundary = bind(&ids, &delivery, profile, plans);
+    for op in [1, 3] {
+        boundary
+            .request(
+                TransferOperationId::new(op),
+                MessageId::new(op * 100),
+                1,
+                &ids,
+                &team,
+            )
+            .unwrap();
+    }
+    for (op, resource) in [(1, 20), (3, 31)] {
+        boundary
+            .apply(
+                env(op, 1, 1, 2, TransferCommand::Offer { expires_at: None }),
+                &ids,
+                &team,
+            )
+            .unwrap();
+        boundary
+            .apply(
+                env(
+                    op,
+                    2,
+                    2,
+                    3,
+                    TransferCommand::Reserve {
+                        resources: vec![ResourceId::new(resource)],
+                        expires_at: None,
+                    },
+                ),
+                &ids,
+                &team,
+            )
+            .unwrap();
+    }
+    for op in [1, 3] {
+        boundary
+            .apply(
+                env(op, 3, 3, 4, TransferCommand::BeginDeparture),
+                &ids,
+                &team,
+            )
+            .unwrap();
+    }
+    boundary
+        .apply(env(1, 4, 4, 5, TransferCommand::Depart), &ids, &team)
+        .unwrap();
+    let before = boundary.core().checkpoint().unwrap();
+    assert!(boundary
+        .apply(env(3, 4, 4, 5, TransferCommand::Depart), &ids, &team)
+        .is_err());
+    assert_eq!(boundary.core().checkpoint().unwrap(), before);
+    boundary
+        .apply(env(1, 5, 5, 6, TransferCommand::Arrive), &ids, &team)
+        .unwrap();
+    boundary
+        .apply(
+            env(1, 6, 6, 7, TransferCommand::CompleteHandover),
+            &ids,
+            &team,
+        )
+        .unwrap();
+    boundary
+        .apply(env(3, 4, 4, 7, TransferCommand::Depart), &ids, &team)
+        .unwrap();
+    boundary
+        .apply(env(3, 5, 5, 8, TransferCommand::Arrive), &ids, &team)
+        .unwrap();
+    boundary
+        .apply(
+            env(3, 6, 6, 9, TransferCommand::CompleteHandover),
+            &ids,
+            &team,
+        )
+        .unwrap();
+}
+
+#[test]
+fn buffered_reservation_cannot_grant_after_actual_destination_closure() {
+    let (ids, delivery, mut profile, plans, team) = fixture();
+    profile
+        .destinations
+        .get_mut(&ServiceId::new(3))
+        .unwrap()
+        .availability = Some(vec![AvailabilityWindow { start: 0, end: 10 }]);
+    let mut boundary = bind(&ids, &delivery, profile, plans);
+    boundary
+        .request(
+            TransferOperationId::new(2),
+            MessageId::new(200),
+            1,
+            &ids,
+            &team,
+        )
+        .unwrap();
+    assert_eq!(
+        boundary
+            .apply(
+                env(
+                    2,
+                    2,
+                    2,
+                    3,
+                    TransferCommand::Reserve {
+                        resources: vec![ResourceId::new(30)],
+                        expires_at: None,
+                    }
+                ),
+                &ids,
+                &team
+            )
+            .unwrap(),
+        ApplyOutcome::Buffered
+    );
+    boundary.advance_to(20, &ids, &team).unwrap();
+    let before = boundary.core().checkpoint().unwrap();
+    assert!(boundary
+        .apply(
+            env(2, 1, 1, 2, TransferCommand::Offer { expires_at: None }),
+            &ids,
+            &team
+        )
+        .is_err());
+    assert_eq!(boundary.core().checkpoint().unwrap(), before);
+}
+
+#[test]
 fn expiry_retains_origin_and_new_attempt_preserves_the_same_person_and_episode() {
     let (ids, delivery, profile, mut plans, team) = fixture();
     let mut retry = plans[1].clone();
