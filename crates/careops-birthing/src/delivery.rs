@@ -43,7 +43,7 @@ pub enum RecoveryState {
 pub struct DeliveryLedger {
     births: BirthMessageLedger,
     records: BTreeMap<BirthMessageId, DeliveryRecord>,
-    states: BTreeMap<PersonId, (u64, RecoveryState)>,
+    states: BTreeMap<(BirthMessageId, PersonId), (u64, RecoveryState)>,
 }
 
 impl DeliveryLedger {
@@ -111,7 +111,7 @@ impl DeliveryLedger {
                 | BirthRecipient::Infant { person_id, .. } => *person_id,
             };
             self.states
-                .entry(person_id)
+                .entry((record.birth.message_id, person_id))
                 .or_insert((tick, RecoveryState::Recovering));
         }
         self.records.insert(record.birth.message_id, record);
@@ -121,22 +121,23 @@ impl DeliveryLedger {
     pub fn record(&self, id: BirthMessageId) -> Option<&DeliveryRecord> {
         self.records.get(&id)
     }
-    pub fn state(&self, id: PersonId) -> Option<(u64, RecoveryState)> {
-        self.states.get(&id).copied()
+    pub fn state(&self, delivery: BirthMessageId, id: PersonId) -> Option<(u64, RecoveryState)> {
+        self.states.get(&(delivery, id)).copied()
     }
 
     /// Domain recovery is independent for each person. Discharge does not delete
     /// relatives or implicitly close their service episodes in the identity ledger.
     pub fn transition(
         &mut self,
+        delivery: BirthMessageId,
         id: PersonId,
         tick: u64,
         state: RecoveryState,
     ) -> Result<(), String> {
         let previous = self
             .states
-            .get_mut(&id)
-            .ok_or("unknown birth participant")?;
+            .get_mut(&(delivery, id))
+            .ok_or("unknown delivery participant")?;
         if tick < previous.0
             || (previous.1 == RecoveryState::Discharged && *previous != (tick, state))
         {

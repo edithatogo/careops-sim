@@ -93,6 +93,34 @@ fn malformed_provenance_or_ordinal_does_not_spawn_partial_infants() {
 }
 
 #[test]
+fn changed_observation_retry_and_core_rejection_preserve_all_delivery_state() {
+    let (mut ids, record) = fixture(DeliveryRoute::Vaginal);
+    let mut deliveries = DeliveryLedger::default();
+    deliveries.register(&mut ids, 1, record.clone()).unwrap();
+    let before_ids = ids.checkpoint().unwrap();
+    let before_record = deliveries.record(record.birth.message_id).unwrap().clone();
+    let before_state = deliveries.state(record.birth.message_id, record.birth.mother_person_id);
+    let mut changed = record.clone();
+    changed.observations[0].value += 1;
+    assert!(deliveries.register(&mut ids, 2, changed).is_err());
+    let mut rejected = record.clone();
+    rejected.birth.message_id = BirthMessageId::new(99);
+    rejected.birth.birth_event_id = BirthEventId::new(100);
+    // Reusing the original spawn keys must fail in the core, after local validation.
+    assert!(deliveries.register(&mut ids, 2, rejected).is_err());
+    assert_eq!(ids.checkpoint().unwrap(), before_ids);
+    assert_eq!(
+        deliveries.record(record.birth.message_id),
+        Some(&before_record)
+    );
+    assert!(deliveries.record(BirthMessageId::new(99)).is_none());
+    assert_eq!(
+        deliveries.state(record.birth.message_id, record.birth.mother_person_id),
+        before_state
+    );
+}
+
+#[test]
 fn maternal_discharge_preserves_infant_recovery_escalation_and_episode_counts() {
     let (mut ids, record) = fixture(DeliveryRoute::Operative);
     let mut deliveries = DeliveryLedger::default();
@@ -120,24 +148,44 @@ fn maternal_discharge_preserves_infant_recovery_escalation_and_episode_counts() 
     )
     .unwrap();
     deliveries
-        .transition(people[0], 3, RecoveryState::Discharged)
+        .transition(
+            BirthMessageId::new(4),
+            people[0],
+            3,
+            RecoveryState::Discharged,
+        )
         .unwrap();
     deliveries
-        .transition(people[1], 3, RecoveryState::Escalated)
+        .transition(
+            BirthMessageId::new(4),
+            people[1],
+            3,
+            RecoveryState::Escalated,
+        )
         .unwrap();
     assert_eq!(
-        deliveries.state(people[2]),
+        deliveries.state(BirthMessageId::new(4), people[2]),
         Some((1, RecoveryState::Recovering))
     );
     assert_eq!(
-        deliveries.state(people[1]),
+        deliveries.state(BirthMessageId::new(4), people[1]),
         Some((3, RecoveryState::Escalated))
     );
     assert!(deliveries
-        .transition(people[0], 4, RecoveryState::Recovering)
+        .transition(
+            BirthMessageId::new(4),
+            people[0],
+            4,
+            RecoveryState::Recovering
+        )
         .is_err());
     assert!(deliveries
-        .transition(people[1], 2, RecoveryState::Discharged)
+        .transition(
+            BirthMessageId::new(4),
+            people[1],
+            2,
+            RecoveryState::Discharged
+        )
         .is_err());
     ids.apply_tick(
         3,
@@ -151,4 +199,49 @@ fn maternal_discharge_preserves_infant_recovery_escalation_and_episode_counts() 
     assert_eq!(ids.counts().service_entries - ids.counts().service_exits, 2);
     assert_eq!(ids.person(people[1]).unwrap().status, PersonStatus::Living);
     assert_eq!(ids.relationships().len(), 2);
+}
+
+#[test]
+fn later_delivery_has_new_recovery_without_reopening_previous_delivery() {
+    let (mut ids, record) = fixture(DeliveryRoute::Vaginal);
+    let mother = record.birth.mother_person_id;
+    let mut deliveries = DeliveryLedger::default();
+    deliveries.register(&mut ids, 1, record.clone()).unwrap();
+    deliveries
+        .transition(BirthMessageId::new(4), mother, 2, RecoveryState::Discharged)
+        .unwrap();
+    let mut later = record;
+    later.birth.message_id = BirthMessageId::new(104);
+    later.birth.birth_event_id = BirthEventId::new(105);
+    for infant in &mut later.birth.infants {
+        infant.spawn_event_id = SpawnEventId::new(102 + u64::from(infant.infant_ordinal));
+        infant.relationship_event_id =
+            RelationshipEventId::new(110 + u64::from(infant.infant_ordinal));
+    }
+    deliveries.register(&mut ids, 10, later).unwrap();
+    assert_eq!(
+        deliveries.state(BirthMessageId::new(104), mother),
+        Some((10, RecoveryState::Recovering))
+    );
+    assert_eq!(
+        deliveries.state(BirthMessageId::new(4), mother),
+        Some((2, RecoveryState::Discharged))
+    );
+    deliveries
+        .transition(
+            BirthMessageId::new(104),
+            mother,
+            11,
+            RecoveryState::Escalated,
+        )
+        .unwrap();
+    assert!(deliveries
+        .transition(
+            BirthMessageId::new(4),
+            mother,
+            12,
+            RecoveryState::Recovering
+        )
+        .is_err());
+    assert_eq!(ids.counts().births, 4);
 }
