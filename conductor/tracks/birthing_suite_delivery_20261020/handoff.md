@@ -12,3 +12,13 @@ profiles. Do not infer atomic grants from conditions or delivery from transfer.
 
 Historical proposal is retained in the planning baseline commit. Current plan,
 specification and test matrix supersede its unconditional capability assumptions.
+
+## 2 November 2026 — A7 prerequisite recovery
+
+Retained B0/B1 scoped local source/evidence is reconciled at `2294973` from
+frozen `f568909`; original checkout remains unchanged. B2 source `c251f9b`
+received reviewer fixes `d3c8fc5` (per-delivery recovery) and `9702fac` (birth-time
+observation provenance). Exact final review found no remaining actionable issues.
+Full core/birthing tests and Clippy pass; hosted checks are the next acceptance
+gate. B2 checkboxes remain unchecked until that readback. B3–B7 and A7 remain
+incomplete. [Evidence](../../evidence/core-a7-prerequisites-20261102/B2.md).
