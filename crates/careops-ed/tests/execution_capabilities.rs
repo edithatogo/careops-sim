@@ -91,11 +91,11 @@ fn backend_selection_is_strict_and_does_not_change_cpu_results() {
     }
     assert_eq!(
         call(&["run", path, "--backend", "cpu_replications"]).exit_code as i32,
-        8
+        2
     );
     assert_eq!(
         call(&["batch", path, "--backend", "cpu_serial"]).exit_code as i32,
-        8
+        2
     );
     assert!(call(&["--help"]).stdout.contains("capabilities"));
 }

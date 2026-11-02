@@ -996,7 +996,7 @@ fn require_execution_mode(mode: &str, command: Option<&str>) -> Result<(), CliOu
         "cpu_serial" if command.is_none() || command == Some("run") => Ok(()),
         "cpu_replications" if command.is_none() || command == Some("batch") => Ok(()),
         "cpu_serial" | "cpu_replications" => Err(CliOutput::error(
-            ExitCodeDef::SimulationFailed,
+            ExitCodeDef::UsageError,
             format!("careops-ed: backend '{mode}' is not available for this command"),
         )),
         "metal" | "pdes" | "grpc" | "mpi" | "distributed" => Err(CliOutput::error(
