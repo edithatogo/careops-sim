@@ -1,6 +1,6 @@
 # Implementation plan: Generic birthing suite simulation delivery
 
-Status: generic synthetic engineering in progress. B0–B5 have scoped acceptance; full specification approval, clinical validation and site acceptance remain open.
+Status: generic synthetic engineering in progress. B0–B6 have scoped acceptance; full specification approval, clinical validation and site acceptance remain open.
 
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
 Dispatch requires reviewed packets, upstream capability readback and the single-maintainer harness.
@@ -61,10 +61,10 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 
 ## B6 — Transfers and split destinations
 
-- [ ] B6.1 Test ward/theatre/neonatal/retrieval transfer rejection, reservation expiry, cancellation and delayed acknowledgements.
-- [ ] B6.2 Integrate transfer lifecycle and destination models, including maternal/infant split destinations and safe fallback after departure.
-- [ ] B6.3 Verify unique ownership, person/episode conservation and origin/destination/escort resource accounting.
-- [ ] B6.4 Conductor — review and verify phase (workflow.md).
+- [x] B6.1 Test ward/theatre/neonatal/retrieval transfer rejection, reservation expiry, cancellation and delayed acknowledgements. Scoped runtime accepted at `81d1e5c`: current hosted native Linux/macOS and completed quality/security checks; independent final review at `fd9ee4c` after two P2 fixes;7 transfer/46 birthing tests pass. Unchanged ED mutation evidence is reused from fully hosted `948500b`; current context/aggregate remains pending and final actual combined-head gates remain mandatory. See [B6 acceptance](../../evidence/core-a7-prerequisites-20261102/B6.md).
+- [x] B6.2 Integrate transfer lifecycle and destination models, including maternal/infant split destinations and safe fallback after departure. Scoped runtime accepted at `81d1e5c`: current hosted native Linux/macOS and completed quality/security checks; independent final review at `fd9ee4c` after two P2 fixes;7 transfer/46 birthing tests pass. Unchanged ED mutation evidence is reused from fully hosted `948500b`; current context/aggregate remains pending and final actual combined-head gates remain mandatory. See [B6 acceptance](../../evidence/core-a7-prerequisites-20261102/B6.md).
+- [x] B6.3 Verify unique ownership, person/episode conservation and origin/destination/escort resource accounting. Scoped runtime accepted at `81d1e5c`: current hosted native Linux/macOS and completed quality/security checks; independent final review at `fd9ee4c` after two P2 fixes;7 transfer/46 birthing tests pass. Unchanged ED mutation evidence is reused from fully hosted `948500b`; current context/aggregate remains pending and final actual combined-head gates remain mandatory. See [B6 acceptance](../../evidence/core-a7-prerequisites-20261102/B6.md).
+- [x] B6.4 Conductor — review and verify phase (workflow.md). Scoped runtime accepted at `81d1e5c`: current hosted native Linux/macOS and completed quality/security checks; independent final review at `fd9ee4c` after two P2 fixes;7 transfer/46 birthing tests pass. Unchanged ED mutation evidence is reused from fully hosted `948500b`; current context/aggregate remains pending and final actual combined-head gates remain mandatory. See [B6 acceptance](../../evidence/core-a7-prerequisites-20261102/B6.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
 

@@ -79,3 +79,19 @@ is unchanged from fully green2c13ec0; that mutation receipt is reused while
 current context/aggregate completes. Final actual combined-head gates remain.
 Next B6.1–B6.3 lifecycle/split-destination/fallback/escort/person-episode-resource
 conservation, using qualified core transfer contracts and explicit ownership.
+
+### B6 scoped acceptance; B7 next — 3 November 2026
+
+Current chat01a19b9f-69e7-7353-9b75-445d5653feb4 owns source lane
+`<managed-worktrees>/careops-pr194-checks/careops-sim`, branch
+`codex/core-a7-prerequisites`, PR197. Owned paths are birthing consumer and
+coordinator Conductor records; no native objects. Earlier owners/assignments
+remain history. Sourcefd9ee4c is independently re-reviewed after application-time
+and escort-exclusivity corrections. Scoped runtime81d1e5c passes current hosted
+native Linux/macOS and completed quality/security checks. Seven transfer and46
+birthing local tests pass. ED mutation graph is unchanged from fully green948500b;
+reuse that receipt while current context completes, without relabeling it green.
+Final combined-head full gates remain mandatory. B7 native batch IPC/Parquet,
+actual composition, worker/recovery/performance and A7 remain open. B7 dependency
+candidate4134/Polars964 keeps runtime074 separate; any actual graph/config change
+invalidates narrow reuse. No clinical/site/full-spec approval follows.
