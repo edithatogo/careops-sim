@@ -1,7 +1,7 @@
 # Handoff
 
 ## Summary
-R10 entry/reference phase accepted on 30 October 2026 for merged remote source e65570b and Kairos 0741026. R11.1 preparation is next; runtime Polars replacement remains pending. See [phase review](review-report.md#r10-phase-review-and-acceptance--30-october-2026).
+R10 entry/reference phase accepted on 30 October 2026 for merged remote source e65570b and Kairos 0741026. Current R11.1/R11.2 bounded local engineering acceptance is recorded below; R11.3 durability work is next, with full R11phase/hosted gates still pending. See [phase review](review-report.md#r10-phase-review-and-acceptance--30-october-2026).
 
 ## Follow-up issues
 Bind and qualify the exact source/dependency/feature matrix during each affected R11/R12 packet. Any unsupported interchange or memory requirement blocks affected replacement; no invented fallback engine.
@@ -37,3 +37,24 @@ preserved. Workspace policy/pin/support checks and69targeted native tests pass.
 [Integration receipt](../../evidence/polars-integration-20261103/integration.json).
 Next: reviewer-confirmed R11.3 durability/model/envelope/process-window controls,
 then full combined phase gates. No R11phase acceptance is claimed yet.
+
+## R11.1/R11.2 local task acceptance — 3 November 2026
+
+Source3ee7ac1:638Rust workspace tests pass;69focused capture/library/E9 controls
+pass;774Python tests pass after retaining a frozen A7 source join and requiring a
+separate exact26case observer/capture compatibility receipt. Actual frozen154ba1a
+and current3ee7ac1 binaries match all26seed7 input/summary hashes and the retained
+analytical reference. Eight negative compatibility controls reject stale/missing
+source/runtime/driver/case evidence; historical A7 bytes remain unchanged and no
+renewed whole-A7 acceptance is asserted. Fuzz isolates native features while the
+production native-data default remains required. Workspace policy/pin/support pass.
+
+Independent integration and guard reviews are ready, with no actionable findings.
+The first full Python run retained two stale-guard failures and a build failure
+during private preparation preservation; original build.rs was restored exactly.
+The six trust-boundary tests pass after restoration; final774Python run is green.
+No unrelated source/checkouts or environments were reset.
+
+R11.1/R11.2 checkboxes record local task acceptance only. R11.3 needs real durable
+control/model/attempt/crash-window fixes; R11.4 still requires full combined source
+review and hosted gates before phase acceptance/integration. R12–R14 remain open.

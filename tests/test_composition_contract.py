@@ -5,6 +5,7 @@ from pathlib import Path
 import unittest
 
 from tools.composition_contract import validate_contract
+from tools.ed_source_compatibility import verify_binding
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / 'model-inputs/core/a7-evaluation.synthetic.json'
@@ -24,7 +25,7 @@ class CompositionEvaluationContractTests(unittest.TestCase):
         join=json.loads((ROOT/'conductor/evidence/a7-two-consumer-20261103/join.json').read_text())
         self.assertEqual({c['domain'] for c in join['consumers']},{'ed','birthing'})
         self.assertEqual(join['scope'],'generic_synthetic_bounded_reuse_only')
-        self.assertEqual(join['ed_source_sha256'],hashlib.sha256((ROOT/'crates/careops-ed/src/lib.rs').read_bytes()).hexdigest())
+        verify_binding(ROOT, join)
         for evidence in join['evidence']:
             self.assertEqual(hashlib.sha256((ROOT/evidence['path']).read_bytes()).hexdigest(),evidence['sha256'])
         self.assertEqual(join['hosted_qualification']['ed_mutants']['viable_survivors'],0)

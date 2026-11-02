@@ -389,8 +389,11 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertIn('license = "Apache-2.0"', fuzz_manifest)
         self.assertIn("[workspace]", fuzz_manifest)
         self.assertIn('libfuzzer-sys = "=0.4.13"', fuzz_manifest)
-        self.assertIn('careops-ed = { path = "../crates/careops-ed", version = "=0.1.0" }', fuzz_manifest)
+        self.assertIn('careops-ed = { default-features = false, path = "../crates/careops-ed", version = "=0.1.0" }', fuzz_manifest)
         self.assertIn('serde_json = "=1.0.151"', fuzz_manifest)
+        import tomllib
+        production = tomllib.loads((WORKFLOW.parents[2] / 'crates/careops-ed/Cargo.toml').read_text())
+        self.assertEqual(production['features']['default'], ['native-data'])
         fuzz_lock = (WORKFLOW.parents[2] / "fuzz" / "Cargo.lock").read_text()
         self.assertIn('name = "libfuzzer-sys"\nversion = "0.4.13"\nsource = "registry+https://github.com/rust-lang/crates.io-index"\nchecksum = ', fuzz_lock)
         workflow = WORKFLOW.read_text()

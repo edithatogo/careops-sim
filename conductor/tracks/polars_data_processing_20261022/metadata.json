@@ -4,7 +4,7 @@
   "type": "refactor",
   "status": "in_progress",
   "created_at": "2026-10-22",
-  "updated_at": "2026-10-30",
+  "updated_at": "2026-11-03",
   "spec_approved": true,
   "implementation_started": true,
   "accepted_phases": [
@@ -49,5 +49,17 @@
   "sequencing_basis": "User requested inventory-first Polars; supporting dependency work gates only demonstrated dependent tasks.",
   "acceptance_evidence": "conductor/tracks/polars_data_processing_20261022/review-report.md",
   "accepted_source_commit": "e65570b7a1046dafb15511ab5118b46b587f2f5d",
-  "next_phase_decision": "R11.1 preparation only; fresh exact-base packet and failing behavior oracles required. No R11 implementation or acceptance."
+  "next_phase_decision": "R11.1/R11.2 local engineering acceptance at3ee7ac1 after full638Rust/774Python/26case differential/policy/pin/support and independent integration/guard reviews. R11.3 packet preparation may proceed; R11.4 combined phase/actual hosted gates remain mandatory. R12\u2013R14 not accepted.",
+  "accepted_local_tasks": {
+    "R11.1": {
+      "source": "3ee7ac1225c9c53d076a7246a1d02ce3e4cdcb10",
+      "prior_authoring": "3952f51",
+      "scope": "retained real boundary oracles and combined local qualification"
+    },
+    "R11.2": {
+      "source": "3ee7ac1225c9c53d076a7246a1d02ce3e4cdcb10",
+      "scope": "original-run production Parquet capture/export integration; recovery defects left toR11.3",
+      "hosted_phase_accepted": false
+    }
+  }
 }
