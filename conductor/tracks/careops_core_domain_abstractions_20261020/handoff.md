@@ -35,3 +35,69 @@ export FlowRuntime, RequestId, RequestState or ResourceId required by the A3.2
 conformance target. The original A3 phase receipts describe the prior pin.
 Keep the PR in draft pending a compatible, qualified Kairos interface and a
 successful locked run including allocation_kairos_conformance.
+
+## 2 November 2026 — A7 prerequisite recovery
+
+Retained B0/B1 scoped local source/evidence is reconciled at `2294973` from
+frozen `f568909`; original checkout remains unchanged. B2 source `c251f9b`
+received reviewer fixes `d3c8fc5` (per-delivery recovery) and `9702fac` (birth-time
+observation provenance). Exact final review found no remaining actionable issues.
+Full core/birthing tests and Clippy pass; hosted checks are the next acceptance
+gate. B2 checkboxes remain unchecked until that readback. B3–B7 and A7 remain
+incomplete. [Evidence](../../evidence/core-a7-prerequisites-20261102/B2.md).
+
+### B6 scoped acceptance; B7 next — 3 November 2026
+
+Current chat01a19b9f-69e7-7353-9b75-445d5653feb4 owns source lane
+`<managed-worktrees>/careops-pr194-checks/careops-sim`, branch
+`codex/core-a7-prerequisites`, PR197. Owned paths are birthing consumer and
+coordinator Conductor records; no native objects. Earlier owners/assignments
+remain history. Sourcefd9ee4c is independently re-reviewed after application-time
+and escort-exclusivity corrections. Scoped runtime81d1e5c passes current hosted
+native Linux/macOS and completed quality/security checks. Seven transfer and46
+birthing local tests pass. ED mutation graph is unchanged from fully green948500b;
+reuse that receipt while current context completes, without relabeling it green.
+Final combined-head full gates remain mandatory. B7 native batch IPC/Parquet,
+actual composition, worker/recovery/performance and A7 remain open. B7 dependency
+candidate4134/Polars964 keeps runtime074 separate; any actual graph/config change
+invalidates narrow reuse. No clinical/site/full-spec approval follows.
+
+### B7 full hosted acceptance; A7 eligible — 3 November 2026
+
+Runtime154ba1a is accepted for the generic synthetic B7 contract after final
+independent implementation/determinism review and all17hosted successes plus
+expected main-only attestation skip. Actual native Linux/macOS CLI/PyArrow,
+current-source ED88.1834%coverage/116canonicalmutants (111caught,2exactequivalents,
+3unviable,0timeouts), full quality/security and lock gates pass. Model/build
+identity now binds completed-replication recovery. B7.1–B7.4 are checked; full-spec,
+clinical/site/operational acceptance remains open. Existing chat/worktree/branch
+ownership is unchanged; no native-object scope. Next operation: bind reviewed A7
+join/evaluation/accounting contract packet. Its private preflight corrected false
+censoring and prediction-time leakage before dispatch. No A7 task is yet accepted.
+
+### A7 engineering complete — 3 November 2026
+
+Current owner chat01a19b9f-69e7-7353-9b75-445d5653feb4, worktree
+`<managed-worktrees>/careops-pr194-checks/careops-sim`, branch
+`codex/core-a7-prerequisites`, PR197. Core architecture/consumer source and Conductor
+status were the owned scope; no native object or authentication scope. Original
+core0320767, compatibilityf568909 and Polars owner96e8cc8 checkouts remain clean
+and unchanged. All earlier assignments remain history.
+
+A7source99cb1c7 passed independent logic/empirical-contract review with no findings.
+Qualified combined head ef613be passed17hosted checks+expected attestation skip,
+766Python tests, current-source ED88.1834%coverage/116mutants111caught2exacteq
+3unviable0timeouts. A7.1–A7.4 and core A0–A7 are engineering-complete. Native runtime
+074/data4134 and old calibration bytes remain fixed. This is synthetic bounded
+composition and artifact/reference-oracle conformance, not clinical/site/operational,
+stable public API, hardware or release acceptance. Birthing fullspec approval
+remains false. Next operation: final documentation-head gates and PR197 integration
+review; other owned lanes retain their separate packets/owners. PR191 stays a
+qualified unmerged draft. No new code lane is dispatched by this handoff.
+
+### Final closeout review correction — 3 November 2026
+
+Independent read-only review of `29312d1` found stale A7-incomplete summaries in
+`index.md` and `plan.md`. Both now agree with the accepted A0–A7 bounded engineering
+status and retain PR197/final documentation-head integration gates. No other
+overclaim, ownership or gate findings were reported. Runtime sources are unchanged.

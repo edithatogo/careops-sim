@@ -10,7 +10,7 @@ these C-R0–C-R7 recommendations. No change to that repository is made by this
 21 October incorporation. Older shorthand “CareOps” here denotes careops-sim
 unless a paragraph explicitly identifies the separate portfolio repository.
 
-Status: implementation in progress. A0–A6 are accepted locally. A7.1–A7.4 remain incomplete; A7.1 depends on birthing B7.4.
+Status: A0–A7 complete for bounded generic synthetic engineering, qualified at `ef613be`. PR197 remains unmerged; final documentation-head checks and integration review remain gates. Empirical/clinical/site/operational, stable public API, hardware and broader release acceptance remain separate. See [A7 acceptance](../../evidence/a7-two-consumer-20261103/README.md).
 
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
 Dispatch requires reviewed packets, upstream capability readback and the single-maintainer harness.
@@ -81,9 +81,9 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 
 ## A7 — Two-consumer evaluation and reuse join
 
-- [ ] A7.1 Join the ED composition evidence with B7 birthing/theatre/maternal-infant evidence before declaring reusable cross-service contracts qualified.
-- [ ] A7.2 Extend existing observation/calibration contracts for delayed/missing observations, exclusions, censoring, latent demand, identifiability and held-out validation.
-- [ ] A7.3 Define separate activity/resource/cost/funding/outcome/equity ledgers and versioned offline fiscal exchange; test mismatched units, periods, duplicate accounting and policy lag before optimisation.
-- [ ] A7.4 Conductor — review and verify phase (workflow.md).
+- [x] A7.1 Join the ED composition evidence with B7 birthing/theatre/maternal-infant evidence before declaring reusable cross-service contracts qualified. Accepted generic synthetic engineering at `ef613be`: independent exact-source logic/empirical-contract review at `99cb1c7`;16new contract controls,766full Python tests and all17hosted checks pass with expected main-only attestation skip. Runtime074/data4134/Rust/old calibration source unchanged. See [A7 acceptance](../../evidence/a7-two-consumer-20261103/README.md). Stable public API, empirical/clinical/site/operational/hardware/release gates remain separate.
+- [x] A7.2 Extend existing observation/calibration contracts for delayed/missing observations, exclusions, censoring, latent demand, identifiability and held-out validation. Accepted generic synthetic engineering at `ef613be`: independent exact-source logic/empirical-contract review at `99cb1c7`;16new contract controls,766full Python tests and all17hosted checks pass with expected main-only attestation skip. Runtime074/data4134/Rust/old calibration source unchanged. See [A7 acceptance](../../evidence/a7-two-consumer-20261103/README.md). Stable public API, empirical/clinical/site/operational/hardware/release gates remain separate.
+- [x] A7.3 Define separate activity/resource/cost/funding/outcome/equity ledgers and versioned offline fiscal exchange; test mismatched units, periods, duplicate accounting and policy lag before optimisation. Accepted generic synthetic engineering at `ef613be`: independent exact-source logic/empirical-contract review at `99cb1c7`;16new contract controls,766full Python tests and all17hosted checks pass with expected main-only attestation skip. Runtime074/data4134/Rust/old calibration source unchanged. See [A7 acceptance](../../evidence/a7-two-consumer-20261103/README.md). Stable public API, empirical/clinical/site/operational/hardware/release gates remain separate.
+- [x] A7.4 Conductor — review and verify phase (workflow.md). Accepted generic synthetic engineering at `ef613be`: independent exact-source logic/empirical-contract review at `99cb1c7`;16new contract controls,766full Python tests and all17hosted checks pass with expected main-only attestation skip. Runtime074/data4134/Rust/old calibration source unchanged. See [A7 acceptance](../../evidence/a7-two-consumer-20261103/README.md). Stable public API, empirical/clinical/site/operational/hardware/release gates remain separate.
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.

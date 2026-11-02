@@ -66,3 +66,19 @@ only the existing PR remote ref. Its final source and check receipts are retaine
 in [the repair closeout](../evidence/pr194-compatibility-20261102/README.md).
 R11.1 remains with the Polars owner; A7 remains gated on birthing B7.4. No new
 phase, native activation, hardware, clinical or operational acceptance is granted.
+
+## Core A7 prerequisite integration — 2 November 2026
+
+Chat `01a19b9f-69e7-7353-9b75-445d5653feb4` owns branch
+`codex/core-a7-prerequisites` in its existing isolated `<PR194_REPAIR_WORKTREE>`.
+Main integration base is `672d3e8`. The scope is retained birthing B0/B1
+source/evidence reconciliation followed by bounded generic synthetic B2–B7
+prerequisites and the A7 join. No native object/authentication scope is involved.
+Original compatibility checkout `f568909`, core checkout `0320767` and Polars
+checkout `96e8cc8` retain their files, branches and private bindings.
+The committed B0/B1 packet is read from immutable `f568909`; its original checkout
+is read-only. The separate PR191 remains open draft at `4b0a264` with all required
+checks passing; its source and runtime/data promotion remain separate.
+One coordinator owns shared Conductor/catalog/manifests in this integration lane.
+Each bounded commit uses a fresh advisory claim and review; no accepted source
+check is rerun merely because a new receipt is written.

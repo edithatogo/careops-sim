@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "packet_id": "B1.3.trajectory-observation",
+  "task_id": "B1.3",
+  "target_repo": ".",
+  "base_commit": "5135a26f0729926cfe33f31ad8e8429764a2bd22",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Validate 16 bounded synthetic episode trajectories over seeds 1 through 16 using a 0.25 per-tick test-only hazard, 32-tick inclusive horizon and 32-executed-event bound; expose only core ObservedPolicyState (observed tick, versioned urgency, elapsed wait) to DecisionPolicy. No patient/service state or future event is added to that policy input, and no clinical rate or prediction claim is introduced.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md",
+    "model-inputs/birthing/fixtures/b1-progression-cases.synthetic.json",
+    "crates/careops-birthing/src/lib.rs",
+    "crates/careops-birthing/tests/runtime_conformance.rs",
+    "crates/careops-core/src/pathway/classification.rs",
+    "conductor/design/composition-contracts-20261020.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md": "8f4bcb5152f56cbf62413338fd3f70c381600bbbdb099c988cea4e2f13d67d8c",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md": "a74dd69aad568def2e38a26159d03f947374a9b62b85759c7a1ed3ba67a85e67",
+    "crates/careops-birthing/src/lib.rs": "a6f888aeaef762dffac2c86f2905b49a6c792c464919f312cbff160474fbc006",
+    "crates/careops-birthing/tests/runtime_conformance.rs": "7a91f1763a668753969ef0e01ea5163bbd960c5f0eafb02cbc8929ffc4e820fc",
+    "crates/careops-core/src/pathway/classification.rs": "861666b93cd38229743a4ba27e04e31514beb4efc04395bdb63f519477761d4b",
+    "conductor/design/composition-contracts-20261020.md": "4b83254e9ec17cbdd8c44790deda7bebf5893b3b46fc7f0eae2842af325d9249",
+    "model-inputs/birthing/fixtures/b1-progression-cases.synthetic.json": "ba6e039a32ca3c5499a1fdc5e79008a061ac23e005b8ab72b59b4894429f8e45"
+  },
+  "write_paths": [
+    "crates/careops-birthing",
+    "conductor/execution/packets/B1.3.trajectory-observation.json",
+    "conductor/evidence/b1.3-trajectory-observation-20261027"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json",
+    "conductor/tracks.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md"
+  ],
+  "leaf_dependencies": [
+    "B1.2"
+  ],
+  "interface_contract": "B1 plan/test matrix; CC-04 and CC-08 in composition-contracts; core ObservedPolicyState and DecisionPolicy API; careops-birthing runtime at packet base.",
+  "steps": [
+    "Add a domain-facing helper that constructs core ObservedPolicyState from the episode current tick plus supplied VersionedUrgencyAssessment and elapsed-wait value. Reject an assessment timestamp later than the observation tick. The core policy input contains only observed tick, assessment, and elapsed wait; patient/service state and queued future events are not passed to this API.",
+    "Add negative controls with identical policy inputs but different patient/service states and pending future-event queues; DecisionPolicy must receive identical values and produce identical decisions. Reject a future-dated assessment and assert the complete VersionedUrgencyAssessment value, including jurisdiction, scheme/version, category, assessment tick, effective date, source authority, citation and optional source hash, is preserved.",
+    "Add deterministic synthetic bounded-trajectory controls for exactly seeds 1..=16, using a test-only hazard rate 0.25 per simulation tick, inclusive horizon 32 and maximum 32 executed events. Assert monotone event ticks, no post-horizon event executes, every unfinished run records censor tick 32, and no run exceeds the event bound. Repeat each seed and require identical trace and observation.",
+    "Use test-only synthetic hazards and target mappings only; retain no clinical parameter/profile change and no prediction claim.",
+    "Run focused B1.3 and B1.2 runtime tests, core policy/pathway compatibility tests, and Rust format check. Record exact seeds, horizon, event bound, toolchain and source/fixture hashes.",
+    "Obtain reviewer-agent review of the integrated commit, fix all findings, then coordinator records acceptance and updates the phase DAG."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Rust format check passes."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-birthing"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Bounded trajectory and observation-only negative controls execute and pass alongside B1.2 regression tests."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "policy_classification_tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Existing ObservedPolicyState/DecisionPolicy versioning and observed-only contract remain compatible."
+    }
+  ],
+  "acceptance": [
+    "Policy input contains only the episode observation tick, supplied versioned urgency assessment and elapsed wait; patient/service values and future queued event content are structurally absent. Different patient/service states or pending future queues with equal inputs produce equal policy decisions.",
+    "Future-dated assessment is rejected; a valid assessment preserves every VersionedUrgencyAssessment field, including jurisdiction, scheme/version, category, assessment tick, effective date, authority, citation and optional source hash.",
+    "For seeds 1..=16, a synthetic per-tick hazard 0.25, horizon 32 and event bound 32, each same-seed run replays identically, event ticks are monotone, no post-horizon event executes, and unfinished episodes are censored at tick 32.",
+    "All parameters are synthetic test controls; no clinical prediction, calibration, site-policy or operational acceptance is claimed."
+  ],
+  "result_path": "conductor/evidence/b1.3-trajectory-observation-20261027/README.md",
+  "stop_conditions": [
+    "Core observed-policy contract cannot be composed without inventing policy",
+    "A trajectory bound needs unsourced clinical parameter values",
+    "Test nondeterminism appears across repeated same-seed execution",
+    "Any edit escapes reserved paths"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

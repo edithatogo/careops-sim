@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "fixture_id": "birthing.b1-progression-event-order.synthetic.v1",
+  "status": "synthetic_expected_trace_contract",
+  "provenance": {
+    "class": "synthetic_deterministic_contract",
+    "empirical_data_used": false,
+    "clinical_thresholds_used": false,
+    "notes": "Integer event ticks are invented solely to define deterministic progression/service ordering cases. They are not clinical intervals, hazards, treatment targets, or fitted timings."
+  },
+  "time_unit": "simulation_tick",
+  "event_order_key": ["tick", "priority", "event_id", "patient_id"],
+  "runtime_status": "expected_oracle_not_yet_bound_to_birthing_runtime",
+  "cases": [
+    {
+      "case_id": "nominal_spontaneous_wait_and_transit",
+      "pathway": "nominal_spontaneous",
+      "patient_id": "synthetic-maternal-001",
+      "expectations": [
+        "progression_occurs_while_waiting_for_suite",
+        "progression_occurs_while_in_transit",
+        "service_unavailability_does_not_pause_patient_state"
+      ],
+      "events": [
+        {"tick": 0, "priority": 2, "event_id": "nominal-admit", "kind": "admission", "patient_state": "latent_labour", "service_state": "waiting_for_suite"},
+        {"tick": 2, "priority": 1, "event_id": "nominal-progress-wait", "kind": "labour_progression", "patient_state": "active_labour", "service_state": "waiting_for_suite"},
+        {"tick": 4, "priority": 2, "event_id": "nominal-suite-reserved", "kind": "service_reservation", "patient_state": "active_labour", "service_state": "suite_reserved"},
+        {"tick": 5, "priority": 2, "event_id": "nominal-depart", "kind": "transfer_departure", "patient_state": "active_labour", "service_state": "in_transit"},
+        {"tick": 6, "priority": 1, "event_id": "nominal-progress-transit", "kind": "labour_progression", "patient_state": "later_labour_stage", "service_state": "in_transit"},
+        {"tick": 7, "priority": 2, "event_id": "nominal-arrive", "kind": "transfer_arrival", "patient_state": "later_labour_stage", "service_state": "in_suite"}
+      ],
+      "cancelled_event_ids": []
+    },
+    {
+      "case_id": "induction_progression_and_intervention_while_waiting",
+      "pathway": "induction",
+      "patient_id": "synthetic-maternal-002",
+      "expectations": [
+        "induction_is_recorded_as_an_intervention",
+        "progression_occurs_during_service_wait",
+        "deterioration_is_observable_before_intervention_response",
+        "intervention_and_deterioration_are_distinct_events"
+      ],
+      "events": [
+        {"tick": 0, "priority": 2, "event_id": "induction-admit", "kind": "admission", "patient_state": "not_in_labour", "service_state": "waiting_for_assessment"},
+        {"tick": 1, "priority": 1, "event_id": "induction-start", "kind": "intervention_induction_start", "patient_state": "induction_started", "service_state": "waiting_for_assessment"},
+        {"tick": 3, "priority": 1, "event_id": "induction-progress-wait", "kind": "labour_progression", "patient_state": "active_labour", "service_state": "waiting_for_assessment"},
+        {"tick": 5, "priority": 1, "event_id": "induction-deterioration", "kind": "deterioration", "patient_state": "deterioration_observed", "service_state": "waiting_for_theatre"},
+        {"tick": 6, "priority": 1, "event_id": "induction-operative-decision", "kind": "intervention_decision", "patient_state": "operative_delivery_planned", "service_state": "waiting_for_theatre"},
+        {"tick": 8, "priority": 2, "event_id": "induction-depart", "kind": "transfer_departure", "patient_state": "operative_delivery_planned", "service_state": "in_transit"},
+        {"tick": 10, "priority": 2, "event_id": "induction-arrive", "kind": "transfer_arrival", "patient_state": "operative_delivery_planned", "service_state": "in_theatre"}
+      ],
+      "cancelled_event_ids": []
+    },
+    {
+      "case_id": "protracted_progression_and_deterioration_in_transit",
+      "pathway": "protracted",
+      "patient_id": "synthetic-maternal-003",
+      "expectations": [
+        "slow_progression_is_explicitly_observed",
+        "intervention_decision_is_separate_from_transfer",
+        "deterioration_occurs_while_in_transit",
+        "stale_progression_event_after_state_change_is_cancelled"
+      ],
+      "events": [
+        {"tick": 0, "priority": 2, "event_id": "protracted-admit", "kind": "admission", "patient_state": "active_labour", "service_state": "waiting_for_review"},
+        {"tick": 2, "priority": 1, "event_id": "protracted-progress", "kind": "labour_progression", "patient_state": "slow_progression_observed", "service_state": "waiting_for_review"},
+        {"tick": 4, "priority": 1, "event_id": "protracted-decision", "kind": "intervention_decision", "patient_state": "escalation_planned", "service_state": "waiting_for_transfer"},
+        {"tick": 5, "priority": 2, "event_id": "protracted-depart", "kind": "transfer_departure", "patient_state": "escalation_planned", "service_state": "in_transit"},
+        {"tick": 6, "priority": 1, "event_id": "protracted-deterioration", "kind": "deterioration", "patient_state": "deterioration_observed", "service_state": "in_transit"},
+        {"tick": 8, "priority": 2, "event_id": "protracted-arrive", "kind": "transfer_arrival", "patient_state": "deterioration_observed", "service_state": "destination_arrived"}
+      ],
+      "cancelled_event_ids": ["protracted-stale-progression-after-deterioration"]
+    }
+  ],
+  "limits": [
+    "This fixture does not specify probabilities, hazard rates, clinical thresholds, or policy targets.",
+    "Expected traces are synthetic design oracles only and have not been executed against a birthing runtime.",
+    "B1.2 must bind these cases to actual patient/service state and event APIs, then demonstrate the expected failing-to-passing transition.",
+    "No clinical prediction, local policy applicability, or operational acceptance follows from this fixture."
+  ]
+}

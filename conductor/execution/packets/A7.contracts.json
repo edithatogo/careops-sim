@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "packet_id": "A7.contracts",
+  "task_id": "A7.1",
+  "target_repo": ".",
+  "base_commit": "0bf34a1b0fb30fb6385219103e92133dee13cebf",
+  "objective": "Join exact accepted ED/B7 runtime receipts, then extend existing P31/P32/C0.2 with a versioned two-consumer observation/evaluation companion and separate six-ledger offline fiscal exchange; artifact/reference-oracle tooling only, no new simulation/fitting runtime.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/agent-contract.md",
+    "conductor/evidence/core-a7-prerequisites-20261102/B7.md",
+    "conductor/design/calibration/c0.2-contract.md"
+  ],
+  "input_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/agent-contract.md",
+    "conductor/evidence/core-a7-prerequisites-20261102/B7.md",
+    "conductor/evidence/a6.2-ed-ward-community-20261027/README.md",
+    "conductor/evidence/a6.3-composition-scheduler-parity-20261027/README.md",
+    "conductor/evidence/a6.4-phase-review-20261027/README.md",
+    "conductor/design/calibration/c0.2-contract.md",
+    "conductor/design/calibration/calibration-v1.schema.json",
+    "model-inputs/ed/calibration/p31-censoring-dependence-fixtures.json",
+    "model-inputs/ed/calibration/p31-identifiability-fixtures.json",
+    "model-inputs/ed/calibration/p32-holdout-validation.synthetic.json"
+  ],
+  "input_hashes": {
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md": "070e599846f4b31e174902a31cff8fe819df1d0ba897a3a8195c366223da567c",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/agent-contract.md": "972e357875ea9584e192eda69c0cc9b76394691fa7113598029bf02892bc2e4a",
+    "conductor/evidence/core-a7-prerequisites-20261102/B7.md": "a0d0e295619eafc3cd3c571b224cfa7dacce8b6ceebc5b46ab39b7f0177c97a5",
+    "conductor/evidence/a6.2-ed-ward-community-20261027/README.md": "290df99447d52c9cb5eb1cf8bb1e60a47d1caad1706e50e633cc35b361b395e3",
+    "conductor/evidence/a6.3-composition-scheduler-parity-20261027/README.md": "d5996e1f5875d7b2c7c3bf616d8da34364bec85aa0b59d4ba1acb40350520d47",
+    "conductor/evidence/a6.4-phase-review-20261027/README.md": "e869d1d26eeb2d390b930b21fd62961e8ec03368f8c314078ce795d83c4dec2c",
+    "conductor/design/calibration/c0.2-contract.md": "e9851bc743f646de5099f6605e60a1046350ee9d28783c166b2eba13df54222a",
+    "conductor/design/calibration/calibration-v1.schema.json": "8c46db62f691f243385a4ebdf8a7a3d3670e2655dd0c3f82cba4335ced2a3842",
+    "model-inputs/ed/calibration/p31-censoring-dependence-fixtures.json": "c19b2124a2a63654426207698b0312d6e984fd3cb24a221e38b5008c380c7bff",
+    "model-inputs/ed/calibration/p31-identifiability-fixtures.json": "58980359160c376689ff009e2ff2d4358fd1e1b5f21da29b5c33a580cfaf7ed0",
+    "model-inputs/ed/calibration/p32-holdout-validation.synthetic.json": "d39b4aed458540362ebe26325fc24a97a5b81e347c8f8499d244d2aa3598a72b"
+  },
+  "context_budget_bytes": 36000,
+  "write_paths": [
+    "conductor/design/composition-evaluation-v1.schema.json",
+    "conductor/design/composition-evaluation-v1.md",
+    "model-inputs/core/a7-evaluation.synthetic.json",
+    "tools/composition_contract.py",
+    "tests/test_composition_contract.py",
+    "conductor/evidence/a7-two-consumer-20261103",
+    "conductor/execution/packets/A7.contracts.json",
+    ".careops-security/inventory.json"
+  ],
+  "protected_paths": [
+    "libs/kairos",
+    "crates",
+    "Cargo.toml",
+    "Cargo.lock",
+    "conductor/research",
+    "conductor/design/calibration",
+    "model-inputs/ed"
+  ],
+  "leaf_dependencies": [
+    "A6.4",
+    "B7.4"
+  ],
+  "interface_contract": "A7.1\u2013A7.3 / CC08 companion to existing C0.2/P31/P32 contracts. Native runtime/source and canonical calibration trace schema untouched. Join accepted A6/B7 first; explicit synthetic-second values are not P31/P32 numeric/unit conversion. Retrospective delayed audit status never becomes a policy-time feature; censoring needs explicit event-free evidence, prediction use binds exact member cutoff. Separate six ledgers/no monetary netting, proposal-only offline fiscal lag.",
+  "steps": [
+    "Write exact accepted two-consumer join and preserve qualified/excluded capability boundaries.",
+    "Add failing targeted contract tests, then copy independently reviewed companion schema/fixture/reference-oracle tool; qualify delayed/unknown/missing/exclusions/censoring/features/splits/non-identifiability.",
+    "Verify all six separate ledgers, unit/window/currency/price-year/dedup/basis/policy-lag negatives before optimisation; keep proposal-only activation.",
+    "Run affected P31/P32 oracles and planning checks; independent implementation/empirical review, fix findings, then final actual combined-head gates before A7phase acceptance."
+  ],
+  "verification": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_composition_contract.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "16positive/negative artifact contract oracles pass for both consumers without fit/promotion."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/composition_contract.py",
+        "model-inputs/core/a7-evaluation.synthetic.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Executable contract report preserves delayed/unknown/missing/excluded accounting, separate latent demand and six-ledger/proposal lag boundaries."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Conductor provenance/links remain valid."
+    }
+  ],
+  "acceptance": [
+    "ExactA6+fullhostedB7join qualifiesboundedreusablecontracts only;no sharedcrossdomainloop/clinical/site/release/hardware claims.",
+    "Missing/delayed/unknown/excluded endpoints stay visible;no inferredcensoring or futurepredictionfeatures.",
+    "Person/family/time split leakage and non-identifiable micro selection reject;no empiricalfit or parameterpromotion.",
+    "Sixledger units/period/currency/priceyear/basis/dedup remain separate;offlinefiscallagexplicit andproposal-only."
+  ],
+  "result_path": "conductor/evidence/a7-two-consumer-20261103/README.md",
+  "stop_conditions": [
+    "Anyrequiredengine/dependencypinchange",
+    "MissingqualifiedB7orA6entryreceipt",
+    "Anywriteoutsidescope"
+  ],
+  "size_exception": "One coherent A7 contract phase packet: serial join then observation/evaluation/accounting companion definitions and reference-oracle tooling; exact pre-dispatch empirical review of frozen private proposal found no remaining findings. Eight paths include schema/design/fixture/tool/behavior tests/evidence/packet/mandatory inventory. No native runtime or upstream writes.",
+  "status": "prepared"
+}

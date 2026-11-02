@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "packet_id": "B4.staffing",
+  "task_id": "B4.1",
+  "target_repo": ".",
+  "base_commit": "49cc2dd05490a4418d197f4343070fc5fa75e57b",
+  "objective": "Qualify configured ratios, role-eligible shared staff and a named static team/space reservation approximation; preserve breaks, bounded overtime, call-in readiness, handover and escort continuity. No upstream atomic-grant claim.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md",
+    "crates/careops-core/src/staffing.rs",
+    "crates/careops-birthing/src/spaces.rs"
+  ],
+  "input_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md",
+    "crates/careops-core/src/staffing.rs",
+    "crates/careops-birthing/src/spaces.rs"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md": "5b5a72947ed22974d6f2c8caf027af1d812bb7ba9dec2e7d9f32e1d284b33539",
+    "crates/careops-core/src/staffing.rs": "68b564adbc095ca7a31288c2aac3081445ce9d32be0fcd46ced450d1b8f63e9b",
+    "crates/careops-birthing/src/spaces.rs": "cee86a7068964c7d8b897d6d95520c99bdad0f46652d97cd1ae02f431089b360"
+  },
+  "context_budget_bytes": 36000,
+  "write_paths": [
+    "crates/careops-birthing/src/lib.rs",
+    "crates/careops-birthing/src/team.rs",
+    "crates/careops-birthing/src/spaces.rs",
+    "crates/careops-birthing/tests/team.rs",
+    "conductor/evidence/core-a7-prerequisites-20261102/B4.md",
+    "conductor/execution/packets/B4.staffing.json",
+    ".careops-security/inventory.json"
+  ],
+  "protected_paths": [
+    "libs/kairos",
+    "crates/careops-core",
+    "crates/careops-ed",
+    "Cargo.toml",
+    "Cargo.lock"
+  ],
+  "leaf_dependencies": [
+    "B3.4"
+  ],
+  "interface_contract": "B4.1\u2013B4.3 and qualified core StaffingRegistry; B3 SpacePool. Static bounded single-process reservations, not a queued shared-resource scheduler.",
+  "steps": [
+    "Add failing configured-ratio/shared-team/role-matching/absence/break/overtime/call-in/handover/escort and composite rollback controls.",
+    "Implement deterministic role matching over qualified core staffing, plus clone/validate/commit static space/team admission; preserve in-memory replay and role eligibility on handover/escort.",
+    "Run focused B4, existing corestaffing and all-target clippy; independent review and scoped current-head native verification before acceptance."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-birthing",
+        "--test",
+        "team"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Configured ratio/role matching, whole-interval availability, rollback, handover and escort behavior pass."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "staffing_contract"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Qualified core staffing contract remains passing."
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-birthing",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All-target warnings-denied succeeds."
+    }
+  ],
+  "acceptance": [
+    "Ratios/role names/cohort units are versioned input, never universal clinical defaults.",
+    "Each staff member fills only one concurrent role; feasible flexible-role matching cannot be rejected by greedy assignment.",
+    "Break/absence/roster/overtime/call-in bounds apply to whole duty intervals.",
+    "Failed team/space admission leaves both registries unchanged.",
+    "Handover has explicit overlap and contiguous continuation; escorts retain the same worker and no unsafe active procedure interruption is admitted."
+  ],
+  "result_path": "conductor/evidence/core-a7-prerequisites-20261102/B4.md",
+  "stop_conditions": [
+    "Missing requiredneutralcorecontract",
+    "Any requiredupstreampinchange",
+    "Anywriteoutsidescope"
+  ],
+  "size_exception": "Seven exact paths include module declaration, team implementation, readonly space eligibility accessor, one behavior target, evidence, packet and mandatory inventory; coordinator reviewed bounded scope.",
+  "status": "prepared"
+}

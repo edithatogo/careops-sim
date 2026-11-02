@@ -1,0 +1,902 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:careops:composition:evaluation:v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "contract_id",
+    "provenance",
+    "extends",
+    "observation",
+    "validation",
+    "accounting",
+    "fiscal_exchange"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "contract_id": {
+      "const": "careops.composition.evaluation.v1"
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "class",
+        "empirical_data_used",
+        "fitting_performed",
+        "parameter_promotion",
+        "clinical_acceptance"
+      ],
+      "properties": {
+        "class": {
+          "const": "synthetic_only"
+        },
+        "empirical_data_used": {
+          "const": false
+        },
+        "fitting_performed": {
+          "const": false
+        },
+        "parameter_promotion": {
+          "const": false
+        },
+        "clinical_acceptance": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "extends": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "observation": {
+      "type": "object",
+      "required": [
+        "unit",
+        "origin",
+        "cohort_id",
+        "window",
+        "as_of",
+        "cohort_rule",
+        "records",
+        "features",
+        "used_features",
+        "latent_requests"
+      ],
+      "properties": {
+        "unit": {
+          "const": "second"
+        },
+        "origin": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "cohort_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "window": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 18446744073709551615
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 18446744073709551615
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "as_of": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "cohort_rule": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "domain",
+              "risk_start",
+              "event_tick",
+              "available_at",
+              "last_observed",
+              "excluded_reason",
+              "endpoint_status",
+              "event_free_until",
+              "event_free_available_at",
+              "censor_reason"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "domain": {
+                "enum": [
+                  "ed",
+                  "birthing"
+                ]
+              },
+              "risk_start": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 18446744073709551615
+              },
+              "event_tick": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "available_at": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "last_observed": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "excluded_reason": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "endpoint_status": {
+                "enum": [
+                  "observed",
+                  "delayed",
+                  "right_censored",
+                  "missing",
+                  "excluded",
+                  "unknown"
+                ]
+              },
+              "event_free_until": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "event_free_available_at": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "censor_reason": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "origin",
+              "available_at"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "origin": {
+                "enum": [
+                  "observed",
+                  "derived",
+                  "latent"
+                ]
+              },
+              "available_at": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "used_features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "feature_id",
+              "member_id",
+              "prediction_cutoff"
+            ],
+            "properties": {
+              "feature_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "member_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "prediction_cutoff": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 18446744073709551615
+              }
+            },
+            "additionalProperties": false
+          },
+          "uniqueItems": true
+        },
+        "latent_requests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "domain",
+              "served",
+              "lineage"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "domain": {
+                "enum": [
+                  "ed",
+                  "birthing"
+                ]
+              },
+              "served": {
+                "type": "boolean"
+              },
+              "lineage": {
+                "const": "model_only"
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "split_windows",
+        "grouping_unit",
+        "frozen_before_test",
+        "test_used_for_selection",
+        "retuned_after_test",
+        "members",
+        "identifiability",
+        "cluster_status"
+      ],
+      "properties": {
+        "split_windows": {
+          "type": "object",
+          "required": [
+            "train",
+            "selection",
+            "locked_test"
+          ],
+          "properties": {
+            "train": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 18446744073709551615
+                },
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 18446744073709551615
+                }
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "selection": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 18446744073709551615
+                },
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 18446744073709551615
+                }
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "locked_test": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 18446744073709551615
+                },
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 18446744073709551615
+                }
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "additionalProperties": false
+        },
+        "grouping_unit": {
+          "const": "longitudinal_person_or_linked_family"
+        },
+        "frozen_before_test": {
+          "const": true
+        },
+        "test_used_for_selection": {
+          "const": false
+        },
+        "retuned_after_test": {
+          "const": false
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "cluster",
+              "split",
+              "at",
+              "family_key",
+              "person_key"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "cluster": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "split": {
+                "enum": [
+                  "train",
+                  "selection",
+                  "locked_test"
+                ]
+              },
+              "at": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 18446744073709551615
+              },
+              "person_key": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "family_key": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "identifiability": {
+          "type": "object",
+          "required": [
+            "scope",
+            "observed_total",
+            "candidate_decompositions",
+            "selected_decomposition",
+            "micro_hazards_identified"
+          ],
+          "properties": {
+            "scope": {
+              "const": "finite_synthetic_grid_only"
+            },
+            "observed_total": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 18446744073709551615
+            },
+            "candidate_decompositions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "walk",
+                  "work"
+                ],
+                "properties": {
+                  "walk": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  },
+                  "work": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  }
+                },
+                "additionalProperties": false
+              },
+              "minItems": 1
+            },
+            "selected_decomposition": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "walk",
+                    "work"
+                  ],
+                  "properties": {
+                    "walk": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 18446744073709551615
+                    },
+                    "work": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 18446744073709551615
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "micro_hazards_identified": {
+              "const": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "cluster_status": {
+          "const": "identified_synthetic"
+        }
+      },
+      "additionalProperties": false
+    },
+    "accounting": {
+      "type": "object",
+      "required": [
+        "window",
+        "time_unit",
+        "currency",
+        "price_year",
+        "perspective",
+        "aggregation_scope",
+        "ledger_units",
+        "entries"
+      ],
+      "properties": {
+        "window": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 18446744073709551615
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 18446744073709551615
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "time_unit": {
+          "const": "second"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "price_year": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 9999
+        },
+        "perspective": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "aggregation_scope": {
+          "const": "observed_window_only"
+        },
+        "ledger_units": {
+          "type": "object",
+          "required": [
+            "activity",
+            "resource",
+            "cost",
+            "funding",
+            "outcome",
+            "equity"
+          ],
+          "properties": {
+            "activity": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "resource": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "cost": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "funding": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "outcome": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "equity": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "additionalProperties": false
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "ledger",
+              "source_event",
+              "component",
+              "basis",
+              "quantity",
+              "unit",
+              "window",
+              "currency",
+              "price_year",
+              "denominator"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "ledger": {
+                "enum": [
+                  "activity",
+                  "resource",
+                  "cost",
+                  "funding",
+                  "outcome",
+                  "equity"
+                ]
+              },
+              "source_event": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "component": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "basis": {
+                "enum": [
+                  "clinical_activity",
+                  "resource_use",
+                  "payment",
+                  "clinical_outcome",
+                  "access"
+                ]
+              },
+              "quantity": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 18446744073709551615
+              },
+              "unit": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "window": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  },
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  }
+                ],
+                "items": false,
+                "minItems": 2,
+                "maxItems": 2
+              },
+              "currency": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "price_year": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "denominator": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "fiscal_exchange": {
+      "type": "object",
+      "required": [
+        "version",
+        "rule_version",
+        "decision_period",
+        "effective_period",
+        "lag_months",
+        "capacity_unit",
+        "evidence_window",
+        "evidence_time_unit",
+        "currency",
+        "price_year",
+        "activation",
+        "monthly_extrapolation",
+        "combines_cost_and_funding"
+      ],
+      "properties": {
+        "version": {
+          "const": "careops.offline_fiscal_exchange.v1"
+        },
+        "rule_version": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "decision_period": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+        },
+        "effective_period": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+        },
+        "lag_months": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "capacity_unit": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "evidence_window": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 18446744073709551615
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 18446744073709551615
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "evidence_time_unit": {
+          "const": "second"
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "price_year": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "activation": {
+          "const": "proposal_only"
+        },
+        "monthly_extrapolation": {
+          "const": false
+        },
+        "combines_cost_and_funding": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

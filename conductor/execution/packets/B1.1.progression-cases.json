@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "packet_id": "B1.1.progression-cases",
+  "task_id": "B1.1",
+  "target_repo": ".",
+  "base_commit": "0af509ba163cda925533f0b0f25f463dff1cdffd",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Define deterministic synthetic expected traces for nominal spontaneous, induction and protracted birthing pathways, including progression and deterioration while waiting/in transit, intervention event separation, deterministic event order and stale-event cancellation. Bind to runtime only in B1.2.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md",
+    "conductor/design/composition-contracts-20261020.md",
+    "model-inputs/birthing/profiles/qld-public-reference-2022-v1.json"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md": "d3ede71d0d6afc723e31b41d31f8dad978211125c784a54a2cf4b3f15c850979",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md": "a74dd69aad568def2e38a26159d03f947374a9b62b85759c7a1ed3ba67a85e67"
+  },
+  "write_paths": [
+    "model-inputs/birthing/fixtures/b1-progression-cases.synthetic.json",
+    "tests/test_birthing_progression_cases.py",
+    "conductor/execution/packets/B1.1.progression-cases.json",
+    "conductor/evidence/b1.1-progression-cases-20261027/README.md"
+  ],
+  "protected_paths": [".git", "Cargo.toml", "Cargo.lock", "crates", "libs/kairos", "conductor/tracks", "conductor/current-state.json", "conductor/execution/tasks.json"],
+  "leaf_dependencies": ["A5.4", "B0.4"],
+  "interface_contract": "conductor/tracks/birthing_suite_delivery_20261020/spec.md#B-R2; conductor/tracks/birthing_suite_delivery_20261020/plan.md#B1.1; composition contract CC-04",
+  "steps": [
+    "Define separate deterministic synthetic cases for nominal spontaneous, induction and protracted pathways, with explicit patient and service states at each event.",
+    "Include progression while waiting and in transit, induction/intervention decisions distinct from progression, deterioration while waiting or in transit, and one stale event invalidated after a state change.",
+    "Keep event times as synthetic simulation ticks and state an explicit deterministic event-order key; include no clinical thresholds, probabilities, hazard parameters or site defaults.",
+    "Add standard-library unittest controls for fixture shape, scenario coverage, waiting/transit expectations, ordering, event identity and forbidden clinical-rate fields.",
+    "Run packet validation, the focused unittest file, staged diff check and Conductor integrity checks. Record that these tests validate the oracle fixture only, not birthing runtime behavior.",
+    "Obtain reviewer-agent review before coordinator acceptance. B1.2 must bind these oracles to the executable Rust runtime and record expected failures before implementation."
+  ],
+  "verification": [
+    {"argv": [".venv/bin/python", "tools/tasks.py", "packet-check", "conductor/execution/packets/B1.1.progression-cases.json"], "cwd": ".", "expected_exit": 0, "oracle": "B1.1 packet binds to accepted A5.4/B0.4 prerequisites and exact context hashes."},
+    {"argv": [".venv/bin/python", "-m", "unittest", "discover", "-s", "tests", "-p", "test_birthing_progression_cases.py", "-v"], "cwd": ".", "expected_exit": 0, "oracle": "All fixture contract cases and negative controls execute and pass; no runtime behavior is claimed."},
+    {"argv": ["git", "diff", "--cached", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Staged fixture, tests, packet and evidence contain no whitespace errors."}
+  ],
+  "acceptance": [
+    "Nominal, induction and protracted synthetic pathways have unique, deterministic expected event traces.",
+    "The traces include patient progression during service waits and transit, explicit intervention and deterioration event distinctions, and stale-event cancellation expectations.",
+    "Tests reject malformed event time/order/identity and any accidental introduction of clinical probabilities or hazard rates.",
+    "Evidence states these are expected trace contracts only; executable runtime binding and observed red-to-green behavior remain a B1.2 gate.",
+    "Reviewer-agent/subagent finds no remaining oracle ambiguity or overclaim at the exact commit."
+  ],
+  "result_path": "conductor/evidence/b1.1-progression-cases-20261027/README.md",
+  "stop_conditions": ["A case requires an invented clinical timing/threshold/probability", "A trace obscures progression during wait/transit or collapses intervention with deterioration", "Any edit escapes the exact write paths"],
+  "size_exception": null,
+  "status": "prepared"
+}

@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "profile_id": "qld-public-reference-2022-v1",
+  "profile_status": "reference_only",
+  "profile_revision_date": "2026-10-27",
+  "jurisdiction": "Queensland, Australia",
+  "data_year": 2022,
+  "units": {
+    "population_count": "person or baby as named by source table",
+    "route_count": "births/babies as named by source table",
+    "labour_onset_count": "mothers"
+  },
+  "sources": {
+    "observed_aggregates": {
+      "source_id": "qld_perinatal_statistics_2022_tables",
+      "authority": "Queensland Health",
+      "title": "Perinatal Statistics - Queensland 2022 Annual Report Tables",
+      "edition": "Final 2022 report, released September 2024",
+      "url": "https://www.health.qld.gov.au/__data/assets/pdf_file/0027/1378017/tables_2022x.pdf",
+      "collection": "Queensland Perinatal Data Collection",
+      "accessed": "2026-10-27",
+      "table_refs": ["Number of mothers by selected variables by year", "Number of babies by selected variables by year", "Table 6.01 onset by plurality", "Table 6.05 method of birth by plurality", "Table 6.12 onset by method of birth"],
+      "change_note": "The report notes that changes to the MR63D collection form may influence reporting and that form changes occur regularly."
+    },
+    "policy_registry": [
+      {
+        "source_id": "qcg_normal_birth_mn22_25_v5_r27",
+        "title": "Queensland Clinical Guideline: Normal birth",
+        "identifier": "MN22.25-V5-R27",
+        "publication_date": "2022-12",
+        "last_amended": "2023-07",
+        "review_date": "2027-12",
+        "scope_note": "Guideline addresses normal birth and its flowcharts specify low-risk woman at term; it is not a general roster or all-acuity site staffing standard.",
+        "url": "https://www.health.qld.gov.au/__data/assets/pdf_file/0014/142007/g-normalbirth.pdf"
+      },
+      {
+        "source_id": "qcg_intrapartum_fetal_surveillance_mn25_15_v12_r30",
+        "title": "Queensland Clinical Guideline: Intrapartum fetal surveillance",
+        "identifier": "MN25.15-V12-R30",
+        "last_amended": "2026-09",
+        "review_date": "2030-02",
+        "scope_note": "Queensland maternity and neonatal practice guidance. Policy reference only; no eligibility logic or service turnaround target is encoded here.",
+        "version_note": "The guideline history records V11 on 2026-09-04 and V12 on 2026-09-25. The currently linked PDF identifies V12 and says it replaces V11; the current PDF cover and later history entry agree.",
+        "url": "https://www.health.qld.gov.au/__data/assets/pdf_file/0012/140043/g-ifs.pdf"
+      },
+      {
+        "source_id": "qcg_instrumental_vaginal_birth_current_2026_10",
+        "title": "Queensland Clinical Guideline: Instrumental vaginal birth",
+        "identifier": "MN24.49-V5-R29",
+        "last_amended": "2026-10",
+        "review_dates": {
+          "pdf": "2029-12",
+          "publication_index": "2029-04",
+          "status": "conflicting_unresolved"
+        },
+        "scope_note": "Guideline index shows this revision in October 2026. The PDF states clinician expertise and a neonatal-resuscitation-trained clinician are required in the described procedure context; this is not a complete staffing model.",
+        "url": "https://www.health.qld.gov.au/__data/assets/pdf_file/0033/736917/g-instrumental.pdf"
+      },
+      {
+        "source_id": "qcg_prolonged_obstructed_labour_current_2026_09",
+        "title": "Queensland Clinical Guideline: Prolonged and/or obstructed labour",
+        "identifier": null,
+        "last_amended": "2026-09",
+        "review_date": "2030-08",
+        "scope_note": "Current indexed clinical guideline; no thresholds are imported into this reference profile.",
+        "url": "https://www.health.qld.gov.au/qcg/publications"
+      }
+    ]
+  },
+  "population": {
+    "mothers": {"count": 60477, "source_table_measure": "mothers birthing in Queensland, 2022"},
+    "babies": {"count": 61404, "source_table_measure": "babies born in Queensland, 2022"},
+    "previous_pregnancies": {
+      "count_unit": "mothers",
+      "categories": [
+        {"category": "none", "count": 26272},
+        {"category": "one_to_four", "count": 32990},
+        {"category": "five_or_more", "count": 1215}
+      ],
+      "not_stated_count": 0,
+      "note": "This is the report's number-of-previous-pregnancies field; it is not relabelled as a universal parity definition."
+    },
+    "plurality": {
+      "count_unit": "mothers",
+      "categories": [
+        {"category": "singleton", "count": 59562},
+        {"category": "twin", "count": 905},
+        {"category": "other_multiple", "count": 10}
+      ]
+    },
+    "maternal_age": {
+      "count_unit": "mothers",
+      "categories": [
+        {"category": "under_20", "count": 1444},
+        {"category": "20_to_34", "count": 44900},
+        {"category": "35_or_more", "count": 14133}
+      ]
+    }
+  },
+  "labour_onset": {
+    "count_unit": "mothers",
+    "mothers_by_category": [
+      {"category": "spontaneous_not_augmented", "count": 18459},
+      {"category": "spontaneous_augmented", "count": 8466},
+      {"category": "induced", "count": 18422},
+      {"category": "no_labour", "count": 15130}
+    ],
+    "note": "The source distinguishes no labour from established spontaneous/induced labour; failed induction resulting in caesarean is classified as no labour in QPDC definitions."
+  },
+  "routes": {
+    "count_unit": "births/babies, source Table 6.05",
+    "births_by_method": [
+      {"category": "vaginal_non_instrumental", "count": 31933},
+      {"category": "forceps", "count": 1570},
+      {"category": "vacuum_extraction", "count": 4064},
+      {"category": "lower_segment_caesarean_section", "count": 23673},
+      {"category": "classical_caesarean_section", "count": 164}
+    ],
+    "cross_tab_notes": [
+      "Table 6.05 reports method by singleton/multiple status; the aggregate table contains selected joint counts but not linked person histories.",
+      "Table 6.12 reports selected labour-onset by birth-method counts; these do not identify time-to-event hazards or full joint dependence."
+    ]
+  },
+  "staffing": {
+    "status": "unavailable_as_public_parameter",
+    "values": null,
+    "source_boundary": "The QPDC aggregate tables do not describe site rosters, shift overlap, skill mix, breaks, call-in delay, occupancy, or contemporaneous effective staffing. QCG Normal birth refers to one-to-one midwifery support in its low-risk-at-term context, not a general service-wide ratio."
+  },
+  "eligibility": {
+    "status": "not_encoded_without_site_scope",
+    "values": null,
+    "policy_sources": ["qcg_normal_birth_mn22_25_v5_r27", "qcg_intrapartum_fetal_surveillance_mn25_15_v12_r30", "qcg_instrumental_vaginal_birth_current_2026_10", "qcg_prolonged_obstructed_labour_current_2026_09"],
+    "reason": "Applicability depends on the selected care setting, service capabilities, population, clinical governance and scope. Current source revisions are indexed; no local clinical rule is inferred from the generic track."
+  },
+  "operational_timing_targets": {
+    "status": "unconfigured_without_site_scope",
+    "time_unit": "minutes when a future source-qualified target is selected",
+    "targets": [],
+    "reason": "The current policy registry does not establish one generic operational decision-to-transfer, incision, delivery, or staffing-response target for an unspecified birthing site. Clinical assessment/monitoring intervals and labour-stage definitions are not silently converted into service turnaround targets. Earlier 30/75-minute and parity/duration examples remain unadopted hypotheses."
+  },
+  "inference_limits": {
+    "individual_hazard_model_supported": false,
+    "person_level_records_present": false,
+    "complete_event_history_present": false,
+    "full_joint_distribution_present": false,
+    "known_correlations": [],
+    "unknown_or_unresolved": ["joint dependence among population attributes, onset, intervention, progression, route and outcomes", "individual labour-stage transition hazards", "individual maternal/neonatal deterioration hazards", "site staffing and resource calendars", "censoring and event timing at person level"]
+  },
+  "synthetic_assumptions": {
+    "status": "none_in_this_reference_profile",
+    "note": "Synthetic assumptions belong in a separately identified fixture and must not be merged into observed aggregates or policy metadata."
+  },
+  "model_use": {
+    "runnable_default": false,
+    "accepted_parameter_pack": false,
+    "clinical_validation": false,
+    "operational_acceptance": false
+  }
+}

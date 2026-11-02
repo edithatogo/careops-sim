@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "packet_id": "B5.theatre",
+  "task_id": "B5.1",
+  "target_repo": ".",
+  "base_commit": "709d92ab0ab17c3a6ea4a34950926697e588d409",
+  "objective": "Implement a bounded single-active theatre service consuming B4 static team/space admission. Retain observed-only versioned urgency, queue reassessment, non-interruption, separate acceptance/transfer/incision/birth/completion callbacks and target metrics.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md",
+    "crates/careops-core/src/pathway/classification.rs",
+    "conductor/evidence/core-a7-prerequisites-20261102/B4.md"
+  ],
+  "input_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md",
+    "crates/careops-core/src/pathway/classification.rs",
+    "conductor/evidence/core-a7-prerequisites-20261102/B4.md",
+    "crates/careops-birthing/src/team.rs",
+    "crates/careops-birthing/src/spaces.rs"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md": "5b5a72947ed22974d6f2c8caf027af1d812bb7ba9dec2e7d9f32e1d284b33539",
+    "crates/careops-core/src/pathway/classification.rs": "861666b93cd38229743a4ba27e04e31514beb4efc04395bdb63f519477761d4b",
+    "conductor/evidence/core-a7-prerequisites-20261102/B4.md": "e0a5aa1f12acde3bc9054877441dd515bc775d0d7b2d7cd8f79ed5dc921ceecf",
+    "crates/careops-birthing/src/team.rs": "09206688806b1edfc64b8cd671c3426875c771a611320dc17773dd64ae8b9d32",
+    "crates/careops-birthing/src/spaces.rs": "051b1b0c4e13d83dc7f9e548db50ca9bcacdda3211a6552d89f881faf8990d25"
+  },
+  "context_budget_bytes": 32000,
+  "write_paths": [
+    "crates/careops-birthing/src/lib.rs",
+    "crates/careops-birthing/src/theatre.rs",
+    "crates/careops-birthing/src/spaces.rs",
+    "crates/careops-birthing/tests/theatre.rs",
+    "conductor/execution/packets/B5.theatre.json",
+    "conductor/evidence/core-a7-prerequisites-20261102/B5.md",
+    ".careops-security/inventory.json"
+  ],
+  "protected_paths": [
+    "libs/kairos",
+    "crates/careops-core",
+    "crates/careops-ed",
+    "Cargo.toml",
+    "Cargo.lock"
+  ],
+  "leaf_dependencies": [
+    "B4.4"
+  ],
+  "interface_contract": "B5.1\u2013B5.3; core ObservedPolicyState and InterruptionEligibility; B4 StaticTeamReservation/SpacePool. Callback batches precede new external events at a due tick. No transfer==delivery or forced target success.",
+  "steps": [
+    "Add failing actual-resource callback/priority/reassessment/non-interruption/target/provenance/replay cases.",
+    "Implement finite checked service stages, deterministic queued rank/decision/id ordering, observed-only policy validation and atomic resource effects; record actual target breaches and raw resource failure causes.",
+    "Run focused theatre, existing core policy and all-target Clippy. Review exact commit; only then scoped hosted acceptance."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-birthing",
+        "--test",
+        "theatre"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Actual resource-backed callbacks, deterministic urgency queue, non-interruption, target/provenance and replay controls pass."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "policy_classification_tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Existing core policy/classification contract remains passing."
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-birthing",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All-target warnings-denied succeeds."
+    }
+  ],
+  "acceptance": [
+    "Transfer and acceptance never create a birth; only explicit birth callback does.",
+    "Queued urgency may reorder waiting cases; active procedure stays non-interruptible.",
+    "Metrics retain original decision clock, explicit unknown/zero targets and policy version at each actual callback.",
+    "No retrospective target rewrite or future observation is accepted.",
+    "Resource denial leaves room/team claims unchanged and remains an observable wait cause.",
+    "Same-tick scheduled callback order is explicit and retries do not duplicate effects."
+  ],
+  "result_path": "conductor/evidence/core-a7-prerequisites-20261102/B5.md",
+  "stop_conditions": [
+    "Missing requiredneutralcorecontract",
+    "Any requiredupstreampinchange",
+    "Anywriteoutsidescope"
+  ],
+  "size_exception": "Seven exact paths cover implementation/declaration/room-kind tag, one behavior target, packet, evidence and mandatory inventory; coordinator reviewed bounded indivisible consumer scope.",
+  "status": "prepared"
+}

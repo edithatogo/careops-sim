@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "packet_id": "B0.1.perinatal-evidence-inventory",
+  "task_id": "B0.1",
+  "target_repo": ".",
+  "base_commit": "717ee035a0ea3aa5756a410510999945e3803c89",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Inventory public primary perinatal data and metadata available for the birthing suite; distinguish aggregate retrospective statistics, recorded field definitions, normative policy, and synthetic assumptions, and state the limits on inferring individual hazards.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md": "96c19054a72100f7ffa4681e78f8137700f01ed423b530e62b7f4cbb6cd7ce50",
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md": "a74dd69aad568def2e38a26159d03f947374a9b62b85759c7a1ed3ba67a85e67"
+  },
+  "write_paths": [
+    "conductor/execution/packets/B0.1.perinatal-evidence-inventory.json",
+    "conductor/evidence/b0.1-perinatal-evidence-inventory-20261027/README.md"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates",
+    "libs/kairos",
+    "profiles",
+    "conductor/tracks",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/tracks/birthing_suite_delivery_20261020/spec.md#B-R1; conductor/tracks/birthing_suite_delivery_20261020/plan.md#B0; conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md#B0",
+  "steps": [
+    "Inventory the current public national and Queensland primary data, collection metadata, and indicator metadata, recording jurisdiction, edition/version, data period, public output type, and source URL.",
+    "Classify each source as aggregate observed statistics, data/field definitions, or normative guidance; separate those from synthetic hypotheses and state whether a source supports a population distribution or an individual hazard model.",
+    "Record source-specific scope, standardisation, missingness, lag, censoring, subjectivity, and correlation/identifiability limitations. Do not download restricted records, request data, or define clinical thresholds.",
+    "Run repository planning-integrity checks and diff checks; capture source access date, exact commands, hashes, results, and limits in the evidence record.",
+    "Obtain reviewer-agent review of the exact implementation commit and remediate findings before coordinator acceptance."
+  ],
+  "verification": [
+    {
+      "argv": [".venv/bin/python", "tools/tasks.py", "check"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "The task catalog remains consistent with source plans and dependency edges."
+    },
+    {
+      "argv": [".venv/bin/python", "tools/context.py", "check"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Conductor planning links and phase structure remain internally valid."
+    },
+    {
+      "argv": ["git", "diff", "--check"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "The inventory and packet have no whitespace errors."
+    }
+  ],
+  "acceptance": [
+    "Official AIHW and Queensland Health sources are recorded with distinct publication/data years and versions; source records distinguish observed aggregate values from metadata and policy.",
+    "The inventory states that aggregate rates and process/outcome indicators do not identify person-level hazards or joint event distributions.",
+    "Queensland duration fields are classified as collected field definitions, with the manual's allowance for subjective clinical judgement retained; no duration distribution is inferred from field existence.",
+    "Synthetic hypotheses and evidence gaps are explicit; no clinical threshold, profile value, data request, individual-level record, or operational claim is introduced.",
+    "Reviewer-agent/subagent has reviewed the exact commit and all findings have been addressed before the coordinator marks B0.1 accepted."
+  ],
+  "result_path": "conductor/evidence/b0.1-perinatal-evidence-inventory-20261027/README.md",
+  "stop_conditions": [
+    "Official source version or data period cannot be established",
+    "A source requires restricted individual-level access to support the proposed claim",
+    "A profile value or clinical decision would have to be invented to complete the inventory",
+    "Any edit escapes the exact write paths"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

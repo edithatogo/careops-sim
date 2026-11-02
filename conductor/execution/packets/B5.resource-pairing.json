@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "packet_id": "B5.resource-pairing",
+  "task_id": "B5.1",
+  "target_repo": ".",
+  "base_commit": "1252b3e41f85c3ae00b09223ffe314b7136a55ba",
+  "objective": "Apply B5 review: bind scheduled clinical effects to the retained admission receipt and live paired room/team ownership; wrong provider or premature departure must reject transactionally.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/evidence/core-a7-prerequisites-20261102/B5.md"
+  ],
+  "input_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/evidence/core-a7-prerequisites-20261102/B5.md",
+    "crates/careops-birthing/src/theatre.rs",
+    "crates/careops-birthing/src/team.rs"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/evidence/core-a7-prerequisites-20261102/B5.md": "24dfc1769c06c8ee71e7afa183c24ab62bd316ef8d419f4f2d102d4709fc9888",
+    "crates/careops-birthing/src/theatre.rs": "e0e1e11878325bfefbfcaad33e1332041d7c78deefb2ee86ee8d3f16eb11e319",
+    "crates/careops-birthing/src/team.rs": "09206688806b1edfc64b8cd671c3426875c771a611320dc17773dd64ae8b9d32"
+  },
+  "context_budget_bytes": 32000,
+  "write_paths": [
+    "crates/careops-birthing/src/theatre.rs",
+    "crates/careops-birthing/src/team.rs",
+    "crates/careops-birthing/tests/theatre.rs",
+    "conductor/evidence/core-a7-prerequisites-20261102/B5.md",
+    "conductor/execution/packets/B5.resource-pairing.json",
+    ".careops-security/inventory.json"
+  ],
+  "protected_paths": [
+    "libs/kairos",
+    "crates/careops-core",
+    "crates/careops-ed",
+    "Cargo.toml",
+    "Cargo.lock"
+  ],
+  "leaf_dependencies": [
+    "B4.4"
+  ],
+  "interface_contract": "B5.1\u2013B5.3; core ObservedPolicyState and InterruptionEligibility; B4 StaticTeamReservation/SpacePool. Callback batches precede new external events at a due tick. No transfer==delivery or forced target success.",
+  "steps": [
+    "Reproduce wrong-room and premature-departure callback effects; add wrong-team control.",
+    "Retain admission/request identity in active plan; add readonly TeamAllocator admission validation and check both providers before clinical callbacks.",
+    "Run exact theatre target, complete birthing milestone and all-target clippy; independent re-review."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-birthing",
+        "--test",
+        "theatre"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Actual resource-backed callbacks, deterministic urgency queue, non-interruption, target/provenance and replay controls pass."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-birthing"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All affected birthing phase contracts remain passing."
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-birthing",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All-target warnings-denied succeeds."
+    }
+  ],
+  "acceptance": [
+    "No incision/birth/completion callback or metric commits without the active paired room and whole duty claims.",
+    "Wrong provider ledger and premature departure reject without new effects; valid histories still replay deterministically."
+  ],
+  "result_path": "conductor/evidence/core-a7-prerequisites-20261102/B5.md",
+  "stop_conditions": [
+    "Missing requiredneutralcorecontract",
+    "Any requiredupstreampinchange",
+    "Anywriteoutsidescope"
+  ],
+  "size_exception": "Six paths cover theatre/provider/target corrections, retained evidence, packet and mandatory inventory; readonly provider validation is necessary to close the resource pairing defect.",
+  "status": "prepared"
+}

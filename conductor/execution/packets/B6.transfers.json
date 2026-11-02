@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "packet_id": "B6.transfers",
+  "task_id": "B6.1",
+  "target_repo": ".",
+  "base_commit": "adb4176c929318863c6b9ec1c0361864d0ecd267",
+  "objective": "Bind maternal/infant delivery recipients and source service episodes to qualified core transfer lifecycle; gate declared destination resources/opening/fallback and escort coverage without replacing core ownership semantics.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md",
+    "conductor/evidence/a4.2-transfer-core-20261027/README.md",
+    "conductor/evidence/core-a7-prerequisites-20261102/B5.md"
+  ],
+  "input_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md",
+    "conductor/evidence/a4.2-transfer-core-20261027/README.md",
+    "conductor/evidence/core-a7-prerequisites-20261102/B5.md",
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/src/birth.rs",
+    "crates/careops-core/src/identity.rs",
+    "crates/careops-birthing/src/delivery.rs",
+    "crates/careops-birthing/src/team.rs"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md": "5b5a72947ed22974d6f2c8caf027af1d812bb7ba9dec2e7d9f32e1d284b33539",
+    "conductor/evidence/a4.2-transfer-core-20261027/README.md": "b60f5a0051cc2419e6dbbafdd01a8053c6ee66fad83625cf436842333787c1b9",
+    "conductor/evidence/core-a7-prerequisites-20261102/B5.md": "181efae230a97a9396f6e484e568a5fd08a368d2134fdf93668ba0afee1a0df2",
+    "crates/careops-core/src/transfer.rs": "3a6272de2ecbb7c2fea58720a703174660eac2f69e60e4f4c34e67107d92a601",
+    "crates/careops-core/src/birth.rs": "f671627369da67166591d1278bd29da701dc7b2b532496748d5e2ea94fa1bdca",
+    "crates/careops-core/src/identity.rs": "588fcea5fc750c07ef14b2e6e921fc8a1d28b3e3ae658d59a2c2a7991a3213cd",
+    "crates/careops-birthing/src/delivery.rs": "3bed50c39769c3810279d31b3faf68e6ea06b099e1a9b6bf0f42d69ab0269fb7",
+    "crates/careops-birthing/src/team.rs": "2fa9c98c9b01a0eee2f3f5aa18d98ed4482d55ec664e9bb585166b2155e21b7a"
+  },
+  "context_budget_bytes": 32000,
+  "write_paths": [
+    "crates/careops-birthing/src/lib.rs",
+    "crates/careops-birthing/src/transfers.rs",
+    "crates/careops-birthing/tests/transfers.rs",
+    "conductor/execution/packets/B6.transfers.json",
+    "conductor/evidence/core-a7-prerequisites-20261102/B6.md",
+    ".careops-security/inventory.json"
+  ],
+  "protected_paths": [
+    "libs/kairos",
+    "crates/careops-core",
+    "crates/careops-ed",
+    "Cargo.toml",
+    "Cargo.lock"
+  ],
+  "leaf_dependencies": [
+    "B5.4"
+  ],
+  "interface_contract": "B6.1\u2013B6.3; CC-01/02; qualified core TransferManager/IdentityLedger/BirthMessageLedger and B4 escort duty. Physical occupancy and origin-claim release remain separate; checkpoint scope is core-ledger only.",
+  "steps": [
+    "Add failing recipient/episode binding, split destinations, unavailable/reject/cancel/expiry/buffered ack/fallback and escort conservation controls.",
+    "Implement a thin clone/validate/commit boundary around core TransferManager with immutable profiles, actual-effect validation and explicit resource units.",
+    "Run affected target, core transfer contract and all-target Clippy; independently review before scoped hosted acceptance."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-birthing",
+        "--test",
+        "transfers"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Bound delivery routes, split/fallback lifecycle, availability/escort gates, retries and conservation pass."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "transfer_contract"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Qualified core transfer lifecycle remains passing."
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-birthing",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All-target warnings-denied succeeds."
+    }
+  ],
+  "acceptance": [
+    "Birth recipients map to stable typed person/source episode references; malformed or unrelated identities cannot request transfers.",
+    "Destination resources/availability and fallback destinations must be explicitly declared; unknown availability cannot grant.",
+    "Reordered/duplicate/late messages use qualified core semantics and cannot duplicate domain effects.",
+    "Actual departures/handovers require configured same-worker escort coverage where declared.",
+    "Person ownership/location and origin/destination/escort claims reconcile; no transfer equals birth or automatic family discharge."
+  ],
+  "result_path": "conductor/evidence/core-a7-prerequisites-20261102/B6.md",
+  "stop_conditions": [
+    "Missing requiredneutralcorecontract",
+    "Any requiredupstreampinchange",
+    "Anywriteoutsidescope"
+  ],
+  "size_exception": "Six paths bind one domain adapter, declaration, one behavior target, packet, evidence and mandatory inventory; no upstream/shared-source writes.",
+  "status": "prepared"
+}
