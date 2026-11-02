@@ -62,3 +62,16 @@ See [current sequencing](dependency-sequencing.md): Polars inventory first, with
 ## Validation/tooling refinement
 
 [Sequencing](dependency-sequencing.md) registers Criterion reuse, schema-validation gates and conditional ODE/WebSocket work. No runtime acceptance.
+
+
+## Qualified consumer status — 3 November 2026
+
+The birthing native batch CLI uses separately pinned `kairo-ecs-arrow` data4134a373
+with Polars96439685 while the parent/runtime pin remains07410266. The qualified
+core and wasm-target normal dependency graphs exclude Polars. Actual Linux/macOS
+CLI plus PyArrow26.0.0/Python3.15.1 independent IPC/Parquet-Zstd readback and
+fixed-build completed-replication recovery are recorded in the [B7 receipt](evidence/core-a7-prerequisites-20261102/B7.md).
+This consumer qualification does not complete the separate whole-layer ED Polars
+migration. [A7](evidence/a7-two-consumer-20261103/README.md) adds artifact-contract/
+reference-oracle validation tooling using the already qualified jsonschema4.26.0;
+it adds no Python simulation/fitting runtime or new architecture decision.

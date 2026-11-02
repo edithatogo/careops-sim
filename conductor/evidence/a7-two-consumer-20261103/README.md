@@ -1,4 +1,6 @@
-# A7 two-consumer reuse/evaluation candidate
+# A7 two-consumer reuse/evaluation acceptance
+
+Current acceptance: source `ef613beef82470abd7e4916199deaf7e302b99e7` after independent exact-code review at `99cb1c7` and all17hosted successes plus expected main-only attestation skip in run41490074373. A7.1–A7.4 close generic synthetic engineering only. Earlier candidate records below preserve chronology.
 
 Base `0bf34a1`; A7.contracts was bound/validated clean after B7.4 acceptance.
 The [join](join.json) binds exact accepted ED A6 receipts, current ED source bytes
@@ -71,3 +73,32 @@ A7.4 acceptance. No runtime/dependency/CI workflow source differs from fully
 qualified154ba1a; old calibration sources remain byte-identical.
 
 Private full milestone log SHA-256 `ebd3d571210bf943702d74d1cc933425bbce1963597eacfd8c2a2bd5bc5d6031`.
+
+## A7.4 full hosted phase acceptance — 3 November 2026
+
+Exactef613be completed all17hosted successes and expected main-only attestation
+skip in run41490074373. Both native platforms execute the actual birthing CLI,
+independent PyArrow reader and float/zero/non-breach/partial controls. Hosted full
+Python:766passed in55.638s. Current-source ED coverage500/567=88.18342151675485%;
+canonical116mutants:111caught,2exact reviewed equivalents,3unviable,0timeouts,
+0viable survivors (catalogcfaa768d; source36c306bb). Policy/security/lock/schema
+and all other required gates pass. No gate was replaced by partial coverage,
+skips, tolerances, retries or advisory exemptions.
+
+Manual readback confirmed delayed follow_up=null with independent verified bound6,
+explicit missing/unknown/excluded accounting, prediction-time feature gating,
+separate cost240/funding1000minor-unit fixture totals and proposal-only2027-01
+policy effect after2months. These invented values are contract examples only.
+All A7 tasks are accepted; core track A0–A7 is complete in its stated engineering
+scope. Source PR197 remains unmerged. Full birthing specification and clinical/
+site/operational, public API, hardware and release gates are retained.
+
+Product/stack synchronization updates only factual qualification/status notes for
+this already selected architecture; product purpose, technology choices and
+communication guidelines do not change. Protected parallel readiness/addendum
+ownership is preserved. Final documentation head must pass its actual required
+checks before integration readiness.
+
+Private `pr197-a7-checks-final-ef613be.json` SHA-256 `0d8bbb825a5bc0daa636e9dd976c77ce1f0760f34c0e3e6d230d00ed4530e7d9`.
+
+Private `pr197-a7-context-final-ef613be.log` SHA-256 `4c0a8ea3d3babadcb8232a7ec615be59f3b10beeb824bf37d1f45fb927b7026c`.

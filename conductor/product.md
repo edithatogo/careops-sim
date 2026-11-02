@@ -36,7 +36,7 @@ Reuse the existing calibration and experiment contracts. No Python/Julia runtime
 is introduced into the Rust operational engine by optional policy adapters.
 
 Original 145 plan tasks are checked complete; no fresh runtime or clinical
-requalification follows from that count. New R/A/B plans are pending.
+requalification follows from that count. Current R/A/B status is scoped by the [track registry](tracks.md): core A0–A7 and birthing B0–B7 have bounded generic synthetic engineering receipts. The birthing track retains its full-specification and clinical/site/operational gates. Source PR197 remains separate from main integration.
 Hardware acceleration, distributed execution, publication and clinical deployment
 retain separate acceptance. See [delivery contract](delivery-contract.md),
 [readiness map](module-readiness.md) and [related repositories](design/related-repository-boundaries-20261020.md).

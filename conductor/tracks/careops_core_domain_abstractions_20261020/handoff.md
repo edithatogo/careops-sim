@@ -74,3 +74,23 @@ clinical/site/operational acceptance remains open. Existing chat/worktree/branch
 ownership is unchanged; no native-object scope. Next operation: bind reviewed A7
 join/evaluation/accounting contract packet. Its private preflight corrected false
 censoring and prediction-time leakage before dispatch. No A7 task is yet accepted.
+
+### A7 engineering complete — 3 November 2026
+
+Current owner chat01a19b9f-69e7-7353-9b75-445d5653feb4, worktree
+`<managed-worktrees>/careops-pr194-checks/careops-sim`, branch
+`codex/core-a7-prerequisites`, PR197. Core architecture/consumer source and Conductor
+status were the owned scope; no native object or authentication scope. Original
+core0320767, compatibilityf568909 and Polars owner96e8cc8 checkouts remain clean
+and unchanged. All earlier assignments remain history.
+
+A7source99cb1c7 passed independent logic/empirical-contract review with no findings.
+Qualified combined head ef613be passed17hosted checks+expected attestation skip,
+766Python tests, current-source ED88.1834%coverage/116mutants111caught2exacteq
+3unviable0timeouts. A7.1–A7.4 and core A0–A7 are engineering-complete. Native runtime
+074/data4134 and old calibration bytes remain fixed. This is synthetic bounded
+composition and artifact/reference-oracle conformance, not clinical/site/operational,
+stable public API, hardware or release acceptance. Birthing fullspec approval
+remains false. Next operation: final documentation-head gates and PR197 integration
+review; other owned lanes retain their separate packets/owners. PR191 stays a
+qualified unmerged draft. No new code lane is dispatched by this handoff.
