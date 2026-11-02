@@ -48,3 +48,5 @@ postnatal/SCN/theatre internals, shared ED/birthing scheduling, cross-process
 transport, fetal identity, clinical validation, site acceptance or full-spec approval.
 
 Operative `theatre_case` records preserve the complete actual callback list, all timing fields, transfer/incision/birth metrics (including non-breaches and zero targets), and their assessment/policy provenance. The independent reader checks the foreign keys, elapsed values, policy identity/rules and breach decisions against those actual records.
+
+Recovery requires the same model/build contract. A build-time SHA-256 binds sorted owned CareOps core/birthing/CLI Rust sources, their manifests, root manifest/lock, build receipt code, actual Rust compiler readback and target/profile/flags. The tag is part of canonical effective-input bytes, checkpoint metadata and each completed replication. A mismatched tag rejects before reusing files or starting pending work. This is an implementation/build contract under the qualified upstream pins, not a binary signature or permission to promote a runtime pin.

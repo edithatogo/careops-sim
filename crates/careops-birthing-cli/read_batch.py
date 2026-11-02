@@ -98,6 +98,7 @@ def read_batch(root, expected_input):
     if len(completed) != expected_input['replications']:
         raise ValueError("incomplete batch")
     reports = []
+    model_contract = None
     for index, result in enumerate(completed):
         if result['index'] != index:
             raise ValueError("unordered or duplicated replication")
@@ -108,6 +109,11 @@ def read_batch(root, expected_input):
         if directory.is_symlink():
             raise ValueError("symlink replication")
         manifest = load(directory / 'birthing_manifest.json')
+        model = result['model_contract_sha256']
+        if (len(model) != 64 or any(c not in '0123456789abcdef' for c in model)
+                or (model_contract is not None and model_contract != model)):
+            raise ValueError('mixed or malformed model/build contract identity')
+        model_contract = model
         native = load(directory / 'run_manifest.json')
         if (manifest['schema_version'] != 1 or not manifest['completed']
                 or manifest['input'] != expected_input or manifest['tick_unit'] != 'second'
@@ -118,7 +124,8 @@ def read_batch(root, expected_input):
                 or native['replication_id'] != index or native['seed'] != result['seed']):
             raise ValueError("unbound source/input/completion metadata")
         encoded_input = manifest['effective_input_json'].encode('utf-8')
-        if json.loads(manifest['effective_input_json']) != expected_input:
+        bound = json.loads(manifest['effective_input_json'])
+        if bound != {'input': expected_input, 'model_contract_sha256': model}:
             raise ValueError("canonical effective input values differ")
         if manifest['effective_input_sha256'] != digest(encoded_input) or native['effective_input_hash'] != digest(encoded_input):
             raise ValueError("effective input digest mismatch")
@@ -186,7 +193,7 @@ def read_batch(root, expected_input):
         reports.append({'index': index, 'seed': result['seed'], 'rows': len(rows),
                         'canonical_sha256': canonical, 'births': len(births),
                         'policy_metrics_checked': validate_theatre(rows, expected_input)})
-    return {'reader': 'PyArrow', 'version': pa.__version__, 'replications': reports}
+    return {'reader': 'PyArrow', 'version': pa.__version__, 'model_contract_sha256': model_contract, 'replications': reports}
 
 
 if __name__ == '__main__':

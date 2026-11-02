@@ -119,6 +119,25 @@ fn interrupted_attempt_is_preserved_and_completed_replications_are_reused() {
 }
 
 #[test]
+fn resume_rejects_a_different_model_build_before_reusing_or_running_any_replication() {
+    let mut input = input();
+    input.replications = 3;
+    let root = private_root();
+    assert!(run_batch(root.path(), &input, 1, false, Some(1)).is_err());
+    let batch = root.path().join(&input.batch_id);
+    let path = batch.join("checkpoint.json");
+    let mut checkpoint: serde_json::Value =
+        serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+    checkpoint["model_contract_sha256"] = "0".repeat(64).into();
+    let changed = serde_json::to_vec(&checkpoint).unwrap();
+    std::fs::write(&path, &changed).unwrap();
+    let before = std::fs::read_dir(&batch).unwrap().count();
+    assert!(run_batch(root.path(), &input, 1, true, None).is_err());
+    assert_eq!(std::fs::read(&path).unwrap(), changed);
+    assert_eq!(std::fs::read_dir(&batch).unwrap().count(), before);
+}
+
+#[test]
 fn operative_capture_retains_all_metrics_and_their_policy_foreign_keys() {
     let input = input();
     for target in [0, 3, 30] {

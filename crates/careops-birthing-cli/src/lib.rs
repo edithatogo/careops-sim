@@ -21,6 +21,7 @@ pub mod model;
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 pub const DATA_REVISION: &str = "4134a3733ba7e833a8c520621ec2af5a4bd4b31a";
 pub const RUNTIME_REVISION: &str = "07410266bf54b6f73c59db2f8cbfbc5697c53734";
+pub const MODEL_CONTRACT_SHA256: &str = env!("CAREOPS_MODEL_CONTRACT_SHA256");
 const MAX_ROWS: usize = 4096;
 const PART_ROWS: usize = 64;
 
@@ -120,6 +121,7 @@ pub struct BatchInput {
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BatchMetadata {
     pub birthing_input: BatchInput,
+    pub model_contract_sha256: String,
 }
 impl BatchInput {
     pub fn validate(&self) -> Result<()> {
@@ -138,7 +140,18 @@ impl BatchInput {
         Ok(())
     }
     pub fn hash(&self) -> Result<String> {
-        Ok(hash(&serde_json::to_vec(self)?))
+        Ok(hash(self.effective_json()?.as_bytes()))
+    }
+    pub fn effective_json(&self) -> Result<String> {
+        #[derive(Serialize)]
+        struct Effective<'a> {
+            input: &'a BatchInput,
+            model_contract_sha256: &'static str,
+        }
+        Ok(serde_json::to_string(&Effective {
+            input: self,
+            model_contract_sha256: MODEL_CONTRACT_SHA256,
+        })?)
     }
 }
 pub fn hash(bytes: &[u8]) -> String {
@@ -178,6 +191,7 @@ pub struct Replication {
     pub directory: String,
     pub rows: usize,
     pub canonical_sha256: String,
+    pub model_contract_sha256: String,
 }
 impl IndexedReplication for Replication {
     fn replication_index(&self) -> usize {
@@ -300,12 +314,13 @@ fn publish(
             directory: directory.clone(),
             rows: rows.len(),
             canonical_sha256: hash(&serde_json::to_vec(&rows)?),
+            model_contract_sha256: MODEL_CONTRACT_SHA256.into(),
         };
         let manifest = ReplicationManifest {
             schema_version: 1,
             input: input.clone(),
             effective_input_sha256: input.hash()?,
-            effective_input_json: serde_json::to_string(input)?,
+            effective_input_json: input.effective_json()?,
             runtime_revision: RUNTIME_REVISION.into(),
             data_revision: DATA_REVISION.into(),
             tick_unit: "second".into(),
@@ -351,7 +366,8 @@ pub fn validate_replication(
         || !manifest.completed
         || manifest.input != *input
         || manifest.effective_input_sha256 != input.hash()?
-        || manifest.effective_input_json != serde_json::to_string(input)?
+        || manifest.effective_input_json != input.effective_json()?
+        || manifest.replication.model_contract_sha256 != MODEL_CONTRACT_SHA256
         || hash(manifest.effective_input_json.as_bytes()) != manifest.effective_input_sha256
         || manifest.runtime_revision != RUNTIME_REVISION
         || manifest.data_revision != DATA_REVISION
@@ -521,6 +537,7 @@ pub fn run_batch(
         let checkpoint: GenericBatchCheckpoint<Replication, BatchMetadata> =
             serde_json::from_slice(&read_bounded(&checkpoint_path, 2 * 1024 * 1024)?)?;
         if checkpoint.metadata.birthing_input != *input
+            || checkpoint.metadata.model_contract_sha256 != MODEL_CONTRACT_SHA256
             || checkpoint.batch_id != input.batch_id
             || checkpoint.base_seed != input.seed
             || checkpoint.total_replications != input.replications
@@ -563,6 +580,7 @@ pub fn run_batch(
             Some(1),
             BatchMetadata {
                 birthing_input: input.clone(),
+                model_contract_sha256: MODEL_CONTRACT_SHA256.into(),
             },
             Some(&batch_root),
             None,
