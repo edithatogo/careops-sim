@@ -10,6 +10,7 @@ use careops_core::pathway::{
 use std::collections::{HashMap, HashSet};
 
 pub mod delivery;
+pub mod spaces;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PatientState {

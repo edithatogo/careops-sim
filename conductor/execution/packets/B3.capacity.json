@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "packet_id": "B3.capacity",
+  "task_id": "B3.1",
+  "target_repo": ".",
+  "base_commit": "262c9abf74f3b1fc20e7b5002eb147863a96f978",
+  "objective": "Implement bounded synthetic room lifecycle/capability matching using qualified neutral capacity/calendar contracts; retain boarding/horizon holds and unknown capacity. B2 runtime prerequisite accepted at871c478; later test-only controls remain scoped local evidence.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md",
+    "crates/careops-core/src/capacity.rs"
+  ],
+  "input_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md",
+    "crates/careops-core/src/capacity.rs"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md": "a74dd69aad568def2e38a26159d03f947374a9b62b85759c7a1ed3ba67a85e67",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md": "5b5a72947ed22974d6f2c8caf027af1d812bb7ba9dec2e7d9f32e1d284b33539",
+    "crates/careops-core/src/capacity.rs": "d3500bf715079f7e2f65d06b769d80f3a08851d8a64aaf6c697b78707a3e981d"
+  },
+  "context_budget_bytes": 32000,
+  "write_paths": [
+    "crates/careops-birthing/src/lib.rs",
+    "crates/careops-birthing/src/spaces.rs",
+    "crates/careops-birthing/tests/spaces.rs",
+    "conductor/evidence/core-a7-prerequisites-20261102/B3.md",
+    "conductor/execution/packets/B3.capacity.json",
+    ".careops-security/inventory.json"
+  ],
+  "protected_paths": [
+    "libs/kairos",
+    "crates/careops-core",
+    "crates/careops-ed",
+    "Cargo.toml",
+    "Cargo.lock"
+  ],
+  "leaf_dependencies": [
+    "B2.4"
+  ],
+  "interface_contract": "B3.1\u2013B3.3; CC-05; core CapacitySnapshot/CapabilitySet/Calendar in current main074 lineage. One simulation tick is one UTC second at synthetic epoch zero.",
+  "steps": [
+    "Add failing capability/open/staff/equipment and reservation/cleaning/boarding/horizon tests.",
+    "Implement stable room selection and episode-owned reserve/start/release/clean lifecycle over core capacity snapshots; refuse unknown capacity, preserve occupied claims on closure and horizon.",
+    "Run focused target, corecapacitycompatibility, format and clippy; independent review before phase acceptance."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-birthing",
+        "--test",
+        "spaces"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Capability and effective capacity gate admissions; distinct episodes cannot share a room; cleaning/closure/boarding/horizon preserve explicit claims."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "capacity_contract"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Existing25 neutralcapacitytests remainpassing."
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-birthing",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All-target warnings-denied succeeds."
+    }
+  ],
+  "acceptance": [
+    "LDR/pool/monitoring/stabilisation labels are configured capability sets, not clinical defaults.",
+    "Unknown staffed/equipped capacity never becomes an inferred zero or grant.",
+    "Reservations are episode-owned, duplicates cannot double book, release requires explicit actual departure, cleaning must finish before reuse.",
+    "Closure, surge contention and horizon do not evict occupants or release boarding claims."
+  ],
+  "result_path": "conductor/evidence/core-a7-prerequisites-20261102/B3.md",
+  "stop_conditions": [
+    "Missing requiredneutralcorecontract",
+    "Any requiredupstreampinchange",
+    "Anywriteoutsidescope"
+  ],
+  "size_exception": "Six exact paths bind module declaration, implementation, one behavior target, evidence, packet and mandatory inventory continuity; coordinator reviewed bounded indivisible scope.",
+  "status": "prepared"
+}
