@@ -63,6 +63,16 @@ pub struct SpacePool {
 }
 
 impl SpacePool {
+    pub fn current_tick(&self) -> i64 {
+        self.now
+    }
+
+    pub fn occupies(&self, episode: u64) -> bool {
+        self.reservations
+            .get(&episode)
+            .is_some_and(|record| self.rooms[&record.room].state == State::Occupied(episode))
+    }
+
     /// Current ownership, distinct from a historical successful receipt.
     pub fn holds_reservation(&self, episode: u64) -> bool {
         self.reservations

@@ -412,6 +412,17 @@ impl TeamAllocator {
             .registry
             .assignment(assignment)
             .ok_or("unknown assignment")?;
+        if self.admissions.values().any(|admission| {
+            admission
+                .receipt
+                .team
+                .assignments
+                .iter()
+                .any(|role| role.assignment == assignment)
+                && tick < admission.request.interval.end()
+        }) {
+            return Err("static admission duty commitment has not completed".into());
+        }
         if matches!(current.kind, DutyKind::Escort { .. }) && tick < current.interval.end() {
             return Err("escort commitment has not completed".into());
         }
@@ -425,6 +436,45 @@ impl TeamAllocator {
         self.registry
             .release_at(assignment, tick)
             .map_err(|error| format!("{error:?}"))
+    }
+
+    /// Verify responsibility at the room pool's actual observation tick. A duty
+    /// window expiring while its episode is still occupying a room is a visible
+    /// shortfall, never an inferred extension of staff availability. Call after
+    /// each event; departure at a boundary precedes this post-event audit.
+    pub fn audit_responsibility(&self, spaces: &SpacePool, tick: i64) -> Result<(), String> {
+        if spaces.current_tick() != tick {
+            return Err("room/team observation ticks differ".into());
+        }
+        let assignments = self.registry.assignments();
+        for (episode, admission) in &self.admissions {
+            if !spaces.matches_started_reservation(
+                *episode,
+                &admission.requirements,
+                admission.request.interval.start(),
+                admission.receipt.room,
+            ) {
+                return Err("admission is not paired with this room history".into());
+            }
+            if !spaces.occupies(*episode) {
+                continue;
+            }
+            for (role, denominator) in &admission.request.profile.patients_per_staff {
+                let required = admission.request.patients.div_ceil(*denominator) as usize;
+                let active = assignments
+                    .iter()
+                    .filter(|claim| {
+                        claim.booking == admission.request.booking
+                            && claim.interval.contains(tick)
+                            && self.roles.get(&claim.id) == Some(role)
+                    })
+                    .count();
+                if active < required {
+                    return Err("occupied episode has insufficient qualified duty coverage".into());
+                }
+            }
+        }
+        Ok(())
     }
 }
 

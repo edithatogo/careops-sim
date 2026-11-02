@@ -270,3 +270,79 @@ fn historical_team_receipt_cannot_admit_after_removed_or_truncated_claim() {
         assert_eq!(spaces.snapshot(1).unwrap().occupied, 0);
     }
 }
+
+#[test]
+fn admitted_service_keeps_its_promised_worker_until_duty_completion() {
+    let mut team = TeamAllocator::new(vec![member(1, &["staff"], 0, 100)]).unwrap();
+    let mut spaces = SpacePool::new(vec![SpaceProfile {
+        id: 1,
+        revision: "synthetic:v1".into(),
+        kind: SpaceKind::Ldr,
+        capabilities: caps(&["ldr"]),
+        open: calendar(0, 100),
+        staffed: Some(calendar(0, 100)),
+        equipped: Some(true),
+    }])
+    .unwrap();
+    let result = team
+        .admit(
+            &mut spaces,
+            10,
+            caps(&["ldr"]),
+            request(1, 1, &[("staff", 1)], 10, 20),
+        )
+        .unwrap();
+    let assignment = result.team.assignments[0].assignment;
+    assert!(team.release_at(assignment, 15).is_err());
+    assert_eq!(
+        team.registry()
+            .assignment(assignment)
+            .unwrap()
+            .interval
+            .end(),
+        20
+    );
+    assert_eq!(spaces.snapshot(1).unwrap().occupied, 1);
+    spaces.advance_to(15).unwrap();
+    team.audit_responsibility(&spaces, 15).unwrap();
+    spaces.advance_to(20).unwrap();
+    assert!(team.audit_responsibility(&spaces, 20).is_err());
+    spaces.depart(10, 20).unwrap();
+    team.audit_responsibility(&spaces, 20).unwrap();
+}
+
+#[test]
+fn admitted_handover_extends_responsibility_without_inventing_overtime() {
+    let mut team = TeamAllocator::new(vec![
+        member(1, &["staff"], 0, 20),
+        member(2, &["staff"], 15, 100),
+    ])
+    .unwrap();
+    let mut spaces = SpacePool::new(vec![SpaceProfile {
+        id: 1,
+        revision: "synthetic:v1".into(),
+        kind: SpaceKind::Ldr,
+        capabilities: caps(&["ldr"]),
+        open: calendar(0, 100),
+        staffed: Some(calendar(0, 100)),
+        equipped: Some(true),
+    }])
+    .unwrap();
+    let result = team
+        .admit(
+            &mut spaces,
+            10,
+            caps(&["ldr"]),
+            request(1, 1, &[("staff", 1)], 10, 20),
+        )
+        .unwrap();
+    let assignment = result.team.assignments[0].assignment;
+    team.handover(assignment, StaffId::new(2), window(15, 20), window(20, 30))
+        .unwrap();
+    spaces.advance_to(25).unwrap();
+    team.audit_responsibility(&spaces, 25).unwrap();
+    spaces.advance_to(30).unwrap();
+    assert!(team.audit_responsibility(&spaces, 30).is_err());
+    spaces.depart(10, 30).unwrap();
+    team.audit_responsibility(&spaces, 30).unwrap();
+}
