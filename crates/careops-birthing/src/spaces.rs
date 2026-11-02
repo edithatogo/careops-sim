@@ -1,6 +1,12 @@
 //! Synthetic birthing spaces over neutral capability/calendar/capacity contracts.
 //! One tick is one UTC second from synthetic epoch zero. No clinical room,
 //! staffing, equipment or eligibility requirement is supplied by these labels.
+//!
+//! Failed operations preserve state and pool time. Successful mutations advance
+//! time; exact historical replays do not. Call `advance_to` before observing a
+//! later horizon, including time spent on rejected attempts. Lifecycle receipts
+//! are in-memory history, not durable checkpoints. One room per episode is the
+//! bound of this pool; a later room/service visit requires a distinct episode.
 
 use careops_core::capacity::{Calendar, CapabilitySet, CapacitySnapshot};
 use std::collections::BTreeMap;

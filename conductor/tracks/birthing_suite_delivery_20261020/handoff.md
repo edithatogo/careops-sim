@@ -22,3 +22,13 @@ observation provenance). Exact final review found no remaining actionable issues
 Full core/birthing tests and Clippy pass; hosted checks are the next acceptance
 gate. B2 checkboxes remain unchecked until that readback. B3–B7 and A7 remain
 incomplete. [Evidence](../../evidence/core-a7-prerequisites-20261102/B2.md).
+
+### B2 acceptance and B3 candidate
+
+B2 runtime is accepted at frozen hosted `871c478`; B2 source review passed at
+`9702fac`. Test-only `b01c885` controls have13local passes/review and retain the
+final combined-head hosted gate. B3 candidate `6292b3b` has5spaces/25corecapacity
+and18fullbirthing tests passing plus no-findings logic review. Reviewer-requested
+clock/in-memory-history documentation is applied. B3.1–B3.4 remain unchecked until
+its hosted milestone; B4–B7/A7 remain open. Earlier pending statements above are
+historical stages.
