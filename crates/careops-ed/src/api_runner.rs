@@ -921,6 +921,10 @@ pub fn cli_usage_text() -> &'static str {
 Headless Emergency Department Simulation & Experiment Tool.\n\
 \n\
 Commands:\n\
+  capabilities [--require <mode>]\n\
+      Report executable ED modes as versioned JSON; unavailable requirements fail.\n\
+      run/batch accept --backend <mode>; defaults are cpu_serial/cpu_replications.\n\
+\n\
   validate <scenario.json>\n\
       Validate scenario schema, parameters, and consistency.\n\
 \n\
@@ -970,8 +974,90 @@ Exit Codes:\n\
   9  Interrupted / cancelled execution"
 }
 
-/// Executes CLI arguments and returns structured output and exit code.
+/// Describes ED integration, not hardware detection or upstream crate availability.
+fn execution_modes() -> serde_json::Value {
+    serde_json::json!({
+        "schema_version": 1,
+        "scope": "careops-ed executable modes; no hardware probe",
+        "modes": [
+            {"id": "cpu_serial", "available": true, "parallelism": "none"},
+            {"id": "cpu_replications", "available": true, "parallelism": "independent_replications"},
+            {"id": "metal", "available": false, "reason": "ED Metal workload is not integrated or device/performance qualified"},
+            {"id": "pdes", "available": false, "reason": "ED within-run PDES is not integrated or serial-oracle qualified"},
+            {"id": "grpc", "available": false, "reason": "ED gRPC is not integrated or protocol/failure qualified"},
+            {"id": "mpi", "available": false, "reason": "ED MPI is not integrated or runtime/failure qualified"},
+            {"id": "distributed", "available": false, "reason": "ED multi-host execution is not integrated or recovery/parity qualified"}
+        ]
+    })
+}
+
+fn require_execution_mode(mode: &str, command: Option<&str>) -> Result<(), CliOutput> {
+    match mode {
+        "cpu_serial" if command.is_none() || command == Some("run") => Ok(()),
+        "cpu_replications" if command.is_none() || command == Some("batch") => Ok(()),
+        "cpu_serial" | "cpu_replications" => Err(CliOutput::error(
+            ExitCodeDef::SimulationFailed,
+            format!("careops-ed: backend '{mode}' is not available for this command"),
+        )),
+        "metal" | "pdes" | "grpc" | "mpi" | "distributed" => Err(CliOutput::error(
+            ExitCodeDef::SimulationFailed,
+            format!("careops-ed: backend '{mode}' is not integrated and qualified; inspect 'capabilities'"),
+        )),
+        _ => Err(CliOutput::error(
+            ExitCodeDef::UsageError,
+            format!("careops-ed: unknown backend '{mode}'; inspect 'capabilities'"),
+        )),
+    }
+}
+
+/// Executes CLI arguments. Explicit unsupported modes fail before reading or writing artifacts.
 pub fn execute_cli_args(args: &[String]) -> CliOutput {
+    let command = args.first().map(String::as_str);
+    if command == Some("capabilities") {
+        if args.len() != 1 {
+            if args.len() != 3 || args[1] != "--require" {
+                return CliOutput::error(
+                    ExitCodeDef::UsageError,
+                    "careops-ed: capabilities [--require <mode>]",
+                );
+            }
+            if let Err(error) = require_execution_mode(&args[2], None) {
+                return error;
+            }
+        }
+        return CliOutput::success(
+            serde_json::to_string_pretty(&execution_modes())
+                .expect("static execution modes serialize"),
+        );
+    }
+    if matches!(command, Some("run" | "batch")) {
+        let mut filtered = vec![args[0].clone()];
+        let mut selected = false;
+        let mut index = 1;
+        while index < args.len() {
+            if args[index] == "--backend" {
+                if selected || index + 1 == args.len() {
+                    return CliOutput::error(
+                        ExitCodeDef::UsageError,
+                        "careops-ed: --backend requires exactly one mode, once",
+                    );
+                }
+                selected = true;
+                if let Err(error) = require_execution_mode(&args[index + 1], command) {
+                    return error;
+                }
+                index += 2;
+            } else {
+                filtered.push(args[index].clone());
+                index += 1;
+            }
+        }
+        return execute_cli_args_inner(&filtered);
+    }
+    execute_cli_args_inner(args)
+}
+
+fn execute_cli_args_inner(args: &[String]) -> CliOutput {
     if args.is_empty() {
         return CliOutput::error(
             ExitCodeDef::UsageError,

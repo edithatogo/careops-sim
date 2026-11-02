@@ -232,3 +232,19 @@ are mandatory preparation inputs: freeze/bind interfaces, source slices, paths,
 commands and reviewer acceptance before dispatch. Parent tasks close only after
 all leaf instances and the original phase acceptance pass. Post-MVP tasks are
 outside this workpack. No Luna execution or qualification is implied by coverage.
+
+## E9 — Current executable capability reconciliation
+
+Current user instruction (3 November 2026) authorizes this bounded parent-owned
+repair. E0–E8 checks and dated receipts remain historical; they do not satisfy
+current device, transport or ED integration gates. This phase does not transfer
+Kairos ownership or reopen the accepted CPU model.
+
+- [ ] E9.1 Audit exact parent/runtime sources against historical E6/E8 receipts; separate real mechanisms, host-local fixtures and missing ED integration.
+- [ ] E9.2 Expose versioned executable mode reporting and reject unsupported explicit modes before IO; preserve default CPU behavior with failing-then-passing controls.
+- [ ] E9.3 Qualify the supported CPU command/API/batch boundary and record exact upstream integration blockers and required device/protocol/fault/parity controls.
+- [ ] E9.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, retain current hardware/transport blockers and original owners.
+
+Exit: current capability truthfulness and supported CPU behavior qualified. Metal,
+within-run PDES and distributed release claims remain blocked until actual ED
+integration and their original runtime/performance/failure gates pass.

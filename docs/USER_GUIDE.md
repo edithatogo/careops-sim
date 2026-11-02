@@ -516,3 +516,19 @@ cargo test --locked -p careops-ed-cli
 ```
 
 All source code and documentation in CareOps Sim are licensed under the Apache License, Version 2.0 (`Apache-2.0`).
+
+## Executable backend capabilities
+
+Run `careops-ed capabilities` for versioned JSON describing modes implemented by
+the ED executable. This reports integration, not hardware detection. For scripted
+requirements, `careops-ed capabilities --require cpu_replications` exits0; an
+unavailable known mode exits8, and unknown/malformed requests exit2.
+
+`run` defaults to `cpu_serial`; `batch` defaults to `cpu_replications` (independent
+replications, not parallel events within one run). Their explicit forms are
+`careops-ed run scenario.json --backend cpu_serial` and
+`careops-ed batch scenario.json --backend cpu_replications`. Metal, within-run
+PDES, gRPC, MPI and distributed ED modes are unavailable; an explicit request
+fails before reading inputs or creating artifacts. No CPU fallback is silently
+reported as acceleration. Upstream feature names and historical fixtures do not
+qualify these ED modes. See the [current source/acceptance boundary](../conductor/evidence/ed-capability-qualification-20261103/README.md).

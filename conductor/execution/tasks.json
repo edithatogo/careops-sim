@@ -4141,6 +4141,117 @@
       "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E8"
     },
     {
+      "id": "E9.1",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E9",
+      "objective": "Audit exact parent/runtime sources against historical E6/E8 receipts; separate real mechanisms, host-local fixtures and missing ED integration.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E4.4"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 243
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E9"
+    },
+    {
+      "id": "E9.2",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E9",
+      "objective": "Expose versioned executable mode reporting and reject unsupported explicit modes before IO; preserve default CPU behavior with failing-then-passing controls.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E9.1"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 244
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E9"
+    },
+    {
+      "id": "E9.3",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E9",
+      "objective": "Qualify the supported CPU command/API/batch boundary and record exact upstream integration blockers and required device/protocol/fault/parity controls.",
+      "kind": "bounded_work",
+      "accepted": false,
+      "dependencies": [
+        "E9.2"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 245
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "crates/careops-ed",
+        "tests/ed"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "gpt-6-luna_candidate_after_packet_review",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E9"
+    },
+    {
+      "id": "E9.4",
+      "track_id": "generic_ed_delivery_20260925",
+      "phase": "E9",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes, retain current hardware/transport blockers and original owners.",
+      "kind": "review_integrate",
+      "accepted": false,
+      "dependencies": [
+        "E9.3"
+      ],
+      "source": {
+        "path": "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "line": 246
+      },
+      "context_paths": [
+        "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+        "conductor/tracks/generic_ed_delivery_20260925/plan.md",
+        "conductor/tracks/generic_ed_delivery_20260925/test-matrix.md",
+        "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md"
+      ],
+      "write_reservations": [
+        "conductor/tracks"
+      ],
+      "dispatch_gate": "reviewed_leaf_packet_required",
+      "model_route": "coordinator",
+      "phase_acceptance_source": "conductor/tracks/generic_ed_delivery_20260925/plan.md#E9"
+    },
+    {
       "id": "R0.1",
       "track_id": "repo_reconciliation_kairos_upgrade_20261020",
       "phase": "R0",

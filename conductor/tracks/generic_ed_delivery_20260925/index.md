@@ -2,7 +2,9 @@
 
 Status: in progress for capability reconciliation. Historical E0–E8 task checks
 and dated receipts remain recorded; E6/E8 hardware claims are disputed by the
-merged audit. See the registry and R0.3/R2.3 gates.
+merged audit. E9 now reconciles exact pin07410266 and fail-closed ED mode selection;
+see the [current qualification](../../evidence/ed-capability-qualification-20261103/README.md).
+Metal/PDES/transport module presence does not satisfy ED G3 gates.
 
 - [Specification](spec.md)
 - [Plan](plan.md)

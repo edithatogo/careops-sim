@@ -128,3 +128,13 @@ Polars inventory leads; sha2/tempfile/proptest are separate tracks with gates on
 ## Python runtime migration — 23 October 2026
 
 - [x] **Track: Python 3.15 migration and qualification** — [Accepted parent runtime](tracks/python315_runtime_qualification_20261023/index.md); main `43ea690`, protected PRs #178/#179, hosted and repo-local Python 3.15.1 handover verified.
+
+## Current Generic ED capability repair — 3 November 2026
+
+Generic ED remains in progress. E9 adds truthful executable mode reporting and
+fail-closed backend selection, with current CPU API/batch/recovery/export checks.
+The current07410266 runtime contains native wgpu/TCP mechanisms, but ED does not
+consume them; device provenance/readback accounting, protocol identity and failed
+collective/frontier handling remain exact upstream integration blockers.
+See [current E9 evidence](evidence/ed-capability-qualification-20261103/README.md).
+Historical E0–E8 task marks are preserved and cannot certify current G3 modes.

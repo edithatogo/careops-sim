@@ -1,0 +1,170 @@
+{
+  "binary_sha256": "6223a69b211c87dd4ee25f8acd1268f5e9fa4d7059012801a7816e5ab127f99b",
+  "python": "3.15.1",
+  "seed": 2026,
+  "scenario_sha256": {
+    "crates/careops-ed/examples/nominal_mvp.json": "71215b7ff4a2b47b38ace339cadac15a68c1c49c9738856ff742e9400c2ff9ae",
+    "crates/careops-ed/examples/constrained_mvp.json": "970ee93feffa8867715ff0362615244728d43f446eecf43d733edc3d93624799"
+  },
+  "cpu_default_explicit_exact_equal": true,
+  "workers_1_2_4_replications_exact_equal": true,
+  "inspection_corrections": "Original batches succeeded and were preserved. Inspector corrected wrong replication_results key to actual replications and completed to actual complete enum. No simulation oracle or batch output changed; batches not repeated.",
+  "batch_artifact_sha256": {
+    "${PRIVATE_EVIDENCE}/ed-capability-walkthrough/batch-1/batch_run.json": "680a514ccc42754f7c44fedcd55b4b90ec54dcf065234687d8a716adcab57f70",
+    "${PRIVATE_EVIDENCE}/ed-capability-walkthrough/batch-2/batch_run.json": "c0516691ae7dcb44d995dab92d8e788e5eac56902f630ae4e4953d79c08e2a28",
+    "${PRIVATE_EVIDENCE}/ed-capability-walkthrough/batch-4/batch_run.json": "c32c22cfa6ff2810b5c364e946f4118d46fa3ab731d9552a5fd071b4074720ee"
+  },
+  "commands": [
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "capabilities"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "07c7c2287c5ff19e67f1dc9e4a1edad2d4cf79d9e8683cba49d97129c90c3cf1",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "capabilities",
+        "--require",
+        "metal"
+      ],
+      "actual_exit": 8,
+      "expected_exit": 8,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "careops-ed: backend 'metal' is not integrated and qualified; inspect 'capabilities'\n"
+    },
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "capabilities",
+        "--require",
+        "pdes"
+      ],
+      "actual_exit": 8,
+      "expected_exit": 8,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "careops-ed: backend 'pdes' is not integrated and qualified; inspect 'capabilities'\n"
+    },
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "capabilities",
+        "--require",
+        "grpc"
+      ],
+      "actual_exit": 8,
+      "expected_exit": 8,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "careops-ed: backend 'grpc' is not integrated and qualified; inspect 'capabilities'\n"
+    },
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "capabilities",
+        "--require",
+        "mpi"
+      ],
+      "actual_exit": 8,
+      "expected_exit": 8,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "careops-ed: backend 'mpi' is not integrated and qualified; inspect 'capabilities'\n"
+    },
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "capabilities",
+        "--require",
+        "distributed"
+      ],
+      "actual_exit": 8,
+      "expected_exit": 8,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "careops-ed: backend 'distributed' is not integrated and qualified; inspect 'capabilities'\n"
+    },
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "validate",
+        "crates/careops-ed/examples/nominal_mvp.json"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "5fb9da93e0dd26d2e1836fafa3758c8fd3cdda91da5913ae50bc1b4d895fb5db",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "validate",
+        "crates/careops-ed/examples/constrained_mvp.json"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "e1c4e3879eeca56a2aea7fd31d3a9d55213201bb2e77e84b4270740ed51c3d2c",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "run",
+        "crates/careops-ed/examples/nominal_mvp.json",
+        "--seed",
+        "2026"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "31c3a310dbccdb01878707afe9dd619cba567ec444113ca671735bc6d9c0c1af",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "run",
+        "crates/careops-ed/examples/nominal_mvp.json",
+        "--seed",
+        "2026",
+        "--backend",
+        "cpu_serial"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "31c3a310dbccdb01878707afe9dd619cba567ec444113ca671735bc6d9c0c1af",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "run",
+        "crates/careops-ed/examples/nominal_mvp.json",
+        "--output",
+        "${PRIVATE_EVIDENCE}/ed-capability-walkthrough/forbidden-run",
+        "--backend",
+        "metal"
+      ],
+      "actual_exit": 8,
+      "expected_exit": 8,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "careops-ed: backend 'metal' is not integrated and qualified; inspect 'capabilities'\n"
+    },
+    {
+      "argv": [
+        "target/debug/careops-ed",
+        "batch",
+        "crates/careops-ed/examples/nominal_mvp.json",
+        "--output-dir",
+        "${PRIVATE_EVIDENCE}/ed-capability-walkthrough/forbidden-batch",
+        "--backend",
+        "metal"
+      ],
+      "actual_exit": 8,
+      "expected_exit": 8,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "careops-ed: backend 'metal' is not integrated and qualified; inspect 'capabilities'\n"
+    }
+  ],
+  "artifact_path_redaction": "Private evidence root replaced by ${PRIVATE_EVIDENCE}; original exact command/readback receipt retained outside Git."
+}

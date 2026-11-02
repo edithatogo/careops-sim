@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "packet_id": "ED.capabilities",
+  "task_id": "E9.1",
+  "target_repo": ".",
+  "base_commit": "544a1e2e35a8ac19a8d0e83d9a24130c6eaad6bb",
+  "objective": "Reconcile historical E6/E8 receipts with exact074 source; expose actual ED executable modes and fail closed for unsupported explicit requests. Preserve Kairos owners, hardware/protocol/performance gates and all historical receipts.",
+  "context_paths": [
+    "conductor/tracks/generic_ed_delivery_20260925/spec.md",
+    "conductor/tracks/generic_ed_delivery_20260925/agent-contract.md",
+    "conductor/evidence/r0.3-source-classification-20261021/README.md"
+  ],
+  "input_paths": [
+    "crates/careops-ed/Cargo.toml",
+    "crates/careops-core/Cargo.toml"
+  ],
+  "input_hashes": {
+    "crates/careops-ed/Cargo.toml": "aeca63ade72d5cf2cf3013aaaef80ed055e1866f125f9a363627980a045a403c",
+    "crates/careops-core/Cargo.toml": "cb5603c9a47a04308df8b63aecd63176fe81549e73026a6d363071010e849678"
+  },
+  "context_budget_bytes": 24000,
+  "write_paths": [
+    "crates/careops-ed/src/api_runner.rs",
+    "crates/careops-ed/tests/execution_capabilities.rs",
+    "conductor/tracks/generic_ed_delivery_20260925",
+    "conductor/evidence/ed-capability-qualification-20261103",
+    "conductor/execution/packets/ED.capabilities.json",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json",
+    "conductor/index.md",
+    "conductor/tracks.md",
+    "conductor/module-readiness.md",
+    "docs/USER_GUIDE.md",
+    ".careops-security/inventory.json"
+  ],
+  "protected_paths": [
+    "libs/kairos",
+    "Cargo.toml",
+    "Cargo.lock",
+    "model-inputs",
+    "conductor/tracks/polars_data_processing_20261022"
+  ],
+  "leaf_dependencies": [
+    "E4.4"
+  ],
+  "interface_contract": "Version1 static ED executable capability report; no hardware probe, no native device/transport enabling; known unavailable modes exit8, malformed/unknown requests exit2 before IO. CPU simulation/RNG/event/artifact semantics unchanged.",
+  "steps": [
+    "Source audit and four failing Rust controls",
+    "Small CLI capability/selection repair",
+    "Focused native API/batch/export checks and actual CLI walkthrough",
+    "Independent Conductor review, accepted fixes, full hosted gates and scoped closeout"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--test",
+        "execution_capabilities",
+        "--test",
+        "e31_public_api_tests",
+        "--test",
+        "e32_batch_and_checkpoint_tests",
+        "--test",
+        "e33_arrow_parquet_spatial_tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Executable mode truthfulness/fail-closed controls and unchanged CPU API/batch/recovery/export behavior."
+    }
+  ],
+  "stop_conditions": [
+    "Kairos source or dependency/pin change needed",
+    "Device or multi-host proof unavailable",
+    "Unknown path owner or source drift"
+  ],
+  "result_path": "conductor/evidence/ed-capability-qualification-20261103/review-report.md",
+  "acceptance": [
+    "Only actual ED CPU modes report available; unsupported known modes exit8 and malformed/unknown modes exit2 before IO.",
+    "CPU run/batch defaults remain unchanged, with actual native CLI output and targeted batch/recovery/export controls.",
+    "Exact upstream source blockers and required peer-failure/protocol/device/parity/performance receipts remain open, with existing owners."
+  ],
+  "size_exception": "Serial coordinator packet spans 12 paths for one CLI boundary and mandatory Conductor/status/inventory synchronization; no dependency, runtime pin or Kairos writes.",
+  "status": "prepared"
+}

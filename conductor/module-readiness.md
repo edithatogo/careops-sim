@@ -56,11 +56,11 @@ establishes current boundaries; only the five-package test slice noted below ran
 | kairo-ecs-uniffi | Bridge wrapper | Maintain regression compatibility; full ED expansion deferred to real consumer; 02 | Deferred expansion |
 | kairo-ecs-diplomat | Bridge wrapper | Same protected ABI review; no redundant ED API rewrite; 02 | Deferred expansion |
 | kairo-ecs-cs-bridge | FFI bridge | Preserve existing gates if shared ABI changes; no new C# ED work; 10 | Deferred expansion |
-| kairo-ecs-gpu | Empty backend dependency features / explicit unavailable contracts | Real wgpu/WGSL Metal dispatch, CPU oracle and device benchmarks; 32, E6 | G3-Metal |
+| kairo-ecs-gpu | At pin07410266: optional wgpu ABM dispatch and CPU fallback; ED does not consume it | Real wgpu/WGSL Metal dispatch, CPU oracle and device benchmarks; 32, E6 | G3-Metal |
 | kairo-ecs-webgpu | Browser contract/scaffold | Real browser device setup and parity through existing 33; no assumption that Pixi rendering is simulation compute | Deferred after native Metal |
 | kairo-ecs-pdes | Conservative scheduler/in-memory reference scaffolding | Real core/Flow LP integration, resource ownership/lookahead/GVT, threaded evidence; 34, E7 | G3-PDES |
-| kairo-ecs-mpi | Local protocol surface; no MPI runtime dependency | Real MPI transport, rank launch, migration and failure evidence; 35, E8 | G3-distributed |
-| kairo-ecs-grpc | Local protocol surface; no tonic/prost runtime | Real services/auth/protocol, recovery and at-most-once migration; 35, E8 | G3-distributed |
+| kairo-ecs-mpi | At pin07410266: TCP process transport with file/environment rendezvous; no MPI ABI dependency | Real MPI transport, rank launch, migration and failure evidence; 35, E8 | G3-distributed |
+| kairo-ecs-grpc | At pin07410266: custom framed TCP transport; no tonic/prost/HTTP2 runtime | Real services/auth/protocol, recovery and at-most-once migration; 35, E8 | G3-distributed |
 | kairo-ecs-streaming | Optional Kafka/NATS/Flight feature names, no runtime deps | Batch Arrow sufficient initially; real live ingestion needs separate source/wall-clock contract; 36 | Deferred |
 | kairo-ecs-ml | Optional backend feature names, no runtime deps | Burn remains existing direction; learned policies/surrogates need measured value and validation; 37 | Deferred |
 | kairo-ecs-fmi | Optional co-simulation features, no runtime deps | Preserve extension contracts, implement only for concrete future model need; 38 | Deferred |
@@ -244,3 +244,14 @@ See [current sequencing](dependency-sequencing.md): Polars inventory first, with
 ## Python runtime qualification — 23 October 2026
 
 [Python 3.15 migration and qualification](tracks/python315_runtime_qualification_20261023/index.md) preserves existing candidate `0aee0d2` and local test evidence. R71–R74 runtime implementation and safe handover are accepted at main `43ea690` through PRs #178/#179, with final repo-local Python 3.15.1 and eight guard controls. Conductor closeout documentation is under PR #180 review/checks. No Kairos pin advance or simulation acceptance follows.
+
+## Current ED execution boundary — 3 November 2026
+
+The ED executable reports only serial CPU and independent CPU replications as
+available. Within-run PDES and GPU/transport module presence do not imply ED
+integration. [E9 qualification](evidence/ed-capability-qualification-20261103/README.md)
+records exact source findings and fail-closed selection controls;
+[upstream blockers](evidence/ed-capability-qualification-20261103/upstream-blockers.md)
+retain device/protocol/peer-failure/GVT/parity/performance gates and existing owners.
+The historical capability matrix above is scoped by these current readbacks; no
+G3 acceptance or clinical/site/release approval follows from CPU qualification.
