@@ -21,3 +21,19 @@ User-authorized planning change: inventory-first Polars; supporting dependencies
 ## R10 terminal handoff — 30 October 2026
 
 Owner chat `01a1876f-9b26-71e0-b55c-daeb9d9a1335`; managed worktree `careops-r103-remote/careops-sim`; owned paths: this track and affected Conductor index/registry/resume/catalog records; no native service scope. Code PR #188 and acceptance PR #189 are merged. R10.4 reconciles the phase records against those receipts. Next operation: prepare the bounded R11.1 packet against the then-current source, preserving the separate advanced A2–A6/birthing lane and global A1/A2 dispatch. No R11 source work is dispatched by this closeout.
+
+## Current integration writer — 3 November 2026
+
+Chat01a19b9f-69e7-7353-9b75-445d5653feb4 owns the bounded Polars integration in
+`${PRIVATE_HOME}/.codex/worktrees/careops-pr194-checks/careops-sim`, branch
+`codex/polars-migration-integration`, base19fe920, sourcePR1914b0a264.
+Original owner worktree96e8cc8 remains clean/unchanged; its prior terminal source
+claim was released and no native operation is in flight. Earlier assignments and
+receipts remain history. No tenant/authentication scope and no Kairos writes.
+
+The retained source is applied with ordinary three-way Git patch integration;
+runtime074, dataGit4134/Polars964, core/B7/E9 source, CI and policy gates are
+preserved. Workspace policy/pin/support checks and69targeted native tests pass.
+[Integration receipt](../../evidence/polars-integration-20261103/integration.json).
+Next: reviewer-confirmed R11.3 durability/model/envelope/process-window controls,
+then full combined phase gates. No R11phase acceptance is claimed yet.

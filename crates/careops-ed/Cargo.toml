@@ -12,3 +12,10 @@ kairo-ecs-core.workspace = true
 kairo-ecs-types.workspace = true
 serde.workspace = true
 serde_json.workspace = true
+kairo-ecs-arrow = { git = "https://github.com/edithatogo/kairos.git", rev = "4134a3733ba7e833a8c520621ec2af5a4bd4b31a", version = "=0.1.0", features = ["polars-native"], optional = true }
+polars = { git = "https://github.com/pola-rs/polars.git", rev = "96439685eb2f95108f51087d2b76091917f2593c", version = "=0.55.1", default-features = false, features = ["parquet"], optional = true }
+tempfile = { version = "=3.27.0", optional = true }
+
+[features]
+default = ["native-data"]
+native-data = ["dep:kairo-ecs-arrow", "dep:polars", "dep:tempfile"]

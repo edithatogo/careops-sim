@@ -42,8 +42,7 @@ use careops_ed::disposition::api_runner::{
 };
 use careops_ed::disposition::arrow_export::generate_arrow_export_bundle;
 use careops_ed::disposition::batch_runner::{
-    compute_batch_aggregates, execute_single_replication, run_batch_with_workers, BatchConfig,
-    BatchRunDocument, ReplicationResult,
+    compute_batch_aggregates, run_batch_with_workers, BatchConfig, BatchRunDocument,
 };
 use careops_ed::disposition::composite_fixture::{
     st003_verify_retained_occupancy, ComposedPatient, CompositeEdFixture, PatientLifecycle,
@@ -1210,18 +1209,32 @@ fn test_distributed_and_pdes_export_bundle_compatibility() {
     let partition_0_tasks: Vec<(usize, u64)> = (0..3).map(|i| (i, seeds[i])).collect();
     let partition_1_tasks: Vec<(usize, u64)> = (3..6).map(|i| (i, seeds[i])).collect();
 
-    let (tx, rx) = mpsc::channel::<(usize, Vec<ReplicationResult>)>();
+    use careops_ed::capture::{
+        capture_replication, finalize_captured_replications, CapturedReplication,
+    };
+    use careops_ed::parquet_capture::{CaptureSource, ParquetPartStore, DEFAULT_LIMITS};
+    let capture_dir = tempfile::tempdir().unwrap();
+    let store =
+        std::sync::Arc::new(ParquetPartStore::open(capture_dir.path(), DEFAULT_LIMITS).unwrap());
+    let (tx, rx) = mpsc::channel::<(usize, Vec<CapturedReplication>)>();
 
     // Spawn Worker Node 0
     let tx0 = tx.clone();
     let scen0 = scenario.clone();
     let tasks0 = partition_0_tasks;
-    let h_override0 = horizon_override;
+    let worker_store0 = store.clone();
+    let config0 = monolithic_config.clone();
     let handle0 = thread::spawn(move || {
         let mut results = Vec::new();
-        for (idx, seed) in tasks0 {
-            let res = execute_single_replication(&scen0, idx, seed, h_override0)
-                .expect("worker 0 replication execution");
+        for (idx, _seed) in tasks0 {
+            let res = capture_replication(
+                &scen0,
+                &config0,
+                DEFAULT_LIMITS,
+                worker_store0.as_ref(),
+                idx,
+            )
+            .expect("worker 0 replication execution");
             results.push(res);
         }
         tx0.send((0, results)).expect("worker 0 send to channel");
@@ -1231,12 +1244,19 @@ fn test_distributed_and_pdes_export_bundle_compatibility() {
     let tx1 = tx;
     let scen1 = scenario.clone();
     let tasks1 = partition_1_tasks;
-    let h_override1 = horizon_override;
+    let worker_store1 = store.clone();
+    let config1 = monolithic_config.clone();
     let handle1 = thread::spawn(move || {
         let mut results = Vec::new();
-        for (idx, seed) in tasks1 {
-            let res = execute_single_replication(&scen1, idx, seed, h_override1)
-                .expect("worker 1 replication execution");
+        for (idx, _seed) in tasks1 {
+            let res = capture_replication(
+                &scen1,
+                &config1,
+                DEFAULT_LIMITS,
+                worker_store1.as_ref(),
+                idx,
+            )
+            .expect("worker 1 replication execution");
             results.push(res);
         }
         tx1.send((1, results)).expect("worker 1 send to channel");
@@ -1260,14 +1280,27 @@ fn test_distributed_and_pdes_export_bundle_compatibility() {
     );
 
     // Canonical sorting by replication_index to reconstruct deterministic batch sequence
-    all_received_results.sort_by_key(|r| r.replication_index);
+    let captured = finalize_captured_replications(
+        &scenario,
+        &monolithic_config,
+        DEFAULT_LIMITS,
+        capture_dir.path(),
+        store.as_ref(),
+        all_received_results,
+    )
+    .unwrap();
+    let all_received_results: Vec<_> = captured.into_iter().map(|r| r.summary).collect();
 
     // Recompute aggregate metrics across all reassembled replications
     let (mean_wait, std_error, completion_rate) = compute_batch_aggregates(&all_received_results);
 
     // Reassemble BatchRunDocument
     let reassembled_doc = BatchRunDocument {
-        schema_version: 1,
+        schema_version: 2,
+        capture: Some(CaptureSource::persistent(
+            capture_dir.path().to_path_buf(),
+            DEFAULT_LIMITS,
+        )),
         batch_id: monolithic_doc.batch_id.clone(),
         scenario_id: monolithic_doc.scenario_id.clone(),
         status: "complete".to_string(),

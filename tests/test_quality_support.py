@@ -29,7 +29,7 @@ class QualitySupportTests(unittest.TestCase):
             "default_msrv": "1.99",
             "packages": [
                 {"manifest": "Cargo.toml", "features": {}},
-                {"manifest": "crates/careops-ed/Cargo.toml", "features": {}},
+                {"manifest": "crates/careops-ed/Cargo.toml", "features": {'default': ['native-data'], 'native-data': ['dep:kairo-ecs-arrow', 'dep:polars', 'dep:tempfile']}},
                 {"manifest": "crates/careops-ed-cli/Cargo.toml", "features": {}},
             ],
             "semver": {
@@ -53,6 +53,9 @@ class QualitySupportTests(unittest.TestCase):
                    '[workspace.package]\nrust-version = "1.99"\n\n[package]\nname = "careops-sim"\n')
         self.write("crates/careops-ed/Cargo.toml", '[package]\nname = "careops-ed"\nrust-version.workspace = true\n')
         self.write("crates/careops-ed-cli/Cargo.toml", '[package]\nname = "careops-ed-cli"\nrust-version.workspace = true\n')
+
+        with (self.root / "crates/careops-ed/Cargo.toml").open("a") as ed_manifest:
+            ed_manifest.write('\n[features]\ndefault = ["native-data"]\nnative-data = ["dep:kairo-ecs-arrow", "dep:polars", "dep:tempfile"]\n')
 
     def tearDown(self):
         self.temp.cleanup()

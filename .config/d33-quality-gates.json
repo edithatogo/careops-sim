@@ -9,7 +9,16 @@
     },
     {
       "manifest": "crates/careops-ed/Cargo.toml",
-      "features": {}
+      "features": {
+        "default": [
+          "native-data"
+        ],
+        "native-data": [
+          "dep:kairo-ecs-arrow",
+          "dep:polars",
+          "dep:tempfile"
+        ]
+      }
     },
     {
       "manifest": "crates/careops-ed-cli/Cargo.toml",
