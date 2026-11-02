@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "packet_id": "A3.4.phase-review",
+  "task_id": "A3.4",
+  "target_repo": ".",
+  "base_commit": "3bce4b2e1d76e37037c5a85d3804e973a6180610",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Review and verify integrated A3.1\u2013A3.3 against the accepted contract, then close phase evidence and point the registry to A4.1.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/agent-contract.md",
+    "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "crates/careops-core/src/allocation.rs",
+    "crates/careops-core/src/staffing.rs",
+    "crates/careops-core/tests/allocation_contract.rs",
+    "crates/careops-core/tests/allocation_kairos_conformance.rs",
+    "crates/careops-core/tests/staffing_contract.rs"
+  ],
+  "input_hashes": {
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md": "070e599846f4b31e174902a31cff8fe819df1d0ba897a3a8195c366223da567c",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md": "8a752e0e1c66d717e9d2a3fa412e0a69b9842e828a7dd2077bffa48ebf76b1c9",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/agent-contract.md": "972e357875ea9584e192eda69c0cc9b76394691fa7113598029bf02892bc2e4a",
+    "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md": "9b99a910c8693ef8a4f9cd4f8a0a1d6296061af136a140a8e138a24934ba368b"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A3.4.phase-review.json",
+    "conductor/evidence/a3.4-phase-review-20261027/README.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/index.md",
+    "conductor/tracks.md",
+    "conductor/index.md",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.lock",
+    "Cargo.toml",
+    "crates",
+    "libs/kairos"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md",
+  "steps": [
+    "Review integrated A3.1\u2013A3.3 source and evidence against the track plan, test matrix, ADR-0011 and exact pinned Kairos revision.",
+    "Run locked workspace tests, workspace Clippy with warnings denied, Rust formatting, and Conductor integrity checks.",
+    "Record reviewer-agent findings, exact reviewed HEAD, commands, toolchain, source hashes, outcomes and exclusions.",
+    "If findings arise, fix them and repeat applicable review/checks before phase acceptance.",
+    "Mark A3.4 accepted and A4.1 next in plan, registries, current state and generated task catalog."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All parent and pinned Kairos workspace tests and doc-tests pass."
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace targets pass Clippy with warnings denied."
+    },
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting is canonical."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Generated task catalog has complete coverage, valid prerequisites and acyclic DAG."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Conductor context and local links validate."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/mvp.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "MVP parent/leaf joins and context hashes validate."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "No whitespace errors in phase changes."
+    }
+  ],
+  "acceptance": [
+    "Independent reviewer-agent/subagent examined exact integrated HEAD and reported no open findings or all fixes were re-reviewed.",
+    "Workspace/runtime and integrity commands above pass; exact outputs and hashes are recorded.",
+    "ADR-0011 boundaries remain explicit; no clinical eligibility, atomic multi-resource grant or portable checkpoint claim.",
+    "No ED schema/runtime source, Kairos source or parent pin changes.",
+    "A4.1 is the next incomplete task after closeout."
+  ],
+  "result_path": "conductor/evidence/a3.4-phase-review-20261027/README.md",
+  "stop_conditions": [
+    "Reviewed source or pin drifts",
+    "Reviewer identifies unresolved material finding",
+    "Any integration gate fails",
+    "Out-of-scope source or pin change appears"
+  ],
+  "size_exception": "Coordinator-only phase closeout: one evidence receipt plus the existing plan/index/registry/current-state/task-catalog join must be atomic to keep the accepted phase and next-task pointers consistent. The 7 checks are phase-level integration and repository integrity gates; no worker code implementation is authorized.",
+  "status": "prepared"
+}

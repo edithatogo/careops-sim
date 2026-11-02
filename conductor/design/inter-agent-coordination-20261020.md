@@ -44,3 +44,25 @@ Combining planning commits does not close implementation tasks or promote a pin.
 Local tests and hosted checks are recorded in [merge readiness](../evidence/merge-readiness-20261021.md).
 The integration history, rather than an assertion of simultaneous workspace sync,
 identifies the reviewed content. Older evidence records describe their dated state.
+
+## PR194 compatibility repair — 2 November 2026
+
+Chat `01a19b9f-69e7-7353-9b75-445d5653feb4` owns the isolated managed
+worktree `<PR194_REPAIR_WORKTREE>` on `codex/pr194-compatibility-checks`, based
+on `0320767`. The original integration worktree and private hook registrations
+remain with chat `01a19709-fd7b-7a61-a1e7-1ed85239eba0` (terminal handoff).
+Scope: allocation conformance adapter, current-source mutation bindings and tests,
+parent/fuzz locks where required, and this repair's Conductor evidence/status.
+No native objects, authentication renewal, Kairos source or submodule pin changes.
+Next operation: verify staged-runtime conformance against retained pin `0741026`,
+then locked workspace, context, mutation and policy gates; independent review
+and hosted checks remain required before acceptance.
+
+PR194 repair source is published at `c786fb3`; ordinary hooks reported zero
+findings. Independent reviewer `review_pr194` found no actionable source issues.
+The original integration checkout remains clean at `0320767`; its local branch
+and private bindings were not advanced. This repair's publication fast-forwards
+only the existing PR remote ref. Its final source and check receipts are retained
+in [the repair closeout](../evidence/pr194-compatibility-20261102/README.md).
+R11.1 remains with the Polars owner; A7 remains gated on birthing B7.4. No new
+phase, native activation, hardware, clinical or operational acceptance is granted.

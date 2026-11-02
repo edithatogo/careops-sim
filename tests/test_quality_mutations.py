@@ -20,13 +20,13 @@ HISTORICAL_CATALOG_PATH = (
     / "conductor/evidence/d3.3-quality-gates-20261005/mutants.json"
 )
 BASELINE_UNVIABLES = (
-    "crates/careops-ed/src/lib.rs:246:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:646:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:664:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:247:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:647:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:665:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
 )
 EQUIVALENT_MISSES = (
-    (746, 60, "crates/careops-ed/src/lib.rs:746:60: replace || with && in run_scenario"),
-    (809, 43, "crates/careops-ed/src/lib.rs:809:43: replace || with && in run_scenario"),
+    (747, 60, "crates/careops-ed/src/lib.rs:747:60: replace || with && in run_scenario"),
+    (810, 43, "crates/careops-ed/src/lib.rs:810:43: replace || with && in run_scenario"),
 )
 
 
@@ -85,7 +85,7 @@ def valid_outcomes():
             phase_results=[phase("Build", "Success"), phase("Test", "Success")],
         ))
     for index, name in enumerate(BASELINE_UNVIABLES):
-        line = (246, 646, 664)[index]
+        line = (247, 647, 665)[index]
         rows.append(mutant_row(
             name, "Unviable", line=line, column=5,
             genre="FnValue", replacement="Ok(Default::default())",
@@ -122,7 +122,7 @@ def validate(document, source_bytes=SOURCE_BYTES, catalog=None, expected_catalog
 class MutationGateTests(unittest.TestCase):
     def test_accepts_full_bound_baseline_and_exact_equivalence_boundaries(self):
         result = validate(valid_outcomes())
-        self.assertEqual(result["source_sha256"], "a79aa97f98e5585f622484691e42ba5725eff3a88b5276234b93eb8061cf591c")
+        self.assertEqual(result["source_sha256"], "36c306bbff204267a5d3c1c68205e29f411cedf7442e8f741d2ab469ea6adb67")
         self.assertEqual(result["total_mutants"], 116)
         self.assertEqual(result["caught"], 111)
         self.assertEqual(result["missed"], 2)
@@ -170,7 +170,7 @@ class MutationGateTests(unittest.TestCase):
             validate(valid_outcomes(), source_bytes=SOURCE_BYTES + b"\n")
 
     def test_rejects_historical_source_binding(self):
-        old_source = SOURCE_BYTES.replace(
+        old_source = SOURCE_BYTES.replace(b"pub mod identity;\n", b"", 1).replace(
             b".is_none_or(|location|",
             b".map_or(true, |location|",
             1,
@@ -231,11 +231,11 @@ class MutationGateTests(unittest.TestCase):
 
     def test_rejects_any_non_disposition_missed_mutant(self):
         bad_mutants = (
-            {"line": 746, "column": 61, "genre": "BinaryOperator", "replacement": "&&", "name": "replace || with &&"},
-            {"line": 746, "column": 60, "genre": "Other", "replacement": "&&", "name": "replace || with &&"},
-            {"line": 746, "column": 60, "genre": "BinaryOperator", "replacement": "||", "name": "replace || with &&"},
-            {"line": 746, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "replace && with ||"},
-            {"line": 746, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "unbound replace || with &&"},
+            {"line": 747, "column": 61, "genre": "BinaryOperator", "replacement": "&&", "name": "replace || with &&"},
+            {"line": 747, "column": 60, "genre": "Other", "replacement": "&&", "name": "replace || with &&"},
+            {"line": 747, "column": 60, "genre": "BinaryOperator", "replacement": "||", "name": "replace || with &&"},
+            {"line": 747, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "replace && with ||"},
+            {"line": 747, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "unbound replace || with &&"},
         )
         for bad in bad_mutants:
             document = valid_outcomes()

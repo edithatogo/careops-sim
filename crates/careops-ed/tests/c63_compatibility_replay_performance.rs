@@ -425,6 +425,47 @@ fn test_feature_api_manifest_compatibility() {
 // ---------------------------------------------------------------------------
 
 #[test]
+fn historical_nominal_fixture_serializes_byte_identically() {
+    let baseline_path =
+        repo_root().join("conductor/evidence/r1-native-baseline-20261021/ed/first.json");
+    let baseline_bytes = fs::read(&baseline_path).expect("read immutable historical ED output");
+    let baseline: RunDocument =
+        serde_json::from_slice(&baseline_bytes).expect("parse historical ED output");
+    let input_bytes = fs::read(nominal_path()).expect("read unchanged nominal scenario bytes");
+
+    assert_eq!(
+        compute_sha256_hex(&input_bytes),
+        baseline.manifest.input_sha256,
+        "nominal fixture bytes must match the input used for the frozen baseline"
+    );
+
+    let scenario =
+        parse_scenario_json(std::str::from_utf8(&input_bytes).expect("nominal scenario is UTF-8"))
+            .expect("parse nominal scenario");
+    let options = RunOptions {
+        seed_override: Some(baseline.manifest.seed),
+        horizon_override: Some(baseline.manifest.horizon_ticks),
+        ..Default::default()
+    };
+    let current = run_experiment(
+        &scenario,
+        &options,
+        &baseline.manifest.input_file,
+        &input_bytes,
+        None,
+    )
+    .expect("run unchanged nominal scenario through the ED compatibility API");
+    let current_bytes = export_document(&current, ExportFormat::Json)
+        .expect("serialize current ED run document")
+        .into_bytes();
+
+    assert_eq!(
+        current_bytes, baseline_bytes,
+        "ED compatibility output must remain byte-identical to the frozen pre-extraction run"
+    );
+}
+
+#[test]
 fn test_deterministic_replay_and_worker_concurrency() {
     let scenario = load_nominal_scenario();
 

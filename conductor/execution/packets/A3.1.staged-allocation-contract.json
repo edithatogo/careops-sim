@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "packet_id": "A3.1.staged-allocation-contract",
+  "task_id": "A3.1",
+  "target_repo": ".",
+  "base_commit": "ee5f870615d2e6b41043e4cd29b726999505328e",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Freeze the CareOps allocation and interruption boundary against the exact pinned Kairos capabilities, distinguishing single-resource claims and bounded staged acquisition from atomic multi-resource grant.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/design/composition-contracts-20261020.md",
+    "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md",
+    "libs/kairos/crates/kairo-ecs-des/src/flow.rs",
+    "libs/kairos/conductor/tracks/03-flow-des-trajectory-abm-behavior/handoff.md"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md": "9b99a910c8693ef8a4f9cd4f8a0a1d6296061af136a140a8e138a24934ba368b",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md": "070e599846f4b31e174902a31cff8fe819df1d0ba897a3a8195c366223da567c",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "8309283c9236d085cc3ab7100eabf20463475a2587b5d3ba3770a788771f7fa0",
+    "conductor/design/composition-contracts-20261020.md": "4b83254e9ec17cbdd8c44790deda7bebf5893b3b46fc7f0eae2842af325d9249"
+  },
+  "write_paths": [
+    "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md",
+    "conductor/execution/packets/A3.1.staged-allocation-contract.json",
+    "conductor/evidence/a3.1-allocation-contract-20261027/README.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md"
+  ],
+  "protected_paths": [".git", "Cargo.lock", "conductor/current-state.json", "conductor/execution/tasks.json", "crates/careops-ed", "libs/kairos"],
+  "leaf_dependencies": ["A2.4"],
+  "interface_contract": "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md",
+  "steps": [
+    "Read back the pinned Kairos request, lease, eligibility, continuation and checkpoint surfaces; retain the exact commit identity.",
+    "Review the contract through an independent agent/subagent against CC-03 and the pinned interface evidence.",
+    "Resolve reviewer findings and rerun packet/context checks; do not edit Kairos or claim atomic multi-resource grant.",
+    "Record the reviewed contract, capability limits and evidence hashes; mark A3.1 complete only after review passes."
+  ],
+  "verification": [
+    {"argv": [".venv/bin/python", "tools/tasks.py", "packet-check", "conductor/execution/packets/A3.1.staged-allocation-contract.json"], "cwd": ".", "expected_exit": 0, "oracle": "A3.1 packet structure and bounded scope pass validation."},
+    {"argv": [".venv/bin/python", "tools/context.py", "check"], "cwd": ".", "expected_exit": 0, "oracle": "Conductor links and plan-derived context validate after A3.1 closeout."}
+  ],
+  "acceptance": [
+    "Each engine lease is treated as a single-resource claim at the exact pinned Kairos commit.",
+    "CareOps staged acquisition exposes partial claims and explicit rollback; it never claims all-or-none grant.",
+    "Safe interruption requires an explicit caller-declared workpoint; urgency alone never interrupts active work.",
+    "Experimental eligibility/continuation and checkpoint limits are stated; no clinical policy or portability is inferred.",
+    "Independent reviewer-agent/subagent findings are resolved and evidence is recorded.",
+    "No Kairos source, parent pin, ED schema/default or dependency changes."
+  ],
+  "result_path": "conductor/evidence/a3.1-allocation-contract-20261027/README.md",
+  "stop_conditions": ["Pin or interface evidence drift", "True atomic multi-resource grant is required", "Reviewer identifies unresolved contract contradiction", "Edit outside write_paths"],
+  "size_exception": null,
+  "status": "prepared"
+}

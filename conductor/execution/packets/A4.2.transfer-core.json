@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "packet_id": "A4.2.transfer-core",
+  "task_id": "A4.2",
+  "target_repo": ".",
+  "base_commit": "e7cb6f4a83ba511e22eb6e82321a6c0484eff60e",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Implement the accepted ADR-0012 transfer lifecycle as a versioned CareOps ledger on one deterministic scheduler, with explicit claims, logical idempotency, compensation, deadline handling and supported checkpoint/restart.",
+  "context_paths": [
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md",
+    "crates/careops-core/tests/contract_negative_tests.rs",
+    "crates/careops-core/src/lib.rs"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md": "47b75af12339c469343166a5a2eace02058170679a65d3b36856482b7ebff7dc",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "7f7583b8dc56fd67d6837b94ed159ad51990023dc0b9eb6f9e647684acf2acfc"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A4.2.transfer-core.json",
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/src/lib.rs",
+    "crates/careops-core/tests/transfer_contract.rs",
+    "conductor/evidence/a4.2-transfer-core-20261027/README.md"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/careops-ed",
+    "crates/careops-ed-cli",
+    "libs/kairos",
+    "profiles"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+  "steps": [
+    "Add versioned typed identities, transfer envelopes, monotone operation revisions and deterministic per-operation message deduplication/pending replay.",
+    "Implement the full accepted state graph with unique location and responsibility, exclusive resource claims, deadline processing before same-tick commands, and explicit origin/destination claim conversion/release.",
+    "Implement post-departure rejection as a linked compensating operation without duplicating the person or episode; settle ownership and claims at the compensating handover.",
+    "Implement deterministic supported checkpoint serialization and strict restore validation of schema, operation state, message history, pending events, ownership, location and claims.",
+    "Add executable positive, negative, conservation, tie, duplicate/reorder/delay, compensation, horizon and checkpoint/restart tests from ADR-0012.",
+    "Run focused tests, core Clippy and workspace formatting; record hashes and results."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "transfer_contract"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Transfer lifecycle, negative, conservation, compensation and checkpoint/restart oracles pass."
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All careops-core targets pass Clippy with warnings denied."
+    },
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace Rust formatting is canonical."
+    }
+  ],
+  "acceptance": [
+    "Every envelope is versioned and bound to an operation ID, message ID, revision and virtual tick; invalid schema/input rejects before partial mutation.",
+    "Normal, rejected, cancelled, expired, duplicate, reordered, delayed, horizon and compensation paths conserve person, episode, location, owner and exclusive claims.",
+    "Deadline equality expires request/offer/reservation before later actions, while in-transit expiry at arrival preserves the hold and converts it once to occupancy.",
+    "Checkpoint/restart preserves deterministic continuation and deduplication; malformed or incompatible checkpoint rejects fail-closed.",
+    "No exactly-once network, clinical policy, ED schema, Kairos source/pin or new dependency claim."
+  ],
+  "result_path": "crates/careops-core/tests/transfer_contract.rs",
+  "stop_conditions": [
+    "ADR-0012 input/base drift",
+    "Unresolvable ambiguity in owner or resource conservation",
+    "A required checkpoint state cannot be represented without dropping claims",
+    "Out-of-scope source/dependency/pin change",
+    "Focused oracle cannot be made deterministic"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

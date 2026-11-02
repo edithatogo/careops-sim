@@ -11,18 +11,18 @@ import sys
 
 
 SOURCE_FILE = "crates/careops-ed/src/lib.rs"
-SOURCE_SHA256 = "a79aa97f98e5585f622484691e42ba5725eff3a88b5276234b93eb8061cf591c"
-CATALOG_SHA256 = "0d35b878022a1750635ea3d1c2c19e8f2533bf278b194e3acdc16d00865bec4f"
+SOURCE_SHA256 = "36c306bbff204267a5d3c1c68205e29f411cedf7442e8f741d2ab469ea6adb67"
+CATALOG_SHA256 = "cfaa768ded199e7a3e5af5b20d03c5f2500ce456396bc60bf1ed4166a6597a3e"
 MUTANTS_VERSION = "27.1.0"
 EXPECTED_TOTAL = 116
 EQUIVALENT_MISSES = {
-    (746, 60): "crates/careops-ed/src/lib.rs:746:60: replace || with && in run_scenario",
-    (809, 43): "crates/careops-ed/src/lib.rs:809:43: replace || with && in run_scenario",
+    (747, 60): "crates/careops-ed/src/lib.rs:747:60: replace || with && in run_scenario",
+    (810, 43): "crates/careops-ed/src/lib.rs:810:43: replace || with && in run_scenario",
 }
 ORIGINAL_UNVIABLES = {
-    "crates/careops-ed/src/lib.rs:246:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:646:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:664:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:247:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:647:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:665:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
 }
 _TOP_LEVEL_KEYS = {
     "cargo_mutants_version", "caught", "end_time", "missed", "outcomes",
