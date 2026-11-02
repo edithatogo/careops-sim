@@ -10,7 +10,7 @@ these C-R0–C-R7 recommendations. No change to that repository is made by this
 21 October incorporation. Older shorthand “CareOps” here denotes careops-sim
 unless a paragraph explicitly identifies the separate portfolio repository.
 
-Status: implementation in progress. A0–A6 are accepted locally. A7.1–A7.4 remain incomplete; A7.1 depends on birthing B7.4.
+Status: A0–A7 complete for bounded generic synthetic engineering, qualified at `ef613be`. PR197 remains unmerged; final documentation-head checks and integration review remain gates. Empirical/clinical/site/operational, stable public API, hardware and broader release acceptance remain separate. See [A7 acceptance](../../evidence/a7-two-consumer-20261103/README.md).
 
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
 Dispatch requires reviewed packets, upstream capability readback and the single-maintainer harness.
