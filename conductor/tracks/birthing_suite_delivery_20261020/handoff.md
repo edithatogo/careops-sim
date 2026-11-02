@@ -40,3 +40,13 @@ other completed checks, independent review, and frozen871c478's unchanged ED
 mutation receipt. Current context/aggregate remains pending; final exact combined
 head gates remain mandatory. B4.1 staffing/bundle cases are next. Reassess evidence
 reuse if shared/core/dependency/schema/fixture/config/ED-path inputs change.
+
+### B3 full hosted result; reviewed B4 candidate
+
+B3 e3bc8ba completed its full hosted run41457106192:16 successes and the expected
+main-only attestation skip. B4 implementation84c9edf received fixes12477e2 and
+ebf680e after independent review. Exact final re-review found no remaining issues;
+26 birthing tests and all-target Clippy pass. B4 boxes remain unchecked pending
+its scoped hosted milestone. Responsibility audit must run after coordinator
+events; dynamic early termination, queued atomic grants and durability remain
+excluded. B5–B7/A7 are still open.
