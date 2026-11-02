@@ -75,6 +75,9 @@ fn backend_selection_is_strict_and_does_not_change_cpu_results() {
     for args in [
         vec!["run", path, "--backend"],
         vec!["run", path, "--backend", "cuda"],
+        vec!["run", path, "--backend", "metal", "--backend", "cpu_serial"],
+        vec!["batch", path, "--backend", "metal", "--backend"],
+        vec!["run", path, "--backend", "cuda", "--backend", "metal"],
         vec![
             "run",
             path,

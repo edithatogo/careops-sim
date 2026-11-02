@@ -1032,24 +1032,26 @@ pub fn execute_cli_args(args: &[String]) -> CliOutput {
     }
     if matches!(command, Some("run" | "batch")) {
         let mut filtered = vec![args[0].clone()];
-        let mut selected = false;
+        let mut selected = None;
         let mut index = 1;
         while index < args.len() {
             if args[index] == "--backend" {
-                if selected || index + 1 == args.len() {
+                if selected.is_some() || index + 1 == args.len() {
                     return CliOutput::error(
                         ExitCodeDef::UsageError,
                         "careops-ed: --backend requires exactly one mode, once",
                     );
                 }
-                selected = true;
-                if let Err(error) = require_execution_mode(&args[index + 1], command) {
-                    return error;
-                }
+                selected = Some(args[index + 1].as_str());
                 index += 2;
             } else {
                 filtered.push(args[index].clone());
                 index += 1;
+            }
+        }
+        if let Some(mode) = selected {
+            if let Err(error) = require_execution_mode(mode, command) {
+                return error;
             }
         }
         return execute_cli_args_inner(&filtered);
