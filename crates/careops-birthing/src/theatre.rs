@@ -140,7 +140,7 @@ pub struct TheatreService {
     capabilities: CapabilitySet,
     cases: BTreeMap<u64, TheatreCase>,
     active: Option<Plan>,
-    cleanups: BTreeMap<u64, u64>,
+    cleanups: BTreeMap<u64, Plan>,
     events: Vec<Callback>,
     now: u64,
 }
@@ -499,19 +499,28 @@ impl TheatreService {
         while let Some((at, _, id, kind)) = candidate.next_due().filter(|event| event.0 <= tick) {
             spatial.advance_to(calendar_tick(at)?)?;
             let episode = candidate.cases[&id].initial.episode;
-            if kind != CallbackKind::RoomReady {
-                let plan = candidate
+            let plan = if kind == CallbackKind::RoomReady {
+                candidate
+                    .cleanups
+                    .get(&id)
+                    .ok_or("missing cleanup admission")?
+            } else {
+                candidate
                     .active
                     .as_ref()
-                    .ok_or("missing active admission")?;
-                if !spatial.matches_started_reservation(
-                    episode,
-                    &candidate.capabilities,
-                    calendar_tick(plan.started)?,
-                    plan.admission.room,
-                ) || !spatial.occupies(episode)
-                {
-                    return Err("active procedure does not own its paired occupied room".into());
+                    .ok_or("missing active admission")?
+            };
+            if !spatial.matches_started_reservation(
+                episode,
+                &candidate.capabilities,
+                calendar_tick(plan.started)?,
+                plan.admission.room,
+            ) {
+                return Err("callback is not paired with this room history".into());
+            }
+            if kind != CallbackKind::RoomReady {
+                if !spatial.occupies(episode) {
+                    return Err("active procedure lost its occupied room".into());
                 }
                 team.validate_admission(episode, &plan.team_request, &plan.admission)?;
             }
@@ -535,7 +544,7 @@ impl TheatreService {
                         .timings
                         .completed = Some(at);
                     let plan = candidate.active.take().expect("active completion");
-                    candidate.cleanups.insert(id, plan.cleaned);
+                    candidate.cleanups.insert(id, plan);
                 }
                 CallbackKind::RoomReady => {
                     spatial.finish_cleaning(episode, calendar_tick(at)?)?;
@@ -574,7 +583,7 @@ impl TheatreService {
             .chain(
                 self.cleanups
                     .iter()
-                    .map(|(id, at)| (*at, 3, *id, CallbackKind::RoomReady)),
+                    .map(|(id, plan)| (plan.cleaned, 3, *id, CallbackKind::RoomReady)),
             )
             .min()
     }

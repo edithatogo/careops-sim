@@ -377,6 +377,52 @@ fn clinical_callbacks_require_the_paired_team_admission_not_just_a_room() {
 }
 
 #[test]
+fn delayed_cleanup_rejects_wrong_room_or_start_history_without_losing_its_plan() {
+    for (room_id, start) in [(9, 0), (1, 1)] {
+        let (base, mut rooms, mut team) = fixture();
+        let mut profile = base.profile().clone();
+        profile.cleaning_ticks = 2;
+        let mut theatre = TheatreService::new(profile).unwrap();
+        theatre.submit(request(1, 2)).unwrap();
+        ready(&mut theatre, 1);
+        theatre.start_next(0, &mut rooms, &mut team).unwrap();
+        theatre.advance_to(6, &mut rooms, &team).unwrap();
+        let mut unrelated = SpacePool::new(vec![SpaceProfile {
+            id: room_id,
+            revision: "room:v1".into(),
+            kind: SpaceKind::Theatre,
+            capabilities: CapabilitySet::new(["theatre"]).unwrap(),
+            open: calendar(0, 100),
+            staffed: Some(calendar(0, 100)),
+            equipped: Some(true),
+        }])
+        .unwrap();
+        unrelated
+            .reserve(101, CapabilitySet::new(["theatre"]).unwrap(), start)
+            .unwrap();
+        unrelated.start(101, start).unwrap();
+        unrelated.depart(101, 6).unwrap();
+        let count = theatre.events().len();
+        assert!(theatre.advance_to(8, &mut unrelated, &team).is_err());
+        assert_eq!(theatre.events().len(), count);
+        assert!(theatre.case(1).unwrap().timings.cleaned.is_none());
+        assert_eq!(unrelated.current_tick(), 6);
+        assert_eq!(unrelated.snapshot(room_id).unwrap().cleaning, 1);
+        assert_eq!(rooms.snapshot(1).unwrap().cleaning, 1);
+        assert_eq!(
+            theatre
+                .advance_to(8, &mut rooms, &team)
+                .unwrap()
+                .iter()
+                .map(|e| e.kind)
+                .collect::<Vec<_>>(),
+            vec![CallbackKind::RoomReady]
+        );
+        assert_eq!(rooms.snapshot(1).unwrap().cleaning, 0);
+    }
+}
+
+#[test]
 fn retries_are_idempotent_and_conflicts_or_future_observations_are_atomic() {
     let (mut theatre, mut rooms, mut team) = fixture();
     let initial = request(1, 2);
