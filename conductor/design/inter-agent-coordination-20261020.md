@@ -57,3 +57,12 @@ No native objects, authentication renewal, Kairos source or submodule pin change
 Next operation: verify staged-runtime conformance against retained pin `0741026`,
 then locked workspace, context, mutation and policy gates; independent review
 and hosted checks remain required before acceptance.
+
+PR194 repair source is published at `c786fb3`; ordinary hooks reported zero
+findings. Independent reviewer `review_pr194` found no actionable source issues.
+The original integration checkout remains clean at `0320767`; its local branch
+and private bindings were not advanced. This repair's publication fast-forwards
+only the existing PR remote ref. Its final source and check receipts are retained
+in [the repair closeout](../evidence/pr194-compatibility-20261102/README.md).
+R11.1 remains with the Polars owner; A7 remains gated on birthing B7.4. No new
+phase, native activation, hardware, clinical or operational acceptance is granted.
