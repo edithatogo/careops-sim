@@ -7,10 +7,15 @@
 #[doc(hidden)]
 pub mod arrivals;
 #[doc(hidden)]
+pub mod capture;
+#[doc(hidden)]
 pub mod disposition;
 pub mod identity;
 #[doc(hidden)]
 pub mod pathway;
+
+#[cfg(test)]
+mod r111_trace_tests;
 
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::error::Error;
@@ -662,6 +667,17 @@ struct ResourceState {
 }
 
 pub fn run_scenario(scenario: &ScenarioConfig) -> Result<RunSummary, SimulationError> {
+    run_scenario_with_capture(scenario, &mut |_| Ok(()))
+}
+
+/// Emits original patient results synchronously after scheduler completion.
+/// A blocked callback stalls result production, not virtual-time scheduling.
+pub fn run_scenario_with_capture(
+    scenario: &ScenarioConfig,
+    capture: &mut dyn FnMut(&PatientResult) -> std::io::Result<()>,
+) -> Result<RunSummary, SimulationError> {
+    #[cfg(test)]
+    r111_trace_tests::observe_invocation(&scenario.scenario_id, scenario.seed);
     scenario
         .validate()
         .map_err(|error| SimulationError(error.to_string()))?;
@@ -796,6 +812,8 @@ pub fn run_scenario(scenario: &ScenarioConfig) -> Result<RunSummary, SimulationE
                 PatientStatus::Unfinished
             },
         });
+        capture(results.last().expect("just appended a patient result"))
+            .map_err(|error| SimulationError(format!("capture failed: {error}")))?;
     }
     let arrivals = results.len();
     let started = results
@@ -922,3 +940,9 @@ mod tests {
         assert_eq!(summary.unfinished, 0);
     }
 }
+
+#[cfg(feature = "native-data")]
+pub mod parquet_capture;
+
+#[cfg(feature = "native-data")]
+mod captured_batch;

@@ -228,32 +228,27 @@ fn test_checkpoint_resumption_bundle_equivalence() {
     let bundle_base =
         generate_arrow_export_bundle(&scenario, &doc_base, None, None).expect("base bundle");
 
-    // Synthesize checkpoint with first 2 replications done out of 4 total
-    let checkpoint = careops_ed::disposition::batch_runner::BatchCheckpoint {
-        schema_version: 1,
-        batch_id: "chk-arrow-base".to_string(),
-        scenario_id: "nominal-ed-mvp".to_string(),
-        base_seed: 8888,
-        total_replications: 4,
-        horizon_override: Some(500),
-        completed_replications: doc_base.replications[..2].to_vec(),
-        pending_indices: vec![2, 3],
-        status: "in_progress".to_string(),
-        checkpoint_epoch_ms: 1000,
+    // Interrupt a genuine captured run after two acknowledged replications.
+    let cancel = careops_ed::disposition::api_runner::CancellationToken::new();
+    let cancel_cb = cancel.clone();
+    let progress = move |p: careops_ed::disposition::batch_runner::BatchProgress| {
+        if p.completed_replications == 2 {
+            cancel_cb.cancel();
+        }
     };
-    let chk_path = tmp.path().join("checkpoint.json");
-    careops_ed::disposition::batch_runner::atomic_write_file(
-        &chk_path,
-        &serde_json::to_vec_pretty(&checkpoint).unwrap(),
+    let mut interrupted_config = cfg_baseline.clone();
+    interrupted_config.num_workers = 1;
+    assert!(run_batch_with_workers(
+        &scenario,
+        &interrupted_config,
+        Some(tmp.path()),
+        Some(&cancel),
+        Some(&progress)
     )
-    .unwrap();
-
-    // Resume to 4 replications
-    let mut resumed_scenario = scenario.clone();
-    resumed_scenario.horizon_ticks = 500;
+    .is_err());
+    let chk_path = tmp.path().join("capture/checkpoint.json");
     let doc_resumed =
-        resume_batch_from_checkpoint(&chk_path, &resumed_scenario, 2, tmp.path(), None)
-            .expect("resumed");
+        resume_batch_from_checkpoint(&chk_path, &scenario, 2, tmp.path(), None).expect("resumed");
     let bundle_resumed =
         generate_arrow_export_bundle(&scenario, &doc_resumed, None, Some((true, Some(1000))))
             .expect("resumed bundle");

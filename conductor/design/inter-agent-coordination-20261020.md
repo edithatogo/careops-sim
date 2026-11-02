@@ -66,3 +66,17 @@ only the existing PR remote ref. Its final source and check receipts are retaine
 in [the repair closeout](../evidence/pr194-compatibility-20261102/README.md).
 R11.1 remains with the Polars owner; A7 remains gated on birthing B7.4. No new
 phase, native activation, hardware, clinical or operational acceptance is granted.
+
+## PR191 recovery after PR194 merge — 2 November 2026
+
+Chat `01a19b9f-69e7-7353-9b75-445d5653feb4` reuses its clean managed worktree
+`careops-pr194-checks/careops-sim` on `codex/pr191-context-recovery`. PR194
+merged at `672d3e8`; its original owner checkout stays at `0320767`. The archived
+Polars owner `01a1876f-9b26-71e0-b55c-daeb9d9a1335` retains the clean
+`careops-r103-remote/careops-sim` checkout and private bindings at `96e8cc8`.
+There is no native service or authentication scope. This writer owns the bounded
+merge/conflict repair, workflow/tests, mutation bindings and recovery records
+listed in [the packet](../evidence/pr191-context-recovery-20261102/packet.json).
+The accepted main packet is imported intact through a normal merge. Next dispatch
+operation is exact-head publication, independent review and hosted qualification;
+no R11.2 phase acceptance or PR191 merge follows automatically.

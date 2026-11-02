@@ -83,6 +83,14 @@ def main():
     metadata = json.loads(subprocess.check_output([cargo, "metadata", "--locked", "--format-version", "1"], cwd=ROOT))
     for package in metadata["packages"]:
         for dep in package["dependencies"]:
+            # Cargo reports same-checkout path dev-dependencies of a Git crate
+            # as Git dependencies. These self references resolve to the locked
+            # package itself and cannot select an external wildcard version.
+            if (dep["kind"] == "dev" and dep["name"] == package["name"]
+                    and dep["source"] == package["source"]
+                    and (dep["source"] or "").startswith("git+")
+                    and dep["source"].endswith("#96439685eb2f95108f51087d2b76091917f2593c")):
+                continue
             if dep["source"] is not None and dep["req"] == "*":
                 raise RuntimeError("wildcard external dependency: " + dep["name"])
     commands = [(['actionlint', '.github/workflows/ci.yml'], 'actionlint'),

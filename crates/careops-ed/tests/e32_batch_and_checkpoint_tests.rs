@@ -233,7 +233,7 @@ fn test_batch_checkpointing_interval() {
     assert_eq!(res.status, "complete");
 
     // Both checkpoint.json and batch_run.json must exist
-    let chk_path = temp_dir.path().join("checkpoint.json");
+    let chk_path = temp_dir.path().join("capture/checkpoint.json");
     let run_path = temp_dir.path().join("batch_run.json");
 
     assert!(chk_path.exists(), "checkpoint.json must exist");
@@ -247,7 +247,8 @@ fn test_batch_checkpointing_interval() {
     );
 
     let chk_bytes = fs::read(&chk_path).unwrap();
-    let checkpoint: BatchCheckpoint = serde_json::from_slice(&chk_bytes).unwrap();
+    let checkpoint: careops_ed::capture::CaptureCheckpoint =
+        serde_json::from_slice(&chk_bytes).unwrap();
     assert_eq!(checkpoint.batch_id, "checkpoint-test");
     assert_eq!(checkpoint.total_replications, 4);
 }

@@ -11,7 +11,7 @@ R10 entry and baseline are reconciled for the bounded remote packet. Runtime Pol
 
 ## R11 — Capture once and durable trace parts
 
-- [ ] R11.1 Add failing run-invocation-count, bounded-buffer/backpressure, disk-error and checkpoint-resume duplicate/loss tests.
+- [x] R11.1 Add failing run-invocation-count, bounded-buffer/backpressure, disk-error and checkpoint-resume duplicate/loss tests. Test-deliverable acceptance recorded against local candidate 761e4ed: original rerun failures retained historically, all oracle families exercised and independently reviewed; final affected suite105 passes. This does not accept R11.2 dependency/security integration; see [handoff](handoff.md#r111-test-deliverable-acceptance-and-r112-blocked-handoff--30-october-2026).
 - [ ] R11.2 Capture required tables during original replications and write bounded per-replication parts using Kairos data facilities; remove export-time reruns.
 - [ ] R11.3 Bind trace part IDs/watermarks to restart state and publish manifest last; preserve exact event/RNG behaviour across worker counts and restarts.
 - [ ] R11.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.

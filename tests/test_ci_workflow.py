@@ -146,6 +146,15 @@ def untrusted_contract_errors(workflow):
 
 
 class CiWorkflowTests(unittest.TestCase):
+    def test_native_context_budget_retains_full_mutation_gate(self):
+        context = workflow_job(WORKFLOW.read_text(), "context")
+        self.assertIn("timeout-minutes: 75", context)
+        self.assertNotIn("CARGO_BUILD_JOBS", context)
+        self.assertIn("--jobs 2 --timeout 180", context)
+        self.assertIn("--package careops-ed --file crates/careops-ed/src/lib.rs", context)
+        self.assertIn("tools/quality_mutations.py --outcomes", context)
+        self.assertNotIn("--skip", context)
+
     def test_scope_requires_explicit_boolean_outputs_and_consistency(self):
         for field, value in (("changed", ""), ("native", "typo"), ("context", "null")):
             selectors = {"native": "false", "context": "false", "policy": "false"}
@@ -189,7 +198,7 @@ class CiWorkflowTests(unittest.TestCase):
         for name, block in blocks:
             timeout = re.search(r"^    timeout-minutes: ([0-9]+)$", block, re.MULTILINE)
             self.assertIsNotNone(timeout)
-            self.assertLessEqual(int(timeout.group(1)), 30 if name == "context" else 20)
+            self.assertLessEqual(int(timeout.group(1)), 75 if name == "context" else 20)
             self.assertGreater(int(timeout.group(1)), 0)
         self.assertNotIn("actions/cache@", workflow)
         self.assertNotIn("pull_request_target", workflow)
@@ -360,7 +369,7 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertIn('license = "Apache-2.0"', fuzz_manifest)
         self.assertIn("[workspace]", fuzz_manifest)
         self.assertIn('libfuzzer-sys = "=0.4.13"', fuzz_manifest)
-        self.assertIn('careops-ed = { path = "../crates/careops-ed", version = "=0.1.0" }', fuzz_manifest)
+        self.assertIn('careops-ed = { default-features = false, path = "../crates/careops-ed", version = "=0.1.0" }', fuzz_manifest)
         self.assertIn('serde_json = "=1.0.151"', fuzz_manifest)
         fuzz_lock = (WORKFLOW.parents[2] / "fuzz" / "Cargo.lock").read_text()
         self.assertIn('name = "libfuzzer-sys"\nversion = "0.4.13"\nsource = "registry+https://github.com/rust-lang/crates.io-index"\nchecksum = ', fuzz_lock)

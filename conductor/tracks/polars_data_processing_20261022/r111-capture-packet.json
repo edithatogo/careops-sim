@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "packet_id": "R11.1.real-capture-boundaries",
+  "task_id": "R11.1",
+  "target_repo": ".",
+  "base_commit": "486cb2bafb7db6a3a88bd785dc42a279deedb06d",
+  "model_role": "coordinator",
+  "model_candidate": "session configured model",
+  "objective": "Add real ED original-result capture and completed-replication recovery interfaces; test bounded backpressure and fault propagation through a real filesystem fixture adapter. No production codec or export migration.",
+  "context_paths": [
+    "conductor/tracks/polars_data_processing_20261022/spec.md",
+    "conductor/tracks/polars_data_processing_20261022/plan.md",
+    "crates/careops-ed/src/batch_runner.rs",
+    "crates/careops-ed/src/arrow_export.rs",
+    "crates/careops-ed/examples/nominal_mvp.json",
+    "Cargo.lock",
+    "rust-toolchain.toml"
+  ],
+  "input_hashes": {
+    "conductor/tracks/polars_data_processing_20261022/spec.md": "ad164e7622813caae80b1e77e4df7a3886150ab60d53e57dcea6e7797ecb37d0",
+    "conductor/tracks/polars_data_processing_20261022/plan.md": "21f3c01dd1dd581fc38ceecf0cd13c05a3b8cbd278642ab21f2d116e38bb8614",
+    "crates/careops-ed/src/batch_runner.rs": "fee753a72054d56d8cae058fe334b287e8d20ec329ad56f551ab38d5aa759255",
+    "crates/careops-ed/src/arrow_export.rs": "b3a4615ae0e9a07d315e3b1027289e62cded68946bf0fed8b3106eed9b10edb9",
+    "crates/careops-ed/examples/nominal_mvp.json": "71215b7ff4a2b47b38ace339cadac15a68c1c49c9738856ff742e9400c2ff9ae",
+    "Cargo.lock": "f0900a0b1b9704c1c2d971947442e7fe68d0f22e15625f5c106e99e18f1cc882",
+    "rust-toolchain.toml": "eeb69f696d42b47412b674d0ab121c4d9b3c49ba67e181b348202ef7f4909507",
+    "crates/careops-core/src/experiment/runner.rs": "584c74d85ac8161ec10d4a3b7c7fa6e0992749d234b242ca7267e06a107b9e23",
+    "crates/careops-ed/src/r111_trace_tests.rs": "c57a46d59d3370767a77680c4e6f5eaac073f0577f4e9d486b647f2459e6c097"
+  },
+  "write_paths": [
+    "crates/careops-ed/src/lib.rs",
+    "crates/careops-ed/src/capture.rs",
+    "crates/careops-ed/tests/r111_capture_boundaries.rs",
+    "conductor/tracks/polars_data_processing_20261022/r111-capture-packet.json",
+    "conductor/tracks/polars_data_processing_20261022/handoff.md",
+    ".careops-security/inventory.json",
+    ".artifacts/r111-capture"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "R10.4 accepted at c8ac4171c8e9ff48852ccbcf8e7b77f0cdbaccba"
+  ],
+  "interface_contract": "Synchronous acknowledged bounded batches of original PatientResult rows; no hidden sink queue. Results emit after scheduler execution, not event streaming. Existing summary/model memory is retained. Per-worker pending batch <= row/encoded-byte cap plus at most one bounded lookahead row; W workers multiply this bound. Encode through bounded Write, reject oversized row. PartStore has no default codec; production orchestrator independently validates actual read bytes hashes, decoded identity, contiguous sequences and row counts before completed-replication resume. Incomplete-replication/orphan parts reject; no midreplication resume claim. Filesystem fixture uses real files/faults, not production durability qualification. Actual codec framing determines splitting. Patient ID bytes have a separate positive cap. Model/summary allocations, accumulated checkpoint metadata and codec encode/decode scratch require separate memory qualification; encoded bytes do not bound decompression memory.",
+  "steps": [
+    "Freeze reviewed interface/ownership scope and claim.",
+    "Add shared-core result callback plus ED capture/checkpoint orchestration; no generic publication engine.",
+    "Run actual filesystem/latch tests and legacy invocation red tests; record results independently.",
+    "Review exact diff and preserve red branch unmerged."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.1",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--test",
+        "r111_capture_boundaries"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Real latch backpressure, bounded writes, injected write/flush/rename/publication failures, real checkpoint resume and malformed/missing/corrupt/duplicate part rejection."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.1",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--lib"
+      ],
+      "cwd": ".",
+      "expected_exit": 101,
+      "oracle": "Only original three exporter invocation tests remain red; existing library tests and observer pass."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.1",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Production/interfaces and test targets compile cleanly; not runtime migration acceptance."
+    }
+  ],
+  "acceptance": [
+    "All four required oracle families exist and execute against real production orchestration; report remaining legacy rerun red.",
+    "R11.1 authored-test deliverable is distinct from accepted green integration. No default output format, event streaming, global-memory, crash durability or midreplication resume claim."
+  ],
+  "result_path": ".artifacts/r111-capture/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Missing prerequisite or undefined interface",
+    "Edit outside write_paths",
+    "Cannot establish the specified oracle"
+  ],
+  "size_exception": "Seven bounded output groups cover the necessary ED interface, shared simulation callback, real filesystem tests, packet/handoff, inventory and ignored receipts. No dependency or child-source changes. Reviewer approved ED orchestration with injected codec/store; generic storage remains upstream.",
+  "status": "prepared",
+  "review": "acceptance_review approved scope before edits: real capture orchestration, bounded encoder, independently checked actual part bytes, completed-replication-only recovery; fixture codec/store not production qualification. Final independent review: ready_for_review, no remaining actionable findings; codec sizing, semantic identity/summary validation and checked wait accumulation verified. Green integration remains blocked by three original exporter invocation failures.",
+  "execution_status": "executed-local-test-deliverable"
+}

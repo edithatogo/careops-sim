@@ -281,9 +281,12 @@ jobs:
         run: cargo test --doc --workspace --all-features --locked
 
   context:
-    # Run 39531482153 passed all 116 mutation outcomes at the old 20m limit.
-    # Allow harness, mutation validation, artifact upload and cleanup headroom.
-    timeout-minutes: 30
+    # The former 30m job stopped after 47/117 mutants, with zero mutant timeouts.
+    # Bound orchestration separately; retain each mutant's 180s acceptance limit.
+    timeout-minutes: 75
+    env:
+      CARGO_PROFILE_DEV_DEBUG: '0'
+      CARGO_PROFILE_TEST_DEBUG: '0'
     name: context
     needs: scope
     if: needs.scope.outputs.context == 'true'
@@ -447,6 +450,7 @@ jobs:
           test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
           "$CAREOPS_PYTHON" tools/ci_policy.py
+          cargo deny --workspace --locked check
           cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check
       - name: Retain bounded failed policy logs
         if: failure()

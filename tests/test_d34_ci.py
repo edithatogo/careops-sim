@@ -53,7 +53,7 @@ class D34CiTests(unittest.TestCase):
             step,
         )
         self.assertNotIn("continue-on-error", step)
-        self.assertEqual("30", re.search(r"^    timeout-minutes: (\d+)$", context, re.M).group(1))
+        self.assertEqual("75", re.search(r"^    timeout-minutes: (\d+)$", context, re.M).group(1))
 
     def test_benchmark_report_is_retained_even_after_failure(self):
         context = workflow_job(WORKFLOW.read_text(), "context")

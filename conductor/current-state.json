@@ -1,10 +1,11 @@
 {
   "schema_version": 1,
   "updated_at": "2026-11-02",
-  "active_track": "careops_core_domain_abstractions_20261020",
-  "active_phase": "A7",
-  "next_action": "PR194 compatibility is repaired on retained Kairos pin 0741026: the capacity-one conformance target uses the purpose-specific StagedResourceRuntime; current-source mutation bindings and the fuzz lock are reconciled. Exact-revision hosted checks and independent review remain the merge gates, with receipts in conductor/evidence/pr194-compatibility-20261102/README.md. PR194 is unmerged. A0\u2013A6 retain scoped local acceptance; A7.1\u2013A7.4 remain incomplete and A7.1 requires birthing B7.4. B0.1 is the next birthing preparation step. The global serial candidate is R11.1, already owned by the separate Polars lane; reconcile that lane rather than dispatch duplicate work. Atomic multi-resource grants, portable checkpoint, clinical/operational and hardware acceptance remain excluded.",
+  "active_track": "polars_data_processing_20261022",
+  "active_phase": "R11",
+  "next_action": "PR194 is merged at 672d3e8 after all exact-head gates passed. PR191 recovery reconciles accepted core/identity source with native capture and repairs the measured CI orchestration timeout; its exact-head hosted checks and independent review remain acceptance requirements. R11.1 retains scoped test-authoring acceptance. R11.2 is not accepted by this repair; R11.3 durable crash/restart proof and R11.4 phase review remain pending. Preserve the original Polars owner checkout and use its terminal handoff before further runtime work. Core A7.1 remains gated on birthing B7.4; hardware, clinical and operational acceptance remain separate.",
   "context_paths": [
+    "conductor/evidence/pr191-context-recovery-20261102/README.md",
     "conductor/evidence/pr194-compatibility-20261102/README.md",
     "conductor/evidence/a6.4-phase-review-20261027/README.md",
     "conductor/execution/packets/A6.4.phase-review.json",
@@ -60,7 +61,7 @@
     "conductor/evidence/a1.3-review-20261025/README.md"
   ],
   "submodule_pins": {
-    "libs/kairos": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+    "libs/kairos": "4134a3733ba7e833a8c520621ec2af5a4bd4b31a",
     "extensions/conductor": "7a5c560a4fdf5297be58594cc37527eb12790272"
   },
   "c42_runtime_qualification": {
@@ -202,5 +203,13 @@
     "paths": "Polars track and affected Conductor metadata only",
     "native_scope": "none",
     "global_dispatch": "Other lane A1/A2 resume state preserved."
+  },
+  "pr194_integration": {
+    "source_head": "2a5d601e4ccac3feef9310a8dfe829ed8371a4c8",
+    "merge_commit": "672d3e8f78f5e502a760b9d41200fdbaf4d9d144",
+    "merged_at": "2026-11-02T10:55:37Z",
+    "hosted_success": 16,
+    "hosted_conditional_skip": 1,
+    "required_aggregate": "SUCCESS"
   }
 }

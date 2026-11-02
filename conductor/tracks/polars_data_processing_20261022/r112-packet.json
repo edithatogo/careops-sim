@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "packet_id": "R11.2.production-capture",
+  "task_id": "R11.2",
+  "target_repo": ".",
+  "base_commit": "761e4ed15e3fc18c24de968ffdbbd5f1edaa5876",
+  "model_role": "coordinator",
+  "model_candidate": "session configured model",
+  "objective": "Integrate Kairos Parquet/Zstd production capture with original batch execution and export; eliminate reruns and verify production readback, bounds, recovery and parity.",
+  "context_paths": [
+    "conductor/tracks/polars_data_processing_20261022/spec.md",
+    "conductor/tracks/polars_data_processing_20261022/plan.md",
+    "crates/careops-ed/src/batch_runner.rs",
+    "crates/careops-ed/src/arrow_export.rs",
+    "crates/careops-ed/examples/nominal_mvp.json",
+    "Cargo.lock",
+    "rust-toolchain.toml"
+  ],
+  "input_hashes": {
+    "conductor/tracks/polars_data_processing_20261022/spec.md": "ad164e7622813caae80b1e77e4df7a3886150ab60d53e57dcea6e7797ecb37d0",
+    "conductor/tracks/polars_data_processing_20261022/plan.md": "495f1fe6f8aa7d970169d7bf22656c764190081db23773e71e5c462283ac4fc4",
+    "libs/kairos/crates/kairo-ecs-arrow/src/polars_interop.rs": "6e450f7e8f15cb8660dd0d9d04443d09e2f1b084e9431f301ed379ce8bd63086"
+  },
+  "write_paths": [
+    ".artifacts/r112",
+    ".careops-security/inventory.json",
+    "Cargo.lock",
+    "Cargo.toml",
+    "conductor/tracks/polars_data_processing_20261022/handoff.md",
+    "conductor/tracks/polars_data_processing_20261022/r112-packet.json",
+    "crates/careops-ed",
+    "crates/careops-ed-cli"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "R11.1 authored-test deliverable accepted at local source761e4ed; R11.2 dependency-policy acceptance blocked."
+  ],
+  "interface_contract": "Real Parquet/Zstd parts through pinned Kairos writer; bounded synchronous capture, immutable disk source for export, completed manifest and hash validation; no simulator calls in export. Preserve scheduler/RNG and cancellation/progress. Old summary-only checkpoints cannot provide captured rows and must reject export. Production capture is native-only; minimal core remains Polars-free. R11.3 process-crash qualification and R13 complete output-schema replacement remain separate.",
+  "steps": [
+    "Bind production native codec and source-lifetime contract.",
+    "Integrate original batch capture and validated export without reruns; keep legacy summary-only export rejection explicit.",
+    "Verify real Parquet roundtrip, bounds, controls, recovery and unchanged deterministic invocation oracles.",
+    "Independent review and local acceptance evidence; retain R11.3/R13 later gates."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.1",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--test",
+        "r111_capture_boundaries"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Real latch backpressure, bounded writes, injected write/flush/rename/publication failures, real checkpoint resume and malformed/missing/corrupt/duplicate part rejection."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.1",
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--lib"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All three existing invocation tests green with exact original rows and counts."
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.1",
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Production/interfaces and test targets compile cleanly; not runtime migration acceptance."
+    }
+  ],
+  "acceptance": [
+    "All existing invocation tests pass; production Parquet part readback preserves exact patients and typed ticks for worker counts 1/2/4.",
+    "Production bounds/errors/completed-replication recovery tested; explicit native feature graph and clean minimal core."
+  ],
+  "result_path": ".artifacts/r112/result.json",
+  "stop_conditions": [
+    "Input/base drift",
+    "Missing prerequisite or undefined interface",
+    "Edit outside write_paths",
+    "Cannot establish the specified oracle"
+  ],
+  "size_exception": "Coordinator owns parent native-data dependency admission and ED/CLI consumer integration; no Kairos pin/source changes. Existing default-native data support is gated out of minimal core; dedicated native tests and dependency qualification required.",
+  "status": "prepared",
+  "review": "Independent reviewer accepted bounded architecture and final fixes; no remaining implementation findings. Security/dependency and hosted acceptance explicitly withheld.",
+  "execution_status": "executed candidate; dependency-policy acceptance blocked; no next dispatch",
+  "initial_execution_base_commit": "445e72d65b0bad9cc98e4cc4807210539d26f52e"
+}
