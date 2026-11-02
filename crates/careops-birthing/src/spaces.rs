@@ -17,6 +17,7 @@ pub enum SpaceKind {
     Pool,
     Monitoring,
     Stabilisation,
+    Theatre,
 }
 
 #[derive(Clone, Debug)]
