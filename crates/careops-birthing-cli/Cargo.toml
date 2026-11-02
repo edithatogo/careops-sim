@@ -1,0 +1,22 @@
+[package]
+name = "careops-birthing-cli"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "careops-birthing"
+path = "src/main.rs"
+
+[dependencies]
+careops-birthing = { path = "../careops-birthing" }
+careops-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+kairo-ecs-arrow = { git = "https://github.com/edithatogo/kairos.git", rev = "4134a3733ba7e833a8c520621ec2af5a4bd4b31a", version = "=0.1.0", features = ["polars-native"] }
+kairo-data-types = { package = "kairo-ecs-types", git = "https://github.com/edithatogo/kairos.git", rev = "4134a3733ba7e833a8c520621ec2af5a4bd4b31a", version = "=0.0.0" }
+
+[dev-dependencies]
+tempfile = "=3.27.0"
