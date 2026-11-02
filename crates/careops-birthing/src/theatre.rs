@@ -5,7 +5,7 @@
 
 use crate::{
     spaces::SpacePool,
-    team::{RatioProfile, TeamAllocator, TeamRequest},
+    team::{AdmissionReceipt, RatioProfile, TeamAllocator, TeamRequest},
 };
 use careops_core::capacity::{CapabilitySet, UtcInterval};
 use careops_core::pathway::{InterruptionEligibility, ObservedPolicyState};
@@ -126,6 +126,9 @@ pub struct Callback {
 #[derive(Clone, Debug)]
 struct Plan {
     id: u64,
+    started: u64,
+    admission: AdmissionReceipt,
+    team_request: TeamRequest,
     incision: u64,
     birth: u64,
     completion: u64,
@@ -443,17 +446,20 @@ impl TheatreService {
             },
         };
         let mut people = team.clone();
-        if let Err(reason) = people.admit(
+        let admission = match people.admit(
             &mut spatial,
             case.initial.episode,
             self.capabilities.clone(),
-            request,
+            request.clone(),
         ) {
-            self.failure(id, tick, reason);
-            *rooms = spatial;
-            self.now = tick;
-            return Ok(None);
-        }
+            Ok(receipt) => receipt,
+            Err(reason) => {
+                self.failure(id, tick, reason);
+                *rooms = spatial;
+                self.now = tick;
+                return Ok(None);
+            }
+        };
         self.cases
             .get_mut(&id)
             .expect("case exists")
@@ -461,6 +467,9 @@ impl TheatreService {
             .started = Some(tick);
         self.active = Some(Plan {
             id,
+            started: tick,
+            admission,
+            team_request: request,
             incision,
             birth,
             completion,
@@ -478,6 +487,7 @@ impl TheatreService {
         &mut self,
         tick: u64,
         rooms: &mut SpacePool,
+        team: &TeamAllocator,
     ) -> Result<Vec<Callback>, String> {
         calendar_tick(tick)?;
         if tick < self.now {
@@ -489,6 +499,22 @@ impl TheatreService {
         while let Some((at, _, id, kind)) = candidate.next_due().filter(|event| event.0 <= tick) {
             spatial.advance_to(calendar_tick(at)?)?;
             let episode = candidate.cases[&id].initial.episode;
+            if kind != CallbackKind::RoomReady {
+                let plan = candidate
+                    .active
+                    .as_ref()
+                    .ok_or("missing active admission")?;
+                if !spatial.matches_started_reservation(
+                    episode,
+                    &candidate.capabilities,
+                    calendar_tick(plan.started)?,
+                    plan.admission.room,
+                ) || !spatial.occupies(episode)
+                {
+                    return Err("active procedure does not own its paired occupied room".into());
+                }
+                team.validate_admission(episode, &plan.team_request, &plan.admission)?;
+            }
             match kind {
                 CallbackKind::ProcedureStarted => {
                     let c = candidate.cases.get_mut(&id).expect("case exists");

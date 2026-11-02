@@ -145,6 +145,41 @@ impl TeamAllocator {
         &self.registry
     }
 
+    /// Verify a retained service admission against this registry's full live
+    /// duty claims. A historical receipt alone cannot authorize clinical effects.
+    pub fn validate_admission(
+        &self,
+        episode: u64,
+        request: &TeamRequest,
+        receipt: &AdmissionReceipt,
+    ) -> Result<(), String> {
+        let prior = self
+            .admissions
+            .get(&episode)
+            .ok_or("unknown paired admission")?;
+        if &prior.request != request
+            || &prior.receipt != receipt
+            || !self.complete_claims(request, &receipt.team)
+        {
+            return Err("admission does not own the complete paired duty claims".into());
+        }
+        Ok(())
+    }
+
+    fn complete_claims(&self, request: &TeamRequest, receipt: &TeamReceipt) -> bool {
+        receipt.assignments.iter().all(|role| {
+            self.registry
+                .assignment(role.assignment)
+                .is_some_and(|claim| {
+                    claim.staff == role.staff
+                        && claim.booking == request.booking
+                        && claim.interval == request.interval
+                        && claim.kind == request.kind
+                        && self.roles.get(&role.assignment) == Some(&role.role)
+                })
+        })
+    }
+
     fn ready(&self, staff: StaffId, interval: UtcInterval) -> bool {
         self.members.get(&staff).is_some_and(|member| {
             member.call_windows.as_ref().is_none_or(|calls| {
@@ -279,18 +314,7 @@ impl TeamAllocator {
         let team = candidate.allocate(request.clone())?;
         // A historical booking receipt is not a new live staffing grant.
         // Every role must still own the whole declared duty before admission.
-        if team.assignments.iter().any(|role| {
-            !candidate
-                .registry
-                .assignment(role.assignment)
-                .is_some_and(|claim| {
-                    claim.staff == role.staff
-                        && claim.booking == request.booking
-                        && claim.interval == request.interval
-                        && claim.kind == request.kind
-                        && candidate.roles.get(&role.assignment) == Some(&role.role)
-                })
-        }) {
+        if !candidate.complete_claims(&request, &team) {
             return Err("historical team receipt no longer owns complete duty claims".into());
         }
         let room = rooms.reserve(episode, requirements.clone(), request.interval.start())?;

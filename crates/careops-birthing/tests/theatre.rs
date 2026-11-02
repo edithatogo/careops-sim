@@ -142,13 +142,13 @@ fn transfer_is_not_birth_and_actual_callbacks_preserve_target_breaches() {
         Some(1)
     );
     assert_eq!(theatre.next_event_tick(), Some(4));
-    let incision = theatre.advance_to(4, &mut rooms).unwrap();
+    let incision = theatre.advance_to(4, &mut rooms, &team).unwrap();
     assert_eq!(
         incision.iter().map(|e| e.kind).collect::<Vec<_>>(),
         vec![CallbackKind::ProcedureStarted]
     );
     assert!(theatre.case(1).unwrap().timings.birth.is_none());
-    theatre.advance_to(8, &mut rooms).unwrap();
+    theatre.advance_to(8, &mut rooms, &team).unwrap();
     team.audit_responsibility(&rooms, 8).unwrap();
     let case = theatre.case(1).unwrap();
     assert_eq!(
@@ -180,7 +180,7 @@ fn reassessment_reorders_only_queued_cases_and_never_interrupts_active_procedure
     theatre.reassess(1, observed(0, 1), policy()).unwrap();
     assert!(theatre.cancel(3, 1, "urgent queued case".into()).is_err());
     assert_eq!(theatre.start_next(1, &mut rooms, &mut team).unwrap(), None);
-    theatre.advance_to(6, &mut rooms).unwrap();
+    theatre.advance_to(6, &mut rooms, &team).unwrap();
     assert_eq!(theatre.case(3).unwrap().timings.birth, Some(5));
     assert_eq!(
         theatre.start_next(6, &mut rooms, &mut team).unwrap(),
@@ -210,7 +210,7 @@ fn denied_resource_attempt_is_a_wait_cause_not_a_partial_grant() {
     assert_eq!(team.registry().assignment_count(), 0);
     assert_eq!(rooms.snapshot(1).unwrap().occupied, 0);
     assert_eq!(theatre.case(1).unwrap().resource_failures.len(), 1);
-    theatre.advance_to(5, &mut rooms).unwrap();
+    theatre.advance_to(5, &mut rooms, &team).unwrap();
     assert_eq!(
         theatre.start_next(5, &mut rooms, &mut team).unwrap(),
         Some(1)
@@ -281,7 +281,7 @@ fn nonzero_decision_time_remains_the_target_and_observed_wait_anchor() {
     obs.elapsed_wait_ticks = 4;
     theatre.reassess(1, obs, policy()).unwrap();
     theatre.start_next(14, &mut rooms, &mut team).unwrap();
-    theatre.advance_to(20, &mut rooms).unwrap();
+    theatre.advance_to(20, &mut rooms, &team).unwrap();
     let metric = theatre.case(1).unwrap().metrics.birth.as_ref().unwrap();
     assert_eq!(metric.elapsed, 9);
     assert_eq!(metric.assessment_tick, 14);
@@ -298,7 +298,7 @@ fn queued_cancellation_is_idempotent_and_never_allocates_or_delivers() {
     assert!(theatre.cancel(1, 1, "changed reason".into()).is_err());
     theatre.submit(req).unwrap();
     assert_eq!(theatre.start_next(1, &mut rooms, &mut team).unwrap(), None);
-    theatre.advance_to(10, &mut rooms).unwrap();
+    theatre.advance_to(10, &mut rooms, &team).unwrap();
     assert_eq!(
         theatre
             .events()
@@ -313,6 +313,67 @@ fn queued_cancellation_is_idempotent_and_never_allocates_or_delivers() {
         .any(|e| e.kind == CallbackKind::Birth));
     assert_eq!(team.registry().assignment_count(), 0);
     assert_eq!(rooms.snapshot(1).unwrap().occupied, 0);
+}
+
+#[test]
+fn clinical_callbacks_reject_wrong_room_history_or_premature_departure_atomically() {
+    for birth_stage in [false, true] {
+        for wrong_pool in [false, true] {
+            let (mut theatre, mut rooms, mut team) = fixture();
+            theatre.submit(request(1, 2)).unwrap();
+            ready(&mut theatre, 1);
+            theatre.start_next(0, &mut rooms, &mut team).unwrap();
+            if birth_stage {
+                theatre.advance_to(2, &mut rooms, &team).unwrap();
+            }
+            let at = if birth_stage { 5 } else { 2 };
+            let mut unrelated = SpacePool::new(Vec::new()).unwrap();
+            let supplied = if wrong_pool {
+                &mut unrelated
+            } else {
+                rooms.depart(101, if birth_stage { 3 } else { 1 }).unwrap();
+                &mut rooms
+            };
+            let before_tick = supplied.current_tick();
+            let before_events = theatre.events().len();
+            assert!(theatre.advance_to(at, supplied, &team).is_err());
+            assert_eq!(supplied.current_tick(), before_tick);
+            assert_eq!(theatre.events().len(), before_events);
+            assert!(theatre.case(1).unwrap().timings.birth.is_none());
+            if !birth_stage {
+                assert!(theatre.case(1).unwrap().timings.incision.is_none());
+            }
+        }
+    }
+}
+
+#[test]
+fn clinical_callbacks_require_the_paired_team_admission_not_just_a_room() {
+    let (mut theatre, mut rooms, mut team) = fixture();
+    theatre.submit(request(1, 2)).unwrap();
+    ready(&mut theatre, 1);
+    theatre.start_next(0, &mut rooms, &mut team).unwrap();
+    let (_, _, mut unrelated) = fixture();
+    let before = theatre.events().len();
+    assert!(theatre.advance_to(2, &mut rooms, &unrelated).is_err());
+    assert_eq!(theatre.events().len(), before);
+    assert_eq!(rooms.current_tick(), 0);
+    // Even a matching standalone booking is not a paired service admission.
+    unrelated
+        .allocate(TeamRequest {
+            booking: BookingId::new(1001),
+            patients: 1,
+            profile: theatre.profile().staffing.clone(),
+            interval: UtcInterval::new(0, 6).unwrap(),
+            kind: careops_core::staffing::DutyKind::Procedure {
+                interruptible: false,
+            },
+        })
+        .unwrap();
+    assert!(theatre.advance_to(2, &mut rooms, &unrelated).is_err());
+    assert_eq!(theatre.events().len(), before);
+    assert_eq!(rooms.current_tick(), 0);
+    theatre.advance_to(2, &mut rooms, &team).unwrap();
 }
 
 #[test]
@@ -334,9 +395,9 @@ fn retries_are_idempotent_and_conflicts_or_future_observations_are_atomic() {
     assert!(theatre.accept(1, 1).is_err());
     assert_eq!(theatre.events().len(), boundary_count);
     theatre.start_next(0, &mut rooms, &mut team).unwrap();
-    theatre.advance_to(6, &mut rooms).unwrap();
+    theatre.advance_to(6, &mut rooms, &team).unwrap();
     let count = theatre.events().len();
-    assert!(theatre.advance_to(6, &mut rooms).unwrap().is_empty());
+    assert!(theatre.advance_to(6, &mut rooms, &team).unwrap().is_empty());
     theatre.transfer_arrived(1, 0).unwrap();
     assert_eq!(theatre.events().len(), count);
     assert_eq!(
@@ -362,7 +423,7 @@ fn zero_unknown_and_changed_policy_targets_never_rewrite_finished_metrics() {
     theatre.submit(req).unwrap();
     ready(&mut theatre, 1);
     theatre.start_next(0, &mut rooms, &mut team).unwrap();
-    theatre.advance_to(2, &mut rooms).unwrap();
+    theatre.advance_to(2, &mut rooms, &team).unwrap();
     let mut obs = observed(2, 3);
     obs.urgency.scheme_version = "v2".into();
     let mut new_policy = policy();
@@ -374,7 +435,7 @@ fn zero_unknown_and_changed_policy_targets_never_rewrite_finished_metrics() {
         birth: Some(0),
     };
     theatre.reassess(1, obs, new_policy).unwrap();
-    theatre.advance_to(6, &mut rooms).unwrap();
+    theatre.advance_to(6, &mut rooms, &team).unwrap();
     let case = theatre.case(1).unwrap();
     assert_eq!(
         case.metrics.transfer.as_ref().unwrap().breached,
@@ -396,7 +457,7 @@ fn zero_unknown_and_changed_policy_targets_never_rewrite_finished_metrics() {
     unknown.submit(req).unwrap();
     ready(&mut unknown, 1);
     unknown.start_next(0, &mut rooms, &mut team).unwrap();
-    unknown.advance_to(6, &mut rooms).unwrap();
+    unknown.advance_to(6, &mut rooms, &team).unwrap();
     assert_eq!(
         unknown
             .case(1)
@@ -417,7 +478,7 @@ fn due_callbacks_precede_external_events_and_zero_time_stages_have_stable_order(
     ready(&mut theatre, 1);
     theatre.start_next(0, &mut rooms, &mut team).unwrap();
     assert!(theatre.reassess(1, observed(1, 2), policy()).is_err());
-    theatre.advance_to(2, &mut rooms).unwrap();
+    theatre.advance_to(2, &mut rooms, &team).unwrap();
     theatre.reassess(1, observed(1, 2), policy()).unwrap();
     let (base, mut rooms, mut team) = fixture();
     let mut profile = base.profile().clone();
@@ -429,14 +490,14 @@ fn due_callbacks_precede_external_events_and_zero_time_stages_have_stable_order(
     instant.start_next(0, &mut rooms, &mut team).unwrap();
     assert_eq!(
         instant
-            .advance_to(0, &mut rooms)
+            .advance_to(0, &mut rooms, &team)
             .unwrap()
             .iter()
             .map(|e| e.kind)
             .collect::<Vec<_>>(),
         vec![CallbackKind::ProcedureStarted, CallbackKind::Birth]
     );
-    instant.advance_to(1, &mut rooms).unwrap();
+    instant.advance_to(1, &mut rooms, &team).unwrap();
     team.audit_responsibility(&rooms, 1).unwrap();
     profile.completion_after_birth_ticks = 0;
     assert!(TheatreService::new(profile).is_err());
