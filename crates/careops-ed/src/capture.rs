@@ -190,12 +190,20 @@ pub const MODEL_CONTRACT_SHA256: &str = env!("CAREOPS_ED_MODEL_CONTRACT_SHA256")
 pub(crate) fn part_name(index: usize, sequence: usize) -> String {
     format!("rep-{index:08}-seq-{sequence:016}.part")
 }
+pub(crate) fn validate_config(config: &BatchConfig) -> Result<()> {
+    if config.schema_version != 1 {
+        return Err(invalid("unsupported batch config schema version"));
+    }
+    Ok(())
+}
+
 pub(crate) fn metadata(
     scenario: &ScenarioConfig,
     config: &BatchConfig,
     limits: CaptureLimits,
     store: &dyn PartStore,
 ) -> Result<CaptureMetadata> {
+    validate_config(config)?;
     limits.validate()?;
     if config.replications == 0 {
         return Err(invalid("replications must be positive"));
@@ -543,6 +551,8 @@ pub(crate) fn check_binding(
     checkpoint: &CaptureCheckpoint,
     expected: &CaptureMetadata,
 ) -> Result<()> {
+    validate_config(&expected.config)?;
+    validate_config(&checkpoint.metadata.config)?;
     let mut config = checkpoint.metadata.config.clone();
     config.num_workers = expected.config.num_workers;
     // Validate the represented control envelope before allocating a seed vector

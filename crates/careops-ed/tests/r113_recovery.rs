@@ -267,6 +267,20 @@ fn real_process_crashes_recover_preserved_parts_and_exact_rows_at_1_2_4_workers(
             assert_eq!(starts(root.path()), original_starts);
             assert!(!dir.join("recovery").exists());
             fs::write(dir.join("checkpoint.json"), &checkpoint).unwrap();
+            let mut unknown_version: serde_json::Value =
+                serde_json::from_slice(&checkpoint).unwrap();
+            unknown_version["config"]["schema_version"] = serde_json::json!(99);
+            fs::write(
+                dir.join("checkpoint.json"),
+                serde_json::to_vec(&unknown_version).unwrap(),
+            )
+            .unwrap();
+            assert!(
+                capture::resume_captured_batch(&scenario(), &cfg, limits, &dir, &store).is_err()
+            );
+            assert_eq!(starts(root.path()), original_starts);
+            assert!(!dir.join("recovery").exists());
+            fs::write(dir.join("checkpoint.json"), &checkpoint).unwrap();
             if mode == "first_part" && workers == 1 {
                 fs::write(dir.join("unknown.part"), b"unrecognized namespace").unwrap();
                 assert!(
@@ -555,4 +569,43 @@ fn internally_consistent_foreign_model_tag_is_readable_but_cannot_resume_executi
         capture::resume_captured_batch(&scenario(), &config(), DEFAULT_LIMITS, &dir, &store)
             .is_err()
     );
+}
+
+#[test]
+fn unknown_nested_batch_version_rejects_export_resume_and_new_output_before_mutation() {
+    let root = tempfile::tempdir().unwrap();
+    let doc =
+        run_batch_with_workers(&scenario(), &config(), Some(root.path()), None, None).unwrap();
+    let dir = root.path().join("capture");
+    let mut checkpoint: serde_json::Value =
+        serde_json::from_slice(&fs::read(dir.join("checkpoint.json")).unwrap()).unwrap();
+    checkpoint["config"]["schema_version"] = serde_json::json!(99);
+    let bytes = serde_json::to_vec(&checkpoint).unwrap();
+    fs::write(dir.join("checkpoint.json"), &bytes).unwrap();
+    let store = ObservedStore::new(root.path(), "none");
+    let preserved: Vec<_> = store
+        .part_names()
+        .unwrap()
+        .into_iter()
+        .map(|name| {
+            let bytes = fs::read(dir.join(&name)).unwrap();
+            (name, bytes)
+        })
+        .collect();
+    assert!(generate_arrow_export_bundle(&scenario(), &doc, None, None).is_err());
+    let mut unknown = config();
+    unknown.schema_version = 99;
+    assert!(
+        capture::resume_captured_batch(&scenario(), &unknown, DEFAULT_LIMITS, &dir, &store)
+            .is_err()
+    );
+    assert!(starts(root.path()).is_empty());
+    assert!(!dir.join("recovery").exists());
+    assert_eq!(fs::read(dir.join("checkpoint.json")).unwrap(), bytes);
+    for (name, bytes) in preserved {
+        assert_eq!(fs::read(dir.join(name)).unwrap(), bytes);
+    }
+    let output = root.path().join("new-output");
+    assert!(run_batch_with_workers(&scenario(), &unknown, Some(&output), None, None).is_err());
+    assert!(!output.exists());
 }

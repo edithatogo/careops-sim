@@ -74,6 +74,7 @@ pub(crate) fn run(
     cancel: Option<&CancellationToken>,
     progress: Option<&(dyn Fn(BatchProgress) + Send + Sync)>,
 ) -> Result<BatchRunDocument, ValidationError> {
+    capture::validate_config(config).map_err(error)?;
     if cancel.is_some_and(|token| token.is_cancelled()) {
         return Err(ValidationError::new(
             ExitCodeDef::Interrupted,
