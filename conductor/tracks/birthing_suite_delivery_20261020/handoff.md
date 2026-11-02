@@ -50,3 +50,12 @@ ebf680e after independent review. Exact final re-review found no remaining issue
 its scoped hosted milestone. Responsibility audit must run after coordinator
 events; dynamic early termination, queued atomic grants and durability remain
 excluded. B5–B7/A7 are still open.
+
+### B4 scoped acceptance; B5 next
+
+Static runtime2c13ec0 is scoped-accepted after current native/quality checks and
+exact-source re-review at ebf680e. Full26birthing tests pass. ED verification
+graph is unchanged from fully green e3bc8ba; its mutation receipt is reused while
+current context/aggregate runs. Final actual combined-head gates remain required.
+Next B5.1: urgency reassessment/queue displacement/non-interruption cases, then
+bounded theatre acceptance/start/birth/completion callbacks and separate metrics.

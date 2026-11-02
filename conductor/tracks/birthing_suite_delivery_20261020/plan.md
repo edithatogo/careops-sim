@@ -1,6 +1,6 @@
 # Implementation plan: Generic birthing suite simulation delivery
 
-Status: generic synthetic engineering in progress. B0–B3 have scoped acceptance; full specification approval, clinical validation and site acceptance remain open.
+Status: generic synthetic engineering in progress. B0–B4 have scoped acceptance; full specification approval, clinical validation and site acceptance remain open.
 
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
 Dispatch requires reviewed packets, upstream capability readback and the single-maintainer harness.
@@ -43,10 +43,10 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 
 ## B4 — Staffing and resource bundles
 
-- [ ] B4.1 Test configured staffing ratios, shared-team contention, breaks, shift handover and call-in latency.
-- [ ] B4.2 Implement qualified bundle or explicitly bounded approximation with role eligibility and no double booking.
-- [ ] B4.3 Verify continuous responsibility and safe handover under absence, overtime limits and escort commitments defined by the profile.
-- [ ] B4.4 Conductor — review and verify phase (workflow.md).
+- [x] B4.1 Test configured staffing ratios, shared-team contention, breaks, shift handover and call-in latency. Scoped static runtime accepted at `2c13ec0`: current native Linux/macOS and completed quality/security checks, independent re-review at `ebf680e`, 8 team/26 birthing tests. Unchanged ED mutation proof is reused from fully hosted `e3bc8ba`; current aggregate remains pending and final combined-head gates stay mandatory. See [B4 acceptance](../../evidence/core-a7-prerequisites-20261102/B4.md).
+- [x] B4.2 Implement qualified bundle or explicitly bounded approximation with role eligibility and no double booking. Scoped static runtime accepted at `2c13ec0`: current native Linux/macOS and completed quality/security checks, independent re-review at `ebf680e`, 8 team/26 birthing tests. Unchanged ED mutation proof is reused from fully hosted `e3bc8ba`; current aggregate remains pending and final combined-head gates stay mandatory. See [B4 acceptance](../../evidence/core-a7-prerequisites-20261102/B4.md).
+- [x] B4.3 Verify continuous responsibility and safe handover under absence, overtime limits and escort commitments defined by the profile. Scoped static runtime accepted at `2c13ec0`: current native Linux/macOS and completed quality/security checks, independent re-review at `ebf680e`, 8 team/26 birthing tests. Unchanged ED mutation proof is reused from fully hosted `e3bc8ba`; current aggregate remains pending and final combined-head gates stay mandatory. See [B4 acceptance](../../evidence/core-a7-prerequisites-20261102/B4.md).
+- [x] B4.4 Conductor — review and verify phase (workflow.md). Scoped static runtime accepted at `2c13ec0`: current native Linux/macOS and completed quality/security checks, independent re-review at `ebf680e`, 8 team/26 birthing tests. Unchanged ED mutation proof is reused from fully hosted `e3bc8ba`; current aggregate remains pending and final combined-head gates stay mandatory. See [B4 acceptance](../../evidence/core-a7-prerequisites-20261102/B4.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
 
