@@ -290,9 +290,11 @@ jobs:
         run: cargo test --doc --workspace --all-features --locked
 
   context:
-    # Reuse qualified PR191's finite native-data profile for this same heavy graph.
+    # Native capture model binding rebuilds each mutant: run41521237813 reached
+    # 113/117 mutations at75minutes with zero per-mutant timeouts. Finish the
+    # full catalog within a finite90minute outer budget; do not relax an oracle.
     # Preserve the 180s per-mutant oracle, coverage floor and compiler concurrency.
-    timeout-minutes: 75
+    timeout-minutes: 90
     env:
       CARGO_PROFILE_DEV_DEBUG: '0'
       CARGO_PROFILE_TEST_DEBUG: '0'
