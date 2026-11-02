@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "packet_id": "B0.2.qld-reference-profile",
+  "task_id": "B0.2",
+  "target_repo": ".",
+  "base_commit": "ed4c9cea11dfb2cff4b218530c1fde0fca1c3d5b",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Create a versioned Queensland public-reference birthing profile with exact 2022 aggregate population, onset and route counts and a separately versioned current-policy source registry. Keep staffing, site eligibility decisions, and operational timing targets explicitly unconfigured where public evidence or a site scope does not support them.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md",
+    "conductor/evidence/b0.1-perinatal-evidence-inventory-20261027/README.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md": "a74dd69aad568def2e38a26159d03f947374a9b62b85759c7a1ed3ba67a85e67"
+  },
+  "write_paths": [
+    "conductor/execution/packets/B0.2.qld-reference-profile.json",
+    "model-inputs/birthing/profiles/qld-public-reference-2022-v1.json",
+    "model-inputs/birthing/profiles/README.md",
+    "conductor/evidence/b0.2-qld-reference-profile-20261027/README.md"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates",
+    "libs/kairos",
+    "conductor/tracks",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "leaf_dependencies": ["B0.1"],
+  "interface_contract": "conductor/tracks/birthing_suite_delivery_20261020/spec.md#B-R1; conductor/tracks/birthing_suite_delivery_20261020/plan.md#B0.2; conductor/evidence/b0.1-perinatal-evidence-inventory-20261027/README.md",
+  "steps": [
+    "Extract only the explicitly tabulated Queensland 2022 maternal/baby population, labour-onset and method-of-birth counts; retain the table population and denominator for every record.",
+    "Build a reference-only versioned JSON profile. Separate observed aggregates, current policy-source metadata and synthetic assumptions; record not-configured states for staffing, site eligibility and operational timing targets where no site-scoped value is supported.",
+    "Check current Queensland Clinical Guideline index/history for policy-source identity and revision as of 2026-10-27. Record source applicability boundaries and do not translate clinical observation intervals into service targets.",
+    "Run packet validation, profile integrity assertions, task/context checks and diff checks; record exact command/output hashes and source limits.",
+    "Obtain reviewer-agent review of the exact implementation commit and address any findings before coordinator acceptance."
+  ],
+  "verification": [
+    {
+      "argv": [".venv/bin/python", "tools/tasks.py", "packet-check", "conductor/execution/packets/B0.2.qld-reference-profile.json"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Packet schema, B0.1 dependency and bound input hashes validate."
+    },
+    {
+      "argv": [".venv/bin/python", "-c", "import json,pathlib; p=json.loads(pathlib.Path('model-inputs/birthing/profiles/qld-public-reference-2022-v1.json').read_text()); assert p['schema_version']==1 and p['profile_status']=='reference_only'; assert p['population']['mothers']['count']==60477 and p['population']['babies']['count']==61404; assert sum(x['count'] for x in p['population']['previous_pregnancies']['categories'])==60477; assert sum(x['count'] for x in p['population']['plurality']['categories'])==60477; assert sum(x['count'] for x in p['population']['maternal_age']['categories'])==60477; assert sum(x['count'] for x in p['routes']['births_by_method'])==61404; assert sum(x['count'] for x in p['labour_onset']['mothers_by_category'])==60477; assert next(s for s in p['sources']['policy_registry'] if s['source_id']=='qcg_intrapartum_fetal_surveillance_mn25_15_v12_r30')['identifier']=='MN25.15-V12-R30'; assert p['staffing']['status']=='unavailable_as_public_parameter'; assert p['eligibility']['status']=='not_encoded_without_site_scope'; assert p['operational_timing_targets']['status']=='unconfigured_without_site_scope'"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Versioned profile parses, observed cohort totals reconcile, and unsupported site-level parameters remain explicitly unconfigured."
+    },
+    {
+      "argv": [".venv/bin/python", "tools/context.py", "check"],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "The new local profile/evidence links resolve and Conductor context remains valid."
+    }
+  ],
+  "acceptance": [
+    "Observed population/onset counts use the Queensland 2022 aggregate tables with correct mother versus baby denominators; method-of-birth categories reconcile to the reported baby count.",
+    "The profile records its data year, source edition, jurisdiction, units, population scope and reference-only status; no observed percentages are transformed into individual-level hazards or a runnable default.",
+    "Current Queensland policy references are versioned independently from 2022 observed data. Staffing, eligibility rules and operational timing targets are explicit unresolved/unconfigured fields rather than invented values.",
+    "The profile documents selected-table cross-tab limitations, changing collection forms, absent staffing data, source scope and unresolved correlations; prior 30/75-minute and parity/duration hypotheses are not adopted.",
+    "Reviewer-agent/subagent has reviewed the exact implementation commit and all findings have been addressed before coordinator acceptance."
+  ],
+  "result_path": "conductor/evidence/b0.2-qld-reference-profile-20261027/README.md",
+  "stop_conditions": [
+    "A denominator or source table scope cannot be reconciled",
+    "A policy rule would need a site or clinical decision not present in the authorized scope",
+    "A missing staffing/target field would have to be replaced with an invented value",
+    "Any edit escapes the exact write paths"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

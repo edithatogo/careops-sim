@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "packet_id": "B1.2.receipt-correction",
+  "task_id": "B1.2",
+  "target_repo": ".",
+  "base_commit": "2073717ff2deb36332d4255f3a5068bcb13766ee",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Correct a contradictory status sentence in the accepted B1.2 evidence receipt. The receipt already records fresh reviewer-agent pass at corrected implementation commit 700341336dec51e4aed774065dc3c0a5d9f282e9; replace the later stale 'review pending' sentence with that exact passed outcome. No source/runtime/task acceptance changes.",
+  "context_paths": [
+    "conductor/evidence/b1.2-runtime-binding-20261027/README.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/evidence/b1.4-phase-review-20261027/README.md",
+    "conductor/execution/packets/B1.2.runtime-binding.json"
+  ],
+  "input_hashes": {
+    "conductor/execution/packets/B1.2.runtime-binding.json": "47364964b6a58c7c68a09de4ae20cb3c4c1606a37ee108a0f5e187a21946e913",
+    "conductor/tracks/birthing_suite_delivery_20261020/evidence/b1.4-phase-review-20261027/README.md": "34448e97b9ad3b89d8f3290d7d53d416c00707265ae8b97fc6cee3f77f4d56be"
+  },
+  "write_paths": [
+    "conductor/evidence/b1.2-runtime-binding-20261027/README.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/packets/B1.2.receipt-correction.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "crates",
+    "Cargo.toml",
+    "Cargo.lock",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+    "conductor/tracks.md",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "leaf_dependencies": [
+    "B1.1"
+  ],
+  "interface_contract": "B1.2 accepted receipt at packet base; phase-review finding in B1.4 candidate receipt; reviewer-agent assessment at commit 700341336dec51e4aed774065dc3c0a5d9f282e9.",
+  "steps": [
+    "Verify the contradictory sentence and B1.4 phase-review finding; confirm the receipt preimage SHA-256 from the exact packet base.",
+    "Update only the B1.2 receipt's stale final sentence so it matches the already-recorded fresh reviewer-agent pass at corrected commit 700341336dec51e4aed774065dc3c0a5d9f282e9; preserve the earlier finding/correction history.",
+    "Run the exact packet check before correction, confirm no stale 'review pending' sentence remains and run git diff --check.",
+    "Obtain read-only reviewer-agent confirmation that the receipt now states one consistent final outcome; keep B1.2 task acceptance and code unchanged."
+  ],
+  "verification": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "packet-check",
+        "conductor/tracks/birthing_suite_delivery_20261020/packets/B1.2.receipt-correction.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Correction packet binds to the exact base and accepted B1.1 prerequisite."
+    },
+    {
+      "argv": [
+        "sh",
+        "-c",
+        "! rg -q 'Fresh review of the correction commit is pending' conductor/evidence/b1.2-runtime-binding-20261027/README.md && rg -q 'Fresh reviewer-agent review of that integrated commit passed with no remaining findings' conductor/evidence/b1.2-runtime-binding-20261027/README.md"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "The old pending sentence is absent and the exact fresh reviewer-agent pass statement is present."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Documentation correction is whitespace-clean."
+    }
+  ],
+  "acceptance": [
+    "The B1.2 receipt no longer contradicts its review section: corrected commit 700341336dec51e4aed774065dc3c0a5d9f282e9 has a fresh reviewer-agent pass with no remaining findings.",
+    "Only the B1.2 receipt and this narrow correction packet change; accepted runtime/task status remains intact.",
+    "Fresh reviewer-agent confirmation finds the receipt internally consistent."
+  ],
+  "result_path": "conductor/evidence/b1.2-runtime-binding-20261027/README.md",
+  "stop_conditions": [
+    "The prior fresh-review pass cannot be verified at the exact commit",
+    "The correction requires a code/status change",
+    "Any write escapes the two declared paths"
+  ],
+  "size_exception": null,
+  "status": "prepared",
+  "output_preimage_hashes": {
+    "conductor/evidence/b1.2-runtime-binding-20261027/README.md": "8147191ebd6069ef5941b4172ed2dff5a8dd070f7a1c378c8ff634b447332f16"
+  }
+}

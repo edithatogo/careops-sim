@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "packet_id": "B0.2.qld-reference-profile.review-fix",
+  "task_id": "B0.2",
+  "target_repo": ".",
+  "base_commit": "a8f3e08294626ec40f78ec8924ed64047b3e740b",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Correct source-table names and policy version metadata identified in reviewer-agent assessment of the B0.2 profile. Preserve the QCG version sequence and conflicting review-date metadata without inferring a resolution.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/evidence/b0.1-perinatal-evidence-inventory-20261027/README.md",
+    "model-inputs/birthing/profiles/qld-public-reference-2022-v1.json",
+    "conductor/evidence/b0.2-qld-reference-profile-20261027/README.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/evidence/b0.1-perinatal-evidence-inventory-20261027/README.md": "1b84cfd2372d8a4b0d5196871b47994698f8ef8b964d474075a58df65b2b5449"
+  },
+  "write_paths": [
+    "conductor/execution/packets/B0.2.qld-reference-profile.review-fix.json",
+    "model-inputs/birthing/profiles/qld-public-reference-2022-v1.json",
+    "conductor/evidence/b0.2-qld-reference-profile-20261027/README.md"
+  ],
+  "protected_paths": [".git", "Cargo.toml", "Cargo.lock", "crates", "libs/kairos", "conductor/tracks", "conductor/current-state.json", "conductor/execution/tasks.json"],
+  "leaf_dependencies": ["B0.1"],
+  "interface_contract": "B0.2 original packet and reviewer-agent findings on a8f3e08294626ec40f78ec8924ed64047b3e740b; Queensland Health Perinatal Statistics 2022 Tables; current Queensland Clinical Guidelines publication/history/PDF sources.",
+  "steps": [
+    "Replace unsupported maternal table numbers with the official summary-table titles; retain exact Table 6 cross-tab identifiers.",
+    "Describe the Intrapartum fetal surveillance sequence accurately: V11 was amended 4 September 2026; V12 was recorded 25 September 2026; current linked PDF is V12 and replaces V11.",
+    "Record Instrumental vaginal birth PDF identifier MN24.49-V5-R29 and preserve its December 2029 review date alongside the publication index's April 2029 date as unresolved conflicting metadata.",
+    "Run packet validation, profile source-integrity assertions and diff checks; obtain a fresh reviewer-agent assessment of the correction commit."
+  ],
+  "verification": [
+    {"argv": [".venv/bin/python", "tools/tasks.py", "packet-check", "conductor/execution/packets/B0.2.qld-reference-profile.review-fix.json"], "cwd": ".", "expected_exit": 0, "oracle": "The review-fix packet binds the verified base and accepted B0.1 dependency."},
+    {"argv": [".venv/bin/python", "-c", "import json,pathlib; p=json.loads(pathlib.Path('model-inputs/birthing/profiles/qld-public-reference-2022-v1.json').read_text()); s=p['sources']; assert s['observed_aggregates']['table_refs'][0:2]==['Number of mothers by selected variables by year','Number of babies by selected variables by year']; q=next(x for x in s['policy_registry'] if x['source_id']=='qcg_intrapartum_fetal_surveillance_mn25_15_v12_r30'); assert q['identifier']=='MN25.15-V12-R30' and q['version_note'].find('2026-09-25')>=0; i=next(x for x in s['policy_registry'] if x['source_id']=='qcg_instrumental_vaginal_birth_current_2026_10'); assert i['identifier']=='MN24.49-V5-R29' and i['review_dates']['status']=='conflicting_unresolved'"], "cwd": ".", "expected_exit": 0, "oracle": "Correct table labels, guideline version sequence and both conflicting review dates are represented explicitly."},
+    {"argv": ["git", "diff", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Corrected source metadata has no whitespace errors."}
+  ],
+  "acceptance": [
+    "The two selected-variable table labels match the official Queensland PDF wording; method/onset cross-tabs retain their correct numbered tables.",
+    "QCG surveillance metadata represents V11 then V12 chronology and identifies the linked current PDF as V12.",
+    "Instrumental-birth guideline identifier and conflicting index/PDF review dates are both retained without silently choosing one.",
+    "The fresh reviewer-agent review confirms all findings are fixed at the exact correction commit."
+  ],
+  "result_path": "conductor/evidence/b0.2-qld-reference-profile-20261027/README.md",
+  "stop_conditions": ["Official source records do not support the proposed correction", "Any edit escapes the exact write paths"],
+  "size_exception": null,
+  "status": "prepared"
+}

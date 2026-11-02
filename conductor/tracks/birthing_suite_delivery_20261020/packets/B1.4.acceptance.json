@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "packet_id": "B1.4.acceptance",
+  "task_id": "B1.4",
+  "target_repo": ".",
+  "base_commit": "f53afe25beb15537fd0bac2b6271c757699c57b3",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Accept B1 after exact candidate d5b3720791c96c92b7672cc61bead80db98a5d19 passed reviewer-agent review with no findings; synchronize source plan, index, registry and generated task catalog while retaining the proposed/spec_approved=false boundary.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/metadata.json",
+    "conductor/workflow.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/packets/B1.4.phase-review.json",
+    "conductor/tracks/birthing_suite_delivery_20261020/evidence/b1.4-phase-review-20261027/README.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/metadata.json": "eef3f9a51c1a410214da7538a0407bfc7abac12d362ea17fb62ea05ca7ed864c",
+    "conductor/workflow.md": "06ccc97ec4fe036c479780ef3843086a96d58bb96643383a06028083ffb770b5",
+    "conductor/tracks/birthing_suite_delivery_20261020/packets/B1.4.phase-review.json": "1f8195d5dde0b93cb384d37730e7a4db73df6bfb5dbcaf95fafb253ec2804509",
+    "conductor/tracks/birthing_suite_delivery_20261020/evidence/b1.4-phase-review-20261027/README.md": "d0e6eb9b9064168f01e0d2d24f967af04e6ac789e36d68981dc9b87bf85aad36"
+  },
+  "write_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/packets/B1.4.acceptance.json",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/index.md",
+    "conductor/tracks.md",
+    "conductor/execution/tasks.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates",
+    "libs/kairos",
+    "model-inputs",
+    "tests",
+    "conductor/current-state.json"
+  ],
+  "leaf_dependencies": [
+    "B1.1",
+    "B1.2",
+    "B1.3"
+  ],
+  "interface_contract": "conductor/workflow.md#Phase-protocol; B1 section of birthing plan; exact B1.4 phase-review receipt and candidate review.",
+  "steps": [
+    "Confirm the receipt records reviewer-agent no-findings review of the exact integrated candidate and the phase packet/base/check results.",
+    "Mark B1.4 complete in the plan with exact review candidate and result; update track index and registry to B1 accepted with B2.1 next.",
+    "Rebuild generated task catalog and run task/context integrity checks plus git diff --check. Keep birthing proposed, spec_approved=false, and preserve the clinical/operational boundary."
+  ],
+  "verification": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "build"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Generated task catalog matches updated source plan."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Task catalog and dependency graph are valid."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Conductor links and phase structure remain valid."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "No whitespace errors."
+    }
+  ],
+  "acceptance": [
+    "B1.4 integrated candidate has reviewer-agent no-findings evidence.",
+    "Plan, index, registry, and generated task catalog agree that B1 is accepted.",
+    "Birthing remains proposed with spec_approved=false; no clinical or operational acceptance is implied."
+  ],
+  "result_path": "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+  "stop_conditions": [
+    "Reviewer report has an actionable finding",
+    "Any output preimage differs from base",
+    "Any edit escapes declared write_paths",
+    "Task or context validation fails."
+  ],
+  "size_exception": "Coordinator acceptance join updates five bounded Conductor outputs (packet, plan, index, registry, generated task catalog); it changes no implementation source.",
+  "status": "prepared",
+  "output_preimage_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md": "9044adbe8a7454a4031de418602d3697c63886a2cf7417af930951489a696eb0",
+    "conductor/tracks/birthing_suite_delivery_20261020/index.md": "74d3f7be23593ea8ece11f93591aacf265813a615d5b36bb7f08af2b902fef48",
+    "conductor/tracks.md": "d7991fe9760421e684a89157d79abef5e18b1ca675f9f1b8163f4612463ce97c",
+    "conductor/execution/tasks.json": "3e241ba55086fe0188b1b6636bcca04bbe14cd43dfc95db84cdd5c173d182f53"
+  }
+}

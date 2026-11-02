@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "packet_id": "B0.3.profile-contract-tests.review-fix",
+  "task_id": "B0.3",
+  "target_repo": ".",
+  "base_commit": "76d71d1485a85a27bb9445fa3d2c0106b34a085c",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Fix reviewer-agent finding that malformed non-object rows in labour-onset and birth-route arrays were silently ignored. Reject each malformed row and add array-specific negative controls.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md",
+    "model-inputs/birthing/profiles/qld-public-reference-2022-v1.json"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md": "560114e5e2169499987ae5b237b3a72050c12588cd750dc3596ec46a28999da6",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md": "a74dd69aad568def2e38a26159d03f947374a9b62b85759c7a1ed3ba67a85e67",
+    "model-inputs/birthing/profiles/qld-public-reference-2022-v1.json": "7c6c0e315f0d7d93cf8ae68eba5eb76d89dfde6a907e9173ef85652d8f9644da"
+  },
+  "write_paths": [
+    "tests/test_birthing_profile_contract.py",
+    "conductor/execution/packets/B0.3.profile-contract-tests.review-fix.json",
+    "conductor/evidence/b0.3-profile-contract-tests-20261027/README.md"
+  ],
+  "protected_paths": [".git", "Cargo.toml", "Cargo.lock", "crates", "libs/kairos", "conductor/tracks", "conductor/current-state.json", "conductor/execution/tasks.json", "model-inputs/birthing/profiles/qld-public-reference-2022-v1.json"],
+  "leaf_dependencies": ["B0.2"],
+  "interface_contract": "Reviewer-agent finding on B0.3 implementation commit 76d71d1485a85a27bb9445fa3d2c0106b34a085c; conductor/tracks/birthing_suite_delivery_20261020/plan.md#B0.3",
+  "steps": [
+    "Reject non-object entries in labour_onset.mothers_by_category and routes.births_by_method instead of skipping them.",
+    "Add one negative-control test for each array using a malformed string entry.",
+    "Run packet validation, the exact focused profile contract test file, staged diff check, and Conductor integrity checks.",
+    "Obtain a fresh reviewer-agent re-review of the correction commit; do not accept B0.3 until malformed rows are verified rejected."
+  ],
+  "verification": [
+    {"argv": [".venv/bin/python", "tools/tasks.py", "packet-check", "conductor/execution/packets/B0.3.profile-contract-tests.review-fix.json"], "cwd": ".", "expected_exit": 0, "oracle": "The correction packet binds to the exact B0.3 implementation revision and unchanged profile/spec inputs."},
+    {"argv": [".venv/bin/python", "-m", "unittest", "discover", "-s", "tests", "-p", "test_birthing_profile_contract.py", "-v"], "cwd": ".", "expected_exit": 0, "oracle": "Both malformed-row controls and all existing profile contract cases execute and pass."},
+    {"argv": ["git", "diff", "--cached", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Staged correction, packet and receipt have no whitespace errors."}
+  ],
+  "acceptance": [
+    "A non-object labour-onset row yields a path-specific contract error and its negative control fails if acceptance regresses.",
+    "A non-object birth-route row yields a path-specific contract error and its negative control fails if acceptance regresses.",
+    "All original provenance, unit, count, inference-boundary and negative-control tests remain passing.",
+    "Fresh reviewer-agent re-review finds the structural gap fixed with no remaining actionable findings."
+  ],
+  "result_path": "conductor/evidence/b0.3-profile-contract-tests-20261027/README.md",
+  "stop_conditions": ["Malformed entries are not rejected by the contract tests", "Any edit escapes the exact write paths"],
+  "size_exception": null,
+  "status": "prepared"
+}

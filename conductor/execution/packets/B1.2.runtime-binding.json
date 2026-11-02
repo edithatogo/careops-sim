@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "packet_id": "B1.2.runtime-binding",
+  "task_id": "B1.2",
+  "target_repo": ".",
+  "base_commit": "a6e8d8f1d4550d8400d811d6bd10991c9a0a2b36",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Create a domain-owned Rust birthing episode/event runtime that binds all accepted B1.1 traces to executable tests. Define independent patient and service states, discrete-tick competing-hazard rescheduling with explicit covariate updates, deterministic ties, finite-horizon censoring, progression-only stale-event rejection after state changes, and per-subsystem random draw ownership. Keep all clinical parameters absent; any nonzero rates are test-only synthetic controls.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+    "model-inputs/birthing/fixtures/b1-progression-cases.synthetic.json",
+    "conductor/design/composition-contracts-20261020.md",
+    "crates/careops-core/src/pathway/progression.rs",
+    "crates/careops-core/src/pathway/clock.rs",
+    "crates/careops-core/src/pathway/streams.rs"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md": "0f455b285b32b9a0dfeb4ed54cf9af7025052d62dc75ac0d3ab4311d616e2f4e",
+    "model-inputs/birthing/fixtures/b1-progression-cases.synthetic.json": "ba6e039a32ca3c5499a1fdc5e79008a061ac23e005b8ab72b59b4894429f8e45",
+    "conductor/design/composition-contracts-20261020.md": "4b83254e9ec17cbdd8c44790deda7bebf5893b3b46fc7f0eae2842af325d9249",
+    "crates/careops-core/src/pathway/progression.rs": "b6bd70e631a57d0676a8fad07b547f62f741e5e545b1128bc8b6be0ae897b59f",
+    "crates/careops-core/src/pathway/clock.rs": "d3e4e5a38d768f61cb9f842ea8300a07e4effc547580360caa2b283c1524be8f",
+    "crates/careops-core/src/pathway/streams.rs": "04c886c431388beb4899973ff745ce66a5e0a3b6742317b4a7cf1abf34ca231e"
+  },
+  "write_paths": [
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/careops-birthing",
+    "conductor/execution/packets/B1.2.runtime-binding.json",
+    "conductor/evidence/b1.2-runtime-binding-20261027"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json",
+    "conductor/tracks.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md"
+  ],
+  "leaf_dependencies": [
+    "A5.4",
+    "B0.4",
+    "B1.1"
+  ],
+  "interface_contract": "B1 plan; CC-04 and CC-07 in conductor/design/composition-contracts-20261020.md; core CompetingRiskModel, ScheduledEvent and PathwayRngStreams APIs at packet base.",
+  "steps": [
+    "Add a new careops-birthing crate that depends on careops-core and existing workspace serde/serde_json only; keep all birthing semantics out of core.",
+    "Add explicit PatientState and ServiceState enums and an event runtime that independently updates the two states, orders events by core ScheduledEvent keys, and records executed, stale and censored outcomes.",
+    "Bind the accepted fixture by parsing and scheduling each listed event, then compare the executed state trace. Map fixture string event and patient IDs to stable numeric ranks using lexicographically sorted unique source IDs, never insertion position. For the cancelled fixture ID, schedule a progression event before deterioration and prove it is popped but rejected using the core generation check; preserve later non-progression service events.",
+    "Add a separate synthetic tie-order control with same-tick/same-priority events inserted in shuffled order and distinct event and patient IDs; independently prove ordering by tick, lower numeric priority, event ID, then patient ID using the core ScheduledEvent contract.",
+    "Implement a discrete simulation-tick hazard sampling entry point using CompetingRiskModel::sample_event and the episode-owned progression stream. Covariate/model updates invalidate old progression events and require a new explicit sample; service and routing draws remain isolated. Document that ticks/rates are synthetic API units, not clinical intervals or fitted hazards.",
+    "Censor unfinished episodes at an inclusive run horizon without executing future events or mutating patient/service state; record the censor tick and observed state.",
+    "Record an expected failing focused runtime test run before implementation and the passing run after implementation; run the exact crate/core compatibility commands and cargo format check in verification.",
+    "Use a reviewer-agent/subagent to inspect the integrated implementation commit against this packet and the B1.1 fixture; fix findings and repeat review. Record the exact reviewed commit and limits in the evidence receipt."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace Rust sources are formatted."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-birthing"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Runtime fixture binding, stale progression rejection, tie ordering, hazard update/draw isolation, and horizon censoring tests execute and pass."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "pathway_failing_cases_tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Qualified core stale event, progression, and RNG stream contracts remain compatible."
+    }
+  ],
+  "acceptance": [
+    "All three B1.1 traces execute through explicit patient/service state and match every listed state transition while preserving wait/transit progression and intervention/deterioration separation.",
+    "The stale event is actually scheduled before deterioration, becomes stale when patient generation advances, is rejected when popped, and is recorded; non-progression service events remain executable.",
+    "Event ties use tick, lower numeric priority, event ID, then patient ID as defined by the qualified core contract; a dedicated shuffled-insertion same-tick control proves all tie keys, while fixture string IDs map to stable sorted numeric ranks.",
+    "Hazard sampling uses only the progression stream, explicit model/covariate updates resample under the new state, and synthetic tests prove service/routing stream counts do not change.",
+    "Horizon censoring preserves unfinished states and prevents post-horizon events from executing; no clinical hazard, policy, or site default is introduced.",
+    "The evidence distinguishes local synthetic runtime conformance from clinical prediction, site acceptance, or operational validation."
+  ],
+  "result_path": "conductor/evidence/b1.2-runtime-binding-20261027/README.md",
+  "stop_conditions": [
+    "A required transition needs an invented clinical parameter or unresolved API contract",
+    "Core contract behavior differs from packet assumptions",
+    "A failing case cannot be made behavior-focused without broadening scope",
+    "Any write escapes the reserved paths"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "packet_id": "B0.4.phase-review.review-fix",
+  "task_id": "B0.4",
+  "target_repo": ".",
+  "base_commit": "e1fe676593ea5731d14229eea3f2146d0d8da7c7",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Resolve B0.4 reviewer-agent consistency findings by aligning B0.2 and B0.3 evidence receipt headers with accepted plan/task status, and make the B0.3 summary disclose its malformed-row negative controls.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+    "conductor/evidence/b0.2-qld-reference-profile-20261027/README.md",
+    "conductor/evidence/b0.3-profile-contract-tests-20261027/README.md",
+    "conductor/evidence/b0.4-phase-review-20261027/README.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md": "ff4f08659e85577f77b119bc7e6d80dd1ac7cdbec16524e07b06609c6f67ac1c"
+  },
+  "write_paths": [
+    "conductor/evidence/b0.2-qld-reference-profile-20261027/README.md",
+    "conductor/evidence/b0.3-profile-contract-tests-20261027/README.md",
+    "conductor/evidence/b0.4-phase-review-20261027/README.md",
+    "conductor/execution/packets/B0.4.phase-review.review-fix.json"
+  ],
+  "protected_paths": [".git", "Cargo.toml", "Cargo.lock", "crates", "libs/kairos", "model-inputs", "tests", "conductor/tracks", "conductor/current-state.json", "conductor/execution/tasks.json"],
+  "leaf_dependencies": ["B0.3"],
+  "interface_contract": "Reviewer-agent findings on B0.4 candidate `e1fe676593ea5731d14229eea3f2146d0d8da7c7`; accepted B0.2/B0.3 coordinator records",
+  "steps": [
+    "Change the B0.2 and B0.3 evidence status headers to accepted after reviewer-agent re-review and coordinator acceptance.",
+    "Update the B0.3 scope sentence to list malformed onset/route row controls alongside its semantic negative controls.",
+    "Record the B0.4 reviewer findings and correction scope in its phase receipt; do not change implementation acceptance claims.",
+    "Run packet validation, Conductor context/task checks and staged diff checks; reuse the exact B0.3 test evidence because tests and source are unchanged.",
+    "Obtain fresh reviewer-agent re-review at the exact correction commit before B0.4 coordinator closeout."
+  ],
+  "verification": [
+    {"argv": [".venv/bin/python", "tools/tasks.py", "packet-check", "conductor/execution/packets/B0.4.phase-review.review-fix.json"], "cwd": ".", "expected_exit": 0, "oracle": "Correction packet binds to candidate B0.4 source and accepted B0.3 prerequisite."},
+    {"argv": [".venv/bin/python", "tools/context.py", "check"], "cwd": ".", "expected_exit": 0, "oracle": "Receipt edits preserve valid Conductor links and phase structure."},
+    {"argv": ["git", "diff", "--cached", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Staged receipt and packet correction has no whitespace errors."}
+  ],
+  "acceptance": [
+    "B0.2 and B0.3 receipt headers match their accepted plan and task-catalog status.",
+    "B0.3 summary accurately lists malformed-row controls without claiming full Draft 2020-12 schema conformance.",
+    "The phase receipt records the initial review and exact correction scope; no source/runtime/clinical acceptance claims change.",
+    "Fresh reviewer-agent phase re-review confirms consistency and no remaining actionable findings."
+  ],
+  "result_path": "conductor/evidence/b0.4-phase-review-20261027/README.md",
+  "stop_conditions": ["An evidence header contradicts the accepted plan/task catalog", "The correction adds unverified clinical/runtime claims", "Any edit escapes the exact write paths"],
+  "size_exception": null,
+  "status": "prepared"
+}

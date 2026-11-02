@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "B1.4.phase-review",
+  "task_id": "B1.4",
+  "target_repo": ".",
+  "base_commit": "bee4945d41c3c4a79cc31173bf487364888819c6",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Review and verify B1.1-B1.3 as the integrated birthing progression phase, confirm evidence and local tests are consistent, and preserve the proposed/spec_approved=false/clinical boundary.",
+  "context_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md",
+    "model-inputs/birthing/fixtures/b1-progression-cases.synthetic.json",
+    "conductor/evidence/b1.1-progression-cases-20261027/README.md",
+    "conductor/evidence/b1.2-runtime-binding-20261027/README.md",
+    "conductor/evidence/b1.3-trajectory-observation-20261027/README.md",
+    "conductor/execution/packets/B1.1.progression-cases.json",
+    "conductor/execution/packets/B1.2.runtime-binding.json",
+    "conductor/execution/packets/B1.3.trajectory-observation.json",
+    "crates/careops-birthing/src/lib.rs",
+    "crates/careops-birthing/tests/runtime_conformance.rs",
+    "crates/careops-core/src/pathway/clock.rs",
+    "crates/careops-core/src/pathway/progression.rs",
+    "crates/careops-core/src/pathway/streams.rs",
+    "crates/careops-core/src/pathway/classification.rs",
+    "conductor/tracks/birthing_suite_delivery_20261020/metadata.json",
+    "conductor/tracks.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/packets/B1.2.receipt-correction.json"
+  ],
+  "input_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/spec.md": "dac9620976b031f9faf0b7bc08975d2df49556989b23587a11ef10fc68c665eb",
+    "conductor/tracks/birthing_suite_delivery_20261020/test-matrix.md": "a74dd69aad568def2e38a26159d03f947374a9b62b85759c7a1ed3ba67a85e67",
+    "conductor/tracks/birthing_suite_delivery_20261020/agent-contract.md": "5b5a72947ed22974d6f2c8caf027af1d812bb7ba9dec2e7d9f32e1d284b33539",
+    "model-inputs/birthing/fixtures/b1-progression-cases.synthetic.json": "ba6e039a32ca3c5499a1fdc5e79008a061ac23e005b8ab72b59b4894429f8e45",
+    "conductor/evidence/b1.1-progression-cases-20261027/README.md": "4d37450a1f0fec0f6eb018c8409499e3049af64569ff4fdc6824917db339338a",
+    "conductor/evidence/b1.2-runtime-binding-20261027/README.md": "f83aa4af46a05875992b65f6dd680787840eb94b87216daf93f79bfa05622174",
+    "conductor/evidence/b1.3-trajectory-observation-20261027/README.md": "bb79c371f27ef021248cf1d975d56c5e18fd9a5aa4a4b9f3640c521129c6356e",
+    "conductor/execution/packets/B1.1.progression-cases.json": "d067b688f4e8459b091f70fd1f70b81ed0a381c4fca6e2df2c69b9b8fd530a68",
+    "conductor/execution/packets/B1.2.runtime-binding.json": "47364964b6a58c7c68a09de4ae20cb3c4c1606a37ee108a0f5e187a21946e913",
+    "conductor/execution/packets/B1.3.trajectory-observation.json": "9931deb84eb69b18805b6f50acf089d35473cc46bfabdf8927e88f5800ca307d",
+    "crates/careops-birthing/src/lib.rs": "0ed92a9ab3e7b90326f5ab56d1736249ccdd2a0c4d29babfdb3c59cb7545a6cf",
+    "crates/careops-birthing/tests/runtime_conformance.rs": "219293e140c1a809fc0c97fc6a24a57be079fc6466c5bc8a835bda821653ea5d",
+    "crates/careops-core/src/pathway/clock.rs": "d3e4e5a38d768f61cb9f842ea8300a07e4effc547580360caa2b283c1524be8f",
+    "crates/careops-core/src/pathway/progression.rs": "b6bd70e631a57d0676a8fad07b547f62f741e5e545b1128bc8b6be0ae897b59f",
+    "crates/careops-core/src/pathway/streams.rs": "04c886c431388beb4899973ff745ce66a5e0a3b6742317b4a7cf1abf34ca231e",
+    "crates/careops-core/src/pathway/classification.rs": "861666b93cd38229743a4ba27e04e31514beb4efc04395bdb63f519477761d4b",
+    "conductor/tracks/birthing_suite_delivery_20261020/packets/B1.2.receipt-correction.json": "79d9c9d32be5991d4ddef3225d01a389d6a2b0fd8007518445e1639ca9c8bdfb"
+  },
+  "write_paths": [
+    "conductor/tracks/birthing_suite_delivery_20261020/packets/B1.4.phase-review.json",
+    "conductor/tracks/birthing_suite_delivery_20261020/evidence/b1.4-phase-review-20261027",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/index.md",
+    "conductor/tracks/birthing_suite_delivery_20261020/metadata.json",
+    "conductor/tracks.md"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates",
+    "libs/kairos",
+    "model-inputs",
+    "tests",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "leaf_dependencies": [
+    "B1.1",
+    "B1.2",
+    "B1.3"
+  ],
+  "interface_contract": "conductor/workflow.md#Phase-protocol; B1 section of birthing plan; CC-04 and CC-07; B1.1-B1.3 packets and receipts at exact base.",
+  "steps": [
+    "Verify accepted B1.1-B1.3 markers against exact implementation/review commits, packets, receipts, and reviewer findings.",
+    "Run workspace format, complete birthing suite tests, core pathway and policy tests, plus Conductor task/context integrity checks.",
+    "Review fixture binding, hazard rescheduling, stale event rejection, inclusive censoring, deterministic ordering, RNG ownership, bounded trajectories and the restricted observation-only policy input. Confirm no clinical/site defaults or prediction claims.",
+    "Set metadata implementation_started=true while retaining status proposed and spec_approved=false.",
+    "Write the candidate phase-review receipt with exact commands/results and boundaries. Obtain reviewer-agent phase review at the integrated candidate before marking B1.4 accepted.",
+    "After review, coordinator accepts B1.4 and synchronizes plan/index/registry; B2.1 dispatch will update current-state under its reservation."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Rust formatting passes."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-birthing"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All birthing conformance and bounded trajectory tests pass."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "pathway_failing_cases_tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Core pathway/progression/stale event/RNG contract remains green."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "policy_classification_tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Core observed policy/versioned assessment contract remains green."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All tasks and dependencies remain valid."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/context.py",
+        "check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Conductor links and phase structure remain valid."
+    }
+  ],
+  "acceptance": [
+    "B1.1-B1.3 accepted markers and receipts agree with exact review commits and executed checks.",
+    "Integrated runtime/tests meet B1 synthetic contracts without clinical/site/prediction claims.",
+    "Fresh reviewer-agent phase review of exact candidate finds no actionable findings.",
+    "Birthing remains proposed and spec_approved=false; metadata implementation_started=true; no clinical or operational acceptance."
+  ],
+  "result_path": "conductor/tracks/birthing_suite_delivery_20261020/evidence/b1.4-phase-review-20261027/README.md",
+  "stop_conditions": [
+    "A prior B1 task lacks acceptance evidence",
+    "A recorded command/hash/count cannot be reproduced",
+    "Phase evidence overstates clinical/site/runtime validity",
+    "Any edit escapes the declared write_paths."
+  ],
+  "size_exception": "Reviewed coordinator exception: B1.4 is a phase join whose independent rustfmt, birthing runtime, core pathway, core policy, task-DAG and context checks must remain individually visible in the receipt. Combining or omitting selectors would weaken exact evidence; the six output paths are individually listed and remain within the task reservation conductor/tracks.",
+  "status": "prepared",
+  "output_preimage_hashes": {
+    "conductor/tracks/birthing_suite_delivery_20261020/metadata.json": "eef3f9a51c1a410214da7538a0407bfc7abac12d362ea17fb62ea05ca7ed864c",
+    "conductor/tracks.md": "d7991fe9760421e684a89157d79abef5e18b1ca675f9f1b8163f4612463ce97c",
+    "conductor/tracks/birthing_suite_delivery_20261020/plan.md": "9044adbe8a7454a4031de418602d3697c63886a2cf7417af930951489a696eb0"
+  }
+}
