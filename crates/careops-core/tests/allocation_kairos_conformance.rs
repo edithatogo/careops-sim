@@ -2,7 +2,10 @@ use careops_core::allocation::{
     EngineRequestId, EngineResourceId, GrantDisposition, GrantReceipt, LeaseId as CareOpsLeaseId,
     ResourceId as CareOpsResourceId, StagedAllocator,
 };
-use kairo_ecs_des::{FlowRuntime, RequestId, RequestState, ResourceId};
+use kairo_ecs_des::{
+    StagedRequestId as RequestId, StagedRequestState as RequestState,
+    StagedResourceId as ResourceId, StagedResourceRuntime,
+};
 use kairo_ecs_types::SimTime;
 
 fn engine_request_id(request: RequestId) -> EngineRequestId {
@@ -18,7 +21,7 @@ fn engine_resource_id(resource: ResourceId) -> EngineResourceId {
 fn record_observed_grant(
     allocator: &mut StagedAllocator,
     local_request: careops_core::allocation::ClaimRequest,
-    engine: &FlowRuntime,
+    engine: &StagedResourceRuntime,
     request: RequestId,
     resource: ResourceId,
 ) {
@@ -45,21 +48,15 @@ fn record_observed_grant(
 
 #[test]
 fn capacity_one_contention_keeps_one_active_lease_and_grants_queued_work_after_release() {
-    let mut engine = FlowRuntime::new();
+    let mut engine = StagedResourceRuntime::new().unwrap();
     let first_owner = engine.spawn_actor().unwrap();
     let second_owner = engine.spawn_actor().unwrap();
     let engine_resource = engine.create_resource(1).unwrap();
     let first_engine_request = engine
-        .acquire(engine_resource)
-        .owner(first_owner)
-        .at(SimTime::from_ticks(1))
-        .submit()
+        .submit(engine_resource, first_owner, SimTime::from_ticks(1))
         .unwrap();
     let second_engine_request = engine
-        .acquire(engine_resource)
-        .owner(second_owner)
-        .at(SimTime::from_ticks(1))
-        .submit()
+        .submit(engine_resource, second_owner, SimTime::from_ticks(1))
         .unwrap();
 
     let mut careops = StagedAllocator::default();
@@ -86,7 +83,7 @@ fn capacity_one_contention_keeps_one_active_lease_and_grants_queued_work_after_r
 
     engine.run_for(8).unwrap();
     let snapshot = engine.resource(engine_resource).unwrap();
-    assert_eq!(snapshot.total, 1);
+    assert_eq!(snapshot.capacity, 1);
     assert_eq!(snapshot.available, 0);
     assert_eq!(snapshot.active.len(), 1);
     assert_eq!(snapshot.queued, vec![second_engine_request]);

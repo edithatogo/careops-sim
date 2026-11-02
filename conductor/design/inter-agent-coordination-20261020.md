@@ -44,3 +44,16 @@ Combining planning commits does not close implementation tasks or promote a pin.
 Local tests and hosted checks are recorded in [merge readiness](../evidence/merge-readiness-20261021.md).
 The integration history, rather than an assertion of simultaneous workspace sync,
 identifies the reviewed content. Older evidence records describe their dated state.
+
+## PR194 compatibility repair — 2 November 2026
+
+Chat `01a19b9f-69e7-7353-9b75-445d5653feb4` owns the isolated managed
+worktree `<PR194_REPAIR_WORKTREE>` on `codex/pr194-compatibility-checks`, based
+on `0320767`. The original integration worktree and private hook registrations
+remain with chat `01a19709-fd7b-7a61-a1e7-1ed85239eba0` (terminal handoff).
+Scope: allocation conformance adapter, current-source mutation bindings and tests,
+parent/fuzz locks where required, and this repair's Conductor evidence/status.
+No native objects, authentication renewal, Kairos source or submodule pin changes.
+Next operation: verify staged-runtime conformance against retained pin `0741026`,
+then locked workspace, context, mutation and policy gates; independent review
+and hosted checks remain required before acceptance.
