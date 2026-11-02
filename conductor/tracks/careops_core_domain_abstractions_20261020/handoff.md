@@ -61,3 +61,16 @@ Final combined-head full gates remain mandatory. B7 native batch IPC/Parquet,
 actual composition, worker/recovery/performance and A7 remain open. B7 dependency
 candidate4134/Polars964 keeps runtime074 separate; any actual graph/config change
 invalidates narrow reuse. No clinical/site/full-spec approval follows.
+
+### B7 full hosted acceptance; A7 eligible — 3 November 2026
+
+Runtime154ba1a is accepted for the generic synthetic B7 contract after final
+independent implementation/determinism review and all17hosted successes plus
+expected main-only attestation skip. Actual native Linux/macOS CLI/PyArrow,
+current-source ED88.1834%coverage/116canonicalmutants (111caught,2exactequivalents,
+3unviable,0timeouts), full quality/security and lock gates pass. Model/build
+identity now binds completed-replication recovery. B7.1–B7.4 are checked; full-spec,
+clinical/site/operational acceptance remains open. Existing chat/worktree/branch
+ownership is unchanged; no native-object scope. Next operation: bind reviewed A7
+join/evaluation/accounting contract packet. Its private preflight corrected false
+censoring and prediction-time leakage before dispatch. No A7 task is yet accepted.

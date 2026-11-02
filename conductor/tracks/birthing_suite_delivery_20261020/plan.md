@@ -1,6 +1,6 @@
 # Implementation plan: Generic birthing suite simulation delivery
 
-Status: generic synthetic engineering in progress. B0–B6 have scoped acceptance; full specification approval, clinical validation and site acceptance remain open.
+Status: generic synthetic engineering in progress. B0–B7 have generic synthetic engineering acceptance; full specification approval, clinical validation and site acceptance remain open.
 
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
 Dispatch requires reviewed packets, upstream capability readback and the single-maintainer harness.
@@ -70,9 +70,9 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 
 ## B7 — Two-consumer composition acceptance
 
-- [ ] B7.1 Implement batch CLI and interoperable Arrow/Parquet output using qualified routes; inspect actual files with an independent reader.
-- [ ] B7.2 Run multi-day birthing to bounded theatre to maternal/infant destinations, with multiple birth, split destinations, unavailable resources and target breaches.
-- [ ] B7.3 Verify replay, named streams, worker invariance, retry/recovery and performance budgets; supply evidence to A7 without declaring clinical validation.
-- [ ] B7.4 Conductor — review and verify phase (workflow.md).
+- [x] B7.1 Implement batch CLI and interoperable Arrow/Parquet output using qualified routes; inspect actual files with an independent reader. Accepted generic synthetic runtime at `154ba1a`: independent final logic/determinism review found no remaining findings; all17 hosted checks pass with expected main-only attestation skip. Seven native batch tests, actual1/2/4worker IPC/Parquet/PyArrow readback and fixed-build completed-replication recovery pass. Full-spec/clinical/site/operational gates remain open. See [B7 acceptance](../../evidence/core-a7-prerequisites-20261102/B7.md).
+- [x] B7.2 Run multi-day birthing to bounded theatre to maternal/infant destinations, with multiple birth, split destinations, unavailable resources and target breaches. Accepted generic synthetic runtime at `154ba1a`: independent final logic/determinism review found no remaining findings; all17 hosted checks pass with expected main-only attestation skip. Seven native batch tests, actual1/2/4worker IPC/Parquet/PyArrow readback and fixed-build completed-replication recovery pass. Full-spec/clinical/site/operational gates remain open. See [B7 acceptance](../../evidence/core-a7-prerequisites-20261102/B7.md).
+- [x] B7.3 Verify replay, named streams, worker invariance, retry/recovery and performance budgets; supply evidence to A7 without declaring clinical validation. Accepted generic synthetic runtime at `154ba1a`: independent final logic/determinism review found no remaining findings; all17 hosted checks pass with expected main-only attestation skip. Seven native batch tests, actual1/2/4worker IPC/Parquet/PyArrow readback and fixed-build completed-replication recovery pass. Full-spec/clinical/site/operational gates remain open. See [B7 acceptance](../../evidence/core-a7-prerequisites-20261102/B7.md).
+- [x] B7.4 Conductor — review and verify phase (workflow.md). Accepted generic synthetic runtime at `154ba1a`: independent final logic/determinism review found no remaining findings; all17 hosted checks pass with expected main-only attestation skip. Seven native batch tests, actual1/2/4worker IPC/Parquet/PyArrow readback and fixed-build completed-replication recovery pass. Full-spec/clinical/site/operational gates remain open. See [B7 acceptance](../../evidence/core-a7-prerequisites-20261102/B7.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
