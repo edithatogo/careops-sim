@@ -59,3 +59,13 @@ graph is unchanged from fully green e3bc8ba; its mutation receipt is reused whil
 current context/aggregate runs. Final actual combined-head gates remain required.
 Next B5.1: urgency reassessment/queue displacement/non-interruption cases, then
 bounded theatre acceptance/start/birth/completion callbacks and separate metrics.
+
+### B4 fully hosted; B5 independently reviewed candidate
+
+B4 exact2c13ec0 full hosted run41461436139 passed. B5 source1252b3e received
+resource-pairing corrections4197d3d/8ba15d5. Final logic and deterministic-fixture
+reviews are ready_for_review at8ba15d5;13 theatre tests independently passed.
+Full local birthing milestone:39 passed. B5 boxes remain unchecked until its
+scoped hosted milestone. Next B6 covers lifecycle routing/split destinations/
+fallback and conservation; B7/A7 remain open. No durability, parallel or clinical
+acceptance is inferred from B5.
