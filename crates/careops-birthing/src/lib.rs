@@ -11,6 +11,7 @@ use std::collections::{HashMap, HashSet};
 
 pub mod delivery;
 pub mod spaces;
+pub mod team;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PatientState {

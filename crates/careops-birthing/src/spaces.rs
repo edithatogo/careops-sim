@@ -63,6 +63,29 @@ pub struct SpacePool {
 }
 
 impl SpacePool {
+    /// Current ownership, distinct from a historical successful receipt.
+    pub fn holds_reservation(&self, episode: u64) -> bool {
+        self.reservations
+            .get(&episode)
+            .is_some_and(|record| self.rooms[&record.room].state == State::Reserved(episode))
+    }
+
+    /// Bind a replayed admission to this pool's logical lifecycle history.
+    pub fn matches_started_reservation(
+        &self,
+        episode: u64,
+        requirements: &CapabilitySet,
+        tick: i64,
+        room: u64,
+    ) -> bool {
+        self.reservations.get(&episode).is_some_and(|record| {
+            record.room == room
+                && &record.requirements == requirements
+                && record.reserved_at == tick
+                && record.started_at == Some(tick)
+        })
+    }
+
     pub fn new(profiles: Vec<SpaceProfile>) -> Result<Self, String> {
         let mut rooms = BTreeMap::new();
         for profile in profiles {
