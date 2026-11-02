@@ -146,6 +146,15 @@ def untrusted_contract_errors(workflow):
 
 
 class CiWorkflowTests(unittest.TestCase):
+    def test_native_context_budget_retains_full_mutation_gate(self):
+        context = workflow_job(WORKFLOW.read_text(), "context")
+        self.assertIn("timeout-minutes: 75", context)
+        self.assertIn("CARGO_BUILD_JOBS: '1'", context)
+        self.assertIn("--jobs 2 --timeout 180", context)
+        self.assertIn("--package careops-ed --file crates/careops-ed/src/lib.rs", context)
+        self.assertIn("tools/quality_mutations.py --outcomes", context)
+        self.assertNotIn("--skip", context)
+
     def test_scope_requires_explicit_boolean_outputs_and_consistency(self):
         for field, value in (("changed", ""), ("native", "typo"), ("context", "null")):
             selectors = {"native": "false", "context": "false", "policy": "false"}
@@ -189,7 +198,7 @@ class CiWorkflowTests(unittest.TestCase):
         for name, block in blocks:
             timeout = re.search(r"^    timeout-minutes: ([0-9]+)$", block, re.MULTILINE)
             self.assertIsNotNone(timeout)
-            self.assertLessEqual(int(timeout.group(1)), 30 if name == "context" else 20)
+            self.assertLessEqual(int(timeout.group(1)), 75 if name == "context" else 20)
             self.assertGreater(int(timeout.group(1)), 0)
         self.assertNotIn("actions/cache@", workflow)
         self.assertNotIn("pull_request_target", workflow)

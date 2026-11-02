@@ -281,9 +281,11 @@ jobs:
         run: cargo test --doc --workspace --all-features --locked
 
   context:
-    # Native Parquet adds compilation and linking time to coverage and each mutation.
-    timeout-minutes: 30
+    # The former 30m job stopped after 47/117 mutants, with zero mutant timeouts.
+    # Bound orchestration separately; retain each mutant's 180s acceptance limit.
+    timeout-minutes: 75
     env:
+      CARGO_BUILD_JOBS: '1'
       CARGO_PROFILE_DEV_DEBUG: '0'
       CARGO_PROFILE_TEST_DEBUG: '0'
     name: context

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "packet_id": "A2.1.capacity-contract",
+  "task_id": "A2.1",
+  "target_repo": ".",
+  "base_commit": "94d2792bb4bebebc5cc08087282993be37d41603",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Freeze A2 capacity accounting, neutral capability matching, shared-pool aliasing, and explicit UTC/local-DST adapter boundaries before implementation.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/design/composition-contracts-20261020.md"
+  ],
+  "input_hashes": {
+    "conductor/design/composition-contracts-20261020.md": "4b83254e9ec17cbdd8c44790deda7bebf5893b3b46fc7f0eae2842af325d9249",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "1a789d13b5a56e06fef2b8f3cc4e31af870df932efdc02317634b5f8e1ed855d",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md": "070e599846f4b31e174902a31cff8fe819df1d0ba897a3a8195c366223da567c"
+  },
+  "write_paths": [
+    "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+    "conductor/execution/packets/A2.1.capacity-contract.json"
+  ],
+  "protected_paths": [".git", "Cargo.lock", "conductor/current-state.json", "conductor/execution/tasks.json", "libs/kairos"],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+  "steps": [
+    "Read the A2 specification, plan, composition contracts, and current ED ResourceBucket behavior.",
+    "Define count dimensions and conservation at a same-time snapshot, distinguishing unknown from known zero and existing dispositions from current ceilings.",
+    "Define shared pool aliasing and opaque all-required capability matching without dispatch or clinical policy semantics.",
+    "Define half-open UTC interval behavior and make DST resolution an explicit local-time adapter responsibility.",
+    "List positive and negative behavior cases that A2.2/A2.3 tests must implement."
+  ],
+  "verification": [
+    {"argv": [".venv/bin/python", "-m", "json.tool", "conductor/execution/packets/A2.1.capacity-contract.json"], "cwd": ".", "expected_exit": 0, "oracle": "Packet is valid JSON and binds the reviewed base and source hashes."},
+    {"argv": ["git", "diff", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Contract and packet contain no whitespace errors."}
+  ],
+  "acceptance": [
+    "ADR-0010 specifies snapshot conservation, known-zero versus unknown, ceiling reductions that do not evict existing dispositions, shared-pool aliasing, and set-based neutral capabilities.",
+    "ADR-0010 specifies half-open UTC calendars, explicit offset/gap handling at the local adapter boundary, 23/25-hour day mappings, checked offset arithmetic, and defers tick precision checks until an adapter exists.",
+    "The required case list includes positive and negative oracles for every A2.1 contract dimension.",
+    "No runtime code, ED profile schema/default, Kairos source/pin, dependency, or dispatch policy changes in this packet."
+  ],
+  "result_path": "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+  "stop_conditions": ["Input/base drift", "Ambiguous resource accounting remains", "Edit outside write_paths", "A requirement would change ED defaults or Kairos ownership"],
+  "size_exception": null,
+  "status": "prepared"
+}

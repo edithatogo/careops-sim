@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "packet_id": "A6.1.ed-compatibility-byte-parity",
+  "task_id": "A6.1",
+  "target_repo": ".",
+  "base_commit": "1d16e2435d20c71b41da1347edc5809e3c8c1180",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Qualify the existing ED compatibility boundary against the retained pre-extraction nominal output: assert exact serialized bytes for the unchanged version-1 scenario, version-3 capacity profile, and version-1 run document. Keep schema migration policy separate and make no public schema or fixture changes.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md",
+    "conductor/evidence/a0.2-small-runner-extraction-20261024/README.md",
+    "conductor/evidence/r1-native-baseline-20261021/ed/first.json",
+    "docs/support-matrix.md",
+    "crates/careops-ed/src/api_runner.rs",
+    "crates/careops-ed/tests/c63_compatibility_replay_performance.rs"
+  ],
+  "input_hashes": {
+    "conductor/evidence/r1-native-baseline-20261021/ed/first.json": "bb303ba2975da470d450c90d27eb54c1556695b06c45a6af66ed5536d3c3e425",
+    "crates/careops-ed/examples/nominal_mvp.json": "71215b7ff4a2b47b38ace339cadac15a68c1c49c9738856ff742e9400c2ff9ae"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A6.1.ed-compatibility-byte-parity.json",
+    "conductor/evidence/a6.1-ed-compatibility-20261027/README.md",
+    "crates/careops-ed/tests/c63_compatibility_replay_performance.rs"
+  ],
+  "protected_paths": [".git", "Cargo.toml", "Cargo.lock", "crates/careops-core", "crates/careops-ed/src", "crates/careops-ed/examples", "libs/kairos", "profiles"],
+  "leaf_dependencies": ["A5.4"],
+  "interface_contract": "conductor/design/composition-contracts-20261020.md#CC-07; docs/support-matrix.md#3-schema-versioning-forward-migration-policy",
+  "steps": [
+    "Add a focused compatibility test that reads the immutable historical nominal output, runs the unchanged current scenario through the public ED run adapter using the recorded input-file label, and compares complete serialized JSON bytes.",
+    "Assert the current nominal input bytes retain the hash recorded by the historical run; no historical evidence is rewritten.",
+    "Document the existing ED-to-core adapter boundary and separately enumerate current scenario, capacity/location, run-document, and Arrow schema versions and the explicit no-migration decision for this slice.",
+    "Run the exact focused native test and record source/input/output hashes and command outcomes."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-ed", "--test", "c63_compatibility_replay_performance", "historical_nominal_fixture_serializes_byte_identically"], "cwd": ".", "expected_exit": 0, "oracle": "The test executes and the current RunDocument serialization equals retained baseline bytes exactly."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Rust formatting remains canonical."},
+    {"argv": ["git", "diff", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Patch has no whitespace errors."}
+  ],
+  "acceptance": [
+    "The exact historical nominal run document matches byte-for-byte at the current ED compatibility boundary.",
+    "The public input and output schema versions remain unchanged, and no migration is silently implied.",
+    "Schema evolution policy is documented independently from runtime fixture parity.",
+    "No clinical validity, full ED-to-ward/community composition, or hosted CI acceptance is claimed by A6.1."
+  ],
+  "result_path": "conductor/evidence/a6.1-ed-compatibility-20261027/README.md",
+  "stop_conditions": ["Historical bytes do not match", "The fixture or schema is changed", "An existing adapter contract is missing or ambiguous", "Any edit escapes the listed write paths"],
+  "size_exception": null,
+  "status": "prepared"
+}

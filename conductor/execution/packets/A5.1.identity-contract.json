@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "packet_id": "A5.1.identity-contract",
+  "task_id": "A5.1",
+  "target_repo": ".",
+  "base_commit": "0fa1c4f4ca517b5b2a42869235414555a94fc75e",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Freeze person/episode identity, relationship cardinality, lifecycle separation, deterministic stream and checkpoint oracles for A5.2\u2013A5.3; do not claim runtime implementation in this contract packet.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/design/composition-contracts-20261020.md",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "c52cba526a34ec270438a8a09ec943f1035023f09204e8a0c718899a2c7d9fda",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md": "47b75af12339c469343166a5a2eace02058170679a65d3b36856482b7ebff7dc"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A5.1.identity-contract.json",
+    "conductor/decisions/ADR-0014-person-episode-identity.md",
+    "conductor/evidence/a5.1-identity-contract-20261027/README.md",
+    "conductor/evidence/a5.1-identity-contract-20261027/identity-cardinality-cases.json"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates",
+    "libs/kairos",
+    "profiles",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/design/composition-contracts-20261020.md#CC-01; conductor/design/composition-contracts-20261020.md#CC-07",
+  "steps": [
+    "Define typed longitudinal and episode identity namespaces, cardinality, uniqueness and readmission semantics.",
+    "Define typed relationship edges and cycle rules separately from entity and episode destruction/lifecycle.",
+    "Specify deterministic creation/idempotency, birth multiplicity, event accounting, RNG namespace and checkpoint/replay cases.",
+    "Validate the packet and case matrix, inspect the diff, and obtain reviewer-agent contract review on the exact commit.",
+    "Specify canonical logical-event ordering and conflict arbitration independent of arrival, traversal and worker order; add permutation oracle.",
+    "Specify sealed-time late identity event behavior and add atomic rejection/dedupe/RNG oracle."
+  ],
+  "verification": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "packet-check",
+        "conductor/execution/packets/A5.1.identity-contract.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Packet is bound to the accepted A4.4 base and current input hashes."
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-c",
+        "import json,pathlib; p=pathlib.Path('conductor/evidence/a5.1-identity-contract-20261027/identity-cardinality-cases.json'); d=json.loads(p.read_text()); assert d['schema_version']==1 and len(d['cases']) >= 15; ids=[c['id'] for c in d['cases']]; assert len(ids)==len(set(ids)); assert all(c.get('oracle') and c.get('expected') for c in d['cases'])"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Versioned machine-readable case matrix has unique IDs and explicit expectations."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Contract-only changes have no whitespace errors."
+    }
+  ],
+  "acceptance": [
+    "ADR-0014 resolves identity and lifecycle cases for readmission, concurrent episodes, recycled handles, relationship cycles, duplicate spawn, birth multiplicity, deterministic streams and checkpoint/replay.",
+    "Relationship removal and episode closure do not implicitly destroy a person or dependent; death is explicit and history remains addressable.",
+    "The case matrix is a specification oracle, not a runtime test pass; no Rust source, ED schema, Kairos source or parent pin changes.",
+    "Reviewer-agent/subagent checks the exact commit against CC-01/CC-07, A5.1 and ADR-0012; findings are fixed and re-reviewed before coordinator acceptance.",
+    "Competing identity commands resolve in canonical logical order and the case matrix compares accepted/rejected IDs, complete state and RNG under order permutations.",
+    "Late identity events after a sealed logical time reject atomically without consuming IDs or RNG; checkpoint replay is separate and explicit."
+  ],
+  "result_path": "conductor/evidence/a5.1-identity-contract-20261027/README.md",
+  "stop_conditions": [
+    "Input/base drift",
+    "Conflict with CC-01/CC-07 or ADR-0012",
+    "Unclear cardinality or atomicity oracle",
+    "Out-of-scope source/pin edit"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "packet_id": "A5.4.lifecycle-fix",
+  "task_id": "A5.4",
+  "target_repo": ".",
+  "base_commit": "2191d6a8d893167d14abc99ad2d08b31367f3981",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Close phase-review checkpoint findings by reconstructing person/episode lifecycle state from event history and requiring exact ED adapter mapping coverage.",
+  "context_paths": [
+    "conductor/execution/packets/A5.4.phase-review.json",
+    "conductor/decisions/ADR-0014-person-episode-identity.md",
+    "conductor/execution/packets/A5.2.identity-ledger.json",
+    "conductor/execution/packets/A5.3.birth-message.json",
+    "crates/careops-core/src/identity.rs",
+    "crates/careops-core/tests/identity_contract.rs",
+    "crates/careops-ed/src/identity.rs",
+    "crates/careops-ed/tests/identity_relationship_contract.rs"
+  ],
+  "input_hashes": {
+    "conductor/execution/packets/A5.4.phase-review.json": "ffc507bcf30ab5edda4f4fe1bf4cba81d19f2c737f6747c79d383220fba71d12"
+  },
+  "write_paths": [
+    "crates/careops-core/src/identity.rs",
+    "crates/careops-core/tests/identity_contract.rs",
+    "crates/careops-ed/src/identity.rs",
+    "crates/careops-ed/tests/identity_relationship_contract.rs",
+    "conductor/evidence/a5.4-lifecycle-fix-20261027/README.md"
+  ],
+  "protected_paths": [".git", "libs/kairos", "profiles", "Cargo.toml", "Cargo.lock"],
+  "leaf_dependencies": ["A5.2", "A5.3"],
+  "interface_contract": "conductor/decisions/ADR-0014-person-episode-identity.md; conductor/execution/packets/A5.2.identity-ledger.json; conductor/execution/packets/A5.3.birth-message.json",
+  "steps": [
+    "Replay every identity event in canonical tick/command order through a temporary ledger and reject checkpoints where derived people, episodes, relationships, births, statuses, exits, counts or watermark differ from stored state.",
+    "Reject duplicate exit/death lifecycle events and state changes without corresponding events; retain same-tick exit-before-death semantics.",
+    "Require ED adapter person/admission maps to cover exactly all people and episodes in its internal IdentityLedger, in addition to checking each derived key and event.",
+    "Add JSON checkpoint tampering regressions for unlogged death, unlogged exit, duplicate exit, duplicate death where practical, and omitted ED mapping maps.",
+    "Run focused core/ED tests and formatting; then repeat the full A5.4 workspace and Conductor verification packet and obtain reviewer-agent re-review."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-core", "--test", "identity_contract"], "cwd": ".", "expected_exit": 0, "oracle": "Core restore rejects lifecycle tampering and duplicate terminal events while valid roundtrip/suffix cases pass."},
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-ed", "--test", "identity_relationship_contract"], "cwd": ".", "expected_exit": 0, "oracle": "ED restore rejects omitted identity maps while valid mapped checkpoint roundtrips pass."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace formatting passes."}
+  ],
+  "acceptance": [
+    "Identity checkpoint snapshots and lifecycle accounting are exactly derivable from valid event history in canonical order.",
+    "Every accepted exit/death has one valid transition event; missing or repeated transitions reject on restore.",
+    "ED adapter maps exactly cover every person and episode in its private core ledger, with source/admission keys and derived IDs still validated.",
+    "A5.4's existing full-workspace checks and independent phase review are rerun at the fixed commit before acceptance.",
+    "No changes to Kairos source/pin, ED external schema or domain behavior are introduced."
+  ],
+  "result_path": "conductor/evidence/a5.4-lifecycle-fix-20261027/README.md",
+  "stop_conditions": [
+    "Reconstructed event history changes accepted current valid behavior",
+    "Existing transfer re-export or serialized public identity IDs change",
+    "ED map coverage cannot be enforced without changing ED schema",
+    "Kairos or profile edit is required"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

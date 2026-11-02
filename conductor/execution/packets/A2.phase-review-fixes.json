@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "packet_id": "A2.phase-review-fixes",
+  "task_id": "A2.3",
+  "target_repo": ".",
+  "base_commit": "daa739fe1086bf384cd9c883d0ec5bb1a3d6d064",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Close A2 phase-review findings on known-zero capacity, physical inventory conservation, and lifecycle transition rejection coverage.",
+  "context_paths": [
+    "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+    "crates/careops-core/src/capacity.rs",
+    "crates/careops-core/tests/capacity_contract.rs"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md": "73e1c420af8b8ce49b038685c2486f608a690ced1c4530a233fa0b7aabd0a913"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A2.phase-review-fixes.json",
+    "crates/careops-core/src/capacity.rs",
+    "crates/careops-core/tests/capacity_contract.rs"
+  ],
+  "protected_paths": [".git", "Cargo.lock", "conductor/current-state.json", "conductor/execution/tasks.json", "crates/careops-ed", "libs/kairos"],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+  "steps": [
+    "Add known physical inventory as a conservation ceiling for dispositions when equipped count is unknown.",
+    "Let any validated known-zero physical/equipped/open/staffed ceiling establish zero assignable capacity even if another ceiling is unknown.",
+    "Test positive-demand shortfall from known zero and zero demand with unknown capacity.",
+    "Add unchanged-state rejection tests for reservation and maintenance underflow and maintenance overflow.",
+    "Run focused capacity tests, core clippy, and formatting checks."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-core", "--test", "capacity_contract"], "cwd": ".", "expected_exit": 0, "oracle": "Known-zero, inventory conservation and lifecycle rejection regressions pass."},
+    {"argv": ["cargo", "clippy", "--locked", "-p", "careops-core", "--all-targets", "--", "-D", "warnings"], "cwd": ".", "expected_exit": 0, "oracle": "All careops-core targets pass clippy with warnings denied."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace Rust formatting is canonical."}
+  ],
+  "acceptance": [
+    "A known physical ceiling constrains dispositions when equipped capacity is unknown.",
+    "A validated zero physical/equipped/open/staffed ceiling yields Some(0) assignable capacity despite other unknown ceilings.",
+    "Failed lifecycle transitions preserve the full snapshot across underflow and overflow cases.",
+    "No ED, Kairos, dependency, schema or lockfile changes."
+  ],
+  "result_path": "crates/careops-core/tests/capacity_contract.rs",
+  "stop_conditions": ["Input/base drift", "ADR-0010 semantics conflict", "Edit outside write_paths", "Could not preserve state on rejection"],
+  "size_exception": null,
+  "status": "prepared"
+}

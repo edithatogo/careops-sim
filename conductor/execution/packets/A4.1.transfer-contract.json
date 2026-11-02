@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "packet_id": "A4.1.transfer-contract",
+  "task_id": "A4.1",
+  "target_repo": ".",
+  "base_commit": "c3aacb4aecfb5034f0c3c102a949635581463063",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Freeze versioned transfer lifecycle and conservation oracles for A4 implementation; do not implement runtime behavior in this contract packet.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/design/composition-contracts-20261020.md",
+    "conductor/design/transport-retrieval-interfacility-flow.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "f918ea0410a500f4ffbc6450d95721803d72ae5b183b0bd03645a54242d0ee34",
+    "conductor/design/composition-contracts-20261020.md": "4b83254e9ec17cbdd8c44790deda7bebf5893b3b46fc7f0eae2842af325d9249",
+    "conductor/design/transport-retrieval-interfacility-flow.md": "e65c0bf720c3539874ccb897a24663f0d74fdee8d214cfdba98954bc0858674a"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A4.1.transfer-contract.json",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+    "conductor/evidence/a4.1-transfer-contract-20261027/README.md"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates",
+    "libs/kairos",
+    "profiles"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/design/composition-contracts-20261020.md#CC-02",
+  "steps": [
+    "Specify the versioned operation envelope, monotone state transitions, authoritative owner, resource release points and explicit compensation behavior.",
+    "Define per-event person, episode, ownership, reservation, occupancy and claim conservation oracles, including cancellation and expiry boundaries.",
+    "List executable positive, negative, tie, duplicate, reorder, delayed-ack and checkpoint/restart cases for A4.2, including explicit claim limits.",
+    "Run packet validation and diff checks; request reviewer-agent contract review before acceptance."
+  ],
+  "verification": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "packet-check",
+        "conductor/execution/packets/A4.1.transfer-contract.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Bound packet has no validation errors at the exact base and input hashes."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Contract files contain no whitespace errors."
+    }
+  ],
+  "acceptance": [
+    "ADR-0012 defines version, state machine, ownership and resource-release rules without prescribing unsupported engine behavior.",
+    "Every lifecycle event has testable conservation and atomic rejection/idempotency expectations.",
+    "Post-departure rejection, in-flight deadline and compensation preserve the unique person/episode and authoritative owner.",
+    "Reviewer-agent/subagent review reports no unresolved contract ambiguity or findings; fixes are re-reviewed.",
+    "No Rust source, ED schema, Kairos source or parent pin changes."
+  ],
+  "result_path": "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+  "stop_conditions": [
+    "Input/base drift",
+    "Contract semantics conflict with CC-02",
+    "Unclear ownership/release oracle",
+    "Out-of-scope source/pin edit"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

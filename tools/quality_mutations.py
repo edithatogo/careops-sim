@@ -11,19 +11,19 @@ import sys
 
 
 SOURCE_FILE = "crates/careops-ed/src/lib.rs"
-SOURCE_SHA256 = "9f5ef0d1905c2540786fe97df4033e8c32a908699e59c5226f45316a623e2c93"
-CATALOG_SHA256 = "ed16dd73d46d6369c031f1b65ee7a99391ed98f95ea80c4307aa7875f0f7c62b"
+SOURCE_SHA256 = "16be17474be52f923196d652f432dcecb3bebfc8866f14114f721a8d4e6a6352"
+CATALOG_SHA256 = "45357afa3f76ccd75e04463839b8350c1ca393be411407ee218806e7e89ac4bb"
 MUTANTS_VERSION = "27.1.0"
 EXPECTED_TOTAL = 117
 EQUIVALENT_MISSES = {
-    (762, 60): "crates/careops-ed/src/lib.rs:762:60: replace || with && in run_scenario_with_capture",
-    (827, 43): "crates/careops-ed/src/lib.rs:827:43: replace || with && in run_scenario_with_capture",
+    (763, 60): "crates/careops-ed/src/lib.rs:763:60: replace || with && in run_scenario_with_capture",
+    (828, 43): "crates/careops-ed/src/lib.rs:828:43: replace || with && in run_scenario_with_capture",
 }
 ORIGINAL_UNVIABLES = {
-    "crates/careops-ed/src/lib.rs:251:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:651:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:669:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:678:5: replace run_scenario_with_capture -> Result<RunSummary, SimulationError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:252:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:652:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:670:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:679:5: replace run_scenario_with_capture -> Result<RunSummary, SimulationError> with Ok(Default::default())",
 }
 _TOP_LEVEL_KEYS = {
     "cargo_mutants_version", "caught", "end_time", "missed", "outcomes",

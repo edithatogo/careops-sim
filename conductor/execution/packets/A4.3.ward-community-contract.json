@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "packet_id": "A4.3.ward-community-contract",
+  "task_id": "A4.3",
+  "target_repo": ".",
+  "base_commit": "a940f4f0bb42134041f8ac0899cd99d176b23e8b",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Freeze and independently review the minimal ward/community boarding boundary contract before implementing new CareOps API semantics.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md",
+    "conductor/design/composition-contracts-20261020.md",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+    "conductor/decisions/ADR-0013-ward-community-boundary.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "628a16197ec2f037eca755557d8f98f69988e4d1a388522b3f609f5fdbcfd6a0",
+    "conductor/design/composition-contracts-20261020.md": "4b83254e9ec17cbdd8c44790deda7bebf5893b3b46fc7f0eae2842af325d9249",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md": "47b75af12339c469343166a5a2eace02058170679a65d3b36856482b7ebff7dc",
+    "conductor/decisions/ADR-0013-ward-community-boundary.md": "6c731c84c1307356f222cdfa60ee1e6dbcaeb1f26a9d5cefa567a8f21fde737f"
+  },
+  "write_paths": [
+    "conductor/decisions/ADR-0013-ward-community-boundary.md",
+    "conductor/execution/packets/A4.3.ward-community-contract.json",
+    "conductor/evidence/a4.3-ward-community-contract-20261027/README.md"
+  ],
+  "protected_paths": [
+    ".git",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/careops-core",
+    "crates/careops-ed",
+    "libs/kairos"
+  ],
+  "leaf_dependencies": [
+    "A4.2"
+  ],
+  "interface_contract": "conductor/decisions/ADR-0013-ward-community-boundary.md",
+  "steps": [
+    "Freeze the single-ward-bed ED-to-community feedback boundary as a synthetic, single-process contract with exogenous integer-time inputs.",
+    "Require separation of ward clinical readiness, destination-place availability, pickup availability, physical departure, arrival, explicit handover acceptance/claim release, emergency admission and horizon censoring.",
+    "Obtain independent reviewer-agent feedback on contract completeness, physical timing, boarding semantics, horizon ties, and claims kept out of scope.",
+    "Apply any contract fixes, rebind the packet to the final ADR digest and record exact hashes and review outcome."
+  ],
+  "verification": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "packet-check",
+        "conductor/execution/packets/A4.3.ward-community-contract.json"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Packet binds to the exact base, objective and inputs with no validation errors."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Contract, packet and evidence contain no whitespace errors."
+    }
+  ],
+  "acceptance": [
+    "ADR-0013 defines the ED-to-ward-to-community single-bed scenario and exogenous input semantics without clinical defaults.",
+    "Actual departure is gated on clinical readiness, community-place availability and pickup availability; physical occupancy ends at departure while the origin claim remains held until arrival and handover.",
+    "Emergency admission and boarding reflect origin-claim release only after explicit handover completion, preserving the A4.2 ownership contract.",
+    "Inclusive horizon, separate arrival/pending-handover/in-transit states, zero duration and checked arithmetic expectations are explicit.",
+    "The ADR is reviewed by an independent agent/subagent and no implementation starts before contract findings are closed."
+  ],
+  "result_path": "conductor/evidence/a4.3-ward-community-contract-20261027/README.md",
+  "stop_conditions": [
+    "A4.2 transfer contract does not support the boundary assumptions",
+    "Boarding feedback requires unbounded queue/capacity policy or site-specific clinical thresholds",
+    "A review finding requires multi-bed allocation or a new external runtime",
+    "Base or bound inputs drift"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

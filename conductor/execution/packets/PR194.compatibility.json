@@ -1,0 +1,98 @@
+{
+  "packet_id": "PR194.compatibility.1",
+  "base_commit": "03207671e632a3ea90f06b785407de3abdadbb92",
+  "objective": "Restore exact-pin staged allocation conformance, source-bound mutation validation and locked fuzz policy without weakening gates",
+  "owner": "01a19b9f-69e7-7353-9b75-445d5653feb4",
+  "size_exception": "Cross-cutting integration repair requires allocation test, mutation validator/tests, lock and Conductor evidence; no runtime core or upstream writes.",
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace",
+        "--lib",
+        "--bins",
+        "--tests"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All workspace integration targets, including allocation conformance, execute successfully"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Full context harness suite succeeds under hash-locked Python dependencies"
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Warnings denied across every workspace target and feature"
+    }
+  ],
+  "stop_conditions": [
+    "unexpected source/pin/ownership drift",
+    "new missed critical mutant",
+    "privacy hook rejection cannot be reconciled under existing authority"
+  ],
+  "acceptance": [
+    "Independent reviewer and exact-head required CI; no clinical or release acceptance"
+  ],
+  "schema_version": 1,
+  "task_id": "A3.2",
+  "target_repo": ".",
+  "context_paths": [
+    "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md"
+  ],
+  "write_paths": [
+    "crates/careops-core/tests/allocation_kairos_conformance.rs",
+    "tools/quality_mutations.py",
+    "tests/test_quality_mutations.py",
+    "fuzz/Cargo.lock",
+    "conductor/design/inter-agent-coordination-20261020.md",
+    "conductor/current-state.json",
+    "conductor/evidence/pr194-compatibility-20261102",
+    "conductor/execution/packets/PR194.compatibility.json",
+    ".careops-security/inventory.json"
+  ],
+  "protected_paths": [
+    "libs/kairos",
+    ".github",
+    "Cargo.toml",
+    "Cargo.lock"
+  ],
+  "leaf_dependencies": [],
+  "interface_contract": "ADR-0011 staged single-resource lease contract; existing exact-source mutation gate; no new runtime interface",
+  "steps": [
+    "Qualify pinned StagedResourceRuntime with unchanged contention and release oracle",
+    "Rebind 116 existing mutants to the current source and rerun exact-source validation",
+    "Repair fuzz dependency lock, retain policy and acceptance gates, then independent review and hosted CI"
+  ],
+  "result_path": "conductor/evidence/pr194-compatibility-20261102/README.md",
+  "status": "prepared",
+  "input_hashes": {
+    "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md": "9b99a910c8693ef8a4f9cd4f8a0a1d6296061af136a140a8e138a24934ba368b",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md": "070e599846f4b31e174902a31cff8fe819df1d0ba897a3a8195c366223da567c"
+  }
+}

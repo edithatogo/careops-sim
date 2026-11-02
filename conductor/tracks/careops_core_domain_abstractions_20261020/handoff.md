@@ -21,3 +21,17 @@ The original checkout's divergent uncommitted proposals are preserved and are no
 reported as integrated. R0 must reconcile them before dispatch from that checkout.
 This incorporation is local planning only; no PR merge, pin change or hardware
 qualification occurred. Existing unchecked tasks remain unchecked.
+
+## Core integration through A6 — 1 November 2026
+
+Chat 01a19709-fd7b-7a61-a1e7-1ed85239eba0 owns the integration at
+`<managed-worktrees>/core-a6-integration/careops-sim`.
+The packet joins 717ee03 to remote main c8ac417 and covers A2–A6 Rust source,
+tests, manifests, phase receipts and Conductor records. There is no native
+object scope. Next operation is PR verification. A7.1 awaits birthing B7.4.
+
+Integration exception: main pins Kairos 0741026. Its kairo-ecs-des does not
+export FlowRuntime, RequestId, RequestState or ResourceId required by the A3.2
+conformance target. The original A3 phase receipts describe the prior pin.
+Keep the PR in draft pending a compatible, qualified Kairos interface and a
+successful locked run including allocation_kairos_conformance.

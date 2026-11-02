@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "packet_id": "A4.3.ward-community-model",
+  "task_id": "A4.3",
+  "target_repo": ".",
+  "base_commit": "6a7f339dff1cc046c469db94badf561d513d063f",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Implement the accepted single-bed ward-to-community boundary model with explicit physical vacancy, transfer handover, origin-claim release and downstream-to-upstream ED boarding feedback.",
+  "context_paths": [
+    "conductor/decisions/ADR-0013-ward-community-boundary.md",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md",
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/src/lib.rs"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0013-ward-community-boundary.md": "6c731c84c1307356f222cdfa60ee1e6dbcaeb1f26a9d5cefa567a8f21fde737f",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md": "47b75af12339c469343166a5a2eace02058170679a65d3b36856482b7ebff7dc",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md": "070e599846f4b31e174902a31cff8fe819df1d0ba897a3a8195c366223da567c",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/test-matrix.md": "8a752e0e1c66d717e9d2a3fa412e0a69b9842e828a7dd2077bffa48ebf76b1c9"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A4.3.ward-community-model.json",
+    "conductor/evidence/a4.3-ward-community-contract-20261027/README.md",
+    "crates/careops-core/src/ward_community.rs",
+    "crates/careops-core/src/lib.rs",
+    "crates/careops-core/tests/ward_community_contract.rs"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/careops-ed",
+    "crates/careops-ed-cli",
+    "libs/kairos",
+    "profiles",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "leaf_dependencies": [
+    "A4.2"
+  ],
+  "interface_contract": "conductor/decisions/ADR-0013-ward-community-boundary.md",
+  "steps": [
+    "Implement a deterministic pure model with typed inputs, statuses and errors, checked tick arithmetic, and separate actual departure, physical bed vacancy, community arrival, handover completion, origin-claim release and ED admission.",
+    "Keep the ward bed claim held from before departure until explicit modeled handover; count ED boarding until that claim release and admit at max(ED-ready, handover tick).",
+    "Add focused deterministic positive and negative tests for every ADR-0013 oracle, including community and pickup delay, in-transit censoring, arrival with handover pending, inclusive horizon, zero duration, invalid times and overflow.",
+    "Preserve A4.2 TransferManager semantics, clinical compatibility, default profile schema, dependencies and Kairos sources/pin."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "ward_community_contract",
+        "--test",
+        "transfer_contract"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Ward/community boundary cases pass deterministically and the A4.2 transfer contract remains compatible."
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "All careops-core targets pass Clippy with warnings denied."
+    },
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace Rust formatting is canonical."
+    }
+  ],
+  "acceptance": [
+    "Identical input always produces identical outcome; readiness beyond horizon and checked tick overflow fail closed.",
+    "Actual ward departure requires readiness, community place and pickup; physical occupancy ends at departure, but origin claim remains held through arrival and explicit handover.",
+    "ED admission waits until handover releases the origin claim; downstream delay increases ED boarding without freeing the claimed bed early.",
+    "Inclusive-horizon departure, missing or late place/pickup, in-transit horizon, arrival-at-horizon with pending handover, and handover complete at the inclusive horizon are distinguishable.",
+    "Ward occupancy and origin-claim durations are explicitly measured from clinical readiness; the fixture does not assert total durations from unstated start times.",
+    "No clinical policies, site defaults, full capacity allocator, new dependencies, ED schema changes or Kairos changes are introduced."
+  ],
+  "result_path": "conductor/evidence/a4.3-ward-community-contract-20261027/README.md",
+  "stop_conditions": [
+    "ADR-0013 or ADR-0012 inputs drift",
+    "The model cannot represent physical vacancy and claim retention separately",
+    "An oracle requires site-specific clinical policy or full multi-bed allocation",
+    "Any out-of-scope ED, Kairos, dependency, profile or current-state edit is needed"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

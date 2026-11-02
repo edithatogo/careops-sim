@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "packet_id": "A2.2.pool-aggregate-review-fix",
+  "task_id": "A2.2",
+  "target_repo": ".",
+  "base_commit": "b873e3a6f639d4f578995b0b9120bef0aad4e11e",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Fix reviewer finding that distinct-pool totals must not aggregate unlike resource units or snapshot times.",
+  "context_paths": [
+    "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+    "crates/careops-core/src/capacity.rs"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md": "73e1c420af8b8ce49b038685c2486f608a690ced1c4530a233fa0b7aabd0a913"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A2.2.pool-aggregate-review-fix.json",
+    "crates/careops-core/src/capacity.rs",
+    "crates/careops-core/tests/capacity_contract.rs"
+  ],
+  "protected_paths": [".git", "Cargo.lock", "conductor/current-state.json", "conductor/execution/tasks.json", "crates/careops-ed", "libs/kairos"],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+  "steps": [
+    "Require a common resource unit and snapshot time across distinct pools before returning one aggregate total.",
+    "Keep per-pool alias conflict validation and permit pool-specific revision identifiers when the aggregate unit/time match.",
+    "Add negative tests for unlike units and unlike timestamps; retain positive multi-pool aggregation.",
+    "Run the focused capacity contract and Rust formatting checks."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-core", "--test", "capacity_contract"], "cwd": ".", "expected_exit": 0, "oracle": "Capacity cases pass, including rejection of mixed-unit and mixed-time pool totals."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace Rust formatting is canonical."}
+  ],
+  "acceptance": [
+    "A single aggregate may only sum distinct pools with matching unit and as-of UTC second.",
+    "Same-pool aliases must still agree on unit, revision, timestamp and full snapshot.",
+    "The positive distinct-pool aggregation remains unchanged, and mixed-unit/time negatives fail closed.",
+    "No ED, Kairos, schema, dependency or lockfile change."
+  ],
+  "result_path": "crates/careops-core/tests/capacity_contract.rs",
+  "stop_conditions": ["Input/base drift", "Aggregate semantics require grouping API beyond this bounded fix", "Edit outside write_paths"],
+  "size_exception": null,
+  "status": "prepared"
+}

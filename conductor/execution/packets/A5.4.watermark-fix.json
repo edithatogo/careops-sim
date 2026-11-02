@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "packet_id": "A5.4.watermark-fix",
+  "task_id": "A5.4",
+  "target_repo": ".",
+  "base_commit": "e5a7a8e0046088a89daf8836366f9ed178fa6342",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Preserve A5.2's valid seal-watermark advancement on duplicate-only later-tick retries while restoring event-derived state correctly.",
+  "context_paths": [
+    "conductor/execution/packets/A5.4.phase-review.json",
+    "conductor/execution/packets/A5.4.lifecycle-fix.json",
+    "conductor/decisions/ADR-0014-person-episode-identity.md",
+    "crates/careops-core/src/identity.rs",
+    "crates/careops-core/tests/identity_contract.rs"
+  ],
+  "input_hashes": {
+    "conductor/execution/packets/A5.4.phase-review.json": "ffc507bcf30ab5edda4f4fe1bf4cba81d19f2c737f6747c79d383220fba71d12"
+  },
+  "write_paths": [
+    "crates/careops-core/src/identity.rs",
+    "crates/careops-core/tests/identity_contract.rs",
+    "conductor/evidence/a5.4-lifecycle-fix-20261027/README.md"
+  ],
+  "protected_paths": [".git", "libs/kairos", "profiles", "Cargo.toml", "Cargo.lock"],
+  "leaf_dependencies": ["A5.2", "A5.3"],
+  "interface_contract": "conductor/decisions/ADR-0014-person-episode-identity.md; conductor/execution/packets/A5.2.identity-ledger.json",
+  "steps": [
+    "Retain apply_tick's current behavior where a duplicate-only request at a later tick advances sealed_through without creating a new event record.",
+    "During restore, replay event-derived entities and lifecycle state, require every recorded event tick to be no later than the stored watermark, and preserve the separately stored watermark rather than requiring exact equality with the maximum event tick.",
+    "Add regression: spawn at tick 0, exact duplicate at tick 5, checkpoint/restore, assert watermark 5 is retained and a new event at tick 5 is rejected as late.",
+    "Run focused identity tests, formatting and record the review finding/fix evidence."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-core", "--test", "identity_contract"], "cwd": ".", "expected_exit": 0, "oracle": "Watermark retry/restore regression and all identity lifecycle tamper tests pass."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace formatting passes."}
+  ],
+  "acceptance": [
+    "Valid later-tick duplicate replay checkpoints restore with the exact preserved sealed watermark.",
+    "All event-derived people, episodes, relationships, birth ordinals and lifecycle states still must reconstruct exactly.",
+    "Every stored event tick remains at or before sealed_through; post-seal new events remain rejected.",
+    "No other accepted A5.2 identity replay behavior changes."
+  ],
+  "result_path": "conductor/evidence/a5.4-lifecycle-fix-20261027/README.md",
+  "stop_conditions": [
+    "Fix requires changing exact duplicate replay semantics",
+    "Lifecycle reconstruction no longer rejects unlogged or duplicate transitions",
+    "Any public ID serialization or Kairos pin changes"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

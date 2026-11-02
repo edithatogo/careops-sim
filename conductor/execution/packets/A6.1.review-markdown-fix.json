@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "packet_id": "A6.1.review-markdown-fix",
+  "task_id": "A6.1",
+  "target_repo": ".",
+  "base_commit": "e70a35d1c12547816b81c74ab985bb0b08d48ec2",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Remove trailing-space Markdown hard breaks from A6.1 evidence so the committed review diff passes git diff --check; make no other changes.",
+  "context_paths": ["conductor/evidence/a6.1-ed-compatibility-20261027/README.md", "conductor/evidence/r1-native-baseline-20261021/ed/first.json"],
+  "input_hashes": {"conductor/evidence/r1-native-baseline-20261021/ed/first.json": "bb303ba2975da470d450c90d27eb54c1556695b06c45a6af66ed5536d3c3e425"},
+  "write_paths": ["conductor/execution/packets/A6.1.review-markdown-fix.json", "conductor/evidence/a6.1-ed-compatibility-20261027/README.md"],
+  "protected_paths": [".git", "Cargo.toml", "Cargo.lock", "crates", "libs/kairos", "profiles"],
+  "leaf_dependencies": ["A6.1.compatibility-byte-parity"],
+  "interface_contract": "conductor/harness/single-maintainer.md; conductor/evidence/a6.1-ed-compatibility-20261027/README.md",
+  "steps": ["Replace trailing-space hard breaks in the evidence with normal Markdown paragraphs or a table.", "Run git diff --check on the committed A6.1 range after committing the fix."],
+  "verification": [{"argv": ["git", "diff", "e70a35d1c12547816b81c74ab985bb0b08d48ec2^", "HEAD", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "The implementation and its review correction have no committed whitespace errors."}],
+  "acceptance": ["Trailing spaces are removed from the A6.1 evidence.", "No source behavior, fixture, or other evidence content is changed."],
+  "result_path": "conductor/evidence/a6.1-ed-compatibility-20261027/README.md",
+  "stop_conditions": ["Additional unrelated content changes are necessary", "The diff check continues to fail"],
+  "size_exception": null,
+  "status": "prepared"
+}

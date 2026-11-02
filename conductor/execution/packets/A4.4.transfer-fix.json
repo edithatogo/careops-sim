@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "packet_id": "A4.4.transfer-fix",
+  "task_id": "A4.4",
+  "target_repo": ".",
+  "base_commit": "bc1dbcb58ef8fe099f23a9393f3b193ddccb98d0",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Resolve two integrated A4 transfer-ledger findings: compensation nesting must fail closed unless full chain completion is supported, and invalid future-tick envelopes must not commit clock advances or unrelated expiries.",
+  "context_paths": [
+    "AGENTS.md",
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/tests/transfer_contract.rs"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md": "47b75af12339c469343166a5a2eace02058170679a65d3b36856482b7ebff7dc"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A4.4.transfer-fix.json",
+    "conductor/evidence/a4.4-transfer-fix-20261027/README.md",
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/tests/transfer_contract.rs"
+  ],
+  "protected_paths": [
+    ".git",
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/careops-ed",
+    "crates/careops-ed-cli",
+    "libs/kairos",
+    "profiles",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json"
+  ],
+  "leaf_dependencies": [
+    "A4.2"
+  ],
+  "interface_contract": "conductor/decisions/ADR-0012-transfer-lifecycle-and-conservation.md",
+  "steps": [
+    "Reject DestinationRejected on compensation operations before creating a child; retain one-level compensation behavior until nested-chain semantics are explicitly modeled.",
+    "Make TransferManager::apply transactional by applying clock expiry and command processing on a cloned ledger, committing only on Ok.",
+    "Add regression proving nested compensation rejection preserves the full checkpoint and existing single-level compensation completes.",
+    "Add future-tick invalid-transition regression where an unrelated request is due to expire; assert full checkpoint, time and claims remain unchanged.",
+    "Run focused transfer and ward/community tests, core Clippy with warnings denied and workspace formatting. Obtain reviewer-agent review of exact resulting commit."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "transfer_contract",
+        "--test",
+        "ward_community_contract"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Transfer lifecycle, compensation and ward/community integration contracts pass."
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "CareOps core targets pass Clippy with warnings denied."
+    },
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace Rust formatting remains canonical."
+    }
+  ],
+  "acceptance": [
+    "Invalid envelope errors preserve the complete ledger, including virtual time and unrelated expiry state.",
+    "Valid commands continue to process expiry before the command at the target tick.",
+    "One-level compensation remains successful; nested compensation is rejected atomically without a dangling active link or claim loss.",
+    "No Kairos source/pin, ED compatibility, profile, dependency or clinical claim changes."
+  ],
+  "result_path": "conductor/evidence/a4.4-transfer-fix-20261027/README.md",
+  "stop_conditions": [
+    "ADR-0012 input drifts",
+    "A compatibility contract requires nested compensation to succeed in A4.4",
+    "Focused tests or core gates fail",
+    "Any out-of-scope source/pin change appears"
+  ],
+  "size_exception": null,
+  "status": "prepared"
+}

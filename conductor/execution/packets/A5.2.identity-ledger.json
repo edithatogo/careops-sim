@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "packet_id": "A5.2.identity-ledger",
+  "task_id": "A5.2",
+  "target_repo": ".",
+  "base_commit": "f1089a38b97b7a2ad02c02ce3d0cf0913b3bb12b",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Implement a deterministic, versioned, checkpointable person/episode relationship and lifecycle ledger in CareOps core, retain transfer API compatibility, and exercise the same registry through an ED-facing adapter.",
+  "context_paths": [
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "conductor/decisions/ADR-0014-person-episode-identity.md",
+    "conductor/design/composition-contracts-20261020.md",
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/src/pathway/streams.rs",
+    "crates/careops-ed/src/lib.rs"
+  ],
+  "input_hashes": {
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "e294e1471550ffcc1270a0a9b7a5829f6e17386e5fc7b3c65fcea19f998f702c",
+    "conductor/decisions/ADR-0014-person-episode-identity.md": "914ddd05cad88a02c1a96def0da765ae38b059b0b0b855e3209f5fe301423c34"
+  },
+  "write_paths": [
+    "crates/careops-core/Cargo.toml",
+    "Cargo.lock",
+    "crates/careops-core/src/identity.rs",
+    "crates/careops-core/src/lib.rs",
+    "crates/careops-core/src/transfer.rs",
+    "crates/careops-core/tests/identity_contract.rs",
+    "crates/careops-ed/src/identity.rs",
+    "crates/careops-ed/src/lib.rs",
+    "crates/careops-ed/tests/identity_relationship_contract.rs",
+    "conductor/execution/packets/A5.2.identity-ledger.json",
+    "conductor/evidence/a5.2-identity-ledger-20261027/README.md"
+  ],
+  "protected_paths": [
+    ".git",
+    "libs/kairos",
+    "conductor/current-state.json",
+    "conductor/execution/tasks.json",
+    "profiles"
+  ],
+  "leaf_dependencies": [
+    "A5.1"
+  ],
+  "interface_contract": "conductor/decisions/ADR-0014-person-episode-identity.md; conductor/design/composition-contracts-20261020.md#CC-01; conductor/design/composition-contracts-20261020.md#CC-07",
+  "steps": [
+    "Move PersonId and EpisodeId definitions into identity.rs and re-export from transfer unchanged; preserve constructors and serialized representation.",
+    "Implement domain-separated SHA-256 ID derivation from run namespace plus stable typed creation event ID; detect zero/collisions, and do not consume model RNG.",
+    "Use exact derivation bytes: core IDs hash ASCII `careops.identity.id.v1\\0` + ASCII type tag (`person` or `episode`) + NUL + run namespace u64 big-endian + event key u64 big-endian; first 8 digest bytes interpreted u64 big-endian, zero rejected. ED source-key hash uses ASCII `careops.ed.key.v1\\0` + ASCII type tag (`person` or `admission`) + NUL + run namespace u64 BE + UTF-8 byte length u32 BE + exact UTF-8 bytes; no Unicode normalization. Add fixed SHA-256/u64 test vectors and detect all resulting key/ID collisions.",
+    "Implement transactional apply_tick batches, canonical ordering, event dedupe/conflict, sealed-time late rejection, typed relationships (BirthParentOf is acyclic; AssociatedWith may cycle), birth provenance and independent episode entry/exit.",
+    "Make explicit death reject atomically while any episode is open. Same-tick exits sort before death, but death never fabricates or silently counts exits; record separate lifecycle facts.",
+    "Implement checkpoint/restore for IDs, links, episodes, lifecycle records, dedupe payloads and watermark; validate checkpoint graph/cardinality invariants.",
+    "Implement an ED adapter over synthetic opaque source keys. Derive spawn/admission keys by domain-separated SHA-256 over run namespace and length-prefixed key bytes; repeated person key reuses PersonId, each distinct admission key creates a new EpisodeId, and hash collisions reject without mutation.",
+    "Expose the EpisodeId as the per-episode PathwayPatient subject key; demonstrate distinct maternal/infant pathway completion/censoring, independent transfer records and no cascade after relationship removal in an ED consumer test.",
+    "Run the exact core and ED integration test targets, formatting, and reviewer-agent review on the exact integrated commit."
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-core",
+        "--test",
+        "identity_contract"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Core identity contract tests execute and pass, including deterministic IDs, cardinality, atomic failure and checkpoint round-trip."
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--test",
+        "identity_relationship_contract"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "ED consumer identity adapter preserves compatibility and demonstrates independent maternal/infant progression and transfer identities."
+    },
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Workspace formatting passes."
+    }
+  ],
+  "acceptance": [
+    "A5.1 typed identity/cardinality contract is implemented with stable deterministic IDs, canonical ordering, typed relationship semantics, atomic conflict/cycle rejection and no cascade deletion.",
+    "Derivation uses the byte encoding and fixed outputs recorded in this packet; the ED key is opaque byte-exact UTF-8 (no Unicode normalization), empty/oversize keys reject, and zero/colliding IDs fail closed.",
+    "BirthParentOf rejects self/transitive cycles; AssociatedWith cycles are permitted and retained.",
+    "Service entry creates a new globally unique episode for the stable person; explicit exit closes only that episode; explicit death requires no open episodes and does not synthesize exits.",
+    "Maternal and infant persons/episodes use independent pathway subject IDs, progression/outcome results and transfer operations; deleting their relationship has no effect on either record.",
+    "ED repeated source person key maps to the same PersonId across distinct admission keys; each new admission maps to a distinct EpisodeId; invalid/empty keys and hash collisions fail closed.",
+    "Exact event replay is idempotent; conflicting payload and late post-seal identity events reject atomically without consuming event IDs or RNG.",
+    "Checkpoint/restore preserves identity, relationship, lifecycle, dedupe and watermark state; suffix replay matches uninterrupted execution.",
+    "The existing careops_core::transfer::{PersonId, EpisodeId} public paths and serialized ID representation remain compatible; no ED scenario/output schema changes.",
+    "Reviewer-agent/subagent examines the exact commit against ADR-0014, transfer ownership, pathway streams and both adapters; findings are fixed and re-reviewed.",
+    "No Kairos source, parent pin, empirical/clinical validity, portable upstream checkpoint or external delivery guarantee is claimed."
+  ],
+  "result_path": "conductor/evidence/a5.2-identity-ledger-20261027/README.md",
+  "stop_conditions": [
+    "ADR-0014/API incompatibility",
+    "Input/base drift",
+    "Existing transfer behavior or serialized compatibility changes",
+    "Death/episode accounting or relation-cycle policy cannot satisfy the fixed oracle",
+    "Source-key hash collision is not detected atomically",
+    "Out-of-scope Kairos or parent pin edit",
+    "Required behavior cannot be represented atomically"
+  ],
+  "size_exception": "Eleven coordinated paths span a shared identity API, a transfer compatibility re-export, lockfile, core tests and an ED adapter/test. The interface is reviewed before implementation and the paths are committed together; no unrelated source changes are authorized.",
+  "status": "prepared",
+  "derivation_vectors": [
+    {
+      "purpose": "core PersonId",
+      "input_encoding_hex": "636172656f70732e6964656e746974792e69642e763100706572736f6e0000000000000000010000000000000001",
+      "sha256_hex": "47816858b00de33dafabd742e6c27f86c2eeb7a36f620a2ba2a22f2184609360",
+      "first_u64_be": 5152514178808668989
+    },
+    {
+      "purpose": "core EpisodeId",
+      "input_encoding_hex": "636172656f70732e6964656e746974792e69642e763100657069736f64650000000000000000010000000000000001",
+      "sha256_hex": "4159271b38d454f98d98b42055278f3b2423811c41e6ea6d294daf4a222923d6",
+      "first_u64_be": 4708837883263603961
+    },
+    {
+      "purpose": "ED person source key to SpawnEventId",
+      "source_key_utf8": "synthetic-patient-\u03b1",
+      "input_encoding_hex": "636172656f70732e65642e6b65792e763100706572736f6e00000000000000002a0000001473796e7468657469632d70617469656e742dceb1",
+      "sha256_hex": "1562dc860899826943ee64fad961f8654659732acc6786e8be6eaa249e6718dc",
+      "first_u64_be": 1541036490742137449
+    },
+    {
+      "purpose": "ED admission source key to EpisodeEventId",
+      "source_key_utf8": "admission-1",
+      "input_encoding_hex": "636172656f70732e65642e6b65792e76310061646d697373696f6e00000000000000002a0000000b61646d697373696f6e2d31",
+      "sha256_hex": "00b6c8d6d772763086ccd0a885d5d8bc3dc83a7f5a4e157f0a28b90fd2cb0be5",
+      "first_u64_be": 51449270824498736
+    },
+    {
+      "purpose": "ED mapped PersonId",
+      "run_namespace_u64": 42,
+      "spawn_event_id_u64": 1541036490742137449,
+      "input_encoding_hex": "636172656f70732e6964656e746974792e69642e763100706572736f6e00000000000000002a1562dc8608998269",
+      "sha256_hex": "7c9ee80c4d349db09fedb05453c24dff4b25c99e868956f81b6410dbb97acce8",
+      "first_u64_be": 8979869846555893168
+    },
+    {
+      "purpose": "ED mapped EpisodeId",
+      "run_namespace_u64": 42,
+      "episode_event_id_u64": 51449270824498736,
+      "input_encoding_hex": "636172656f70732e6964656e746974792e69642e763100657069736f646500000000000000002a00b6c8d6d7727630",
+      "sha256_hex": "797d6cb7c64fcf4dacd9dd6868e500541d2171cc92b3de5e414aea7c00dc9a55",
+      "first_u64_be": 8754272787240046413
+    }
+  ]
+}

@@ -65,3 +65,16 @@ The coordinator accepts R11.1's authored behavioral-test deliverable against loc
 Actual CLI batch/export also passed with two workers, two replications, horizon8 and ten patient rows, real Parquet capture files and completed manifest. Absolute worktree path, command, hashes and logs remain in ignored receipts. The bound packet is refreshed to source candidate761e4ed for this coordinator reconciliation; its initial execution base445e72d remains explicit. Do not dispatch beyond the recorded acceptance blocker or reuse the packet at a drifting HEAD.
 
 Terminal ownership: same owner chat and managed worktree; source claim released immediately after761e4ed, then a separate clean coordinator claim owns only plan/catalog/packet/handoff and ignored closeout receipts. Next operation: obtain and qualify a compatible accepted upstream Kairos/Polars Zstd dependency chain, then review the parent dependency-policy differences and rerun full integration gates. No native operation is in flight. R11.3–R14 remain pending.
+
+## PR191 context recovery — 2 November 2026
+
+PR194 is merged at `672d3e8`. This chat's isolated integration lane reconciles
+that accepted core source with PR191 `96e8cc8`, retaining the original owner
+checkout and private bindings. The old 30-minute context cancellation is not
+qualified mutation evidence: only 47/117 mutants completed with zero individual
+timeouts. [Recovery evidence and preserved gates](../../evidence/pr191-context-recovery-20261102/README.md)
+records the bounded orchestration repair and full exact-head CI requirement.
+The newer qualified dependency graph passes local workspace/fuzz policy; earlier
+Zstd/version/licence blockers above remain historical receipts. R11.1 stays a
+scoped test-deliverable acceptance; this repair does not check off R11.2–R11.4
+or authorize duplicate work in the original checkout.

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "packet_id": "A2.2.capacity-core",
+  "task_id": "A2.2",
+  "target_repo": ".",
+  "base_commit": "f555a2b43e3f9edc0ab7d86ebfbaf8ba9ed5d326",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Implement the ADR-0010 neutral capacity snapshot, shared-pool accounting, capability matching, and explicit UTC calendar primitives with executable contract tests.",
+  "context_paths": [
+    "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md": "73e1c420af8b8ce49b038685c2486f608a690ced1c4530a233fa0b7aabd0a913",
+    "crates/careops-core/Cargo.toml": "7af84bea12b1624a4fba9883d0901dea83d03d8df2c0fea8145e1695283629d0"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A2.2.capacity-core.json",
+    "crates/careops-core/src/capacity.rs",
+    "crates/careops-core/src/lib.rs",
+    "crates/careops-core/tests/capacity_contract.rs"
+  ],
+  "protected_paths": [".git", "Cargo.lock", "conductor/current-state.json", "conductor/execution/tasks.json", "crates/careops-ed", "libs/kairos"],
+  "leaf_dependencies": [],
+  "interface_contract": "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+  "steps": [
+    "Write failing tests for capacity conservation, unknown versus known zero, shared-pool deduplication/conflict, capability matching, UTC half-open intervals, overlap rejection, explicit-offset DST mapping, gap policy, and overflow.",
+    "Run the exact focused test and record the expected compile failure before implementation.",
+    "Implement the smallest careops-core capacity module without new dependencies or ED/Kairos changes.",
+    "Run the focused capacity contract tests and format check; preserve A2.3 transition/turnover behavior as a separate packet."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-core", "--test", "capacity_contract"], "cwd": ".", "expected_exit": 0, "oracle": "All capacity/calendar contract cases execute and pass."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace Rust formatting is canonical."}
+  ],
+  "acceptance": [
+    "A2.2 types distinguish physical/equipped/open/staffed ceilings from reserved/occupied/cleaning/unavailable dispositions and preserve unknown versus known zero.",
+    "Shared pool declarations must agree on identity, unit, revision, instant, and snapshot; aggregate capacity counts each pool once without claiming allocation arbitration.",
+    "Capability matching is opaque, set-based, and independent of clinical eligibility or dispatch.",
+    "Calendar intervals are half-open UTC seconds; offset mapping is explicit and checked, and no implicit TZDB or UTC-to-simulation-tick adapter is added.",
+    "No new dependency, ED schema/default change, Kairos source/pin change, or lockfile change."
+  ],
+  "result_path": "crates/careops-core/tests/capacity_contract.rs",
+  "stop_conditions": ["Input/base drift", "ADR-0010 no longer matches source", "Edit outside write_paths", "Need for new timezone or allocation dependency"],
+  "size_exception": null,
+  "status": "prepared"
+}

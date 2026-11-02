@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "packet_id": "A3.3-staff-calendar-and-handover",
+  "task_id": "A3.3",
+  "target_repo": ".",
+  "base_commit": "3a1a7b37b4cf629caca3809d88f08a997cbeb26f",
+  "model_role": "coordinator",
+  "model_candidate": "gpt-6.1-sol",
+  "objective": "Implement neutral staff roster, break, assignment, handover, escort-continuity and on-call latency contracts using the accepted UTC Calendar; keep role and clinical policy outside the scheduler core.",
+  "context_paths": [
+    "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+    "conductor/decisions/ADR-0011-staged-resource-claims-and-interruption.md",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
+    "crates/careops-core/src/capacity.rs",
+    "crates/careops-core/src/allocation.rs"
+  ],
+  "input_hashes": {
+    "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md": "089b8cee8bf4f292e5291b2c2a81dc023439f16888878268c4f4193ca2a620bc",
+    "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md": "24f4a0140af902b5643861d3b9afaa414bc2242e64c0400f7be3ac4e600aa427"
+  },
+  "write_paths": [
+    "conductor/execution/packets/A3.3-staff-calendar-and-handover.json",
+    "conductor/evidence/a3.3-staff-calendar-and-handover-20261027/README.md",
+    "crates/careops-core/src/staffing.rs",
+    "crates/careops-core/src/lib.rs",
+    "crates/careops-core/tests/staffing_contract.rs"
+  ],
+  "protected_paths": [".git", "Cargo.lock", "conductor/current-state.json", "conductor/execution/tasks.json", "crates/careops-ed", "libs/kairos"],
+  "leaf_dependencies": ["A3.2"],
+  "interface_contract": "conductor/decisions/ADR-0010-effective-capacity-and-calendar-boundaries.md",
+  "steps": [
+    "Add behavior-first tests for roster coverage, break exclusions, overlap rejection, atomic two-person handover, contiguous escort retention, on-call latency/overflow, and non-interruptible procedure claims.",
+    "Implement neutral StaffId/BookingId, UTC calendar roster and break data, checked interval assignment, overlapping handover for distinct staff, and same-staff escort continuation over adjacent intervals.",
+    "Require handover reservation to validate both incoming windows before mutation; reject double-booking without partial assignments.",
+    "Compute call-in availability as requested time plus configured latency using checked arithmetic; do not make on-call staff immediately available or encode clinical roles.",
+    "Run focused staffing contract tests, core clippy and formatting; record exact source/input/output hashes."
+  ],
+  "verification": [
+    {"argv": ["cargo", "test", "--locked", "-p", "careops-core", "--test", "staffing_contract"], "cwd": ".", "expected_exit": 0, "oracle": "Roster/break, no-double-booking, handover, escort, call-in, and non-interruptible cases pass with atomic state on rejection."},
+    {"argv": ["cargo", "clippy", "--locked", "-p", "careops-core", "--all-targets", "--", "-D", "warnings"], "cwd": ".", "expected_exit": 0, "oracle": "CareOps core targets pass clippy with warnings denied."},
+    {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "expected_exit": 0, "oracle": "Workspace Rust formatting is canonical."}
+  ],
+  "acceptance": [
+    "Staff availability requires roster coverage and excludes break intervals; every staff identity is booked at most once at an instant.",
+    "Handover permits distinct outgoing/incoming staff to overlap only for the declared same booking and validates all incoming windows atomically.",
+    "Escort continuity preserves one staff identity across adjacent escort intervals and blocks concurrent assignments.",
+    "Call-in latency is explicit, checked and never assumed zero.",
+    "Non-interruptible active procedure claims cannot be suspended or released by urgency; no clinical role, priority or staffing policy is added.",
+    "No ED schema/default, Kairos source/pin, production dependency or checkpoint behavior changes."
+  ],
+  "result_path": "conductor/evidence/a3.3-staff-calendar-and-handover-20261027/README.md",
+  "stop_conditions": ["Calendar unit or interval contract changes", "Schedule requires clinical eligibility/role policy", "Cannot make handover validation atomic", "Edit outside write_paths"],
+  "size_exception": null,
+  "status": "prepared"
+}

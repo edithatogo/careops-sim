@@ -20,14 +20,14 @@ HISTORICAL_CATALOG_PATH = (
     / "conductor/evidence/d3.3-quality-gates-20261005/mutants.json"
 )
 BASELINE_UNVIABLES = (
-    "crates/careops-ed/src/lib.rs:251:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:651:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:669:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
-    "crates/careops-ed/src/lib.rs:678:5: replace run_scenario_with_capture -> Result<RunSummary, SimulationError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:252:5: replace parse_scenario_json -> Result<ScenarioConfig, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:652:5: replace invalid -> Result<T, ScenarioError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:670:5: replace run_scenario -> Result<RunSummary, SimulationError> with Ok(Default::default())",
+    "crates/careops-ed/src/lib.rs:679:5: replace run_scenario_with_capture -> Result<RunSummary, SimulationError> with Ok(Default::default())",
 )
 EQUIVALENT_MISSES = (
-    (762, 60, "crates/careops-ed/src/lib.rs:762:60: replace || with && in run_scenario_with_capture"),
-    (827, 43, "crates/careops-ed/src/lib.rs:827:43: replace || with && in run_scenario_with_capture"),
+    (763, 60, "crates/careops-ed/src/lib.rs:763:60: replace || with && in run_scenario_with_capture"),
+    (828, 43, "crates/careops-ed/src/lib.rs:828:43: replace || with && in run_scenario_with_capture"),
 )
 
 
@@ -86,7 +86,7 @@ def valid_outcomes():
             phase_results=[phase("Build", "Success"), phase("Test", "Success")],
         ))
     for index, name in enumerate(BASELINE_UNVIABLES):
-        line = (251, 651, 669, 678)[index]
+        line = (252, 652, 670, 679)[index]
         rows.append(mutant_row(
             name, "Unviable", line=line, column=5,
             genre="FnValue", replacement="Ok(Default::default())",
@@ -123,7 +123,7 @@ def validate(document, source_bytes=SOURCE_BYTES, catalog=None, expected_catalog
 class MutationGateTests(unittest.TestCase):
     def test_accepts_full_bound_baseline_and_exact_equivalence_boundaries(self):
         result = validate(valid_outcomes())
-        self.assertEqual(result["source_sha256"], "9f5ef0d1905c2540786fe97df4033e8c32a908699e59c5226f45316a623e2c93")
+        self.assertEqual(result["source_sha256"], "16be17474be52f923196d652f432dcecb3bebfc8866f14114f721a8d4e6a6352")
         self.assertEqual(result["total_mutants"], 117)
         self.assertEqual(result["caught"], 111)
         self.assertEqual(result["missed"], 2)
@@ -232,11 +232,11 @@ class MutationGateTests(unittest.TestCase):
 
     def test_rejects_any_non_disposition_missed_mutant(self):
         bad_mutants = (
-            {"line": 762, "column": 61, "genre": "BinaryOperator", "replacement": "&&", "name": "replace || with &&"},
-            {"line": 762, "column": 60, "genre": "Other", "replacement": "&&", "name": "replace || with &&"},
-            {"line": 762, "column": 60, "genre": "BinaryOperator", "replacement": "||", "name": "replace || with &&"},
-            {"line": 762, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "replace && with ||"},
-            {"line": 762, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "unbound replace || with &&"},
+            {"line": 763, "column": 61, "genre": "BinaryOperator", "replacement": "&&", "name": "replace || with &&"},
+            {"line": 763, "column": 60, "genre": "Other", "replacement": "&&", "name": "replace || with &&"},
+            {"line": 763, "column": 60, "genre": "BinaryOperator", "replacement": "||", "name": "replace || with &&"},
+            {"line": 763, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "replace && with ||"},
+            {"line": 763, "column": 60, "genre": "BinaryOperator", "replacement": "&&", "name": "unbound replace || with &&"},
         )
         for bad in bad_mutants:
             document = valid_outcomes()
