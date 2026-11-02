@@ -53,6 +53,8 @@ impl DeliveryLedger {
 
     /// Normalize complete correlated records before an atomic core registration.
     /// A conflicting route or observation cannot be hidden by a birth-message retry.
+    /// This bounded record accepts observations taken at birth only; availability
+    /// may be delayed. Later observations require a separate update contract.
     pub fn register(
         &mut self,
         identities: &mut IdentityLedger,
@@ -71,9 +73,11 @@ impl DeliveryLedger {
             .map(|infant| infant.infant_ordinal)
             .collect();
         let mut observed = BTreeSet::new();
+        let retry = self.records.contains_key(&record.birth.message_id);
         for observation in &record.observations {
             if !ordinals.contains(&observation.infant_ordinal)
                 || observation.observed_tick > tick
+                || (!retry && observation.observed_tick != tick)
                 || observation.available_tick < observation.observed_tick
                 || [
                     &observation.variable,

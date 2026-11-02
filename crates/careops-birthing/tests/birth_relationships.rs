@@ -218,6 +218,10 @@ fn later_delivery_has_new_recovery_without_reopening_previous_delivery() {
         infant.relationship_event_id =
             RelationshipEventId::new(110 + u64::from(infant.infant_ordinal));
     }
+    for observation in &mut later.observations {
+        observation.observed_tick = 10;
+        observation.available_tick = 11;
+    }
     deliveries.register(&mut ids, 10, later).unwrap();
     assert_eq!(
         deliveries.state(BirthMessageId::new(104), mother),
@@ -244,4 +248,17 @@ fn later_delivery_has_new_recovery_without_reopening_previous_delivery() {
         )
         .is_err());
     assert_eq!(ids.counts().births, 4);
+}
+
+#[test]
+fn pre_birth_observation_rejects_without_creating_a_delivery() {
+    let (mut ids, record) = fixture(DeliveryRoute::Vaginal);
+    let before = ids.checkpoint().unwrap();
+    let mut deliveries = DeliveryLedger::default();
+    assert!(deliveries.register(&mut ids, 10, record.clone()).is_err());
+    assert_eq!(ids.checkpoint().unwrap(), before);
+    assert!(deliveries.record(record.birth.message_id).is_none());
+    assert!(deliveries
+        .state(record.birth.message_id, record.birth.mother_person_id)
+        .is_none());
 }
