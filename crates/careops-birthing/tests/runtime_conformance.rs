@@ -55,7 +55,9 @@ fn accepted_b11_fixture_executes_through_independent_patient_and_service_states(
 
     for case in cases {
         let events = case["events"].as_array().unwrap();
-        let first = &events[0];
+        let first = events
+            .first()
+            .expect("B1 case oracle must include its initial state event");
         let patient_id = patient_ids[case["patient_id"].as_str().unwrap()];
         let mut episode = BirthingEpisode::new(
             patient_id,
@@ -128,6 +130,8 @@ fn accepted_b11_fixture_executes_through_independent_patient_and_service_states(
         }
 
         let horizon = episode.observation().tick + 2;
+        // These B1 cases deliberately end unfinished. A completed-delivery
+        // fixture needs a distinct completion oracle, not a relaxed assertion.
         let censored = episode.censor_at(horizon).unwrap();
         assert!(
             censored.censored,

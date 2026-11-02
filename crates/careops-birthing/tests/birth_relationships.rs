@@ -77,13 +77,15 @@ fn both_routes_register_correlated_twins_and_reject_changed_duplicate_atomically
 
 #[test]
 fn malformed_provenance_or_ordinal_does_not_spawn_partial_infants() {
-    for mode in 0..4 {
+    for mode in 0..6 {
         let (mut ids, mut record) = fixture(DeliveryRoute::Vaginal);
         match mode {
             0 => record.observations[0].provenance.clear(),
             1 => record.observations[0].infant_ordinal = 99,
             2 => record.observations[0].available_tick = 0,
-            _ => record.observations.push(record.observations[0].clone()),
+            3 => record.observations.push(record.observations[0].clone()),
+            4 => record.observations[0].variable = " ".into(),
+            _ => record.observations[0].unit = " ".into(),
         }
         let before = ids.checkpoint().unwrap();
         let mut deliveries = DeliveryLedger::default();
@@ -210,6 +212,13 @@ fn later_delivery_has_new_recovery_without_reopening_previous_delivery() {
     deliveries
         .transition(BirthMessageId::new(4), mother, 2, RecoveryState::Discharged)
         .unwrap();
+    // Exact replay is idempotent; re-dating even the same terminal value fails.
+    deliveries
+        .transition(BirthMessageId::new(4), mother, 2, RecoveryState::Discharged)
+        .unwrap();
+    assert!(deliveries
+        .transition(BirthMessageId::new(4), mother, 3, RecoveryState::Discharged)
+        .is_err());
     let mut later = record;
     later.birth.message_id = BirthMessageId::new(104);
     later.birth.birth_event_id = BirthEventId::new(105);
