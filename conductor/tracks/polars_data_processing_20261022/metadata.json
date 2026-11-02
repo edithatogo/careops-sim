@@ -8,7 +8,8 @@
   "spec_approved": true,
   "implementation_started": true,
   "accepted_phases": [
-    "R10"
+    "R10",
+    "R11"
   ],
   "approval_basis": "User confirmed clean break, both repositories, Parquet default, bounded float differences; requested Conductor incorporation.",
   "phase_dependencies": {
@@ -45,11 +46,11 @@
       "receipt": "conductor/evidence/r103-remote-20261029/prerequisites.md"
     }
   ],
-  "active_phase": "R11",
+  "active_phase": "R12",
   "sequencing_basis": "User requested inventory-first Polars; supporting dependency work gates only demonstrated dependent tasks.",
   "acceptance_evidence": "conductor/tracks/polars_data_processing_20261022/review-report.md",
-  "accepted_source_commit": "e65570b7a1046dafb15511ab5118b46b587f2f5d",
-  "next_phase_decision": "R11.1\u2013R11.3 local engineering accepted; R11.3 exact244907e has646Rust/774Python,34focused, native CLI/PyArrow and independent reviewer ready. R11.4 requires actual hosted gates/phase closeout. R12\u2013R14 remain open.",
+  "accepted_source_commit": "2796f4499a84b3734a2e2d9a7143918705f58bf0",
+  "next_phase_decision": "R11 engineering accepted at2796f44 after complete hosted41537272425:17successes plus expected main-only skip;117mutants fully accounted, zero viable survivors/timeouts,88.408%critical line coverage. Dispatch R12.1 analytical tests under a fresh reviewed packet; R12\u2013R14 remain open.",
   "accepted_local_tasks": {
     "R11.1": {
       "source": "3ee7ac1225c9c53d076a7246a1d02ce3e4cdcb10",
@@ -59,12 +60,17 @@
     "R11.2": {
       "source": "3ee7ac1225c9c53d076a7246a1d02ce3e4cdcb10",
       "scope": "original-run production Parquet capture/export integration; recovery defects left toR11.3",
-      "hosted_phase_accepted": false
+      "hosted_phase_accepted_at_local_acceptance": false
     },
     "R11.3": {
       "source": "244907e0c38df527bf1b6d822bbbba272bbc06be",
       "scope": "durable control journal, validated model/envelopes, preserved pending attempts and completed-manifest recovery; 24 real process kills",
-      "hosted_phase_accepted": false
+      "hosted_phase_accepted_at_local_acceptance": false
     }
-  }
+  },
+  "accepted_phase_sources": {
+    "R10": "e65570b7a1046dafb15511ab5118b46b587f2f5d",
+    "R11": "2796f4499a84b3734a2e2d9a7143918705f58bf0"
+  },
+  "hosted_phase_receipt": "conductor/evidence/polars-integration-20261103/R11-hosted.json"
 }

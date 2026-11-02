@@ -75,3 +75,22 @@ native operation, private binding or owner worktree was transferred. This writer
 continues as coordinator for R11.4 hosted phase qualification; original assignments
 remain history. R12–R14 stay open behind that phase decision. No merge/release or
 clinical acceptance is inferred from the local handoff.
+
+## R11.4 terminal evidence handoff — 3 November 2026
+
+Existing chat/worktree ownership and runtime074/data4134/Polars964 remain
+unchanged. Head2796f44, simulation sourcef41d938, passes all17hosted checks
+plus expected main-only attestation skip in run41537272425. All117mutations
+are accounted:111caught,2exact reviewed equivalents,4compiler-unviable,
+zero viable survivors/timeouts. Critical line coverage88.408%;26benchmarks pass.
+The [R11 hosted receipt](../../evidence/polars-integration-20261103/R11-hosted.json)
+binds exact source/tree/artifacts and separates local from hosted evidence.
+
+R11 is accepted for bounded engineering. Next: this same coordinator prepares
+and reviews R12.1 statistical/join oracles, then claims only selected ED/birthing
+processing paths. Preparation identifies existing calibration fixture projections,
+checked integer reduction and cardinality validation. No R12 implementation or
+acceptance is inferred from those probes. No native service operation or owner
+transfer is in flight. Prior assignments, frozen R103/A7 references and failed
+attempts remain history. PR199 remains draft/unmerged; R12–R14 and broader gates
+remain open.

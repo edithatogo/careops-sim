@@ -67,7 +67,7 @@ required features and acceptance recipes. E2 is the functional headless MVP; E4
 is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.
 
 ---
-- [~] **Track: CareOps whole-layer Polars migration** — R10 accepted; R11.1–R11.3 locally qualified at244907e with original-run Parquet capture and durable recovery. R11.4 hosted phase gate pending; R12–R14 processing, consumers and final acceptance remain open. [Track](tracks/polars_data_processing_20261022/index.md).
+- [~] **Track: CareOps whole-layer Polars migration** — R10–R11 engineering accepted at2796f44 after hosted41537272425:17successes plus expected main-only skip, complete117mutation outcomes and88.408%critical line coverage. R12.1 analytical tests are next; R12–R14 processing, consumers and final acceptance remain open. [Track](tracks/polars_data_processing_20261022/index.md).
 
 ---
 - [ ] **Track: rand deterministic RNG adoption** — Proposed; implementation not started. [Track](tracks/rand_rng_adoption_20261022/index.md).

@@ -92,3 +92,47 @@ Reviewer ofcfe6151 found P2: nested BatchConfig schema_version was not checked. 
 ### Remaining acceptance boundary
 
 R11.1–R11.3 checkboxes are local engineering only. The normal privacy/history hook passed publication of the draft branch; actual hosted checks and clean committed phase records still gate R11.4. R12 processing, R13 consumer migration and R14 performance/removal remain open. Hardware power-loss, clinical and broader A7 acceptance are not established.
+
+## Review Report: R11 phase — 3 November 2026
+
+### Summary
+
+R11 is ready for bounded engineering acceptance at2796f44, simulation
+sourcef41d938, with complete actual hosted evidence; R12–R14 remain open.
+
+### Verification Checks
+
+- [x] Plan compliance: original-run bounded capture, durable acknowledgments,
+  model/envelope validation, preserved attempts and manifest-last publication.
+- [x] Style compliance: formatting and warnings-denied Clippy pass.
+- [x] New tests: actual cancellation/progress corruption and UInt64 overflow
+  controls join real process-kill, sync-failure and schema controls.
+- [x] Test coverage:648Rust/774Python,36focused and24kill-window local controls;
+  actual critical line coverage511/578 (88.408%) and complete117mutant catalog.
+- [x] Test results: all17hosted checks pass, with expected main-only skip;
+  111caught,2reviewed equivalents,4unviable,zero viable survivors/timeouts.
+  Both native hosts and26benchmarks pass. See the
+  [exact receipt](../../evidence/polars-integration-20261103/R11-hosted.json).
+
+### Findings and disposition
+
+Partial progress incorrectly reported zero after two durable acknowledgments;
+corrupt journal state could publish a misleading marker. f41d938 fixes both,
+with actual failing controls retained. A valid completion atUInt64::MAX exposed
+legacy spatial tick-addition overflow, now explicitly rejected. A defensive
+checked subtraction is present; no reachable prior subtraction panic was claimed.
+Manufactured spatial movements remain the reviewed R12/R13 removal, rather than
+silently changing the legacy export in R11.
+
+The75minute outer timeout left113/117mutations incomplete and remains failed
+evidence. A finite90minute ceiling permits completion without changing any
+per-mutant limit, catalog, compiler proof, coverage floor or survivor rule.
+The second stale75minute test assertion was corrected at2796f44;27affected tests
+pass and exact independent review is ready. No rejected/cross-owner changes.
+
+### Next-phase decision
+
+Accept R11.4 and permit R12.1 under a fresh reviewed packet and advisory claim.
+This closeout records source2796f44 evidence, not hosted results for its containing
+documentation commit. Preserve R12–R14, physical, clinical, site, operational,
+release and broader A7 gates. Keep the track active; do not archive it.
