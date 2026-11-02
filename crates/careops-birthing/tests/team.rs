@@ -173,6 +173,8 @@ fn handover_preserves_role_responsibility_and_escort_continuity() {
     assert_eq!(team.registry().assignment_count(), 3);
     assert!(team.release_at(original, 46).is_err());
     assert!(team.release_at(result.0, 46).is_err());
+    assert!(team.release_at(result.1, 50).is_err());
+    assert!(team.release_at(result.1, 60).is_err());
     assert!(team
         .allocate(request(2, 1, &[("staff", 1)], 60, 70))
         .is_err());
@@ -242,4 +244,29 @@ fn unsafe_procedure_interruption_and_invalid_profiles_fail_closed() {
     let mut invalid = profile;
     invalid.overtime_per_shift_seconds = u64::MAX;
     assert!(TeamAllocator::new(vec![invalid]).is_err());
+}
+
+#[test]
+fn historical_team_receipt_cannot_admit_after_removed_or_truncated_claim() {
+    for released_at in [10, 15] {
+        let mut team = TeamAllocator::new(vec![member(1, &["staff"], 0, 100)]).unwrap();
+        let req = request(1, 1, &[("staff", 1)], 10, 20);
+        let assignment = team.allocate(req.clone()).unwrap().assignments[0].assignment;
+        team.release_at(assignment, released_at).unwrap();
+        let before = team.registry().assignments();
+        let mut spaces = SpacePool::new(vec![SpaceProfile {
+            id: 1,
+            revision: "synthetic:v1".into(),
+            kind: SpaceKind::Ldr,
+            capabilities: caps(&["ldr"]),
+            open: calendar(0, 100),
+            staffed: Some(calendar(0, 100)),
+            equipped: Some(true),
+        }])
+        .unwrap();
+        assert!(team.admit(&mut spaces, 10, caps(&["ldr"]), req).is_err());
+        assert_eq!(team.registry().assignments(), before);
+        assert_eq!(spaces.snapshot(1).unwrap().reserved, 0);
+        assert_eq!(spaces.snapshot(1).unwrap().occupied, 0);
+    }
 }

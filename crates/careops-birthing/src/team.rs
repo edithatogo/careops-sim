@@ -277,6 +277,22 @@ impl TeamAllocator {
         let mut candidate = self.clone();
         let mut rooms = spaces.clone();
         let team = candidate.allocate(request.clone())?;
+        // A historical booking receipt is not a new live staffing grant.
+        // Every role must still own the whole declared duty before admission.
+        if team.assignments.iter().any(|role| {
+            !candidate
+                .registry
+                .assignment(role.assignment)
+                .is_some_and(|claim| {
+                    claim.staff == role.staff
+                        && claim.booking == request.booking
+                        && claim.interval == request.interval
+                        && claim.kind == request.kind
+                        && candidate.roles.get(&role.assignment) == Some(&role.role)
+                })
+        }) {
+            return Err("historical team receipt no longer owns complete duty claims".into());
+        }
         let room = rooms.reserve(episode, requirements.clone(), request.interval.start())?;
         if !rooms.holds_reservation(episode) {
             return Err("historical room receipt is not a current reservation".into());
@@ -400,10 +416,11 @@ impl TeamAllocator {
             return Err("escort commitment has not completed".into());
         }
         if self.handovers.iter().any(|(prior, handover)| {
-            (*prior == assignment || handover.result.0 == assignment)
-                && tick < handover.overlap.end()
+            ((*prior == assignment || handover.result.0 == assignment)
+                && tick < handover.overlap.end())
+                || (handover.result.1 == assignment && tick < current.interval.end())
         }) {
-            return Err("handover overlap has not completed".into());
+            return Err("handover responsibility commitment has not completed".into());
         }
         self.registry
             .release_at(assignment, tick)
