@@ -13,7 +13,7 @@ R10 entry and baseline are reconciled for the bounded remote packet. Runtime Pol
 
 - [x] R11.1 Add failing run-invocation-count, bounded-buffer/backpressure, disk-error and checkpoint-resume duplicate/loss tests. Retained authoring acceptance3952f51; combined local qualification at3ee7ac1:69targeted and638workspace Rust tests, policy/pin/support and774Python tests pass; independent review ready.
 - [x] R11.2 Capture required tables during original replications and write bounded per-replication parts using Kairos data facilities; remove export-time reruns. Bounded local engineering accepted at3ee7ac1 after the retained PR191 source integration,638workspace Rust/774Python tests,26actual frozen/current seed7 differential cases, locked policy/pin/support checks and independent review. Full R11phase/hosted acceptance remains R11.4; R11.3 crash/durability defects stay open.
-- [ ] R11.3 Bind trace part IDs/watermarks to restart state and publish manifest last; preserve exact event/RNG behaviour across worker counts and restarts.
+- [x] R11.3 Bind trace part IDs/watermarks to restart state and publish manifest last; preserve exact event/RNG behaviour across worker counts and restarts. Local engineering accepted at244907e after durable journal/model/envelope/attempt recovery,24real process-kill cases at1/2/4workers,646Rust/774Python tests, native CLI/PyArrow checks and independent review with nested-schema fix applied. Full phase/hosted gate remainsR11.4.
 - [ ] R11.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.
 
 ## R12 — Rust Polars domain processing

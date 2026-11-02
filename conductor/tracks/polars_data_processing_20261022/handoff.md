@@ -58,3 +58,20 @@ No unrelated source/checkouts or environments were reset.
 R11.1/R11.2 checkboxes record local task acceptance only. R11.3 needs real durable
 control/model/attempt/crash-window fixes; R11.4 still requires full combined source
 review and hosted gates before phase acceptance/integration. R12–R14 remain open.
+
+## R11.3 reviewed local handoff — 3 November 2026
+
+Exact source244907e on this chat's existing integration branch completes the
+durable-control/model/envelope/attempt work. Independent review found one nested
+BatchConfig version omission; the real red regression and24kill-window refusal
+probes now pass after the committed fix, and exact re-review is ready.
+646Rust/774Python tests,34focused controls, Clippy, policy/pin/support and an actual
+CLI/PyArrow1/4worker round trip pass. [Detailed evidence](../../evidence/polars-integration-20261103/R11.md).
+The disk-full linker attempt remains failed evidence; the subsequent full retry
+passes after cleaning only terminal, owned ED build artifacts.
+
+Normal hooks accepted the branch push with0new findings. No source/environment,
+native operation, private binding or owner worktree was transferred. This writer
+continues as coordinator for R11.4 hosted phase qualification; original assignments
+remain history. R12–R14 stay open behind that phase decision. No merge/release or
+clinical acceptance is inferred from the local handoff.

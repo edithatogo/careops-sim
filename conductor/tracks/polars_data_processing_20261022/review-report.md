@@ -69,3 +69,26 @@ Owner: chat `01a1876f-9b26-71e0-b55c-daeb9d9a1335`; managed worktree `careops-r1
 ### Next-phase decision
 
 Permit **R11.1 preparation only** after R10.4 acceptance. Bind a fresh exact-base packet, context hashes, owned paths and claim before source edits. Name and execute failing oracles for one invocation per replication, bounded capture/backpressure, disk failure and checkpoint-resume duplicate/loss behavior before implementing capture. Retained dependency work gates only its demonstrated consumer/oracle; no blanket sha2/tempfile/proptest adoption gate. No R11 task is checked complete or dispatched by this review. Keep this track active through R14; do not archive it.
+
+
+## Review Report: R11.3 local engineering — 3 November 2026
+
+### Summary
+
+Ready at244907e for local R11.3 engineering acceptance; full R11phase hosted acceptance remains open.
+
+### Verification Checks
+
+- [x] Plan compliance: durable control publication, preserved attempts, model/envelope binding and completed-manifest recovery are implemented.
+- [x] Style compliance: ED all-target Clippy with warnings denied and formatting pass.
+- [x] New tests: actual child-process kills at8windows with1/2/4worker recovery; sync faults, unknown versions and model binding.
+- [x] Integration tests:646Rust workspace and774Python tests pass; actual CLI/PyArrow typed Parquet/Zstd/hash/model/cross-worker checks pass.
+- [ ] Hosted phase gates: pending; no R11.4 or R12 acceptance.
+
+### Findings and disposition
+
+Reviewer ofcfe6151 found P2: nested BatchConfig schema_version was not checked. A new actual export regression failed on that source. Commit244907e validates before export/resume binding and before new output creation;24process-window probes also require refusal before mutation. Independent exact-commit re-review reports the finding fully addressed, ready, no new delta findings. No rejected findings or cross-owner changes.
+
+### Remaining acceptance boundary
+
+R11.1–R11.3 checkboxes are local engineering only. The normal privacy/history hook passed publication of the draft branch; actual hosted checks and clean committed phase records still gate R11.4. R12 processing, R13 consumer migration and R14 performance/removal remain open. Hardware power-loss, clinical and broader A7 acceptance are not established.
