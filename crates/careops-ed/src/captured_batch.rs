@@ -200,9 +200,13 @@ pub(crate) fn export_source(
     let store = ParquetPartStore::open(&source.directory, source.limits).map_err(error)?;
     let checkpoint =
         capture::read_checkpoint(&source.directory.join("checkpoint.json")).map_err(error)?;
-    let meta = checkpoint.metadata;
-    let expected =
+    let meta = checkpoint.metadata.clone();
+    let mut expected =
         capture::metadata(scenario, &meta.config, source.limits, &store).map_err(error)?;
+    // Read-only analysis checks the recorded producer identity; only execution
+    // recovery requires this reader's current compiled model identity.
+    expected.model_contract_sha256 = meta.model_contract_sha256.clone();
+    capture::check_binding(&checkpoint, &expected).map_err(error)?;
     let reps = store.completed_replications().map_err(error)?;
     if meta != expected
         || doc.status != "complete"

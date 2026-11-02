@@ -113,3 +113,43 @@ R11.3 remains unaccepted: initial/control checkpoint sync, pending orphan attemp
 recovery, capture-manifest/final-document crash window, compiled-model binding and
 full checkpoint-envelope validation need real fault/process controls. R12–R14
 remain separate processing/output/performance/removal phases.
+
+## R11.3 durability candidate — 3 November 2026
+
+Capture control is now schema version2, `careops.ed.capture-boundary.v2`. Old
+unacceptedv1capture directories remain preserved and reject rather than being
+reinterpreted. The ED coordinator persists an initial checkpoint before workers,
+then serializes each completed-replication acknowledgment through file sync, atomic
+replacement and directory sync. It reuses the generic independent-seed runner
+without its best-effort checkpoint writer; generic core/engine code is unchanged.
+
+Recovery validates the full control envelope, represented index coverage and every
+acknowledged part before mutation. Known pending replication parts are moved to
+exclusive `recovery/attempt-*` directories on explicit resume; bytes are preserved.
+Unknown namespaces and corrupt/missing acknowledged data reject. A complete valid
+capture manifest can finalize a missing batch document without republishing parts
+or rerunning completed work. Repeated capture recovery is idempotent; an already
+published batch document remains protected from overwrite.
+
+The compiled model contract hashes owned core/ED/CLI implementation and manifests,
+actual consumed path-runtime source, root lock, build script, actual rustc/target/
+profile/flags/features. It is stored in checkpoint metadata, replication records
+and typed Parquet parts. Execution recovery requires the current build identity;
+read-only analysis validates internally consistent recorded producer identity.
+The original actual-compiler metadata is retained. This is an implementation
+binding, not a binary signature, clinical validation or cross-platform restart
+claim. Source/pin rollback uses its own compatible output, never mixed artifacts.
+
+New native controls cover24actual child-process kills across8publication windows
+and1/2/4recovery workers; exact serial row/count/seed coverage, preserved acknowledged
+bytes and pending-attempt bytes, call counts and idempotence. File and directory
+sync failures are separately injected at the real control publication boundary.
+A controlled omission of model binding fails the intended refusal assertion; exact
+source is restored before green verification. Seven recovery targets (including
+the child fixture), retained21capture targets and5E9controls pass locally, with
+Clippy warnings denied. Independent committed review, parser-fuzz build-dependency
+lock qualification and full combined R11phase/hosted gates remain pending.
+
+These results establish local-filesystem process-crash/completed-replication
+recovery only. Codec/model/control metadata memory and actual platform/power-loss
+limitations remain explicit; there is no within-replication simulation checkpoint.

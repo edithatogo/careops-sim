@@ -216,8 +216,9 @@ fn full_u64_ticks_and_nullable_limbs_roundtrip() {
     let root = tempfile::tempdir().unwrap();
     let store = ParquetPartStore::open(root.path(), DEFAULT_LIMITS).unwrap();
     let b = CaptureBatch {
+        model_contract_sha256: careops_ed::capture::MODEL_CONTRACT_SHA256.into(),
         time_unit: "ticks".into(),
-        schema: "careops.ed.capture-boundary.v1".into(),
+        schema: "careops.ed.capture-boundary.v2".into(),
         run_id: "edge".into(),
         input_sha256: "0".repeat(64),
         replication_index: 0,
@@ -330,7 +331,8 @@ fn production_encoder_propagates_actual_partial_file_write_error() {
     let root = tempfile::tempdir().unwrap();
     let store = ParquetPartStore::open(root.path(), DEFAULT_LIMITS).unwrap();
     let batch = CaptureBatch {
-        schema: "careops.ed.capture-boundary.v1".into(),
+        model_contract_sha256: careops_ed::capture::MODEL_CONTRACT_SHA256.into(),
+        schema: "careops.ed.capture-boundary.v2".into(),
         time_unit: s.time_unit,
         run_id: "disk-error".into(),
         input_sha256: "0".repeat(64),

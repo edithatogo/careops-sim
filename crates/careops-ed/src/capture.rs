@@ -10,8 +10,13 @@
 //! summary and accumulated checkpoint metadata require separate qualification.
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::fs::{self, File, OpenOptions};
 use std::io::{self, Read, Write};
 use std::path::Path;
+use std::sync::{
+    atomic::{AtomicU64, Ordering},
+    Mutex,
+};
 
 use careops_core::experiment::{self, ExperimentError, ExperimentErrorKind, IndexedReplication};
 use serde::{Deserialize, Serialize};
@@ -94,6 +99,7 @@ pub struct CaptureBatch {
     pub schema: String,
     pub run_id: String,
     pub input_sha256: String,
+    pub model_contract_sha256: String,
     pub time_unit: String,
     pub replication_index: usize,
     pub seed: u64,
@@ -133,11 +139,24 @@ pub trait PartStore: Sync {
     fn part_names(&self) -> Result<Vec<String>>;
     fn is_complete(&self) -> Result<bool>;
     fn complete(&self, replications: &[CapturedReplication]) -> Result<()>;
+    /// Acknowledgment follows file sync, atomic replacement and directory sync.
+    fn commit_checkpoint(&self, path: &Path, bytes: &[u8]) -> Result<()> {
+        durable_checkpoint(path, bytes)
+    }
+    /// Only explicit recovery may preserve/archive unacknowledged pending parts.
+    fn prepare_recovery(&self, _pending: &[usize]) -> Result<()> {
+        Ok(())
+    }
+    /// Stores must independently verify an already-published completion manifest.
+    fn verify_complete(&self, _replications: &[CapturedReplication]) -> Result<()> {
+        Err(invalid("completed store recovery verification unsupported"))
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct CapturedReplication {
+    pub model_contract_sha256: String,
     pub summary: ReplicationResult,
     pub parts: Vec<PartRef>,
 }
@@ -156,6 +175,7 @@ impl IndexedReplication for CapturedReplication {
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct CaptureMetadata {
     pub capture_schema: String,
+    pub model_contract_sha256: String,
     pub codec_id: String,
     pub effective_input_sha256: String,
     pub parsed_input_sha256: String,
@@ -164,9 +184,10 @@ pub struct CaptureMetadata {
 }
 pub type CaptureCheckpoint =
     experiment::GenericBatchCheckpoint<CapturedReplication, CaptureMetadata>;
-const SCHEMA: &str = "careops.ed.capture-boundary.v1";
+pub const SCHEMA: &str = "careops.ed.capture-boundary.v2";
+pub const MODEL_CONTRACT_SHA256: &str = env!("CAREOPS_ED_MODEL_CONTRACT_SHA256");
 
-fn part_name(index: usize, sequence: usize) -> String {
+pub(crate) fn part_name(index: usize, sequence: usize) -> String {
     format!("rep-{index:08}-seq-{sequence:016}.part")
 }
 pub(crate) fn metadata(
@@ -184,6 +205,7 @@ pub(crate) fn metadata(
     effective.seed = config.base_seed;
     Ok(CaptureMetadata {
         capture_schema: SCHEMA.into(),
+        model_contract_sha256: MODEL_CONTRACT_SHA256.into(),
         codec_id: store.codec_id().into(),
         effective_input_sha256: compute_sha256_hex(
             &serde_json::to_vec(&effective).map_err(invalid_json)?,
@@ -283,6 +305,7 @@ fn execute(
             schema: SCHEMA.into(),
             run_id: meta.config.batch_id.clone(),
             input_sha256: meta.effective_input_sha256.clone(),
+            model_contract_sha256: meta.model_contract_sha256.clone(),
             time_unit: scenario.time_unit.clone(),
             replication_index: index,
             seed,
@@ -316,6 +339,7 @@ fn execute(
             .ok_or_else(|| invalid("capture wait sum overflow"))
     })?;
     Ok(CapturedReplication {
+        model_contract_sha256: meta.model_contract_sha256.clone(),
         summary: ReplicationResult {
             replication_index: index,
             seed,
@@ -340,6 +364,16 @@ pub(crate) fn validate_parts(
     scenario: &ScenarioConfig,
     store: &dyn PartStore,
 ) -> Result<()> {
+    validate_parts_pending(results, meta, scenario, store, &BTreeSet::new())
+}
+
+fn validate_parts_pending(
+    results: &[CapturedReplication],
+    meta: &CaptureMetadata,
+    scenario: &ScenarioConfig,
+    store: &dyn PartStore,
+    pending: &BTreeSet<usize>,
+) -> Result<()> {
     let limits = meta.limits;
     let expected_patients: BTreeMap<_, _> = scenario
         .patients
@@ -357,7 +391,10 @@ pub(crate) fn validate_parts(
     let mut names = BTreeSet::new();
     for result in results {
         let index = result.summary.replication_index;
-        if seeds.get(index) != Some(&result.summary.seed) || !replications.insert(index) {
+        if result.model_contract_sha256 != meta.model_contract_sha256
+            || seeds.get(index) != Some(&result.summary.seed)
+            || !replications.insert(index)
+        {
             return Err(invalid("capture replication identity mismatch"));
         }
         let mut started = 0usize;
@@ -384,6 +421,7 @@ pub(crate) fn validate_parts(
                 || batch.schema != SCHEMA
                 || batch.run_id != meta.config.batch_id
                 || batch.input_sha256 != meta.effective_input_sha256
+                || batch.model_contract_sha256 != meta.model_contract_sha256
                 || batch.replication_index != result.summary.replication_index
                 || batch.seed != result.summary.seed
                 || batch.first_sequence != next
@@ -448,8 +486,12 @@ pub(crate) fn validate_parts(
             return Err(invalid("capture coverage or summary mismatch"));
         }
     }
-    let actual = store.part_names()?;
-    if actual.len() != names.len() || actual.into_iter().collect::<BTreeSet<_>>() != names {
+    let actual: BTreeSet<_> = store.part_names()?.into_iter().collect();
+    if !names.is_subset(&actual)
+        || actual
+            .difference(&names)
+            .any(|name| parse_part_name(name).is_none_or(|(index, _)| !pending.contains(&index)))
+    {
         return Err(invalid(
             "unreferenced capture parts require explicit recovery; no implicit replay",
         ));
@@ -458,6 +500,10 @@ pub(crate) fn validate_parts(
 }
 
 pub(crate) fn read_checkpoint(path: &Path) -> Result<CaptureCheckpoint> {
+    let file_type = fs::symlink_metadata(path).map_err(output)?.file_type();
+    if !file_type.is_file() || file_type.is_symlink() {
+        return Err(invalid("checkpoint must be a regular file"));
+    }
     let mut bytes = vec![];
     std::fs::File::open(path)
         .map_err(output)?
@@ -467,12 +513,60 @@ pub(crate) fn read_checkpoint(path: &Path) -> Result<CaptureCheckpoint> {
     if bytes.len() > 16 * 1024 * 1024 {
         return Err(invalid("capture checkpoint too large"));
     }
-    serde_json::from_slice(&bytes).map_err(invalid_json)
+    let value: serde_json::Value = serde_json::from_slice(&bytes).map_err(invalid_json)?;
+    let allowed = [
+        "schema_version",
+        "batch_id",
+        "base_seed",
+        "total_replications",
+        "completed_replications",
+        "pending_indices",
+        "status",
+        "checkpoint_epoch_ms",
+        "capture_schema",
+        "model_contract_sha256",
+        "codec_id",
+        "effective_input_sha256",
+        "parsed_input_sha256",
+        "config",
+        "limits",
+    ];
+    if value
+        .as_object()
+        .is_none_or(|object| object.keys().any(|key| !allowed.contains(&key.as_str())))
+    {
+        return Err(invalid("unknown capture control fields"));
+    }
+    serde_json::from_value(value).map_err(invalid_json)
 }
-fn check_binding(checkpoint: &CaptureCheckpoint, expected: &CaptureMetadata) -> Result<()> {
+pub(crate) fn check_binding(
+    checkpoint: &CaptureCheckpoint,
+    expected: &CaptureMetadata,
+) -> Result<()> {
     let mut config = checkpoint.metadata.config.clone();
     config.num_workers = expected.config.num_workers;
-    if checkpoint.metadata.parsed_input_sha256 != expected.parsed_input_sha256
+    // Validate the represented control envelope before allocating a seed vector
+    // from untrusted persisted counts. File-size bounds alone do not bound N.
+    if expected.config.replications == 0
+        || checkpoint
+            .completed_replications
+            .len()
+            .checked_add(checkpoint.pending_indices.len())
+            != Some(expected.config.replications)
+        || expected.model_contract_sha256.len() != 64
+        || !expected
+            .model_contract_sha256
+            .bytes()
+            .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+        || checkpoint.schema_version != 2
+        || checkpoint.status
+            != if checkpoint.pending_indices.is_empty() {
+                "complete"
+            } else {
+                "in_progress"
+            }
+        || checkpoint.metadata.model_contract_sha256 != expected.model_contract_sha256
+        || checkpoint.metadata.parsed_input_sha256 != expected.parsed_input_sha256
         || checkpoint.metadata.capture_schema != SCHEMA
         || checkpoint.metadata.codec_id != expected.codec_id
         || checkpoint.metadata.limits != expected.limits
@@ -482,7 +576,28 @@ fn check_binding(checkpoint: &CaptureCheckpoint, expected: &CaptureMetadata) -> 
         || checkpoint.base_seed != expected.config.base_seed
         || checkpoint.total_replications != expected.config.replications
     {
-        return Err(invalid("capture checkpoint input/config binding mismatch"));
+        return Err(invalid(
+            "capture checkpoint input/config/model binding mismatch",
+        ));
+    }
+    let mut indices = BTreeSet::new();
+    let seeds = experiment::allocate_replication_seeds(
+        expected.config.base_seed,
+        expected.config.replications,
+    );
+    for replication in &checkpoint.completed_replications {
+        let index = replication.summary.replication_index;
+        if seeds.get(index) != Some(&replication.summary.seed) || !indices.insert(index) {
+            return Err(invalid("invalid completed replication envelope"));
+        }
+    }
+    for &index in &checkpoint.pending_indices {
+        if index >= expected.config.replications || !indices.insert(index) {
+            return Err(invalid("invalid pending replication envelope"));
+        }
+    }
+    if indices.len() != expected.config.replications {
+        return Err(invalid("incomplete capture control coverage"));
     }
     Ok(())
 }
@@ -510,27 +625,33 @@ pub fn run_captured_batch_controlled(
     progress: Option<&(dyn Fn(experiment::BatchProgress) + Send + Sync)>,
 ) -> Result<Vec<CapturedReplication>> {
     let meta = metadata(scenario, config, limits, store)?;
-    let checkpoint_path = checkpoint_dir.join("checkpoint.json");
-    if checkpoint_path.exists() || store.is_complete()? || !store.part_names()?.is_empty() {
+    let path = checkpoint_dir.join("checkpoint.json");
+    if path.exists() || store.is_complete()? || !store.part_names()?.is_empty() {
         return Err(invalid(
             "capture run already exists; use completed-replication recovery",
         ));
     }
+    fs::create_dir_all(checkpoint_dir).map_err(output)?;
+    let initial = make_checkpoint(meta.clone(), vec![]);
+    commit(store, &path, &initial)?; // Before the first worker or part exists.
+    let journal = Mutex::new(initial);
     let results = experiment::run_generic_batch(
         &config.batch_id,
         config.base_seed,
         config.replications,
         config.num_workers,
-        Some(1),
+        None,
         meta.clone(),
-        Some(checkpoint_dir),
+        None,
         cancel,
         progress,
-        |index, seed, m| execute(scenario, index, seed, m, store),
+        |index, seed, m| {
+            let result = execute(scenario, index, seed, m, store)?;
+            acknowledge(store, &path, &journal, result.clone())?;
+            Ok(result)
+        },
     )?;
-    // The inherited generic runner treats checkpoint writes as best effort. A
-    // captured run must not publish completion unless its actual checkpoint agrees.
-    let checkpoint = read_checkpoint(&checkpoint_path)?;
+    let checkpoint = read_checkpoint(&path)?;
     check_binding(&checkpoint, &meta)?;
     if checkpoint.completed_replications != results || !checkpoint.pending_indices.is_empty() {
         return Err(invalid("capture checkpoint did not commit all results"));
@@ -559,34 +680,61 @@ pub fn resume_captured_batch_controlled(
     cancel: Option<&experiment::CancellationToken>,
 ) -> Result<Vec<CapturedReplication>> {
     let meta = metadata(scenario, config, limits, store)?;
-    if store.is_complete()? {
-        return Err(invalid("completed capture cannot be overwritten"));
-    }
     let path = checkpoint_dir.join("checkpoint.json");
     let checkpoint = read_checkpoint(&path)?;
     check_binding(&checkpoint, &meta)?;
+    let pending: BTreeSet<_> = checkpoint.pending_indices.iter().copied().collect();
+    validate_parts_pending(
+        &checkpoint.completed_replications,
+        &meta,
+        scenario,
+        store,
+        &pending,
+    )?;
+    if store.is_complete()? {
+        if !pending.is_empty() {
+            return Err(invalid("manifest precedes complete checkpoint"));
+        }
+        store.verify_complete(&checkpoint.completed_replications)?;
+        return Ok(checkpoint.completed_replications);
+    }
+    // Validate every acknowledged part and control binding BEFORE preserving pending attempts.
+    store.prepare_recovery(&checkpoint.pending_indices)?;
     validate_parts(&checkpoint.completed_replications, &meta, scenario, store)?;
-    // Exclusive checkpoint/store ownership is required throughout this operation.
-    let (_, results) = experiment::resume_generic_batch::<CapturedReplication, CaptureMetadata, _>(
-        &path,
+    let cached: BTreeMap<_, _> = checkpoint
+        .completed_replications
+        .iter()
+        .map(|r| (r.summary.replication_index, r.clone()))
+        .collect();
+    let journal = Mutex::new(make_checkpoint(
+        meta.clone(),
+        checkpoint.completed_replications,
+    ));
+    let results = experiment::run_generic_batch(
+        &config.batch_id,
+        config.base_seed,
+        config.replications,
         config.num_workers,
-        checkpoint_dir,
+        None,
+        meta.clone(),
+        None,
         cancel,
         None,
-        |index, seed, m| execute(scenario, index, seed, m, store),
+        |index, seed, m| {
+            if let Some(result) = cached.get(&index) {
+                return Ok(result.clone());
+            }
+            let result = execute(scenario, index, seed, m, store)?;
+            acknowledge(store, &path, &journal, result.clone())?;
+            Ok(result)
+        },
     )?;
+    let checkpoint = read_checkpoint(&path)?;
+    check_binding(&checkpoint, &meta)?;
+    if checkpoint.completed_replications != results || !checkpoint.pending_indices.is_empty() {
+        return Err(invalid("recovery checkpoint did not commit every result"));
+    }
     validate_parts(&results, &meta, scenario, store)?;
-    // Persist the complete capture checkpoint before publishing completion.
-    let completed = CaptureCheckpoint {
-        completed_replications: results.clone(),
-        pending_indices: vec![],
-        status: "complete".into(),
-        ..checkpoint
-    };
-    experiment::atomic_write_file(
-        &path,
-        &serde_json::to_vec(&completed).map_err(invalid_json)?,
-    )?;
     store.complete(&results)?;
     Ok(results)
 }
@@ -624,7 +772,7 @@ pub fn finalize_captured_replications(
     results.sort_by_key(|r| r.summary.replication_index);
     validate_parts(&results, &meta, scenario, store)?;
     let checkpoint = CaptureCheckpoint {
-        schema_version: 1,
+        schema_version: 2,
         batch_id: config.batch_id.clone(),
         base_seed: config.base_seed,
         total_replications: config.replications,
@@ -634,10 +782,123 @@ pub fn finalize_captured_replications(
         status: "complete".into(),
         checkpoint_epoch_ms: experiment::current_epoch_ms(),
     };
-    experiment::atomic_write_file(
-        &checkpoint_dir.join("checkpoint.json"),
-        &serde_json::to_vec(&checkpoint).map_err(invalid_json)?,
-    )?;
+    commit(store, &checkpoint_dir.join("checkpoint.json"), &checkpoint)?;
     store.complete(&results)?;
     Ok(results)
+}
+
+/// Canonical namespaces make pending-part recovery explicit and non-destructive.
+pub(crate) fn parse_part_name(name: &str) -> Option<(usize, usize)> {
+    let (index, sequence) = name
+        .strip_prefix("rep-")?
+        .strip_suffix(".part")?
+        .split_once("-seq-")?;
+    let pair = (index.parse().ok()?, sequence.parse().ok()?);
+    (part_name(pair.0, pair.1) == name).then_some(pair)
+}
+
+fn make_checkpoint(
+    meta: CaptureMetadata,
+    mut results: Vec<CapturedReplication>,
+) -> CaptureCheckpoint {
+    results.sort_by_key(|r| r.summary.replication_index);
+    let done: BTreeSet<_> = results
+        .iter()
+        .map(|r| r.summary.replication_index)
+        .collect();
+    let pending: Vec<_> = (0..meta.config.replications)
+        .filter(|i| !done.contains(i))
+        .collect();
+    CaptureCheckpoint {
+        schema_version: 2,
+        batch_id: meta.config.batch_id.clone(),
+        base_seed: meta.config.base_seed,
+        total_replications: meta.config.replications,
+        completed_replications: results,
+        status: if pending.is_empty() {
+            "complete"
+        } else {
+            "in_progress"
+        }
+        .into(),
+        pending_indices: pending,
+        checkpoint_epoch_ms: experiment::current_epoch_ms(),
+        metadata: meta,
+    }
+}
+fn commit(store: &dyn PartStore, path: &Path, checkpoint: &CaptureCheckpoint) -> Result<()> {
+    let bytes = serde_json::to_vec(checkpoint).map_err(invalid_json)?;
+    if bytes.len() > 16 * 1024 * 1024 {
+        return Err(invalid("checkpoint exceeds read bound"));
+    }
+    store.commit_checkpoint(path, &bytes)
+}
+fn acknowledge(
+    store: &dyn PartStore,
+    path: &Path,
+    journal: &Mutex<CaptureCheckpoint>,
+    result: CapturedReplication,
+) -> Result<()> {
+    let mut guard = journal.lock().map_err(output)?;
+    let mut results = guard.completed_replications.clone();
+    if results
+        .iter()
+        .any(|r| r.summary.replication_index == result.summary.replication_index)
+    {
+        return Err(invalid("duplicate replication acknowledgment"));
+    }
+    results.push(result);
+    let next = make_checkpoint(guard.metadata.clone(), results);
+    commit(store, path, &next)?;
+    *guard = next;
+    Ok(())
+}
+/// Local-filesystem process-crash boundary; not a hardware power-loss guarantee.
+pub fn durable_checkpoint(path: &Path, bytes: &[u8]) -> Result<()> {
+    durable_checkpoint_with_sync(path, bytes, &File::sync_all)
+}
+
+/// Narrow storage-fault seam: production uses `File::sync_all` for both stages.
+/// A caller-provided sync implementation does not qualify power-loss durability.
+pub fn durable_checkpoint_with_sync(
+    path: &Path,
+    bytes: &[u8],
+    sync: &dyn Fn(&File) -> io::Result<()>,
+) -> Result<()> {
+    static NEXT: AtomicU64 = AtomicU64::new(0);
+    let parent = path
+        .parent()
+        .ok_or_else(|| invalid("checkpoint has no parent"))?;
+    let parent_meta = fs::symlink_metadata(parent).map_err(output)?;
+    if !parent_meta.is_dir() || parent_meta.file_type().is_symlink() {
+        return Err(invalid("checkpoint parent must be a real directory"));
+    }
+    if let Ok(meta) = fs::symlink_metadata(path) {
+        if !meta.is_file() || meta.file_type().is_symlink() {
+            return Err(invalid("checkpoint must be a regular file"));
+        }
+    }
+    let staging = parent.join(format!(
+        ".checkpoint-{}-{}.tmp",
+        std::process::id(),
+        NEXT.fetch_add(1, Ordering::Relaxed)
+    ));
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(&staging)
+        .map_err(output)?;
+    let result = (|| {
+        file.write_all(bytes).map_err(output)?;
+        file.flush().map_err(output)?;
+        sync(&file).map_err(output)?;
+        fs::rename(&staging, path).map_err(output)?;
+        File::open(parent)
+            .and_then(|directory| sync(&directory))
+            .map_err(output)
+    })();
+    if staging.exists() {
+        let _ = fs::remove_file(&staging);
+    }
+    result
 }

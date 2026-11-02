@@ -405,8 +405,8 @@ fn checkpoint_write_failure_cannot_be_reported_complete() {
     let store = FsFixture::new(temp.0.join("parts"));
     let dir = temp.0.join("checkpoints");
     fs::create_dir(&dir).unwrap();
-    // Collision at the REAL inherited atomic-write staging path, not an invented trace path.
-    fs::create_dir(dir.join(format!("checkpoint.tmp.{}", std::process::id()))).unwrap();
+    // Obstruct the actual durable control path; no checkpoint can be acknowledged.
+    fs::create_dir(dir.join("checkpoint.json")).unwrap();
     assert!(run_captured_batch(&scenario(), &config(1), limits(), &dir, &store).is_err());
     assert!(!store.is_complete().unwrap());
 }
@@ -566,8 +566,9 @@ fn actual_codec_framing_controls_batch_split_and_byte_cap() {
     store.padding = 512;
     let rows = run_scenario(&scenario()).unwrap().patients;
     let sample = CaptureBatch {
+        model_contract_sha256: careops_ed::capture::MODEL_CONTRACT_SHA256.into(),
         time_unit: "ticks".into(),
-        schema: "careops.ed.capture-boundary.v1".into(),
+        schema: "careops.ed.capture-boundary.v2".into(),
         run_id: config(1).batch_id,
         input_sha256: "0".repeat(64),
         replication_index: 0,

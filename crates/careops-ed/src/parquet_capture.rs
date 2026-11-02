@@ -130,7 +130,13 @@ impl ParquetPartStore {
         Ok(m.replications)
     }
     fn dataframe(&self, b: &CaptureBatch) -> Result<DataFrame> {
-        if b.rows.is_empty()
+        if b.schema != crate::capture::SCHEMA
+            || b.model_contract_sha256.len() != 64
+            || !b
+                .model_contract_sha256
+                .bytes()
+                .all(|v| v.is_ascii_digit() || (b'a'..=b'f').contains(&v))
+            || b.rows.is_empty()
             || b.rows.len() > self.limits.max_rows
             || b.rows
                 .iter()
@@ -145,6 +151,11 @@ impl ParquetPartStore {
             Series::new("capture_schema".into(), vec![b.schema.as_str(); n]).into(),
             Series::new("run_id".into(), vec![b.run_id.as_str(); n]).into(),
             Series::new("input_sha256".into(), vec![b.input_sha256.as_str(); n]).into(),
+            Series::new(
+                "model_contract_sha256".into(),
+                vec![b.model_contract_sha256.as_str(); n],
+            )
+            .into(),
             Series::new(
                 "replication_index".into(),
                 vec![b.replication_index as u64; n],
@@ -272,7 +283,7 @@ impl PartStore for ParquetPartStore {
         }
         let df =
             kairo_ecs_arrow::polars_interop::read_parquet(Cursor::new(bytes)).map_err(invalid)?;
-        if df.width() != 22 {
+        if df.width() != 23 {
             return Err(invalid("unexpected patient schema columns"));
         }
         let string = |name: &str, i: usize| -> Result<String> {
@@ -317,17 +328,28 @@ impl PartStore for ParquetPartStore {
             schema: string("capture_schema", 0)?,
             run_id: string("run_id", 0)?,
             input_sha256: string("input_sha256", 0)?,
+            model_contract_sha256: string("model_contract_sha256", 0)?,
             replication_index: usize::try_from(number("replication_index", 0)?).map_err(invalid)?,
             seed: number("seed", 0)?,
             first_sequence: usize::try_from(number("sequence", 0)?).map_err(invalid)?,
             rows: Vec::new(),
         };
+        if b.schema != crate::capture::SCHEMA
+            || b.model_contract_sha256.len() != 64
+            || !b
+                .model_contract_sha256
+                .bytes()
+                .all(|v| v.is_ascii_digit() || (b'a'..=b'f').contains(&v))
+        {
+            return Err(invalid("unsupported capture schema or model identity"));
+        }
         for i in 0..df.height() {
             if string("time_unit", i)? != b.time_unit
                 || string("schema", i)? != PATIENT_SCHEMA
                 || string("capture_schema", i)? != b.schema
                 || string("run_id", i)? != b.run_id
                 || string("input_sha256", i)? != b.input_sha256
+                || string("model_contract_sha256", i)? != b.model_contract_sha256
                 || number("replication_index", i)? != b.replication_index as u64
                 || number("seed", i)? != b.seed
                 || number("sequence", i)?
@@ -376,6 +398,63 @@ impl PartStore for ParquetPartStore {
     }
     fn is_complete(&self) -> Result<bool> {
         Ok(self.path("manifest.json")?.exists())
+    }
+    fn prepare_recovery(&self, pending: &[usize]) -> Result<()> {
+        let orphaned: Vec<_> = self
+            .part_names()?
+            .into_iter()
+            .filter(|name| {
+                crate::capture::parse_part_name(name)
+                    .is_some_and(|(index, _)| pending.contains(&index))
+            })
+            .collect();
+        if orphaned.is_empty() {
+            return Ok(());
+        }
+        let recovery = self.root.join("recovery");
+        if recovery.exists() {
+            let metadata = fs::symlink_metadata(&recovery).map_err(io)?;
+            if !metadata.is_dir() || metadata.file_type().is_symlink() {
+                return Err(invalid("recovery path must be a real directory"));
+            }
+        } else {
+            fs::create_dir(&recovery).map_err(io)?;
+        }
+        File::open(&self.root)
+            .and_then(|f| f.sync_all())
+            .map_err(io)?;
+        let mut destination = None;
+        for index in 0..1_000_000 {
+            let attempt = recovery.join(format!("attempt-{index:08}"));
+            match fs::create_dir(&attempt) {
+                Ok(()) => {
+                    destination = Some(attempt);
+                    break;
+                }
+                Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => {}
+                Err(error) => return Err(io(error)),
+            }
+        }
+        let destination = destination.ok_or_else(|| invalid("too many preserved attempts"))?;
+        File::open(&recovery)
+            .and_then(|f| f.sync_all())
+            .map_err(io)?;
+        for name in orphaned {
+            fs::rename(self.path(&name)?, destination.join(name)).map_err(io)?;
+        }
+        File::open(&destination)
+            .and_then(|f| f.sync_all())
+            .map_err(io)?;
+        File::open(&self.root)
+            .and_then(|f| f.sync_all())
+            .map_err(io)?;
+        Ok(())
+    }
+    fn verify_complete(&self, reps: &[CapturedReplication]) -> Result<()> {
+        if self.completed_replications()? != reps {
+            return Err(invalid("completed capture/manifest mismatch"));
+        }
+        Ok(())
     }
     fn complete(&self, reps: &[CapturedReplication]) -> Result<()> {
         let bytes = serde_json::to_vec(&Manifest {
