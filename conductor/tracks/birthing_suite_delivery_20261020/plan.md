@@ -1,6 +1,6 @@
 # Implementation plan: Generic birthing suite simulation delivery
 
-Status: generic synthetic engineering in progress. B0–B2 have scoped acceptance; full specification approval, clinical validation and site acceptance remain open.
+Status: generic synthetic engineering in progress. B0–B3 have scoped acceptance; full specification approval, clinical validation and site acceptance remain open.
 
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
 Dispatch requires reviewed packets, upstream capability readback and the single-maintainer harness.
@@ -34,10 +34,10 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 
 ## B3 — Spaces and effective capacity
 
-- [ ] B3.1 Test capability-based room matching, reservation, cleaning, closure and equipment shortages.
-- [ ] B3.2 Implement LDR/pool/monitoring/stabilisation profiles through neutral capabilities, with staffing/opening constraints.
-- [ ] B3.3 Verify boarding holds, surge demand, occupancy and horizon censoring without premature release.
-- [ ] B3.4 Conductor — review and verify phase (workflow.md).
+- [x] B3.1 Test capability-based room matching, reservation, cleaning, closure and equipment shortages. Scoped runtime acceptance at `e3bc8ba`: current native Linux/macOS checks, exact-commit independent review, 5 spaces/25 core capacity/18 birthing local tests. Unchanged ED mutation proof is reused from frozen `871c478`; current aggregate remains pending and final actual combined-head gates are mandatory. See [B3 acceptance](../../evidence/core-a7-prerequisites-20261102/B3.md).
+- [x] B3.2 Implement LDR/pool/monitoring/stabilisation profiles through neutral capabilities, with staffing/opening constraints. Scoped runtime acceptance at `e3bc8ba`: current native Linux/macOS checks, exact-commit independent review, 5 spaces/25 core capacity/18 birthing local tests. Unchanged ED mutation proof is reused from frozen `871c478`; current aggregate remains pending and final actual combined-head gates are mandatory. See [B3 acceptance](../../evidence/core-a7-prerequisites-20261102/B3.md).
+- [x] B3.3 Verify boarding holds, surge demand, occupancy and horizon censoring without premature release. Scoped runtime acceptance at `e3bc8ba`: current native Linux/macOS checks, exact-commit independent review, 5 spaces/25 core capacity/18 birthing local tests. Unchanged ED mutation proof is reused from frozen `871c478`; current aggregate remains pending and final actual combined-head gates are mandatory. See [B3 acceptance](../../evidence/core-a7-prerequisites-20261102/B3.md).
+- [x] B3.4 Conductor — review and verify phase (workflow.md). Scoped runtime acceptance at `e3bc8ba`: current native Linux/macOS checks, exact-commit independent review, 5 spaces/25 core capacity/18 birthing local tests. Unchanged ED mutation proof is reused from frozen `871c478`; current aggregate remains pending and final actual combined-head gates are mandatory. See [B3 acceptance](../../evidence/core-a7-prerequisites-20261102/B3.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
 

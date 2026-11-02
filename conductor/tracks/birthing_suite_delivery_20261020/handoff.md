@@ -32,3 +32,11 @@ and18fullbirthing tests passing plus no-findings logic review. Reviewer-requeste
 clock/in-memory-history documentation is applied. B3.1–B3.4 remain unchecked until
 its hosted milestone; B4–B7/A7 remain open. Earlier pending statements above are
 historical stages.
+
+### 3 November — B3 scoped acceptance and B4 dispatch
+
+B3 runtime `e3bc8ba` is scoped-accepted using its current native Linux/macOS and
+other completed checks, independent review, and frozen871c478's unchanged ED
+mutation receipt. Current context/aggregate remains pending; final exact combined
+head gates remain mandatory. B4.1 staffing/bundle cases are next. Reassess evidence
+reuse if shared/core/dependency/schema/fixture/config/ED-path inputs change.
