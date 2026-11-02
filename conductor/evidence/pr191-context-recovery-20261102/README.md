@@ -56,3 +56,14 @@ joins remain pending. The earlier dependency blocker in the original handoff is
 historical: the newer PR191 graph passes current advisory, duplicate, licence
 and source policy locally; exact combined-source hosted evidence still controls.
 No clinical, operational, release, shared-event-loop or new hardware acceptance.
+
+## Additional workflow-budget assertion
+
+The first combined-source context run at `5db6138` reached the full Python
+suite and failed a second legacy outer-budget assertion in `test_d34_ci.py`:
+its expected 30 minutes disagreed with the documented 75-minute workflow.
+The same failure was reproduced locally, then the assertion was aligned with
+the measured finite orchestration budget. The benchmark-ordering, unconditional
+execution, report retention, canonical tools, failure propagation and all actual
+quality thresholds remain unchanged. Both affected workflow test files are
+required to pass before publication; the first failed hosted result is retained.
