@@ -1,0 +1,325 @@
+{
+  "schema": "careops.ed.analytical-oracles.v1",
+  "unequal_replications": {
+    "wait_means": [
+      0.0,
+      10.0
+    ],
+    "arrivals": [
+      1,
+      9
+    ],
+    "completed": [
+      1,
+      0
+    ],
+    "mean_wait": 5.0,
+    "sample_variance": 50.0,
+    "standard_error": 5.0,
+    "pooled_completion": 0.1
+  },
+  "skew": {
+    "values": [
+      0.0,
+      0.0,
+      30.0
+    ],
+    "mean": 10.0,
+    "sample_variance": 300.0,
+    "standard_error": 10.0
+  },
+  "pooled_elapsed": {
+    "completed_durations_by_replication": [
+      [
+        1,
+        1
+      ],
+      [
+        31
+      ]
+    ],
+    "point": 11.0,
+    "uncertainty": null,
+    "uncertainty_status": "cluster_method_unqualified"
+  },
+  "uncertainty": [
+    {
+      "values": [],
+      "variance": null,
+      "status": "no_samples"
+    },
+    {
+      "values": [
+        7.0
+      ],
+      "variance": null,
+      "status": "insufficient_replications"
+    },
+    {
+      "values": [
+        7.0,
+        7.0
+      ],
+      "variance": 0.0,
+      "status": "defined"
+    }
+  ],
+  "joins": {
+    "grain": [
+      "run_id",
+      "replication_index",
+      "patient_id"
+    ],
+    "valid_cross_replication": [
+      [
+        "r",
+        0,
+        "p0"
+      ],
+      [
+        "r",
+        1,
+        "p0"
+      ]
+    ],
+    "duplicate_fact": [
+      [
+        "r",
+        0,
+        "p0"
+      ],
+      [
+        "r",
+        0,
+        "p0"
+      ]
+    ],
+    "duplicate_dimension": [
+      [
+        "s",
+        "p0",
+        "a"
+      ],
+      [
+        "s",
+        "p0",
+        "b"
+      ]
+    ],
+    "missing_resource": {
+      "patient_resource": "missing",
+      "resource_keys": [
+        "a"
+      ]
+    },
+    "expected_invalid_error": "MalformedConfig"
+  },
+  "nonfinite_values": [
+    "NaN",
+    "+Infinity",
+    "-Infinity"
+  ],
+  "tick_subtraction": [
+    {
+      "end": [
+        1,
+        0
+      ],
+      "start": [
+        0,
+        18446744073709551615
+      ],
+      "difference": [
+        0,
+        1
+      ]
+    },
+    {
+      "end": [
+        18446744073709551615,
+        18446744073709551615
+      ],
+      "start": [
+        0,
+        0
+      ],
+      "difference": [
+        18446744073709551615,
+        18446744073709551615
+      ]
+    },
+    {
+      "end": [
+        0,
+        0
+      ],
+      "start": [
+        0,
+        1
+      ],
+      "expected_error": "underflow"
+    }
+  ],
+  "count_overflow": {
+    "values": [
+      "18446744073709551615",
+      "1"
+    ],
+    "expected_error": "MalformedConfig"
+  },
+  "spatial": {
+    "capture_status": "not_captured",
+    "observed_rows": 0
+  },
+  "finite_comparison": {
+    "absolute": 1e-12,
+    "relative": 1e-10
+  },
+  "note": "Independent analytical vectors, not observed simulation or clinical data. R12.2 must exercise the same expected vectors through production native DataFrame APIs.",
+  "birthing": {
+    "case_grain": [
+      "run_id",
+      "replication_index",
+      "case_id"
+    ],
+    "valid_cross_replication": [
+      [
+        "r",
+        0,
+        "c0"
+      ],
+      [
+        "r",
+        1,
+        "c0"
+      ]
+    ],
+    "equal_tick_assessments": [
+      {
+        "case_id": "c0",
+        "tick": 7,
+        "ordinal": 0
+      },
+      {
+        "case_id": "c0",
+        "tick": 7,
+        "ordinal": 1
+      }
+    ],
+    "expected_assessment_count": 2,
+    "orphan_child": {
+      "case_id": "missing",
+      "expected_error": "MalformedConfig"
+    },
+    "targets": [
+      {
+        "target": null,
+        "elapsed": 0,
+        "breach": null
+      },
+      {
+        "target": 0,
+        "elapsed": 0,
+        "breach": false
+      }
+    ],
+    "policy_identity": [
+      "jurisdiction",
+      "scheme",
+      "version",
+      "revision"
+    ],
+    "conflicting_policy_content": {
+      "identity": [
+        "j",
+        "s",
+        "v1",
+        "r1"
+      ],
+      "contents": [
+        "sha_a",
+        "sha_b"
+      ],
+      "expected_error": "MalformedConfig"
+    },
+    "callback_overlap": {
+      "embedded_sequences": [
+        0
+      ],
+      "top_level_sequences": [
+        0
+      ],
+      "authoritative_count": 1
+    },
+    "nullable_entities": [
+      null,
+      {
+        "index": 0,
+        "generation": 0
+      }
+    ],
+    "note": "Do not infer a maternal/infant identity from an absent entity or identifier zero."
+  },
+  "all_empty_replications": {
+    "replications": [
+      {
+        "arrivals": 0,
+        "started": 0,
+        "completed": 0,
+        "unfinished": 0,
+        "horizon_ticks": 100,
+        "mean_wait_ticks": 0.0
+      },
+      {
+        "arrivals": 0,
+        "started": 0,
+        "completed": 0,
+        "unfinished": 0,
+        "horizon_ticks": 100,
+        "mean_wait_ticks": 0.0
+      }
+    ],
+    "expected_metrics": {
+      "mean_wait_ticks": {
+        "point": null,
+        "variance": null,
+        "total_replications": 2,
+        "eligible_replications": 0,
+        "included_replications": 0,
+        "uncertainty_status": "no_samples"
+      },
+      "completion_rate": {
+        "point": null,
+        "variance": null,
+        "total_replications": 2,
+        "eligible_replications": 0,
+        "included_replications": 0,
+        "uncertainty_status": "no_samples"
+      },
+      "censored_presentation_rate": {
+        "point": null,
+        "variance": null,
+        "total_replications": 2,
+        "eligible_replications": 0,
+        "included_replications": 0,
+        "uncertainty_status": "no_samples"
+      },
+      "mean_elapsed_ticks": {
+        "point": null,
+        "variance": null,
+        "total_replications": 2,
+        "eligible_replications": 0,
+        "included_replications": 0,
+        "uncertainty_status": "no_samples"
+      },
+      "throughput_per_horizon_tick": {
+        "point": 0.0,
+        "variance": 0.0,
+        "total_replications": 2,
+        "eligible_replications": 2,
+        "included_replications": 2,
+        "uncertainty_status": "defined"
+      }
+    }
+  }
+}
