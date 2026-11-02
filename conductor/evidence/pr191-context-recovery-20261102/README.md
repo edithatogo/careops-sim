@@ -29,8 +29,9 @@ pass. Original failed/cancelled receipts remain retained.
   four exact unviable identities, successful-baseline/command checks and zero
   timeouts. This does not convert the incomplete old run into acceptance.
 - Give the finite context job a 75-minute orchestration budget, based on the
-  observed incomplete native-data run, and cap each Cargo build at one compiler
-  job to reduce concurrent native-link memory pressure. Retain two mutation
+  observed incomplete native-data run. Keep the previously qualified default
+  compiler concurrency; the initially attempted cap is withdrawn as recorded
+  below. Retain two mutation
   workers, the 180-second per-mutant limit, all 117 mutants, the 80% coverage
   floor, all native tests, policy/security checks and required aggregate. No
   ignored tests, retries, advisory suppression or feature filtering is added.
@@ -67,3 +68,16 @@ the measured finite orchestration budget. The benchmark-ordering, unconditional
 execution, report retention, canonical tools, failure propagation and all actual
 quality thresholds remain unchanged. Both affected workflow test files are
 required to pass before publication; the first failed hosted result is retained.
+
+## Restore the qualified compiler execution profile
+
+The optional one-job compiler cap was not required by the diagnosed cancellation.
+The old run reported no out-of-memory error or individual mutant timeout.
+With the cap, the same full harness took 6m25s instead of 2m55s, and the
+representative benchmark step exceeded 12 minutes versus the old 6m06s. The
+intermediate run remains incomplete, not accepted. The cap is removed to retain
+the previously qualified compiler execution profile. Only the finite outer
+75-minute orchestration budget differs from that profile; all 117 mutations,
+per-mutant test deadlines, coverage/benchmark/policy/security criteria and native
+suites remain mandatory. The workflow guard now protects this restored profile
+as well as the existing complete mutation command.

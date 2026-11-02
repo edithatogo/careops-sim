@@ -149,7 +149,7 @@ class CiWorkflowTests(unittest.TestCase):
     def test_native_context_budget_retains_full_mutation_gate(self):
         context = workflow_job(WORKFLOW.read_text(), "context")
         self.assertIn("timeout-minutes: 75", context)
-        self.assertIn("CARGO_BUILD_JOBS: '1'", context)
+        self.assertNotIn("CARGO_BUILD_JOBS", context)
         self.assertIn("--jobs 2 --timeout 180", context)
         self.assertIn("--package careops-ed --file crates/careops-ed/src/lib.rs", context)
         self.assertIn("tools/quality_mutations.py --outcomes", context)
