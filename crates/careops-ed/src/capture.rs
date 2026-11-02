@@ -487,7 +487,7 @@ fn validate_parts_pending(
             || next != result.summary.arrivals
             || started != result.summary.started
             || completed != result.summary.completed
-            || next - completed != result.summary.unfinished
+            || next.checked_sub(completed) != Some(result.summary.unfinished)
             || result.summary.mean_wait_ticks != mean_wait
             || result.summary.horizon_ticks != horizon
         {

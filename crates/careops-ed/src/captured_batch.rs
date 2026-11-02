@@ -126,10 +126,23 @@ pub(crate) fn run(
     .map_err(error);
     if let Err(e) = &results {
         if let Some(root) = output {
+            // Report only durably acknowledged progress. If the journal cannot
+            // be validated, preserve the original failure and do not fabricate
+            // a zero-completion marker.
+            let checkpoint = capture::read_checkpoint(&source.directory.join("checkpoint.json"))
+                .map_err(|cause| {
+                    ValidationError::new(
+                        e.code,
+                        format!("{}; durable progress unavailable: {cause}", e.message),
+                    )
+                })?;
+            let expected =
+                capture::metadata(scenario, config, source.limits, &store).map_err(error)?;
+            capture::check_binding(&checkpoint, &expected).map_err(error)?;
             let marker = crate::disposition::batch_runner::PartialBatchMarker {
                 status: "incomplete".into(),
                 batch_id: config.batch_id.clone(),
-                completed_replications: 0,
+                completed_replications: checkpoint.completed_replications.len(),
                 total_replications: config.replications,
                 error: e.message.clone(),
             };

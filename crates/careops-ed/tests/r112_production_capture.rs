@@ -25,6 +25,45 @@ fn config() -> BatchConfig {
     }
 }
 #[test]
+fn legacy_spatial_tick_overflow_returns_error_without_panicking() {
+    let mut scenario = scenario();
+    scenario.patients.truncate(1);
+    scenario.horizon_ticks = u64::MAX;
+    scenario.patients[0].arrival_tick = u64::MAX - 1;
+    scenario.patients[0].work_ticks = 1;
+    let mut config = config();
+    config.replications = 1;
+    config.horizon_override = None;
+    let doc = run_batch_with_workers(&scenario, &config, None, None, None).unwrap();
+    assert_eq!(doc.replications[0].completed, 1);
+    assert!(generate_arrow_export_bundle(&scenario, &doc, None, None).is_err());
+}
+#[test]
+fn partial_marker_is_absent_when_durable_progress_cannot_be_validated() {
+    let root = tempfile::tempdir().unwrap();
+    let cancel = CancellationToken::new();
+    let callback_cancel = cancel.clone();
+    let checkpoint = root.path().join("capture/checkpoint.json");
+    let callback_checkpoint = checkpoint.clone();
+    let callback = move |p: careops_ed::disposition::batch_runner::BatchProgress| {
+        if p.completed_replications == 2 {
+            fs::write(&callback_checkpoint, b"{}").unwrap();
+            callback_cancel.cancel();
+        }
+    };
+    assert!(run_batch_with_workers(
+        &scenario(),
+        &config(),
+        Some(root.path()),
+        Some(&cancel),
+        Some(&callback)
+    )
+    .is_err());
+    assert_eq!(fs::read(checkpoint).unwrap(), b"{}");
+    assert!(!root.path().join("batch_run.partial").exists());
+    assert!(!root.path().join("batch_run.json").exists());
+}
+#[test]
 fn parquet_is_zstd_typed_and_original_horizon_rows_match_across_workers() {
     let s = scenario();
     let mut baseline = None;
@@ -163,6 +202,15 @@ fn actual_cancelled_checkpoint_resumes_and_exports_without_losing_completed_part
         run_batch_with_workers(&s, &c, Some(root.path()), Some(&cancel), Some(&callback)).is_err()
     );
     let capture_dir = root.path().join("capture");
+    let checkpoint: careops_ed::capture::CaptureCheckpoint =
+        serde_json::from_slice(&fs::read(capture_dir.join("checkpoint.json")).unwrap()).unwrap();
+    let marker: serde_json::Value =
+        serde_json::from_slice(&fs::read(root.path().join("batch_run.partial")).unwrap()).unwrap();
+    assert!(checkpoint.completed_replications.len() >= 2);
+    assert_eq!(
+        marker["completed_replications"],
+        checkpoint.completed_replications.len()
+    );
     let store = ParquetPartStore::open(&capture_dir, DEFAULT_LIMITS).unwrap();
     let preserved: Vec<_> = store
         .part_names()

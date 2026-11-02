@@ -802,7 +802,15 @@ pub fn generate_arrow_export_bundle(
 
             // Transit step 1: Entry / Waiting -> Treatment Bay
             let transit_start = pat.arrival_tick;
-            let transit_end = pat.start_tick.unwrap_or(pat.arrival_tick + 1);
+            let transit_end = match pat.start_tick {
+                Some(tick) => tick,
+                None => pat.arrival_tick.checked_add(1).ok_or_else(|| {
+                    ValidationError::new(
+                        ExitCodeDef::MalformedConfig,
+                        "legacy spatial tick overflow",
+                    )
+                })?,
+            };
             let dist_1 = lookup_route_distance(scenario, &entry_loc, &loc_id);
             let dur_1 = transit_end.saturating_sub(transit_start).max(1);
 
@@ -841,7 +849,12 @@ pub fn generate_arrow_export_bundle(
                     to_location: exit_loc.clone(),
                     distance_metres: dist_2,
                     departure_tick: comp_tick,
-                    arrival_tick: comp_tick + dur_2,
+                    arrival_tick: comp_tick.checked_add(dur_2).ok_or_else(|| {
+                        ValidationError::new(
+                            ExitCodeDef::MalformedConfig,
+                            "legacy spatial tick overflow",
+                        )
+                    })?,
                     transit_ticks: dur_2,
                     position_kind: PositionKind::Simulated,
                     spatial_revision: spatial_revision.clone(),
