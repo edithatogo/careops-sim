@@ -53,7 +53,7 @@ class D34CiTests(unittest.TestCase):
             step,
         )
         self.assertNotIn("continue-on-error", step)
-        self.assertEqual("75", re.search(r"^    timeout-minutes: (\d+)$", context, re.M).group(1))
+        self.assertEqual("90", re.search(r"^    timeout-minutes: (\d+)$", context, re.M).group(1))
         self.assertIn("CARGO_PROFILE_DEV_DEBUG: '0'", context)
         self.assertIn("CARGO_PROFILE_TEST_DEBUG: '0'", context)
         self.assertIn("--timeout 180", context)
