@@ -58,3 +58,16 @@ Executed at this owned worktree, Python3.15.1/jsonschema4.26.0:
 | `a7-p32.log` | `9da87c7966ff470f411182f2d5cd610db87cd442aa056bcf363cd1262b9ac209` |
 
 The normal commit hook rejected three generic-key pattern matches in invented family labels. Short labels F1/F2 preserve the same split/relationship semantics; the full scanner then passed without exclusions or hook changes. Exact staged source was preserved through a private checksum-bound patch before reacquiring the clean lease; no other checkout, writer or private binding was changed.
+
+## Exact-commit implementation/empirical review
+
+Reviewer-agent independently examined99cb1c7 against0bf34a1 and returned
+ready_for_review for logic and empirical-contract scope, with no actionable
+findings. It verified actual Python3.15.1, ran16focused tests plus validator CLI
+(exit0), and observed clean source afterwards. Full root Python milestone:
+766tests passed in46.391s. The [review report](review-report.md) records the
+scoped status. Final actual combined-head hosted gates remain required before
+A7.4 acceptance. No runtime/dependency/CI workflow source differs from fully
+qualified154ba1a; old calibration sources remain byte-identical.
+
+Private full milestone log SHA-256 `ebd3d571210bf943702d74d1cc933425bbce1963597eacfd8c2a2bd5bc5d6031`.
