@@ -69,3 +69,13 @@ Full local birthing milestone:39 passed. B5 boxes remain unchecked until its
 scoped hosted milestone. Next B6 covers lifecycle routing/split destinations/
 fallback and conservation; B7/A7 remain open. No durability, parallel or clinical
 acceptance is inferred from B5.
+
+### B5 scoped acceptance; B6 next
+
+B5 runtime948500b is scoped-accepted after current native/quality checks and
+independent logic/determinism review at8ba15d5. Thirteen theatre tests passed
+independently; full local birthing milestone39 passed. ED verification graph
+is unchanged from fully green2c13ec0; that mutation receipt is reused while
+current context/aggregate completes. Final actual combined-head gates remain.
+Next B6.1–B6.3 lifecycle/split-destination/fallback/escort/person-episode-resource
+conservation, using qualified core transfer contracts and explicit ownership.

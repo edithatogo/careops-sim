@@ -1,6 +1,6 @@
 # Implementation plan: Generic birthing suite simulation delivery
 
-Status: generic synthetic engineering in progress. B0–B4 have scoped acceptance; full specification approval, clinical validation and site acceptance remain open.
+Status: generic synthetic engineering in progress. B0–B5 have scoped acceptance; full specification approval, clinical validation and site acceptance remain open.
 
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
 Dispatch requires reviewed packets, upstream capability readback and the single-maintainer harness.
@@ -52,10 +52,10 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 
 ## B5 — Escalation and bounded theatre completion
 
-- [ ] B5.1 Test urgency reassessment, queue displacement and refusal to interrupt unsafe active phases; targets may be breached.
-- [ ] B5.2 Implement a bounded theatre service with acceptance, procedure-start and birth/completion callbacks; transfer alone is not delivery.
-- [ ] B5.3 Measure decision-to-transfer, incision and delivery separately against versioned policy; preserve delay causes and breached targets.
-- [ ] B5.4 Conductor — review and verify phase (workflow.md).
+- [x] B5.1 Test urgency reassessment, queue displacement and refusal to interrupt unsafe active phases; targets may be breached. Scoped bounded runtime accepted at `948500b`: current native Linux/macOS and completed quality/security checks, independent final logic/determinism review at `8ba15d5`, 13 theatre/39 birthing tests. Unchanged ED mutation proof is reused from fully hosted `2c13ec0`; current aggregate remains pending and final combined-head gates stay mandatory. See [B5 acceptance](../../evidence/core-a7-prerequisites-20261102/B5.md).
+- [x] B5.2 Implement a bounded theatre service with acceptance, procedure-start and birth/completion callbacks; transfer alone is not delivery. Scoped bounded runtime accepted at `948500b`: current native Linux/macOS and completed quality/security checks, independent final logic/determinism review at `8ba15d5`, 13 theatre/39 birthing tests. Unchanged ED mutation proof is reused from fully hosted `2c13ec0`; current aggregate remains pending and final combined-head gates stay mandatory. See [B5 acceptance](../../evidence/core-a7-prerequisites-20261102/B5.md).
+- [x] B5.3 Measure decision-to-transfer, incision and delivery separately against versioned policy; preserve delay causes and breached targets. Scoped bounded runtime accepted at `948500b`: current native Linux/macOS and completed quality/security checks, independent final logic/determinism review at `8ba15d5`, 13 theatre/39 birthing tests. Unchanged ED mutation proof is reused from fully hosted `2c13ec0`; current aggregate remains pending and final combined-head gates stay mandatory. See [B5 acceptance](../../evidence/core-a7-prerequisites-20261102/B5.md).
+- [x] B5.4 Conductor — review and verify phase (workflow.md). Scoped bounded runtime accepted at `948500b`: current native Linux/macOS and completed quality/security checks, independent final logic/determinism review at `8ba15d5`, 13 theatre/39 birthing tests. Unchanged ED mutation proof is reused from fully hosted `2c13ec0`; current aggregate remains pending and final combined-head gates stay mandatory. See [B5 acceptance](../../evidence/core-a7-prerequisites-20261102/B5.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
 
