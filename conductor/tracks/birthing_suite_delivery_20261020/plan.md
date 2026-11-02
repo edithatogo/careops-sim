@@ -1,6 +1,6 @@
 # Implementation plan: Generic birthing suite simulation delivery
 
-Status: proposed specification; B0.1–B0.4 and B1.1–B1.4 have scoped local acceptance. Specification approval, clinical validation and site acceptance remain open.
+Status: generic synthetic engineering in progress. B0–B2 have scoped acceptance; full specification approval, clinical validation and site acceptance remain open.
 
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
 Dispatch requires reviewed packets, upstream capability readback and the single-maintainer harness.
@@ -25,10 +25,10 @@ Exit: retain executed command/input/output hashes, negative controls and scope-s
 
 ## B2 — Birth identities and maternal-infant relationships
 
-- [ ] B2.1 Test vaginal and operative birth events, multiple infants, correlated records and duplicate event rejection.
-- [ ] B2.2 Implement one-to-many relationships and pre/post-birth state mapping where modeled; record neonatal observations with provenance.
-- [ ] B2.3 Verify independent maternal/infant recovery, escalation and discharge with person/episode conservation.
-- [ ] B2.4 Conductor — review and verify phase (workflow.md).
+- [x] B2.1 Test vaginal and operative birth events, multiple infants, correlated records and duplicate event rejection. Both routes, multiple births and conflict/rollback controls are accepted at frozen runtime `871c478`; subsequent test-only controls `b01c885` are locally qualified. See [B2 acceptance](../../evidence/core-a7-prerequisites-20261102/B2.md).
+- [x] B2.2 Implement one-to-many relationships and pre/post-birth state mapping where modeled; record neonatal observations with provenance. Qualified A5 identity/message contracts plus birth-time provenance are accepted at frozen runtime `871c478`; fetal identities remain unmodeled. See [B2 acceptance](../../evidence/core-a7-prerequisites-20261102/B2.md).
+- [x] B2.3 Verify independent maternal/infant recovery, escalation and discharge with person/episode conservation. Per-delivery/person recovery and explicit core episode accounting are accepted at `871c478` after review fixes `d3c8fc5` and `9702fac`. See [B2 acceptance](../../evidence/core-a7-prerequisites-20261102/B2.md).
+- [x] B2.4 Conductor — review and verify phase (workflow.md). Independent review found no remaining B2 runtime findings at `9702fac`; all 17 hosted checks passed at exact runtime tree `871c478` (one main-only attestation skip). Test-only `b01c885` review/13 tests are local proof; final combined-head hosted gates remain mandatory. See [B2 acceptance](../../evidence/core-a7-prerequisites-20261102/B2.md).
 
 Exit: retain executed command/input/output hashes, negative controls and scope-specific evidence; unresolved or unavailable behaviour remains unverified.
 

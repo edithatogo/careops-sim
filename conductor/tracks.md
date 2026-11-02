@@ -47,10 +47,10 @@ R/A/B DAG and reviewed packets.
   [spec](tracks/careops_core_domain_abstractions_20261020/spec.md),
   [plan](tracks/careops_core_domain_abstractions_20261020/plan.md)). In progress: A0–A4.4 are accepted locally; the integrated A4 transfer and ward/community contracts passed workspace checks and reviewer-agent review per [A4 phase review](evidence/a4.4-phase-review-20261027/README.md). A5.1–A5.4 are accepted locally; the A5 phase passed independent reviewer-agent review and full workspace/Conductor checks per [A5.4 phase review](evidence/a5.4-phase-review-20261027/README.md). A6.1 is accepted at `e547b62` after independent reviewer-agent re-review; exact nominal fixture output parity and separate schema-version documentation are recorded in [A6.1 evidence](evidence/a6.1-ed-compatibility-20261027/README.md). A6.2 is accepted at `24f55b1` after independent reviewer-agent review; the synthetic ED→ward→community fixture and bounded limits are recorded in [A6.2 evidence](evidence/a6.2-ed-ward-community-20261027/README.md). A6.3 is accepted at `deba8a2` after reviewer-agent review and correction of the shared-scheduler wording; see [A6.3 evidence](evidence/a6.3-composition-scheduler-parity-20261027/README.md). A6.4 passed integrated A6 review, final workspace gates and reviewer-agent re-review at source `f2e09a3`; see [A6 phase review](evidence/a6.4-phase-review-20261027/README.md). A7.1–A7.4 remain incomplete, and A7.1 is gated on birthing B7.4.
 
-- [ ] **Generic birthing suite simulation delivery** — `birthing_suite_delivery_20261020`
+- [~] **Generic birthing suite simulation delivery** — `birthing_suite_delivery_20261020`
   ([index](tracks/birthing_suite_delivery_20261020/index.md),
   [spec](tracks/birthing_suite_delivery_20261020/spec.md),
-  [plan](tracks/birthing_suite_delivery_20261020/plan.md)). Proposed. Modular birthing suite simulation crate (`careops-birthing`) with labor progression, dynamic neonate spawning, LDR suites, 1:1 midwifery staffing, acute CS preemption, and decoupled outbox egress routing.
+  [plan](tracks/birthing_suite_delivery_20261020/plan.md)). Generic synthetic prerequisites for core A7 are in progress. Retained B0/B1 source is reconciled; B2 runtime is accepted at hosted `871c478` after independent review. B3–B7 remain open. Staffing ratios and timing targets remain profile-owned; unsafe active-phase interruption is not qualified. Full specification, clinical and site acceptance remain open.
 
 ## Research intake completed
 
