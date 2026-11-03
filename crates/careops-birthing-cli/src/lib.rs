@@ -19,6 +19,7 @@ use std::{
 };
 
 pub mod model;
+pub mod theatre_tables;
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 pub const DATA_REVISION: &str = "4134a3733ba7e833a8c520621ec2af5a4bd4b31a";
 pub const RUNTIME_REVISION: &str = "07410266bf54b6f73c59db2f8cbfbc5697c53734";
@@ -344,7 +345,33 @@ fn safe_component(value: &str) -> bool {
         && value != "."
         && value != ".."
 }
+// All package entry points share this barrier before any Polars operation.
+// This coordinates the package's own callers; applications embedding other
+// Polars users must still initialize the shared runtime before concurrent use.
+fn initialize_native_data() -> Result<()> {
+    // Configure once, before native pool initialization; replication workers
+    // remain independent of this one-thread native data pool.
+    static NATIVE_INIT: std::sync::OnceLock<std::result::Result<(), String>> =
+        std::sync::OnceLock::new();
+    NATIVE_INIT
+        .get_or_init(|| {
+            let budget = ThreadBudget {
+                worker_threads: NonZeroUsize::new(1).unwrap(),
+            };
+            match run_output::native_thread_budget().map_err(|e| e.to_string())? {
+                Some(existing) if existing == budget => Ok(()),
+                Some(_) => Err("conflicting native thread budget".into()),
+                None => {
+                    run_output::configure_native_thread_budget(budget).map_err(|e| e.to_string())
+                }
+            }
+        })
+        .clone()?;
+    Ok(())
+}
+
 fn canonical_event_frame(frame: DataFrame) -> Result<DataFrame> {
+    initialize_native_data()?;
     let expected = io::records_to_dataframe(&[])?;
     if frame.schema() != expected.schema() || frame.height() > MAX_ROWS {
         return Err("unsupported native event schema or row bound".into());
@@ -378,6 +405,7 @@ pub fn replication_events(
     index: usize,
     seed: u64,
 ) -> Result<(ReplicationManifest, DataFrame)> {
+    initialize_native_data()?;
     if !safe_component(directory)
         || !directory.starts_with(&format!("{}-attempt", input.batch_id))
         || !directory.ends_with(&format!("-rep{index}"))
@@ -528,24 +556,7 @@ pub fn run_batch(
     if !(1..=4).contains(&workers) {
         return Err("workers must be1–4".into());
     }
-    // Configure once, before native pool initialization; replication workers
-    // remain independent of this one-thread native data pool.
-    static NATIVE_INIT: std::sync::OnceLock<std::result::Result<(), String>> =
-        std::sync::OnceLock::new();
-    NATIVE_INIT
-        .get_or_init(|| {
-            let budget = ThreadBudget {
-                worker_threads: NonZeroUsize::new(1).unwrap(),
-            };
-            match run_output::native_thread_budget().map_err(|e| e.to_string())? {
-                Some(existing) if existing == budget => Ok(()),
-                Some(_) => Err("conflicting native thread budget".into()),
-                None => {
-                    run_output::configure_native_thread_budget(budget).map_err(|e| e.to_string())
-                }
-            }
-        })
-        .clone()?;
+    initialize_native_data()?;
     if !root.is_dir() || fs::symlink_metadata(root)?.file_type().is_symlink() {
         return Err("existing private output root required".into());
     }
@@ -643,4 +654,82 @@ pub fn run_batch(
 
 pub fn batch_root(root: &Path, input: &BatchInput) -> PathBuf {
     root.join(&input.batch_id)
+}
+
+#[cfg(test)]
+mod native_identity_vectors {
+    use super::*;
+    #[test]
+    fn generic_entity_zero_stays_distinct_from_absence_and_domain_person_sentinel() {
+        initialize_native_data().unwrap();
+        let fixture: serde_json::Value = serde_json::from_str(include_str!(
+            "../../careops-ed/tests/fixtures/r121_analytical.json"
+        ))
+        .unwrap();
+        let records = fixture["birthing"]["nullable_entities"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .enumerate()
+            .map(|(i, entity)| EventLogRecord {
+                schema_version: SCHEMA_VERSION_V2,
+                run_id: "r".into(),
+                event_id: EventId {
+                    index: i as u64 + 1,
+                    generation: 0,
+                },
+                entity_id: if entity.is_null() {
+                    None
+                } else {
+                    Some(EntityId {
+                        index: entity["index"].as_u64().unwrap(),
+                        generation: u32::try_from(entity["generation"].as_u64().unwrap()).unwrap(),
+                    })
+                },
+                time_ticks: 0,
+                time_scale: "second".into(),
+                priority: 0,
+                sequence: i as u64 + 1,
+                event_kind: "control".into(),
+                status: EventStatus::Dispatched,
+                payload_ref: Some("{}".into()),
+            })
+            .collect::<Vec<_>>();
+        let frame =
+            canonical_event_frame(io::records_to_dataframe(&records).unwrap().reverse()).unwrap();
+        assert_eq!(
+            frame
+                .column("entity_id_index")
+                .unwrap()
+                .u64()
+                .unwrap()
+                .get(0),
+            None
+        );
+        assert_eq!(
+            frame
+                .column("entity_id_index")
+                .unwrap()
+                .u64()
+                .unwrap()
+                .get(1),
+            Some(0)
+        );
+        assert_eq!(
+            frame.column("entity_id_gen").unwrap().u32().unwrap().get(1),
+            Some(0)
+        );
+        // B7's domain PersonId format is nonzero; its explicit zero sentinel is
+        // not a generic ECS EntityId(0,0) and must never become a mother/infant.
+        let domain = Row {
+            tick: 0,
+            person: 0,
+            episode: 0,
+            kind: "control".into(),
+            data: serde_json::Value::Null,
+        };
+        assert!(super::records("r", &[domain], 0).unwrap()[0]
+            .entity_id
+            .is_none());
+    }
 }
