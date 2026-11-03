@@ -270,9 +270,15 @@ class TestE61NumericBatchProfiling(unittest.TestCase):
             f"Native cargo test -p kairo-ecs-gpu failed:\nStdout:\n{res.stdout}\nStderr:\n{res.stderr}"
         )
         combined_output = res.stdout + res.stderr
-        self.assertIn("test_26_workload_candidate_catalog_and_kernel_selection", combined_output)
-        self.assertIn("test_d0_exact_state_authority_and_rng_retention", combined_output)
-        self.assertIn("test_sorting_cost_separation_in_catalog", combined_output)
+        # The pinned upstream supplies CPU-fallback parity/atomicity contracts,
+        # not a native implementation of the Python 26-workload catalogue.
+        # Require actual passing records; ignored/zero-test runs cannot satisfy this.
+        for name in [
+            "fixed_seed_abm_parity_harness_is_deterministic",
+            "fixed_seed_des_parity_harness_applies_events_in_timestamp_order",
+            "persistent_des_error_does_not_partially_apply_events",
+        ]:
+            self.assertIn(f"test {name} ... ok", combined_output)
         self.assertIn("test result: ok", combined_output)
 
         # Also verify careops-ed e61 batch numeric workloads test suite
@@ -289,7 +295,16 @@ class TestE61NumericBatchProfiling(unittest.TestCase):
             res_ed.returncode, 0,
             f"Native cargo test -p careops-ed failed:\nStdout:\n{res_ed.stdout}\nStderr:\n{res_ed.stderr}"
         )
-        self.assertIn("test result: ok", res_ed.stdout)
+        for name in [
+            "test_batched_spatial_transit_10k_agents_precision_oracle",
+            "test_presorted_equal_w1_vs_weighted_unequal_w1_separation",
+            "test_ks_maximum_distance_triage_to_bed",
+            "test_parameter_candidate_scoring_32_configs_and_decision_stability",
+            "test_hardware_fallback_seamless_delegation",
+            "test_error_conditions_fail_closed",
+        ]:
+            self.assertIn(f"test tests::{name} ... ok", res_ed.stdout)
+        self.assertIn("test result: ok. 6 passed", res_ed.stdout)
 
 
 if __name__ == "__main__":
