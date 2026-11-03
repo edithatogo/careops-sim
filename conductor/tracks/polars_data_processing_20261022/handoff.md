@@ -210,3 +210,25 @@ waived. Populated direct parent FFI and final full native/replay/performance/
 streaming/clean-package/coverage/mutation/security/hosted gates remain mandatory.
 Same sole chat01a19b9f owns careops-pr194-checks/careops-sim; no new runtime,
 merge, publication or clinical/site/operational acceptance is implied.
+
+
+## Native reader qualification checkpoint — 3 November 2026
+
+Source1b6ca2deaead85f1bc0da50c1d6aa00df54e2cba is committed with normal privacy
+hooks passing zero findings. Original chat01a19b9f-69e7-7353-9b75-445d5653feb4
+retains coordinator scope in `<managed-worktrees>/careops-pr194-checks/careops-sim`,
+branch `codex/polars-migration-integration`; no native/authentication scope.
+Birthing/Generic ED reconciliation commits/worktree remain separate and unchanged.
+
+Final5profile/9output/5reader tests pass; explicit historical conversion1 plus
+independent3tests pass, including6datasets/18tables. All26actual frozen summary
+cases and16strict compatibility tests pass. Final Clippy/fmt, canonical dependency
+policy, minimal graphs and Conductor integrity pass. Independent final review is
+ready with no remaining findings. Original historical receipts are unchanged.
+[Detailed scope and failure history](../../evidence/polars-integration-20261103/R13.md).
+
+The existing external build target is qualified for continued work; internal
+storage link failures are retained as failed evidence. No new hosted run, push,
+whole R13/R14 acceptance or archive is claimed. Next: native CLI export/compare,
+main/default and all-known-consumer cutover, then removal and existing R14 gates.
+These are concrete unfinished tasks; the track remains in progress.

@@ -68,7 +68,7 @@ qualification is claimed.
 
 ## Planned Polars migration
 
-[CareOps migration](tracks/polars_data_processing_20261022/index.md) follows accepted Kairos Track 70. R10–R11 accepted for bounded engineering at2796f44 after complete hosted gates. R12.1 analytical tests are next; Rust processing, output/consumer migration and final acceptance remain open.
+[CareOps migration](tracks/polars_data_processing_20261022/index.md) follows accepted Kairos Track 70. R10–R12 accepted within their recorded scopes. Native reader/conversion1b6ca2d is locally qualified with final IPC/interoperability,26-case compatibility and canonical policy checks. R13 CLI/main/consumer cutover and R14 final acceptance remain open; this is not whole-layer completion.
 
 ## Separate library adoption tracks
 

@@ -64,7 +64,7 @@
   "sequencing_basis": "User requested inventory-first Polars; supporting dependency work gates only demonstrated dependent tasks.",
   "acceptance_evidence": "conductor/tracks/polars_data_processing_20261022/review-report.md",
   "accepted_source_commit": "65731f093a9ff1e11005782bbe9d544c4dd5cbab",
-  "next_phase_decision": "Continue R13 native consumers: strict typed native dataset read/export/compare, then coherent binary/default CLI + versioned strict native benchmark/all-known-consumer cutover. Library outputf6297fd/requiredreaderCIae20548 and callableCLIcoreacf217b reviewed locally; main still legacy deliberately until cutover. Hosted92d8daa has17successes+expectedskip for data adoption/capture sizing, predating these new library/CLI changes. R13.2/R13.3 whole tasks and all R14 final/FFI/streaming/RSS/removal gates remain open; runtime074/dataf347/Polars964 fixed.",
+  "next_phase_decision": "Continue R13 native CLI export/compare, coherent main/default CLI and all-known-consumer cutover, then legacy removal and R14 final/FFI/performance gates. Native reader/conversion1b6ca2d locally qualified: final5profile/9output/5reader tests, explicit historical conversion1+independent3,26actual frozen cases,16guard tests,Clippy/canonical policy pass. Hosted current source pending; whole R13/R14 open.",
   "accepted_local_tasks": {
     "R11.1": {
       "source": "3ee7ac1225c9c53d076a7246a1d02ce3e4cdcb10",
@@ -123,6 +123,19 @@
     "native_cli_core": {
       "source": "acf217bf06b9a5325c12d6845fa50b1ad742b301",
       "accepted_scope": "callable library10nativeCLI+42output/capture tests,13compatibility guard,Clippy; fresh-root/raw/control/recovery/realCSVWrite; main unchanged; actualbinary/slowpipe/cutover pending"
+    },
+    "native_reader": {
+      "source": "1b6ca2deaead85f1bc0da50c1d6aa00df54e2cba",
+      "accepted_scope": "Local closed-profile reader/conversion and exact metadata-dependency compatibility; no whole R13/R14 or hosted acceptance",
+      "native_profile_tests": 5,
+      "native_output_tests": 9,
+      "native_reader_tests": 5,
+      "explicit_historical_conversion_tests": 1,
+      "independent_reader_tests": 3,
+      "actual_frozen_cases": 26,
+      "compatibility_tests": 16,
+      "policy": "canonical toolchain/dependency metadata and Cargo Deny advisories/bans/licenses/sources pass",
+      "evidence": "conductor/evidence/polars-integration-20261103/R13.md"
     }
   }
 }
