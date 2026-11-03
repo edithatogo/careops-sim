@@ -63,13 +63,23 @@ fn rewrite_first(
     let mut native: Value = serde_json::from_slice(&std::fs::read(&native_path).unwrap()).unwrap();
     let ipc_path = directory.join(domain["ipc"][0]["file"].as_str().unwrap());
     let parquet_path = directory.join(native["parts"][0]["file_name"].as_str().unwrap());
-    let frame =
-        io::read_ipc_stream(std::io::Cursor::new(std::fs::read(&ipc_path).unwrap())).unwrap();
+    let bytes = std::fs::read(&ipc_path).unwrap();
+    // Preserve actual file provenance so transformations reach their intended
+    // schema/value oracle instead of failing the independent metadata gate.
+    let metadata: std::collections::BTreeMap<String, String> =
+        IpcStreamReader::new(std::io::Cursor::new(&bytes))
+            .custom_metadata()
+            .unwrap()
+            .expect("original captured IPC metadata")
+            .iter()
+            .map(|(key, value)| (key.to_string(), value.to_string()))
+            .collect();
+    let frame = io::read_ipc_stream(std::io::Cursor::new(bytes)).unwrap();
     let mut frame = transform(frame);
     let mut ipc = Vec::new();
-    io::write_ipc_stream(&mut frame, &mut ipc).unwrap();
+    io::write_ipc_stream_with_metadata(&mut frame, &mut ipc, &metadata).unwrap();
     let mut parquet = Vec::new();
-    io::write_parquet_zstd(&mut frame, &mut parquet).unwrap();
+    io::write_parquet_zstd_with_metadata(&mut frame, &mut parquet, &metadata).unwrap();
     std::fs::write(ipc_path, &ipc).unwrap();
     std::fs::write(parquet_path, &parquet).unwrap();
     domain["ipc"][0]["sha256"] = hash(&ipc).into();
