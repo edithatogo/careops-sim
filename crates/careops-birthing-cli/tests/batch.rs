@@ -251,3 +251,74 @@ fn unknown_versions_units_and_unbounded_profiles_fail_before_output() {
         assert_eq!(std::fs::read_dir(root.path()).unwrap().count(), 0);
     }
 }
+
+#[test]
+fn uncertainty_is_explicit_and_cannot_be_silently_changed_or_omitted() {
+    let mut input = input();
+    input.replications = 1;
+    input.scenario.days = 1;
+    let root = private_root();
+    let results = run_batch(root.path(), &input, 1, false, None).unwrap();
+    let batch = root.path().join(&input.batch_id);
+    let result = &results[0];
+    let path = batch.join(&result.directory).join("birthing_manifest.json");
+    let original: serde_json::Value =
+        serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+    assert_eq!(original["schema_version"], 2);
+    assert_eq!(
+        original["uncertainty"],
+        serde_json::json!({
+            "schema": "careops.birthing.observation-uncertainty.v1",
+            "method": "not_estimated",
+            "reason": "case_observations_no_declared_sampling_estimand",
+            "observation_unit": "synthetic_case",
+            "experiment_unit": "independent_replication",
+            "metrics": ["delay_seconds", "origin_occupied_seconds", "target_breach"]
+        })
+    );
+    for key in [
+        "schema",
+        "method",
+        "reason",
+        "observation_unit",
+        "experiment_unit",
+        "metrics",
+    ] {
+        let mut changed = original.clone();
+        changed["uncertainty"].as_object_mut().unwrap().remove(key);
+        std::fs::write(&path, serde_json::to_vec(&changed).unwrap()).unwrap();
+        assert!(
+            validate_replication(&batch, &result.directory, &input, 0, result.seed).is_err(),
+            "missing {key}"
+        );
+        let mut changed = original.clone();
+        changed["uncertainty"][key] = if key == "metrics" {
+            serde_json::json!(["delay_seconds"])
+        } else {
+            "invented".into()
+        };
+        std::fs::write(&path, serde_json::to_vec(&changed).unwrap()).unwrap();
+        assert!(
+            validate_replication(&batch, &result.directory, &input, 0, result.seed).is_err(),
+            "altered {key}"
+        );
+    }
+    for mode in 0..3 {
+        let mut changed = original.clone();
+        match mode {
+            0 => {
+                changed.as_object_mut().unwrap().remove("uncertainty");
+            }
+            1 => {
+                changed["uncertainty"]["population_ci"] = serde_json::json!([0, 0]);
+            }
+            _ => {
+                changed["schema_version"] = 1.into();
+            }
+        }
+        std::fs::write(&path, serde_json::to_vec(&changed).unwrap()).unwrap();
+        assert!(validate_replication(&batch, &result.directory, &input, 0, result.seed).is_err());
+    }
+    std::fs::write(&path, serde_json::to_vec(&original).unwrap()).unwrap();
+    validate_replication(&batch, &result.directory, &input, 0, result.seed).unwrap();
+}

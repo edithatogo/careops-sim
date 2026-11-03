@@ -203,10 +203,40 @@ impl IndexedReplication for Replication {
         self.seed
     }
 }
+/// Reporting scope for actual observations, not a population or pooled-case
+/// estimator. Replications may support a separately declared future estimand.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ObservationUncertainty {
+    pub schema: String,
+    pub method: String,
+    pub reason: String,
+    pub observation_unit: String,
+    pub experiment_unit: String,
+    pub metrics: Vec<String>,
+}
+impl ObservationUncertainty {
+    fn observations_only() -> Self {
+        Self {
+            schema: "careops.birthing.observation-uncertainty.v1".into(),
+            method: "not_estimated".into(),
+            reason: "case_observations_no_declared_sampling_estimand".into(),
+            observation_unit: "synthetic_case".into(),
+            experiment_unit: "independent_replication".into(),
+            metrics: vec![
+                "delay_seconds".into(),
+                "origin_occupied_seconds".into(),
+                "target_breach".into(),
+            ],
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ReplicationManifest {
     pub schema_version: u32,
+    pub uncertainty: ObservationUncertainty,
     pub input: BatchInput,
     pub effective_input_sha256: String,
     /// Exact normalized UTF-8 bytes hashed by the writer. Readers parse these
@@ -319,7 +349,8 @@ fn publish(
             model_contract_sha256: MODEL_CONTRACT_SHA256.into(),
         };
         let manifest = ReplicationManifest {
-            schema_version: 1,
+            schema_version: 2,
+            uncertainty: ObservationUncertainty::observations_only(),
             input: input.clone(),
             effective_input_sha256: input.hash()?,
             effective_input_json: input.effective_json()?,
@@ -418,7 +449,8 @@ pub fn replication_events(
     }
     let manifest: ReplicationManifest =
         serde_json::from_slice(&read_bounded(&dir.join("birthing_manifest.json"), 262144)?)?;
-    if manifest.schema_version != 1
+    if manifest.schema_version != 2
+        || manifest.uncertainty != ObservationUncertainty::observations_only()
         || !manifest.completed
         || manifest.input != *input
         || manifest.effective_input_sha256 != input.hash()?

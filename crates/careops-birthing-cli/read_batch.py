@@ -92,6 +92,22 @@ def validate_theatre(rows, expected_input):
     return checked
 
 
+def validate_uncertainty(manifest):
+    expected = {
+        'schema': 'careops.birthing.observation-uncertainty.v1',
+        'method': 'not_estimated',
+        'reason': 'case_observations_no_declared_sampling_estimand',
+        'observation_unit': 'synthetic_case',
+        'experiment_unit': 'independent_replication',
+        'metrics': ['delay_seconds', 'origin_occupied_seconds', 'target_breach'],
+    }
+    actual = manifest.get('uncertainty')
+    if (type(manifest.get('schema_version')) is not int
+            or manifest['schema_version'] != 2 or actual != expected):
+        raise ValueError('missing or unsupported observation uncertainty contract')
+    return actual
+
+
 def read_batch(root, expected_input):
     batch = root / expected_input['batch_id']
     completed = load(batch / 'batch_manifest.json')
@@ -99,6 +115,7 @@ def read_batch(root, expected_input):
         raise ValueError("incomplete batch")
     reports = []
     model_contract = None
+    uncertainty = None
     for index, result in enumerate(completed):
         if result['index'] != index:
             raise ValueError("unordered or duplicated replication")
@@ -109,13 +126,14 @@ def read_batch(root, expected_input):
         if directory.is_symlink():
             raise ValueError("symlink replication")
         manifest = load(directory / 'birthing_manifest.json')
+        uncertainty = validate_uncertainty(manifest)
         model = result['model_contract_sha256']
         if (len(model) != 64 or any(c not in '0123456789abcdef' for c in model)
                 or (model_contract is not None and model_contract != model)):
             raise ValueError('mixed or malformed model/build contract identity')
         model_contract = model
         native = load(directory / 'run_manifest.json')
-        if (manifest['schema_version'] != 1 or not manifest['completed']
+        if (manifest['schema_version'] != 2 or not manifest['completed']
                 or manifest['input'] != expected_input or manifest['tick_unit'] != 'second'
                 or manifest['replication'] != result
                 or manifest['runtime_revision'] != '07410266bf54b6f73c59db2f8cbfbc5697c53734'
@@ -193,7 +211,8 @@ def read_batch(root, expected_input):
         reports.append({'index': index, 'seed': result['seed'], 'rows': len(rows),
                         'canonical_sha256': canonical, 'births': len(births),
                         'policy_metrics_checked': validate_theatre(rows, expected_input)})
-    return {'reader': 'PyArrow', 'version': pa.__version__, 'model_contract_sha256': model_contract, 'replications': reports}
+    return {'reader': 'PyArrow', 'version': pa.__version__, 'model_contract_sha256': model_contract,
+            'uncertainty': uncertainty, 'replications': reports}
 
 
 if __name__ == '__main__':

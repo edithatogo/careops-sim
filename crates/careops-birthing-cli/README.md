@@ -50,3 +50,13 @@ transport, fetal identity, clinical validation, site acceptance or full-spec app
 Operative `theatre_case` records preserve the complete actual callback list, all timing fields, transfer/incision/birth metrics (including non-breaches and zero targets), and their assessment/policy provenance. The independent reader checks the foreign keys, elapsed values, policy identity/rules and breach decisions against those actual records.
 
 Recovery requires the same model/build contract. A build-time SHA-256 binds sorted owned CareOps core/birthing/CLI Rust sources, their manifests, root manifest/lock, build receipt code, actual Rust compiler readback and target/profile/flags. The tag is part of canonical effective-input bytes, checkpoint metadata and each completed replication. A mismatched tag rejects before reusing files or starting pending work. This is an implementation/build contract under the qualified upstream pins, not a binary signature or permission to promote a runtime pin.
+
+Domain manifest v2 explicitly declares observation uncertainty contract v1 for
+actual delay-seconds, origin-occupied-seconds and target-breach observations.
+`method=not_estimated` means there is no declared sampling estimand for these case
+observations. The observation unit is `synthetic_case`; the experiment unit is
+`independent_replication`. Cases are not asserted IID, stochastic jitter is not
+called deterministic, and no zero uncertainty, population/batch estimate or CI is
+claimed. Independent replications can support a later explicitly defined estimator.
+Rust readback/recovery and the independent reader require the exact declaration;
+old v1 manifests are historical artifacts and do not silently gain this contract.
