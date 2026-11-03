@@ -9,6 +9,7 @@ use kairo_ecs_arrow::{
     run_output::{self, RunOutput, RunOutputConfig, ThreadBudget},
 };
 use kairo_ecs_arrow::{EventLogRecord, EventStatus, SCHEMA_VERSION_V2};
+use polars::prelude::{DataFrame, SortMultipleOptions};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
@@ -234,7 +235,7 @@ fn records(run: &str, rows: &[Row], offset: usize) -> Result<Vec<EventLogRecord>
                     generation: 0,
                 }),
                 time_ticks: u128::from(row.tick),
-                time_scale: "ticks".into(),
+                time_scale: "second".into(),
                 priority: 0,
                 sequence: (offset + i + 1) as u64,
                 event_kind: row.kind.clone(),
@@ -343,6 +344,21 @@ fn safe_component(value: &str) -> bool {
         && value != "."
         && value != ".."
 }
+fn canonical_event_frame(frame: DataFrame) -> Result<DataFrame> {
+    let expected = io::records_to_dataframe(&[])?;
+    if frame.schema() != expected.schema() || frame.height() > MAX_ROWS {
+        return Err("unsupported native event schema or row bound".into());
+    }
+    for column in frame.columns() {
+        if !matches!(column.name().as_str(), "entity_id_index" | "entity_id_gen")
+            && column.null_count() != 0
+        {
+            return Err("null required B7 event field".into());
+        }
+    }
+    Ok(frame.sort(["sequence"], SortMultipleOptions::default())?)
+}
+
 pub fn validate_replication(
     root: &Path,
     directory: &str,
@@ -350,6 +366,18 @@ pub fn validate_replication(
     index: usize,
     seed: u64,
 ) -> Result<ReplicationManifest> {
+    replication_events(root, directory, input, index, seed).map(|(manifest, _)| manifest)
+}
+
+/// Read original native capture with exact manifest/model/input binding. Returned
+/// buffers are owned by the offline table; the simulation is never invoked.
+pub fn replication_events(
+    root: &Path,
+    directory: &str,
+    input: &BatchInput,
+    index: usize,
+    seed: u64,
+) -> Result<(ReplicationManifest, DataFrame)> {
     if !safe_component(directory)
         || !directory.starts_with(&format!("{}-attempt", input.batch_id))
         || !directory.ends_with(&format!("-rep{index}"))
@@ -407,7 +435,7 @@ pub fn validate_replication(
     {
         return Err("upstream/domain manifest identity mismatch".into());
     }
-    let mut all = Vec::new();
+    let mut all = io::records_to_dataframe(&[])?;
     for (part, receipt) in manifest.ipc.iter().enumerate() {
         if receipt.file != format!("ipc-{part:05}.arrow")
             || receipt.rows == 0
@@ -419,23 +447,32 @@ pub fn validate_replication(
         if hash(&bytes) != receipt.sha256 {
             return Err("IPC content hash mismatch".into());
         }
-        let frame = io::read_ipc_stream(std::io::Cursor::new(bytes))?;
-        let mut ipc_rows = io::dataframe_to_records(&frame)?;
-        let other = io::read_parquet(std::io::Cursor::new(read_bounded(
+        let frame = canonical_event_frame(io::read_ipc_stream(std::io::Cursor::new(bytes))?)?;
+        let other = canonical_event_frame(io::read_parquet(std::io::Cursor::new(read_bounded(
             &dir.join(&parquet.parts[part].file_name),
             8 * 1024 * 1024,
-        )?))?;
-        let mut parquet_rows = io::dataframe_to_records(&other)?;
-        ipc_rows.sort_by_key(|r| r.sequence);
-        parquet_rows.sort_by_key(|r| r.sequence);
-        if ipc_rows != parquet_rows || ipc_rows.len() != receipt.rows {
+        )?))?)?;
+        if !frame.equals_missing(&other)
+            || frame.height() != receipt.rows
+            || other.height() != parquet.parts[part].row_count
+        {
             return Err("IPC/Parquet capture mismatch".into());
         }
-        all.extend(ipc_rows);
+        if all
+            .height()
+            .checked_add(frame.height())
+            .is_none_or(|n| n > MAX_ROWS)
+        {
+            return Err("capture row bound exceeded".into());
+        }
+        all.vstack_mut(&frame)?;
     }
-    all.sort_by_key(|r| r.sequence);
-    let mut rows = Vec::new();
-    for (i, record) in all.iter().enumerate() {
+    let all = canonical_event_frame(all)?;
+    // Domain identity and retained canonical digest are control validation, not
+    // tabular transformations. Actual sort/format equality stay in Polars.
+    let records = io::dataframe_to_records(&all)?;
+    let mut rows = Vec::with_capacity(records.len());
+    for (i, record) in records.iter().enumerate() {
         let row: Row = serde_json::from_str(
             record
                 .payload_ref
@@ -444,7 +481,7 @@ pub fn validate_replication(
         )?;
         if record.sequence != (i + 1) as u64
             || record.schema_version != SCHEMA_VERSION_V2
-            || record.time_scale != "ticks"
+            || record.time_scale != "second"
             || record.status != EventStatus::Dispatched
             || record.priority != 0
             || record.event_id.index != record.sequence
@@ -467,7 +504,7 @@ pub fn validate_replication(
     {
         return Err("canonical capture digest mismatch".into());
     }
-    Ok(manifest)
+    Ok((manifest, all))
 }
 
 fn execute_replication(

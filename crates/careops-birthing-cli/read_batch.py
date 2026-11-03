@@ -3,7 +3,7 @@
 
 Run with the repository-local Python3.15.1 and pinned reader requirements.
 The required domain manifest carries tick=second and effective-input provenance;
-the generic event-log time_scale column remains its schema's literal `ticks`.
+the generic event-log time_scale column explicitly records `second` as well.
 """
 import hashlib
 import json
@@ -173,7 +173,7 @@ def read_batch(root, expected_input):
             row = json.loads(record['payload_ref'])
             if (record['schema_version'] != 2 or record['run_id'] != native['run_id']
                     or record['sequence'] != sequence or record['event_id_index'] != sequence
-                    or record['event_id_gen'] != 0 or record['time_scale'] != 'ticks'
+                    or record['event_id_gen'] != 0 or record['time_scale'] != 'second'
                     or record['priority'] != 0
                     or record['entity_id_gen'] != (0 if row['person'] else None)
                     or (record['time_ticks_hi'] << 64) + record['time_ticks_lo'] != row['tick']
