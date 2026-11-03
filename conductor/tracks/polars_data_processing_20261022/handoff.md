@@ -105,3 +105,16 @@ No production source change, native service scope, owner transfer or new pin.
 The intentionally red authoring commit remains local until a coherent implemented
 green milestone. Next: fresh reviewed R12.2 processing packet/claim, preserving
 the frozen expected vectors and all subsequent phase gates.
+
+
+## R12 engineering handoff — 3 November 2026
+
+Sole parent integration chat/worktree/branch remains unchanged. Source65731f0
+passed739native including doctests,774top-level Python and8explicitEDmirror;
+independent slice/phase review is ready. Closeout69df957 records exact R13
+legacy dispositions. Accept R12 local engineering and prepare R13.1 output/reader
+controls, then bounded consumer migration/removal. No native service scope,
+owner transfer or pin change. Generic arbitrary-domain C Data requires a
+separate Track70 owner packet; it blocks affected FFI/final acceptance only.
+Current-source hosted, R13/R14 performance/removal/consumer and broader gates
+remain open. PR199 stays draft/unmerged; publish this coherent checkpoint next.

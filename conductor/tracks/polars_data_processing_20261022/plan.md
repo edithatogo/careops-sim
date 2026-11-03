@@ -19,9 +19,14 @@ R10 entry and baseline are reconciled for the bounded remote packet. Runtime Pol
 ## R12 — Rust Polars domain processing
 
 - [x] R12.1 Add analytical tests for weighted versus unweighted estimands, ddof/intervals, censoring, empty/singleton, null/nonfinite, skew and duplicate/missing join keys. Authoring accepted atb143bd1:14compiling baseline controls (5positive/9actual method failures), frozen numerical/key/B7 vectors and reviewed scientific contract. This is test-authoring completion only; typed DataFrame oracles and green runtime acceptance remain R12.2/R12.4.
-- [ ] R12.2 Replace applicable ED and birthing batch transformations, joins, summaries, repeated statistics and calibration-trace preparation with Polars expressions; keep online/domain logic authoritative.
-- [ ] R12.3 Use existing modules for domain definitions and Kairos for generic interchange; extract shared helpers only for actual duplicate consumers, not speculative frameworks.
-- [ ] R12.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.
+- [x] R12.2 Replace applicable ED and birthing batch transformations, joins, summaries, repeated statistics and calibration-trace preparation with Polars expressions; keep online/domain logic authoritative.
+- [x] R12.3 Use existing modules for domain definitions and Kairos for generic interchange; extract shared helpers only for actual duplicate consumers, not speculative frameworks.
+- [x] R12.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.
+
+R12 local engineering accepted at65731f0 after coherent739native/774top-level
+Python/8EDmirror passes and independent review. Exact legacy R13 dispositions
+and compiler/hosted distinctions are in the R12 evidence; final-head hosted
+and R13/R14 consumer/FFI/performance/removal gates remain open.
 
 ## R13 — Outputs and consumers
 

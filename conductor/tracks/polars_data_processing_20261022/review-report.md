@@ -136,3 +136,39 @@ Accept R11.4 and permit R12.1 under a fresh reviewed packet and advisory claim.
 This closeout records source2796f44 evidence, not hosted results for its containing
 documentation commit. Preserve R12–R14, physical, clinical, site, operational,
 release and broader A7 gates. Keep the track active; do not archive it.
+
+
+## Review Report: R12 local engineering — 3 November 2026
+
+### Summary
+
+R12 is ready for scoped local engineering acceptance at65731f0; independent
+review reused exact slice reviews and verified actual coherent milestone logs.
+Closeout69df957 records exact legacy paths/callers/owner/R13 dispositions.
+
+### Verification Checks
+
+- [x] Plan compliance: native ED statistics, validated fact/dimension joins,
+  nullable synthetic calibration provenance and five captured B7 theatre views.
+- [x] Style compliance: affected all-target warnings-denied Clippy and fmt pass.
+- [x] New tests: independent frozen numerical/key controls plus actual native
+  error, policy ambiguity, same-tick reassessment, callback and IO controls.
+- [x] Test results:739native including doctests,0failed/ignored;774top-level
+  Python plus separately selected8EDmirror tests pass at exact65731f0.
+- [x] Scope: generic core/model progression retained; no speculative backend.
+
+### Findings and disposition
+
+Applied reviewed duplicate/null/endpoint, neutral interval naming, callback/
+case timing, receipt binding, stale same-tick policy and native-budget fixes.
+Actual red controls and final receipts remain in the R12 evidence. Legacy
+comparison standard errors and JSON/CSV/DDL are explicitly R13 migration/removal,
+not newly qualified statistics. No cross-owner implementation was attempted.
+
+### Next-phase decision
+
+Accept R12.2/R12.3/R12.4 as local engineering and proceed R13 output/consumer
+work. Hosted2e2864f is older source; final-head hosted proof remains mandatory.
+Generic populated domain C Data needs the Track70 owner followup; serialization
+or event-log-only FFI receipts cannot substitute. R13/R14 removal, performance,
+complete consumer, release, clinical/site/operational gates remain open.
