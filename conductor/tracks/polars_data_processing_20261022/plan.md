@@ -1,6 +1,6 @@
 # Plan: CareOps whole-layer Polars migration
 
-R10 entry and baseline are reconciled for the bounded remote packet. Runtime Polars replacement remains pending; write failing behavioural tests before replacement.
+R10–R12 retain their scoped acceptance. R13 local engineering is accepted at f7563a8; final R14 source, interoperability, performance, package and hosted gates remain open.
 
 ## R10 — Upstream entry and baseline
 
@@ -31,9 +31,9 @@ and R13/R14 consumer/FFI/performance/removal gates remain open.
 ## R13 — Outputs and consumers
 
 - [x] R13.1 Add independent-reader tests for real Parquet/Zstd and IPC, explicit CSV quoting/limb fields, effective input hashes and incomplete manifest rejection. Local format/test acceptance at `b1b91ca`; exact hosted parent readers pending, production migration remains R13.2/R13.3.
-- [ ] R13.2 Replace JSON full-table bundles/schema DDL/manual CSV output with versioned Parquet tables plus provenance manifests; migrate CLIs and every known downstream fixture/script.
-- [ ] R13.3 Regenerate owned synthetic fixtures, preserve historical files, remove old alpha data APIs/readers and document clean-break run/output instructions.
-- [ ] R13.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.
+- [x] R13.2 Replace JSON full-table bundles/schema DDL/manual CSV output with versioned Parquet tables plus provenance manifests; migrate CLIs and every known downstream fixture/script. Local source accepted at f7563a8 after the coherent776-test workspace pass and recorded Python/native consumer evidence; final-head hosted acceptance remains R14.
+- [x] R13.3 Regenerate owned synthetic fixtures, preserve historical files, remove old alpha data APIs/readers and document clean-break run/output instructions. Owned fixture views and consumers are migrated, historical inputs/receipts preserved, 2382 obsolete production lines removed, and current guides/CI discovery reconciled; see [R13 acceptance](../../evidence/polars-r13-acceptance-20261104/README.md).
+- [x] R13.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision. Local engineering accepted at f7563a8 after independent packet reviews, actual776 workspace tests,796 top-level Python tests and all127 ED cases accounted with the corrected exact E61 case. [Acceptance and remaining gates](../../evidence/polars-r13-acceptance-20261104/README.md) retain the original failures, exact release26-case receipt and final R14/hosted boundaries.
 
 ## R14 — Acceptance and removal
 

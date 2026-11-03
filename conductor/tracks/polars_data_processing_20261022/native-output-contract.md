@@ -54,10 +54,11 @@ The metadata interfaces are existing locked dependencies, not a new backend.
 Their separate strict compatibility receipt does not renew A7 or complete R13.
 
 
-## Next bounded fixture view contract
+## Bounded fixture view contract
 
-This is the reviewed interface for the next packet, not a claim of implemented
-or qualified source at63a30b8. CompositeEdFixture has no original capture-backed
+The reviewed interface below was implemented at a44a938 and accepted in the
+R13 local engineering closeout at f7563a8. The original63a30b8 checkpoint did
+not claim this implementation. CompositeEdFixture has no original capture-backed
 BatchRunDocument; never fabricate one or input/model provenance to use the native
 ED exporter. Keep to_run_summary as the authoritative online projection.
 

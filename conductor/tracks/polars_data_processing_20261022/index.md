@@ -9,17 +9,20 @@
 - [handoff.md](handoff.md)
 - [Planning review](review-report.md)
 
-Local engineering checkpoint through63a30b8 includes the real native CLI
-entrypoint. The earlier source-bound release checkpoint passed26case compatibility
-and unchanged stdout/RSS/time budgets; final-source qualification remains open.
-Reviewed CI/Python/Rust/capture/dashboard packets are integrated; obsolete
-example runner and unused fabricated dashboard exporters are removed.
-See [dated review checkpoint](review-report.md#r13-continued-local-cutover-checkpoint--3-november-2026).
+R13 local engineering is accepted at f7563a8. All known CLI, Python/Rust,
+capture, fixture, calibration, dashboard and B7 consumers use native tables;
+obsolete alpha production serializers/dispatcher/descriptor exports are removed.
+The coherent workspace passed776 tests including doctests with no ignored or
+filtered tests. Top-level Python passed796; all127 ED cases are accounted by
+126 passes from full discovery and the corrected exact E61 case.
 
-R13.2/R13.3 remain unchecked: remaining C62/E42-heldout/C64 fixture
-consumers, production alpha serializers and current
-instructions require migration. R14 populated parent FFI, full native/consumer,
-performance/build-cost, clean-package, coverage/mutation/security/policy and
-current-head hosted gates remain open. Known whole-workspace native_reader.rs
-rustfmt drift still needs an exact-source qualified repair. No archive yet.
-Runtime074/dataf347/Polars964 pins and existing ownership are preserved.
+[Phase acceptance](../../evidence/polars-r13-acceptance-20261104/README.md) preserves
+exact receipts, original failures, independent reviews and the new source-bound
+26-case release/stdout pass. The formatting drift is repaired at7b9892b.
+
+R14 remains open: the upstream shared trusted-import crate must pass its source,
+native, policy, Git-consumer and hosted gates before an exact parent default-off
+FFI/data-source packet. Final historical conversion, native/consumer/performance,
+maintained-code/build-cost, package, coverage/mutation/security/policy and
+current-head hosted evidence remain separate. No archive yet. Parent
+runtime074/dataf347/Polars964 and existing ownership are unchanged.

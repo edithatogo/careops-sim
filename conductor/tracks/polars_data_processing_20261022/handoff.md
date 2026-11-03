@@ -245,3 +245,27 @@ C62/E42-heldout/C64 migration, then production legacy removal and final R14.
 The [dated review](review-report.md#native-boundary-and-consumer-continuation--4-november-2026)
 records exact acceptance scopes and remaining gates. No whole-layer completion,
 archive, upstream source/pin mutation or merge is inferred.
+
+## R13 local engineering phase closeout — 4 November 2026
+
+Source f7563a8 completes the known consumer and legacy cutover. The retained
+[acceptance record](../../evidence/polars-r13-acceptance-20261104/README.md) binds
+all scoped commits, actual776-test coherent workspace pass (zero ignored/filtered),
+796 top-level Python passes and all127 ED cases accounted with the corrected
+exact E61 receipt test. Original failed runs remain private evidence. Independent
+packet reviews accepted fixes without serial test harnesses, skipped oracles,
+new tolerances, dependency exemptions or hook bypasses.
+
+Release binary0c2e8487d3fc8a6fb7128dde24a78c7dfacb903b1d6ca0f1a331c1f58d9b9b88
+passed all26 frozen cases plus unchanged stdout/RSS/time gates after the exact
+reader formatting repair at7b9892b. Linux /dev/full remains locally unverified.
+Earlier package and hosted receipts retain their old source scope.
+
+The actual root FFI probe passed3 domain projections but its graph failed
+unexempted policy for duplicate Kairos core/rng sources. The same stopped upstream
+owner has a fresh bounded Track70 reservation for a shared trusted-import crate,
+with architecture/security review, unchanged canonical importer and old engine
+contracts. Arrow's unsafe prohibition is preserved. Its native/source/policy/
+Git-consumer/hosted qualification is pending; parent pin/profile adoption has not
+started. Root runtime074/dataf347/Polars964 remain fixed. R14 and archival remain
+open; optional clinical/site/GPU/distributed/stable-release approval is separate.
