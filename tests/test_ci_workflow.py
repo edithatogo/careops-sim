@@ -175,6 +175,10 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertLess(schema, readers)
         self.assertLess(readers, check)
         self.assertLess(check, harness)
+        build = context.index("- name: Build native CLI for Python consumers")
+        self.assertLess(check, build)
+        self.assertLess(build, harness)
+        self.assertIn("CAREOPS_ED_PROFILE: 'release'", context)
         self.assertLess(harness, benchmark)
         self.assertNotIn("continue-on-error", context[schema:harness])
 

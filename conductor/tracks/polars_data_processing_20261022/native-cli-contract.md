@@ -104,3 +104,8 @@ pickled, real IPC crosses a child process, and production readers reject actual
 truncated, invalid-framing, unsupported-schema/type and oversized IPC parts.
 Python network-client mocking observes the harness process only; it is not a
 claim of OS-enforced native-child network confinement.
+
+CI ordering repair: build the canonical locked release CLI before Python consumers,
+select release explicitly and persist the verified Rust tools. The benchmark still
+runs after support checks, with its unchanged budgets and artifact retention.
+Local2D34 and27workflow tests pass; hosted execution remains pending.
