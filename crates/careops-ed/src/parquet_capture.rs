@@ -16,7 +16,11 @@ use crate::capture::{
 use crate::{PatientResult, PatientStatus};
 
 pub const PATIENT_SCHEMA: &str = "careops.ed.patient-result.v2";
-pub const CODEC: &str = "careops.ed.patient-result.v2/parquet-zstd/polars-96439685";
+pub const CODEC: &str = "careops.ed.patient-result.v2/parquet-zstd/provenance-v1/polars-96439685";
+// Qualified producer for this codec, independent of a future reader's package
+// version. New writer versions need explicit codec qualification; reading old
+// files never compares their producer against the current build version.
+const CODEC_PRODUCER: &str = "careops-ed/0.1.0";
 pub const DEFAULT_LIMITS: CaptureLimits = CaptureLimits {
     max_rows: 256,
     max_bytes: 4 * 1024 * 1024,
@@ -27,6 +31,36 @@ fn invalid(e: impl std::fmt::Display) -> ExperimentError {
 }
 fn io(e: impl std::fmt::Display) -> ExperimentError {
     ExperimentError::new(ExperimentErrorKind::OutputWriteFailed, e.to_string())
+}
+
+// File provenance is part of this codec contract. It binds declared historical
+// model identity, not the model compiled into a future reader. Resume performs
+// its separate current-model compatibility check in capture.rs.
+fn file_provenance(b: &CaptureBatch) -> Vec<(String, String)> {
+    [
+        ("schema", PATIENT_SCHEMA.to_owned()),
+        ("codec", CODEC.to_owned()),
+        ("run_id", b.run_id.clone()),
+        ("effective_input_sha256", b.input_sha256.clone()),
+        (
+            "input_hash_basis",
+            "normalized-effective-scenario".to_owned(),
+        ),
+        ("model_contract_sha256", b.model_contract_sha256.clone()),
+        ("time_unit", b.time_unit.clone()),
+        ("replication_index", b.replication_index.to_string()),
+        ("seed", b.seed.to_string()),
+        ("first_sequence", b.first_sequence.to_string()),
+        ("rows", b.rows.len().to_string()),
+        ("producer", CODEC_PRODUCER.to_owned()),
+        (
+            "polars_revision",
+            "96439685eb2f95108f51087d2b76091917f2593c".to_owned(),
+        ),
+    ]
+    .into_iter()
+    .map(|(key, value)| (format!("careops.{key}"), value))
+    .collect()
 }
 
 /// Temporary runs live as long as their returned document (or clones). Serialized
@@ -234,7 +268,17 @@ impl PartStore for ParquetPartStore {
         if b.rows.is_empty() {
             return Err(invalid("empty physical capture part"));
         }
-        kairo_ecs_arrow::polars_interop::write_parquet_zstd(&mut self.dataframe(b)?, w).map_err(io)
+        if format!("careops-ed/{}", env!("CARGO_PKG_VERSION")) != CODEC_PRODUCER {
+            return Err(invalid(
+                "producer version requires capture codec qualification",
+            ));
+        }
+        ParquetWriter::new(w)
+            .with_compression(ParquetCompression::Zstd(None))
+            .with_key_value_metadata(Some(KeyValueMetadata::from_static(file_provenance(b))))
+            .finish(&mut self.dataframe(b)?)
+            .map(|_| ())
+            .map_err(io)
     }
     fn write_part(&self, name: &str, b: &CaptureBatch, max: usize) -> Result<()> {
         if self.is_complete()? {
@@ -283,8 +327,18 @@ impl PartStore for ParquetPartStore {
         if md.num_rows == 0 || md.num_rows > self.limits.max_rows || decoded > cap {
             return Err(invalid("decoded part exceeds bounds"));
         }
-        let df =
-            kairo_ecs_arrow::polars_interop::read_parquet(Cursor::new(bytes)).map_err(invalid)?;
+        let provenance: Vec<_> = md
+            .key_value_metadata
+            .as_deref()
+            .unwrap_or_default()
+            .iter()
+            .filter(|kv| kv.key.starts_with("careops."))
+            .map(|kv| (kv.key.clone(), kv.value.clone()))
+            .collect();
+        // Retain the vector until validation: converting to a map first could
+        // silently collapse duplicate reserved keys. Standard Arrow metadata
+        // remains the library's responsibility.
+        let df = reader.finish().map_err(invalid)?;
         if df.width() != 23 {
             return Err(invalid("unexpected patient schema columns"));
         }
@@ -379,6 +433,19 @@ impl PartStore for ParquetPartStore {
                     _ => return Err(invalid("unknown patient status")),
                 },
             });
+        }
+        let expected = file_provenance(&b);
+        if provenance.len() != expected.len()
+            || expected.iter().any(|(key, value)| {
+                provenance.iter().filter(|(k, _)| k == key).count() != 1
+                    || !provenance
+                        .iter()
+                        .any(|(k, v)| k == key && v.as_ref() == Some(value))
+            })
+        {
+            return Err(invalid(
+                "missing, duplicate or inconsistent capture file provenance",
+            ));
         }
         Ok(b)
     }
