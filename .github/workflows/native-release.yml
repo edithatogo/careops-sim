@@ -1,10 +1,10 @@
 name: Native CLI release candidate
 on:
   pull_request:
-    paths: ['.github/workflows/native-release.yml', 'tools/package_native_release.py', 'tests/test_native_release_package.py', 'Cargo.toml', 'Cargo.lock', 'crates/**', 'libs/kairos', 'LICENSE', 'NOTICE', 'rust-toolchain.toml']
+    paths: ['.github/workflows/native-release.yml', 'tools/package_native_release.py', 'tests/test_native_release_package.py', 'tests/ed/native_cli_support.py', 'Cargo.toml', 'Cargo.lock', 'crates/**', 'libs/kairos', 'LICENSE', 'NOTICE', 'rust-toolchain.toml']
   push:
     branches: [main]
-    paths: ['.github/workflows/native-release.yml', 'tools/package_native_release.py', 'tests/test_native_release_package.py', 'Cargo.toml', 'Cargo.lock', 'crates/**', 'libs/kairos', 'LICENSE', 'NOTICE', 'rust-toolchain.toml']
+    paths: ['.github/workflows/native-release.yml', 'tools/package_native_release.py', 'tests/test_native_release_package.py', 'tests/ed/native_cli_support.py', 'Cargo.toml', 'Cargo.lock', 'crates/**', 'libs/kairos', 'LICENSE', 'NOTICE', 'rust-toolchain.toml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -29,6 +29,10 @@ jobs:
       - name: Verify packaging refusal and integrity regressions
         run: |
           "$CAREOPS_PYTHON" -m unittest discover -s tests -p test_native_release_package.py -v
+      - name: Install the qualified independent native reader
+        run: |
+          "$CAREOPS_PYTHON" -m pip install -r crates/careops-birthing-cli/requirements-reader.txt
+          "$CAREOPS_PYTHON" -c 'import sys, pyarrow; assert sys.version_info[:3] == (3, 15, 1); assert pyarrow.__version__ == "26.0.0"'
       - name: Compile once using the canonical locked Rust lane
         run: |
           toolchain=$("$CAREOPS_PYTHON" -c 'import tomllib; print(tomllib.load(open("rust-toolchain.toml", "rb"))["toolchain"]["channel"])')
@@ -49,33 +53,48 @@ jobs:
           cd "$RUNNER_TEMP/native-consumer" || exit 1
           bin/careops-ed --help > help.txt
           grep -F 'Usage: careops-ed' help.txt
+          grep -F 'Software verification of simulation mechanics does NOT constitute clinical domain validation for any healthcare site.' help.txt
           bin/careops-ed validate examples/nominal_mvp.json
-          bin/careops-ed run examples/nominal_mvp.json --seed 42 --output result.json
-          bin/careops-ed run examples/nominal_mvp.json --seed 42 --output result-repeat.json
-          cmp result.json result-repeat.json
+          bin/careops-ed run examples/nominal_mvp.json --seed 42 --output-dir result > result-control.json
+          bin/careops-ed run examples/nominal_mvp.json --seed 42 --output-dir result-repeat > result-repeat-control.json
+          bin/careops-ed compare result/data result-repeat/data > comparison.json
           printf '{}\n' > invalid.json
           invalid_status=0
           bin/careops-ed validate invalid.json > invalid-result.txt 2>&1 || invalid_status=$?
           test "$invalid_status" -eq 4
           grep -F "MALFORMED_CONFIG (4)" invalid-result.txt
-          "$CAREOPS_PYTHON" - <<'PYCODE'
+          PYTHONPATH="$GITHUB_WORKSPACE" "$CAREOPS_PYTHON" - <<'PYCODE'
           import hashlib, json
           from pathlib import Path
+          from tests.ed.native_cli_support import read_run, control
           scenario_path = Path('examples/nominal_mvp.json')
           scenario = json.loads(scenario_path.read_text())
-          result = json.loads(Path('result.json').read_text())
-          manifest, summary = result['manifest'], result['summary']
-          assert manifest['input_sha256'] == hashlib.sha256(scenario_path.read_bytes()).hexdigest()
-          assert manifest['seed'] == summary['seed'] == 42
-          assert manifest['scenario_id'] == summary['scenario_id'] == scenario['scenario_id']
-          assert summary['arrivals'] == summary['started'] == summary['completed'] == 5
-          assert summary['unfinished'] == 0 and len(summary['patients']) == 5
-          assert {p['patient_id'] for p in summary['patients']} == {f'patient-{n:03}' for n in range(1, 6)}
-          assert all(p['status'] == 'completed' and p['arrival_tick'] <= p['start_tick'] <= p['completion_tick'] for p in summary['patients'])
-          assert result['validation_taxonomy']['provenance_class'] == 'synthetic'
-          assert result['validation_taxonomy']['validation_scope'] == 'none'
+          assert scenario['provenance']['class'] == 'synthetic'
+          package = control('build.json')
+          assert package['binarySha256'] == hashlib.sha256(Path('bin/careops-ed').read_bytes()).hexdigest()
+          datasets = []
+          for name in ['result', 'result-repeat']:
+              root = Path(name)
+              assert control(root / 'manifest.json') == control(name + '-control.json')
+              manifest, tables = read_run(root)
+              assert manifest['format'] == 'parquet' and manifest['compression'] == 'zstd'
+              assert control(root / 'invocation.json')['raw_input_sha256'] == hashlib.sha256(scenario_path.read_bytes()).hexdigest()
+              assert manifest['base_seed'] == 42 and manifest['replication_seeds'] == [42]
+              assert manifest['scenario_id'] == scenario['scenario_id'] and manifest['time_unit'] == 'tick'
+              patients, replications = tables['patients'].to_pylist(), tables['replications'].to_pylist()
+              assert len(patients) == 5 and len(replications) == 1 and tables['metrics'].num_rows == 5
+              assert {p['patient_id'] for p in patients} == {f'patient-{n:03}' for n in range(1, 6)}
+              assert all(p['status'] == 'completed' and p['arrival_tick_hi'] == p['start_tick_hi'] == p['completion_tick_hi'] == 0 and p['arrival_tick_lo'] <= p['start_tick_lo'] <= p['completion_tick_lo'] for p in patients)
+              assert replications[0]['arrivals'] == replications[0]['started'] == replications[0]['completed'] == 5
+              assert replications[0]['unfinished'] == 0 and replications[0]['seed'] == 42
+              datasets.append(tables)
+          assert all(datasets[0][name].equals(datasets[1][name], check_metadata=False) for name in datasets[0])
+          comparison = control('comparison.json')
+          assert comparison['schema'] == 'careops.ed.native-comparison.v1'
+          assert len(comparison['metrics']) == 5 and all(row['delta'] == 0 for row in comparison['metrics'])
+          Path('consumer-result.json').write_text(json.dumps({'schema': 'careops.native-package-consumer.v1', 'binary_sha256': package['binarySha256'], 'repeat_equal': True, 'comparison_equal': True, 'table_rows': {k: v.num_rows for k, v in datasets[0].items()}}) + '\n')
           PYCODE
-          cp result.json "$GITHUB_WORKSPACE/dist/consumer-result.json"
+          cp consumer-result.json "$GITHUB_WORKSPACE/dist/consumer-result.json"
       - name: Read immutable qualified artifact tooling
         shell: bash
         run: |
