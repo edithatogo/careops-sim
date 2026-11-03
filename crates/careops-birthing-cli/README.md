@@ -60,3 +60,23 @@ called deterministic, and no zero uncertainty, population/batch estimate or CI i
 claimed. Independent replications can support a later explicitly defined estimator.
 Rust readback/recovery and the independent reader require the exact declaration;
 old v1 manifests are historical artifacts and do not silently gain this contract.
+
+## Native readback boundary
+
+Each real Parquet and IPC part carries the exact eleven `careops.` metadata
+fields: `schema_version`, `run_id`, `effective_input_sha256`,
+`model_contract_sha256`, `runtime_revision`, `data_revision`, `time_unit`,
+`replication_index`, `seed`, `first_sequence` and `rows`. Readback checks these
+against the domain contract and original part sequence before domain decoding;
+missing, altered or extra metadata is rejected. The generic file time scale
+remains `ticks`; the validated domain contract explicitly supplies seconds.
+
+The checked-capture reader decodes each bounded canonical payload into `Row`
+once and retains its original sequence. `read_theatre_tables` reuses those
+validated rows to derive native domain views; filtering does not renumber capture
+sequence. This is not a claim that all five derived views are separately persisted,
+or that payload parsing is eliminated. The existing payload bound and canonical
+identity checks remain in force.
+
+Project-owned code uses [Apache-2.0](../../LICENSE) with
+[NOTICE](../../NOTICE); upstream and separately governed content rights remain.

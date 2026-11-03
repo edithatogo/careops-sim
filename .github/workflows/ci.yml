@@ -361,6 +361,7 @@ jobs:
       - name: Run harness and incompatible-pin regressions
         run: |
           "$CAREOPS_PYTHON" -m unittest discover -s tests -v
+          "$CAREOPS_PYTHON" -m unittest discover -s tests/ed -v
       - name: Check reviewed support and flaky-test inventory
         run: |
           "$CAREOPS_PYTHON" tools/quality_support.py --root .
