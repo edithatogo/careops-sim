@@ -6,14 +6,16 @@
 //! separate from observation. R13 replaces descriptors/JSON/manual CSV with
 //! qualified native file outputs and migrates their reachable consumers.
 
+#[cfg(feature = "native-data")]
+#[path = "native_tables.rs"]
+pub mod native_tables;
+
 use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
 use crate::disposition::api_runner::{ExitCodeDef, ValidationError};
 use crate::disposition::batch_runner::BatchRunDocument;
-#[cfg(feature = "native-data")]
-use crate::PatientStatus;
 use crate::ScenarioConfig;
 
 /// Position measurement kind distinguishing physical/arrival confirmation,
@@ -880,8 +882,8 @@ pub fn generate_arrow_export_bundle(
     spatial_revision_override: Option<&str>,
     resumed_info: Option<(bool, Option<u64>)>,
 ) -> Result<ArrowExportBundle, ValidationError> {
-    let (capture_store, captured, capture_meta) =
-        crate::captured_batch::export_source(scenario, batch_doc)?;
+    let source = crate::captured_batch::export_source(scenario, batch_doc)?;
+    let capture_meta = source.2.clone();
     let spatial_revision = spatial_revision_override
         .unwrap_or("not_captured")
         .to_string();
@@ -911,91 +913,62 @@ pub fn generate_arrow_export_bundle(
         completed_epoch_ms: batch_doc.completed_at_epoch_ms,
     };
 
-    // Build resource map: resource_id -> location_id
-    let mut resource_locations = BTreeMap::new();
-    for rb in &scenario.capacity_location.resource_buckets {
-        resource_locations.insert(rb.resource_id.clone(), rb.location_id.clone());
-    }
-
-    // Generate patient rows and spatial transit records across replications
-    let mut patient_records = Vec::new();
-
-    for rep in &batch_doc.replications {
-        #[cfg(feature = "native-data")]
-        let patient_rows = {
-            use crate::capture::PartStore;
-            let capture = captured
-                .iter()
-                .find(|r| r.summary.replication_index == rep.replication_index)
-                .ok_or_else(|| {
-                    ValidationError::new(
-                        ExitCodeDef::MalformedConfig,
-                        "missing captured replication",
-                    )
-                })?;
-            let mut rows = Vec::new();
-            for part in &capture.parts {
-                let bytes = capture_store
-                    .read_part(&part.name, capture_meta.limits.max_bytes)
-                    .map_err(crate::captured_batch::error)?;
-                rows.extend(
-                    capture_store
-                        .decode_part(&bytes)
-                        .map_err(crate::captured_batch::error)?
-                        .rows,
-                );
-            }
-            rows
-        };
-        #[cfg(not(feature = "native-data"))]
-        let patient_rows: Vec<crate::PatientResult> = Vec::new();
-        for pat in &patient_rows {
-            let res_id = scenario
-                .patients
-                .iter()
-                .find(|w| w.patient_id == pat.patient_id)
-                .map(|w| w.resource_id.clone())
-                .ok_or_else(|| {
-                    invalid_statistic("captured patient has no configuration reference")
-                })?;
-
-            let loc_id = resource_locations
-                .get(&res_id)
-                .cloned()
-                .filter(|location| !location.is_empty());
-
-            let status_str = match pat.status {
-                PatientStatus::Completed => "completed".to_string(),
-                PatientStatus::Unfinished => "unfinished".to_string(),
-            };
-
-            let censor_str = if pat.status == PatientStatus::Unfinished {
-                "right_censored_at_horizon".to_string()
+    // R13 removes this DTO boundary; native joins and captured ordering are
+    // authoritative now. Do not reconstruct rows to perform analytical joins.
+    let patients =
+        native_tables::patient_table_from_validated_capture(scenario, batch_doc, source)?;
+    let text = |name: &str, index: usize| -> Result<String, ValidationError> {
+        patients
+            .column(name)
+            .and_then(|c| c.str())
+            .map_err(|e| invalid_statistic(e.to_string()))?
+            .get(index)
+            .map(str::to_owned)
+            .ok_or_else(|| invalid_statistic(format!("null {name}")))
+    };
+    let tick = |name: &str, index: usize| -> Result<Option<u64>, ValidationError> {
+        Ok(patients
+            .column(name)
+            .and_then(|c| c.u64())
+            .map_err(|e| invalid_statistic(e.to_string()))?
+            .get(index))
+    };
+    let mut patient_records = Vec::with_capacity(patients.height());
+    for index in 0..patients.height() {
+        let status = text("status", index)?;
+        patient_records.push(ArrowPatientRow {
+            patient_id: text("patient_id", index)?,
+            replication_index: usize::try_from(
+                tick("replication_index", index)?
+                    .ok_or_else(|| invalid_statistic("null replication"))?,
+            )
+            .map_err(|e| invalid_statistic(e.to_string()))?,
+            seed: tick("seed", index)?.ok_or_else(|| invalid_statistic("null seed"))?,
+            arrival_tick: tick("arrival_tick_lo", index)?
+                .ok_or_else(|| invalid_statistic("null arrival"))?,
+            start_tick: tick("start_tick_lo", index)?,
+            completion_tick: tick("completion_tick_lo", index)?,
+            work_ticks: tick("work_ticks_lo", index)?
+                .ok_or_else(|| invalid_statistic("null work"))?,
+            wait_ticks: tick("wait_ticks_lo", index)?,
+            elapsed_ticks: tick("elapsed_ticks_lo", index)?,
+            censor_status: if status == "unfinished" {
+                "right_censored_at_horizon"
             } else {
-                "uncensored".to_string()
-            };
-
-            patient_records.push(ArrowPatientRow {
-                patient_id: pat.patient_id.clone(),
-                replication_index: rep.replication_index,
-                seed: rep.seed,
-                arrival_tick: pat.arrival_tick,
-                start_tick: pat.start_tick,
-                completion_tick: pat.completion_tick,
-                work_ticks: pat.work_ticks,
-                wait_ticks: pat.wait_ticks,
-                elapsed_ticks: pat.elapsed_ticks,
-                status: status_str,
-                censor_status: censor_str,
-                resource_id: res_id.clone(),
-                location_id: loc_id.clone(),
-                spatial_revision: spatial_revision.clone(),
-            });
-        }
+                "uncensored"
+            }
+            .into(),
+            status,
+            resource_id: text("resource_id", index)?,
+            location_id: patients
+                .column("location_id")
+                .and_then(|c| c.str())
+                .map_err(|e| invalid_statistic(e.to_string()))?
+                .get(index)
+                .map(str::to_owned),
+            spatial_revision: spatial_revision.clone(),
+        });
     }
-
-    // Deterministic sorting of tabular rows
-    patient_records.sort_by_key(|r| (r.replication_index, r.arrival_tick, r.patient_id.clone()));
     let spatial_records = Vec::new();
     let spatial_summary = SpatialSummary {
         spatial_revision: spatial_revision.clone(),

@@ -129,14 +129,13 @@ impl ParquetPartStore {
         }
         Ok(m.replications)
     }
-    fn dataframe(&self, b: &CaptureBatch) -> Result<DataFrame> {
+    pub(crate) fn dataframe(&self, b: &CaptureBatch) -> Result<DataFrame> {
         if b.schema != crate::capture::SCHEMA
             || b.model_contract_sha256.len() != 64
             || !b
                 .model_contract_sha256
                 .bytes()
                 .all(|v| v.is_ascii_digit() || (b'a'..=b'f').contains(&v))
-            || b.rows.is_empty()
             || b.rows.len() > self.limits.max_rows
             || b.rows
                 .iter()
@@ -232,6 +231,9 @@ impl PartStore for ParquetPartStore {
         CODEC
     }
     fn encode_part(&self, b: &CaptureBatch, w: &mut dyn Write) -> Result<()> {
+        if b.rows.is_empty() {
+            return Err(invalid("empty physical capture part"));
+        }
         kairo_ecs_arrow::polars_interop::write_parquet_zstd(&mut self.dataframe(b)?, w).map_err(io)
     }
     fn write_part(&self, name: &str, b: &CaptureBatch, max: usize) -> Result<()> {
