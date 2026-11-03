@@ -9,8 +9,11 @@ use careops_ed::disposition::batch_runner::{
 };
 #[cfg(feature = "native-data")]
 use careops_ed::disposition::{
-    arrow_export::{generate_arrow_export_bundle, summarize_replications},
+    arrow_export::summarize_replications,
     batch_runner::{run_batch_with_workers, BatchConfig},
+    native_output::{
+        export_native_batch, read_native_dataset, ExportLimits, NativeDataset, NativeFormat,
+    },
 };
 use careops_ed::parse_scenario_json;
 use serde_json::Value;
@@ -146,7 +149,7 @@ fn finite_input_with_nonfinite_derived_variance_is_a_typed_error() {
 }
 
 #[cfg(feature = "native-data")] // Actual native capture/export capability.
-fn two_replication_bundle() -> Value {
+fn two_replication_dataset() -> NativeDataset {
     let scenario = parse_scenario_json(include_str!("../examples/nominal_mvp.json")).unwrap();
     let config = BatchConfig {
         scenario_id: scenario.scenario_id.clone(),
@@ -156,41 +159,78 @@ fn two_replication_bundle() -> Value {
         ..BatchConfig::default()
     };
     let batch = run_batch_with_workers(&scenario, &config, None, None, None).unwrap();
-    serde_json::to_value(generate_arrow_export_bundle(&scenario, &batch, None, None).unwrap())
-        .unwrap()
+    native_dataset(&scenario, &batch)
+}
+
+#[cfg(feature = "native-data")]
+fn native_dataset(
+    scenario: &careops_ed::ScenarioConfig,
+    batch: &careops_ed::disposition::batch_runner::BatchRunDocument,
+) -> NativeDataset {
+    let destination = tempfile::tempdir().unwrap();
+    export_native_batch(
+        scenario,
+        batch,
+        destination.path(),
+        NativeFormat::Parquet,
+        ExportLimits::default(),
+    )
+    .unwrap();
+    read_native_dataset(destination.path()).unwrap()
 }
 
 #[cfg(feature = "native-data")] // Actual native capture/export capability.
 #[test]
 fn pooled_completion_has_no_unqualified_unweighted_rate_interval() {
-    let bundle = two_replication_bundle();
-    let metric = bundle["metrics"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .find(|m| m["name"] == "completion_rate")
+    let data = two_replication_dataset();
+    let metrics = data.metrics();
+    let row = (0..metrics.height())
+        .find(|&i| metrics.column("name").unwrap().str().unwrap().get(i) == Some("completion_rate"))
         .unwrap();
-    assert_eq!(metric["uncertainty"]["ci_95_lower"], Value::Null);
+    assert_eq!(
+        metrics
+            .column("ci_95_lower")
+            .unwrap()
+            .f64()
+            .unwrap()
+            .get(row),
+        None
+    );
 }
 
 #[cfg(feature = "native-data")] // Actual native capture/export capability.
 #[test]
 fn pooled_elapsed_has_no_unqualified_patient_independence_interval() {
-    let bundle = two_replication_bundle();
-    let metric = bundle["metrics"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .find(|m| m["name"] == "mean_elapsed_ticks")
+    let data = two_replication_dataset();
+    let metrics = data.metrics();
+    let row = (0..metrics.height())
+        .find(|&i| {
+            metrics.column("name").unwrap().str().unwrap().get(i) == Some("mean_elapsed_ticks")
+        })
         .unwrap();
-    assert_eq!(metric["uncertainty"]["ci_95_lower"], Value::Null);
+    assert_eq!(
+        metrics
+            .column("ci_95_lower")
+            .unwrap()
+            .f64()
+            .unwrap()
+            .get(row),
+        None
+    );
 }
 
 #[cfg(feature = "native-data")] // Actual native capture/export capability.
 #[test]
 fn patient_work_capture_cannot_manufacture_spatial_movements() {
-    let bundle = two_replication_bundle();
-    assert_eq!(bundle["spatial_records"].as_array().unwrap().len(), 0);
+    let data = two_replication_dataset();
+    assert_eq!(
+        data.manifest()
+            .tables
+            .iter()
+            .map(|t| t.name.as_str())
+            .collect::<Vec<_>>(),
+        ["patients", "replications", "metrics"]
+    );
 }
 
 #[cfg(feature = "native-data")]
@@ -346,23 +386,42 @@ fn native_capture_configured_location_is_association_not_movement() {
         ..BatchConfig::default()
     };
     let batch = run_batch_with_workers(&scenario, &config, None, None, None).unwrap();
-    let bundle = generate_arrow_export_bundle(&scenario, &batch, None, None).unwrap();
-    assert!(!bundle.patient_records.is_empty());
-    for row in &bundle.patient_records {
+    let data = native_dataset(&scenario, &batch);
+    let patients = data.patients();
+    assert!(patients.height() > 0);
+    for row in 0..patients.height() {
+        let resource_id = patients
+            .column("resource_id")
+            .unwrap()
+            .str()
+            .unwrap()
+            .get(row)
+            .unwrap();
         let resource = scenario
             .capacity_location
             .resource_buckets
             .iter()
-            .find(|r| r.resource_id == row.resource_id)
+            .find(|r| r.resource_id == resource_id)
             .unwrap();
         assert_eq!(
-            row.location_id.as_deref(),
+            patients
+                .column("location_id")
+                .unwrap()
+                .str()
+                .unwrap()
+                .get(row),
             Some(resource.location_id.as_str())
         );
     }
-    assert_eq!(bundle.spatial_summary.capture_status, "not_captured");
-    assert_eq!(bundle.spatial_summary.observed_rows, 0);
-    assert!(bundle.spatial_records.is_empty());
+    // Native output carries configured associations, never fabricated movement observations.
+    assert_eq!(
+        data.manifest()
+            .tables
+            .iter()
+            .map(|t| t.name.as_str())
+            .collect::<Vec<_>>(),
+        ["patients", "replications", "metrics"]
+    );
 }
 
 #[cfg(feature = "native-data")]
