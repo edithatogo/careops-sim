@@ -269,6 +269,69 @@ class PacketTests(unittest.TestCase):
     def test_stale_base_rejected(self):
         self.assertTrue(any('Base commit drift' in e for e in tasks.packet_errors(self.root,self.packet)))
 
+class ArchivedTrackTasksTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.root=Path(self.temp.name)
+        (self.root/'conductor/evidence').mkdir(parents=True)
+        (self.root/'conductor/evidence/done.md').write_text('# Accepted evidence\n')
+        self.archived=self.track('archive','foundation','R14','complete',True)
+        self.active=self.track('tracks','next','R20','proposed',False,
+            [{'milestone':'R20','requires':'foundation:R14'}])
+
+    def track(self,area,name,phase,status,accepted,dependencies=None):
+        path=self.root/'conductor'/area/name;path.mkdir(parents=True)
+        for file in ('spec.md','index.md','agent-contract.md','risk-register.md','test-matrix.md','handoff.md'):
+            (path/file).write_text('# Document\n')
+        metadata={'track_id':name,'status':status,'phase_dependencies':{phase:[]},
+                  'milestone_dependencies':dependencies or [],
+                  'completion_evidence':['conductor/evidence/done.md'] if status=='complete' else []}
+        (path/'metadata.json').write_text(json.dumps(metadata))
+        mark='x' if accepted else ' '
+        (path/'plan.md').write_text(f'## {phase} — Work\n- [{mark}] {phase}.1 Complete reviewed work\n')
+        return path
+
+    def test_completed_archive_preserves_task_identity_source_and_cross_track_gate(self):
+        by={task['id']:task for task in tasks.derive(self.root)['tasks']}
+        self.assertEqual(set(by),{'R14.1','R20.1'})
+        self.assertTrue(by['R14.1']['accepted'])
+        self.assertEqual(by['R14.1']['source']['path'],'conductor/archive/foundation/plan.md')
+        self.assertEqual(by['R20.1']['dependencies'],['R14.1'])
+
+    def test_archive_requires_complete_status_and_accepted_plan(self):
+        path=self.archived/'metadata.json';original=json.loads(path.read_text())
+        for status in ('proposed','in_progress','blocked','archived'):
+            with self.subTest(status=status):
+                path.write_text(json.dumps(dict(original,status=status)))
+                with self.assertRaisesRegex(ValueError,'Archived track must be complete'):
+                    tasks.derive(self.root)
+        path.write_text(json.dumps(original))
+        (self.archived/'plan.md').write_text('## R14 — Work\n- [ ] R14.1 Pending\n')
+        with self.assertRaisesRegex(ValueError,'Archived track has incomplete'):
+            tasks.derive(self.root)
+
+    def test_duplicate_track_id_and_broken_archive_metadata_fail(self):
+        duplicate=self.track('tracks','foundation','R14','complete',True)
+        with self.assertRaisesRegex(ValueError,'Duplicate track ID'):
+            tasks.derive(self.root)
+        import shutil
+        shutil.rmtree(duplicate)
+        (self.archived/'metadata.json').unlink()
+        with self.assertRaisesRegex(ValueError,'Archived track metadata missing'):
+            tasks.derive(self.root)
+
+    def test_absent_archive_is_optional_and_missing_completion_evidence_rejects(self):
+        (self.root/'conductor/evidence/done.md').unlink()
+        with self.assertRaisesRegex(ValueError,'completion evidence missing'):
+            tasks.derive(self.root)
+        import shutil
+        shutil.rmtree(self.root/'conductor/archive')
+        metadata=json.loads((self.active/'metadata.json').read_text())
+        metadata['milestone_dependencies']=[]
+        (self.active/'metadata.json').write_text(json.dumps(metadata))
+        self.assertEqual([task['id'] for task in tasks.derive(self.root)['tasks']],['R20.1'])
+
+
 if __name__=='__main__':unittest.main()
 
 class ExplicitDependencyTests(unittest.TestCase):

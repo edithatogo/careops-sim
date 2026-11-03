@@ -120,3 +120,15 @@ the merge parents are base19fe920 and head86dcc7c. This is equal-source-tree
 qualification, not a claim that merge and head are the same commit. Downloaded
 ELF bytes match the hosted consumer/build manifest hash4dda994572ff49198d24ca8175293d069485a8dcd2b6d137f5ff078993e96199;
 the resolved workspace lock matches the current accepted lock byte-for-byte.
+
+## Archive dependency preservation
+
+Conductor originally discovered only active track folders. Three later tracks
+retain Polars R14 prerequisites, so a bare folder move would discard accepted
+DAG nodes. The bounded tasks/context update also discovers optional completed
+archives, retaining the same task IDs and prerequisite edges. Archived plans
+must have accepted numbered tasks and completion evidence; duplicate IDs,
+unfinished or malformed task rows and broken links still fail. Bare dependency
+follow-ups may resolve the archived specification. Active APIs remain unchanged.
+No track is moved or task accepted by this tooling change; actual R14 completion
+and review remain prerequisites for archival.
