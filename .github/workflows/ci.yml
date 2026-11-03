@@ -307,11 +307,11 @@ jobs:
         run: cargo test --doc --workspace --all-features --locked
 
   context:
-    # Native capture model binding rebuilds each mutant: run41521237813 reached
-    # 113/117 mutations at75minutes with zero per-mutant timeouts. Finish the
-    # full catalog within a finite90minute outer budget; do not relax an oracle.
-    # Preserve the 180s per-mutant oracle, coverage floor and compiler concurrency.
-    timeout-minutes: 90
+    # Run41683463668 reached115/117 mutations before the90minute whole-job
+    # deadline (18minutes setup/coverage plus72minutes mutations). Reserve a
+    # finite120minutes for the complete catalog; retain2workers and180s per
+    # mutant, exact source/equivalence validation and the coverage floor.
+    timeout-minutes: 120
     env:
       CARGO_PROFILE_DEV_DEBUG: '0'
       CARGO_PROFILE_TEST_DEBUG: '0'

@@ -230,7 +230,7 @@ class CiWorkflowTests(unittest.TestCase):
         for name, block in blocks:
             timeout = re.search(r"^    timeout-minutes: ([0-9]+)$", block, re.MULTILINE)
             self.assertIsNotNone(timeout)
-            self.assertLessEqual(int(timeout.group(1)), 90 if name == "context" else 20)
+            self.assertLessEqual(int(timeout.group(1)), 120 if name == "context" else 20)
             self.assertGreater(int(timeout.group(1)), 0)
         context = workflow_job(workflow, "context")
         self.assertIn("--jobs 2 --timeout 180", context)

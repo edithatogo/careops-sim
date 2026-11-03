@@ -132,3 +132,25 @@ unfinished or malformed task rows and broken links still fail. Bare dependency
 follow-ups may resolve the archived specification. Active APIs remain unchanged.
 No track is moved or task accepted by this tooling change; actual R14 completion
 and review remain prerequisites for archival.
+
+
+## Final-source context deadline — 4 November 2026
+
+Source40efa3b CI41683463668 passed both787-test native suites (zero ignored or
+skipped), default workspace, doctests, Clippy, policy and the exact Linux package.
+Context passed815 top-level and127 ED Python tests, the26-case benchmark and
+coverage. It then hit the90-minute whole-job deadline at18:59:18UTC, after115 of
+117 mutations:109 caught,2 existing reviewed equivalent misses,4 unviable,
+zero per-mutant timeouts; `end_time` remained null. This incomplete experiment is
+not accepted or combined with any later run. Preserve its full log and d33
+artifact. The ED-file coverage gate passed at512/578 lines (88.5813%) against80%;
+aggregate workspace coverage is not substituted for that file-specific result.
+
+The bounded repair raises only the outer context budget to120minutes, allowing
+for its approximately18-minute setup/coverage and72-minute partial mutation run.
+The117 catalogue, exact source validator,180-second per-mutant limit,2workers,
+coverage floor and all behavioral oracles remain unchanged. Final full mutation
+and required aggregate success remain prerequisites; R14 is still unchecked.
+Coordinator01a19b9f-69e7-7353-9b75-445d5653feb4 retains the existing integration
+worktree and shared Conductor ownership; frozen staging/consumer lanes remain
+untouched.
