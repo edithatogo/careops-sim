@@ -39,8 +39,10 @@ reuse against prior/current logical origin claims until actual handover.
 Actual Parquet/Zstd and IPC stream parts preserve generic Schema v2 typed IDs,
 u128 tick limbs and original sequence, with domain capture in payload_ref.
 The required domain manifest declares tick=second, normalized effective input,
-component revisions, exact normalized effective-input UTF-8 bytes and hashes. The generic file time_scale remains `ticks`;
-files alone do not establish a seconds mapping. Both formats are independently
+component revisions, exact normalized effective-input UTF-8 bytes and hashes.
+The actual native `time_scale` column declares `second`, matching the domain
+contract and embedded `careops.time_unit=second` metadata. This is the declared
+synthetic model unit, not empirical site calibration. Both formats are independently
 read with PyArrow26.0.0 and compared by capture sequence.
 
 This is a generic synthetic engineering fixture. It does not implement full
@@ -68,8 +70,9 @@ fields: `schema_version`, `run_id`, `effective_input_sha256`,
 `model_contract_sha256`, `runtime_revision`, `data_revision`, `time_unit`,
 `replication_index`, `seed`, `first_sequence` and `rows`. Readback checks these
 against the domain contract and original part sequence before domain decoding;
-missing, altered or extra metadata is rejected. The generic file time scale
-remains `ticks`; the validated domain contract explicitly supplies seconds.
+missing, altered or extra metadata is rejected. Both the actual `time_scale`
+column and validated domain contract declare `second`; the reader checks that
+agreement rather than inferring a unit conversion.
 
 The checked-capture reader decodes each bounded canonical payload into `Row`
 once and retains its original sequence. `read_theatre_tables` reuses those
