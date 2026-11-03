@@ -308,7 +308,7 @@ class D41TrustBoundaryTests(unittest.TestCase):
                 check=True,
             )
             bundle_doc = json.loads(bundle_json.read_text(encoding="utf-8"))
-            self.assertEqual(bundle_doc["patient_schema"]["schema_name"], "careops.ed.patient_records.v1")
+            self.assertEqual(bundle_doc["patient_schema"]["schema_name"], "careops.ed.patient_records.v2")
             self.assertEqual(bundle_doc["patient_schema"]["metadata"]["format"], "kairoecs.ed.patient_table")
 
         # 3. Deserialization fails closed on truncated or corrupted IPC payloads
