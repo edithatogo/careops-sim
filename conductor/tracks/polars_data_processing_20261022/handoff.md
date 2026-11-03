@@ -303,3 +303,10 @@ an expected skip. Main CI context first failed before compilation/tests on a
 preinstalled partial Rustup toolchain conflict (`bin/cargo-clippy`), while other
 jobs continued. Preserve that log and use one bounded targeted fresh-runner retry
 after the run ends; coverage/mutation/full-native/aggregate remain required.
+
+C63 repair: first hosted Nextest787 ran786 pass/1 timed comparison failure at
+114.640051ms against100ms. Preserve the failure. The default Cargo lane and
+exact local isolated30.814334ms check pass. Reserve the exact timed case
+with Nextest0.9.146 `num-test-threads`; all787, validation/oracles,100ms and
+retries0 remain. Actual two-process control proves scheduler exclusion; full
+fresh hosted qualification remains required. No production source changed.

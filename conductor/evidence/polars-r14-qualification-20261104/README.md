@@ -94,3 +94,29 @@ basenames: polars-parent-473-release-final.json, polars-parent-473-historical-re
 polars-parent-473-package-current.json, polars-r14-ensemble-473-attempt02/report.json,
 polars-r14-maintained-code-audit-86dcc7c.json and polars-r14-disk-recovery.json.
 No private machine path or operational content is included here.
+
+## C63 timed-case scheduling repair
+
+At source86dcc7c the Linux native job ran787 tests:786 passed, and the actual
+1,000-patient comparison took114.640051ms, exceeding its unchanged100ms limit.
+That failure remains evidence. The hosted default Cargo lane passed its unchanged
+assertion; an exact local isolated run measured30.814334ms and passed. These are
+scoped observations, not proof that every loaded run meets the budget.
+
+Only this exact package/binary/test reserves `num-test-threads` in Nextest0.9.146.
+All other tests retain default parallelism; all787 catalogue entries, file/schema/
+hash validation, numerical assertions,100ms limit, zero retries, fail-on-flaky
+and non-fail-fast execution remain unchanged. No production code changed.
+[Nextest's official reservation semantics](https://nexte.st/docs/configuration/threads-required/)
+are qualified by the pinned local binary: a two-process shared-resource control
+fails without reservation and passes both unchanged cases with it. The actual
+production test must still pass the complete fresh hosted run. Raw first-failure,
+isolated measurement and runner-control logs remain private external evidence.
+
+Hosted package provenance readback: the PR event head is86dcc7c, while the actual
+package records GitHub merge commit3df1a74527e8eaf767a99d2cbf50dcf46de62e6e.
+Both immutable commits have identical complete Git tree371c7f59eea239326cca16141980317c3a9f3c7d;
+the merge parents are base19fe920 and head86dcc7c. This is equal-source-tree
+qualification, not a claim that merge and head are the same commit. Downloaded
+ELF bytes match the hosted consumer/build manifest hash4dda994572ff49198d24ca8175293d069485a8dcd2b6d137f5ff078993e96199;
+the resolved workspace lock matches the current accepted lock byte-for-byte.

@@ -2,3 +2,9 @@
 retries = 0
 flaky-result = "fail"
 fail-fast = false
+
+# The one-shot 100ms comparison gate measures native validation, not competing
+# test-process load. Reserve the configured budget; retain every test/oracle.
+[[profile.default.overrides]]
+filter = 'package(=careops-ed-cli) & binary(=c63_native_contract) & test(=native_c63_actual_thousand_patient_comparison_and_export_latency)'
+threads-required = "num-test-threads"
