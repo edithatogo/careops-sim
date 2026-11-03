@@ -523,3 +523,33 @@ pub fn export_native_batch(
         .map_err(crate::captured_batch::error)?;
     Ok(manifest)
 }
+
+/// Stream the validated joined patient table through the qualified CSV writer.
+/// A finite byte cap and all write/flush errors apply to the real sink. Partial
+/// stdout is a failure, even when already-published disk artifacts are complete.
+pub fn stream_patient_csv(
+    scenario: &ScenarioConfig,
+    document: &BatchRunDocument,
+    writer: &mut dyn Write,
+    max_bytes: usize,
+) -> Result<(), ValidationError> {
+    if max_bytes == 0 || max_bytes > 8 * 1024 * 1024 {
+        return Err(invalid("patient CSV stream cap outside qualified budget"));
+    }
+    let rows = document.replications.iter().try_fold(0usize, |n, r| {
+        n.checked_add(r.arrivals)
+            .ok_or_else(|| invalid("patient stream row overflow"))
+    })?;
+    if rows > ExportLimits::default().max_total_rows {
+        return Err(invalid("patient stream row budget exceeded"));
+    }
+    let mut patients = native_tables::patient_table(scenario, document)?;
+    let mut bounded = BoundedPartWriter::new(writer, max_bytes);
+    CsvWriter::new(&mut bounded)
+        .include_header(true)
+        .with_quote_style(QuoteStyle::Necessary)
+        .with_null_value(String::new().into())
+        .finish(&mut patients)
+        .map_err(output)?;
+    bounded.flush().map_err(output)
+}

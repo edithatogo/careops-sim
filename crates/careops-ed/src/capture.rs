@@ -518,7 +518,9 @@ fn validate_parts_pending(
     Ok(())
 }
 
-pub(crate) fn read_checkpoint(path: &Path) -> Result<CaptureCheckpoint> {
+/// Read a bounded shape/version-checked capture checkpoint without mutation.
+/// Callers must bind its input, model, limits and store before execution recovery.
+pub fn read_checkpoint(path: &Path) -> Result<CaptureCheckpoint> {
     let file_type = fs::symlink_metadata(path).map_err(output)?.file_type();
     if !file_type.is_file() || file_type.is_symlink() {
         return Err(invalid("checkpoint must be a regular file"));
