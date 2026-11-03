@@ -18,7 +18,7 @@ consumers and existing environments.
 | `x86_64-unknown-linux-gnu` | Historical Rust 1.99.0 CI/container checks | Requires current-head Linux CI and package/runtime evidence; old checks do not qualify this revision. |
 | `aarch64-apple-darwin` | Historical Rust 1.99.0 workstation/harness checks | Later bounded Rust 1.99.1 native checks retain their exact-source scope; final R14/current-head proof remains separate. |
 
-See [Polars Conductor](../conductor/tracks/polars_data_processing_20261022/index.md)
+See [Polars Conductor](../conductor/archive/polars_data_processing_20261022/index.md)
 for current task status and receipts. Local Mach-O execution does not establish
 Linux executable support, even if an archive uses a Linux-oriented filename.
 No additional target, container, OS-version or hardware tier is qualified here.

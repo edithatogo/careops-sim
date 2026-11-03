@@ -28,7 +28,7 @@ the simulation. There is no overwrite flag or schema-descriptor export mode.
 Original-run capture, input/model hashes, typed tick limbs and recovery boundaries
 are explained in the [walkthrough](../../docs/user-walkthrough.md). Source
 behavior and evidence are distinct: current-source R14 and hosted qualification
-remain tracked in [Polars Conductor](../../conductor/tracks/polars_data_processing_20261022/index.md).
+remain tracked in [Polars Conductor](../../conductor/archive/polars_data_processing_20261022/index.md).
 The [support matrix](../../docs/support-matrix.md) separates earlier platform
 receipts from current-source checks; the [delivery contract](../../conductor/delivery-contract.md)
 sets acceptance requirements, rather than certifying this checkout.

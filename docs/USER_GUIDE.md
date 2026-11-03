@@ -32,7 +32,7 @@ qualified by this guide. Rendering remains a separate consumer.
 
 See the [support matrix](support-matrix.md) for dated platform evidence and current
 qualification boundaries, the [delivery contract](../conductor/delivery-contract.md)
-for acceptance requirements, and [Polars Conductor](../conductor/tracks/polars_data_processing_20261022/index.md)
+for acceptance requirements, and [Polars Conductor](../conductor/archive/polars_data_processing_20261022/index.md)
 for outstanding gates. Unsupported schema revisions and unknown fields are rejected;
 no stable-v1 or automated legacy migration guarantee is asserted.
 

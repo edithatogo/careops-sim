@@ -161,7 +161,7 @@ cargo test --locked -p careops-ed-cli
 
 These commands provide their recorded scopes, not automatic release or clinical
 acceptance. The [support matrix](support-matrix.md) distinguishes historical
-platform evidence from current-source qualification. [Polars Conductor](../conductor/tracks/polars_data_processing_20261022/index.md)
+platform evidence from current-source qualification. [Polars Conductor](../conductor/archive/polars_data_processing_20261022/index.md)
 retains open acceptance gates and exact receipts.
 
 The CLI reports `cpu_serial` and independent `cpu_replications` integration via

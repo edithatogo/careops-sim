@@ -2,7 +2,7 @@
   "track_id": "polars_data_processing_20261022",
   "title": "CareOps whole-layer Polars migration",
   "type": "refactor",
-  "status": "in_progress",
+  "status": "complete",
   "created_at": "2026-10-22",
   "updated_at": "2026-11-04",
   "spec_approved": true,
@@ -10,7 +10,9 @@
   "accepted_phases": [
     "R10",
     "R11",
-    "R12"
+    "R12",
+    "R13",
+    "R14"
   ],
   "approval_basis": "User confirmed clean break, both repositories, Parquet default, bounded float differences; requested Conductor incorporation.",
   "phase_dependencies": {
@@ -50,21 +52,22 @@
       "repository": "kairos",
       "track": "70",
       "phase": "generic domain C Data followup",
-      "status": "data_source_adopted_direct_parent_interop_pending",
-      "required_receipt": "Scoped data source accepted with upstream hosted three-platform native/FFI/Git-source closure, exact parent ED/B7/native readers and26frozen summary parity; populated direct parent FFI/wholeR14 still pending",
+      "status": "accepted_engineering",
+      "required_receipt": "conductor/evidence/polars-r14-qualification-20261104/final-source.json",
       "gate_task": "R14.3",
-      "scope": "Affected direct FFI and B7 metadata API adoption only; independent ED R13 output/consumer work may proceed",
-      "candidate_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
+      "scope": "Accepted engine-free shared importer, populated parent ED/calibration/B7 C Data and Stream proof, all native consumers and final R14 engineering; runtime074 unchanged.",
+      "candidate_commit": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
       "pr": "https://github.com/edithatogo/kairos/pull/367",
-      "accepted_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
-      "parent_adoption_commit": "43511e665706cf31c434758675ce291d8c12547b"
+      "accepted_commit": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+      "parent_adoption_commit": "a61f259ff3e553db8442b150bd767548ef9c6b73",
+      "qualified_parent_commit": "258bb6b41f4682e140c06cb66a20155eb83d91a2"
     }
   ],
-  "active_phase": "R13",
+  "active_phase": "R14",
   "sequencing_basis": "User requested inventory-first Polars; supporting dependency work gates only demonstrated dependent tasks.",
-  "acceptance_evidence": "conductor/tracks/polars_data_processing_20261022/review-report.md",
-  "accepted_source_commit": "65731f093a9ff1e11005782bbe9d544c4dd5cbab",
-  "next_phase_decision": "Continue R13 C62/E42-heldout/C64 native fixture consumers, remove remaining legacy output surfaces and update current guides; then populated parent FFI and final R14 gates. Reviewed reference4357206, unpacked-package CIb215047, C63/capability443f506 and B7v2/metadata95fe28c/63a30b8 are integrated locally. Native release26case benchmark retains exact earlier scope. Final workspace/performance/package/coverage/mutation/security/policy and current-head hosted proof remain open; do not archive.",
+  "acceptance_evidence": "conductor/archive/polars_data_processing_20261022/review-report.md",
+  "accepted_source_commit": "258bb6b41f4682e140c06cb66a20155eb83d91a2",
+  "next_phase_decision": "Engineering R10-R14 complete and archived after source258 full hosted acceptance and independent review. Preserve separate main merge, stable release, renewed A7, clinical/site/hardware gates; no new task dispatched.",
   "accepted_local_tasks": {
     "R11.1": {
       "source": "3ee7ac1225c9c53d076a7246a1d02ce3e4cdcb10",
@@ -96,7 +99,9 @@
   "accepted_phase_sources": {
     "R10": "e65570b7a1046dafb15511ab5118b46b587f2f5d",
     "R11": "2796f4499a84b3734a2e2d9a7143918705f58bf0",
-    "R12": "65731f093a9ff1e11005782bbe9d544c4dd5cbab"
+    "R12": "65731f093a9ff1e11005782bbe9d544c4dd5cbab",
+    "R13": "f7563a8bfaf3a8da623b2373cc369883aca609f6",
+    "R14": "258bb6b41f4682e140c06cb66a20155eb83d91a2"
   },
   "hosted_phase_receipt": "conductor/evidence/polars-integration-20261103/R11-hosted.json",
   "r12_acceptance_scope": "Local engineering at65731f0:739native including doctests,774top-level Python,8explicitEDmirror; source/hosted checkpoint distinctions preserved. Later92d8daa full hosted17successes+expectedskip covers R12 plus data adoption/capture sizing, not subsequent f629/ae205/acf native output/CLI changes.",
@@ -144,5 +149,47 @@
     "actual_frozen_cases": 26,
     "hosted_current_source": "pending",
     "remaining": "C62/E42-heldout/C64 fixture consumers, production legacy removal, current guides, populated parent FFI and final R14/hosted gates"
-  }
+  },
+  "acceptance_history": [
+    {
+      "recorded_at": "2026-11-04",
+      "source_commit": "258bb6b41f4682e140c06cb66a20155eb83d91a2",
+      "prior_current_fields": {
+        "status": "in_progress",
+        "active_phase": "R13",
+        "accepted_phases": [
+          "R10",
+          "R11",
+          "R12"
+        ],
+        "accepted_source_commit": "65731f093a9ff1e11005782bbe9d544c4dd5cbab",
+        "acceptance_evidence": "conductor/tracks/polars_data_processing_20261022/review-report.md",
+        "next_phase_decision": "Continue R13 C62/E42-heldout/C64 native fixture consumers, remove remaining legacy output surfaces and update current guides; then populated parent FFI and final R14 gates. Reviewed reference4357206, unpacked-package CIb215047, C63/capability443f506 and B7v2/metadata95fe28c/63a30b8 are integrated locally. Native release26case benchmark retains exact earlier scope. Final workspace/performance/package/coverage/mutation/security/policy and current-head hosted proof remain open; do not archive."
+      }
+    }
+  ],
+  "external_dependency_history": [
+    {
+      "recorded_at": "2026-11-04",
+      "source_commit": "258bb6b41f4682e140c06cb66a20155eb83d91a2",
+      "record": {
+        "repository": "kairos",
+        "track": "70",
+        "phase": "generic domain C Data followup",
+        "status": "data_source_adopted_direct_parent_interop_pending",
+        "required_receipt": "Scoped data source accepted with upstream hosted three-platform native/FFI/Git-source closure, exact parent ED/B7/native readers and26frozen summary parity; populated direct parent FFI/wholeR14 still pending",
+        "gate_task": "R14.3",
+        "scope": "Affected direct FFI and B7 metadata API adoption only; independent ED R13 output/consumer work may proceed",
+        "candidate_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
+        "pr": "https://github.com/edithatogo/kairos/pull/367",
+        "accepted_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
+        "parent_adoption_commit": "43511e665706cf31c434758675ce291d8c12547b"
+      }
+    }
+  ],
+  "completion_evidence": [
+    "conductor/evidence/polars-r14-qualification-20261104/final-source.json",
+    "conductor/evidence/polars-r14-qualification-20261104/README.md",
+    "conductor/archive/polars_data_processing_20261022/review-report.md"
+  ]
 }

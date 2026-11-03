@@ -20,12 +20,10 @@ filtered tests. Top-level Python passed796; all127 ED cases are accounted by
 exact receipts, original failures, independent reviews and the new source-bound
 26-case release/stdout pass. The formatting drift is repaired at7b9892b.
 
-R14 source qualification now includes reviewed upstream data473ff2c, all three
-upstream hosted platforms, parent adoption a61f259 and immutable guard86dcc7c.
-Runtime074/Polars964 and existing ownership remain unchanged. Populated FFI,
-historical conversion, release26-case/stdout, bounded ensemble/conversion/worker
-measurements and the current unpacked package have scoped local receipts.
-[Current R14 checkpoint](../../evidence/polars-r14-qualification-20261104/README.md)
-records their limits and the positive maintained-code cost. R14 remains open:
-finish coherent native/coverage/mutation checks and exact-head hosted CI/release
-readbacks after disk recovery. All R14 boxes remain unchecked; no archive yet.
+R14 engineering is accepted at258bb6b and this track is archived. All20 tasks
+remain registered and accepted; the three downstream R14 prerequisites retain
+their IDs. Runtime074/data473/Polars964 remain unchanged. See the
+[final source receipt](../../evidence/polars-r14-qualification-20261104/README.md)
+for complete hosted gates, actual benchmarks, retained failures, review, positive
+maintenance cost and rollback. No main-merge, stable-release or clinical claim
+is added; no new implementation task is dispatched.

@@ -365,3 +365,71 @@ contracts. Arrow's unsafe prohibition is preserved. Its native/source/policy/
 Git-consumer/hosted qualification is pending; parent pin/profile adoption has not
 started. Root runtime074/dataf347/Polars964 remain fixed. R14 and archival remain
 open; optional clinical/site/GPU/distributed/stable-release approval is separate.
+
+## R14 final engineering acceptance — 4 November 2026
+
+R14 is accepted at parent258bb6b41f4682e140c06cb66a20155eb83d91a2 after
+[CI41718206221](https://github.com/edithatogo/careops-sim/actions/runs/41718206221)
+and [release41718206130](https://github.com/edithatogo/careops-sim/actions/runs/41718206130)
+completed successfully. GitHub tested mergee2724a13d4fb9d3ec6ccbd218d2b7eaef64ce053;
+its complete treedfd71e4b1a571d9af68a3a0facff058ec31cbe49 equals the source tree.
+These are distinct commits. The later archive/documentation commit does not
+become that tested commit; unchanged implementation evidence is reused explicitly.
+
+Both native hosts passed787/787 with zero ignored, skipped or failed tests and
+expected red-control exit100. Default-feature workspace, doctests, Clippy, policy,
+all companion workflows and the required aggregate passed. Context passed815
+top-level plus127 ED Python tests. ED-file coverage512/578=88.5813% exceeds the
+unchanged80% floor. One complete terminal117-mutation experiment accounts for
+111 caught,2 existing source-bound reviewed equivalents,4 original unviable and
+zero timeouts; the unchanged exact-source/catalog/phase validator passed. Its
+terminal timestamp is2026-11-03T22:37:04.854641599Z. The earlier incomplete115/117
+experiment remains separate and unaccepted.
+
+All26 frozen input/canonical-summary pairs match;14 rehashed negatives and actual
+Linux disk-full/zero/oversize/slow-stdout/live-blocked-pipe checks pass within the
+unchanged10s/256MiB/8MiB budgets. Maximum normal case0.851725315s and148025344B
+child RSS. Actual unpacked Linux ELF4dda9945, package repeat/comparison consumers
+and exact lockfile passed. Local12-command small/large ensemble,8 conversions,
+2 full-table worker-equivalence checks, historical conversion/60 unchanged files,
+populated3-domain FFI, graph/policy and cached external build receipts retain their
+actual source/toolchain/cache scopes. No cross-workload speedup, universal zero-copy,
+Python-reader RSS, cold-build or external concurrent-load claim is added.
+
+The maintained-code audit retains gross legacy removal and a net increase:
++859 production/runtime,+2756 test/support,+3615 aggregate in its six-prefix
+scope. The two source258 assertion substitutions do not change those totals.
+Obsolete full-table JSON/schema-DDL/manual-CSV/dispatcher/descriptor production
+paths are removed; retained closed-profile readers, control/provenance documents,
+scientific numerical logic, SHA/FIPS and boundary oracles have explicit purposes.
+No overall net-negative migration is claimed.
+
+Independent reviewer `/root/ffi_packet_prepare` verified immutable source/merge
+bindings and the actual terminal hosted/local receipts, accepting bounded R14
+engineering with no blockers. Runtime074/data473/Polars964 and all existing
+ownership remain. Rollback keeps parent85419da/dataf347 and the preserved
+0c2e8487 release; use the archived shared-import adoption contract. The original
+failed attempts and immutable JSON receipts remain intact. This closes engineering
+R10–R14 and archives the track; no main merge, stable release, renewed A7,
+clinical/site or unavailable-hardware acceptance is implied. No new track is dispatched.
+
+Terminal owner: coordinator01a19b9f-69e7-7353-9b75-445d5653feb4, `careops-pr194-checks/careops-sim`. Source258 accepted; this archive commit is documentation reconciliation. Earlier assignments remain history.
+
+## Archive fixture verification — 4 November 2026
+
+The first focused38-task-test run exposed a fixture that copied only active
+tracks, omitting the archived Polars prerequisite before its intended override
+rejections. The isolated fixture now copies both areas and actual completion
+evidence; all four malformed-override assertions remain. The corrected38 task,
+16 context,9 dependency-handoff and30 immutable-source tests pass. Actual
+context/DAG/MVP checks pass at25 tracks/110 milestones/405 tasks and82/258 MVP
+parents/leaves. All20 Polars IDs, three downstream edges, unrelated tasks/handoff
+rows and10 immutable receipt/packet hashes remain unchanged apart from the four
+accepted R14 flags and intentional archive paths.
+
+This archive-only fixture change adds12/removes6 test lines: final maintained
+cost is+859 runtime/production,+2762 tests/support,+3621 aggregate. The qualified
+source258/source40 audit remains+3615; its receipt is preserved. No runtime,
+manifest, lockfile, native test, benchmark oracle or CI configuration changed in
+the archive commit. Existing source258 hosted evidence is reused with this
+explicit distinction; no fresh archive-head native pass is inferred.

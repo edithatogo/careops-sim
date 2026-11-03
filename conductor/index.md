@@ -66,9 +66,17 @@ bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind review
 context/commands just before dispatch. No autonomous execution or model
 qualification is claimed.
 
-## Planned Polars migration
+## Completed Polars migration
 
-[CareOps migration](tracks/polars_data_processing_20261022/index.md) follows accepted Kairos Track70. R10–R12 retain scoped acceptance; [R13 local engineering](evidence/polars-r13-acceptance-20261104/README.md) is accepted at f7563a8 after the complete consumer/legacy cutover,776 native tests and recorded Python/release26-case evidence. R14 remains in progress: reviewed data473 and parent source86dcc7c have populated FFI, historical conversion, release26, measured ensemble/package and strict Clippy evidence. [Current checkpoint](evidence/polars-r14-qualification-20261104/README.md) retains the local disk-build failure and pending final hosted native/coverage/mutation/package gates. Runtime074/Polars964 and existing ownership are preserved; no archive yet.
+[Archived CareOps migration](archive/polars_data_processing_20261022/index.md)
+records accepted R10–R14 engineering. Source258bb6b passed both787-test native
+hosts,815+127 Python,26 frozen benchmarks, full117 mutation accounting, coverage,
+policy and the native Linux package. [Final source receipt](evidence/polars-r14-qualification-20261104/README.md)
+preserves original failures, actual source/merge distinctions, rollback and the
+net+3621 maintenance cost (qualified source+3615; archive fixture+6). All20 task IDs and three downstream prerequisites
+remain; runtime074/data473/Polars964 and ownership are unchanged. The archive
+is documentation reconciliation; no main merge, release, clinical or new dispatch
+is implied.
 
 ## Separate library adoption tracks
 

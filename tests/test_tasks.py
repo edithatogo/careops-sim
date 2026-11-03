@@ -347,12 +347,18 @@ class ExplicitDependencyTests(unittest.TestCase):
     def test_override_errors_rejected_during_derivation(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            for source in (tasks.ROOT/'conductor/tracks').iterdir():
-                if not source.is_dir(): continue
-                target = root/'conductor/tracks'/source.name
-                target.mkdir(parents=True)
-                for name in ('metadata.json', 'plan.md'):
-                    (target/name).write_bytes((source/name).read_bytes())
+            for area in ('tracks', 'archive'):
+                for source in (tasks.ROOT/'conductor'/area).glob('*'):
+                    if not source.is_dir(): continue
+                    target = root/'conductor'/area/source.name
+                    target.mkdir(parents=True)
+                    for name in ('metadata.json', 'plan.md'):
+                        (target/name).write_bytes((source/name).read_bytes())
+                    metadata = json.loads((source/'metadata.json').read_text())
+                    for evidence in metadata.get('completion_evidence', []):
+                        destination = root/evidence
+                        destination.parent.mkdir(parents=True, exist_ok=True)
+                        destination.write_bytes((tasks.ROOT/evidence).read_bytes())
             path = root/'conductor/tracks/empirical_calibration_20260925/metadata.json'
             baseline = json.loads(path.read_text())
             for override in ({'C9.9':['C2.0']}, {'C2.3':['C9.9']}, {'C2.3':['C2.1']}, {'C2.3':'C2.0'}):

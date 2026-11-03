@@ -1,6 +1,6 @@
 # Plan: CareOps whole-layer Polars migration
 
-R10–R12 retain their scoped acceptance. R13 local engineering is accepted at f7563a8; final R14 source, interoperability, performance, package and hosted gates remain open.
+R10–R12 retain their scoped acceptance. R13 local engineering is accepted at f7563a8; R14 engineering is accepted at258bb6b with the final hosted source, interoperability, performance, package and mutation receipts. The track is archived.
 
 ## R10 — Upstream entry and baseline
 
@@ -37,10 +37,10 @@ and R13/R14 consumer/FFI/performance/removal gates remain open.
 
 ## R14 — Acceptance and removal
 
-- [ ] R14.1 Run native domain/replay/restart/numerical/interchange lanes and existing performance gates; measure small/large ensembles, output latency, peak RSS, thread contention and build size.
-- [ ] R14.2 Audit net maintained-code deletion and all retained candidates; remove obsolete compatibility and duplicate paths and reconcile docs without claiming clinical acceptance.
-- [ ] R14.3 Record accepted parent and Kairos commits, hosted/local evidence distinctions, rollback instructions and exact pin/schema/library receipts; close only after full consumer validation.
-- [ ] R14.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.
+- [x] R14.1 Run native domain/replay/restart/numerical/interchange lanes and existing performance gates; measure small/large ensembles, output latency, peak RSS, thread contention and build size.
+- [x] R14.2 Audit net maintained-code deletion and all retained candidates; remove obsolete compatibility and duplicate paths and reconcile docs without claiming clinical acceptance.
+- [x] R14.3 Record accepted parent and Kairos commits, hosted/local evidence distinctions, rollback instructions and exact pin/schema/library receipts; close only after full consumer validation.
+- [x] R14.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.
 
 ## External gate and scheduling
 
@@ -53,3 +53,5 @@ Track 70 starts with Phase 0 inventory and migration-boundary decisions; Tracks 
 ## Remote-baseline reconciliation
 
 R10 retains accepted repository reconciliation R3 as its entry prerequisite. The original 44261eb retention gate was satisfied by the bounded capability-preserving 0741026 bridge, accepted in PR #188 and recorded in PR #189. The old contract and receipts remain immutable historical evidence. Advanced local candidate runtime/archival commits remain separate and are not evidence of their remote integration.
+
+Final R14 acceptance: [source258 receipt](../../evidence/polars-r14-qualification-20261104/README.md). All20 task IDs and original R10–R13 scopes are preserved.
