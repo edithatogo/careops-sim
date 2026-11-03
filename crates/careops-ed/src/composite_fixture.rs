@@ -7,6 +7,10 @@
 //! - ST001–ST009 acceptance boundary specifications.
 //! - CSV export and capacity comparison oracle.
 
+#[cfg(feature = "native-data")]
+#[path = "calibration_table.rs"]
+pub mod native_calibration;
+
 use std::fmt::{Display, Formatter};
 
 use serde::{Deserialize, Serialize};
@@ -523,35 +527,56 @@ impl CompositeEdFixture {
         day: u32,
         route_edges: &[&str],
     ) -> Result<Vec<CalibrationTraceRecord>, OperationalError> {
-        let transit_ticks = match self.fidelity {
-            ExecutionFidelity::Macro => 0,
+        let (transit_ticks, source, source_seconds) = match self.fidelity {
+            ExecutionFidelity::Macro => (0, CalibrationTransitSource::MacroModel, None),
             ExecutionFidelity::Micro => {
-                if let Some(ref graph) = self.graph {
-                    if route_edges.is_empty() {
-                        0
-                    } else {
-                        graph.compute_travel_seconds(route_edges)? as u64
-                    }
-                } else {
-                    0
+                if route_edges.is_empty() {
+                    return Err(OperationalError::RouteUnreachable);
                 }
+                let graph = self
+                    .graph
+                    .as_ref()
+                    .ok_or(OperationalError::RouteUnreachable)?;
+                let seconds = graph.compute_travel_seconds(route_edges)?;
+                if !seconds.is_finite() || seconds < 0.0 || seconds >= u64::MAX as f64 {
+                    return Err(OperationalError::Accounting);
+                }
+                // Retain the fixture's existing whole-second floor convention.
+                (
+                    seconds.floor() as u64,
+                    CalibrationTransitSource::RouteModel,
+                    Some(seconds),
+                )
             }
         };
+        Ok(calibration_records(
+            &self.completed,
+            day,
+            transit_ticks,
+            source,
+            source_seconds,
+        ))
+    }
 
-        let mut records = Vec::with_capacity(self.completed.len());
-        for p in &self.completed {
-            let start = p.start_tick.unwrap_or(p.arrival_tick);
-            let end = p.completion_tick.unwrap_or(start + p.work_elapsed_ticks);
-            records.push(CalibrationTraceRecord {
-                case_id: format!("case_{}", p.id),
-                day,
-                start_tick: start,
-                end_tick: end,
-                transit_ticks,
-                work_ticks: p.work_elapsed_ticks,
-            });
-        }
-        Ok(records)
+    /// Native synthetic trace projection. Route models explicitly require a
+    /// one-second tick mapping; this does not establish empirical calibration.
+    #[cfg(feature = "native-data")]
+    pub fn calibration_table(
+        &self,
+        day: u32,
+        route_edges: &[&str],
+        fixture_id: &str,
+        time_unit: &str,
+    ) -> Result<polars::prelude::DataFrame, crate::disposition::api_runner::ValidationError> {
+        let records = self
+            .export_calibration_traces(day, route_edges)
+            .map_err(|e| {
+                crate::disposition::api_runner::ValidationError::new(
+                    crate::disposition::api_runner::ExitCodeDef::MalformedConfig,
+                    e.to_string(),
+                )
+            })?;
+        native_calibration::calibration_table(&records, fixture_id, time_unit)
     }
 
     /// Exports current fixture state into a RunSummary.
@@ -734,36 +759,70 @@ pub fn compare_capacity(nominal: &RunSummary, constrained: &RunSummary) -> Capac
     }
 }
 
-/// A calibration-compatible trace record for empirical calibration and validation.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+/// Provenance of a synthetic transit parameter, never a movement observation.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum CalibrationTransitSource {
+    CallerSupplied,
+    RouteModel,
+    MacroModel,
+}
+impl CalibrationTransitSource {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::CallerSupplied => "caller_supplied",
+            Self::RouteModel => "route_model",
+            Self::MacroModel => "macro_model",
+        }
+    }
+}
+
+/// Synthetic calibration input projection. Missing endpoints remain missing.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CalibrationTraceRecord {
     pub case_id: String,
     pub day: u32,
-    pub start_tick: u64,
-    pub end_tick: u64,
+    pub start_tick: Option<u64>,
+    pub end_tick: Option<u64>,
     pub transit_ticks: u64,
+    pub transit_source: CalibrationTransitSource,
+    pub transit_source_seconds: Option<f64>,
     pub work_ticks: u64,
 }
 
-/// Standalone helper to convert a slice of completed patients into calibration trace records.
+/// Project synthetic patients with an explicitly caller-supplied transit parameter.
 pub fn export_patient_calibration_traces(
     patients: &[ComposedPatient],
     day: u32,
     transit_ticks: u64,
 ) -> Vec<CalibrationTraceRecord> {
+    calibration_records(
+        patients,
+        day,
+        transit_ticks,
+        CalibrationTransitSource::CallerSupplied,
+        None,
+    )
+}
+
+fn calibration_records(
+    patients: &[ComposedPatient],
+    day: u32,
+    transit_ticks: u64,
+    transit_source: CalibrationTransitSource,
+    transit_source_seconds: Option<f64>,
+) -> Vec<CalibrationTraceRecord> {
     patients
         .iter()
-        .map(|p| {
-            let start = p.start_tick.unwrap_or(p.arrival_tick);
-            let end = p.completion_tick.unwrap_or(start + p.work_elapsed_ticks);
-            CalibrationTraceRecord {
-                case_id: format!("case_{}", p.id),
-                day,
-                start_tick: start,
-                end_tick: end,
-                transit_ticks,
-                work_ticks: p.work_elapsed_ticks,
-            }
+        .map(|p| CalibrationTraceRecord {
+            case_id: format!("case_{}", p.id),
+            day,
+            start_tick: p.start_tick,
+            end_tick: p.completion_tick,
+            transit_ticks,
+            transit_source,
+            transit_source_seconds,
+            work_ticks: p.work_elapsed_ticks,
         })
         .collect()
 }
@@ -774,7 +833,12 @@ pub fn calibration_traces_to_csv(records: &[CalibrationTraceRecord]) -> String {
     for r in records {
         out.push_str(&format!(
             "{},{},{},{},{},{}\n",
-            r.case_id, r.day, r.start_tick, r.end_tick, r.transit_ticks, r.work_ticks
+            r.case_id,
+            r.day,
+            r.start_tick.map(|v| v.to_string()).unwrap_or_default(),
+            r.end_tick.map(|v| v.to_string()).unwrap_or_default(),
+            r.transit_ticks,
+            r.work_ticks
         ));
     }
     out

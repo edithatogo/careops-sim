@@ -525,8 +525,8 @@ fn test_downstream_exports_arrow_csv_and_calibration_traces() {
     assert_eq!(traces.len(), 2);
     assert_eq!(traces[0].case_id, "case_201");
     assert_eq!(traces[0].day, 1);
-    assert_eq!(traces[0].start_tick, 3);
-    assert_eq!(traces[0].end_tick, 13);
+    assert_eq!(traces[0].start_tick, Some(3));
+    assert_eq!(traces[0].end_tick, Some(13));
     assert_eq!(traces[0].transit_ticks, 15);
     assert_eq!(traces[0].work_ticks, 10);
 
