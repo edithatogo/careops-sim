@@ -50,19 +50,21 @@
       "repository": "kairos",
       "track": "70",
       "phase": "generic domain C Data followup",
-      "status": "hosted_qualified_consumer_adoption_pending",
-      "required_receipt": "Scoped source review plus actual hosted Linux/macOS/Windows native/FFI, policy and committed Git-source closure passed; exact parent producer/consumer and pin adoption still required. Registry publication is not qualified.",
+      "status": "data_source_adopted_direct_parent_interop_pending",
+      "required_receipt": "Scoped data source accepted with upstream hosted three-platform native/FFI/Git-source closure, exact parent ED/B7/native readers and26frozen summary parity; populated direct parent FFI/wholeR14 still pending",
       "gate_task": "R14.3",
       "scope": "Affected direct FFI and B7 metadata API adoption only; independent ED R13 output/consumer work may proceed",
       "candidate_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
-      "pr": "https://github.com/edithatogo/kairos/pull/367"
+      "pr": "https://github.com/edithatogo/kairos/pull/367",
+      "accepted_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
+      "parent_adoption_commit": "43511e665706cf31c434758675ce291d8c12547b"
     }
   ],
   "active_phase": "R13",
   "sequencing_basis": "User requested inventory-first Polars; supporting dependency work gates only demonstrated dependent tasks.",
   "acceptance_evidence": "conductor/tracks/polars_data_processing_20261022/review-report.md",
   "accepted_source_commit": "65731f093a9ff1e11005782bbe9d544c4dd5cbab",
-  "next_phase_decision": "Continue R13.2/R13.3 production output/CLI/consumer migration. R13.1 independent native file controls and required reader CI are locally reviewed at b1b91ca; new parent hosted outcomes pending. Upstream f34750533c07e9e868481606e5fe5c89ec9b76be passes hosted native/policy/clean Git-source gates; perform exact consumer/pin adoption separately. Address measured per-row capture encoding cost under bounded R14 prerequisite without weakening byte/recovery gates. Runtime074/data4134/Polars964 unchanged; R13/R14 final gates remain.",
+  "next_phase_decision": "Continue R13.2/R13.3 native production output/CLI/consumer migration and legacy removal. Scoped capture-sizing optimization1cb4530 and exact data-source adoption43511e6 reviewed locally; whole R13/R14 pending. Dataf347505 adopted, simulation runtime07410266/Polars96439685 unchanged. Required parent-hosted reader checks/final full consumer, populated FFI, streaming/RSS/performance, security/coverage/mutation/release gates remain; large legacy JSON four-worker case still exceeds256MiB.",
   "accepted_local_tasks": {
     "R11.1": {
       "source": "3ee7ac1225c9c53d076a7246a1d02ce3e4cdcb10",
@@ -87,7 +89,8 @@
     "R13.1": {
       "source": "b1b91ca8573a2122a16ac552fd524db6e5a2c5e5",
       "scope": "independent Parquet/Zstd, IPC, explicit typed CSV and strict provenance/incomplete controls; required CI wiring; production migration and hosted current parent pending",
-      "runtime_accepted": false
+      "runtime_accepted": false,
+      "data_source_requalification": "43511e665706cf31c434758675ce291d8c12547b"
     }
   },
   "accepted_phase_sources": {
@@ -96,5 +99,16 @@
     "R12": "65731f093a9ff1e11005782bbe9d544c4dd5cbab"
   },
   "hosted_phase_receipt": "conductor/evidence/polars-integration-20261103/R11-hosted.json",
-  "r12_acceptance_scope": "Local engineering only:739native including doctests,774top-level Python,8explicitEDmirror; reviewed slices and strict numerical/key/null/provenance controls. Hosted2e2864f predates final R12 source; current-hosted proof pending."
+  "r12_acceptance_scope": "Local engineering only:739native including doctests,774top-level Python,8explicitEDmirror; reviewed slices and strict numerical/key/null/provenance controls. Hosted2e2864f predates final R12 source; current-hosted proof pending.",
+  "bounded_prerequisites": {
+    "capture_sizing": {
+      "source": "1cb45303a56b705c68f3248d7326c61d1da37653",
+      "accepted_scope": "bounded flush-only pure encoding with byte splits and33capture/recovery tests; final native-output/RSS budgets pending"
+    },
+    "data_source_adoption": {
+      "source": "43511e665706cf31c434758675ce291d8c12547b",
+      "upstream": "f34750533c07e9e868481606e5fe5c89ec9b76be",
+      "accepted_scope": "data-only, runtime unchanged;57ED/39B7 native,2file/1B7 reader,26frozen actualsummary cases,13guard/16composition tests and policy pass; current parent hosted pending"
+    }
+  }
 }

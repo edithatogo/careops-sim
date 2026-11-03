@@ -192,3 +192,25 @@ Parent runtime074/data4134/Polars964 unchanged. Separate reviewed exact parent
 adoption/interop proof still required. Continue R13.2/R13.3; pull measured
 capture encoding cost prerequisite forward under bounded review, preserving
 row/byte bounds, durability, fault/recovery and final R14 performance gates.
+
+## Data-source prerequisite closeout — 3 November2026
+
+Source43511e665706cf31c434758675ce291d8c12547b records the reviewed data-only
+adoption of upstreamf34750533c07e9e868481606e5fe5c89ec9b76be. Runtime074,
+Polars964 and all registry/version edges remain unchanged. Actual57EDnative/
+39B7native,2file/1B7independent reader,13compatibility guard/16composition
+tests,26frozen current CLI summary cases and strict policy/Clippy pass.
+Historical join/source-compatibility/reference/driver bytes are unchanged.
+A7 boundary finding was fixed with explicit separately bound data-only parity
+evidence; dirty tested source was labelled as a base plus hashes. This committed
+identity closes that source binding. Parent hosted exact newhead remains pending.
+
+Scoped sizing source1cb4530 is locally reviewed with33capture/recovery tests,
+including24process kills. Large-case elapsed cost improves, but four-worker
+legacy full JSON bundle278,331,392bytes exceeds256MiB; final performance is not
+accepted. R13.2/R13.3 must remove full-table JSON/DDL/manualCSV and migrate
+production consumers, followed by whole R13 review and R14 full native/replay/
+interop/streaming/performance/coverage/mutation/security/clean-package gates.
+Same sole chat01a19b9f owns careops-pr194-checks/careops-sim; upstream standard
+worktree retains its separate history, no active upstream reservation. No merge,
+registry publication or clinical/site/operational acceptance follows.

@@ -3,7 +3,7 @@
   "updated_at": "2026-11-03",
   "active_track": "polars_data_processing_20261022",
   "active_phase": "R13",
-  "next_action": "Continue R13.2/R13.3 production output/CLI/consumer migration. R13.1 independent native file controls and required reader CI are locally reviewed at b1b91ca; new parent hosted outcomes pending. Upstream f34750533c07e9e868481606e5fe5c89ec9b76be passes hosted native/policy/clean Git-source gates; perform exact consumer/pin adoption separately. Address measured per-row capture encoding cost under bounded R14 prerequisite without weakening byte/recovery gates. Runtime074/data4134/Polars964 unchanged; R13/R14 final gates remain.",
+  "next_action": "Continue R13.2/R13.3 native production output/CLI/consumer migration and legacy removal. Scoped capture-sizing optimization1cb4530 and exact data-source adoption43511e6 reviewed locally; whole R13/R14 pending. Dataf347505 adopted, simulation runtime07410266/Polars96439685 unchanged. Required parent-hosted reader checks/final full consumer, populated FFI, streaming/RSS/performance, security/coverage/mutation/release gates remain; large legacy JSON four-worker case still exceeds256MiB.",
   "context_paths": [
     "conductor/tracks/polars_data_processing_20261022/plan.md",
     "conductor/tracks/polars_data_processing_20261022/statistical-contract.md",
@@ -153,5 +153,12 @@
     "native_scope": "none",
     "global_dispatch": "Other lane A1/A2 resume state preserved."
   },
-  "completed_engineering_track": "careops_core_domain_abstractions_20261020"
+  "completed_engineering_track": "careops_core_domain_abstractions_20261020",
+  "polars_data_source_adoption": {
+    "parent_commit": "43511e665706cf31c434758675ce291d8c12547b",
+    "data_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
+    "runtime_commit": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+    "scope": "data-only source adoption, actual26frozen summary cases, ED/B7 native and independent files; parent hosted pending",
+    "evidence": "conductor/evidence/polars-integration-20261103/data-source-compatibility.json"
+  }
 }
