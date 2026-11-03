@@ -118,3 +118,27 @@ owner transfer or pin change. Generic arbitrary-domain C Data requires a
 separate Track70 owner packet; it blocks affected FFI/final acceptance only.
 Current-source hosted, R13/R14 performance/removal/consumer and broader gates
 remain open. PR199 stays draft/unmerged; publish this coherent checkpoint next.
+
+
+## R13 ED provenance and upstream handoff — 3 November 2026
+
+Same sole parent chat/worktree remains. ED provenance source232ee91 has5new
+native controls, reused21capture/recovery tests and final independent20-row/four
+replication PyArrow26 proof; reviewed local slice only. Whole R13 remains open.
+
+The upstream standard Git worktree kairos-polars-domain-ffi-20261103 produced
+reviewed scoped commitsd835c525 (trusted declared-domain C Data) and0f981f72
+(metadata-aware original publisher). Draft Kairos PR367 is published at0f981f72.
+Upstream133native/29default C Data package proof and100Arrow metadata native
+passes, independent real Parquet/IPC metadata/data/receipt proof, strict Clippy/
+docs and reviews are local receipts, not parent or hosted acceptance. Locks and
+compiler identities remain distinct. No upstream active source lease is retained.
+
+Parent runtime074/data4134/Polars964 are unchanged. Actual upstream hosted/
+package acceptance gates new API/pin promotion. Independent ED R13 output/
+consumer work can proceed; affected B7 metadata and populated direct FFI proof
+wait on that exact source. Parent FFI import tests belong behind a default-off
+root feature with an explicit required-features target/CI invocation, preserving
+production ED/core/birthing and minimal/Wasm/fuzz graphs. No engine handle or
+new-runtime domain type crosses this boundary. Keep PR199 draft/unmerged and
+retain all consumer/removal/performance/final-head/clinical release gates.
