@@ -74,6 +74,7 @@ export interface SpatialPackage {
 
 export class SpatialLayoutManager {
   private pkg: SpatialPackage;
+  private routeData: { nodes: RouteNode[]; edges: RouteEdge[] };
   private locationMap: Map<string, SpatialLocation>;
   private nodeMap: Map<string, RouteNode>;
   private adjacency: Map<string, Array<{ to: string; dist_mm: number }>>;
@@ -88,7 +89,8 @@ export class SpatialLayoutManager {
       this.locationMap.set(loc.location_id, loc);
     }
 
-    const routeData = pkg.routes || pkg.route_graph || { nodes: [], edges: [] };
+    const routeData = pkg.routes ?? pkg.route_graph ?? { nodes: [], edges: [] };
+    this.routeData = routeData;
 
     for (const node of routeData.nodes) {
       this.nodeMap.set(node.node_id, node);
@@ -134,7 +136,7 @@ export class SpatialLayoutManager {
   }
 
   getAllEdges(): RouteEdge[] {
-    return this.pkg.route_graph.edges;
+    return this.routeData.edges;
   }
 
   /**
