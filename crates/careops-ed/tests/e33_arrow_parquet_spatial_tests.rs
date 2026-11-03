@@ -75,7 +75,7 @@ fn load_nominal_scenario() -> careops_ed::ScenarioConfig {
 #[test]
 fn test_arrow_schemas_and_parquet_ddl() {
     let patient_schema = build_patient_arrow_schema("scenario-1", "tick");
-    assert_eq!(patient_schema.schema_name, "careops.ed.patient_records.v1");
+    assert_eq!(patient_schema.schema_name, "careops.ed.patient_records.v2");
     assert!(patient_schema.fields.iter().any(|f| f.name == "patient_id"));
     assert!(patient_schema
         .fields
@@ -88,7 +88,34 @@ fn test_arrow_schemas_and_parquet_ddl() {
             && f.denominator == Some("completed_patients".to_string())));
 
     let metrics_schema = build_metrics_arrow_schema();
-    assert_eq!(metrics_schema.schema_name, "careops.ed.metrics.v1");
+    assert_eq!(metrics_schema.schema_name, "careops.ed.metrics.v2");
+    assert_eq!(metrics_schema.version, "2.0");
+    for name in [
+        "value",
+        "variance",
+        "standard_error",
+        "ci_95_lower",
+        "ci_95_upper",
+        "denominator_value",
+    ] {
+        assert!(
+            metrics_schema
+                .fields
+                .iter()
+                .find(|f| f.name == name)
+                .unwrap()
+                .nullable
+        );
+    }
+    assert!(
+        patient_schema
+            .fields
+            .iter()
+            .find(|f| f.name == "location_id")
+            .unwrap()
+            .nullable
+    );
+
     assert!(metrics_schema
         .fields
         .iter()
@@ -107,7 +134,7 @@ fn test_arrow_schemas_and_parquet_ddl() {
         .any(|f| f.name == "censored_count"));
 
     let spatial_schema = build_spatial_arrow_schema();
-    assert_eq!(spatial_schema.schema_name, "careops.ed.spatial_transit.v1");
+    assert_eq!(spatial_schema.schema_name, "careops.ed.spatial_transit.v2");
     assert!(spatial_schema
         .fields
         .iter()
@@ -130,26 +157,26 @@ fn test_arrow_schemas_and_parquet_ddl() {
 #[test]
 fn test_statistical_uncertainty_calculator() {
     // Single sample
-    let b1 = compute_uncertainty(&[42.0]);
-    assert_eq!(b1.variance, 0.0);
-    assert_eq!(b1.standard_error, 0.0);
-    assert_eq!(b1.ci_95_lower, 42.0);
-    assert_eq!(b1.ci_95_upper, 42.0);
+    let b1 = compute_uncertainty(&[42.0]).unwrap();
+    assert_eq!(b1.variance, None);
+    assert_eq!(b1.standard_error, None);
+    assert_eq!(b1.ci_95_lower, None);
+    assert_eq!(b1.ci_95_upper, None);
 
     // Identical samples
-    let b_const = compute_uncertainty(&[10.0, 10.0, 10.0]);
-    assert_eq!(b_const.variance, 0.0);
-    assert_eq!(b_const.standard_error, 0.0);
-    assert_eq!(b_const.ci_95_lower, 10.0);
-    assert_eq!(b_const.ci_95_upper, 10.0);
+    let b_const = compute_uncertainty(&[10.0, 10.0, 10.0]).unwrap();
+    assert_eq!(b_const.variance, Some(0.0));
+    assert_eq!(b_const.standard_error, Some(0.0));
+    assert_eq!(b_const.ci_95_lower, Some(10.0));
+    assert_eq!(b_const.ci_95_upper, Some(10.0));
 
     // Multi sample: [10.0, 20.0, 30.0] -> mean = 20.0, var = 100.0, SE = sqrt(100/3) ~= 5.7735
-    let b_calc = compute_uncertainty(&[10.0, 20.0, 30.0]);
-    assert!((b_calc.variance - 100.0).abs() < 1e-6);
-    let se = b_calc.standard_error;
+    let b_calc = compute_uncertainty(&[10.0, 20.0, 30.0]).unwrap();
+    assert!((b_calc.variance.unwrap() - 100.0).abs() < 1e-6);
+    let se = b_calc.standard_error.unwrap();
     assert!((se - (100.0 / 3.0_f64).sqrt()).abs() < 1e-6);
-    let lower = b_calc.ci_95_lower;
-    let upper = b_calc.ci_95_upper;
+    let lower = b_calc.ci_95_lower.unwrap();
+    let upper = b_calc.ci_95_upper.unwrap();
     let mean = 20.0;
     assert!((lower - (mean - 1.959964 * se)).abs() < 1e-6);
     assert!((upper - (mean + 1.959964 * se)).abs() < 1e-6);
@@ -328,11 +355,14 @@ fn test_spatial_summary_and_csv_export() {
 
     let csv = export_spatial_summary_to_csv(&bundle.spatial_summary);
     assert!(csv.starts_with("route,traversals,mean_duration_ticks,spatial_revision\n"));
-    assert!(csv.contains("spatial.v2.custom"));
+    assert_eq!(csv.lines().count(), 1);
+    assert_eq!(bundle.spatial_summary.capture_status, "not_captured");
+    assert_eq!(bundle.spatial_summary.total_transits, None);
+    assert_eq!(bundle.spatial_summary.total_distance_metres, None);
 
     let json = export_bundle_to_json(&bundle).expect("json");
     assert!(json.contains("spatial.v2.custom"));
-    assert!(json.contains("careops.ed.patient_records.v1"));
+    assert!(json.contains("careops.ed.patient_records.v2"));
 }
 
 #[test]
@@ -361,7 +391,7 @@ fn test_censored_and_unfinished_counts() {
         .iter()
         .find(|m| m.name == "mean_wait_ticks")
         .expect("wait metric");
-    assert_eq!(wait_m.denominator_name, "started_patients");
+    assert_eq!(wait_m.denominator_name, "included_replications");
 
     let comp_m = bundle
         .metrics
@@ -375,16 +405,16 @@ fn test_censored_and_unfinished_counts() {
         .iter()
         .find(|m| m.name == "throughput_per_horizon_tick")
         .expect("throughput metric");
-    assert_eq!(tp_m.denominator_name, "horizon_ticks");
-    assert_eq!(tp_m.denominator_value, 10.0);
+    assert_eq!(tp_m.denominator_name, "per_replication_horizon_ticks");
+    assert_eq!(tp_m.denominator_value, None);
 
     let censor_m = bundle
         .metrics
         .iter()
         .find(|m| m.name == "censored_presentation_rate")
         .expect("censor metric");
-    assert_eq!(censor_m.denominator_name, "total_arrivals");
-    assert!(censor_m.value >= 0.0);
+    assert_eq!(censor_m.denominator_name, "included_replications");
+    assert!(censor_m.value.unwrap() >= 0.0);
 }
 
 #[test]
@@ -423,11 +453,11 @@ fn test_api_runner_batch_cli_arrow_export() {
 
     let arrow_content = fs::read_to_string(&arrow_out).expect("read arrow out");
     assert!(arrow_content.contains("spatial.test.rev1"));
-    assert!(arrow_content.contains("careops.ed.patient_records.v1"));
-    assert!(arrow_content.contains("careops.ed.metrics.v1"));
+    assert!(arrow_content.contains("careops.ed.patient_records.v2"));
+    assert!(arrow_content.contains("careops.ed.metrics.v2"));
 
     let spatial_content = fs::read_to_string(&spatial_out).expect("read spatial out");
-    assert!(spatial_content.contains("spatial.test.rev1"));
+    assert_eq!(spatial_content.lines().count(), 1); // No invented movement row.
     assert!(spatial_content.starts_with("route,traversals,mean_duration_ticks,spatial_revision\n"));
 }
 

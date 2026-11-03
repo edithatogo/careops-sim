@@ -21,6 +21,7 @@ Verifies:
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -419,10 +420,14 @@ class E43DeliveryContractWalkthroughTests(unittest.TestCase):
             )
             self.assertEqual(proc_batch.returncode, 0, proc_batch.stderr)
 
-            chk_file = batch_dir / "checkpoint.json"
+            chk_file = batch_dir / "capture" / "checkpoint.json"
             batch_file = batch_dir / "batch_run.json"
             self.assertTrue(chk_file.exists(), "checkpoint.json must exist")
             self.assertTrue(batch_file.exists(), "batch_run.json must exist")
+            parts = sorted((batch_dir / "capture").glob("rep-*-seq-*.part"))
+            self.assertTrue(parts, "native capture parts must exist")
+            part_hashes = {part.name: hashlib.sha256(part.read_bytes()).hexdigest() for part in parts}
+
 
             # 2. Clean resumption from checkpoint
             resume_dir = tmp_path / "batch_resumed"
@@ -436,6 +441,12 @@ class E43DeliveryContractWalkthroughTests(unittest.TestCase):
                 str(resume_dir),
             )
             self.assertEqual(proc_resume.returncode, 0, proc_resume.stderr)
+            self.assertEqual(
+                {part.name: hashlib.sha256(part.read_bytes()).hexdigest() for part in parts},
+                part_hashes,
+                "complete-checkpoint reuse must preserve acknowledged native parts",
+            )
+
 
             # Resumed results match original batch run
             doc_orig = json.loads(batch_file.read_text(encoding="utf-8"))

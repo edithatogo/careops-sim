@@ -25,7 +25,7 @@ fn config() -> BatchConfig {
     }
 }
 #[test]
-fn legacy_spatial_tick_overflow_returns_error_without_panicking() {
+fn maximum_tick_completion_exports_without_invented_spatial_addition() {
     let mut scenario = scenario();
     scenario.patients.truncate(1);
     scenario.horizon_ticks = u64::MAX;
@@ -36,7 +36,10 @@ fn legacy_spatial_tick_overflow_returns_error_without_panicking() {
     config.horizon_override = None;
     let doc = run_batch_with_workers(&scenario, &config, None, None, None).unwrap();
     assert_eq!(doc.replications[0].completed, 1);
-    assert!(generate_arrow_export_bundle(&scenario, &doc, None, None).is_err());
+    let bundle = generate_arrow_export_bundle(&scenario, &doc, None, None).unwrap();
+    assert_eq!(bundle.patient_records[0].completion_tick, Some(u64::MAX));
+    assert!(bundle.spatial_records.is_empty());
+    assert_eq!(bundle.spatial_summary.capture_status, "not_captured");
 }
 #[test]
 fn partial_marker_is_absent_when_durable_progress_cannot_be_validated() {
@@ -439,7 +442,7 @@ fn reordered_partitions_keep_rows_bound_to_their_own_replication() {
         .iter()
         .map(|r| r.summary.clone())
         .collect();
-    let (mean, se, rate) = compute_batch_aggregates(&doc.replications);
+    let (mean, se, rate) = compute_batch_aggregates(&doc.replications).unwrap();
     doc.aggregate_mean_wait = mean;
     doc.aggregate_std_error = se;
     doc.mean_completion_rate = rate;

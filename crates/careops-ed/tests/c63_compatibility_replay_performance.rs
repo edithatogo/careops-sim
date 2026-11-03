@@ -401,7 +401,7 @@ fn test_feature_api_manifest_compatibility() {
 
     // Verify Arrow schema builders and field properties directly
     let p_schema = build_patient_arrow_schema("nominal", "tick");
-    assert_eq!(p_schema.schema_name, "careops.ed.patient_records.v1");
+    assert_eq!(p_schema.schema_name, "careops.ed.patient_records.v2");
     let wait_field = p_schema
         .fields
         .iter()
@@ -411,10 +411,10 @@ fn test_feature_api_manifest_compatibility() {
     assert_eq!(wait_field.denominator.as_deref(), Some("started_patients"));
 
     let m_schema = build_metrics_arrow_schema();
-    assert_eq!(m_schema.schema_name, "careops.ed.metrics.v1");
+    assert_eq!(m_schema.schema_name, "careops.ed.metrics.v2");
 
     let s_schema = build_spatial_arrow_schema();
-    assert_eq!(s_schema.schema_name, "careops.ed.spatial_transit.v1");
+    assert_eq!(s_schema.schema_name, "careops.ed.spatial_transit.v2");
 
     let ddl = generate_parquet_schema_ddl();
     assert!(ddl.contains("required int64 arrival_tick"));

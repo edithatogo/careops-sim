@@ -30,7 +30,7 @@ fn finish(
     output: Option<&Path>,
 ) -> Result<BatchRunDocument, ValidationError> {
     let summaries: Vec<_> = results.into_iter().map(|r| r.summary).collect();
-    let (mean, se, completion) = compute_batch_aggregates(&summaries);
+    let (mean, se, completion) = compute_batch_aggregates(&summaries)?;
     let doc = BatchRunDocument {
         schema_version: 2,
         batch_id: config.batch_id.clone(),
@@ -237,7 +237,7 @@ pub(crate) fn export_source(
             "capture/document binding mismatch",
         ));
     }
-    let (mean, se, rate) = compute_batch_aggregates(&doc.replications);
+    let (mean, se, rate) = compute_batch_aggregates(&doc.replications)?;
     if (
         doc.aggregate_mean_wait,
         doc.aggregate_std_error,

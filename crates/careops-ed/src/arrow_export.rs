@@ -1,16 +1,10 @@
-//! Arrow/Parquet export, metric summaries with denominators & uncertainty,
-//! complete provenance, and spatial revision/transit records for Phase E3.3.
+//! ED statistical records and the temporary alpha export surface.
 //!
-//! Provides:
-//! - Full tabular Arrow and Parquet schema definitions with units and denominators.
-//! - Comprehensive metric summaries with explicit denominators (`started_patients`,
-//!   `completed_patients`, `total_arrivals`, `horizon_ticks`), uncertainty bounds
-//!   (standard error, variance, 95% confidence intervals), and censored presentation counts.
-//! - Complete execution and checkpoint provenance tracking.
-//! - Spatial revision tagging, location/transit records, and distinction between
-//!   `Observed`, `Simulated`, and `Interpolated` position states.
-//! - Spatial transit summaries and continuous trajectory interpolation for replay.
-//! - Strict deterministic equivalence across 1, 2, and N CPU workers and checkpoint resumption.
+//! Native reductions use pinned Polars; checked scalar math preserves minimal
+//! CPU execution. Original-run capture supplies patient results without reruns.
+//! Movement is explicitly not captured. Caller-supplied transit interpolation is
+//! separate from observation. R13 replaces descriptors/JSON/manual CSV with
+//! qualified native file outputs and migrates their reachable consumers.
 
 use std::collections::BTreeMap;
 
@@ -58,24 +52,36 @@ pub struct RunProvenance {
 /// Statistical uncertainty estimates (standard error, variance, 95% confidence interval).
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UncertaintyBounds {
-    pub variance: f64,
-    pub standard_error: f64,
-    pub ci_95_lower: f64,
-    pub ci_95_upper: f64,
+    pub estimate: Option<f64>,
+    pub variance: Option<f64>,
+    pub standard_error: Option<f64>,
+    pub ci_95_lower: Option<f64>,
+    pub ci_95_upper: Option<f64>,
     pub replications_count: usize,
+    pub ddof: Option<u8>,
+    pub method: String,
+    pub status: String,
 }
 
 /// Summary metric record with explicit units, denominators, and uncertainty.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct MetricRecord {
     pub name: String,
-    pub value: f64,
+    pub value: Option<f64>,
     pub unit: String,
     pub denominator_name: String,
-    pub denominator_value: f64,
+    pub denominator_value: Option<f64>,
+    pub numerator_count: Option<u64>,
+    pub denominator_count: Option<u64>,
+    pub estimand: String,
+    pub sample_unit: String,
+    pub weighting: String,
+    pub eligible_replications: usize,
+    pub included_replications: usize,
+    pub total_replications: usize,
     pub uncertainty: UncertaintyBounds,
-    pub censored_count: usize,
-    pub unfinished_count: usize,
+    pub censored_count: u64,
+    pub unfinished_count: u64,
 }
 
 /// Tabular Arrow column field metadata.
@@ -113,7 +119,7 @@ pub struct ArrowPatientRow {
     pub status: String,
     pub censor_status: String,
     pub resource_id: String,
-    pub location_id: String,
+    pub location_id: Option<String>,
     pub spatial_revision: String,
 }
 
@@ -145,13 +151,15 @@ pub struct TrajectoryPosition {
     pub spatial_revision: String,
 }
 
-/// Aggregated spatial summaries across all replications and routes.
+/// Spatial capture status. Unknown movement quantities stay null, not zero.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SpatialSummary {
     pub spatial_revision: String,
-    pub total_transits: usize,
-    pub total_distance_metres: f64,
-    pub mean_transit_duration_ticks: f64,
+    pub capture_status: String,
+    pub observed_rows: usize,
+    pub total_transits: Option<usize>,
+    pub total_distance_metres: Option<f64>,
+    pub mean_transit_duration_ticks: Option<f64>,
     pub location_visit_counts: BTreeMap<String, usize>,
     pub route_traversal_counts: BTreeMap<String, usize>,
     pub route_mean_duration_ticks: BTreeMap<String, f64>,
@@ -185,8 +193,8 @@ pub fn build_patient_arrow_schema(scenario_id: &str, time_unit: &str) -> ArrowTa
     metadata.insert("byte_order".to_string(), "little".to_string());
 
     ArrowTableSchema {
-        schema_name: "careops.ed.patient_records.v1".to_string(),
-        version: "1.0".to_string(),
+        schema_name: "careops.ed.patient_records.v2".to_string(),
+        version: "2.0".to_string(),
         fields: vec![
             ArrowField {
                 name: "patient_id".to_string(),
@@ -275,7 +283,7 @@ pub fn build_patient_arrow_schema(scenario_id: &str, time_unit: &str) -> ArrowTa
             ArrowField {
                 name: "location_id".to_string(),
                 data_type: "utf8".to_string(),
-                nullable: false,
+                nullable: true,
                 unit: "identifier".to_string(),
                 denominator: None,
             },
@@ -291,98 +299,53 @@ pub fn build_patient_arrow_schema(scenario_id: &str, time_unit: &str) -> ArrowTa
     }
 }
 
-/// Constructs the canonical Arrow table schema for metric summary records.
+/// Flat v2 metric-table descriptor; optional estimates/bounds remain nullable.
 pub fn build_metrics_arrow_schema() -> ArrowTableSchema {
-    let mut metadata = BTreeMap::new();
-    metadata.insert(
-        "format".to_string(),
-        "kairoecs.ed.metrics_table".to_string(),
-    );
-    metadata.insert("byte_order".to_string(), "little".to_string());
-
+    let fields = [
+        ("name", "utf8", false),
+        ("value", "float64", true),
+        ("unit", "utf8", false),
+        ("denominator_name", "utf8", false),
+        ("denominator_value", "float64", true),
+        ("numerator_count", "uint64", true),
+        ("denominator_count", "uint64", true),
+        ("estimand", "utf8", false),
+        ("sample_unit", "utf8", false),
+        ("weighting", "utf8", false),
+        ("eligible_replications", "uint64", false),
+        ("included_replications", "uint64", false),
+        ("total_replications", "uint64", false),
+        ("variance", "float64", true),
+        ("standard_error", "float64", true),
+        ("ci_95_lower", "float64", true),
+        ("ci_95_upper", "float64", true),
+        ("replications_count", "uint64", false),
+        ("ddof", "uint32", true),
+        ("method", "utf8", false),
+        ("status", "utf8", false),
+        ("censored_count", "uint64", false),
+        ("unfinished_count", "uint64", false),
+    ]
+    .into_iter()
+    .map(|(name, data_type, nullable)| ArrowField {
+        name: name.into(),
+        data_type: data_type.into(),
+        nullable,
+        unit: "per_metric_unit_and_estimand".into(),
+        denominator: None,
+    })
+    .collect();
     ArrowTableSchema {
-        schema_name: "careops.ed.metrics.v1".to_string(),
-        version: "1.0".to_string(),
-        fields: vec![
-            ArrowField {
-                name: "metric_name".to_string(),
-                data_type: "utf8".to_string(),
-                nullable: false,
-                unit: "name".to_string(),
-                denominator: None,
-            },
-            ArrowField {
-                name: "metric_value".to_string(),
-                data_type: "float64".to_string(),
-                nullable: false,
-                unit: "variable".to_string(),
-                denominator: None,
-            },
-            ArrowField {
-                name: "unit".to_string(),
-                data_type: "utf8".to_string(),
-                nullable: false,
-                unit: "unit".to_string(),
-                denominator: None,
-            },
-            ArrowField {
-                name: "denominator_name".to_string(),
-                data_type: "utf8".to_string(),
-                nullable: false,
-                unit: "denominator".to_string(),
-                denominator: None,
-            },
-            ArrowField {
-                name: "denominator_value".to_string(),
-                data_type: "float64".to_string(),
-                nullable: false,
-                unit: "count".to_string(),
-                denominator: None,
-            },
-            ArrowField {
-                name: "variance".to_string(),
-                data_type: "float64".to_string(),
-                nullable: false,
-                unit: "variance".to_string(),
-                denominator: None,
-            },
-            ArrowField {
-                name: "standard_error".to_string(),
-                data_type: "float64".to_string(),
-                nullable: false,
-                unit: "se".to_string(),
-                denominator: None,
-            },
-            ArrowField {
-                name: "ci_95_lower".to_string(),
-                data_type: "float64".to_string(),
-                nullable: false,
-                unit: "bound".to_string(),
-                denominator: None,
-            },
-            ArrowField {
-                name: "ci_95_upper".to_string(),
-                data_type: "float64".to_string(),
-                nullable: false,
-                unit: "bound".to_string(),
-                denominator: None,
-            },
-            ArrowField {
-                name: "censored_count".to_string(),
-                data_type: "uint64".to_string(),
-                nullable: false,
-                unit: "count".to_string(),
-                denominator: None,
-            },
-            ArrowField {
-                name: "unfinished_count".to_string(),
-                data_type: "uint64".to_string(),
-                nullable: false,
-                unit: "count".to_string(),
-                denominator: None,
-            },
-        ],
-        metadata,
+        schema_name: "careops.ed.metrics.v2".into(),
+        version: "2.0".into(),
+        fields,
+        metadata: BTreeMap::from([
+            ("format".into(), "careops.ed.metrics.v2".into()),
+            (
+                "uncertainty".into(),
+                "explicit method/status; undefined values are null".into(),
+            ),
+        ]),
     }
 }
 
@@ -396,8 +359,8 @@ pub fn build_spatial_arrow_schema() -> ArrowTableSchema {
     metadata.insert("byte_order".to_string(), "little".to_string());
 
     ArrowTableSchema {
-        schema_name: "careops.ed.spatial_transit.v1".to_string(),
-        version: "1.0".to_string(),
+        schema_name: "careops.ed.spatial_transit.v2".to_string(),
+        version: "2.0".to_string(),
         fields: vec![
             ArrowField {
                 name: "patient_id".to_string(),
@@ -485,86 +448,165 @@ pub fn build_spatial_arrow_schema() -> ArrowTableSchema {
 pub fn generate_parquet_schema_ddl() -> String {
     "message careops_ed_patient_record {\n\
   required binary patient_id (UTF8);\n\
-  required int64 replication_index;\n\
-  required int64 seed;\n\
-  required int64 arrival_tick;\n\
-  optional int64 start_tick;\n\
-  optional int64 completion_tick;\n\
-  required int64 work_ticks;\n\
-  optional int64 wait_ticks;\n\
-  optional int64 elapsed_ticks;\n\
+  required int64 replication_index (INTEGER(64,false));\n\
+  required int64 seed (INTEGER(64,false));\n\
+  required int64 arrival_tick (INTEGER(64,false));\n\
+  optional int64 start_tick (INTEGER(64,false));\n\
+  optional int64 completion_tick (INTEGER(64,false));\n\
+  required int64 work_ticks (INTEGER(64,false));\n\
+  optional int64 wait_ticks (INTEGER(64,false));\n\
+  optional int64 elapsed_ticks (INTEGER(64,false));\n\
   required binary status (UTF8);\n\
   required binary censor_status (UTF8);\n\
   required binary resource_id (UTF8);\n\
-  required binary location_id (UTF8);\n\
+  optional binary location_id (UTF8);\n\
   required binary spatial_revision (UTF8);\n\
 }\n\
 \n\
 message careops_ed_metric_summary {\n\
-  required binary metric_name (UTF8);\n\
-  required double metric_value;\n\
+  required binary name (UTF8);\n\
+  optional double value;\n\
   required binary unit (UTF8);\n\
   required binary denominator_name (UTF8);\n\
-  required double denominator_value;\n\
-  required double variance;\n\
-  required double standard_error;\n\
-  required double ci_95_lower;\n\
-  required double ci_95_upper;\n\
-  required int64 replications_count;\n\
-  required int64 censored_count;\n\
-  required int64 unfinished_count;\n\
+  optional double denominator_value;\n\
+  optional double variance;\n\
+  optional double standard_error;\n\
+  optional double ci_95_lower;\n\
+  optional double ci_95_upper;\n\
+  optional int64 numerator_count (INTEGER(64,false));\n\
+  optional int64 denominator_count (INTEGER(64,false));\n\
+  required binary estimand (UTF8);\n\
+  required binary sample_unit (UTF8);\n\
+  required binary weighting (UTF8);\n\
+  required int64 eligible_replications (INTEGER(64,false));\n\
+  required int64 included_replications (INTEGER(64,false));\n\
+  required int64 total_replications (INTEGER(64,false));\n\
+  optional int32 ddof (INTEGER(32,false));\n\
+  required binary method (UTF8);\n\
+  required binary status (UTF8);\n\
+  required int64 replications_count (INTEGER(64,false));\n\
+  required int64 censored_count (INTEGER(64,false));\n\
+  required int64 unfinished_count (INTEGER(64,false));\n\
 }\n\
 \n\
 message careops_ed_spatial_transit {\n\
   required binary patient_id (UTF8);\n\
-  required int64 replication_index;\n\
-  required int64 step_index;\n\
+  required int64 replication_index (INTEGER(64,false));\n\
+  required int64 step_index (INTEGER(64,false));\n\
   required binary from_location (UTF8);\n\
   required binary to_location (UTF8);\n\
   required double distance_metres;\n\
-  required int64 departure_tick;\n\
-  required int64 arrival_tick;\n\
-  required int64 transit_ticks;\n\
+  required int64 departure_tick (INTEGER(64,false));\n\
+  required int64 arrival_tick (INTEGER(64,false));\n\
+  required int64 transit_ticks (INTEGER(64,false));\n\
   required binary position_kind (UTF8);\n\
   required binary spatial_revision (UTF8);\n\
 }"
     .to_string()
 }
 
-/// Computes uncertainty bounds (mean, variance, standard error, 95% CI) for a slice of values.
-pub fn compute_uncertainty(values: &[f64]) -> UncertaintyBounds {
-    let n = values.len();
-    if n == 0 {
-        return UncertaintyBounds {
-            variance: 0.0,
-            standard_error: 0.0,
-            ci_95_lower: 0.0,
-            ci_95_upper: 0.0,
-            replications_count: 0,
-        };
-    }
-    let mean = values.iter().sum::<f64>() / n as f64;
-    let variance = if n > 1 {
-        values.iter().map(|&v| (v - mean).powi(2)).sum::<f64>() / (n - 1) as f64
-    } else {
-        0.0
-    };
-    let se = if n > 1 {
-        (variance / n as f64).sqrt()
-    } else {
-        0.0
-    };
-    // Normal approximation critical value z = 1.959964
-    let z = 1.959964;
-    let margin = z * se;
+fn invalid_statistic(message: impl Into<String>) -> ValidationError {
+    ValidationError::new(ExitCodeDef::MalformedConfig, message)
+}
 
+fn undefined_uncertainty(
+    estimate: Option<f64>,
+    replications: usize,
+    status: &str,
+) -> UncertaintyBounds {
     UncertaintyBounds {
-        variance,
-        standard_error: se,
-        ci_95_lower: mean - margin,
-        ci_95_upper: mean + margin,
-        replications_count: n,
+        estimate,
+        variance: None,
+        standard_error: None,
+        ci_95_lower: None,
+        ci_95_upper: None,
+        replications_count: replications,
+        ddof: None,
+        method: "unqualified".into(),
+        status: status.into(),
     }
+}
+
+/// Sample uncertainty, explicitly undefined for fewer than two observations.
+/// Native data uses pinned Polars reductions. The small non-native branch
+/// preserves minimal CPU execution without linking a tabular runtime.
+/// Neither branch may publish nonfinite inputs, derived values or intervals.
+pub fn compute_uncertainty(values: &[f64]) -> Result<UncertaintyBounds, ValidationError> {
+    if values.iter().any(|v| !v.is_finite()) {
+        return Err(invalid_statistic("nonfinite statistical input"));
+    }
+    if values.is_empty() {
+        return Ok(undefined_uncertainty(None, 0, "no_samples"));
+    }
+    #[cfg(feature = "native-data")]
+    let (mean, variance) = {
+        use polars::prelude::*;
+        if values.len() > u32::MAX as usize {
+            return Err(invalid_statistic("native row-index capacity exceeded"));
+        }
+        let frame = DataFrame::new(
+            values.len(),
+            vec![Series::new("value".into(), values).into()],
+        )
+        .map_err(|e| invalid_statistic(e.to_string()))?
+        .lazy()
+        .select([
+            col("value").mean().alias("mean"),
+            col("value").var(1).alias("variance"),
+        ])
+        .collect()
+        .map_err(|e| invalid_statistic(e.to_string()))?;
+        let number = |name: &str| -> Result<Option<f64>, ValidationError> {
+            Ok(frame
+                .column(name)
+                .map_err(|e| invalid_statistic(e.to_string()))?
+                .f64()
+                .map_err(|e| invalid_statistic(e.to_string()))?
+                .get(0))
+        };
+        (
+            number("mean")?.ok_or_else(|| invalid_statistic("missing sample mean"))?,
+            number("variance")?,
+        )
+    };
+    #[cfg(not(feature = "native-data"))]
+    let (mean, variance) = {
+        let mean = values.iter().sum::<f64>() / values.len() as f64;
+        let variance = (values.len() > 1).then(|| {
+            values.iter().map(|v| (v - mean).powi(2)).sum::<f64>() / (values.len() - 1) as f64
+        });
+        (mean, variance)
+    };
+    if !mean.is_finite() || variance.is_some_and(|v| !v.is_finite() || v < 0.0) {
+        return Err(invalid_statistic(
+            "nonfinite or invalid derived statistical result",
+        ));
+    }
+    let Some(variance) = variance else {
+        let mut result =
+            undefined_uncertainty(Some(mean), values.len(), "insufficient_replications");
+        result.ddof = Some(1);
+        result.method = "normal_approximation_95".into();
+        return Ok(result);
+    };
+    let se = (variance / values.len() as f64).sqrt();
+    let margin = 1.959964 * se;
+    let lower = mean - margin;
+    let upper = mean + margin;
+    if [se, lower, upper].iter().any(|v| !v.is_finite()) {
+        return Err(invalid_statistic("nonfinite uncertainty interval"));
+    }
+    Ok(UncertaintyBounds {
+        estimate: Some(mean),
+        variance: Some(variance),
+        standard_error: Some(se),
+        ci_95_lower: Some(lower),
+        ci_95_upper: Some(upper),
+        replications_count: values.len(),
+        ddof: Some(1),
+        method: "normal_approximation_95".into(),
+        status: "defined".into(),
+    })
 }
 
 /// Interpolates a patient's position at a target query tick given their transit sequence.
@@ -646,22 +688,191 @@ pub fn interpolate_patient_position(
     })
 }
 
-/// Extracts location distance between two named locations from scenario routes.
+/// Fixed ED analysis over validated replication summaries. Native reductions
+/// use Polars; no patient, event, policy or movement is inferred by statistics.
 #[cfg(feature = "native-data")]
-fn lookup_route_distance(scenario: &ScenarioConfig, from: &str, to: &str) -> f64 {
-    for route in &scenario.capacity_location.routes {
-        if (route.from_location_id == from && route.to_location_id == to)
-            || (route.from_location_id == to && route.to_location_id == from)
-        {
-            return route.distance.value;
-        }
+pub fn summarize_replications(
+    results: &[crate::disposition::batch_runner::ReplicationResult],
+    completed_elapsed_ticks: &[u128],
+    time_unit: &str,
+) -> Result<Vec<MetricRecord>, ValidationError> {
+    let counts = crate::disposition::batch_runner::checked_replication_counts(results)?;
+    if u64::try_from(completed_elapsed_ticks.len()).ok() != Some(counts[2]) || time_unit.is_empty()
+    {
+        return Err(invalid_statistic(
+            "completed duration count or time unit mismatch",
+        ));
     }
-    // Default synthetic distance if not explicitly routed
-    15.0
+    let total = results.len();
+    let started_reps = results.iter().filter(|r| r.started > 0).count();
+    let arrival_reps = results.iter().filter(|r| r.arrivals > 0).count();
+    let completed_reps = results.iter().filter(|r| r.completed > 0).count();
+    let wait = if started_reps == 0 {
+        undefined_uncertainty(None, total, "no_samples")
+    } else {
+        compute_uncertainty(
+            &results
+                .iter()
+                .map(|r| r.mean_wait_ticks)
+                .collect::<Vec<_>>(),
+        )?
+    };
+    let rate = (counts[0] > 0).then(|| counts[2] as f64 / counts[0] as f64);
+    let completion = undefined_uncertainty(
+        rate,
+        total,
+        if rate.is_some() {
+            "ratio_method_unqualified"
+        } else {
+            "no_samples"
+        },
+    );
+    let throughput = compute_uncertainty(
+        &results
+            .iter()
+            .map(|r| r.completed as f64 / r.horizon_ticks as f64)
+            .collect::<Vec<_>>(),
+    )?;
+    let censor = if arrival_reps == 0 {
+        undefined_uncertainty(None, total, "no_samples")
+    } else {
+        compute_uncertainty(
+            &results
+                .iter()
+                .map(|r| {
+                    if r.arrivals == 0 {
+                        0.0
+                    } else {
+                        r.unfinished as f64 / r.arrivals as f64
+                    }
+                })
+                .collect::<Vec<_>>(),
+        )?
+    };
+    let elapsed_point = compute_uncertainty(
+        &completed_elapsed_ticks
+            .iter()
+            .map(|v| *v as f64)
+            .collect::<Vec<_>>(),
+    )?
+    .estimate;
+    let elapsed = undefined_uncertainty(
+        elapsed_point,
+        total,
+        if elapsed_point.is_some() {
+            "cluster_method_unqualified"
+        } else {
+            "no_samples"
+        },
+    );
+    let included_wait = if started_reps > 0 { total } else { 0 };
+    let included_censor = if arrival_reps > 0 { total } else { 0 };
+    let definitions = [
+        (
+            "mean_wait_ticks",
+            time_unit,
+            "included_replications",
+            None,
+            Some(included_wait as u64),
+            "mean_of_replication_wait_means",
+            "replication",
+            "equal_replication_zero_for_empty",
+            started_reps,
+            included_wait,
+            wait,
+        ),
+        (
+            "mean_elapsed_ticks",
+            time_unit,
+            "completed_patients",
+            None,
+            Some(counts[2]),
+            "pooled_completed_patient_mean",
+            "completed_patient",
+            "equal_completed_patient",
+            completed_reps,
+            completed_reps,
+            elapsed,
+        ),
+        (
+            "completion_rate",
+            "ratio",
+            "total_arrivals",
+            Some(counts[2]),
+            Some(counts[0]),
+            "pooled_completed_over_arrivals",
+            "arrival",
+            "pooled_counts",
+            arrival_reps,
+            arrival_reps,
+            completion,
+        ),
+        (
+            "throughput_per_horizon_tick",
+            "patients_per_tick",
+            "per_replication_horizon_ticks",
+            None,
+            None,
+            "mean_of_replication_throughputs",
+            "replication",
+            "equal_replication",
+            total,
+            total,
+            throughput,
+        ),
+        (
+            "censored_presentation_rate",
+            "ratio",
+            "included_replications",
+            None,
+            Some(included_censor as u64),
+            "mean_of_replication_unfinished_rates",
+            "replication",
+            "equal_replication_zero_for_empty",
+            arrival_reps,
+            included_censor,
+            censor,
+        ),
+    ];
+    Ok(definitions
+        .into_iter()
+        .map(
+            |(
+                name,
+                unit,
+                denominator_name,
+                numerator_count,
+                denominator_count,
+                estimand,
+                sample_unit,
+                weighting,
+                eligible,
+                included,
+                uncertainty,
+            )| MetricRecord {
+                name: name.into(),
+                value: uncertainty.estimate,
+                unit: unit.into(),
+                denominator_name: denominator_name.into(),
+                denominator_value: denominator_count.map(|v| v as f64),
+                numerator_count,
+                denominator_count,
+                estimand: estimand.into(),
+                sample_unit: sample_unit.into(),
+                weighting: weighting.into(),
+                eligible_replications: eligible,
+                included_replications: included,
+                total_replications: total,
+                uncertainty,
+                censored_count: counts[3],
+                unfinished_count: counts[3],
+            },
+        )
+        .collect())
 }
 
 /// Generates complete Arrow/Parquet export bundle with explicit denominators, uncertainty,
-/// spatial revision, transit records, and provenance.
+/// spatial revision and provenance. Movement is explicitly not captured.
 #[cfg(feature = "native-data")]
 pub fn generate_arrow_export_bundle(
     scenario: &ScenarioConfig,
@@ -672,7 +883,7 @@ pub fn generate_arrow_export_bundle(
     let (capture_store, captured, capture_meta) =
         crate::captured_batch::export_source(scenario, batch_doc)?;
     let spatial_revision = spatial_revision_override
-        .unwrap_or("spatial.v1.synthetic-generic-ed")
+        .unwrap_or("not_captured")
         .to_string();
 
     let (resumed, chk_epoch) = resumed_info.unwrap_or((false, None));
@@ -681,7 +892,7 @@ pub fn generate_arrow_export_bundle(
     let replication_seeds: Vec<u64> = batch_doc.replications.iter().map(|r| r.seed).collect();
     let provenance = RunProvenance {
         scenario_id: batch_doc.scenario_id.clone(),
-        schema_version: 1,
+        schema_version: 2,
         input_sha256: capture_meta.effective_input_sha256.clone(),
         parsed_input_sha256: capture_meta.parsed_input_sha256.clone(),
         time_unit: scenario.time_unit.clone(),
@@ -706,29 +917,8 @@ pub fn generate_arrow_export_bundle(
         resource_locations.insert(rb.resource_id.clone(), rb.location_id.clone());
     }
 
-    // Default entrance / waiting / exit locations
-    let entry_loc = scenario
-        .capacity_location
-        .locations
-        .iter()
-        .find(|l| l.location_id.contains("waiting") || l.location_id.contains("triage"))
-        .map(|l| l.location_id.clone())
-        .unwrap_or_else(|| "loc-triage".to_string());
-
-    let exit_loc = scenario
-        .capacity_location
-        .locations
-        .iter()
-        .find(|l| l.location_id.contains("discharge") || l.location_id.contains("exit"))
-        .map(|l| l.location_id.clone())
-        .unwrap_or_else(|| "loc-discharge".to_string());
-
     // Generate patient rows and spatial transit records across replications
     let mut patient_records = Vec::new();
-    let mut spatial_records = Vec::new();
-
-    let mut route_traversals: BTreeMap<String, Vec<u64>> = BTreeMap::new();
-    let mut location_visits: BTreeMap<String, usize> = BTreeMap::new();
 
     for rep in &batch_doc.replications {
         #[cfg(feature = "native-data")]
@@ -765,12 +955,14 @@ pub fn generate_arrow_export_bundle(
                 .iter()
                 .find(|w| w.patient_id == pat.patient_id)
                 .map(|w| w.resource_id.clone())
-                .unwrap_or_else(|| "res-general".to_string());
+                .ok_or_else(|| {
+                    invalid_statistic("captured patient has no configuration reference")
+                })?;
 
             let loc_id = resource_locations
                 .get(&res_id)
                 .cloned()
-                .unwrap_or_else(|| "loc-bay-1".to_string());
+                .filter(|location| !location.is_empty());
 
             let status_str = match pat.status {
                 PatientStatus::Completed => "completed".to_string(),
@@ -799,247 +991,28 @@ pub fn generate_arrow_export_bundle(
                 location_id: loc_id.clone(),
                 spatial_revision: spatial_revision.clone(),
             });
-
-            // Transit step 1: Entry / Waiting -> Treatment Bay
-            let transit_start = pat.arrival_tick;
-            let transit_end = match pat.start_tick {
-                Some(tick) => tick,
-                None => pat.arrival_tick.checked_add(1).ok_or_else(|| {
-                    ValidationError::new(
-                        ExitCodeDef::MalformedConfig,
-                        "legacy spatial tick overflow",
-                    )
-                })?,
-            };
-            let dist_1 = lookup_route_distance(scenario, &entry_loc, &loc_id);
-            let dur_1 = transit_end.saturating_sub(transit_start).max(1);
-
-            let route_key_1 = format!("{entry_loc}->{loc_id}");
-            route_traversals.entry(route_key_1).or_default().push(dur_1);
-            *location_visits.entry(entry_loc.clone()).or_default() += 1;
-            *location_visits.entry(loc_id.clone()).or_default() += 1;
-
-            spatial_records.push(LocationTransitRecord {
-                patient_id: pat.patient_id.clone(),
-                replication_index: rep.replication_index,
-                step_index: 0,
-                from_location: entry_loc.clone(),
-                to_location: loc_id.clone(),
-                distance_metres: dist_1,
-                departure_tick: transit_start,
-                arrival_tick: transit_end,
-                transit_ticks: dur_1,
-                position_kind: PositionKind::Simulated,
-                spatial_revision: spatial_revision.clone(),
-            });
-
-            // Transit step 2: If completed, Treatment Bay -> Discharge / Exit
-            if let Some(comp_tick) = pat.completion_tick {
-                let dist_2 = lookup_route_distance(scenario, &loc_id, &exit_loc);
-                let dur_2 = 1; // 1 tick transit to discharge
-                let route_key_2 = format!("{loc_id}->{exit_loc}");
-                route_traversals.entry(route_key_2).or_default().push(dur_2);
-                *location_visits.entry(exit_loc.clone()).or_default() += 1;
-
-                spatial_records.push(LocationTransitRecord {
-                    patient_id: pat.patient_id.clone(),
-                    replication_index: rep.replication_index,
-                    step_index: 1,
-                    from_location: loc_id.clone(),
-                    to_location: exit_loc.clone(),
-                    distance_metres: dist_2,
-                    departure_tick: comp_tick,
-                    arrival_tick: comp_tick.checked_add(dur_2).ok_or_else(|| {
-                        ValidationError::new(
-                            ExitCodeDef::MalformedConfig,
-                            "legacy spatial tick overflow",
-                        )
-                    })?,
-                    transit_ticks: dur_2,
-                    position_kind: PositionKind::Simulated,
-                    spatial_revision: spatial_revision.clone(),
-                });
-            }
         }
     }
 
     // Deterministic sorting of tabular rows
     patient_records.sort_by_key(|r| (r.replication_index, r.arrival_tick, r.patient_id.clone()));
-    spatial_records.sort_by_key(|r| {
-        (
-            r.replication_index,
-            r.departure_tick,
-            r.patient_id.clone(),
-            r.step_index,
-        )
-    });
-
-    // Compile spatial summaries
-    let total_transits = spatial_records.len();
-    let total_dist = spatial_records
-        .iter()
-        .map(|r| r.distance_metres)
-        .sum::<f64>();
-    let mean_dur = if total_transits > 0 {
-        spatial_records.iter().map(|r| r.transit_ticks).sum::<u64>() as f64 / total_transits as f64
-    } else {
-        0.0
-    };
-
-    let mut route_counts = BTreeMap::new();
-    let mut route_means = BTreeMap::new();
-    for (k, durs) in route_traversals {
-        route_counts.insert(k.clone(), durs.len());
-        let mean = durs.iter().sum::<u64>() as f64 / durs.len() as f64;
-        route_means.insert(k, mean);
-    }
-
+    let spatial_records = Vec::new();
     let spatial_summary = SpatialSummary {
         spatial_revision: spatial_revision.clone(),
-        total_transits,
-        total_distance_metres: total_dist,
-        mean_transit_duration_ticks: mean_dur,
-        location_visit_counts: location_visits,
-        route_traversal_counts: route_counts,
-        route_mean_duration_ticks: route_means,
+        capture_status: "not_captured".into(),
+        observed_rows: 0,
+        total_transits: None,
+        total_distance_metres: None,
+        mean_transit_duration_ticks: None,
+        location_visit_counts: BTreeMap::new(),
+        route_traversal_counts: BTreeMap::new(),
+        route_mean_duration_ticks: BTreeMap::new(),
     };
-
-    // Calculate metrics with explicit denominators and uncertainty across replications
-    let total_reps = batch_doc.replications.len();
-    let total_arrivals: usize = batch_doc.replications.iter().map(|r| r.arrivals).sum();
-    let total_started: usize = batch_doc.replications.iter().map(|r| r.started).sum();
-    let total_completed: usize = batch_doc.replications.iter().map(|r| r.completed).sum();
-    let total_unfinished: usize = batch_doc.replications.iter().map(|r| r.unfinished).sum();
-
-    // Metric 1: Mean wait ticks (denominator: started_patients)
-    let wait_values: Vec<f64> = batch_doc
-        .replications
+    let elapsed: Vec<_> = patient_records
         .iter()
-        .map(|r| r.mean_wait_ticks)
+        .filter_map(|r| r.elapsed_ticks.map(u128::from))
         .collect();
-    let wait_uncertainty = compute_uncertainty(&wait_values);
-    let wait_metric = MetricRecord {
-        name: "mean_wait_ticks".to_string(),
-        value: batch_doc.aggregate_mean_wait,
-        unit: scenario.time_unit.clone(),
-        denominator_name: "started_patients".to_string(),
-        denominator_value: total_started as f64,
-        uncertainty: wait_uncertainty,
-        censored_count: total_unfinished,
-        unfinished_count: total_unfinished,
-    };
-
-    // Metric 2: Completion rate (denominator: total_arrivals)
-    let comp_rates: Vec<f64> = batch_doc
-        .replications
-        .iter()
-        .map(|r| {
-            if r.arrivals > 0 {
-                r.completed as f64 / r.arrivals as f64
-            } else {
-                0.0
-            }
-        })
-        .collect();
-    let comp_uncertainty = compute_uncertainty(&comp_rates);
-    let comp_metric = MetricRecord {
-        name: "completion_rate".to_string(),
-        value: batch_doc.mean_completion_rate,
-        unit: "ratio".to_string(),
-        denominator_name: "total_arrivals".to_string(),
-        denominator_value: total_arrivals as f64,
-        uncertainty: comp_uncertainty,
-        censored_count: total_unfinished,
-        unfinished_count: total_unfinished,
-    };
-
-    // Metric 3: Throughput per horizon (denominator: horizon_ticks)
-    let throughput_values: Vec<f64> = batch_doc
-        .replications
-        .iter()
-        .map(|r| {
-            if r.horizon_ticks > 0 {
-                r.completed as f64 / r.horizon_ticks as f64
-            } else {
-                0.0
-            }
-        })
-        .collect();
-    let tp_uncertainty = compute_uncertainty(&throughput_values);
-    let tp_mean = if !throughput_values.is_empty() {
-        throughput_values.iter().sum::<f64>() / total_reps as f64
-    } else {
-        0.0
-    };
-    let tp_metric = MetricRecord {
-        name: "throughput_per_horizon_tick".to_string(),
-        value: tp_mean,
-        unit: "patients_per_tick".to_string(),
-        denominator_name: "horizon_ticks".to_string(),
-        denominator_value: provenance.horizon_ticks as f64,
-        uncertainty: tp_uncertainty,
-        censored_count: total_unfinished,
-        unfinished_count: total_unfinished,
-    };
-
-    // Metric 4: Censor / Unfinished presentation rate
-    let censor_rates: Vec<f64> = batch_doc
-        .replications
-        .iter()
-        .map(|r| {
-            if r.arrivals > 0 {
-                r.unfinished as f64 / r.arrivals as f64
-            } else {
-                0.0
-            }
-        })
-        .collect();
-    let censor_uncertainty = compute_uncertainty(&censor_rates);
-    let censor_mean = if !censor_rates.is_empty() {
-        censor_rates.iter().sum::<f64>() / total_reps as f64
-    } else {
-        0.0
-    };
-    let censor_metric = MetricRecord {
-        name: "censored_presentation_rate".to_string(),
-        value: censor_mean,
-        unit: "ratio".to_string(),
-        denominator_name: "total_arrivals".to_string(),
-        denominator_value: total_arrivals as f64,
-        uncertainty: censor_uncertainty,
-        censored_count: total_unfinished,
-        unfinished_count: total_unfinished,
-    };
-
-    // Metric 5: Mean elapsed ticks (denominator: completed_patients)
-    let completed_elapseds: Vec<f64> = patient_records
-        .iter()
-        .filter_map(|r| r.elapsed_ticks.map(|e| e as f64))
-        .collect();
-    let elapsed_uncertainty = compute_uncertainty(&completed_elapseds);
-    let mean_elapsed = if !completed_elapseds.is_empty() {
-        completed_elapseds.iter().sum::<f64>() / completed_elapseds.len() as f64
-    } else {
-        0.0
-    };
-    let elapsed_metric = MetricRecord {
-        name: "mean_elapsed_ticks".to_string(),
-        value: mean_elapsed,
-        unit: scenario.time_unit.clone(),
-        denominator_name: "completed_patients".to_string(),
-        denominator_value: total_completed as f64,
-        uncertainty: elapsed_uncertainty,
-        censored_count: total_unfinished,
-        unfinished_count: total_unfinished,
-    };
-
-    let metrics = vec![
-        wait_metric,
-        elapsed_metric,
-        comp_metric,
-        tp_metric,
-        censor_metric,
-    ];
+    let metrics = summarize_replications(&batch_doc.replications, &elapsed, &scenario.time_unit)?;
 
     let patient_schema = build_patient_arrow_schema(&scenario.scenario_id, &scenario.time_unit);
     let metrics_schema = build_metrics_arrow_schema();
@@ -1047,7 +1020,7 @@ pub fn generate_arrow_export_bundle(
     let parquet_schema = generate_parquet_schema_ddl();
 
     Ok(ArrowExportBundle {
-        schema_version: 1,
+        schema_version: 2,
         provenance,
         patient_schema,
         metrics_schema,

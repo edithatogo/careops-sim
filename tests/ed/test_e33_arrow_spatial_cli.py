@@ -98,9 +98,9 @@ class E33ArrowSpatialCliTests(unittest.TestCase):
                 bundle = json.load(f)
 
             # 1. Check schemas
-            self.assertEqual(bundle["patient_schema"]["schema_name"], "careops.ed.patient_records.v1")
-            self.assertEqual(bundle["metrics_schema"]["schema_name"], "careops.ed.metrics.v1")
-            self.assertEqual(bundle["spatial_schema"]["schema_name"], "careops.ed.spatial_transit.v1")
+            self.assertEqual(bundle["patient_schema"]["schema_name"], "careops.ed.patient_records.v2")
+            self.assertEqual(bundle["metrics_schema"]["schema_name"], "careops.ed.metrics.v2")
+            self.assertEqual(bundle["spatial_schema"]["schema_name"], "careops.ed.spatial_transit.v2")
             self.assertIn("careops_ed_patient_record", bundle["parquet_schema"])
 
             # 2. Check provenance
@@ -118,7 +118,7 @@ class E33ArrowSpatialCliTests(unittest.TestCase):
             self.assertIn("censored_presentation_rate", m_names)
 
             wait_m = next(m for m in metrics if m["name"] == "mean_wait_ticks")
-            self.assertEqual(wait_m["denominator_name"], "started_patients")
+            self.assertEqual(wait_m["denominator_name"], "included_replications")
             self.assertIn("variance", wait_m["uncertainty"])
             self.assertIn("standard_error", wait_m["uncertainty"])
             self.assertIn("ci_95_lower", wait_m["uncertainty"])
@@ -129,7 +129,7 @@ class E33ArrowSpatialCliTests(unittest.TestCase):
             self.assertEqual(comp_m["denominator_name"], "total_arrivals")
 
             tp_m = next(m for m in metrics if m["name"] == "throughput_per_horizon_tick")
-            self.assertEqual(tp_m["denominator_name"], "horizon_ticks")
+            self.assertEqual(tp_m["denominator_name"], "per_replication_horizon_ticks")
 
             # 4. Check patient records
             patient_recs = bundle["patient_records"]
@@ -138,19 +138,17 @@ class E33ArrowSpatialCliTests(unittest.TestCase):
             self.assertEqual(sample_p["spatial_revision"], "spatial.v1.test-rev")
             self.assertIn(sample_p["censor_status"], ["censored", "uncensored"])
 
-            # 5. Check spatial transit records and position kinds
-            spatial_recs = bundle["spatial_records"]
-            self.assertGreater(len(spatial_recs), 0)
-            sample_s = spatial_recs[0]
-            self.assertEqual(sample_s["spatial_revision"], "spatial.v1.test-rev")
-            self.assertEqual(sample_s["position_kind"], "simulated")
-            self.assertGreater(sample_s["distance_metres"], 0.0)
-
-            # 6. Check spatial summary
+            # No movement observations exist in patient work capture.
+            self.assertEqual(bundle["spatial_records"], [])
             summary = bundle["spatial_summary"]
             self.assertEqual(summary["spatial_revision"], "spatial.v1.test-rev")
-            self.assertGreater(summary["total_transits"], 0)
-            self.assertGreater(len(summary["route_traversal_counts"]), 0)
+            self.assertEqual(summary["capture_status"], "not_captured")
+            self.assertEqual(summary["observed_rows"], 0)
+            self.assertIsNone(summary["total_transits"])
+            self.assertIsNone(summary["total_distance_metres"])
+            self.assertEqual(summary["route_traversal_counts"], {})
+            self.assertEqual(comp_m["uncertainty"]["status"], "ratio_method_unqualified")
+            self.assertIsNone(comp_m["uncertainty"]["ci_95_lower"])
 
     def test_cli_batch_spatial_csv_export(self):
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -172,10 +170,10 @@ class E33ArrowSpatialCliTests(unittest.TestCase):
 
             content = csv_path.read_text(encoding="utf-8")
             lines = content.strip().split("\n")
-            self.assertGreaterEqual(len(lines), 2)
+            self.assertEqual(len(lines), 1)
             header = lines[0]
             self.assertEqual(header, "route,traversals,mean_duration_ticks,spatial_revision")
-            self.assertIn("spatial.v2.cairns", lines[1])
+            # Header only: no fabricated zero-valued spatial summary.
 
     def test_cli_batch_deterministic_bundles_across_workers(self):
         with tempfile.TemporaryDirectory() as tmp_dir:

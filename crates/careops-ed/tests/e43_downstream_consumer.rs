@@ -420,14 +420,14 @@ fn test_downstream_exports_arrow_csv_and_calibration_traces() {
 
     // 4. Test Arrow schemas and Parquet DDL generators
     let patient_schema = build_patient_arrow_schema("test-scenario", "tick");
-    assert_eq!(patient_schema.schema_name, "careops.ed.patient_records.v1");
+    assert_eq!(patient_schema.schema_name, "careops.ed.patient_records.v2");
     assert!(patient_schema
         .fields
         .iter()
         .any(|f| f.name == "wait_ticks" && f.denominator == Some("started_patients".to_string())));
 
     let metrics_schema = build_metrics_arrow_schema();
-    assert_eq!(metrics_schema.schema_name, "careops.ed.metrics.v1");
+    assert_eq!(metrics_schema.schema_name, "careops.ed.metrics.v2");
     assert!(metrics_schema
         .fields
         .iter()
@@ -438,7 +438,7 @@ fn test_downstream_exports_arrow_csv_and_calibration_traces() {
         .any(|f| f.name == "denominator_name"));
 
     let spatial_schema = build_spatial_arrow_schema();
-    assert_eq!(spatial_schema.schema_name, "careops.ed.spatial_transit.v1");
+    assert_eq!(spatial_schema.schema_name, "careops.ed.spatial_transit.v2");
 
     let ddl = generate_parquet_schema_ddl();
     assert!(ddl.contains("message careops_ed_patient_record"));
@@ -482,10 +482,10 @@ fn test_downstream_exports_arrow_csv_and_calibration_traces() {
     assert_eq!(transit_record.position_kind, PositionKind::Observed);
 
     // Uncertainty computation test
-    let uncert = compute_uncertainty(&[10.0, 12.0, 14.0, 16.0, 18.0]);
+    let uncert = compute_uncertainty(&[10.0, 12.0, 14.0, 16.0, 18.0]).unwrap();
     assert_eq!(uncert.replications_count, 5);
-    assert!(uncert.standard_error > 0.0);
-    assert!(uncert.ci_95_lower < uncert.ci_95_upper);
+    assert!(uncert.standard_error.unwrap() > 0.0);
+    assert!(uncert.ci_95_lower.unwrap() < uncert.ci_95_upper.unwrap());
 
     // 5. Calibration traces export
     let test_patients = vec![

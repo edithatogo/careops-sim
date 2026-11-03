@@ -154,16 +154,14 @@ pub fn execute_single_replication(
     let summary = run_scenario(&eff_scen)
         .map_err(|e| ValidationError::new(ExitCodeDef::SimulationFailed, e.to_string()))?;
 
-    let waits: Vec<u64> = summary
+    let waits: Vec<f64> = summary
         .patients
         .iter()
-        .filter_map(|p| p.wait_ticks)
+        .filter_map(|p| p.wait_ticks.map(|ticks| ticks as f64))
         .collect();
-    let mean_wait = if !waits.is_empty() {
-        waits.iter().sum::<u64>() as f64 / waits.len() as f64
-    } else {
-        0.0
-    };
+    let mean_wait = crate::disposition::arrow_export::compute_uncertainty(&waits)?
+        .estimate
+        .unwrap_or(0.0); // Explicit zero-start control convention.
 
     Ok(ReplicationResult {
         replication_index,
@@ -177,33 +175,116 @@ pub fn execute_single_replication(
     })
 }
 
-/// Computes aggregate statistics (mean wait, standard error, completion rate) for replication results.
-pub fn compute_batch_aggregates(results: &[ReplicationResult]) -> (f64, f64, f64) {
-    let total_reps = results.len();
-    if total_reps == 0 {
-        return (0.0, 0.0, 0.0);
+/// Validate domain summary inputs and integer totals before any reduction.
+/// Counts are control-plane values; they must never wrap in either feature build.
+pub(crate) fn checked_replication_counts(
+    results: &[ReplicationResult],
+) -> Result<[u64; 4], ValidationError> {
+    #[cfg(feature = "native-data")]
+    if results.len() > u32::MAX as usize {
+        return Err(ValidationError::new(
+            ExitCodeDef::MalformedConfig,
+            "native row-index capacity exceeded",
+        ));
     }
-    let mean_wait = results.iter().map(|r| r.mean_wait_ticks).sum::<f64>() / total_reps as f64;
-    let std_error = if total_reps > 1 {
-        let variance = results
-            .iter()
-            .map(|r| (r.mean_wait_ticks - mean_wait).powi(2))
-            .sum::<f64>()
-            / (total_reps - 1) as f64;
-        (variance / total_reps as f64).sqrt()
+    let mut totals = [0u64; 4];
+    let mut indices = std::collections::BTreeSet::new();
+    for result in results {
+        if !result.mean_wait_ticks.is_finite()
+            || result.mean_wait_ticks < 0.0
+            || (result.started == 0 && result.mean_wait_ticks != 0.0)
+            || result.horizon_ticks == 0
+            || result.completed > result.started
+            || result.started > result.arrivals
+            || result.completed.checked_add(result.unfinished) != Some(result.arrivals)
+            || !indices.insert(result.replication_index)
+        {
+            return Err(ValidationError::new(
+                ExitCodeDef::MalformedConfig,
+                "invalid replication summary",
+            ));
+        }
+        for (total, count) in totals.iter_mut().zip([
+            result.arrivals,
+            result.started,
+            result.completed,
+            result.unfinished,
+        ]) {
+            let count = u64::try_from(count).map_err(|_| {
+                ValidationError::new(
+                    ExitCodeDef::MalformedConfig,
+                    "replication count exceeds UInt64",
+                )
+            })?;
+            *total = total.checked_add(count).ok_or_else(|| {
+                ValidationError::new(
+                    ExitCodeDef::MalformedConfig,
+                    "replication count total overflow",
+                )
+            })?;
+        }
+    }
+    Ok(totals)
+}
+
+/// Small control projection: empty/singleton scalar zeros are retained here,
+/// separately from nullable native metric records. No error becomes a zero.
+pub fn compute_batch_aggregates(
+    results: &[ReplicationResult],
+) -> Result<(f64, f64, f64), ValidationError> {
+    let counts = checked_replication_counts(results)?;
+    let values: Vec<_> = results.iter().map(|r| r.mean_wait_ticks).collect();
+    let uncertainty = crate::disposition::arrow_export::compute_uncertainty(&values)?;
+    #[cfg(feature = "native-data")]
+    let completion = {
+        use polars::prelude::*;
+        if counts[0] == 0 {
+            0.0
+        } else {
+            let arrivals: Vec<_> = results.iter().map(|r| r.arrivals as u64).collect();
+            let completed: Vec<_> = results.iter().map(|r| r.completed as u64).collect();
+            let frame = DataFrame::new(
+                results.len(),
+                vec![
+                    Series::new("arrivals".into(), arrivals).into(),
+                    Series::new("completed".into(), completed).into(),
+                ],
+            )
+            .map_err(|e| ValidationError::new(ExitCodeDef::MalformedConfig, e.to_string()))?
+            .lazy()
+            .select([(col("completed").sum().cast(DataType::Float64)
+                / col("arrivals").sum().cast(DataType::Float64))
+            .alias("rate")])
+            .collect()
+            .map_err(|e| ValidationError::new(ExitCodeDef::MalformedConfig, e.to_string()))?;
+            frame
+                .column("rate")
+                .map_err(|e| ValidationError::new(ExitCodeDef::MalformedConfig, e.to_string()))?
+                .f64()
+                .map_err(|e| ValidationError::new(ExitCodeDef::MalformedConfig, e.to_string()))?
+                .get(0)
+                .ok_or_else(|| {
+                    ValidationError::new(ExitCodeDef::MalformedConfig, "missing completion rate")
+                })?
+        }
+    };
+    #[cfg(not(feature = "native-data"))]
+    let completion = if counts[0] > 0 {
+        counts[2] as f64 / counts[0] as f64
     } else {
         0.0
     };
-
-    let total_arrivals: usize = results.iter().map(|r| r.arrivals).sum();
-    let total_completed: usize = results.iter().map(|r| r.completed).sum();
-    let completion_rate = if total_arrivals > 0 {
-        total_completed as f64 / total_arrivals as f64
-    } else {
-        0.0
-    };
-
-    (mean_wait, std_error, completion_rate)
+    if !completion.is_finite() {
+        return Err(ValidationError::new(
+            ExitCodeDef::MalformedConfig,
+            "nonfinite completion rate",
+        ));
+    }
+    Ok((
+        uncertainty.estimate.unwrap_or(0.0),
+        uncertainty.standard_error.unwrap_or(0.0),
+        completion,
+    ))
 }
 
 /// Executes a batch of replications across independent CPU worker threads.
@@ -296,7 +377,7 @@ pub fn run_batch_with_workers(
     })?;
 
     // Compute aggregate metrics
-    let (mean_wait, std_error, completion_rate) = compute_batch_aggregates(&results);
+    let (mean_wait, std_error, completion_rate) = compute_batch_aggregates(&results)?;
 
     let document = BatchRunDocument {
         schema_version: 1,
@@ -401,7 +482,7 @@ pub fn resume_batch_from_checkpoint(
         })?;
 
     let total_reps = all_results.len();
-    let (mean_wait, std_error, completion_rate) = compute_batch_aggregates(&all_results);
+    let (mean_wait, std_error, completion_rate) = compute_batch_aggregates(&all_results)?;
 
     let doc = BatchRunDocument {
         schema_version: 1,

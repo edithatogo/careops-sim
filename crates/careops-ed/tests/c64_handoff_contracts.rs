@@ -1292,7 +1292,8 @@ fn test_distributed_and_pdes_export_bundle_compatibility() {
     let all_received_results: Vec<_> = captured.into_iter().map(|r| r.summary).collect();
 
     // Recompute aggregate metrics across all reassembled replications
-    let (mean_wait, std_error, completion_rate) = compute_batch_aggregates(&all_received_results);
+    let (mean_wait, std_error, completion_rate) =
+        compute_batch_aggregates(&all_received_results).unwrap();
 
     // Reassemble BatchRunDocument
     let reassembled_doc = BatchRunDocument {

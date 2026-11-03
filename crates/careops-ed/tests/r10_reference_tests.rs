@@ -28,31 +28,31 @@ fn one_patient_scenario() -> careops_ed::ScenarioConfig {
 
 #[test]
 fn empty_and_sample_uncertainty_match_independent_reference() {
-    let empty = compute_uncertainty(&[]);
+    let empty = compute_uncertainty(&[]).unwrap();
     assert_eq!(empty.replications_count, 0);
-    assert_eq!(empty.variance, 0.0);
-    assert_eq!(empty.standard_error, 0.0);
-    assert_eq!(empty.ci_95_lower, 0.0);
-    assert_eq!(empty.ci_95_upper, 0.0);
+    assert_eq!(empty.variance, None);
+    assert_eq!(empty.standard_error, None);
+    assert_eq!(empty.ci_95_lower, None);
+    assert_eq!(empty.ci_95_upper, None);
 
-    let singleton = compute_uncertainty(&[42.0]);
+    let singleton = compute_uncertainty(&[42.0]).unwrap();
     assert_eq!(singleton.replications_count, 1);
-    assert_eq!(singleton.variance, 0.0);
-    assert_eq!(singleton.standard_error, 0.0);
-    assert_eq!(singleton.ci_95_lower, 42.0);
-    assert_eq!(singleton.ci_95_upper, 42.0);
+    assert_eq!(singleton.variance, None);
+    assert_eq!(singleton.standard_error, None);
+    assert_eq!(singleton.ci_95_lower, None);
+    assert_eq!(singleton.ci_95_upper, None);
 
     // Independent hand calculation: mean=4, sample variance=20/3,
     // standard error=sqrt((20/3)/4), with the current normal 95% interval.
-    let observed = compute_uncertainty(&[1.0, 3.0, 5.0, 7.0]);
+    let observed = compute_uncertainty(&[1.0, 3.0, 5.0, 7.0]).unwrap();
     let variance = 20.0 / 3.0;
     let standard_error = (variance / 4.0_f64).sqrt();
     let margin = 1.959964 * standard_error;
     assert_eq!(observed.replications_count, 4);
-    assert!((observed.variance - variance).abs() < 1e-12);
-    assert!((observed.standard_error - standard_error).abs() < 1e-12);
-    assert!((observed.ci_95_lower - (4.0 - margin)).abs() < 1e-12);
-    assert!((observed.ci_95_upper - (4.0 + margin)).abs() < 1e-12);
+    assert!((observed.variance.unwrap() - variance).abs() < 1e-12);
+    assert!((observed.standard_error.unwrap() - standard_error).abs() < 1e-12);
+    assert!((observed.ci_95_lower.unwrap() - (4.0 - margin)).abs() < 1e-12);
+    assert!((observed.ci_95_upper.unwrap() - (4.0 + margin)).abs() < 1e-12);
 }
 
 #[test]
@@ -115,10 +115,10 @@ fn synthetic_export_rows_match_patient_reference_per_replication() {
         .iter()
         .find(|metric| metric.name == "completion_rate")
         .expect("completion metric");
-    assert_eq!(wait.denominator_name, "started_patients");
-    assert_eq!(wait.denominator_value, 3.0);
+    assert_eq!(wait.denominator_name, "included_replications");
+    assert_eq!(wait.denominator_value, Some(3.0));
     assert_eq!(completion.denominator_name, "total_arrivals");
-    assert_eq!(completion.denominator_value, 3.0);
+    assert_eq!(completion.denominator_value, Some(3.0));
     assert_eq!(wait.uncertainty.replications_count, 3);
     assert_eq!(completion.uncertainty.replications_count, 3);
 }
