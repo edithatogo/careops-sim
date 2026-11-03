@@ -184,3 +184,29 @@ interop/streaming/performance/coverage/mutation/security/clean-package gates.
 Same sole chat01a19b9f owns careops-pr194-checks/careops-sim; upstream standard
 worktree retains its separate history, no active upstream reservation. No merge,
 registry publication or clinical/site/operational acceptance follows.
+
+## Native output and callable CLI checkpoints — 3 November2026
+
+Accept scoped local library outputf6297fd and requiredreader wiringae20548,
+then callable CLI execution/recovery coreacf217bf06b9a5325c12d6845fa50b1ad742b301.
+The latest core has10native CLI plus42output/capture tests, including24process
+kills,13compatibility guard tests and strict Clippy/fmt/integrity success.
+Prior independent9native/3standardreader output proof and26workflow tests retain
+their exact-source scope. Reviews by /root/review_pr194 and /root/polars_ci_review
+found no remaining actionable issue; false readback wording and pre-cancel test
+assumptions were corrected. Exact source/commands/failedattempts/hashes are R13
+evidence and private receipts. The ownership expiry rejected writes, then
+same-owner stopped-phase/process audit and exact preservation/re-reservation
+recovered safely; no other-owner takeover, hook bypass or native retry occurred.
+
+Actual hosted92d8daa now has17successes plus the expected main-only skip. It
+qualifies the earlier data adoption/capture-sizing checkpoint, not later native
+output/callableCLI source. Runtime074/dataf347/Polars964 remain fixed. Main is
+still legacy until a coherent strict native benchmark/all-consumer cutover.
+Continue typed native read/export/compare, then binary/consumer migration, B7/
+calibration output migration and legacy removal; R13.2/R13.3 and whole R13/R14
+remain open. Large legacy JSON four-worker RSS still fails256MiB and must not be
+waived. Populated direct parent FFI and final full native/replay/performance/
+streaming/clean-package/coverage/mutation/security/hosted gates remain mandatory.
+Same sole chat01a19b9f owns careops-pr194-checks/careops-sim; no new runtime,
+merge, publication or clinical/site/operational acceptance is implied.

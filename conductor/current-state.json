@@ -3,11 +3,12 @@
   "updated_at": "2026-11-03",
   "active_track": "polars_data_processing_20261022",
   "active_phase": "R13",
-  "next_action": "Continue R13.2/R13.3 native production output/CLI/consumer migration and legacy removal. Scoped capture-sizing optimization1cb4530 and exact data-source adoption43511e6 reviewed locally; whole R13/R14 pending. Dataf347505 adopted, simulation runtime07410266/Polars96439685 unchanged. Required parent-hosted reader checks/final full consumer, populated FFI, streaming/RSS/performance, security/coverage/mutation/release gates remain; large legacy JSON four-worker case still exceeds256MiB.",
+  "next_action": "Continue R13 native consumers: strict typed native dataset read/export/compare, then coherent binary/default CLI + versioned strict native benchmark/all-known-consumer cutover. Library outputf6297fd/requiredreaderCIae20548 and callableCLIcoreacf217b reviewed locally; main still legacy deliberately until cutover. Hosted92d8daa has17successes+expectedskip for data adoption/capture sizing, predating these new library/CLI changes. R13.2/R13.3 whole tasks and all R14 final/FFI/streaming/RSS/removal gates remain open; runtime074/dataf347/Polars964 fixed.",
   "context_paths": [
     "conductor/tracks/polars_data_processing_20261022/plan.md",
     "conductor/tracks/polars_data_processing_20261022/statistical-contract.md",
-    "conductor/evidence/polars-integration-20261103/R12.md"
+    "conductor/tracks/polars_data_processing_20261022/native-output-contract.md",
+    "conductor/tracks/polars_data_processing_20261022/native-cli-contract.md"
   ],
   "submodule_pins": {
     "libs/kairos": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
@@ -160,5 +161,16 @@
     "runtime_commit": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
     "scope": "data-only source adoption, actual26frozen summary cases, ED/B7 native and independent files; parent hosted pending",
     "evidence": "conductor/evidence/polars-integration-20261103/data-source-compatibility.json"
+  },
+  "polars_native_prerequisites": {
+    "native_output": "f6297fd124f9bf543095db029a774e1b894d7533",
+    "native_output_ci": "ae20548b70b73fdb8de3dad5dba8353bf56c4e94",
+    "native_cli_core": "acf217bf06b9a5325c12d6845fa50b1ad742b301",
+    "scope": "local reviewed library/CI/callableCLI only; main unchanged; no whole R13 or binary acceptance",
+    "hosted_checkpoint": "92d8daaac10c4e96a2d38d70b8cd649752a91bcb",
+    "hosted_checkpoint_results": {
+      "success": 17,
+      "expected_skip": 1
+    }
   }
 }

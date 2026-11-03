@@ -64,7 +64,7 @@
   "sequencing_basis": "User requested inventory-first Polars; supporting dependency work gates only demonstrated dependent tasks.",
   "acceptance_evidence": "conductor/tracks/polars_data_processing_20261022/review-report.md",
   "accepted_source_commit": "65731f093a9ff1e11005782bbe9d544c4dd5cbab",
-  "next_phase_decision": "Continue R13.2/R13.3 native production output/CLI/consumer migration and legacy removal. Scoped capture-sizing optimization1cb4530 and exact data-source adoption43511e6 reviewed locally; whole R13/R14 pending. Dataf347505 adopted, simulation runtime07410266/Polars96439685 unchanged. Required parent-hosted reader checks/final full consumer, populated FFI, streaming/RSS/performance, security/coverage/mutation/release gates remain; large legacy JSON four-worker case still exceeds256MiB.",
+  "next_phase_decision": "Continue R13 native consumers: strict typed native dataset read/export/compare, then coherent binary/default CLI + versioned strict native benchmark/all-known-consumer cutover. Library outputf6297fd/requiredreaderCIae20548 and callableCLIcoreacf217b reviewed locally; main still legacy deliberately until cutover. Hosted92d8daa has17successes+expectedskip for data adoption/capture sizing, predating these new library/CLI changes. R13.2/R13.3 whole tasks and all R14 final/FFI/streaming/RSS/removal gates remain open; runtime074/dataf347/Polars964 fixed.",
   "accepted_local_tasks": {
     "R11.1": {
       "source": "3ee7ac1225c9c53d076a7246a1d02ce3e4cdcb10",
@@ -99,7 +99,7 @@
     "R12": "65731f093a9ff1e11005782bbe9d544c4dd5cbab"
   },
   "hosted_phase_receipt": "conductor/evidence/polars-integration-20261103/R11-hosted.json",
-  "r12_acceptance_scope": "Local engineering only:739native including doctests,774top-level Python,8explicitEDmirror; reviewed slices and strict numerical/key/null/provenance controls. Hosted2e2864f predates final R12 source; current-hosted proof pending.",
+  "r12_acceptance_scope": "Local engineering at65731f0:739native including doctests,774top-level Python,8explicitEDmirror; source/hosted checkpoint distinctions preserved. Later92d8daa full hosted17successes+expectedskip covers R12 plus data adoption/capture sizing, not subsequent f629/ae205/acf native output/CLI changes.",
   "bounded_prerequisites": {
     "capture_sizing": {
       "source": "1cb45303a56b705c68f3248d7326c61d1da37653",
@@ -108,7 +108,21 @@
     "data_source_adoption": {
       "source": "43511e665706cf31c434758675ce291d8c12547b",
       "upstream": "f34750533c07e9e868481606e5fe5c89ec9b76be",
-      "accepted_scope": "data-only, runtime unchanged;57ED/39B7 native,2file/1B7 reader,26frozen actualsummary cases,13guard/16composition tests and policy pass; current parent hosted pending"
+      "accepted_scope": "data-only, runtime unchanged;57ED/39B7 native,2file/1B7 reader,26frozen actualsummary cases,13guard/16composition tests and policy pass; current parent hosted pending",
+      "hosted_parent_checkpoint": "92d8daaac10c4e96a2d38d70b8cd649752a91bcb",
+      "hosted_results": {
+        "success": 17,
+        "expected_skip": 1
+      }
+    },
+    "native_output": {
+      "source": "f6297fd124f9bf543095db029a774e1b894d7533",
+      "ci_source": "ae20548b70b73fdb8de3dad5dba8353bf56c4e94",
+      "accepted_scope": "local library9native/3independent/33capture tests plus26CI workflow tests; strict typed file/provenance/limit/publication controls; whole consumers and hosted source pending"
+    },
+    "native_cli_core": {
+      "source": "acf217bf06b9a5325c12d6845fa50b1ad742b301",
+      "accepted_scope": "callable library10nativeCLI+42output/capture tests,13compatibility guard,Clippy; fresh-root/raw/control/recovery/realCSVWrite; main unchanged; actualbinary/slowpipe/cutover pending"
     }
   }
 }
