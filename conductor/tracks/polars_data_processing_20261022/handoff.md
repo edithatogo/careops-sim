@@ -94,3 +94,14 @@ acceptance is inferred from those probes. No native service operation or owner
 transfer is in flight. Prior assignments, frozen R103/A7 references and failed
 attempts remain history. PR199 remains draft/unmerged; R12–R14 and broader gates
 remain open.
+
+## R12.1 authoring handoff — 3 November 2026
+
+Existing integration chat/worktree remains the sole writer. Exactb143bd1 has
+reviewed statistical contract, frozen independent vectors and14compiling native
+baseline controls (5pass,9actual method failures). Exact independent review is
+ready. Test-authoring completion permits R12.2; it is not green runtime acceptance.
+No production source change, native service scope, owner transfer or new pin.
+The intentionally red authoring commit remains local until a coherent implemented
+green milestone. Next: fresh reviewed R12.2 processing packet/claim, preserving
+the frozen expected vectors and all subsequent phase gates.
