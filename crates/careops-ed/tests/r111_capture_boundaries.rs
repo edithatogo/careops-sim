@@ -91,6 +91,8 @@ struct FsFixture {
     acknowledged: Mutex<Vec<(usize, usize)>>,
     gate: Option<Arc<Gate>>,
     padding: usize,
+    encodes: AtomicUsize,
+    fail_encode: bool,
 }
 impl FsFixture {
     fn new(root: PathBuf) -> Self {
@@ -102,6 +104,8 @@ impl FsFixture {
             acknowledged: Mutex::new(vec![]),
             gate: None,
             padding: 0,
+            encodes: AtomicUsize::new(0),
+            fail_encode: false,
         }
     }
     fn path(&self, name: &str) -> Result<PathBuf> {
@@ -148,6 +152,10 @@ impl PartStore for FsFixture {
         Ok(())
     }
     fn encode_part(&self, batch: &CaptureBatch, writer: &mut dyn Write) -> Result<()> {
+        self.encodes.fetch_add(1, Ordering::SeqCst);
+        if self.fail_encode {
+            return Err(failure("non-cap encoder failure"));
+        }
         for _ in 0..self.padding {
             writer.write_all(b" ").map_err(failure)?;
         }
@@ -627,5 +635,54 @@ fn capture_wait_aggregate_overflow_is_a_typed_error_not_a_panic() {
         .unwrap_err();
     assert_eq!(error.kind, ExperimentErrorKind::MalformedConfig);
     assert!(error.message.contains("wait sum overflow"));
+    assert!(!store.is_complete().unwrap());
+}
+
+#[test]
+fn pure_encoding_work_scales_with_parts_not_patient_prefixes() {
+    let temp = Temp::new();
+    let store = FsFixture::new(temp.0.join("parts"));
+    let mut input = scenario();
+    let template = input.patients[0].clone();
+    input.patients = (0..100)
+        .map(|index| {
+            let mut patient = template.clone();
+            patient.patient_id = format!("sizing-{index:03}");
+            patient
+        })
+        .collect();
+    let cap = CaptureLimits {
+        max_rows: 8,
+        ..limits()
+    };
+    let result =
+        run_captured_batch(&input, &config(1), cap, &temp.0.join("checkpoints"), &store).unwrap();
+    let parts: usize = result.iter().map(|r| r.parts.len()).sum();
+    assert_eq!(parts, 4 * 13);
+    assert_eq!(
+        store.encodes.load(Ordering::SeqCst),
+        parts * 2,
+        "one pure sizing plus one physical encoding per fitting part"
+    );
+    assert_eq!(store.all_rows(), reference(&input, &config(1)));
+}
+
+#[test]
+fn non_cap_encoder_error_is_propagated_without_publication_or_retry() {
+    let temp = Temp::new();
+    let mut store = FsFixture::new(temp.0.join("parts"));
+    store.fail_encode = true;
+    let error = run_captured_batch(
+        &scenario(),
+        &config(1),
+        limits(),
+        &temp.0.join("checkpoints"),
+        &store,
+    )
+    .unwrap_err();
+    assert!(error.message.contains("non-cap encoder failure"));
+    assert_eq!(store.encodes.load(Ordering::SeqCst), 1);
+    assert!(store.acknowledged.lock().unwrap().is_empty());
+    assert!(store.part_names().unwrap().is_empty());
     assert!(!store.is_complete().unwrap());
 }

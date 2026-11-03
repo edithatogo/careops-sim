@@ -250,6 +250,20 @@ impl Capture<'_> {
         if self.batch.rows.is_empty() {
             return Ok(());
         }
+        // Sizing is pure and bounded. A byte-cap hit may split this bounded row
+        // buffer; other codec failures propagate. Compression size need not be
+        // monotonic, so do not binary-search for a largest fitting prefix.
+        if !fits_part(self.store, &self.batch, self.limits.max_bytes)? {
+            if self.batch.rows.len() == 1 {
+                return Err(invalid("single capture row exceeds encoded byte limit"));
+            }
+            let suffix = self.batch.rows.split_off(self.batch.rows.len() / 2);
+            self.flush()?;
+            // The prefix acknowledgment advanced the checked sequence offset.
+            // No physical write is retried, even if a later half fails.
+            self.batch.rows = suffix;
+            return self.flush();
+        }
         let name = part_name(self.batch.replication_index, self.batch.first_sequence);
         self.store
             .write_part(&name, &self.batch, self.limits.max_bytes)?;
@@ -281,14 +295,6 @@ impl Capture<'_> {
             self.flush()?;
         }
         self.batch.rows.push(row.clone());
-        if !fits_part(self.store, &self.batch, self.limits.max_bytes)? {
-            let lookahead = self.batch.rows.pop().unwrap();
-            self.flush()?;
-            self.batch.rows.push(lookahead);
-            if !fits_part(self.store, &self.batch, self.limits.max_bytes)? {
-                return Err(invalid("single capture row exceeds encoded byte limit"));
-            }
-        }
         Ok(())
     }
 }
