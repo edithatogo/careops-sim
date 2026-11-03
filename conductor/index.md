@@ -68,7 +68,7 @@ qualification is claimed.
 
 ## Planned Polars migration
 
-[CareOps migration](tracks/polars_data_processing_20261022/index.md) follows accepted Kairos Track70. R10–R12 retain scoped acceptance; [R13 local engineering](evidence/polars-r13-acceptance-20261104/README.md) is accepted at f7563a8 after the complete consumer/legacy cutover,776 native tests and recorded Python/release26-case evidence. R14 remains in progress: upstream shared trusted-import qualification, exact parent FFI/data-source adoption and final source/package/performance/coverage/mutation/policy/hosted gates. Runtime074/dataf347/Polars964 and existing ownership are preserved; no archive yet.
+[CareOps migration](tracks/polars_data_processing_20261022/index.md) follows accepted Kairos Track70. R10–R12 retain scoped acceptance; [R13 local engineering](evidence/polars-r13-acceptance-20261104/README.md) is accepted at f7563a8 after the complete consumer/legacy cutover,776 native tests and recorded Python/release26-case evidence. R14 remains in progress: reviewed data473 and parent source86dcc7c have populated FFI, historical conversion, release26, measured ensemble/package and strict Clippy evidence. [Current checkpoint](evidence/polars-r14-qualification-20261104/README.md) retains the local disk-build failure and pending final hosted native/coverage/mutation/package gates. Runtime074/Polars964 and existing ownership are preserved; no archive yet.
 
 ## Separate library adoption tracks
 

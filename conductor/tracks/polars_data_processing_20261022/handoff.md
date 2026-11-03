@@ -269,3 +269,37 @@ contracts. Arrow's unsafe prohibition is preserved. Its native/source/policy/
 Git-consumer/hosted qualification is pending; parent pin/profile adoption has not
 started. Root runtime074/dataf347/Polars964 remain fixed. R14 and archival remain
 open; optional clinical/site/GPU/distributed/stable-release approval is separate.
+
+## R14 source qualification checkpoint — 4 November 2026
+
+Coordinator chat01a19b9f-69e7-7353-9b75-445d5653feb4 retains the existing
+careops-pr194-checks/careops-sim lane and local synthetic-artifact scope. No prior
+assignment or immutable receipt is replaced. Parent source86dcc7c follows actual
+adoption a61f259 of reviewed data473ff2c and its engine-free shared importer;
+runtime074 and Polars964 remain fixed. Upstream exact-source hosted run41667625899
+passed all three platforms. Parent source was pushed with normal privacy/history
+checks; final hosted acceptance remains a separate readback.
+
+[The R14 checkpoint](../../evidence/polars-r14-qualification-20261104/README.md)
+records populated FFI3, guard30, support68, actual historical conversion1+3 with
+all60 original files unchanged, release26/14-negative/stdout budgets,12 measured
+commands with8 conversions and2 worker-equivalence checks, and the current local
+unpacked-package consumer. Measurement report source is a61f259; guard-only86dcc7c
+retains the exact critical source/binary, rather than inventing a new producer run.
+The maintained audit is net+859 production/runtime and+2564 tests/support,
+aggregate+3423 within its six-prefix scope; no overall code reduction is claimed.
+
+Python discovery ran806 cases:801 passed,5 selected stale in-tree binary checks
+failed, then their corrected exact5 passed against the hash-verified external
+release. No fresh full806 pass is claimed. The all-features workspace attempt
+failed during build for lack of disk, before tests ran. The owned operation stopped;
+supported narrow ED/CLI dev-cache cleanup recovered8.2GiB and preserved release
+hash. Strict Clippy passed the locked workspace with all features and targets. Final
+coherent native, coverage/mutation and exact-head hosted CI/release readbacks
+remain open. All R14 tasks stay unchecked; archive only after actual acceptance.
+
+Hosted Linux release run41678403333 passed at86dcc7c; main-only attestation was
+an expected skip. Main CI context first failed before compilation/tests on a
+preinstalled partial Rustup toolchain conflict (`bin/cargo-clippy`), while other
+jobs continued. Preserve that log and use one bounded targeted fresh-runner retry
+after the run ends; coverage/mutation/full-native/aggregate remain required.
