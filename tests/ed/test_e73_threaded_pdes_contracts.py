@@ -104,6 +104,7 @@ class TestE73ThreadedPdesContracts(unittest.TestCase):
         cmd = [
             "cargo",
             "test",
+            "--locked",
             "-p",
             "careops-ed",
             "--test",

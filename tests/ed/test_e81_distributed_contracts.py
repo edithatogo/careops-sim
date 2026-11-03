@@ -112,6 +112,7 @@ class TestE81DistributedContracts(unittest.TestCase):
         cmd = [
             "cargo",
             "test",
+            "--locked",
             "-p",
             "careops-ed",
             "--test",

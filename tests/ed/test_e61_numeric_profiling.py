@@ -256,7 +256,7 @@ class TestE61NumericBatchProfiling(unittest.TestCase):
 
     def test_09_native_rust_test_suite_execution(self):
         """Verifies that native Rust test suites compile and pass with 0 failures."""
-        cmd = ["cargo", "test", "-p", "kairo-ecs-gpu"]
+        cmd = ["cargo", "test", "--locked", "-p", "kairo-ecs-gpu"]
         res = subprocess.run(
             cmd,
             cwd=str(KAIROS_DIR),
@@ -276,7 +276,7 @@ class TestE61NumericBatchProfiling(unittest.TestCase):
         self.assertIn("test result: ok", combined_output)
 
         # Also verify careops-ed e61 batch numeric workloads test suite
-        cmd_ed = ["cargo", "test", "-p", "careops-ed", "--test", "e61_batch_numeric_workloads"]
+        cmd_ed = ["cargo", "test", "--locked", "-p", "careops-ed", "--test", "e61_batch_numeric_workloads"]
         res_ed = subprocess.run(
             cmd_ed,
             cwd=str(REPO_ROOT),

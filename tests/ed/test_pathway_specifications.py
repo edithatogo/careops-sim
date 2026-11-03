@@ -90,7 +90,7 @@ class GenericEDPathwaySpecificationTests(unittest.TestCase):
 
     def test_rust_pathway_conformance_suite_passes(self):
         """Execute the native Rust pathway conformance test suite."""
-        cmd = ["cargo", "test", "--package", "careops-ed", "--test", "pathway_conformance"]
+        cmd = ["cargo", "test", "--locked", "--package", "careops-ed", "--test", "pathway_conformance"]
         proc = subprocess.run(
             cmd,
             cwd=ROOT_DIR,
