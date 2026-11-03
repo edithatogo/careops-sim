@@ -7,6 +7,7 @@ its explicitly supplied owned fixture and restored after each negative control.
 import hashlib
 import io
 import json
+import os
 import math
 from pathlib import Path
 import sys
@@ -19,6 +20,13 @@ from polars.testing import assert_frame_equal
 import pyarrow as pa
 import pyarrow.csv as pcsv
 import pyarrow.parquet as pq
+
+# Closed profile: production fixtures default to the new accepted data component;
+# retained historical fixture verification explicitly selects its original revision.
+DATA_REVISIONS = frozenset({'473ff2c0e640a7e457f500593f6ea1f06602ab35', 'f34750533c07e9e868481606e5fe5c89ec9b76be'})
+EXPECTED_DATA_REVISION = os.environ.get('CAREOPS_NATIVE_EXPECTED_DATA_REVISION', '473ff2c0e640a7e457f500593f6ea1f06602ab35')
+if EXPECTED_DATA_REVISION not in DATA_REVISIONS:
+    raise ValueError('unsupported native fixture data revision profile')
 
 ROOT = Path(sys.argv.pop(1)).resolve()
 DTYPES = {'UInt64': (pa.uint64(), pl.UInt64), 'UInt32': (pa.uint32(), pl.UInt32),
@@ -63,7 +71,7 @@ def load_fixture(root):
         required = {'careops.table_schema': TABLES[name][0], 'careops.time_unit': 'tick',
                     'careops.fixture_kind': kinds[name],
                     'careops.polars_revision': '96439685eb2f95108f51087d2b76091917f2593c',
-                    'careops.data_library_revision': 'f34750533c07e9e868481606e5fe5c89ec9b76be',
+                    'careops.data_library_revision': EXPECTED_DATA_REVISION,
                     'careops.runtime_revision': '07410266bf54b6f73c59db2f8cbfbc5697c53734',
                     'careops.producer': 'careops-ed/0.1.0'}
         if name == 'patients':

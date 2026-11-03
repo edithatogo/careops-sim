@@ -1,0 +1,402 @@
+{
+  "schema_version": 1,
+  "scope": "shared_trusted_import_data_source_summary_parity_only",
+  "renewed_a7_acceptance": false,
+  "promotion_bindings": {
+    "from_data_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
+    "to_data_commit": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+    "runtime_commit": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+    "polars_commit": "96439685eb2f95108f51087d2b76091917f2593c",
+    "source_sha256": {
+      "Cargo.toml": "2000c30f811e10d72221596b10acbc3ab490c664f4d54f3027b3ac9e3f6f736e",
+      "Cargo.lock": "816500fcc5e68397433f49cde34840389f61a70ddad63f464d0faea8b2112702",
+      "crates/careops-ed/Cargo.toml": "4b08503f1f513ae9c2d45257b0b154fca1337f5217dff3f12c3d11e45c1f0942",
+      "crates/careops-birthing-cli/Cargo.toml": "df70889e7bc7d160507a02398e0f53f724bd6d040f825b96bb6b3f1005f0b28a",
+      "crates/careops-ed/src/native_output.rs": "33516ba922fda4ec5ec84cdf51fd9d563f345ef89802f676a2dfc4be828da3d0",
+      "crates/careops-ed/src/native_reader.rs": "c50d6da701afda2a00db3b358106087463d9d4272dd230e122f83a46efefd5e0",
+      "crates/careops-ed-cli/src/lib.rs": "42c3a61a5742e26f634689b9fc320c3f16104714a8cd6fa8cbeeb529fb138906",
+      "crates/careops-ed-cli/src/main.rs": "d5a01a124e324772570b4337d2cdca8b6cbdb06bf0e7729be20f65d24224f999",
+      "crates/careops-birthing-cli/src/lib.rs": "e192716b29e918feae6e3368e60a4418f7e1ebe0e0f9a517d50d5451b93aa619",
+      "crates/careops-birthing-cli/read_batch.py": "d769d4dd6896cd0daa5d5a312c4cb3e9d2a8fb55856c751df67a3c2f8dd9bcd1",
+      "crates/careops-ed/test_native_output.py": "7d8da1a234fb06f2382d324eeada4211291b7433bcc6ed36c086b475d31c1051",
+      "crates/careops-ed/test_native_files.py": "cd1cd0d06b9392e2fbd0b678b99c3f67d0f7401ce9ac9733629804d09e59512e",
+      "tests/r143_native_domain_ffi.rs": "bb7f3713bb05cf40fd1695d5fcc546399e36857d559488288d6939e9cee3bfdd",
+      "tools/ed_native_benchmarks.py": "b02558f1f4b329ddf5795bc7b70d4df630e0f0e371a4bc32928065e3c2ffab88",
+      "tools/ed_native_benchmark_process.py": "3ef5c9c5c60ba01e0d7155a4839c4158acbeb7c099970dd527ebb16cb22d46b2"
+    },
+    "root_features": {
+      "default": [],
+      "native-ffi-acceptance": [
+        "dep:careops-ed",
+        "dep:careops-birthing-cli",
+        "dep:kairo-data-arrow",
+        "dep:kairo-data-ffi",
+        "dep:serde_json",
+        "dep:tempfile"
+      ]
+    },
+    "root_test_targets": [
+      {
+        "name": "r143_native_domain_ffi",
+        "path": "tests/r143_native_domain_ffi.rs",
+        "required-features": [
+          "native-ffi-acceptance"
+        ]
+      }
+    ],
+    "root_optional_dependencies": {
+      "careops-ed": {
+        "path": "crates/careops-ed",
+        "default-features": false,
+        "features": [
+          "native-data"
+        ],
+        "optional": true
+      },
+      "careops-birthing-cli": {
+        "path": "crates/careops-birthing-cli",
+        "optional": true
+      },
+      "kairo-data-arrow": {
+        "package": "kairo-ecs-arrow",
+        "git": "https://github.com/edithatogo/kairos.git",
+        "rev": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+        "version": "=0.1.0",
+        "default-features": false,
+        "features": [
+          "polars-native"
+        ],
+        "optional": true
+      },
+      "kairo-data-ffi": {
+        "package": "kairo-ecs-arrow-ffi",
+        "git": "https://github.com/edithatogo/kairos.git",
+        "rev": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+        "version": "=0.1.0",
+        "default-features": false,
+        "features": [
+          "native-data"
+        ],
+        "optional": true
+      },
+      "serde_json": {
+        "workspace": true,
+        "optional": true
+      },
+      "tempfile": {
+        "version": "=3.27.0",
+        "optional": true
+      }
+    },
+    "historical_receipts": {
+      "conductor/evidence/polars-integration-20261103/source-compatibility.json": {
+        "commit": "079c061d2bcc5a5fda373a3f9236d09235a2bca8",
+        "sha256": "0cefeeb2fa4d81d3add8ad066c72674e24c9f99b64243176398b54291e2c362b"
+      },
+      "conductor/evidence/polars-integration-20261103/data-source-compatibility.json": {
+        "commit": "43511e665706cf31c434758675ce291d8c12547b",
+        "sha256": "42be7ff2b2963b227fb12c4bdbfb355023e39945fb6ac0b1f930570b5ab07077"
+      },
+      "conductor/evidence/polars-integration-20261103/native-reader-source-compatibility.json": {
+        "commit": "1b6ca2deaead85f1bc0da50c1d6aa00df54e2cba",
+        "sha256": "785ec51a58193771eb79f3034d89cbfcf891bd81e4ea2e1eee7d1c30d0833551"
+      },
+      "conductor/evidence/polars-integration-20261103/native-cli-source-compatibility.json": {
+        "commit": "b0ddd0c1ea02b99667a643199051b3e303a35b8e",
+        "sha256": "2f1734524d3e90678f421f2bb00142391c8a34b71de22922e0e7c500cefcc626"
+      },
+      "conductor/evidence/polars-integration-20261103/native-reader-format-source-compatibility.json": {
+        "commit": "7b9892b28bfabe7f26f7fa9d292f74ba0d6484bb",
+        "sha256": "0032af3aa2b8b4161858995c2911de6273bedefbf1d4f8a89deb2488e0ee1b06"
+      }
+    }
+  },
+  "summary_compatibility": {
+    "schema_version": 1,
+    "scope": "observer_capture_summary_parity_only",
+    "renewed_a7_acceptance": false,
+    "seed": 7,
+    "baseline_binary_sha256": "f18aacc6de491edd71b7007e5a79ee58873a28f9b77a86dbeee810112ebae1e8",
+    "current_binary_sha256": "c4e7ed9f5158b23f6e8d667dbbe69d53a1a1db285bd87232881cc02c6deee033",
+    "bindings": {
+      "baseline_commit": "154ba1a2f0e5ecc5d5894b9ac559132267387727",
+      "baseline_source_sha256": "36c306bbff204267a5d3c1c68205e29f411cedf7442e8f741d2ab469ea6adb67",
+      "current_source_sha256": "16be17474be52f923196d652f432dcecb3bebfc8866f14114f721a8d4e6a6352",
+      "source_path": "crates/careops-ed/src/lib.rs",
+      "runtime_commit": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+      "data_commit": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+      "polars_commit": "96439685eb2f95108f51087d2b76091917f2593c",
+      "driver_sha256": {
+        "tools/ed_benchmarks.py": "e59a0179153eed888e77b1e6c4b2ab4dd7f002449f18dc56092410d080838171",
+        "tools/ed_benchmark_process.py": "65b6f94a1d15e65876fc8348265ad597f39814de17f9bc32349c36c8b435f90a",
+        "crates/careops-ed/examples/one_patient.json": "ecc460f58de1958a0a3c2ce8cdb69f24fb95a22a6c4c6c4d793c0975afeb1f53"
+      },
+      "reference_sha256": "b9eea6e4b90ebdf726023b0f2c230be5850dbbd76309d3d1940ef0610ed3a4c9"
+    },
+    "cases": [
+      {
+        "case": 100,
+        "repeat": 1,
+        "kind": "representative",
+        "input_sha256": "7fecada6f530b1e28f2c0be86aadf7232c7c1f6b2ccbfc2499ee5bf445eacae5",
+        "baseline_summary_sha256": "85eb2649d09f91708c2f43d8101c66bf3b77f69baf7a4d0869eba40ffe27b646",
+        "current_summary_sha256": "85eb2649d09f91708c2f43d8101c66bf3b77f69baf7a4d0869eba40ffe27b646",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 100,
+        "repeat": 2,
+        "kind": "representative",
+        "input_sha256": "7fecada6f530b1e28f2c0be86aadf7232c7c1f6b2ccbfc2499ee5bf445eacae5",
+        "baseline_summary_sha256": "85eb2649d09f91708c2f43d8101c66bf3b77f69baf7a4d0869eba40ffe27b646",
+        "current_summary_sha256": "85eb2649d09f91708c2f43d8101c66bf3b77f69baf7a4d0869eba40ffe27b646",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 1,
+        "kind": "representative",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 2,
+        "kind": "representative",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 10000,
+        "repeat": 1,
+        "kind": "representative",
+        "input_sha256": "83df8fe2f9ba8e1c651a9a894754fb06550adc112ba670b164cd69071d93c962",
+        "baseline_summary_sha256": "24937448bf0b387820975dac9e03e1aa769540adde92324dd78456ac4bc9edc0",
+        "current_summary_sha256": "24937448bf0b387820975dac9e03e1aa769540adde92324dd78456ac4bc9edc0",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 10000,
+        "repeat": 2,
+        "kind": "representative",
+        "input_sha256": "83df8fe2f9ba8e1c651a9a894754fb06550adc112ba670b164cd69071d93c962",
+        "baseline_summary_sha256": "24937448bf0b387820975dac9e03e1aa769540adde92324dd78456ac4bc9edc0",
+        "current_summary_sha256": "24937448bf0b387820975dac9e03e1aa769540adde92324dd78456ac4bc9edc0",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 1,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 2,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 3,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 4,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 5,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 6,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 7,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 8,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 9,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 10,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 11,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 12,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 13,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 14,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 15,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 16,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 17,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 18,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 19,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      },
+      {
+        "case": 1000,
+        "repeat": 20,
+        "kind": "soak",
+        "input_sha256": "03fedc43cc78ab5ae3b1527999778f3f9750fefb6c420f632f193a33316df721",
+        "baseline_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "current_summary_sha256": "af64482c4549d3d10e83eead15068735a562d9ac529210067537edbfee90b054",
+        "baseline_exit": 0,
+        "current_exit": 0
+      }
+    ],
+    "source_base_commit": "d7c188fa0f5c5cd5643e220653e0e7b64fda9028",
+    "source_worktree_dirty": true,
+    "tested_dirty_source_base": "d7c188fa0f5c5cd5643e220653e0e7b64fda9028"
+  }
+}

@@ -18,6 +18,7 @@ CANONICAL_RUST = "1.99.1"
 # Schema v1 retains the field name; this now enforces the sole declared floor.
 DEFAULT_MSRV = "1.99"
 APPROVED_FEATURES = {
+    "Cargo.toml": {'default': [], 'native-ffi-acceptance': ['dep:careops-ed', 'dep:careops-birthing-cli', 'dep:kairo-data-arrow', 'dep:kairo-data-ffi', 'dep:serde_json', 'dep:tempfile']},
     "crates/careops-ed/Cargo.toml": {
         "default": ["native-data"],
         "native-data": ["dep:kairo-ecs-arrow", "dep:polars", "dep:tempfile", "dep:polars-arrow-format", "dep:polars-parquet-format"],

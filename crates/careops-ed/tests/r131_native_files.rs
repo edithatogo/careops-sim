@@ -176,7 +176,7 @@ fn emit(
 ) -> Value {
     metadata.insert(
         "careops.data_library_revision".into(),
-        "f34750533c07e9e868481606e5fe5c89ec9b76be".into(),
+        "473ff2c0e640a7e457f500593f6ea1f06602ab35".into(),
     );
     metadata.insert(
         "careops.runtime_revision".into(),
@@ -212,7 +212,7 @@ fn emit(
 }
 #[test]
 fn actual_native_domain_fixture_is_published_only_to_explicit_fresh_destination() {
-    assert!(include_str!("../Cargo.toml").contains("f34750533c07e9e868481606e5fe5c89ec9b76be"));
+    assert!(include_str!("../Cargo.toml").contains("473ff2c0e640a7e457f500593f6ea1f06602ab35"));
     let contract: Value = serde_json::from_str(include_str!(
         "../../../conductor/evidence/d2.4-kairos-contract.json"
     ))

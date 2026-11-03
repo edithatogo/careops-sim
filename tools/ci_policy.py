@@ -95,7 +95,7 @@ def main():
         print(result.stdout, end='')
         if result.returncode or version not in result.stdout.split():
             raise RuntimeError('tool version mismatch: ' + argv[0])
-    metadata = json.loads(subprocess.check_output([cargo, "metadata", "--locked", "--format-version", "1"], cwd=ROOT))
+    metadata = json.loads(subprocess.check_output([cargo, "metadata", "--locked", "--all-features", "--format-version", "1"], cwd=ROOT))
     validate_external_dependencies(metadata)
     commands = [(['actionlint', '.github/workflows/ci.yml'], 'actionlint'),
                 (zizmor + ['--no-progress', '--offline', '--persona', 'auditor', '.github/workflows/ci.yml'], 'zizmor'),

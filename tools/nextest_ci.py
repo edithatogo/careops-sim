@@ -17,7 +17,8 @@ from install_nextest import InstallError, install_nextest
 
 
 VERSION = "1.99.1"
-SELECTION = ["--workspace", "--all-features", "--lib", "--bins", "--tests", "--locked"]
+SELECTION = ["--workspace", "--all-features", "--lib", "--bins", "--tests", "--locked",
+             "--features", "careops-sim/native-ffi-acceptance"]
 RED_TEST = "injected_failure_is_detected"
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 CARGO_RUNNING_LINE = re.compile(r"^\s*Running .+ \((.+)\)\s*$")

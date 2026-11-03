@@ -167,6 +167,11 @@ class NextestInstallerTests(unittest.TestCase):
 
 
 class NextestDiscoveryTests(unittest.TestCase):
+    def test_native_discovery_and_execution_share_exact_populated_ffi_selection(self):
+        self.assertEqual(nextest_ci.SELECTION, [
+            "--workspace", "--all-features", "--lib", "--bins", "--tests", "--locked",
+            "--features", "careops-sim/native-ffi-acceptance"])
+
     def test_cargo_and_nextest_names_and_ignored_state_compare_as_multisets(self):
         cargo_all = (
             "Running unittests src/lib.rs (target/debug/deps/lib-same-111)\n"

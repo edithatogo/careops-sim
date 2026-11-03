@@ -15,6 +15,9 @@ quality_support = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(quality_support)
 
 
+ROOT_FEATURES = {'default': [], 'native-ffi-acceptance': ['dep:careops-ed', 'dep:careops-birthing-cli', 'dep:kairo-data-arrow', 'dep:kairo-data-ffi', 'dep:serde_json', 'dep:tempfile']}
+
+
 class QualitySupportTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -28,7 +31,7 @@ class QualitySupportTests(unittest.TestCase):
             "canonical_rust": "1.99.1",
             "default_msrv": "1.99",
             "packages": [
-                {"manifest": "Cargo.toml", "features": {}},
+                {"manifest": "Cargo.toml", "features": ROOT_FEATURES.copy()},
                 {"manifest": "crates/careops-ed/Cargo.toml", "features": {'default': ['native-data'], 'native-data': ['dep:kairo-ecs-arrow', 'dep:polars', 'dep:tempfile', 'dep:polars-arrow-format', 'dep:polars-parquet-format']}},
                 {"manifest": "crates/careops-ed-cli/Cargo.toml", "features": {}},
             ],
@@ -51,6 +54,10 @@ class QualitySupportTests(unittest.TestCase):
         self.write("rust-toolchain.toml", '[toolchain]\nchannel = "1.99.1"\n')
         self.write("Cargo.toml", '[workspace]\nmembers = ["crates/careops-ed", "crates/careops-ed-cli"]\n\n'
                    '[workspace.package]\nrust-version = "1.99"\n\n[package]\nname = "careops-sim"\n')
+        with (self.root / "Cargo.toml").open("a") as root_manifest:
+            root_manifest.write('\n[features]\n' + ''.join(
+                name + ' = ' + json.dumps(values) + '\n'
+                for name, values in ROOT_FEATURES.items()))
         self.write("crates/careops-ed/Cargo.toml", '[package]\nname = "careops-ed"\nrust-version.workspace = true\n')
         self.write("crates/careops-ed-cli/Cargo.toml", '[package]\nname = "careops-ed-cli"\nrust-version.workspace = true\n')
 
@@ -145,6 +152,24 @@ class QualitySupportTests(unittest.TestCase):
                            '[package]\nname = "careops-ed"\nrust-version.workspace = true\n'
                            '[features]\ndefault = ["native-data"]\nnative-data = '
                            + json.dumps(candidate) + '\n')
+                errors = self.errors()
+                self.assertTrue(any("approved feature" in error.lower() for error in errors), errors)
+
+    def test_root_feature_co_drift_cannot_enable_default_or_drop_an_edge(self):
+        approved = ROOT_FEATURES["native-ffi-acceptance"]
+        candidates = [
+            dict(ROOT_FEATURES, default=["native-ffi-acceptance"]),
+            dict(ROOT_FEATURES, experimental=[]),
+        ] + [dict(ROOT_FEATURES, **{"native-ffi-acceptance": [v for v in approved if v != edge]})
+             for edge in approved]
+        for candidate in candidates:
+            with self.subTest(candidate=candidate):
+                self.config["packages"][0]["features"] = candidate
+                self.write("Cargo.toml", '[workspace]\nmembers = []\n'
+                           '[workspace.package]\nrust-version = "1.99"\n'
+                           '[package]\nname = "careops-sim"\n[features]\n'
+                           + ''.join(name + ' = ' + json.dumps(values) + '\n'
+                                     for name, values in candidate.items()))
                 errors = self.errors()
                 self.assertTrue(any("approved feature" in error.lower() for error in errors), errors)
 

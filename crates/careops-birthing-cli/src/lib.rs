@@ -22,7 +22,7 @@ use std::{
 pub mod model;
 pub mod theatre_tables;
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
-pub const DATA_REVISION: &str = "f34750533c07e9e868481606e5fe5c89ec9b76be";
+pub const DATA_REVISION: &str = "473ff2c0e640a7e457f500593f6ea1f06602ab35";
 pub const RUNTIME_REVISION: &str = "07410266bf54b6f73c59db2f8cbfbc5697c53734";
 pub const MODEL_CONTRACT_SHA256: &str = env!("CAREOPS_MODEL_CONTRACT_SHA256");
 const MAX_ROWS: usize = 4096;

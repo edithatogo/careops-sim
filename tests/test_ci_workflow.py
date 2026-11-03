@@ -146,6 +146,11 @@ def untrusted_contract_errors(workflow):
 
 
 class DependencySourcePolicyTests(unittest.TestCase):
+    def test_policy_metadata_and_deny_both_include_activated_root_feature_graph(self):
+        source = (Path(__file__).parents[1] / "tools/ci_policy.py").read_text()
+        self.assertIn('[cargo, "metadata", "--locked", "--all-features", "--format-version", "1"]', source)
+        self.assertIn("[cargo, 'deny', '--locked', '--workspace', '--all-features'", source)
+
     SOURCE = "git+https://github.com/pola-rs/polars.git?rev=96439685eb2f95108f51087d2b76091917f2593c#96439685eb2f95108f51087d2b76091917f2593c"
 
     def metadata(self, kind="dev", source=None):

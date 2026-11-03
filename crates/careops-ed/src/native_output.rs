@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use std::path::Path;
 
 pub const SCHEMA: &str = "careops.ed.native-output.v1";
-pub const DATA_REVISION: &str = "f34750533c07e9e868481606e5fe5c89ec9b76be";
+pub const DATA_REVISION: &str = "473ff2c0e640a7e457f500593f6ea1f06602ab35";
 pub const POLARS_REVISION: &str = "96439685eb2f95108f51087d2b76091917f2593c";
 pub const RUNTIME_REVISION: &str = "07410266bf54b6f73c59db2f8cbfbc5697c53734";
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]

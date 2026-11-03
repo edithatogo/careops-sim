@@ -196,7 +196,8 @@ pub fn read_native_dataset(root: &Path) -> Result<NativeDataset, ValidationError
         || bytes.len() > manifest.limits.max_manifest_bytes
         || manifest.compression != (manifest.format == NativeFormat::Parquet).then(|| "zstd".into())
         || manifest.runtime_revision != RUNTIME_REVISION
-        || manifest.data_revision != DATA_REVISION
+        || ![DATA_REVISION, "f34750533c07e9e868481606e5fe5c89ec9b76be"]
+            .contains(&manifest.data_revision.as_str())
         || manifest.polars_revision != POLARS_REVISION
         || manifest.producer != format!("careops-ed/{}", env!("CARGO_PKG_VERSION"))
         || manifest.time_unit.is_empty()

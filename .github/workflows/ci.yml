@@ -168,7 +168,7 @@ jobs:
             echo "RUSTDOC=$rustdoc_path"
           } >> "$GITHUB_ENV"
           echo "$toolchain_bin" >> "$GITHUB_PATH"
-      - name: Verify nextest discovery, failure handling and test suite
+      - name: Verify nextest discovery, failure handling and populated domain FFI suite
         run: |
           set -euo pipefail
           "$CAREOPS_PYTHON" tools/nextest_ci.py --toolchain 1.99.1
