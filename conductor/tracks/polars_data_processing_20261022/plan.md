@@ -30,7 +30,7 @@ and R13/R14 consumer/FFI/performance/removal gates remain open.
 
 ## R13 — Outputs and consumers
 
-- [ ] R13.1 Add independent-reader tests for real Parquet/Zstd and IPC, explicit CSV quoting/limb fields, effective input hashes and incomplete manifest rejection.
+- [x] R13.1 Add independent-reader tests for real Parquet/Zstd and IPC, explicit CSV quoting/limb fields, effective input hashes and incomplete manifest rejection. Local format/test acceptance at `b1b91ca`; exact hosted parent readers pending, production migration remains R13.2/R13.3.
 - [ ] R13.2 Replace JSON full-table bundles/schema DDL/manual CSV output with versioned Parquet tables plus provenance manifests; migrate CLIs and every known downstream fixture/script.
 - [ ] R13.3 Regenerate owned synthetic fixtures, preserve historical files, remove old alpha data APIs/readers and document clean-break run/output instructions.
 - [ ] R13.4 Conductor — review and verify phase (workflow.md); apply accepted fixes, record rejected/cross-owner work, receipts, clean-tree check and explicit next-phase decision.

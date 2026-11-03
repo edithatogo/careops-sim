@@ -172,3 +172,23 @@ work. Hosted2e2864f is older source; final-head hosted proof remains mandatory.
 Generic populated domain C Data needs the Track70 owner followup; serialization
 or event-log-only FFI receipts cannot substitute. R13/R14 removal, performance,
 complete consumer, release, clinical/site/operational gates remain open.
+
+## R13.1 local acceptance and upstream checkpoint — 3 November2026
+
+Sole coordinator chat01a19b9f retains careops-pr194-checks/careops-sim ownership.
+Accept bounded independent file/provenance/test authoring and CI wiring at
+b1b91ca, following reviewer /root/review_pr194 and applied metadata/oracle/log
+retention findings. Six native format controls, two exact independent readers,
+26workflow tests and actual isolated Python3.15.1/PyArrow26/Polars2.1/runtime32
+profile pass. No production consumer migration or whole R13 acceptance follows.
+Parent043edab hosted17successes plus expectedskip is older R12 source.
+
+Upstream f34750533c07e9e868481606e5fe5c89ec9b76be draft367 is mergeable, behind
+main and passes actual hosted Linux/macOS/Windows native Arrow/FFI, committed
+Git-source closure, policy/core/binding/package gates; configured publication
+skips remain. Prior conflicting7c and failed0f receipts remain historical.
+Git-source acceptance is distinct from unpublished registry Arrow/FFI packages.
+Parent runtime074/data4134/Polars964 unchanged. Separate reviewed exact parent
+adoption/interop proof still required. Continue R13.2/R13.3; pull measured
+capture encoding cost prerequisite forward under bounded review, preserving
+row/byte bounds, durability, fault/recovery and final R14 performance gates.
