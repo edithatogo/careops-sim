@@ -109,3 +109,15 @@ CI ordering repair: build the canonical locked release CLI before Python consume
 select release explicitly and persist the verified Rust tools. The benchmark still
 runs after support checks, with its unchanged budgets and artifact retention.
 Local2D34 and27workflow tests pass; hosted execution remains pending.
+
+Rust consumer integration: E31(9), E33(8), E43(4), new CLI consumer(3)
+and unchanged native CLI(13) checks pass on the external target. A focused typed
+calibration-day assertion rerun also passes. Separate review accepted the four
+source blobs. CLI lifecycle belongs to the CLI crate, without an ED dependency
+cycle. Real interrupted capture/resume, worker equivalence, analytical vectors,
+calibration records/domain fixture and package/licence bodies are retained.
+Native tables replace descriptor DDL, full-row JSON and manual calibration CSV
+assertions. The build model contract binds the independently observed compiler;
+human-readable toolchain evidence stays in execution receipts.
+
+Production legacy API/source removal and remaining R14 gates are still open.
