@@ -63,7 +63,7 @@ def load_fixture(root):
         required = {'careops.table_schema': TABLES[name][0], 'careops.time_unit': 'tick',
                     'careops.fixture_kind': kinds[name],
                     'careops.polars_revision': '96439685eb2f95108f51087d2b76091917f2593c',
-                    'careops.data_library_revision': '4134a3733ba7e833a8c520621ec2af5a4bd4b31a',
+                    'careops.data_library_revision': 'f34750533c07e9e868481606e5fe5c89ec9b76be',
                     'careops.runtime_revision': '07410266bf54b6f73c59db2f8cbfbc5697c53734',
                     'careops.producer': 'careops-ed/0.1.0'}
         if name == 'patients':

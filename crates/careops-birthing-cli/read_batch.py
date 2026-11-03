@@ -119,7 +119,7 @@ def read_batch(root, expected_input):
                 or manifest['input'] != expected_input or manifest['tick_unit'] != 'second'
                 or manifest['replication'] != result
                 or manifest['runtime_revision'] != '07410266bf54b6f73c59db2f8cbfbc5697c53734'
-                or manifest['data_revision'] != '4134a3733ba7e833a8c520621ec2af5a4bd4b31a'
+                or manifest['data_revision'] != 'f34750533c07e9e868481606e5fe5c89ec9b76be'
                 or native['status'] != 'Completed' or native['time_scale'] != 'second'
                 or native['replication_id'] != index or native['seed'] != result['seed']):
             raise ValueError("unbound source/input/completion metadata")

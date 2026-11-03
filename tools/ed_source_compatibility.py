@@ -7,6 +7,9 @@ from pathlib import Path
 
 SOURCE = 'crates/careops-ed/src/lib.rs'
 RECEIPT = 'conductor/evidence/polars-integration-20261103/source-compatibility.json'
+DATA_RECEIPT = 'conductor/evidence/polars-integration-20261103/data-source-compatibility.json'
+DATA_PROMOTION = 'f34750533c07e9e868481606e5fe5c89ec9b76be'
+HISTORICAL_RECEIPT_COMMIT = '079c061d2bcc5a5fda373a3f9236d09235a2bca8'
 REFERENCE = 'conductor/evidence/r103-remote-20261029/parity.json'
 DRIVERS = ('tools/ed_benchmarks.py', 'tools/ed_benchmark_process.py',
            'crates/careops-ed/examples/one_patient.json')
@@ -64,12 +67,13 @@ def verify_binding(root, join):
     if baseline_hash != join['ed_source_sha256']:
         raise ValueError('historical join no longer binds its exact qualified source')
     current_hash = digest((root / SOURCE).read_bytes())
-    if current_hash == baseline_hash:
-        return
     try:
-        receipt = json.loads((root / RECEIPT).read_text())
+        receipt_bytes = (root / RECEIPT).read_bytes()
+        receipt = json.loads(receipt_bytes)
     except (OSError, ValueError) as error:
         raise ValueError('changed ED source needs exact compatibility evidence') from error
+    if receipt_bytes != git_blob(root, HISTORICAL_RECEIPT_COMMIT, RECEIPT):
+        raise ValueError('immutable historical compatibility receipt changed')
     reference_bytes = (root / REFERENCE).read_bytes()
     if reference_bytes != git_blob(root, baseline, REFERENCE):
         raise ValueError('frozen analytical reference drift')
@@ -87,6 +91,42 @@ def verify_binding(root, join):
         'polars_commit': deps['polars']['rev'], 'driver_sha256': drivers,
         'reference_sha256': digest(reference_bytes),
     }
-    if runtime != join['kairos_runtime'] or bindings['data_commit'] != join['native_data_component']:
-        raise ValueError('compatibility changes the qualified runtime/data boundary')
-    validate_receipt(receipt, bindings, json.loads(reference_bytes))
+    if runtime != join['kairos_runtime']:
+        raise ValueError('compatibility changes the qualified runtime boundary')
+    if current_hash == baseline_hash and bindings['data_commit'] == join['native_data_component']:
+        return
+    reference = json.loads(reference_bytes)
+    historical_bindings = dict(bindings, data_commit=join['native_data_component'])
+    # The accepted original receipt is checked independently, never rewritten to
+    # inherit a new data revision. Existing frozen source/driver constraints stay.
+    validate_receipt(receipt, historical_bindings, reference)
+    if bindings['data_commit'] == join['native_data_component']:
+        return
+    if bindings['data_commit'] != DATA_PROMOTION:
+        raise ValueError('unqualified data source revision')
+    expected = {
+        'from_data_commit': join['native_data_component'],
+        'to_data_commit': DATA_PROMOTION,
+        'runtime_commit': runtime, 'polars_commit': bindings['polars_commit'],
+        'current_source_sha256': current_hash,
+        'lock_sha256': digest((root / 'Cargo.lock').read_bytes()),
+        'ed_manifest_sha256': digest((root / 'crates/careops-ed/Cargo.toml').read_bytes()),
+        'historical_receipt_sha256': digest(receipt_bytes),
+        'historical_join_sha256': digest(git_blob(root, JOIN_COMMIT, JOIN_PATH)),
+        'reference_sha256': digest(reference_bytes), 'driver_sha256': drivers,
+    }
+    try:
+        data_receipt = json.loads((root / DATA_RECEIPT).read_text())
+    except (OSError, ValueError) as error:
+        raise ValueError('data promotion needs exact compatibility evidence') from error
+    validate_data_receipt(data_receipt, expected, bindings, reference)
+
+
+def validate_data_receipt(receipt, expected, bindings, reference):
+    if (not isinstance(receipt, dict)
+            or type(receipt.get('schema_version')) is not int or receipt['schema_version'] != 1
+            or receipt.get('scope') != 'data_source_summary_parity_only'
+            or receipt.get('renewed_a7_acceptance') is not False
+            or receipt.get('promotion_bindings') != expected):
+        raise ValueError('data promotion scope or exact binding mismatch')
+    validate_receipt(receipt.get('summary_compatibility'), bindings, reference)
