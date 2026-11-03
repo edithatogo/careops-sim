@@ -19,6 +19,9 @@ METADATA_EDGES = {
     'polars-parquet-format': {'version': '=0.1.0', 'default-features': False, 'optional': True},
 }
 NATIVE_RECEIPT_COMMIT = '1b6ca2deaead85f1bc0da50c1d6aa00df54e2cba'
+FORMAT_RECEIPT = 'conductor/evidence/polars-integration-20261103/native-reader-format-source-compatibility.json'
+# Exact reviewed rustfmt-only successor; unknown reader changes still refuse.
+FORMATTED_READER_SHA = '67c60a7a39c1bfb54769cbcccde6a44904f4d428c071435566d8411570dfb59d'
 CLI_RECEIPT = 'conductor/evidence/polars-integration-20261103/native-cli-source-compatibility.json'
 CLI_DRIVERS = ('tools/ed_native_benchmarks.py', 'tools/ed_native_benchmark_process.py')
 CLI_SOURCES = ('crates/careops-ed-cli/src/lib.rs', 'crates/careops-ed-cli/src/main.rs')
@@ -63,8 +66,9 @@ def validate_receipt(receipt, bindings, reference):
         raise ValueError('all 26 frozen cases are required')
     seen = set()
     for row in rows:
-        if not isinstance(row, dict):
-            raise ValueError('invalid compatibility case')
+        if (not isinstance(row, dict) or type(row.get('case')) is not int
+                or type(row.get('repeat')) is not int or type(row.get('kind')) is not str):
+            raise ValueError('invalid compatibility case identity types')
         key = (row.get('case'), row.get('repeat'), row.get('kind'))
         original = expected.get(key)
         if original is None or key in seen:
@@ -163,14 +167,25 @@ def verify_binding(root, join):
     validate_native_receipt(native_receipt, historical_native, bindings, reference)
     if strict_equal(native_expected, historical_native):
         return
+    formatting_changed = False
     for path in NATIVE_SOURCES:
         if path not in CLI_SOURCES and native_expected['source_sha256'][path] != historical_native['source_sha256'][path]:
-            raise ValueError('unqualified native reader/output source change outside CLI cutover')
+            if path == 'crates/careops-ed/src/native_reader.rs' and native_expected['source_sha256'][path] == FORMATTED_READER_SHA:
+                formatting_changed = True
+            else:
+                raise ValueError('unqualified native reader/output source change outside CLI cutover')
     try:
         cli_receipt = json.loads((root / CLI_RECEIPT).read_text())
     except (OSError, ValueError) as error:
         raise ValueError('native CLI cutover needs exact compatibility evidence') from error
     validate_cli_receipt(cli_receipt,cli_bindings(root,native_bytes),bindings,reference)
+    if formatting_changed:
+        try:
+            format_receipt = json.loads((root / FORMAT_RECEIPT).read_text())
+        except (OSError, ValueError) as error:
+            raise ValueError('formatted native reader needs exact compatibility evidence') from error
+        validate_native_receipt(format_receipt, native_expected, bindings, reference)
+
 
 
 def validate_data_receipt(receipt, expected, bindings, reference):

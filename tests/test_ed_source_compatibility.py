@@ -225,3 +225,29 @@ class EDSourceCompatibilityTests(unittest.TestCase):
         with mock.patch.object(gate,'CLI_RECEIPT','absent-cli-receipt.json'):
             with self.assertRaisesRegex(ValueError,'CLI cutover needs exact'):
                 gate.verify_binding(ROOT,self.join)
+
+
+class FormattedReaderProfileTests(unittest.TestCase):
+    def test_formatted_reader_requires_its_new_receipt(self):
+        join = json.loads((ROOT / gate.JOIN_PATH).read_text())
+        with mock.patch.object(gate, 'FORMAT_RECEIPT', 'absent-format-receipt.json'):
+            with self.assertRaisesRegex(ValueError, 'formatted native reader needs exact'):
+                gate.verify_binding(ROOT, join)
+
+    def test_unknown_reader_source_cannot_inherit_format_acceptance(self):
+        join = json.loads((ROOT / gate.JOIN_PATH).read_text())
+        with mock.patch.object(gate, 'FORMATTED_READER_SHA', '0' * 64):
+            with self.assertRaisesRegex(ValueError, 'unqualified native reader'):
+                gate.verify_binding(ROOT, join)
+
+    def test_format_case_identity_rejects_numeric_aliases(self):
+        native = json.loads((ROOT / gate.NATIVE_RECEIPT).read_text())
+        summary = native['summary_compatibility']
+        reference = json.loads((ROOT / gate.REFERENCE).read_text())
+        for key, replacement in [('case', float(summary['cases'][0]['case'])),
+                                 ('repeat', bool(summary['cases'][0]['repeat']))]:
+            changed = copy.deepcopy(native)
+            changed['summary_compatibility']['cases'][0][key] = replacement
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                gate.validate_native_receipt(changed, native['native_bindings'],
+                                             summary['bindings'], reference)

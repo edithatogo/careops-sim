@@ -717,8 +717,7 @@ pub(super) fn ipc_preflight(
                         let mut previous = 0usize;
                         for offset in offsets.as_chunks::<8>().0 {
                             let offset =
-                                usize::try_from(i64::from_le_bytes(*offset))
-                                    .map_err(invalid)?;
+                                usize::try_from(i64::from_le_bytes(*offset)).map_err(invalid)?;
                             if offset < previous
                                 || offset > values.len()
                                 || !text.is_char_boundary(offset)
