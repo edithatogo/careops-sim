@@ -30,3 +30,25 @@ JSON, schema-DDL output, clinical interpretation or movement claim is added.
 
 Production CLI/default consumer migration, legacy deletion, independent direct
 FFI and final performance/full hosted/clinical gates remain separate tasks.
+
+
+## Closed native reader/conversion profile
+
+The reader snapshots all declared parts before typed decoding, checks source
+hashes, exact ordered schemas/provenance and row coverage, and retains immutable
+Polars frames after source files disappear. Conversion reuses the no-clobber
+publisher without a simulation rerun; a final conversion receipt binds actual
+source and target manifest bytes.
+
+The finite profile caps encoded data at64MiB/dataset and4MiB/part, estimated
+decoded payload at64MiB/part and256MiB/dataset, footer1MiB and page/IPC metadata
+64KiB. The same profile applies during pure planning and actual file readback.
+These are payload/allocation profiles, not a universal peak-RSS claim; R14's
+measured RSS gate remains required. Standard generated IPC/Parquet metadata APIs
+inspect actual buffer/page bounds before high-level decoding. Only the pinned
+flat producer schema, encodings and metadata are accepted. CSV uses explicit
+types, quote-aware counting and canonical standard-writer roundtrip; quoted empty
+strings remain distinct from null. Historical fixtures require actual readback.
+
+The metadata interfaces are existing locked dependencies, not a new backend.
+Their separate strict compatibility receipt does not renew A7 or complete R13.

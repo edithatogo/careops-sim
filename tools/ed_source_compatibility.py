@@ -1,4 +1,5 @@
 """Keep historical ED qualification immutable; require exact migration evidence."""
+import copy
 import hashlib
 import json
 import subprocess
@@ -9,6 +10,14 @@ SOURCE = 'crates/careops-ed/src/lib.rs'
 RECEIPT = 'conductor/evidence/polars-integration-20261103/source-compatibility.json'
 DATA_RECEIPT = 'conductor/evidence/polars-integration-20261103/data-source-compatibility.json'
 DATA_PROMOTION = 'f34750533c07e9e868481606e5fe5c89ec9b76be'
+DATA_RECEIPT_COMMIT = '43511e665706cf31c434758675ce291d8c12547b'
+NATIVE_RECEIPT = 'conductor/evidence/polars-integration-20261103/native-reader-source-compatibility.json'
+NATIVE_SOURCES = ('crates/careops-ed/src/native_output.rs', 'crates/careops-ed/src/native_reader.rs',
+                  'crates/careops-ed-cli/src/lib.rs', 'crates/careops-ed-cli/src/main.rs')
+METADATA_EDGES = {
+    'polars-arrow-format': {'version': '=0.2.1', 'default-features': False, 'features': ['ipc'], 'optional': True},
+    'polars-parquet-format': {'version': '=0.1.0', 'default-features': False, 'optional': True},
+}
 HISTORICAL_RECEIPT_COMMIT = '079c061d2bcc5a5fda373a3f9236d09235a2bca8'
 REFERENCE = 'conductor/evidence/r103-remote-20261029/parity.json'
 DRIVERS = ('tools/ed_benchmarks.py', 'tools/ed_benchmark_process.py',
@@ -19,6 +28,14 @@ JOIN_PATH = 'conductor/evidence/a7-two-consumer-20261103/join.json'
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
+
+
+def strict_equal(left, right):
+    """Keep Boolean/integer types distinct in closed parsed control contracts."""
+    try:
+        return json.dumps(left, sort_keys=True, allow_nan=False) == json.dumps(right, sort_keys=True, allow_nan=False)
+    except (TypeError, ValueError):
+        return False
 
 
 def git_blob(root, commit, path):
@@ -109,17 +126,32 @@ def verify_binding(root, join):
         'to_data_commit': DATA_PROMOTION,
         'runtime_commit': runtime, 'polars_commit': bindings['polars_commit'],
         'current_source_sha256': current_hash,
-        'lock_sha256': digest((root / 'Cargo.lock').read_bytes()),
-        'ed_manifest_sha256': digest((root / 'crates/careops-ed/Cargo.toml').read_bytes()),
+        'lock_sha256': digest(git_blob(root, DATA_RECEIPT_COMMIT, 'Cargo.lock')),
+        'ed_manifest_sha256': digest(git_blob(root, DATA_RECEIPT_COMMIT, 'crates/careops-ed/Cargo.toml')),
         'historical_receipt_sha256': digest(receipt_bytes),
         'historical_join_sha256': digest(git_blob(root, JOIN_COMMIT, JOIN_PATH)),
         'reference_sha256': digest(reference_bytes), 'driver_sha256': drivers,
     }
     try:
-        data_receipt = json.loads((root / DATA_RECEIPT).read_text())
+        data_bytes = (root / DATA_RECEIPT).read_bytes()
+        data_receipt = json.loads(data_bytes)
     except (OSError, ValueError) as error:
         raise ValueError('data promotion needs exact compatibility evidence') from error
+    if data_bytes != git_blob(root, DATA_RECEIPT_COMMIT, DATA_RECEIPT):
+        raise ValueError('immutable data compatibility receipt changed')
     validate_data_receipt(data_receipt, expected, bindings, reference)
+    lock_bytes = (root / 'Cargo.lock').read_bytes()
+    manifest_bytes = (root / 'crates/careops-ed/Cargo.toml').read_bytes()
+    if (digest(lock_bytes) == expected['lock_sha256']
+            and digest(manifest_bytes) == expected['ed_manifest_sha256']):
+        return
+    validate_metadata_edges(root, lock_bytes, manifest_bytes)
+    native_expected = native_bindings(root, data_bytes)
+    try:
+        native_receipt = json.loads((root / NATIVE_RECEIPT).read_text())
+    except (OSError, ValueError) as error:
+        raise ValueError('data promotion scope or exact binding mismatch: native wire dependencies need exact compatibility evidence') from error
+    validate_native_receipt(native_receipt, native_expected, bindings, reference)
 
 
 def validate_data_receipt(receipt, expected, bindings, reference):
@@ -129,4 +161,48 @@ def validate_data_receipt(receipt, expected, bindings, reference):
             or receipt.get('renewed_a7_acceptance') is not False
             or receipt.get('promotion_bindings') != expected):
         raise ValueError('data promotion scope or exact binding mismatch')
+    validate_receipt(receipt.get('summary_compatibility'), bindings, reference)
+
+
+def validate_metadata_edges(root, lock_bytes, manifest_bytes):
+    """Permit exactly two metadata interfaces already in the qualified closure."""
+    old_manifest = tomllib.loads(git_blob(root, DATA_RECEIPT_COMMIT,
+                                        'crates/careops-ed/Cargo.toml').decode())
+    expected_manifest = copy.deepcopy(old_manifest)
+    expected_manifest['dependencies'].update(copy.deepcopy(METADATA_EDGES))
+    expected_manifest['features']['native-data'].extend('dep:' + name for name in METADATA_EDGES)
+    expected_lock = tomllib.loads(git_blob(root, DATA_RECEIPT_COMMIT, 'Cargo.lock').decode())
+    ed = [p for p in expected_lock['package'] if p['name'] == 'careops-ed']
+    if len(ed) != 1:
+        raise ValueError('qualified lock has no unique ED package')
+    ed[0]['dependencies'] = sorted(ed[0]['dependencies'] + list(METADATA_EDGES))
+    try:
+        actual_manifest = tomllib.loads(manifest_bytes.decode())
+        actual_lock = tomllib.loads(lock_bytes.decode())
+        # Canonical JSON keeps TOML integer and Boolean types distinct.
+        matched = strict_equal(actual_manifest, expected_manifest) and strict_equal(actual_lock, expected_lock)
+    except (TypeError, ValueError, UnicodeError) as error:
+        raise ValueError('data promotion scope or exact binding mismatch: malformed metadata profile') from error
+    if not matched:
+        raise ValueError('data promotion scope or exact binding mismatch: unknown metadata dependency profile')
+
+
+def native_bindings(root, data_bytes):
+    return {
+        'data_receipt_commit': DATA_RECEIPT_COMMIT,
+        'data_receipt_sha256': digest(data_bytes),
+        'lock_sha256': digest((root / 'Cargo.lock').read_bytes()),
+        'ed_manifest_sha256': digest((root / 'crates/careops-ed/Cargo.toml').read_bytes()),
+        'metadata_edges': copy.deepcopy(METADATA_EDGES),
+        'source_sha256': {p: digest((root / p).read_bytes()) for p in NATIVE_SOURCES},
+    }
+
+
+def validate_native_receipt(receipt, expected, bindings, reference):
+    if (not isinstance(receipt, dict)
+            or type(receipt.get('schema_version')) is not int or receipt['schema_version'] != 1
+            or receipt.get('scope') != 'native_wire_dependencies_summary_parity_only'
+            or receipt.get('renewed_a7_acceptance') is not False
+            or not strict_equal(receipt.get('native_bindings'), expected)):
+        raise ValueError('data promotion scope or exact binding mismatch: native wire receipt')
     validate_receipt(receipt.get('summary_compatibility'), bindings, reference)

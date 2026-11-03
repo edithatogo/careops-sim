@@ -92,7 +92,7 @@ use crate::disposition::arrow_export::{native_tables, summarize_replications, Me
 use crate::parquet_capture::ParquetPartStore;
 use polars::prelude::*;
 use std::collections::BTreeMap;
-use std::io::{self, Write};
+use std::io::Write;
 fn invalid(e: impl std::fmt::Display) -> ValidationError {
     ValidationError::new(ExitCodeDef::MalformedConfig, e.to_string())
 }
@@ -140,59 +140,9 @@ impl ExportLimits {
     }
 }
 fn columns(frame: &DataFrame, table: &str) -> Result<Vec<ColumnSchema>, ValidationError> {
-    frame
-        .columns()
-        .iter()
-        .map(|column| {
-            let physical_type = match column.dtype() {
-                DataType::UInt64 => "UInt64",
-                DataType::UInt32 => "UInt32",
-                DataType::Float64 => "Float64",
-                DataType::Boolean => "Boolean",
-                DataType::String => "String",
-                _ => return Err(invalid("unsupported native physical column")),
-            };
-            let name = column.name().as_str();
-            // Requiredness is a versioned domain contract, never inferred from the
-            // nulls observed in this particular run.
-            let nullable = match table {
-                "patients" => [
-                    "start_tick_hi",
-                    "start_tick_lo",
-                    "completion_tick_hi",
-                    "completion_tick_lo",
-                    "wait_ticks_hi",
-                    "wait_ticks_lo",
-                    "elapsed_ticks_hi",
-                    "elapsed_ticks_lo",
-                ]
-                .contains(&name),
-                "replications" => name == "mean_wait_ticks",
-                "metrics" => [
-                    "value",
-                    "denominator_value",
-                    "numerator_count",
-                    "denominator_count",
-                    "estimate",
-                    "variance",
-                    "standard_error",
-                    "ci_95_lower",
-                    "ci_95_upper",
-                    "ddof",
-                ]
-                .contains(&name),
-                _ => return Err(invalid("unknown native table")),
-            };
-            if !nullable && column.null_count() != 0 {
-                return Err(invalid(format!("null required column {name}")));
-            }
-            Ok(ColumnSchema {
-                name: name.into(),
-                physical_type: physical_type.into(),
-                nullable,
-            })
-        })
-        .collect()
+    let declared = reader::closed_columns(table)?;
+    reader::check_frame(frame, &declared, frame.height())?;
+    Ok(declared)
 }
 fn replication_frame(document: &BatchRunDocument) -> Result<DataFrame, ValidationError> {
     let rows = &document.replications;
@@ -304,9 +254,10 @@ fn plan_part(
     first: usize,
     rows: usize,
     parts: &mut usize,
+    budget: &mut reader::ProfileBudget,
 ) -> Result<(), ValidationError> {
     let metadata = file_metadata(manifest, table, first, rows);
-    let mut writer = BoundedPartWriter::new(io::sink(), manifest.limits.max_bytes_per_part);
+    let mut writer = BoundedPartWriter::new(Vec::new(), manifest.limits.max_bytes_per_part);
     let result = encode(
         &mut frame.slice(first as i64, rows),
         manifest.format,
@@ -314,18 +265,34 @@ fn plan_part(
         &mut writer,
     );
     if writer.limit_exceeded() {
+        // Release the bounded encoded buffer before descending into a split.
+        drop(writer);
         if rows <= 1 {
             return Err(invalid(
                 "native single row or typed empty file exceeds byte budget",
             ));
         }
         let left = rows / 2;
-        plan_part(frame, manifest, table, first, left, parts)?;
-        return plan_part(frame, manifest, table, first + left, rows - left, parts);
+        plan_part(frame, manifest, table, first, left, parts, budget)?;
+        return plan_part(
+            frame,
+            manifest,
+            table,
+            first + left,
+            rows - left,
+            parts,
+            budget,
+        );
     }
     result?;
     if *parts >= manifest.limits.max_parts {
         return Err(invalid("native total part budget exceeded"));
+    }
+    let encoded_bytes = writer.written();
+    let encoded = writer.into_inner();
+    budget.add(&encoded, manifest.format, &table.columns, rows)?;
+    if manifest.format == NativeFormat::Csv {
+        reader::csv_part(&encoded, &table.columns, rows)?;
     }
     *parts += 1;
     table.parts.push(NativePart {
@@ -337,7 +304,7 @@ fn plan_part(
         ),
         first_row: first,
         rows,
-        bytes: writer.written(),
+        bytes: encoded_bytes,
         sha256: "0".repeat(64),
     });
     Ok(())
@@ -406,7 +373,7 @@ pub fn export_native_batch(
         return Err(invalid("native metric schema cardinality changed"));
     }
     let frames = [facts, replication_frame(document)?, metric_frame(&metrics)?];
-    let mut manifest = NativeManifest {
+    let manifest = NativeManifest {
         schema: SCHEMA.into(),
         status: "complete".into(),
         format,
@@ -431,7 +398,40 @@ pub fn export_native_batch(
         limits,
         tables: Vec::new(),
     };
+    publish_frames(manifest, frames, destination)
+}
+
+fn publish_frames(
+    mut manifest: NativeManifest,
+    frames: [DataFrame; 3],
+    destination: &Path,
+) -> Result<NativeManifest, ValidationError> {
+    let limits = manifest.limits;
+    let format = manifest.format;
+    limits.validate()?;
+    let meta = std::fs::symlink_metadata(destination).map_err(output)?;
+    if !meta.is_dir()
+        || meta.file_type().is_symlink()
+        || std::fs::read_dir(destination)
+            .map_err(output)?
+            .next()
+            .is_some()
+    {
+        return Err(invalid(
+            "native export destination must be a fresh empty real directory",
+        ));
+    }
+    let total = frames.iter().try_fold(0usize, |n, f| {
+        n.checked_add(f.height())
+            .ok_or_else(|| invalid("native total rows overflow"))
+    })?;
+    if total > limits.max_total_rows {
+        return Err(invalid("native total row budget exceeded"));
+    }
+    manifest.tables.clear();
+    reader::check_provenance(&frames, &manifest)?;
     let mut parts = 0;
+    let mut budget = reader::ProfileBudget::default();
     for (frame, (name, schema)) in frames.iter().zip([
         ("patients", "careops.ed.patients.v2"),
         ("replications", "careops.ed.replications.v1"),
@@ -445,7 +445,7 @@ pub fn export_native_batch(
             parts: Vec::new(),
         };
         if frame.height() == 0 {
-            plan_part(frame, &manifest, &mut table, 0, 0, &mut parts)?;
+            plan_part(frame, &manifest, &mut table, 0, 0, &mut parts, &mut budget)?;
         } else {
             for first in (0..frame.height()).step_by(limits.max_rows_per_part) {
                 plan_part(
@@ -455,6 +455,7 @@ pub fn export_native_batch(
                     first,
                     (frame.height() - first).min(limits.max_rows_per_part),
                     &mut parts,
+                    &mut budget,
                 )?;
             }
         }
@@ -472,6 +473,7 @@ pub fn export_native_batch(
         },
     )
     .map_err(crate::captured_batch::error)?;
+    let mut actual_budget = reader::ProfileBudget::default();
     for (index, frame) in frames.iter().enumerate() {
         for part_index in 0..manifest.tables[index].parts.len() {
             let part = manifest.tables[index].parts[part_index].clone();
@@ -505,6 +507,13 @@ pub fn export_native_batch(
                 return Err(output(
                     "native physical encoding differs from pure preflight",
                 ));
+            }
+            actual_budget
+                .add(&bytes, format, &manifest.tables[index].columns, part.rows)
+                .map_err(output)?;
+            if format == NativeFormat::Csv {
+                reader::csv_part(&bytes, &manifest.tables[index].columns, part.rows)
+                    .map_err(output)?;
             }
             manifest.tables[index].parts[part_index].sha256 =
                 crate::disposition::api_runner::compute_sha256_hex(&bytes);
@@ -552,4 +561,50 @@ pub fn stream_patient_csv(
         .finish(&mut patients)
         .map_err(output)?;
     bounded.flush().map_err(output)
+}
+
+#[path = "native_reader.rs"]
+mod reader;
+pub use reader::{read_native_dataset, NativeDataset};
+/// Convert a validated immutable native snapshot without rerunning its model.
+pub fn convert_native_dataset(
+    dataset: &NativeDataset,
+    destination: &Path,
+    format: NativeFormat,
+    limits: ExportLimits,
+) -> Result<NativeManifest, ValidationError> {
+    let mut manifest = dataset.manifest.clone();
+    manifest.format = format;
+    manifest.compression = (format == NativeFormat::Parquet).then(|| "zstd".into());
+    manifest.limits = limits;
+    manifest.producer = format!("careops-ed/{}", env!("CARGO_PKG_VERSION"));
+    let manifest = publish_frames(manifest, dataset.frames.clone(), destination)?;
+    let target = reader::bounded_file(
+        &destination.join("manifest.json"),
+        limits.max_manifest_bytes,
+    )?;
+    let receipt = serde_json::json!({"schema":"careops.ed.native-conversion.v1","source_manifest_sha256":dataset.manifest_sha256,"target_manifest_sha256":crate::disposition::api_runner::compute_sha256_hex(&target)});
+    let mut bounded = BoundedPartWriter::new(Vec::new(), 8192);
+    serde_json::to_writer_pretty(&mut bounded, &receipt).map_err(output)?;
+    let bytes = bounded.into_inner();
+    let store = ParquetPartStore::open(
+        destination,
+        crate::capture::CaptureLimits {
+            max_rows: limits.max_rows_per_part,
+            max_bytes: limits.max_bytes_per_part,
+            max_patient_id_bytes: 4096,
+        },
+    )
+    .map_err(crate::captured_batch::error)?;
+    store
+        .publish("conversion.json", |file| {
+            file.write_all(&bytes).map_err(|e| {
+                careops_core::experiment::ExperimentError::new(
+                    careops_core::experiment::ExperimentErrorKind::OutputWriteFailed,
+                    e.to_string(),
+                )
+            })
+        })
+        .map_err(crate::captured_batch::error)?;
+    Ok(manifest)
 }

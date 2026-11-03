@@ -133,3 +133,56 @@ class EDSourceCompatibilityTests(unittest.TestCase):
             with self.subTest(path=path), mock.patch.object(gate, 'digest', side_effect=lambda data: '0' * 64 if data == content else original(data)):
                 with self.assertRaisesRegex(ValueError, 'data promotion scope or exact binding'):
                     gate.verify_binding(ROOT, self.join)
+
+    def test_exact_metadata_edges_only(self):
+        lock = (ROOT / 'Cargo.lock').read_bytes()
+        manifest = (ROOT / 'crates/careops-ed/Cargo.toml').read_bytes()
+        gate.validate_metadata_edges(ROOT, lock, manifest)
+        for old, new in [(b'=0.2.1', b'=0.2.2'), (b'default-features = false, features = ["ipc"]', b'default-features = 0, features = ["ipc"]'), (b'features = ["ipc"]', b'features = ["ipc", "flight-data"]'),
+                         (b'default-features = false, features = ["ipc"]', b'default-features = true, features = ["ipc"]'),
+                         (b'optional = true }\npolars-parquet-format', b'optional = false }\npolars-parquet-format')]:
+            self.assertIn(old, manifest)
+            with self.subTest(change=new), self.assertRaises(ValueError):
+                gate.validate_metadata_edges(ROOT, lock, manifest.replace(old, new))
+        with self.assertRaises(ValueError):
+            gate.validate_metadata_edges(ROOT, lock + b'\nunknown_profile = true\n', manifest)
+        with self.assertRaises(ValueError):
+            gate.validate_metadata_edges(ROOT, lock.replace(b'version = "0.2.1"', b'version = "0.2.2"'), manifest)
+
+    def test_native_receipt_all_bindings_scope_and_cases_are_exact(self):
+        data = (ROOT / gate.DATA_RECEIPT).read_bytes()
+        expected = gate.native_bindings(ROOT, data)
+        summary = json.loads(data)['summary_compatibility']
+        value = {'schema_version': 1, 'scope': 'native_wire_dependencies_summary_parity_only',
+                 'renewed_a7_acceptance': False, 'native_bindings': expected,
+                 'summary_compatibility': summary}
+        bindings = summary['bindings']
+        gate.validate_native_receipt(value, expected, bindings, self.reference)
+        for key in expected:
+            changed = copy.deepcopy(value)
+            changed['native_bindings'][key] = 'changed'
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                gate.validate_native_receipt(changed, expected, bindings, self.reference)
+        for key, replacement in [('scope', 'all_A7'), ('schema_version', True), ('renewed_a7_acceptance', True)]:
+            changed = copy.deepcopy(value); changed[key] = replacement
+            with self.assertRaises(ValueError):
+                gate.validate_native_receipt(changed, expected, bindings, self.reference)
+        changed = copy.deepcopy(value)
+        changed['native_bindings']['metadata_edges']['polars-arrow-format']['default-features'] = 0
+        with self.assertRaises(ValueError):
+            gate.validate_native_receipt(changed, expected, bindings, self.reference)
+        changed = copy.deepcopy(value); changed['summary_compatibility']['cases'].pop()
+        with self.assertRaises(ValueError):
+            gate.validate_native_receipt(changed, expected, bindings, self.reference)
+
+    def test_data_receipt_is_immutable_and_native_receipt_is_required(self):
+        original = gate.git_blob
+        def changed(root, commit, path):
+            raw = original(root, commit, path)
+            return raw + b' ' if commit == gate.DATA_RECEIPT_COMMIT and path == gate.DATA_RECEIPT else raw
+        with mock.patch.object(gate, 'git_blob', side_effect=changed):
+            with self.assertRaisesRegex(ValueError, 'immutable data compatibility'):
+                gate.verify_binding(ROOT, self.join)
+        with mock.patch.object(gate, 'NATIVE_RECEIPT', 'absent-native-receipt.json'):
+            with self.assertRaisesRegex(ValueError, 'native wire dependencies need exact'):
+                gate.verify_binding(ROOT, self.join)
