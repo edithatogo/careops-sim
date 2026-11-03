@@ -13,41 +13,10 @@ use careops_ed::disposition::native_output::{
 #[cfg(feature = "native-data")]
 use careops_ed::parse_scenario_json;
 use std::fs;
-#[cfg(feature = "native-data")]
-use std::path::Path;
 use std::path::PathBuf;
 #[cfg(feature = "native-data")]
-struct TestTempDir {
-    path: PathBuf,
-}
-
-#[cfg(feature = "native-data")]
-impl TestTempDir {
-    fn new(prefix: &str) -> Self {
-        let unique = format!(
-            "careops_test_{}_{}_{}",
-            prefix,
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
-        );
-        let path = std::env::temp_dir().join(unique);
-        fs::create_dir_all(&path).unwrap();
-        Self { path }
-    }
-
-    fn path(&self) -> &Path {
-        &self.path
-    }
-}
-
-#[cfg(feature = "native-data")]
-impl Drop for TestTempDir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.path);
-    }
+fn tempdir(prefix: &str) -> tempfile::TempDir {
+    tempfile::Builder::new().prefix(prefix).tempdir().unwrap()
 }
 
 fn repo_root() -> PathBuf {
@@ -133,7 +102,7 @@ fn test_replication_seed_allocation_uniqueness() {
 #[cfg(feature = "native-data")]
 fn native(seed: u64, horizon: Option<u64>) -> NativeDataset {
     let scenario = parse_scenario_json(&fs::read_to_string(nominal_path()).unwrap()).unwrap();
-    let tmp = TestTempDir::new("native-public");
+    let tmp = tempdir("native-public");
     let config = BatchConfig {
         base_seed: seed,
         replications: 1,

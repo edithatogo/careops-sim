@@ -21,42 +21,11 @@ use careops_ed::disposition::native_output::{
 use careops_ed::disposition::operations::ExecutionFidelity;
 use careops_ed::{parse_scenario_json, run_scenario, Eligibility, RunSummary, ScenarioConfig};
 use std::fs;
-#[cfg(feature = "native-data")]
-use std::path::Path;
 use std::path::PathBuf;
 use std::process::Command;
 #[cfg(feature = "native-data")]
-struct TestTempDir {
-    path: PathBuf,
-}
-
-#[cfg(feature = "native-data")]
-impl TestTempDir {
-    fn new(prefix: &str) -> Self {
-        let unique = format!(
-            "careops_e43_test_{}_{}_{}",
-            prefix,
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
-        );
-        let path = std::env::temp_dir().join(unique);
-        fs::create_dir_all(&path).expect("create test temp dir");
-        Self { path }
-    }
-
-    fn path(&self) -> &Path {
-        &self.path
-    }
-}
-
-#[cfg(feature = "native-data")]
-impl Drop for TestTempDir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.path);
-    }
+fn tempdir(prefix: &str) -> tempfile::TempDir {
+    tempfile::Builder::new().prefix(prefix).tempdir().unwrap()
 }
 
 fn repo_root() -> PathBuf {
@@ -156,7 +125,7 @@ fn test_downstream_parse_scenario_json_nominal_and_rejections() {
 #[test]
 fn test_downstream_native_files_and_seed_allocation() {
     let scenario = parse_scenario_json(&fs::read_to_string(nominal_path()).unwrap()).unwrap();
-    let root = TestTempDir::new("native-downstream");
+    let root = tempdir("native-downstream");
     let config = BatchConfig {
         replications: 1,
         num_workers: 1,

@@ -37,7 +37,7 @@ fn publish(
 }
 #[cfg(feature = "native-data")]
 fn snapshot(scenario: &careops_ed::ScenarioConfig, config: &BatchConfig) -> NativeDataset {
-    let root = TestTempDir::new("snapshot");
+    let root = tempdir("snapshot");
     let doc = run_batch_with_workers(scenario, config, Some(root.path()), None, None).unwrap();
     publish(scenario, &doc, root.path())
 }
@@ -56,37 +56,8 @@ fn metric(data: &NativeDataset, name: &str) -> usize {
 }
 
 #[cfg(feature = "native-data")]
-struct TestTempDir {
-    path: PathBuf,
-}
-
-#[cfg(feature = "native-data")]
-impl TestTempDir {
-    fn new(prefix: &str) -> Self {
-        let unique = format!(
-            "careops_arrow_test_{}_{}_{}",
-            prefix,
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
-        );
-        let path = std::env::temp_dir().join(unique);
-        fs::create_dir_all(&path).unwrap();
-        Self { path }
-    }
-
-    fn path(&self) -> &Path {
-        &self.path
-    }
-}
-
-#[cfg(feature = "native-data")]
-impl Drop for TestTempDir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.path);
-    }
+fn tempdir(prefix: &str) -> tempfile::TempDir {
+    tempfile::Builder::new().prefix(prefix).tempdir().unwrap()
 }
 
 #[cfg(feature = "native-data")]
@@ -251,7 +222,7 @@ fn test_worker_equivalence_for_native_frames() {
 #[cfg(feature = "native-data")]
 #[test]
 fn test_checkpoint_resumption_native_equivalence() {
-    let tmp = TestTempDir::new("resume");
+    let tmp = tempdir("resume");
     let scenario = load_nominal_scenario();
     let config = BatchConfig {
         batch_id: "native-resume".into(),
