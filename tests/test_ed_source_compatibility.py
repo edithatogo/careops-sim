@@ -135,8 +135,8 @@ class EDSourceCompatibilityTests(unittest.TestCase):
                     gate.verify_binding(ROOT, self.join)
 
     def test_exact_metadata_edges_only(self):
-        lock = (ROOT / 'Cargo.lock').read_bytes()
-        manifest = (ROOT / 'crates/careops-ed/Cargo.toml').read_bytes()
+        lock = gate.git_blob(ROOT, gate.NATIVE_RECEIPT_COMMIT, 'Cargo.lock')
+        manifest = gate.git_blob(ROOT, gate.NATIVE_RECEIPT_COMMIT, 'crates/careops-ed/Cargo.toml')
         gate.validate_metadata_edges(ROOT, lock, manifest)
         for old, new in [(b'=0.2.1', b'=0.2.2'), (b'default-features = false, features = ["ipc"]', b'default-features = 0, features = ["ipc"]'), (b'features = ["ipc"]', b'features = ["ipc", "flight-data"]'),
                          (b'default-features = false, features = ["ipc"]', b'default-features = true, features = ["ipc"]'),
@@ -251,3 +251,110 @@ class FormattedReaderProfileTests(unittest.TestCase):
             with self.subTest(key=key), self.assertRaises(ValueError):
                 gate.validate_native_receipt(changed, native['native_bindings'],
                                              summary['bindings'], reference)
+
+
+class SharedImportPromotionTests(unittest.TestCase):
+    """Run only after the real first adoption commit and receipt exist.
+
+    There is no skip/fallback or generated passing receipt for a pending pin.
+    """
+    def setUp(self):
+        self.receipt = json.loads((ROOT / gate.SHARED_RECEIPT).read_bytes())
+        self.reference = json.loads((ROOT / gate.REFERENCE).read_bytes())
+        self.join = json.loads((ROOT / gate.JOIN_PATH).read_bytes())
+        self.expected = gate.shared_bindings(ROOT, gate.SHARED_QUALIFICATION_COMMIT)
+        self.bindings = self.receipt['summary_compatibility']['bindings']
+
+    def test_actual_current_shared_profile_and_immutable_first_receipt(self):
+        gate.verify_binding(ROOT, self.join)
+        self.assertTrue(gate.strict_equal(gate.shared_bindings(ROOT), self.expected))
+
+    def test_shared_promotion_requires_its_new_receipt(self):
+        with mock.patch.object(gate, 'SHARED_RECEIPT', 'absent-shared-receipt.json'):
+            with self.assertRaisesRegex(ValueError, 'shared trusted import promotion needs exact'):
+                gate.verify_binding(ROOT, self.join)
+
+    def test_every_promotion_critical_source_is_bound_to_first_snapshot(self):
+        original = Path.read_bytes
+        for path in gate.SHARED_SOURCES:
+            selected = ROOT / path
+            def changed(current, selected=selected):
+                data = original(current)
+                return data + b'\n' if current == selected else data
+            with self.subTest(path=path), mock.patch.object(Path, 'read_bytes', changed):
+                with self.assertRaisesRegex(ValueError, 'data promotion scope or exact binding'):
+                    gate.verify_binding(ROOT, self.join)
+
+    def test_source_and_receipt_codrift_cannot_rewrite_accepted_profile(self):
+        source = ROOT / 'crates/careops-ed/src/native_reader.rs'
+        receipt_path = ROOT / gate.SHARED_RECEIPT
+        original = Path.read_bytes
+        source_bytes = original(source) + b'\n'
+        value = copy.deepcopy(self.receipt)
+        value['promotion_bindings']['source_sha256'][str(source.relative_to(ROOT))] = gate.digest(source_bytes)
+        def changed(current):
+            if current == source:
+                return source_bytes
+            if current == receipt_path:
+                return json.dumps(value).encode()
+            return original(current)
+        with mock.patch.object(Path, 'read_bytes', changed):
+            with self.assertRaisesRegex(ValueError, 'immutable shared trusted import'):
+                gate.verify_binding(ROOT, self.join)
+
+    def test_new_receipt_anchor_cannot_change(self):
+        original = gate.git_blob
+        def changed(root, commit, path):
+            data = original(root, commit, path)
+            return data + b' ' if commit == gate.SHARED_QUALIFICATION_COMMIT and path == gate.SHARED_RECEIPT else data
+        with mock.patch.object(gate, 'git_blob', changed):
+            with self.assertRaisesRegex(ValueError, 'immutable shared trusted import'):
+                gate.verify_binding(ROOT, self.join)
+
+    def test_exact_root_default_feature_target_and_importer_pin(self):
+        manifest = gate.tomllib.loads((ROOT / 'Cargo.toml').read_text())
+        gate.validate_shared_root_manifest(manifest)
+        for change in [
+            lambda v: v['features'].__setitem__('default', ['native-ffi-acceptance']),
+            lambda v: v['features'].__setitem__('unexpected', []),
+            lambda v: v['test'][0].__setitem__('required-features', []),
+            lambda v: v['dependencies']['kairo-data-ffi'].__setitem__('rev', '0' * 40),
+            lambda v: v['dependencies']['kairo-data-ffi'].__setitem__('package', 'kairo-ecs-ffi'),
+            lambda v: v['dependencies']['kairo-data-ffi'].__setitem__('optional', 1),
+        ]:
+            value = copy.deepcopy(manifest)
+            change(value)
+            with self.assertRaisesRegex(ValueError, 'shared root feature/dependency/test profile'):
+                gate.validate_shared_root_manifest(value)
+
+    def test_shared_receipt_scope_bindings_cases_and_exact_types(self):
+        gate.validate_shared_receipt(self.receipt, self.expected, self.bindings, self.reference)
+        for key in self.expected:
+            value = copy.deepcopy(self.receipt)
+            value['promotion_bindings'][key] = 'changed'
+            with self.subTest(binding=key), self.assertRaises(ValueError):
+                gate.validate_shared_receipt(value, self.expected, self.bindings, self.reference)
+        value = copy.deepcopy(self.receipt)
+        value['summary_compatibility']['seed'] = 7.0
+        with self.assertRaises(ValueError):
+            gate.validate_shared_receipt(value, self.expected, self.bindings, self.reference)
+        for key, replacement in [('case', 100.0), ('repeat', True), ('current_exit', False)]:
+            value = copy.deepcopy(self.receipt)
+            value['summary_compatibility']['cases'][0][key] = replacement
+            with self.subTest(case_field=key), self.assertRaises(ValueError):
+                gate.validate_shared_receipt(value, self.expected, self.bindings, self.reference)
+        for key, replacement in [('schema_version', True), ('scope', 'all_R14'),
+                                 ('renewed_a7_acceptance', True)]:
+            value = copy.deepcopy(self.receipt)
+            value[key] = replacement
+            with self.subTest(field=key), self.assertRaises(ValueError):
+                gate.validate_shared_receipt(value, self.expected, self.bindings, self.reference)
+        value = copy.deepcopy(self.receipt)
+        value['summary_compatibility']['cases'].pop()
+        with self.assertRaises(ValueError):
+            gate.validate_shared_receipt(value, self.expected, self.bindings, self.reference)
+        for key, replacement in [('data_commit', '0' * 40), ('runtime_commit', '0' * 40),
+                                 ('polars_commit', '0' * 40)]:
+            changed = dict(self.bindings, **{key: replacement})
+            with self.subTest(pin=key), self.assertRaises(ValueError):
+                gate.validate_shared_receipt(self.receipt, self.expected, changed, self.reference)

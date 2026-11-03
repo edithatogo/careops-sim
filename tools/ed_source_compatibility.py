@@ -32,6 +32,53 @@ DRIVERS = ('tools/ed_benchmarks.py', 'tools/ed_benchmark_process.py',
 JOIN_COMMIT = '99cb1c74ca93d9721e86e353ffb41d97aa4e7046'
 JOIN_PATH = 'conductor/evidence/a7-two-consumer-20261103/join.json'
 
+# Bound in a SECOND source commit to the FIRST actual qualified adoption commit.
+# Keep placeholder until that immutable source+actual receipt commit exists.
+SHARED_QUALIFICATION_COMMIT = 'a61f259ff3e553db8442b150bd767548ef9c6b73'
+SHARED_DATA_PROMOTION = '473ff2c0e640a7e457f500593f6ea1f06602ab35'
+SHARED_RUNTIME = '07410266bf54b6f73c59db2f8cbfbc5697c53734'
+SHARED_POLARS = '96439685eb2f95108f51087d2b76091917f2593c'
+SHARED_RECEIPT = 'conductor/evidence/polars-shared-import-20261104/source-compatibility.json'
+CLI_RECEIPT_COMMIT = 'b0ddd0c1ea02b99667a643199051b3e303a35b8e'
+FORMAT_RECEIPT_COMMIT = '7b9892b28bfabe7f26f7fa9d292f74ba0d6484bb'
+# Only these promotion-critical sources are frozen by this explicit profile.
+SHARED_SOURCES = (
+    'Cargo.toml', 'Cargo.lock', 'crates/careops-ed/Cargo.toml',
+    'crates/careops-birthing-cli/Cargo.toml',
+    'crates/careops-ed/src/native_output.rs', 'crates/careops-ed/src/native_reader.rs',
+    'crates/careops-ed-cli/src/lib.rs', 'crates/careops-ed-cli/src/main.rs',
+    'crates/careops-birthing-cli/src/lib.rs', 'crates/careops-birthing-cli/read_batch.py',
+    'crates/careops-ed/test_native_output.py', 'crates/careops-ed/test_native_files.py',
+    'tests/r143_native_domain_ffi.rs', 'tools/ed_native_benchmarks.py',
+    'tools/ed_native_benchmark_process.py',
+)
+SHARED_ROOT_FEATURES = {
+    'default': [],
+    'native-ffi-acceptance': ['dep:careops-ed', 'dep:careops-birthing-cli',
+                              'dep:kairo-data-arrow', 'dep:kairo-data-ffi',
+                              'dep:serde_json', 'dep:tempfile'],
+}
+SHARED_ROOT_TESTS = [{'name': 'r143_native_domain_ffi',
+                      'path': 'tests/r143_native_domain_ffi.rs',
+                      'required-features': ['native-ffi-acceptance']}]
+SHARED_ROOT_DEPENDENCIES = {
+    'careops-ed': {'path': 'crates/careops-ed', 'default-features': False,
+                   'features': ['native-data'], 'optional': True},
+    'careops-birthing-cli': {'path': 'crates/careops-birthing-cli', 'optional': True},
+    'kairo-data-arrow': {'package': 'kairo-ecs-arrow',
+                         'git': 'https://github.com/edithatogo/kairos.git',
+                         'rev': SHARED_DATA_PROMOTION, 'version': '=0.1.0',
+                         'default-features': False, 'features': ['polars-native'],
+                         'optional': True},
+    'kairo-data-ffi': {'package': 'kairo-ecs-arrow-ffi',
+                       'git': 'https://github.com/edithatogo/kairos.git',
+                       'rev': SHARED_DATA_PROMOTION, 'version': '=0.1.0',
+                       'default-features': False, 'features': ['native-data'],
+                       'optional': True},
+    'serde_json': {'workspace': True, 'optional': True},
+    'tempfile': {'version': '=3.27.0', 'optional': True},
+}
+
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
@@ -56,7 +103,8 @@ def git_blob(root, commit, path):
 def validate_receipt(receipt, bindings, reference):
     if not isinstance(receipt, dict) or type(receipt.get('schema_version')) is not int or receipt['schema_version'] != 1 or receipt.get('scope') != 'observer_capture_summary_parity_only':
         raise ValueError('unsupported compatibility receipt or scope')
-    if receipt.get('renewed_a7_acceptance') is not False or receipt.get('seed') != 7:
+    if (receipt.get('renewed_a7_acceptance') is not False
+            or type(receipt.get('seed')) is not int or receipt['seed'] != 7):
         raise ValueError('receipt cannot renew historical A7 acceptance')
     if receipt.get('bindings') != bindings:
         raise ValueError('compatibility source/runtime/driver binding mismatch')
@@ -126,6 +174,9 @@ def verify_binding(root, join):
     # inherit a new data revision. Existing frozen source/driver constraints stay.
     validate_receipt(receipt, historical_bindings, reference)
     if bindings['data_commit'] == join['native_data_component']:
+        return
+    if bindings['data_commit'] == SHARED_DATA_PROMOTION:
+        verify_shared_promotion(root, join, bindings, reference)
         return
     if bindings['data_commit'] != DATA_PROMOTION:
         raise ValueError('unqualified data source revision')
@@ -271,3 +322,176 @@ def validate_cli_receipt(receipt, expected, bindings, reference):
                 or type(case.get('repeat')) is not int or type(case.get('kind')) is not str):
             raise ValueError('native CLI cutover case identity must preserve exact types')
     validate_receipt(summary,bindings,reference)
+
+
+def _anchored_receipt(root, path, commit, missing_message, changed_message):
+    try:
+        raw = (Path(root) / path).read_bytes()
+        receipt = json.loads(raw)
+    except (OSError, ValueError) as error:
+        raise ValueError(missing_message) from error
+    if raw != git_blob(root, commit, path):
+        raise ValueError(changed_message)
+    return raw, receipt
+
+
+def _historical_summary_bindings(root, commit, data_commit, join, reference):
+    """Original Git snapshot, never the new lock, source or data revision."""
+    baseline = join['qualified_runtime_tree']
+    manifest = tomllib.loads(git_blob(root, commit, 'crates/careops-ed/Cargo.toml').decode())
+    return {
+        'baseline_commit': baseline,
+        'baseline_source_sha256': digest(git_blob(root, baseline, SOURCE)),
+        'current_source_sha256': digest(git_blob(root, commit, SOURCE)),
+        'source_path': SOURCE, 'runtime_commit': join['kairos_runtime'],
+        'data_commit': data_commit,
+        'polars_commit': manifest['dependencies']['polars']['rev'],
+        'driver_sha256': {p: digest(git_blob(root, baseline, p)) for p in DRIVERS},
+        'reference_sha256': digest(git_blob(root, baseline, REFERENCE)),
+    }
+
+
+def _native_bindings_at(root, commit, data_bytes):
+    return {
+        'data_receipt_commit': DATA_RECEIPT_COMMIT,
+        'data_receipt_sha256': digest(data_bytes),
+        'lock_sha256': digest(git_blob(root, commit, 'Cargo.lock')),
+        'ed_manifest_sha256': digest(git_blob(root, commit, 'crates/careops-ed/Cargo.toml')),
+        'metadata_edges': copy.deepcopy(METADATA_EDGES),
+        'source_sha256': {p: digest(git_blob(root, commit, p)) for p in NATIVE_SOURCES},
+    }
+
+
+def _cli_bindings_at(root, commit, native_bytes):
+    return {
+        'native_receipt_commit': NATIVE_RECEIPT_COMMIT,
+        'native_receipt_sha256': digest(native_bytes),
+        'lock_sha256': digest(git_blob(root, commit, 'Cargo.lock')),
+        'ed_manifest_sha256': digest(git_blob(root, commit, 'crates/careops-ed/Cargo.toml')),
+        'cli_manifest_sha256': digest(git_blob(root, commit, 'crates/careops-ed-cli/Cargo.toml')),
+        'source_sha256': {p: digest(git_blob(root, commit, p)) for p in CLI_SOURCES},
+        'native_driver_sha256': {p: digest(git_blob(root, commit, p)) for p in CLI_DRIVERS},
+        'driver_protocol': 'careops.ed.native-benchmark.v1',
+        'process_protocol': 'careops.ed.native-benchmark-process.v1',
+    }
+
+
+def validate_shared_history(root, join, reference):
+    """Validate every old receipt at its original accepted Git/source profile."""
+    observer_bytes, observer = _anchored_receipt(
+        root, RECEIPT, HISTORICAL_RECEIPT_COMMIT,
+        'changed ED source needs exact compatibility evidence',
+        'immutable historical compatibility receipt changed')
+    validate_receipt(observer, _historical_summary_bindings(
+        root, HISTORICAL_RECEIPT_COMMIT, join['native_data_component'], join, reference), reference)
+    data_bytes, data = _anchored_receipt(
+        root, DATA_RECEIPT, DATA_RECEIPT_COMMIT,
+        'data promotion needs exact compatibility evidence',
+        'immutable data compatibility receipt changed')
+    data_summary = _historical_summary_bindings(root, DATA_RECEIPT_COMMIT, DATA_PROMOTION, join, reference)
+    expected_data = {
+        'from_data_commit': join['native_data_component'], 'to_data_commit': DATA_PROMOTION,
+        'runtime_commit': join['kairos_runtime'], 'polars_commit': data_summary['polars_commit'],
+        'current_source_sha256': data_summary['current_source_sha256'],
+        'lock_sha256': digest(git_blob(root, DATA_RECEIPT_COMMIT, 'Cargo.lock')),
+        'ed_manifest_sha256': digest(git_blob(root, DATA_RECEIPT_COMMIT, 'crates/careops-ed/Cargo.toml')),
+        'historical_receipt_sha256': digest(observer_bytes),
+        'historical_join_sha256': digest(git_blob(root, JOIN_COMMIT, JOIN_PATH)),
+        'reference_sha256': data_summary['reference_sha256'],
+        'driver_sha256': data_summary['driver_sha256'],
+    }
+    validate_data_receipt(data, expected_data, data_summary, reference)
+    # The old metadata profile is qualified ONLY against its old snapshot.
+    validate_metadata_edges(root, git_blob(root, NATIVE_RECEIPT_COMMIT, 'Cargo.lock'),
+                            git_blob(root, NATIVE_RECEIPT_COMMIT, 'crates/careops-ed/Cargo.toml'))
+    native_bytes, native = _anchored_receipt(
+        root, NATIVE_RECEIPT, NATIVE_RECEIPT_COMMIT,
+        'native wire dependencies need exact compatibility evidence',
+        'immutable native wire compatibility receipt changed')
+    validate_native_receipt(native, _native_bindings_at(root, NATIVE_RECEIPT_COMMIT, data_bytes),
+                            _historical_summary_bindings(root, NATIVE_RECEIPT_COMMIT, DATA_PROMOTION, join, reference), reference)
+    cli_bytes, cli = _anchored_receipt(
+        root, CLI_RECEIPT, CLI_RECEIPT_COMMIT,
+        'native CLI cutover needs exact compatibility evidence',
+        'immutable native CLI compatibility receipt changed')
+    validate_cli_receipt(cli, _cli_bindings_at(root, CLI_RECEIPT_COMMIT, native_bytes),
+                         _historical_summary_bindings(root, CLI_RECEIPT_COMMIT, DATA_PROMOTION, join, reference), reference)
+    format_bytes, formatted = _anchored_receipt(
+        root, FORMAT_RECEIPT, FORMAT_RECEIPT_COMMIT,
+        'formatted native reader needs exact compatibility evidence',
+        'immutable formatted native reader compatibility receipt changed')
+    expected_format = _native_bindings_at(root, FORMAT_RECEIPT_COMMIT, data_bytes)
+    if expected_format['source_sha256']['crates/careops-ed/src/native_reader.rs'] != FORMATTED_READER_SHA:
+        raise ValueError('unqualified native reader formatted historical profile')
+    validate_native_receipt(formatted, expected_format,
+                            _historical_summary_bindings(root, FORMAT_RECEIPT_COMMIT, DATA_PROMOTION, join, reference), reference)
+    return {
+        RECEIPT: {'commit': HISTORICAL_RECEIPT_COMMIT, 'sha256': digest(observer_bytes)},
+        DATA_RECEIPT: {'commit': DATA_RECEIPT_COMMIT, 'sha256': digest(data_bytes)},
+        NATIVE_RECEIPT: {'commit': NATIVE_RECEIPT_COMMIT, 'sha256': digest(native_bytes)},
+        CLI_RECEIPT: {'commit': CLI_RECEIPT_COMMIT, 'sha256': digest(cli_bytes)},
+        FORMAT_RECEIPT: {'commit': FORMAT_RECEIPT_COMMIT, 'sha256': digest(format_bytes)},
+    }
+
+
+def validate_shared_root_manifest(manifest):
+    if (not strict_equal(manifest.get('features'), SHARED_ROOT_FEATURES)
+            or not strict_equal(manifest.get('test'), SHARED_ROOT_TESTS)
+            or not strict_equal(manifest.get('dependencies'), SHARED_ROOT_DEPENDENCIES)):
+        raise ValueError('data promotion scope or exact binding mismatch: shared root feature/dependency/test profile')
+
+
+def shared_bindings(root, commit=None):
+    """Receipt generator: current bytes before commit; verifier: immutable first commit.
+
+    The returned object deliberately omits that commit ID, so the first receipt
+    has no self-hash/self-commit dependency. The second guard commit supplies its
+    known immutable anchor. No receipt is generated or accepted by this helper.
+    """
+    root = Path(root)
+    read = (lambda path: (root / path).read_bytes()) if commit is None else (lambda path: git_blob(root, commit, path))
+    manifest = tomllib.loads(read('Cargo.toml').decode())
+    validate_shared_root_manifest(manifest)
+    return {
+        'from_data_commit': DATA_PROMOTION, 'to_data_commit': SHARED_DATA_PROMOTION,
+        'runtime_commit': SHARED_RUNTIME, 'polars_commit': SHARED_POLARS,
+        'source_sha256': {p: digest(read(p)) for p in SHARED_SOURCES},
+        'root_features': copy.deepcopy(SHARED_ROOT_FEATURES),
+        'root_test_targets': copy.deepcopy(SHARED_ROOT_TESTS),
+        'root_optional_dependencies': copy.deepcopy(SHARED_ROOT_DEPENDENCIES),
+        'historical_receipts': {
+            path: {'commit': anchor, 'sha256': digest(git_blob(root, anchor, path))}
+            for path, anchor in [
+                (RECEIPT, HISTORICAL_RECEIPT_COMMIT), (DATA_RECEIPT, DATA_RECEIPT_COMMIT),
+                (NATIVE_RECEIPT, NATIVE_RECEIPT_COMMIT), (CLI_RECEIPT, CLI_RECEIPT_COMMIT),
+                (FORMAT_RECEIPT, FORMAT_RECEIPT_COMMIT)]
+        },
+    }
+
+
+def validate_shared_receipt(receipt, expected, bindings, reference):
+    if (not isinstance(receipt, dict)
+            or set(receipt) != {'schema_version', 'scope', 'renewed_a7_acceptance',
+                                'promotion_bindings', 'summary_compatibility'}
+            or type(receipt.get('schema_version')) is not int or receipt['schema_version'] != 1
+            or receipt.get('scope') != 'shared_trusted_import_data_source_summary_parity_only'
+            or receipt.get('renewed_a7_acceptance') is not False
+            or not strict_equal(receipt.get('promotion_bindings'), expected)):
+        raise ValueError('data promotion scope or exact binding mismatch: shared trusted import receipt')
+    if (bindings.get('data_commit') != SHARED_DATA_PROMOTION
+            or bindings.get('runtime_commit') != SHARED_RUNTIME
+            or bindings.get('polars_commit') != SHARED_POLARS):
+        raise ValueError('unqualified shared trusted import source/runtime/data profile')
+    validate_receipt(receipt.get('summary_compatibility'), bindings, reference)
+
+
+def verify_shared_promotion(root, join, bindings, reference):
+    validate_shared_history(root, join, reference)
+    _, receipt = _anchored_receipt(
+        root, SHARED_RECEIPT, SHARED_QUALIFICATION_COMMIT,
+        'shared trusted import promotion needs exact compatibility evidence',
+        'immutable shared trusted import compatibility receipt changed')
+    expected = shared_bindings(root, SHARED_QUALIFICATION_COMMIT)
+    if not strict_equal(shared_bindings(root), expected):
+        raise ValueError('data promotion scope or exact binding mismatch: shared current source/profile')
+    validate_shared_receipt(receipt, expected, bindings, reference)
