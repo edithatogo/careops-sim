@@ -1,78 +1,23 @@
 #![forbid(unsafe_code)]
 
-//! C6.3 Compatibility, Deterministic Replay, and Performance Gates.
-//!
-//! Verifies:
-//! 1. `test_feature_api_manifest_compatibility`:
-//!    - Scenario JSON validation and deterministic exit codes (`ExitCodeDef`).
-//!    - Run manifest schema version checking (`schema_version = 1`), hash verification (`compute_sha256_hex`).
-//!    - CLI dispatcher commands (`validate`, `run`, `compare`, `export`).
-//!    - Arrow/Parquet schema compatibility, explicit units, and denominators.
-//!
-//! 2. `test_deterministic_replay_and_worker_concurrency`:
-//!    - Deterministic replay: repeated simulation runs on identical seeds yield identical run summaries.
-//!    - Batch worker equivalence: batch runner with 1, 2, and 4 workers yields identical output summaries,
-//!      identical hashes, and identical Arrow patient records.
-//!
-//! 3. `test_performance_benchmarks_and_scaling`:
-//!    - Simulation step throughput (steps/sec and patients/sec) measured across 100, 500, and 1000 patients.
-//!    - Comparison report generation latency measured on 1000-patient runs.
-//!    - Ingestion memory footprint and probe overhead metrics.
-//!    - Named hardware environment logging (OS, Arch, CPU parallelism).
-//!
-//! 4. `test_validity_limits_and_diagnostics`:
-//!    - Zero horizon rejection (`ExitCodeDef::MalformedConfig`).
-//!    - Zero work rejection (`work_ticks == 0` and empty `patients: []`).
-//!    - Malformed JSON diagnostics (syntax errors, unknown fields, bad UTF-8).
-//!    - Capacity constraints (non-positive counts, open > physical, staffed > open).
+//! C6.3 domain compatibility, independent historical facts, replay and scaling.
+//! CLI lifecycle/capability contracts live in careops-ed-cli tests, avoiding a
+//! reverse dependency. Alpha row JSON/schema DDL is retired, not reproduced.
 
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::time::Instant;
 
 use careops_ed::disposition::api_runner::{
-    compare_run_documents, compute_sha256_hex, execute_cli_args, export_document, run_experiment,
-    validate_scenario_source, ExitCodeDef, ExportFormat, RunDocument, RunOptions,
-    ValidationSuccess,
-};
-use careops_ed::disposition::arrow_export::{
-    build_metrics_arrow_schema, build_patient_arrow_schema, build_spatial_arrow_schema,
-    generate_arrow_export_bundle, generate_parquet_schema_ddl,
+    compute_sha256_hex, validate_scenario_source, ExitCodeDef, ValidationSuccess,
 };
 use careops_ed::disposition::batch_runner::{run_batch_with_workers, BatchConfig};
-use careops_ed::{parse_scenario_json, run_scenario, ScenarioConfig};
+#[cfg(feature = "native-data")]
+use careops_ed::disposition::native_output::{
+    export_native_batch, read_native_dataset, ExportLimits, NativeFormat,
+};
+use careops_ed::{parse_scenario_json, run_scenario, RunSummary, ScenarioConfig};
 use serde_json::json;
-
-struct TestTempDir {
-    path: PathBuf,
-}
-
-impl TestTempDir {
-    fn new(prefix: &str) -> Self {
-        let unique = format!(
-            "careops_c63_{}_{}_{}",
-            prefix,
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
-        );
-        let path = std::env::temp_dir().join(unique);
-        fs::create_dir_all(&path).expect("create temp dir");
-        Self { path }
-    }
-
-    fn path(&self) -> &Path {
-        &self.path
-    }
-}
-
-impl Drop for TestTempDir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.path);
-    }
-}
 
 fn repo_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -85,14 +30,6 @@ fn repo_root() -> PathBuf {
 
 fn nominal_path() -> PathBuf {
     repo_root().join("crates/careops-ed/examples/nominal_mvp.json")
-}
-
-fn constrained_path() -> PathBuf {
-    repo_root().join("crates/careops-ed/examples/constrained_mvp.json")
-}
-
-fn malformed_path() -> PathBuf {
-    repo_root().join("crates/careops-ed/examples/malformed_mvp.json")
 }
 
 fn load_nominal_scenario() -> ScenarioConfig {
@@ -200,224 +137,27 @@ fn make_synthetic_scenario_json(
 // ---------------------------------------------------------------------------
 
 #[test]
-fn test_feature_api_manifest_compatibility() {
-    let tmp = TestTempDir::new("api_manifest_compat");
-
-    // A. Scenario JSON validation and deterministic exit codes
+fn test_feature_api_validation_and_standard_hash_vectors() {
     let nominal_content = fs::read_to_string(nominal_path()).expect("read nominal_mvp.json");
-    let val_res = validate_scenario_source(&nominal_content);
-    assert!(val_res.is_ok(), "nominal scenario must be valid");
-    let report: ValidationSuccess = val_res.unwrap();
+    let report: ValidationSuccess = validate_scenario_source(&nominal_content).unwrap();
     assert_eq!(report.scenario_id, "nominal-ed-mvp");
     assert_eq!(report.schema_version, 1);
     assert_eq!(report.time_unit, "tick");
     assert_eq!(report.horizon_ticks, 20);
     assert_eq!(report.patient_count, 5);
-
-    // Unsupported schema version -> ExitCodeDef::MalformedConfig
-    let bad_schema_json =
-        nominal_content.replace("\"schema_version\": 1,", "\"schema_version\": 99,");
-    let bad_val = validate_scenario_source(&bad_schema_json);
-    assert!(bad_val.is_err());
-    assert_eq!(bad_val.unwrap_err().code, ExitCodeDef::MalformedConfig);
-
-    // Nonexistent file -> ExitCodeDef::FileNotFound
-    let missing_out = execute_cli_args(&[
-        "validate".to_string(),
-        tmp.path().join("does_not_exist.json").display().to_string(),
-    ]);
-    assert_eq!(missing_out.exit_code, ExitCodeDef::FileNotFound);
-    assert!(missing_out.stderr.contains("file not found"));
-
-    // Missing command -> ExitCodeDef::UsageError
-    let no_cmd_out = execute_cli_args(&[]);
-    assert_eq!(no_cmd_out.exit_code, ExitCodeDef::UsageError);
-
-    // B. Run manifest schema version checking & hash verification
-    let empty_sha = compute_sha256_hex(b"");
+    let bad = nominal_content.replace("\"schema_version\": 1,", "\"schema_version\": 99,");
     assert_eq!(
-        empty_sha, "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "empty sha256 must match standard FIPS 180-4 vector"
+        validate_scenario_source(&bad).unwrap_err().code,
+        ExitCodeDef::MalformedConfig
     );
-    let abc_sha = compute_sha256_hex(b"abc");
     assert_eq!(
-        abc_sha, "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-        "abc sha256 must match standard FIPS 180-4 vector"
+        compute_sha256_hex(b""),
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     );
-
-    let scenario = load_nominal_scenario();
-    let nominal_bytes = nominal_content.as_bytes();
-    let expected_hash = compute_sha256_hex(nominal_bytes);
-
-    let run_opts = RunOptions {
-        seed_override: Some(42),
-        horizon_override: Some(20),
-        ..Default::default()
-    };
-    let doc = run_experiment(
-        &scenario,
-        &run_opts,
-        "nominal_mvp.json",
-        nominal_bytes,
-        None,
-    )
-    .expect("run experiment");
-
     assert_eq!(
-        doc.manifest.schema_version, 1,
-        "manifest schema_version must be 1"
+        compute_sha256_hex(b"abc"),
+        "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
     );
-    assert_eq!(doc.manifest.scenario_id, "nominal-ed-mvp");
-    assert_eq!(doc.manifest.seed, 42);
-    assert_eq!(doc.manifest.time_unit, "tick");
-    assert_eq!(doc.manifest.horizon_ticks, 20);
-    assert_eq!(doc.manifest.input_sha256, expected_hash);
-
-    // Incompatible scenario comparisons:
-    // Schema version mismatch -> ExitCodeDef::IncompatibleScenario
-    let mut cand_doc_bad_schema = doc.clone();
-    cand_doc_bad_schema.manifest.schema_version = 2;
-    let comp_schema_err = compare_run_documents(&doc, &cand_doc_bad_schema);
-    assert!(comp_schema_err.is_err());
-    assert_eq!(
-        comp_schema_err.unwrap_err().code,
-        ExitCodeDef::IncompatibleScenario
-    );
-
-    // Time unit mismatch -> ExitCodeDef::IncompatibleScenario
-    let mut cand_doc_bad_unit = doc.clone();
-    cand_doc_bad_unit.manifest.time_unit = "second".to_string();
-    let comp_unit_err = compare_run_documents(&doc, &cand_doc_bad_unit);
-    assert!(comp_unit_err.is_err());
-    assert_eq!(
-        comp_unit_err.unwrap_err().code,
-        ExitCodeDef::IncompatibleScenario
-    );
-
-    // C. CLI Dispatcher Commands: validate, run, compare, export
-    // 1. validate
-    let cli_val = execute_cli_args(&["validate".to_string(), nominal_path().display().to_string()]);
-    assert_eq!(cli_val.exit_code, ExitCodeDef::Success);
-    assert!(cli_val.stdout.contains("valid scenario 'nominal-ed-mvp'"));
-
-    // 2. run
-    let out_json = tmp.path().join("run_out.json");
-    let cli_run = execute_cli_args(&[
-        "run".to_string(),
-        nominal_path().display().to_string(),
-        "--output".to_string(),
-        out_json.display().to_string(),
-        "--seed".to_string(),
-        "42".to_string(),
-        "--horizon".to_string(),
-        "30".to_string(),
-    ]);
-    assert_eq!(cli_run.exit_code, ExitCodeDef::Success);
-    assert!(out_json.exists());
-
-    // Overwrite protection: running again without --overwrite fails with FileAlreadyExists
-    let cli_run_dup = execute_cli_args(&[
-        "run".to_string(),
-        nominal_path().display().to_string(),
-        "--output".to_string(),
-        out_json.display().to_string(),
-    ]);
-    assert_eq!(cli_run_dup.exit_code, ExitCodeDef::FileAlreadyExists);
-
-    // Running with --overwrite succeeds
-    let cli_run_overwrite = execute_cli_args(&[
-        "run".to_string(),
-        nominal_path().display().to_string(),
-        "--output".to_string(),
-        out_json.display().to_string(),
-        "--overwrite".to_string(),
-    ]);
-    assert_eq!(cli_run_overwrite.exit_code, ExitCodeDef::Success);
-
-    // 3. compare
-    let out_cand_json = tmp.path().join("cand_out.json");
-    let cli_run_cand = execute_cli_args(&[
-        "run".to_string(),
-        constrained_path().display().to_string(),
-        "--output".to_string(),
-        out_cand_json.display().to_string(),
-        "--seed".to_string(),
-        "42".to_string(),
-    ]);
-    assert_eq!(cli_run_cand.exit_code, ExitCodeDef::Success);
-
-    let cli_comp = execute_cli_args(&[
-        "compare".to_string(),
-        out_json.display().to_string(),
-        out_cand_json.display().to_string(),
-    ]);
-    assert_eq!(cli_comp.exit_code, ExitCodeDef::Success);
-    assert!(cli_comp.stdout.contains("nominal-ed-mvp"));
-    assert!(cli_comp.stdout.contains("constrained-ed-mvp"));
-    assert!(cli_comp.stdout.contains("mean_wait"));
-
-    // 4. export
-    // Export CSV
-    let export_csv_path = tmp.path().join("export.csv");
-    let cli_exp_csv = execute_cli_args(&[
-        "export".to_string(),
-        out_json.display().to_string(),
-        "--format".to_string(),
-        "csv".to_string(),
-        "--output".to_string(),
-        export_csv_path.display().to_string(),
-    ]);
-    assert_eq!(cli_exp_csv.exit_code, ExitCodeDef::Success);
-    let csv_content = fs::read_to_string(&export_csv_path).expect("read csv");
-    assert!(csv_content.starts_with("patient_id,arrival_tick,start_tick,completion_tick"));
-
-    // Export Arrow schema
-    let export_arrow_path = tmp.path().join("export_arrow.json");
-    let cli_exp_arrow = execute_cli_args(&[
-        "export".to_string(),
-        out_json.display().to_string(),
-        "--format".to_string(),
-        "arrow".to_string(),
-        "--output".to_string(),
-        export_arrow_path.display().to_string(),
-    ]);
-    assert_eq!(cli_exp_arrow.exit_code, ExitCodeDef::Success);
-    let arrow_schema_text = fs::read_to_string(&export_arrow_path).expect("read arrow schema");
-    assert!(arrow_schema_text.contains("arrow_schema"));
-    assert!(arrow_schema_text.contains("patient_id"));
-    assert!(arrow_schema_text.contains("started_patients"));
-
-    // Export Parquet schema
-    let cli_exp_parquet = execute_cli_args(&[
-        "export".to_string(),
-        out_json.display().to_string(),
-        "--format".to_string(),
-        "parquet".to_string(),
-    ]);
-    assert_eq!(cli_exp_parquet.exit_code, ExitCodeDef::Success);
-    assert!(cli_exp_parquet
-        .stdout
-        .contains("message careops_ed_patient_record"));
-
-    // Verify Arrow schema builders and field properties directly
-    let p_schema = build_patient_arrow_schema("nominal", "tick");
-    assert_eq!(p_schema.schema_name, "careops.ed.patient_records.v2");
-    let wait_field = p_schema
-        .fields
-        .iter()
-        .find(|f| f.name == "wait_ticks")
-        .expect("wait_ticks field");
-    assert_eq!(wait_field.unit, "tick");
-    assert_eq!(wait_field.denominator.as_deref(), Some("started_patients"));
-
-    let m_schema = build_metrics_arrow_schema();
-    assert_eq!(m_schema.schema_name, "careops.ed.metrics.v2");
-
-    let s_schema = build_spatial_arrow_schema();
-    assert_eq!(s_schema.schema_name, "careops.ed.spatial_transit.v2");
-
-    let ddl = generate_parquet_schema_ddl();
-    assert!(ddl.contains("required int64 arrival_tick"));
 }
 
 // ---------------------------------------------------------------------------
@@ -425,44 +165,26 @@ fn test_feature_api_manifest_compatibility() {
 // ---------------------------------------------------------------------------
 
 #[test]
-fn historical_nominal_fixture_serializes_byte_identically() {
-    let baseline_path =
-        repo_root().join("conductor/evidence/r1-native-baseline-20261021/ed/first.json");
-    let baseline_bytes = fs::read(&baseline_path).expect("read immutable historical ED output");
-    let baseline: RunDocument =
-        serde_json::from_slice(&baseline_bytes).expect("parse historical ED output");
-    let input_bytes = fs::read(nominal_path()).expect("read unchanged nominal scenario bytes");
-
+fn historical_nominal_fixture_preserves_exact_independent_domain_facts() {
+    let bytes =
+        fs::read(repo_root().join("conductor/evidence/r1-native-baseline-20261021/ed/first.json"))
+            .unwrap();
     assert_eq!(
-        compute_sha256_hex(&input_bytes),
-        baseline.manifest.input_sha256,
-        "nominal fixture bytes must match the input used for the frozen baseline"
+        compute_sha256_hex(&bytes),
+        "0988abef23d353a1178d2ebefbcde4debec97a4b352307aeabbf1647bab6fda7"
     );
-
-    let scenario =
-        parse_scenario_json(std::str::from_utf8(&input_bytes).expect("nominal scenario is UTF-8"))
-            .expect("parse nominal scenario");
-    let options = RunOptions {
-        seed_override: Some(baseline.manifest.seed),
-        horizon_override: Some(baseline.manifest.horizon_ticks),
-        ..Default::default()
-    };
-    let current = run_experiment(
-        &scenario,
-        &options,
-        &baseline.manifest.input_file,
-        &input_bytes,
-        None,
-    )
-    .expect("run unchanged nominal scenario through the ED compatibility API");
-    let current_bytes = export_document(&current, ExportFormat::Json)
-        .expect("serialize current ED run document")
-        .into_bytes();
-
+    // This reads immutable historical evidence only; no alpha output is produced.
+    let baseline: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    let expected: RunSummary = serde_json::from_value(baseline["summary"].clone()).unwrap();
+    let input = fs::read(nominal_path()).unwrap();
     assert_eq!(
-        current_bytes, baseline_bytes,
-        "ED compatibility output must remain byte-identical to the frozen pre-extraction run"
+        compute_sha256_hex(&input),
+        baseline["manifest"]["input_sha256"].as_str().unwrap()
     );
+    let mut scenario = parse_scenario_json(std::str::from_utf8(&input).unwrap()).unwrap();
+    scenario.seed = baseline["manifest"]["seed"].as_u64().unwrap();
+    scenario.horizon_ticks = baseline["manifest"]["horizon_ticks"].as_u64().unwrap();
+    assert_eq!(run_scenario(&scenario).unwrap(), expected);
 }
 
 #[test]
@@ -477,28 +199,22 @@ fn test_deterministic_replay_and_worker_concurrency() {
         "identical scenario must produce identical RunSummary"
     );
 
-    let input_bytes = fs::read(nominal_path()).expect("read nominal bytes");
-    let opts = RunOptions {
-        seed_override: Some(999),
-        horizon_override: Some(50),
-        ..Default::default()
-    };
-    let doc_1 = run_experiment(&scenario, &opts, "nominal_mvp.json", &input_bytes, None)
-        .expect("experiment 1");
-    let doc_2 = run_experiment(&scenario, &opts, "nominal_mvp.json", &input_bytes, None)
-        .expect("experiment 2");
-
-    assert_eq!(doc_1.manifest, doc_2.manifest);
-    assert_eq!(doc_1.summary, doc_2.summary);
+    let mut overridden = scenario.clone();
+    overridden.seed = 999;
+    overridden.horizon_ticks = 50;
+    let first = run_scenario(&overridden).unwrap();
+    let second = run_scenario(&overridden).unwrap();
+    assert_eq!(first.seed, 999);
+    assert_eq!(first.horizon_ticks, 50);
+    assert_eq!(first, second);
     assert_eq!(
-        compute_sha256_hex(&serde_json::to_vec(&doc_1).unwrap()),
-        compute_sha256_hex(&serde_json::to_vec(&doc_2).unwrap()),
-        "serialized run documents on identical seeds must yield identical sha256"
+        compute_sha256_hex(&serde_json::to_vec(&first).unwrap()),
+        compute_sha256_hex(&serde_json::to_vec(&second).unwrap())
     );
 
     // B. Batch worker equivalence: batch runner with 1, 2, and 4 workers
     let cfg_1 = BatchConfig {
-        batch_id: "c63-worker-eq-1".to_string(),
+        batch_id: "c63-worker-eq".to_string(),
         scenario_id: "nominal-ed-mvp".to_string(),
         base_seed: 54321,
         replications: 4,
@@ -509,13 +225,13 @@ fn test_deterministic_replay_and_worker_concurrency() {
     };
 
     let cfg_2 = BatchConfig {
-        batch_id: "c63-worker-eq-2".to_string(),
+        batch_id: "c63-worker-eq".to_string(),
         num_workers: 2,
         ..cfg_1.clone()
     };
 
     let cfg_4 = BatchConfig {
-        batch_id: "c63-worker-eq-4".to_string(),
+        batch_id: "c63-worker-eq".to_string(),
         num_workers: 4,
         ..cfg_1.clone()
     };
@@ -589,15 +305,37 @@ fn test_deterministic_replay_and_worker_concurrency() {
         "2-worker and 4-worker output hashes must match"
     );
 
-    // Verify Arrow bundle patient records and metrics match identically
-    let bundle_1 = generate_arrow_export_bundle(&scenario, &res_1, None, None).expect("bundle 1");
-    let bundle_2 = generate_arrow_export_bundle(&scenario, &res_2, None, None).expect("bundle 2");
-    let bundle_4 = generate_arrow_export_bundle(&scenario, &res_4, None, None).expect("bundle 4");
-
-    assert_eq!(bundle_1.patient_records, bundle_2.patient_records);
-    assert_eq!(bundle_2.patient_records, bundle_4.patient_records);
-    assert_eq!(bundle_1.metrics, bundle_2.metrics);
-    assert_eq!(bundle_2.metrics, bundle_4.metrics);
+    #[cfg(feature = "native-data")]
+    {
+        let mut datasets = Vec::new();
+        for batch in [&res_1, &res_2, &res_4] {
+            let root = tempfile::tempdir().unwrap();
+            let manifest = export_native_batch(
+                &scenario,
+                batch,
+                root.path(),
+                NativeFormat::Parquet,
+                ExportLimits::default(),
+            )
+            .unwrap();
+            assert_eq!(
+                manifest
+                    .tables
+                    .iter()
+                    .map(|t| t.name.as_str())
+                    .collect::<Vec<_>>(),
+                ["patients", "replications", "metrics"]
+            );
+            datasets.push(read_native_dataset(root.path()).unwrap());
+        }
+        for other in &datasets[1..] {
+            assert!(datasets[0].patients().equals_missing(other.patients()));
+            assert!(datasets[0]
+                .replications()
+                .equals_missing(other.replications()));
+            assert!(datasets[0].metrics().equals_missing(other.metrics()));
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -621,7 +359,6 @@ fn test_performance_benchmarks_and_scaling() {
 
     // Benchmarking simulation step throughput across 100, 500, and 1000 patients
     let patient_scales = [100usize, 500usize, 1000usize];
-    let mut stored_1000_doc: Option<RunDocument> = None;
 
     for &n_patients in &patient_scales {
         // Construct patient specs: staggered arrivals every tick, work_ticks = 2
@@ -680,64 +417,8 @@ fn test_performance_benchmarks_and_scaling() {
             steps_per_sec > 100.0,
             "step throughput must be positive and reasonable"
         );
-
-        if n_patients == 1000 {
-            let doc = RunDocument {
-                manifest: careops_ed::disposition::api_runner::RunManifest {
-                    schema_version: 1,
-                    scenario_id: format!("scale-{n_patients}"),
-                    input_file: "synthetic.json".to_string(),
-                    input_sha256: compute_sha256_hex(json_str.as_bytes()),
-                    seed: 42,
-                    time_unit: "tick".to_string(),
-                    horizon_ticks,
-                },
-                validation_taxonomy: Default::default(),
-                summary,
-            };
-            stored_1000_doc = Some(doc);
-        }
     }
-
-    // Benchmark comparison report generation latency on 1000-patient runs
-    let base_1000_doc = stored_1000_doc.expect("1000 patient document must exist");
-    let mut cand_1000_doc = base_1000_doc.clone();
-    cand_1000_doc.manifest.scenario_id = "scale-1000-cand".to_string();
-    cand_1000_doc.manifest.seed = 999;
-    // Alter candidate wait ticks slightly to test delta and standard error calculations
-    for p in &mut cand_1000_doc.summary.patients {
-        if let Some(ref mut w) = p.wait_ticks {
-            *w = w.saturating_add(1);
-        }
-    }
-
-    let t_comp_start = Instant::now();
-    let comp_report =
-        compare_run_documents(&base_1000_doc, &cand_1000_doc).expect("comparison must succeed");
-    let t_comp = t_comp_start.elapsed();
-
-    println!(
-        "  1000-patient Comparison Latency: {:>8.2?} across {} metrics",
-        t_comp,
-        comp_report.metrics.len()
-    );
-
-    assert!(
-        t_comp.as_millis() < 100,
-        "1000-patient comparison latency must be under 100ms (took {:?})",
-        t_comp
-    );
-    assert_eq!(comp_report.base_scenario_id, "scale-1000");
-    assert_eq!(comp_report.candidate_scenario_id, "scale-1000-cand");
-    assert!(comp_report.metrics.len() >= 4);
-
-    // Verify probe overhead: export_document latency
-    let t_export_start = Instant::now();
-    let export_text = export_document(&base_1000_doc, ExportFormat::Json).expect("export json");
-    let t_export = t_export_start.elapsed();
-    assert!(!export_text.is_empty());
-    println!("  1000-patient Document Export Latency: {:>8.2?}", t_export);
-    println!("=================================================================\n");
+    // Actual CLI comparison/export timing moved to c63_native_contract in the CLI crate.
 }
 
 // ---------------------------------------------------------------------------
@@ -746,8 +427,6 @@ fn test_performance_benchmarks_and_scaling() {
 
 #[test]
 fn test_validity_limits_and_diagnostics() {
-    let tmp = TestTempDir::new("validity_limits");
-
     // A. Zero horizon rejection (ExitCodeDef::MalformedConfig)
     let zero_horizon_val = make_synthetic_scenario_json(
         "zero-horizon",
@@ -764,21 +443,6 @@ fn test_validity_limits_and_diagnostics() {
     let err = val_err.unwrap_err();
     assert_eq!(err.code, ExitCodeDef::MalformedConfig);
     assert!(err.message.contains("horizon"));
-
-    // Also verify via CLI dispatcher: validate command
-    let zero_h_path = tmp.path().join("zero_horizon.json");
-    fs::write(&zero_h_path, &zero_horizon_str).expect("write zero horizon");
-    let cli_zero_h = execute_cli_args(&["validate".to_string(), zero_h_path.display().to_string()]);
-    assert_eq!(cli_zero_h.exit_code, ExitCodeDef::MalformedConfig);
-
-    // CLI run with --horizon 0 override
-    let cli_override_zero_h = execute_cli_args(&[
-        "run".to_string(),
-        nominal_path().display().to_string(),
-        "--horizon".to_string(),
-        "0".to_string(),
-    ]);
-    assert_eq!(cli_override_zero_h.exit_code, ExitCodeDef::MalformedConfig);
 
     // B. Zero work rejection:
     // 1. Patient with work_ticks == 0
@@ -837,24 +501,6 @@ fn test_validity_limits_and_diagnostics() {
     let unknown_err = validate_scenario_source(&unknown_field_str);
     assert!(unknown_err.is_err());
     assert_eq!(unknown_err.unwrap_err().code, ExitCodeDef::MalformedConfig);
-
-    // 4. Malformed example file passed to CLI validate, compare, export
-    let cli_malformed_val = execute_cli_args(&[
-        "validate".to_string(),
-        malformed_path().display().to_string(),
-    ]);
-    assert_eq!(cli_malformed_val.exit_code, ExitCodeDef::MalformedConfig);
-
-    let cli_malformed_comp = execute_cli_args(&[
-        "compare".to_string(),
-        malformed_path().display().to_string(),
-        nominal_path().display().to_string(),
-    ]);
-    assert_eq!(cli_malformed_comp.exit_code, ExitCodeDef::MalformedConfig);
-
-    let cli_malformed_exp =
-        execute_cli_args(&["export".to_string(), malformed_path().display().to_string()]);
-    assert_eq!(cli_malformed_exp.exit_code, ExitCodeDef::MalformedConfig);
 
     // D. Capacity constraints (non-positive capacity rejection):
     // 1. Both physical_count and open_count are 0
