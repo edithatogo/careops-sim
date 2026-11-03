@@ -3,7 +3,7 @@
 use std::env;
 use std::process::ExitCode;
 
-use careops_ed::disposition::api_runner::execute_cli_args;
+use careops_ed_cli::execute;
 
 fn main() -> ExitCode {
     // Single-threaded process entry, before any worker or Polars pool exists.
@@ -21,18 +21,13 @@ fn main() -> ExitCode {
         }
     }
     let args: Vec<String> = env::args().skip(1).collect();
-    let out = execute_cli_args(&args);
-    if !out.stdout.is_empty() {
-        print!("{}", out.stdout);
-        if !out.stdout.ends_with('\n') {
-            println!();
+    let stdout = std::io::stdout();
+    let mut stdout = stdout.lock();
+    match execute(&args, &mut stdout, None) {
+        Ok(()) => ExitCode::SUCCESS,
+        Err(error) => {
+            eprintln!("{error}");
+            ExitCode::from(error.code as u8)
         }
     }
-    if !out.stderr.is_empty() {
-        eprint!("{}", out.stderr);
-        if !out.stderr.ends_with('\n') {
-            eprintln!();
-        }
-    }
-    ExitCode::from(out.exit_code as u8)
 }

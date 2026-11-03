@@ -2,14 +2,15 @@
 #![forbid(unsafe_code)]
 use careops_ed::capture::{BoundedPartWriter, MODEL_CONTRACT_SHA256};
 use careops_ed::disposition::api_runner::{
-    check_safe_cli_path, compute_sha256_hex, execute_cli_args, validate_scenario_source,
-    CancellationToken, ExitCodeDef, ValidationError, MAX_SCENARIO_PAYLOAD_BYTES,
+    check_safe_cli_path, compute_sha256_hex, validate_scenario_source, CancellationToken,
+    ExitCodeDef, ValidationError, MAX_SCENARIO_PAYLOAD_BYTES,
 };
 use careops_ed::disposition::batch_runner::{
     resume_batch_from_checkpoint, run_batch_with_workers, BatchConfig,
 };
 use careops_ed::disposition::native_output::{
-    export_native_batch, stream_patient_csv, ExportLimits, NativeFormat,
+    convert_native_dataset, export_native_batch, read_native_dataset, stream_patient_csv,
+    ExportLimits, NativeFormat,
 };
 use careops_ed::{parse_scenario_json, ScenarioConfig};
 use serde::{Deserialize, Serialize};
@@ -19,7 +20,7 @@ use std::path::{Path, PathBuf};
 
 pub const MAX_CONTROL_BYTES: usize = 128 * 1024;
 pub const MAX_STDOUT_BYTES: usize = 8 * 1024 * 1024;
-pub const USAGE:&str="Usage: careops-ed capabilities [--require MODE]\n  careops-ed validate INPUT.json\n  careops-ed run INPUT.json --output-dir FRESH [--seed N] [--horizon T] [--format parquet|ipc|csv] [--stdout] [--backend cpu_serial]\n  careops-ed batch INPUT.json --output-dir FRESH [--replications N] [--workers N] [--checkpoint N] [--seed N] [--horizon T] [--format parquet|ipc|csv] [--stdout] [--backend cpu_replications]\n  careops-ed batch INPUT.json --output-dir EXISTING --resume EXISTING/capture/checkpoint.json [--workers N]\nDefault format is real Parquet/Zstd. --stdout requires CSV and streams patients only. Fresh output roots are never overwritten. Resume is capture-only; incomplete export cannot be retried in place.\n";
+pub const USAGE:&str="Usage: careops-ed capabilities [--require MODE]\n  careops-ed validate INPUT.json\n  careops-ed run INPUT.json --output-dir FRESH [--seed N] [--horizon T] [--format parquet|ipc|csv] [--stdout] [--backend cpu_serial]\n  careops-ed batch INPUT.json --output-dir FRESH [--replications N] [--workers N] [--checkpoint N] [--seed N] [--horizon T] [--format parquet|ipc|csv] [--stdout] [--backend cpu_replications]\n  careops-ed batch INPUT.json --output-dir EXISTING --resume EXISTING/capture/checkpoint.json [--workers N]\n  careops-ed export DATASET --output-dir FRESH [--format parquet|ipc|csv]\n  careops-ed compare LEFT_DATASET RIGHT_DATASET\nDefault format is real Parquet/Zstd. --stdout requires CSV and streams patients only. Fresh output roots are never overwritten. Resume is capture-only; incomplete export cannot be retried in place.\nSoftware verification of simulation mechanics does NOT constitute clinical domain validation for any healthcare site.\n";
 fn error(code: ExitCodeDef, message: impl std::fmt::Display) -> ValidationError {
     ValidationError::new(code, message.to_string())
 }
@@ -63,6 +64,7 @@ fn argument<'a>(args: &'a [String], index: &mut usize) -> Result<&'a str, Valida
 }
 fn parse(args: &[String]) -> Result<Options, ValidationError> {
     let batch = args[0] == "batch";
+    let execution = matches!(args[0].as_str(), "run" | "batch");
     let mut options = Options::default();
     let mut index = 1;
     while index < args.len() {
@@ -72,14 +74,16 @@ fn parse(args: &[String]) -> Result<Options, ValidationError> {
                 &mut options.destination,
                 PathBuf::from(argument(args, &mut index)?),
             )?,
-            "--backend" => once(&mut options.backend, argument(args, &mut index)?.to_owned())?,
-            "--seed" => once(
+            "--backend" if execution => {
+                once(&mut options.backend, argument(args, &mut index)?.to_owned())?
+            }
+            "--seed" if execution => once(
                 &mut options.seed,
                 argument(args, &mut index)?
                     .parse()
                     .map_err(|_| usage("seed requires a u64"))?,
             )?,
-            "--horizon" => once(
+            "--horizon" if execution => once(
                 &mut options.horizon,
                 argument(args, &mut index)?
                     .parse()
@@ -116,7 +120,7 @@ fn parse(args: &[String]) -> Result<Options, ValidationError> {
                 };
                 once(&mut options.format, format)?;
             }
-            "--stdout" => {
+            "--stdout" if execution => {
                 if options.stream {
                     return Err(usage("--stdout specified more than once"));
                 }
@@ -144,12 +148,42 @@ fn parse(args: &[String]) -> Result<Options, ValidationError> {
     }
     Ok(options)
 }
-fn capability(args: &[String], stdout: &mut dyn Write) -> Result<(), ValidationError> {
-    let result = execute_cli_args(args);
-    if result.exit_code != ExitCodeDef::Success {
-        return Err(error(result.exit_code, result.stderr));
+fn execution_modes() -> serde_json::Value {
+    serde_json::json!({
+        "schema_version": 1,
+        "scope": "careops-ed executable modes; no hardware probe",
+        "modes": [
+            {"id": "cpu_serial", "available": true, "parallelism": "none"},
+            {"id": "cpu_replications", "available": true, "parallelism": "independent_replications"},
+            {"id": "metal", "available": false, "reason": "ED Metal workload is not integrated or device/performance qualified"},
+            {"id": "pdes", "available": false, "reason": "ED within-run PDES is not integrated or serial-oracle qualified"},
+            {"id": "grpc", "available": false, "reason": "ED gRPC is not integrated or protocol/failure qualified"},
+            {"id": "mpi", "available": false, "reason": "ED MPI is not integrated or runtime/failure qualified"},
+            {"id": "distributed", "available": false, "reason": "ED multi-host execution is not integrated or recovery/parity qualified"}
+        ]
+    })
+}
+
+fn require_mode(selected: &str) -> Result<(), ValidationError> {
+    match selected {
+        "cpu_serial" | "cpu_replications" => Ok(()),
+        "metal" | "pdes" | "grpc" | "mpi" | "distributed" => Err(error(
+            ExitCodeDef::SimulationFailed,
+            format!("careops-ed: backend '{selected}' is not integrated and qualified; inspect 'capabilities'"),
+        )),
+        _ => Err(usage(format!("careops-ed: unknown backend '{selected}'; inspect 'capabilities'"))),
     }
-    stdout.write_all(result.stdout.as_bytes()).map_err(output)?;
+}
+fn capability(args: &[String], stdout: &mut dyn Write) -> Result<(), ValidationError> {
+    if args.len() != 1 {
+        if args.len() != 3 || args[1] != "--require" {
+            return Err(usage("careops-ed: capabilities [--require <mode>]"));
+        }
+        require_mode(&args[2])?;
+    }
+    stdout
+        .write_all(&control(&execution_modes())?)
+        .map_err(output)?;
     stdout.write_all(b"\n").map_err(output)?;
     stdout.flush().map_err(output)
 }
@@ -163,11 +197,7 @@ fn mode(command: &str, selected: Option<&str>) -> Result<(), ValidationError> {
     if ["cpu_serial", "cpu_replications"].contains(&selected) && selected != expected {
         return Err(usage("backend is not available for this command"));
     }
-    let result = execute_cli_args(&["capabilities".into(), "--require".into(), selected.into()]);
-    if result.exit_code != ExitCodeDef::Success {
-        return Err(error(result.exit_code, result.stderr));
-    }
-    Ok(())
+    require_mode(selected)
 }
 fn bounded_read(path: &Path, limit: usize) -> Result<Vec<u8>, ValidationError> {
     let metadata = fs::symlink_metadata(path).map_err(|e| error(ExitCodeDef::FileNotFound, e))?;
@@ -317,6 +347,184 @@ fn create_private_root(root: &Path) -> Result<(), ValidationError> {
         }
     })
 }
+fn export(args: &[String], stdout: &mut dyn Write) -> Result<(), ValidationError> {
+    let options = parse(args)?;
+    if options.backend.is_some()
+        || options.seed.is_some()
+        || options.horizon.is_some()
+        || options.resume.is_some()
+        || options.stream
+        || options.help
+    {
+        return Err(usage(
+            "export accepts DATASET --output-dir FRESH [--format parquet|ipc|csv]",
+        ));
+    }
+    let source = options
+        .input
+        .ok_or_else(|| usage("export requires one dataset"))?;
+    let destination = options
+        .destination
+        .ok_or_else(|| usage("export requires --output-dir"))?;
+    check_safe_cli_path(&source)?;
+    check_safe_cli_path(&destination)?;
+    let dataset = read_native_dataset(&source)?;
+    create_private_root(&destination)?;
+    let manifest = convert_native_dataset(
+        &dataset,
+        &destination,
+        options.format.unwrap_or(NativeFormat::Parquet),
+        ExportLimits::default(),
+    )?;
+    let report = serde_json::json!({"schema":"careops.ed.cli-export.v1","status":"complete",
+        "source_manifest_sha256":dataset.manifest_sha256(),"format":manifest.format,
+        "dataset_manifest":"manifest.json", "dataset_manifest_sha256":compute_sha256_hex(&bounded_read(&destination.join("manifest.json"), ExportLimits::default().max_manifest_bytes)?),
+        "conversion_receipt":"conversion.json", "conversion_receipt_sha256":compute_sha256_hex(&bounded_read(&destination.join("conversion.json"), MAX_CONTROL_BYTES)?)});
+    stdout.write_all(&control(&report)?).map_err(output)?;
+    stdout.flush().map_err(output)
+}
+
+fn compare(args: &[String], stdout: &mut dyn Write) -> Result<(), ValidationError> {
+    if args.len() != 3 || args[1..].iter().any(|a| a.starts_with('-')) {
+        return Err(usage("compare requires exactly two native datasets"));
+    }
+    for path in &args[1..] {
+        check_safe_cli_path(Path::new(path))?;
+    }
+    let left = read_native_dataset(Path::new(&args[1]))?;
+    let right = read_native_dataset(Path::new(&args[2]))?;
+    let a = left.manifest();
+    let b = right.manifest();
+    if a.time_unit != b.time_unit
+        || a.runtime_revision != b.runtime_revision
+        || a.data_revision != b.data_revision
+        || a.polars_revision != b.polars_revision
+        || a.model_contract_sha256 != b.model_contract_sha256
+    {
+        return Err(error(
+            ExitCodeDef::IncompatibleScenario,
+            "comparison requires compatible units and model/runtime contracts",
+        ));
+    }
+    let a = left.metrics();
+    let b = right.metrics();
+    if a.height() != 5 || b.height() != 5 {
+        return Err(invalid(
+            "comparison requires the five qualified native metrics",
+        ));
+    }
+    let names_a = a.column("name").map_err(invalid)?.str().map_err(invalid)?;
+    let names_b = b.column("name").map_err(invalid)?.str().map_err(invalid)?;
+    let mut index = std::collections::BTreeMap::new();
+    for i in 0..b.height() {
+        let name = names_b.get(i);
+        if index
+            .insert(name.ok_or_else(|| invalid("null metric name"))?, i)
+            .is_some()
+        {
+            return Err(invalid("duplicate metric name"));
+        }
+    }
+    let mut seen = std::collections::BTreeSet::new();
+    let values_a = a.column("value").map_err(invalid)?.f64().map_err(invalid)?;
+    let values_b = b.column("value").map_err(invalid)?.f64().map_err(invalid)?;
+    let mut metrics = Vec::with_capacity(5);
+    for i in 0..a.height() {
+        let name = names_a.get(i);
+        let name = name.ok_or_else(|| invalid("null metric name"))?;
+        if !seen.insert(name) {
+            return Err(invalid("duplicate metric name"));
+        }
+        let j = *index
+            .get(name)
+            .ok_or_else(|| invalid("metric key mismatch"))?;
+        let expected = match name {
+            "mean_wait_ticks" => [
+                left.manifest().time_unit.as_str(),
+                "included_replications",
+                "mean_of_replication_wait_means",
+                "replication",
+                "equal_replication_zero_for_empty",
+            ],
+            "mean_elapsed_ticks" => [
+                left.manifest().time_unit.as_str(),
+                "completed_patients",
+                "pooled_completed_patient_mean",
+                "completed_patient",
+                "equal_completed_patient",
+            ],
+            "completion_rate" => [
+                "ratio",
+                "total_arrivals",
+                "pooled_completed_over_arrivals",
+                "arrival",
+                "pooled_counts",
+            ],
+            "throughput_per_horizon_tick" => [
+                "patients_per_tick",
+                "per_replication_horizon_ticks",
+                "mean_of_replication_throughputs",
+                "replication",
+                "equal_replication",
+            ],
+            "censored_presentation_rate" => [
+                "ratio",
+                "included_replications",
+                "mean_of_replication_unfinished_rates",
+                "replication",
+                "equal_replication_zero_for_empty",
+            ],
+            _ => return Err(invalid("unqualified comparison metric")),
+        };
+        for (field, expected) in [
+            "unit",
+            "denominator_name",
+            "estimand",
+            "sample_unit",
+            "weighting",
+        ]
+        .into_iter()
+        .zip(expected)
+        {
+            if a.column(field)
+                .map_err(invalid)?
+                .str()
+                .map_err(invalid)?
+                .get(i)
+                != Some(expected)
+                || b.column(field)
+                    .map_err(invalid)?
+                    .str()
+                    .map_err(invalid)?
+                    .get(j)
+                    != Some(expected)
+            {
+                return Err(error(
+                    ExitCodeDef::IncompatibleScenario,
+                    "comparison unit or estimand mismatch",
+                ));
+            }
+        }
+        let av = values_a.get(i);
+        let bv = values_b.get(j);
+        let delta = av.zip(bv).map(|(av, bv)| bv - av);
+        if delta.is_some_and(|n| !n.is_finite()) {
+            return Err(invalid("comparison delta overflow"));
+        }
+        metrics.push(
+            serde_json::json!({"name":name,"left":av,"right":bv,"delta":delta,
+            "unit":a.column("unit").map_err(invalid)?.str().map_err(invalid)?.get(i),
+            "estimand":a.column("estimand").map_err(invalid)?.str().map_err(invalid)?.get(i)}),
+        );
+    }
+    let report = serde_json::json!({"schema":"careops.ed.native-comparison.v1",
+        "left_manifest_sha256":left.manifest_sha256(),"right_manifest_sha256":right.manifest_sha256(),
+        "uncertainty_method":"not_estimated","uncertainty_reason":"paired_difference_method_unqualified",
+        "metrics":metrics});
+    stdout.write_all(&control(&report)?).map_err(output)?;
+    stdout.flush().map_err(output)
+}
+
 /// Execute native run/batch into a real writer. `main` adopts this API only at
 /// the coherent benchmark/consumer cutover. Cancellation retains original R11
 /// capture semantics; incomplete export is never retried in place.
@@ -330,6 +538,8 @@ pub fn execute(
     }
     match args[0].as_str() {
         "capabilities" => return capability(args, stdout),
+        "export" => return export(args, stdout),
+        "compare" => return compare(args, stdout),
         "--help" | "-h" if args.len() == 1 => {
             stdout.write_all(USAGE.as_bytes()).map_err(output)?;
             return stdout.flush().map_err(output);

@@ -427,3 +427,199 @@ fn pre_dispatch_cancellation_neither_reads_input_nor_creates_artifacts() {
     assert!(!temp.0.join("cancelled").exists());
     assert!(stdout.is_empty());
 }
+
+#[test]
+fn native_export_and_compare_consume_actual_typed_outputs() {
+    let temp = Temp::new();
+    execute(
+        &temp.args("run", "left", &["--horizon", "8"]),
+        &mut Vec::new(),
+        None,
+    )
+    .unwrap();
+    let source = temp.0.join("left/data");
+    let converted = temp.0.join("converted");
+    let mut declaration = Vec::new();
+    execute(
+        &[
+            "export".into(),
+            source.display().to_string(),
+            "--output-dir".into(),
+            converted.display().to_string(),
+            "--format".into(),
+            "ipc".into(),
+        ],
+        &mut declaration,
+        None,
+    )
+    .unwrap();
+    assert_eq!(json(converted.join("manifest.json"))["format"], "ipc");
+    assert!(converted.join("conversion.json").is_file());
+    let declaration: serde_json::Value = serde_json::from_slice(&declaration).unwrap();
+    assert_eq!(declaration["schema"], "careops.ed.cli-export.v1");
+    assert_eq!(
+        declaration
+            .as_object()
+            .unwrap()
+            .keys()
+            .cloned()
+            .collect::<std::collections::BTreeSet<_>>(),
+        [
+            "schema",
+            "status",
+            "format",
+            "source_manifest_sha256",
+            "dataset_manifest",
+            "dataset_manifest_sha256",
+            "conversion_receipt",
+            "conversion_receipt_sha256"
+        ]
+        .into_iter()
+        .map(String::from)
+        .collect()
+    );
+
+    let mut report = Vec::new();
+    execute(
+        &[
+            "compare".into(),
+            source.display().to_string(),
+            converted.display().to_string(),
+        ],
+        &mut report,
+        None,
+    )
+    .unwrap();
+    let report: serde_json::Value = serde_json::from_slice(&report).unwrap();
+    assert_eq!(report["schema"], "careops.ed.native-comparison.v1");
+    assert_eq!(report["uncertainty_method"], "not_estimated");
+    assert_eq!(report["metrics"].as_array().unwrap().len(), 5);
+    for metric in report["metrics"].as_array().unwrap() {
+        assert!(metric["delta"].is_null() || metric["delta"] == 0.0);
+    }
+    assert_eq!(
+        execute(
+            &[
+                "export".into(),
+                source.display().to_string(),
+                "--output-dir".into(),
+                converted.display().to_string()
+            ],
+            &mut Vec::new(),
+            None
+        )
+        .unwrap_err()
+        .code,
+        ExitCodeDef::FileAlreadyExists
+    );
+}
+
+#[test]
+fn native_consumer_arguments_fail_before_io_and_compare_refuses_different_units() {
+    let temp = Temp::new();
+    let absent = temp.0.join("absent").display().to_string();
+    let destination = temp.0.join("unused").display().to_string();
+    for extra in [
+        vec!["--seed", "1"],
+        vec!["--horizon", "0"],
+        vec!["--backend", "metal"],
+        vec!["--stdout"],
+    ] {
+        let mut args = vec![
+            "export".into(),
+            absent.clone(),
+            "--output-dir".into(),
+            destination.clone(),
+        ];
+        args.extend(extra.into_iter().map(String::from));
+        assert_eq!(
+            execute(&args, &mut Vec::new(), None).unwrap_err().code,
+            ExitCodeDef::UsageError
+        );
+        assert!(!temp.0.join("unused").exists());
+    }
+    execute(
+        &temp.args("run", "ticks", &["--horizon", "8"]),
+        &mut Vec::new(),
+        None,
+    )
+    .unwrap();
+    execute(
+        &temp.args("run", "seconds", &["--horizon", "8", "--format", "csv"]),
+        &mut Vec::new(),
+        None,
+    )
+    .unwrap();
+    let manifest_path = temp.0.join("seconds/data/manifest.json");
+    let mut manifest = json(&manifest_path);
+    manifest["time_unit"] = "second".into();
+    for part in manifest["tables"][0]["parts"].as_array_mut().unwrap() {
+        let path = temp
+            .0
+            .join("seconds/data")
+            .join(part["file"].as_str().unwrap());
+        let text = std::fs::read_to_string(&path)
+            .unwrap()
+            .replace("tick,", "second,");
+        std::fs::write(&path, text.as_bytes()).unwrap();
+        part["bytes"] = text.len().into();
+        part["sha256"] = compute_sha256_hex(text.as_bytes()).into();
+    }
+    std::fs::write(&manifest_path, serde_json::to_vec(&manifest).unwrap()).unwrap();
+    let mut stdout = Vec::new();
+    assert_eq!(
+        execute(
+            &[
+                "compare".into(),
+                temp.0.join("ticks/data").display().to_string(),
+                temp.0.join("seconds/data").display().to_string()
+            ],
+            &mut stdout,
+            None
+        )
+        .unwrap_err()
+        .code,
+        ExitCodeDef::IncompatibleScenario
+    );
+    assert!(stdout.is_empty());
+}
+
+#[test]
+fn compare_rejects_same_unqualified_metric_in_both_rehashed_native_sources() {
+    let temp = Temp::new();
+    execute(
+        &temp.args("run", "dataset", &["--horizon", "8", "--format", "csv"]),
+        &mut Vec::new(),
+        None,
+    )
+    .unwrap();
+    let root = temp.0.join("dataset/data");
+    let path = root.join("manifest.json");
+    let mut manifest = json(&path);
+    for part in manifest["tables"][2]["parts"].as_array_mut().unwrap() {
+        let file = root.join(part["file"].as_str().unwrap());
+        let text = std::fs::read_to_string(&file)
+            .unwrap()
+            .replace("mean_wait_ticks", "unqualified_metric");
+        std::fs::write(&file, text.as_bytes()).unwrap();
+        part["bytes"] = text.len().into();
+        part["sha256"] = compute_sha256_hex(text.as_bytes()).into();
+    }
+    std::fs::write(&path, serde_json::to_vec(&manifest).unwrap()).unwrap();
+    let mut stdout = Vec::new();
+    assert_eq!(
+        execute(
+            &[
+                "compare".into(),
+                root.display().to_string(),
+                root.display().to_string()
+            ],
+            &mut stdout,
+            None
+        )
+        .unwrap_err()
+        .code,
+        ExitCodeDef::MalformedConfig
+    );
+    assert!(stdout.is_empty());
+}

@@ -186,3 +186,42 @@ class EDSourceCompatibilityTests(unittest.TestCase):
         with mock.patch.object(gate, 'NATIVE_RECEIPT', 'absent-native-receipt.json'):
             with self.assertRaisesRegex(ValueError, 'native wire dependencies need exact'):
                 gate.verify_binding(ROOT, self.join)
+
+
+    def test_native_wire_receipt_remains_immutable_during_cli_cutover(self):
+        original=gate.git_blob
+        def changed(root,commit,path):
+            raw=original(root,commit,path)
+            return raw+b' ' if commit==gate.NATIVE_RECEIPT_COMMIT and path==gate.NATIVE_RECEIPT else raw
+        with mock.patch.object(gate,'git_blob',side_effect=changed):
+            with self.assertRaisesRegex(ValueError,'immutable native wire'):
+                gate.verify_binding(ROOT,self.join)
+
+    def test_cli_cutover_receipt_is_closed_and_preserves_all_cases(self):
+        native=(ROOT/gate.NATIVE_RECEIPT).read_bytes()
+        expected=gate.cli_bindings(ROOT,native)
+        summary=json.loads(native)['summary_compatibility']; bindings=summary['bindings']
+        receipt={'schema_version':1,'scope':'native_cli_cutover_summary_parity_only',
+                 'renewed_a7_acceptance':False,'cli_bindings':expected,'summary_compatibility':summary}
+        gate.validate_cli_receipt(receipt,expected,bindings,self.reference)
+        for key in expected:
+            value=copy.deepcopy(receipt);value['cli_bindings'][key]='changed'
+            with self.subTest(key=key),self.assertRaises(ValueError):gate.validate_cli_receipt(value,expected,bindings,self.reference)
+        for key,value in [('schema_version',True),('scope','all_A7'),('renewed_a7_acceptance',True)]:
+            changed=copy.deepcopy(receipt);changed[key]=value
+            with self.assertRaises(ValueError):gate.validate_cli_receipt(changed,expected,bindings,self.reference)
+        changed=copy.deepcopy(receipt);changed['summary_compatibility']['cases'].pop()
+        with self.assertRaises(ValueError):gate.validate_cli_receipt(changed,expected,bindings,self.reference)
+
+    def test_cli_case_identity_cannot_coerce_boolean_or_float(self):
+        native=(ROOT/gate.NATIVE_RECEIPT).read_bytes(); expected=gate.cli_bindings(ROOT,native)
+        summary=json.loads(native)['summary_compatibility']; bindings=summary['bindings']
+        for key,value in [('case',100.0),('repeat',False)]:
+            changed=copy.deepcopy(summary);changed['cases'][0][key]=value
+            receipt={'schema_version':1,'scope':'native_cli_cutover_summary_parity_only','renewed_a7_acceptance':False,'cli_bindings':expected,'summary_compatibility':changed}
+            with self.assertRaises(ValueError):gate.validate_cli_receipt(receipt,expected,bindings,self.reference)
+
+    def test_missing_cli_cutover_receipt_cannot_pass(self):
+        with mock.patch.object(gate,'CLI_RECEIPT','absent-cli-receipt.json'):
+            with self.assertRaisesRegex(ValueError,'CLI cutover needs exact'):
+                gate.verify_binding(ROOT,self.join)

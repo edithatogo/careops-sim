@@ -18,6 +18,10 @@ METADATA_EDGES = {
     'polars-arrow-format': {'version': '=0.2.1', 'default-features': False, 'features': ['ipc'], 'optional': True},
     'polars-parquet-format': {'version': '=0.1.0', 'default-features': False, 'optional': True},
 }
+NATIVE_RECEIPT_COMMIT = '1b6ca2deaead85f1bc0da50c1d6aa00df54e2cba'
+CLI_RECEIPT = 'conductor/evidence/polars-integration-20261103/native-cli-source-compatibility.json'
+CLI_DRIVERS = ('tools/ed_native_benchmarks.py', 'tools/ed_native_benchmark_process.py')
+CLI_SOURCES = ('crates/careops-ed-cli/src/lib.rs', 'crates/careops-ed-cli/src/main.rs')
 HISTORICAL_RECEIPT_COMMIT = '079c061d2bcc5a5fda373a3f9236d09235a2bca8'
 REFERENCE = 'conductor/evidence/r103-remote-20261029/parity.json'
 DRIVERS = ('tools/ed_benchmarks.py', 'tools/ed_benchmark_process.py',
@@ -148,10 +152,25 @@ def verify_binding(root, join):
     validate_metadata_edges(root, lock_bytes, manifest_bytes)
     native_expected = native_bindings(root, data_bytes)
     try:
-        native_receipt = json.loads((root / NATIVE_RECEIPT).read_text())
+        native_bytes = (root / NATIVE_RECEIPT).read_bytes()
+        native_receipt = json.loads(native_bytes)
     except (OSError, ValueError) as error:
         raise ValueError('data promotion scope or exact binding mismatch: native wire dependencies need exact compatibility evidence') from error
-    validate_native_receipt(native_receipt, native_expected, bindings, reference)
+    if native_bytes != git_blob(root, NATIVE_RECEIPT_COMMIT, NATIVE_RECEIPT):
+        raise ValueError('immutable native wire compatibility receipt changed')
+    historical_native = copy.deepcopy(native_expected)
+    historical_native['source_sha256'] = {p:digest(git_blob(root,NATIVE_RECEIPT_COMMIT,p)) for p in NATIVE_SOURCES}
+    validate_native_receipt(native_receipt, historical_native, bindings, reference)
+    if strict_equal(native_expected, historical_native):
+        return
+    for path in NATIVE_SOURCES:
+        if path not in CLI_SOURCES and native_expected['source_sha256'][path] != historical_native['source_sha256'][path]:
+            raise ValueError('unqualified native reader/output source change outside CLI cutover')
+    try:
+        cli_receipt = json.loads((root / CLI_RECEIPT).read_text())
+    except (OSError, ValueError) as error:
+        raise ValueError('native CLI cutover needs exact compatibility evidence') from error
+    validate_cli_receipt(cli_receipt,cli_bindings(root,native_bytes),bindings,reference)
 
 
 def validate_data_receipt(receipt, expected, bindings, reference):
@@ -206,3 +225,34 @@ def validate_native_receipt(receipt, expected, bindings, reference):
             or not strict_equal(receipt.get('native_bindings'), expected)):
         raise ValueError('data promotion scope or exact binding mismatch: native wire receipt')
     validate_receipt(receipt.get('summary_compatibility'), bindings, reference)
+
+
+def cli_bindings(root, native_bytes):
+    return {
+        'native_receipt_commit':NATIVE_RECEIPT_COMMIT,
+        'native_receipt_sha256':digest(native_bytes),
+        'lock_sha256':digest((root/'Cargo.lock').read_bytes()),
+        'ed_manifest_sha256':digest((root/'crates/careops-ed/Cargo.toml').read_bytes()),
+        'cli_manifest_sha256':digest((root/'crates/careops-ed-cli/Cargo.toml').read_bytes()),
+        'source_sha256':{p:digest((root/p).read_bytes()) for p in CLI_SOURCES},
+        'native_driver_sha256':{p:digest((root/p).read_bytes()) for p in CLI_DRIVERS},
+        'driver_protocol':'careops.ed.native-benchmark.v1',
+        'process_protocol':'careops.ed.native-benchmark-process.v1',
+    }
+
+
+def validate_cli_receipt(receipt, expected, bindings, reference):
+    if (not isinstance(receipt,dict)
+            or type(receipt.get('schema_version')) is not int or receipt['schema_version'] != 1
+            or receipt.get('scope') != 'native_cli_cutover_summary_parity_only'
+            or receipt.get('renewed_a7_acceptance') is not False
+            or not strict_equal(receipt.get('cli_bindings'),expected)):
+        raise ValueError('native CLI cutover scope or exact binding mismatch')
+    summary=receipt.get('summary_compatibility')
+    if not isinstance(summary,dict) or not isinstance(summary.get('cases'),list):
+        raise ValueError('native CLI cutover needs typed case evidence')
+    for case in summary['cases']:
+        if (not isinstance(case,dict) or type(case.get('case')) is not int
+                or type(case.get('repeat')) is not int or type(case.get('kind')) is not str):
+            raise ValueError('native CLI cutover case identity must preserve exact types')
+    validate_receipt(summary,bindings,reference)
