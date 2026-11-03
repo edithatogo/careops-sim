@@ -244,6 +244,12 @@ class CiWorkflowTests(unittest.TestCase):
         artifact = native.split("- name: Retain bounded failed native log", 1)[1]
         self.assertIn(".artifacts/ci/nextest/native-files-fixture.log", artifact)
         self.assertIn(".artifacts/ci/nextest/native-files-reader.log", artifact)
+        self.assertIn("test ! -e .artifacts/ci/native-output", step)
+        self.assertIn('CAREOPS_NATIVE_OUTPUT_FIXTURE="$PWD/.artifacts/ci/native-output"', step)
+        self.assertIn("--test r132_native_output qualified_native_output_fixture_requires_explicit_fresh_destination -- --exact", step)
+        self.assertIn('"$CAREOPS_PYTHON" crates/careops-ed/test_native_output.py .artifacts/ci/native-output', step)
+        self.assertIn(".artifacts/ci/nextest/native-output-fixture.log", artifact)
+        self.assertIn(".artifacts/ci/nextest/native-output-reader.log", artifact)
 
     def test_unit_lane_does_not_repeat_documentation_tests(self):
         workflow = WORKFLOW.read_text()

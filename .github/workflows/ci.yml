@@ -191,6 +191,9 @@ jobs:
           test ! -e .artifacts/ci/native-files
           CAREOPS_R131_FILES_DESTINATION="$PWD/.artifacts/ci/native-files" cargo test --locked --package careops-ed --test r131_native_files actual_native_domain_fixture_is_published_only_to_explicit_fresh_destination -- --exact 2>&1 | tee .artifacts/ci/nextest/native-files-fixture.log
           "$CAREOPS_PYTHON" crates/careops-ed/test_native_files.py .artifacts/ci/native-files 2>&1 | tee .artifacts/ci/nextest/native-files-reader.log
+          test ! -e .artifacts/ci/native-output
+          CAREOPS_NATIVE_OUTPUT_FIXTURE="$PWD/.artifacts/ci/native-output" cargo test --locked --package careops-ed --test r132_native_output qualified_native_output_fixture_requires_explicit_fresh_destination -- --exact 2>&1 | tee .artifacts/ci/nextest/native-output-fixture.log
+          "$CAREOPS_PYTHON" crates/careops-ed/test_native_output.py .artifacts/ci/native-output 2>&1 | tee .artifacts/ci/nextest/native-output-reader.log
       - name: Retain bounded failed native log
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -207,6 +210,8 @@ jobs:
             .artifacts/ci/nextest/tests.log
             .artifacts/ci/nextest/native-files-fixture.log
             .artifacts/ci/nextest/native-files-reader.log
+            .artifacts/ci/nextest/native-output-fixture.log
+            .artifacts/ci/nextest/native-output-reader.log
           retention-days: 7
           if-no-files-found: error
 
