@@ -54,6 +54,11 @@ impl<W> BoundedPartWriter<W> {
     pub fn written(&self) -> usize {
         self.written
     }
+    /// True only when a write attempted to exceed the configured byte budget.
+    /// Underlying IO or codec failures do not set this sizing signal.
+    pub fn limit_exceeded(&self) -> bool {
+        self.exceeded
+    }
     pub fn into_inner(self) -> W {
         self.inner
     }
