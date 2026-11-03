@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -105,6 +106,18 @@ def read_run(root):
     return read_dataset(root / 'data')
 
 
+def native_tick(row, stem):
+    """Read an exact optional u128 from the already typed native limb columns."""
+    hi, lo = row[stem + '_hi'], row[stem + '_lo']
+    if hi is None or lo is None:
+        if hi is not None or lo is not None:
+            raise AssertionError('mixed null tick limbs')
+        return None
+    if any(type(value) is not int or not 0 <= value < 2**64 for value in [hi, lo]):
+        raise AssertionError('invalid tick limb')
+    return (hi << 64) | lo
+
+
 def metric_rows(tables):
     # Test-only assertions over already typed native rows; never production output.
     return {row['name']: row for row in tables['metrics'].to_pylist()}
@@ -144,3 +157,8 @@ class NativeCliCase(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stderr)
         self.assertEqual(json.loads(proc.stdout), control(Path(root) / 'manifest.json'))
         return read_run(root)
+
+    def run_scenario(self, scenario, *options):
+        """Return actual typed tables from an owned temporary CLI output root."""
+        with tempfile.TemporaryDirectory(prefix='careops-native-consumer-') as directory:
+            return self.run_ok(Path(directory) / 'run', scenario, 'run', *options)

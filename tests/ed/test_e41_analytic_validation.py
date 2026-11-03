@@ -1,47 +1,23 @@
-"""Analytic limiting cases, invariant/differential tests, and validation taxonomy suite for Task E4.1.
+"""E41 software-verification vectors through actual native ED tables.
 
-Distinguishes Software Verification from Domain Validation:
-1. Software Verification ("Building the model right"):
-   - Mathematical and algorithmic correctness of the simulation engine.
-   - Verifies queue mechanics, priority scheduling, work conservation, zero-contention limits,
-     Kendall D/D/1 deterministic single-server schedules, and state conservation invariants.
-   - Independent of real-world clinical datasets.
-2. Domain Validation ("Building the right model"):
-   - Empirical calibration and fidelity to a specific clinical site (e.g. Cairns ED, AIHW/NHAMCS benchmarks).
-   - Evaluates whether model parameters reflect real-world clinical practice.
-   - Distinct and non-conflated with software verification.
+Retains zero-contention, exact D/D/1 schedules, synthetic qualitative
+shape/triage-ordering vectors and conservation. Historical generic reference
+labels are not renewed empirical/site validation. Native help states that
+software verification does not constitute clinical domain validation.
 
-Test Coverage:
-- `test_software_verification_vs_domain_validation_boundary`:
-  Verifies that software verification checks are distinct from domain validation reports, and that
-  runner outputs include explicit provenance/validation taxonomy stating that software verification
-  does NOT constitute clinical domain validation for any healthcare site.
-- `test_public_reference_distribution_comparisons`:
-  Compares simulated ED distributions (wait times, length of stay) against generic public reference
-  baselines (e.g. AIHW Australian ED Care 2022-23 and NHAMCS US ED summary statistics: median LOS ~ 2.5-4h,
-  right-skewed lognormal-like distribution, ATS 1-5 triage wait distribution ordering: ATS 1 immediate,
-  ATS 2-5 progressively longer median waits), confirming qualitative alignment without claiming
-  hospital-calibrated validity.
-- `test_analytic_limiting_case_runner_scenarios`:
-  Executes the runner example on zero-contention and Kendall D/D/1 deterministic single-server scenarios,
-  asserting wait_ticks == 0 in zero contention and bit-for-bit schedule matching in single server.
-- `test_differential_fidelity_comparison_through_cli`:
-  Runs Macro vs Micro through the runner compare command and confirms comparison output diagnostics
-  report metric deltas neutrally without declaring empirical superiority.
-- `test_invariant_state_conservation_audit`:
-  Verifies patient and resource conservation in run outputs: `arrivals == completed + unfinished`,
-  `started <= arrivals`, across nominal, constrained, and horizon-truncated scenarios.
+The former forged Macro/Micro JSON comparison is replaced with an actual native
+boundary rejection/neutral-comparison test. The real domain fidelity/transit
+oracle remains the C62 Rust holdout comparison, outside this CLI producer.
 """
 
 import json
 import math
 from pathlib import Path
-import subprocess
 import tempfile
 import unittest
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
-RUNNER_BIN = ROOT_DIR / "target/debug/examples/runner"
+from native_cli_support import NativeCliCase, invoke, native_tick, metric_rows
 NOMINAL_SCENARIO = ROOT_DIR / "crates/careops-ed/examples/nominal_mvp.json"
 CONSTRAINED_SCENARIO = ROOT_DIR / "crates/careops-ed/examples/constrained_mvp.json"
 
@@ -165,82 +141,24 @@ def build_scenario_dict(
     }
 
 
-class E41AnalyticValidationTests(unittest.TestCase):
+class E41AnalyticValidationTests(NativeCliCase):
     """E4.1 analytic limiting cases, invariant conservation, and validation boundary tests."""
 
-    @classmethod
-    def setUpClass(cls):
-        # Ensure the runner example is built
-        proc = subprocess.run(
-            ["cargo", "build", "--locked", "-p", "careops-ed", "--example", "runner"],
-            cwd=ROOT_DIR,
-            capture_output=True,
-            text=True,
-        )
-        if proc.returncode != 0:
-            raise RuntimeError(f"Failed to build runner: {proc.stderr}")
-        assert RUNNER_BIN.exists(), f"Runner binary not found at {RUNNER_BIN}"
 
-    def run_cmd(self, *args):
-        """Invoke runner binary with provided arguments."""
-        proc = subprocess.run(
-            [str(RUNNER_BIN), *args],
-            cwd=ROOT_DIR,
-            capture_output=True,
-            text=True,
-        )
-        return proc
+
+
 
     def test_software_verification_vs_domain_validation_boundary(self):
-        """Verify that software verification and clinical domain validation are strictly distinguished.
-
-        Runner outputs must explicitly include validation taxonomy stating that software
-        verification does NOT constitute clinical domain validation for any healthcare site.
-        """
-        proc = self.run_cmd("run", str(NOMINAL_SCENARIO))
-        self.assertEqual(proc.returncode, 0, f"Runner failed: {proc.stderr}")
-
-        doc = json.loads(proc.stdout)
-        self.assertIn("validation_taxonomy", doc)
-        tax = doc["validation_taxonomy"]
-
-        # 1. Verification vs. validation scope categorization
-        self.assertEqual(tax["verification_scope"], "software_verification")
-        self.assertEqual(tax["validation_scope"], "none")
-        self.assertEqual(tax["provenance_class"], "synthetic")
-
-        # 2. Explicit non-conflation disclaimer
-        disclaimer = tax["disclaimer"]
-        self.assertIn("Software verification", disclaimer)
-        self.assertIn("does NOT constitute clinical domain validation", disclaimer)
-        self.assertIn("healthcare site", disclaimer)
-
-        # 3. Comparative evaluation also retains taxonomy boundary
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            base_file = Path(tmp_dir) / "base.json"
-            cand_file = Path(tmp_dir) / "cand.json"
-            self.assertEqual(
-                self.run_cmd("run", str(NOMINAL_SCENARIO), "-o", str(base_file)).returncode,
-                0,
-            )
-            self.assertEqual(
-                self.run_cmd("run", str(CONSTRAINED_SCENARIO), "-o", str(cand_file)).returncode,
-                0,
-            )
-
-            proc_comp = self.run_cmd("compare", str(base_file), str(cand_file))
-            self.assertEqual(proc_comp.returncode, 0, proc_comp.stderr)
-            comp_rep = json.loads(proc_comp.stdout)
-
-            self.assertIn("validation_taxonomy", comp_rep)
-            self.assertEqual(
-                comp_rep["validation_taxonomy"]["verification_scope"],
-                "software_verification",
-            )
-            self.assertIn(
-                "does NOT constitute clinical domain validation",
-                comp_rep["validation_taxonomy"]["disclaimer"],
-            )
+        """Native help retains the verification boundary; no clinical acceptance is inferred."""
+        proc = invoke('--help')
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn('Software verification', proc.stdout)
+        self.assertIn('does NOT constitute clinical domain validation', proc.stdout)
+        self.assertIn('healthcare site', proc.stdout)
+        manifest, tables = self.run_scenario(NOMINAL_SCENARIO)
+        self.assertEqual(manifest['scenario_id'], 'nominal-ed-mvp')
+        self.assertEqual(tables['patients'].num_rows, 5)
+        self.assertEqual(json.loads(NOMINAL_SCENARIO.read_text())['provenance']['class'], 'synthetic')
 
     def test_public_reference_distribution_comparisons(self):
         """Compare simulated ED distributions against generic public reference baselines.
@@ -427,19 +345,17 @@ class E41AnalyticValidationTests(unittest.TestCase):
             scen_file = Path(tmp_dir) / "public_ref.json"
             scen_file.write_text(json.dumps(scenario, indent=2))
 
-            proc = self.run_cmd("run", str(scen_file))
-            self.assertEqual(proc.returncode, 0, f"Run failed: {proc.stderr}")
-
-            doc = json.loads(proc.stdout)
-            patient_results = {p["patient_id"]: p for p in doc["summary"]["patients"]}
+            _, tables = self.run_scenario(scen_file)
+            native_patients = tables['patients'].to_pylist()
+            patient_results = {p['patient_id']: p for p in native_patients}
 
             # 1. Triage Wait Ordering (ATS 1-5):
             # ATS 1 has 0 wait ticks (immediate resuscitation target)
-            ats1_wait = patient_results["ats1_patient"]["wait_ticks"]
-            ats2_wait = patient_results["ats2_patient"]["wait_ticks"]
-            ats3_wait = patient_results["ats3_patient"]["wait_ticks"]
-            ats4_wait = patient_results["ats4_patient"]["wait_ticks"]
-            ats5_wait = patient_results["ats5_patient"]["wait_ticks"]
+            ats1_wait = native_tick(patient_results["ats1_patient"], "wait_ticks")
+            ats2_wait = native_tick(patient_results["ats2_patient"], "wait_ticks")
+            ats3_wait = native_tick(patient_results["ats3_patient"], "wait_ticks")
+            ats4_wait = native_tick(patient_results["ats4_patient"], "wait_ticks")
+            ats5_wait = native_tick(patient_results["ats5_patient"], "wait_ticks")
 
             self.assertEqual(ats1_wait, 0, "ATS 1 must receive immediate access (0 wait)")
             self.assertLessEqual(ats1_wait, ats2_wait, "ATS 1 wait must be <= ATS 2 wait")
@@ -450,8 +366,8 @@ class E41AnalyticValidationTests(unittest.TestCase):
             # 2. Length of Stay (LOS) Median Baseline:
             # For 1 tick/minute representation: 150 to 240 ticks maps to 2.5h to 4.0h
             cohort_los = [
-                p["elapsed_ticks"]
-                for p in doc["summary"]["patients"]
+                native_tick(p, 'elapsed_ticks')
+                for p in native_patients
                 if "blocker" not in p["patient_id"]
             ]
             median_los = compute_median(cohort_los)
@@ -481,12 +397,9 @@ class E41AnalyticValidationTests(unittest.TestCase):
                 f"Mean LOS ({mean_los}) must exceed median LOS ({median_los}) for right-skewed distribution",
             )
 
-            # 4. Explicit verification taxonomy non-conflation check
-            self.assertEqual(
-                doc["validation_taxonomy"]["verification_scope"],
-                "software_verification",
-            )
-            self.assertEqual(doc["validation_taxonomy"]["validation_scope"], "none")
+            # Synthetic qualitative checks do not become hospital validation.
+            self.assertEqual(scenario['provenance']['class'], 'synthetic')
+            self.assertIn('does NOT constitute clinical domain validation', invoke('--help').stdout)
 
     def test_analytic_limiting_case_runner_scenarios(self):
         """Execute runner on zero-contention and Kendall D/D/1 single-server analytic scenarios.
@@ -527,30 +440,27 @@ class E41AnalyticValidationTests(unittest.TestCase):
             zc_file = Path(tmp_dir) / "zero_contention.json"
             zc_file.write_text(json.dumps(zc_scenario, indent=2))
 
-            proc_zc = self.run_cmd("run", str(zc_file))
-            self.assertEqual(proc_zc.returncode, 0, proc_zc.stderr)
-
-            doc_zc = json.loads(proc_zc.stdout)
-            summary_zc = doc_zc["summary"]
+            _, tables_zc = self.run_scenario(zc_file)
+            summary_zc = tables_zc['replications'].to_pylist()[0]
 
             self.assertEqual(summary_zc["arrivals"], 5)
             self.assertEqual(summary_zc["completed"], 5)
             self.assertEqual(summary_zc["unfinished"], 0)
 
-            for p in summary_zc["patients"]:
+            for p in tables_zc['patients'].to_pylist():
                 self.assertEqual(
-                    p["wait_ticks"],
+                    native_tick(p, 'wait_ticks'),
                     0,
                     f"Patient {p['patient_id']} experienced non-zero wait in zero-contention case",
                 )
                 self.assertEqual(
-                    p["start_tick"],
-                    p["arrival_tick"],
+                    native_tick(p, 'start_tick'),
+                    native_tick(p, 'arrival_tick'),
                     f"Patient {p['patient_id']} start_tick != arrival_tick in zero contention",
                 )
                 self.assertEqual(
-                    p["elapsed_ticks"],
-                    p["work_ticks"],
+                    native_tick(p, 'elapsed_ticks'),
+                    native_tick(p, 'work_ticks'),
                     f"Patient {p['patient_id']} elapsed_ticks != work_ticks in zero contention",
                 )
 
@@ -598,11 +508,8 @@ class E41AnalyticValidationTests(unittest.TestCase):
             dd1_file = Path(tmp_dir) / "dd1_scenario.json"
             dd1_file.write_text(json.dumps(dd1_scenario, indent=2))
 
-            proc_dd1 = self.run_cmd("run", str(dd1_file))
-            self.assertEqual(proc_dd1.returncode, 0, proc_dd1.stderr)
-
-            doc_dd1 = json.loads(proc_dd1.stdout)
-            summary_dd1 = doc_dd1["summary"]
+            _, tables_dd1 = self.run_scenario(dd1_file)
+            summary_dd1 = tables_dd1['replications'].to_pylist()[0]
 
             self.assertEqual(summary_dd1["completed"], 4)
             self.assertEqual(summary_dd1["unfinished"], 0)
@@ -615,245 +522,76 @@ class E41AnalyticValidationTests(unittest.TestCase):
                 {"id": "dd1_p3", "arr": 8, "start": 8, "wait": 0, "comp": 9},
             ]
 
-            actual_pts = {p["patient_id"]: p for p in summary_dd1["patients"]}
+            actual_pts = {p["patient_id"]: p for p in tables_dd1['patients'].to_pylist()}
             for exp in expected_schedule:
                 act = actual_pts[exp["id"]]
                 self.assertEqual(
-                    act["start_tick"],
+                    native_tick(act, 'start_tick'),
                     exp["start"],
-                    f"Patient {exp['id']} start_tick mismatch: expected {exp['start']}, got {act['start_tick']}",
+                    f"Patient {exp['id']} start_tick mismatch: expected {exp['start']}, got {native_tick(act, 'start_tick')}",
                 )
                 self.assertEqual(
-                    act["wait_ticks"],
+                    native_tick(act, 'wait_ticks'),
                     exp["wait"],
-                    f"Patient {exp['id']} wait_ticks mismatch: expected {exp['wait']}, got {act['wait_ticks']}",
+                    f"Patient {exp['id']} wait_ticks mismatch: expected {exp['wait']}, got {native_tick(act, 'wait_ticks')}",
                 )
                 self.assertEqual(
-                    act["completion_tick"],
+                    native_tick(act, 'completion_tick'),
                     exp["comp"],
-                    f"Patient {exp['id']} completion_tick mismatch: expected {exp['comp']}, got {act['completion_tick']}",
+                    f"Patient {exp['id']} completion_tick mismatch: expected {exp['comp']}, got {native_tick(act, 'completion_tick')}",
                 )
 
-    def test_differential_fidelity_comparison_through_cli(self):
-        """Run Macro vs Micro comparison through runner compare command.
+    def test_native_comparison_rejects_forged_fidelity_documents(self):
+        """The CLI cannot confer fidelity provenance on invented alpha JSON.
 
-        Confirms:
-        1. Comparison diagnostics report metric deltas neutrally without declaring empirical superiority.
-        2. Micro fidelity structural transit delta increases elapsed duration.
-        3. Diagnostics do not use value-laden superiority claims ('superior', 'better', 'clinical truth').
+        Real Macro/Micro transit, preemption and work conservation are owned by
+        c62_macro_micro_holdout_comparison::test_macro_micro_holdout_comparison_through_api_runner.
+        This boundary test makes no claim to execute that domain producer.
         """
-        # Construct Macro and Micro run documents with identical patient cohorts
-        # In Macro: elapsed_ticks == work_ticks (0 transit overhead)
-        # In Micro: elapsed_ticks == work_ticks + transit_ticks (structural transit delay)
-        patients_common = [
-            {"id": "p001", "arr": 1, "work": 30, "transit": 5},
-            {"id": "p002", "arr": 5, "work": 40, "transit": 5},
-            {"id": "p003", "arr": 10, "work": 25, "transit": 5},
-        ]
-
-        macro_doc = {
-            "manifest": {
-                "schema_version": 1,
-                "scenario_id": "synthetic-ed-macro",
-                "input_file": "synthetic-ed-macro.json",
-                "input_sha256": "0000000000000000000000000000000000000000000000000000000000000001",
-                "seed": 42,
-                "time_unit": "tick",
-                "horizon_ticks": 100,
-            },
-            "summary": {
-                "schema_version": 1,
-                "scenario_id": "synthetic-ed-macro",
-                "seed": 42,
-                "time_unit": "tick",
-                "horizon_ticks": 100,
-                "arrivals": len(patients_common),
-                "started": len(patients_common),
-                "completed": len(patients_common),
-                "unfinished": 0,
-                "patients": [
-                    {
-                        "patient_id": p["id"],
-                        "arrival_tick": p["arr"],
-                        "start_tick": p["arr"],
-                        "completion_tick": p["arr"] + p["work"],
-                        "work_ticks": p["work"],
-                        "wait_ticks": 0,
-                        "elapsed_ticks": p["work"],
-                        "status": "completed",
-                    }
-                    for p in patients_common
-                ],
-            },
-        }
-
-        micro_doc = {
-            "manifest": {
-                "schema_version": 1,
-                "scenario_id": "synthetic-ed-micro",
-                "input_file": "synthetic-ed-micro.json",
-                "input_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
-                "seed": 42,
-                "time_unit": "tick",
-                "horizon_ticks": 100,
-            },
-            "summary": {
-                "schema_version": 1,
-                "scenario_id": "synthetic-ed-micro",
-                "seed": 42,
-                "time_unit": "tick",
-                "horizon_ticks": 100,
-                "arrivals": len(patients_common),
-                "started": len(patients_common),
-                "completed": len(patients_common),
-                "unfinished": 0,
-                "patients": [
-                    {
-                        "patient_id": p["id"],
-                        "arrival_tick": p["arr"],
-                        "start_tick": p["arr"],
-                        "completion_tick": p["arr"] + p["work"] + p["transit"],
-                        "work_ticks": p["work"],
-                        "wait_ticks": 0,
-                        "elapsed_ticks": p["work"] + p["transit"],
-                        "status": "completed",
-                    }
-                    for p in patients_common
-                ],
-            },
-        }
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            macro_path = Path(tmp_dir) / "macro_run.json"
-            micro_path = Path(tmp_dir) / "micro_run.json"
-
-            macro_path.write_text(json.dumps(macro_doc, indent=2))
-            micro_path.write_text(json.dumps(micro_doc, indent=2))
-
-            proc_compare = self.run_cmd("compare", str(macro_path), str(micro_path))
-            self.assertEqual(proc_compare.returncode, 0, proc_compare.stderr)
-
-            rep = json.loads(proc_compare.stdout)
-            self.assertEqual(rep["base_scenario_id"], "synthetic-ed-macro")
-            self.assertEqual(rep["candidate_scenario_id"], "synthetic-ed-micro")
-
-            metrics = {m["metric_name"]: m for m in rep["metrics"]}
-
-            # 1. Micro increases elapsed duration due to transit
-            self.assertIn("mean_elapsed", metrics)
-            elapsed_m = metrics["mean_elapsed"]
-            self.assertGreater(
-                elapsed_m["delta"],
-                0.0,
-                "Micro fidelity must reflect structural transit delta in mean_elapsed",
-            )
-            self.assertAlmostEqual(elapsed_m["delta"], 5.0)
-
-            # 2. Diagnostics report metric deltas neutrally without superiority claims
-            diagnostics_text = " ".join(rep["diagnostics"]).lower()
-            unpermitted_superiority_terms = [
-                "superior",
-                "inferior",
-                "better model",
-                "more accurate",
-                "clinically validated",
-                "ground truth",
-            ]
-            for term in unpermitted_superiority_terms:
-                self.assertNotIn(
-                    term,
-                    diagnostics_text,
-                    f"Diagnostic emitted non-neutral superiority claim '{term}'",
-                )
-
-            # 3. Report includes explicit validation taxonomy
-            self.assertIn("validation_taxonomy", rep)
-            self.assertEqual(
-                rep["validation_taxonomy"]["verification_scope"],
-                "software_verification",
-            )
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            forged = directory / 'forged.json'
+            forged.write_text(json.dumps({'manifest': {'scenario_id': 'macro'},
+                                          'summary': {'patients': [], 'mean_elapsed': 5}}))
+            rejected = invoke('compare', forged, forged)
+            self.assertEqual(rejected.returncode, 4, rejected.stderr)
+            _, left = self.run_ok(directory / 'nominal')
+            _, right = self.run_ok(directory / 'constrained', CONSTRAINED_SCENARIO)
+            result = invoke('compare', directory / 'nominal/data', directory / 'constrained/data')
+            self.assertEqual(result.returncode, 0, result.stderr)
+            report = json.loads(result.stdout)
+            wait = {row['name']: row for row in report['metrics']}['mean_wait_ticks']
+            self.assertAlmostEqual(wait['delta'], 3.8)
+            self.assertEqual(metric_rows(left)['mean_wait_ticks']['unit'], 'tick')
+            self.assertEqual(metric_rows(right)['mean_wait_ticks']['unit'], 'tick')
+            self.assertEqual(report['uncertainty_method'], 'not_estimated')
+            for term in ['superior', 'inferior', 'better model', 'more accurate', 'clinically validated', 'ground truth']:
+                self.assertNotIn(term, result.stdout.lower())
 
     def test_invariant_state_conservation_audit(self):
-        """Verify strict patient and state conservation across diverse scenarios.
-
-        Invariants:
-        1. Patient count conservation: `arrivals == completed + unfinished`.
-        2. Started bounds: `started <= arrivals`.
-        3. Completed bounds: `completed <= started`.
-        4. Every patient record is exhaustively accounted for in patient list.
-        """
-        # Test 1: Nominal MVP scenario
-        proc_nom = self.run_cmd("run", str(NOMINAL_SCENARIO))
-        self.assertEqual(proc_nom.returncode, 0)
-        doc_nom = json.loads(proc_nom.stdout)
-        sum_nom = doc_nom["summary"]
-
-        self.assertEqual(sum_nom["arrivals"], sum_nom["completed"] + sum_nom["unfinished"])
-        self.assertLessEqual(sum_nom["started"], sum_nom["arrivals"])
-        self.assertLessEqual(sum_nom["completed"], sum_nom["started"])
-        self.assertEqual(len(sum_nom["patients"]), sum_nom["arrivals"])
-
-        # Test 2: Constrained MVP scenario
-        proc_con = self.run_cmd("run", str(CONSTRAINED_SCENARIO))
-        self.assertEqual(proc_con.returncode, 0)
-        doc_con = json.loads(proc_con.stdout)
-        sum_con = doc_con["summary"]
-
-        self.assertEqual(sum_con["arrivals"], sum_con["completed"] + sum_con["unfinished"])
-        self.assertLessEqual(sum_con["started"], sum_con["arrivals"])
-        self.assertLessEqual(sum_con["completed"], sum_con["started"])
-        self.assertEqual(len(sum_con["patients"]), sum_con["arrivals"])
-
-        # Test 3: Truncated horizon scenario with unfinished presentations
-        # Horizon is 8 ticks, while arrivals at tick 1, 3, 5 require 10 ticks each
-        trunc_patients = [
-            {
-                "patient_id": f"trunc_p{i}",
-                "arrival_tick": arr,
-                "work_ticks": 10,
-                "resource_id": "res.care",
-                "task_class_id": "task.care",
-            }
-            for i, arr in enumerate([1, 3, 5])
-        ]
-        trunc_scenario = build_scenario_dict(
-            scenario_id="horizon-truncation-conservation",
-            horizon_ticks=8,
-            resource_count=1,
-            patients=trunc_patients,
-            notes="Finite horizon truncation scenario testing unfinished conservation",
-        )
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            trunc_file = Path(tmp_dir) / "trunc.json"
-            trunc_file.write_text(json.dumps(trunc_scenario, indent=2))
-
-            proc_trunc = self.run_cmd("run", str(trunc_file))
-            self.assertEqual(proc_trunc.returncode, 0)
-
-            doc_trunc = json.loads(proc_trunc.stdout)
-            sum_trunc = doc_trunc["summary"]
-
-            # Patients cannot finish before horizon=8 (work=10)
-            self.assertEqual(sum_trunc["arrivals"], 3)
-            self.assertEqual(sum_trunc["completed"], 0)
-            self.assertEqual(sum_trunc["unfinished"], 3)
-            self.assertEqual(
-                sum_trunc["completed"] + sum_trunc["unfinished"],
-                sum_trunc["arrivals"],
-                "Terminal conservation must hold when unfinished > 0",
-            )
-            self.assertLessEqual(sum_trunc["started"], sum_trunc["arrivals"])
-
-            # Verify patient status breakdown
-            completed_count = sum(
-                1 for p in sum_trunc["patients"] if p["status"] == "completed" and p["completion_tick"] is not None
-            )
-            unfinished_count = sum(
-                1 for p in sum_trunc["patients"] if p["status"] == "unfinished" and p["completion_tick"] is None
-            )
-            self.assertEqual(completed_count, sum_trunc["completed"])
-            self.assertEqual(unfinished_count, sum_trunc["unfinished"])
+        """Actual native patient rows and per-replication counts conserve state."""
+        for scenario in [NOMINAL_SCENARIO, CONSTRAINED_SCENARIO]:
+            _, tables = self.run_scenario(scenario)
+            summary = tables['replications'].to_pylist()[0]
+            self.assertEqual(summary['arrivals'], summary['completed'] + summary['unfinished'])
+            self.assertLessEqual(summary['started'], summary['arrivals'])
+            self.assertLessEqual(summary['completed'], summary['started'])
+            self.assertEqual(tables['patients'].num_rows, summary['arrivals'])
+        patients = [dict(patient_id=f'trunc_p{i}', arrival_tick=arrival, work_ticks=10,
+                         resource_id='res.care', task_class_id='task.care')
+                    for i, arrival in enumerate([1, 3, 5])]
+        scenario = build_scenario_dict('horizon-truncation-conservation', 8, 1, patients,
+                                       'Finite horizon truncation testing unfinished conservation')
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / 'trunc.json'; source.write_text(json.dumps(scenario))
+            _, tables = self.run_scenario(source)
+            summary = tables['replications'].to_pylist()[0]
+            self.assertEqual((summary['arrivals'], summary['completed'], summary['unfinished']), (3, 0, 3))
+            self.assertEqual(summary['arrivals'], summary['completed'] + summary['unfinished'])
+            self.assertLessEqual(summary['started'], summary['arrivals'])
+            rows = tables['patients'].to_pylist()
+            self.assertEqual(sum(p['status'] == 'completed' and native_tick(p, 'completion_tick') is not None for p in rows), summary['completed'])
+            self.assertEqual(sum(p['status'] == 'unfinished' and native_tick(p, 'completion_tick') is None for p in rows), summary['unfinished'])
 
 
 if __name__ == "__main__":

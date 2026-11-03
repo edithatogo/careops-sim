@@ -4,7 +4,7 @@ Validates:
 1. Input resource limits and malformed rejection (horizon, capacity, durations/speed, schema, path traversal, payload size).
 2. Arrow C Data pointer in-process restriction vs bounded IPC stream boundaries and fail-closed deserialization.
 3. Agent harness write reservations, path claim validation, and precommit scope integrity.
-4. Complete offline airgap and zero external socket/HTTP call enforcement.
+4. Offline native workflows and zero Python harness socket/HTTP calls; no child-process confinement claim.
 5. Output privacy, zero PHI/PII leakage, synthetic ID verification, and atomic write semantics.
 6. Absolute unsafe code forbid assertion and 0 unsafe blocks in crate source.
 """
@@ -12,13 +12,13 @@ Validates:
 from __future__ import annotations
 
 import copy
-import ctypes
+import pickle
 import json
 import os
 from pathlib import Path
 import re
 import socket
-import struct
+import sys
 import subprocess
 import tempfile
 import unittest
@@ -29,98 +29,28 @@ from tools import agent_session, ci_scope
 from tools.validate_ed_profile_pack_semantics import validate_profile_semantics
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-RUNNER_BIN = ROOT_DIR / "target/debug/examples/runner"
+sys.path.insert(0, str(ROOT_DIR / 'tests/ed'))
+from native_cli_support import NativeCliCase, invoke, read_run, read_dataset, sha
 NOMINAL_SCENARIO = ROOT_DIR / "crates/careops-ed/examples/nominal_mvp.json"
 MALFORMED_SCENARIO = ROOT_DIR / "crates/careops-ed/examples/malformed_mvp.json"
 
 
-class ArrowArrayStream(ctypes.Structure):
-    """C structure representation of the Arrow C Data Interface ArrowArrayStream."""
-    _fields_ = [
-        ("get_schema", ctypes.c_void_p),
-        ("get_next", ctypes.c_void_p),
-        ("get_last_error", ctypes.c_void_p),
-        ("release", ctypes.c_void_p),
-        ("private_data", ctypes.c_void_p),
-    ]
 
 
-class BoundedArrowIPCProtocol:
-    """Bounded Arrow IPC message stream framing with explicit boundaries and schema headers."""
-    MAGIC = b"ARROW1\x00\x00"
-    CONTINUATION = b"\xff\xff\xff\xff"
-    MAX_FRAME_SIZE = 16 * 1024 * 1024  # 16 MiB boundary cap
-
-    @staticmethod
-    def encode_frame(schema_header: dict, payload: bytes) -> bytes:
-        header_bytes = json.dumps(schema_header).encode("utf-8")
-        header_len = len(header_bytes)
-        body_len = len(payload)
-        return (
-            BoundedArrowIPCProtocol.CONTINUATION
-            + struct.pack("<II", header_len, body_len)
-            + header_bytes
-            + payload
-        )
-
-    @staticmethod
-    def decode_frame(raw_bytes: bytes) -> tuple[dict, bytes]:
-        if len(raw_bytes) < 12:
-            raise ValueError("Truncated Arrow IPC frame: missing 12-byte framing header")
-        continuation = raw_bytes[:4]
-        if continuation != BoundedArrowIPCProtocol.CONTINUATION:
-            raise ValueError("Invalid Arrow IPC framing: missing continuation indicator")
-        header_len, body_len = struct.unpack("<II", raw_bytes[4:12])
-        if header_len + body_len > BoundedArrowIPCProtocol.MAX_FRAME_SIZE:
-            raise ValueError(
-                f"Arrow IPC frame exceeds maximum boundary ({BoundedArrowIPCProtocol.MAX_FRAME_SIZE} bytes)"
-            )
-        expected_total = 12 + header_len + body_len
-        if len(raw_bytes) < expected_total:
-            raise ValueError(
-                f"Truncated Arrow IPC payload: expected {expected_total} bytes, got {len(raw_bytes)}"
-            )
-        header_raw = raw_bytes[12 : 12 + header_len]
-        try:
-            header = json.loads(header_raw.decode("utf-8"))
-        except Exception as exc:
-            raise ValueError(f"Corrupted Arrow IPC schema header: {exc}") from exc
-
-        if header.get("format") not in ("kairoecs.calibration.output", "kairoecs.ed.patient_table"):
-            raise ValueError(f"Unsupported Arrow IPC schema format: {header.get('format')}")
-        if header.get("record_type") not in (
-            "calibration_residual.v1",
-            "calibration_metric.v1",
-            "careops.ed.patient_records.v1",
-        ):
-            raise ValueError(f"Unsupported Arrow IPC record type: {header.get('record_type')}")
-
-        body = raw_bytes[12 + header_len : expected_total]
-        return header, body
 
 
-class D41TrustBoundaryTests(unittest.TestCase):
+
+
+class D41TrustBoundaryTests(NativeCliCase):
     """Comprehensive test suite for Task D4.1 trust boundaries, misuse cases, and resource limits."""
 
-    @classmethod
-    def setUpClass(cls):
-        # Ensure runner example binary is compiled
-        subprocess.run(
-            ["cargo", "build", "--locked", "-p", "careops-ed", "--example", "runner"],
-            cwd=ROOT_DIR,
-            check=True,
-            capture_output=True,
-        )
+
 
     def run_cmd(self, *args, check=False):
-        proc = subprocess.run(
-            [str(RUNNER_BIN), *args],
-            cwd=ROOT_DIR,
-            capture_output=True,
-            text=True,
-            check=check,
-        )
-        return proc
+        result = invoke(*args)
+        if check:
+            result.check_returncode()
+        return result
 
     def test_input_resource_limits_and_malformed_rejection(self):
         """Test rejection of zero/negative horizon, nonpositive capacity, negative durations/speed,
@@ -130,7 +60,7 @@ class D41TrustBoundaryTests(unittest.TestCase):
         # 1. Zero or negative horizon
         proc_h0 = self.run_cmd("run", str(NOMINAL_SCENARIO), "--horizon", "0")
         self.assertEqual(proc_h0.exit_code if hasattr(proc_h0, 'exit_code') else proc_h0.returncode, 4)
-        self.assertIn("horizon_ticks override must be greater than zero", proc_h0.stdout + proc_h0.stderr)
+        self.assertIn("horizon must be positive", proc_h0.stdout + proc_h0.stderr)
 
         # Profile pack semantics rejection of zero and negative horizon
         err_h0 = validate_profile_semantics({"horizon": {"source_unit": "s", "value": "0"}})
@@ -212,7 +142,7 @@ class D41TrustBoundaryTests(unittest.TestCase):
         self.assertEqual(proc_trav_in.returncode, 2)
         self.assertIn("path traversal rejected", proc_trav_in.stdout + proc_trav_in.stderr)
 
-        proc_trav_out = self.run_cmd("run", str(NOMINAL_SCENARIO), "-o", "../../etc/passwd")
+        proc_trav_out = self.run_cmd("run", str(NOMINAL_SCENARIO), "--output-dir", "../../etc/passwd")
         self.assertEqual(proc_trav_out.returncode, 2)
         self.assertIn("path traversal rejected", proc_trav_out.stdout + proc_trav_out.stderr)
 
@@ -232,118 +162,83 @@ class D41TrustBoundaryTests(unittest.TestCase):
             huge_file.write_text('{"schema_version": 1, "padding": "' + padding + '"}', encoding="utf-8")
             proc_huge = self.run_cmd("validate", str(huge_file))
             self.assertEqual(proc_huge.returncode, 4)
-            self.assertIn("scenario payload exceeds limit", proc_huge.stdout + proc_huge.stderr)
+            self.assertIn("bounded", proc_huge.stdout + proc_huge.stderr)
 
         # agent_session snapshot budget bound
         with self.assertRaisesRegex(ValueError, "budget"):
             agent_session.snapshot(ROOT_DIR, "test-task", ["tools/agent_session.py"], budget=10)
 
     def test_arrow_c_data_pointer_in_process_vs_bounded_ipc_boundary(self):
-        """Test that Arrow C Data pointers are recognized as strictly in-process only,
+        """Real in-process capsule vs serialized IPC; production reader rejects invalid files.
 
-        inter-process communication requires bounded Arrow IPC bytes with schema headers,
-        and deserialization fails closed on truncated or corrupted payloads.
+        Parent populated FFI lifetime/release acceptance is a separate Rust lane.
+        This Python test does not fabricate a pointer or claim parent FFI proof.
         """
-        # 1. Arrow C Data Interface pointers are valid ONLY in-process
-        stream = ArrowArrayStream()
-        stream_ptr = ctypes.addressof(stream)
-        current_pid = os.getpid()
-        external_pid = current_pid + 9999
+        import pyarrow as pa
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory); root = directory / 'run'
+            _, tables = self.run_ok(root, NOMINAL_SCENARIO, 'run', '--format', 'ipc')
+            patients = tables['patients']
+            capsule = patients.__arrow_c_stream__()
+            with self.assertRaises(TypeError):
+                pickle.dumps(capsule)
+            manifest_path = root / 'data/manifest.json'
+            original_manifest = manifest_path.read_bytes()
+            manifest = json.loads(original_manifest)
+            part = manifest['tables'][0]['parts'][0]
+            path = root / 'data' / part['file']
+            original = path.read_bytes()
+            stream = pa.ipc.open_stream(pa.BufferReader(original))
+            self.assertEqual(stream.schema.metadata[b'careops.schema'], b'careops.ed.patients.v2')
+            self.assertEqual(stream.schema.field('arrival_tick_hi').type, pa.uint64())
+            self.assertEqual(stream.schema.field('arrival_tick_lo').type, pa.uint64())
+            self.assertTrue(stream.read_all().equals(patients, check_metadata=False))
+            child = subprocess.run([sys.executable, '-c',
+                "import sys,json,pyarrow as pa; raw=sys.stdin.buffer.read(4*1024*1024+1); "
+                "assert len(raw)<=4*1024*1024; r=pa.ipc.open_stream(pa.BufferReader(raw)); "
+                "assert r.schema.metadata[b'careops.schema']==b'careops.ed.patients.v2'; "
+                "t=r.read_all(); assert t.schema.field('arrival_tick_lo').type==pa.uint64(); "
+                "print(json.dumps({'rows':t.num_rows,'columns':t.column_names}))"],
+                input=original, capture_output=True, timeout=30)
+            self.assertEqual(child.returncode, 0, child.stderr.decode())
+            self.assertEqual(json.loads(child.stdout)['rows'], 5)
+            self.assertEqual(json.loads(child.stdout)['columns'], patients.column_names)
 
-        def dereference_across_boundary(source_pid: int, dest_pid: int, ptr: int):
-            if source_pid != dest_pid:
-                raise PermissionError(
-                    f"Arrow C Data pointer 0x{ptr:x} in PID {source_pid} cannot cross process boundary into PID {dest_pid}. "
-                    "Arrow C Data pointers are trusted in-process interfaces only; inter-process boundary requires bounded IPC."
-                )
-            return True
+            def encoded(table):
+                sink = pa.BufferOutputStream()
+                with pa.ipc.new_stream(sink, table.schema) as writer:
+                    writer.write_table(table)
+                return sink.getvalue().to_pybytes()
 
-        self.assertTrue(dereference_across_boundary(current_pid, current_pid, stream_ptr))
-        with self.assertRaisesRegex(PermissionError, "trusted in-process interfaces only"):
-            dereference_across_boundary(external_pid, current_pid, stream_ptr)
-
-        # 2. Inter-process/worker communication requires bounded Arrow IPC bytes with schema headers
-        schema_header_residual = {
-            "format": "kairoecs.calibration.output",
-            "physical_version": "1",
-            "record_type": "calibration_residual.v1",
-            "column_count": 30,
-            "byte_order": "little",
-        }
-        residual_payload = b'{"record_type":"calibration_residual.v1","dataset_id":"ds1","schema_version":"calibration-v1"}'
-
-        encoded_frame = BoundedArrowIPCProtocol.encode_frame(schema_header_residual, residual_payload)
-        self.assertTrue(encoded_frame.startswith(BoundedArrowIPCProtocol.CONTINUATION))
-
-        # Successfully decode valid bounded frame
-        decoded_header, decoded_body = BoundedArrowIPCProtocol.decode_frame(encoded_frame)
-        self.assertEqual(decoded_header["format"], "kairoecs.calibration.output")
-        self.assertEqual(decoded_header["record_type"], "calibration_residual.v1")
-        self.assertEqual(decoded_header["column_count"], 30)
-        self.assertEqual(decoded_body, residual_payload)
-
-        # Test careops.ed schema header via CLI export
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            run_json = Path(tmp_dir) / "run.json"
-            self.run_cmd("run", str(NOMINAL_SCENARIO), "-o", str(run_json), check=True)
-
-            proc_arrow = self.run_cmd("export", str(run_json), "--format", "arrow", check=True)
-            arrow_doc = json.loads(proc_arrow.stdout)
-            self.assertIn("arrow_schema", arrow_doc)
-            fields = arrow_doc["arrow_schema"]["fields"]
-            denominators = {f["name"]: f.get("denominator") for f in fields if f.get("denominator")}
-            self.assertEqual(denominators.get("wait_ticks"), "started_patients")
-            self.assertEqual(denominators.get("elapsed_ticks"), "completed_patients")
-
-            bundle_json = Path(tmp_dir) / "bundle.json"
-            self.run_cmd(
-                "batch",
-                str(NOMINAL_SCENARIO),
-                "--replications",
-                "2",
-                "--workers",
-                "1",
-                "--export-arrow",
-                str(bundle_json),
-                check=True,
-            )
-            bundle_doc = json.loads(bundle_json.read_text(encoding="utf-8"))
-            self.assertEqual(bundle_doc["patient_schema"]["schema_name"], "careops.ed.patient_records.v2")
-            self.assertEqual(bundle_doc["patient_schema"]["metadata"]["format"], "kairoecs.ed.patient_table")
-
-        # 3. Deserialization fails closed on truncated or corrupted IPC payloads
-        # Truncated framing header
-        with self.assertRaisesRegex(ValueError, "missing 12-byte framing header"):
-            BoundedArrowIPCProtocol.decode_frame(b"SHORT")
-
-        # Missing continuation indicator
-        corrupt_indicator = b"\x00\x00\x00\x00" + encoded_frame[4:]
-        with self.assertRaisesRegex(ValueError, "missing continuation indicator"):
-            BoundedArrowIPCProtocol.decode_frame(corrupt_indicator)
-
-        # Truncated payload body
-        truncated_payload = encoded_frame[:-10]
-        with self.assertRaisesRegex(ValueError, "Truncated Arrow IPC payload"):
-            BoundedArrowIPCProtocol.decode_frame(truncated_payload)
-
-        # Corrupted schema header JSON
-        corrupted_header_bytes = (
-            BoundedArrowIPCProtocol.CONTINUATION
-            + struct.pack("<II", 8, len(residual_payload))
-            + b"{badjson"
-            + residual_payload
-        )
-        with self.assertRaisesRegex(ValueError, "Corrupted Arrow IPC schema header"):
-            BoundedArrowIPCProtocol.decode_frame(corrupted_header_bytes)
-
-        # Unsupported schema format rejected
-        unsupported_format_header = {
-            "format": "untrusted.external.unknown",
-            "record_type": "calibration_residual.v1",
-        }
-        unsupported_frame = BoundedArrowIPCProtocol.encode_frame(unsupported_format_header, residual_payload)
-        with self.assertRaisesRegex(ValueError, "Unsupported Arrow IPC schema format"):
-            BoundedArrowIPCProtocol.decode_frame(unsupported_frame)
+            wrong_metadata = patients.replace_schema_metadata({**patients.schema.metadata,
+                                                              b'careops.schema': b'unknown.v99'})
+            wrong_type = patients.set_column(patients.schema.get_field_index('arrival_tick_lo'),
+                pa.field('arrival_tick_lo', pa.float64(), nullable=False),
+                patients['arrival_tick_lo'].cast(pa.float64()))
+            oversized = original + b'0' * (4*1024*1024 + 1 - len(original))
+            self.assertEqual(pa.ipc.open_stream(pa.BufferReader(oversized)).read_all().num_rows, 5)
+            negatives = {
+                'truncated': original[:len(original)//2],
+                'invalid_framing': b'not an Arrow stream',
+                'unsupported_schema': encoded(wrong_metadata),
+                'wrong_physical_type': encoded(wrong_type),
+                'oversized': oversized,
+            }
+            for name, raw in negatives.items():
+                try:
+                    changed = json.loads(original_manifest)
+                    path.write_bytes(raw)
+                    changed_part = changed['tables'][0]['parts'][0]
+                    changed_part.update(bytes=len(raw), sha256=sha(path))
+                    manifest_path.write_text(json.dumps(changed))
+                    destination = directory / name
+                    result = invoke('export', root / 'data', '--output-dir', destination)
+                    self.assertEqual(result.returncode, 4, (name, result.stderr))
+                    self.assertFalse(destination.exists())
+                finally:
+                    path.write_bytes(original)
+                    manifest_path.write_bytes(original_manifest)
+            read_dataset(root / 'data')
 
     def test_agent_harness_write_reservations_and_isolation(self):
         """Test that agent write reservations prevent overlapping edits, reject unauthorized
@@ -399,133 +294,67 @@ class D41TrustBoundaryTests(unittest.TestCase):
             agent_session.release(repo, lease_b["token"])
 
     def test_network_airgap_and_zero_socket_enforcement(self):
-        """Test that running simulation experiments, batch runners, and calibration runners
+        """Offline native workflow and no Python harness network-client calls.
 
-        makes ZERO external socket or HTTP network calls under full airgap enforcement.
+        Monkeypatching this Python process does not monitor child native sockets;
+        this test makes no operating-system-wide network confinement claim.
         """
-        socket_attempted = []
-
-        class AirgapViolationError(AssertionError):
-            pass
-
+        attempted = []
         def blocked_socket(*args, **kwargs):
-            err = AirgapViolationError("Socket call attempted during offline airgapped execution")
-            socket_attempted.append(err)
-            raise err
-
-        with mock.patch("socket.socket", side_effect=blocked_socket), \
-             mock.patch("socket.create_connection", side_effect=blocked_socket), \
-             mock.patch("urllib.request.urlopen", side_effect=blocked_socket):
-
-            with tempfile.TemporaryDirectory() as tmp_dir:
-                # 1. Scenario validation (airgapped)
-                proc_val = self.run_cmd("validate", str(NOMINAL_SCENARIO), check=True)
-                self.assertIn("valid scenario", proc_val.stdout)
-
-                # 2. Simulation execution (airgapped)
-                run_out = Path(tmp_dir) / "run_airgap.json"
-                proc_run = self.run_cmd("run", str(NOMINAL_SCENARIO), "-o", str(run_out), check=True)
-                self.assertTrue(run_out.exists())
-
-                # 3. Multi-worker batch run (airgapped)
-                batch_out = Path(tmp_dir) / "batch"
-                proc_batch = self.run_cmd(
-                    "batch",
-                    str(NOMINAL_SCENARIO),
-                    "--replications",
-                    "2",
-                    "--workers",
-                    "1",
-                    "-o",
-                    str(batch_out),
-                    check=True,
-                )
-                batch_doc = json.loads(proc_batch.stdout)
-                self.assertEqual(batch_doc["status"], "complete")
-
-                # 4. Export (airgapped)
-                proc_export = self.run_cmd("export", str(run_out), "--format", "json", check=True)
-                self.assertIn("manifest", proc_export.stdout)
-
-                # 5. Offline profile semantics
-                minimal_pack_path = ROOT_DIR / "model-inputs/ed/profiles/p4-minimal-pack.json"
-                profile_data = json.loads(minimal_pack_path.read_text(encoding="utf-8"))
-                profile_errors = validate_profile_semantics(profile_data)
-                self.assertEqual(profile_errors, [])
-
-        self.assertEqual(len(socket_attempted), 0, "Airgap violated: external network socket calls were attempted")
+            attempted.append((args, kwargs))
+            raise AssertionError('Python harness network call during offline workflow')
+        with mock.patch('socket.socket', side_effect=blocked_socket), \
+             mock.patch('socket.create_connection', side_effect=blocked_socket), \
+             mock.patch('urllib.request.urlopen', side_effect=blocked_socket):
+            with tempfile.TemporaryDirectory() as directory:
+                directory = Path(directory)
+                validation = self.run_cmd('validate', NOMINAL_SCENARIO, check=True)
+                self.assertEqual(json.loads(validation.stdout)['scenario_id'], 'nominal-ed-mvp')
+                self.run_ok(directory / 'run')
+                self.run_ok(directory / 'batch', NOMINAL_SCENARIO, 'batch', '--replications', 2, '--workers', 1)
+                result = self.run_cmd('export', directory / 'run/data', '--output-dir', directory / 'ipc', '--format', 'ipc', check=True)
+                self.assertEqual(json.loads(result.stdout)['status'], 'complete')
+                read_dataset(directory / 'ipc')
+                profile = json.loads((ROOT_DIR / 'model-inputs/ed/profiles/p4-minimal-pack.json').read_text())
+                self.assertEqual(validate_profile_semantics(profile), [])
+        self.assertEqual(attempted, [])
 
     def test_output_privacy_and_phi_leakage_guards(self):
-        """Verify that generated simulation outputs, Arrow tables, and run documents do NOT
-
-        contain unhashed patient PII/PHI or secret tokens, and enforce atomic write semantics.
-        """
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            run_json = Path(tmp_dir) / "run.json"
-            bundle_json = Path(tmp_dir) / "bundle.json"
-            spatial_csv = Path(tmp_dir) / "spatial.csv"
-
-            self.run_cmd("run", str(NOMINAL_SCENARIO), "-o", str(run_json), check=True)
-            self.run_cmd(
-                "batch",
-                str(NOMINAL_SCENARIO),
-                "--replications",
-                "2",
-                "--workers",
-                "1",
-                "--export-arrow",
-                str(bundle_json),
-                "--export-spatial",
-                str(spatial_csv),
-                check=True,
-            )
-
-            # 1. PII/PHI and Secret scanning across generated outputs
-            run_text = run_json.read_text(encoding="utf-8")
-            bundle_text = bundle_json.read_text(encoding="utf-8")
-            spatial_text = spatial_csv.read_text(encoding="utf-8")
-            all_outputs = [run_text, bundle_text, spatial_text]
-
+        """Scan actual native string values/control files and reject incomplete output."""
+        import pyarrow as pa
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            _, run = self.run_ok(directory / 'run')
+            _, batch = self.run_ok(directory / 'batch', NOMINAL_SCENARIO, 'batch', '--replications', 2, '--workers', 1)
+            outputs = [p.read_text() for p in directory.rglob('*.json')]
+            for tables in [run, batch]:
+                for table in tables.values():
+                    for field in table.schema:
+                        if pa.types.is_string(field.type) or pa.types.is_large_string(field.type) or pa.types.is_string_view(field.type):
+                            outputs.extend(value for value in table[field.name].to_pylist() if value is not None)
+                for identity in tables['patients']['patient_id'].to_pylist():
+                    self.assertTrue(identity.startswith(('patient-', 'patient_', 'P')), identity)
             patterns = {
-                "SSN": re.compile(r"\b\d{3}-\d{2}-\d{4}\b"),
-                "Medicare card": re.compile(r"\b[2-6]\d{9}\b"),
-                "Private Key": re.compile(r"-----BEGIN (?:RSA )?PRIVATE KEY-----"),
-                "Bearer Token": re.compile(r"\bBearer\s+[A-Za-z0-9_\-\.]{20,}\b"),
-                "API Secret Token": re.compile(r"\b(?:AKIA|ghp_|glpat-)[A-Za-z0-9_]{16,}\b"),
+                'SSN': r'\b\d{3}-\d{2}-\d{4}\b',
+                'Medicare card': r'\b[2-6]\d{9}\b',
+                'Private Key': r'-----BEGIN (?:RSA )?PRIVATE KEY-----',
+                'Bearer Token': r'\bBearer\s+[A-Za-z0-9_\-\.]{20,}\b',
+                'API Secret Token': r'\b(?:AKIA|ghp_|glpat-)[A-Za-z0-9_]{16,}\b',
             }
-
             for name, pattern in patterns.items():
-                for output in all_outputs:
-                    matches = pattern.findall(output)
-                    self.assertEqual(matches, [], f"Privacy leakage detected: found {name} in simulation output")
-
-            # Verify patient identifiers are synthetic tokens only
-            bundle_data = json.loads(bundle_text)
-            for rec in bundle_data["patient_records"]:
-                self.assertTrue(
-                    rec["patient_id"].startswith("patient-") or rec["patient_id"].startswith("patient_") or rec["patient_id"].startswith("P"),
-                    f"Non-synthetic patient identifier detected: {rec['patient_id']}",
-                )
-
-            # 2. Atomic output writing semantics and partial run rejection
-            # Verify temporary atomic staging file does not leak after completion
-            staging_files = list(Path(tmp_dir).glob("*.tmp.*"))
-            self.assertEqual(staging_files, [], "Atomic staging file left un-renamed after completed run")
-
-            # Verify partial markers are rejected fail-closed
-            partial_path = Path(tmp_dir) / "partial_run.json"
-            partial_marker = {
-                "status": "incomplete",
-                "scenario_id": "test_scenario",
-                "interrupted": True,
-                "reason": "simulation cancelled by token",
-            }
-            partial_path.write_text(json.dumps(partial_marker), encoding="utf-8")
-
-            # Attempting to export or compare a partial run fails closed
-            proc_export_partial = self.run_cmd("export", str(partial_path))
-            self.assertEqual(proc_export_partial.returncode, 4)
-            self.assertIn("invalid run JSON", proc_export_partial.stdout + proc_export_partial.stderr)
+                for output in outputs:
+                    self.assertEqual(re.findall(pattern, output), [], name)
+            self.assertEqual(list(directory.rglob('*.tmp.*')), [])
+            dataset = directory / 'run/data'; manifest = dataset / 'manifest.json'
+            original = manifest.read_bytes(); incomplete = json.loads(original); incomplete['status'] = 'incomplete'
+            manifest.write_text(json.dumps(incomplete))
+            try:
+                result = self.run_cmd('export', dataset, '--output-dir', directory / 'partial-export')
+                self.assertEqual(result.returncode, 4, result.stderr)
+                self.assertFalse((directory / 'partial-export').exists())
+            finally:
+                manifest.write_bytes(original)
+            read_dataset(dataset)
 
     def test_unsafe_code_forbid_assertion(self):
         """Inspect Rust source files and confirm #![forbid(unsafe_code)] is present at the crate
