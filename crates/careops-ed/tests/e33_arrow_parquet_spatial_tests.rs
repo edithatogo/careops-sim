@@ -3,15 +3,21 @@
 use careops_ed::disposition::arrow_export::{
     compute_uncertainty, interpolate_patient_position, LocationTransitRecord, PositionKind,
 };
+#[cfg(feature = "native-data")]
 use careops_ed::disposition::batch_runner::{
     resume_batch_from_checkpoint, run_batch_with_workers, BatchConfig, BatchRunDocument,
 };
+#[cfg(feature = "native-data")]
 use careops_ed::disposition::native_output::{
     export_native_batch, read_native_dataset, ExportLimits, NativeDataset, NativeFormat,
 };
+#[cfg(feature = "native-data")]
 use careops_ed::parse_scenario_json;
+#[cfg(feature = "native-data")]
 use std::fs;
+#[cfg(feature = "native-data")]
 use std::path::{Path, PathBuf};
+#[cfg(feature = "native-data")]
 fn publish(
     scenario: &careops_ed::ScenarioConfig,
     document: &BatchRunDocument,
@@ -29,16 +35,19 @@ fn publish(
     .unwrap();
     read_native_dataset(&destination).unwrap()
 }
+#[cfg(feature = "native-data")]
 fn snapshot(scenario: &careops_ed::ScenarioConfig, config: &BatchConfig) -> NativeDataset {
     let root = TestTempDir::new("snapshot");
     let doc = run_batch_with_workers(scenario, config, Some(root.path()), None, None).unwrap();
     publish(scenario, &doc, root.path())
 }
+#[cfg(feature = "native-data")]
 fn equal_frames(a: &NativeDataset, b: &NativeDataset) {
     assert!(a.patients().equals_missing(b.patients()));
     assert!(a.replications().equals_missing(b.replications()));
     assert!(a.metrics().equals_missing(b.metrics()));
 }
+#[cfg(feature = "native-data")]
 fn metric(data: &NativeDataset, name: &str) -> usize {
     let names = data.metrics().column("name").unwrap().str().unwrap();
     (0..data.metrics().height())
@@ -46,10 +55,12 @@ fn metric(data: &NativeDataset, name: &str) -> usize {
         .unwrap()
 }
 
+#[cfg(feature = "native-data")]
 struct TestTempDir {
     path: PathBuf,
 }
 
+#[cfg(feature = "native-data")]
 impl TestTempDir {
     fn new(prefix: &str) -> Self {
         let unique = format!(
@@ -71,12 +82,14 @@ impl TestTempDir {
     }
 }
 
+#[cfg(feature = "native-data")]
 impl Drop for TestTempDir {
     fn drop(&mut self) {
         let _ = fs::remove_dir_all(&self.path);
     }
 }
 
+#[cfg(feature = "native-data")]
 fn repo_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .parent()
@@ -86,6 +99,7 @@ fn repo_root() -> PathBuf {
         .to_path_buf()
 }
 
+#[cfg(feature = "native-data")]
 fn load_nominal_scenario() -> careops_ed::ScenarioConfig {
     let p = repo_root().join("crates/careops-ed/examples/nominal_mvp.json");
     let content = fs::read_to_string(&p).expect("read nominal_mvp.json");
@@ -163,6 +177,7 @@ fn test_trajectory_interpolation_and_position_kinds() {
     assert_eq!(pos_mid.destination_location, Some("loc_bed".to_string()));
 }
 
+#[cfg(feature = "native-data")]
 #[test]
 fn test_actual_native_schemas_and_no_manufactured_spatial_capture() {
     let data = snapshot(&load_nominal_scenario(), &BatchConfig::default());
@@ -205,6 +220,7 @@ fn test_actual_native_schemas_and_no_manufactured_spatial_capture() {
     }
     assert_eq!(data.patients().height(), 20);
 }
+#[cfg(feature = "native-data")]
 #[test]
 fn test_worker_equivalence_for_native_frames() {
     let scenario = load_nominal_scenario();
@@ -232,6 +248,7 @@ fn test_worker_equivalence_for_native_frames() {
         );
     }
 }
+#[cfg(feature = "native-data")]
 #[test]
 fn test_checkpoint_resumption_native_equivalence() {
     let tmp = TestTempDir::new("resume");
@@ -279,6 +296,7 @@ fn test_checkpoint_resumption_native_equivalence() {
         resume_batch_from_checkpoint(&checkpoint, &scenario, 2, tmp.path(), None).unwrap();
     equal_frames(&baseline, &publish(&scenario, &resumed, tmp.path()));
 }
+#[cfg(feature = "native-data")]
 #[test]
 fn test_censored_and_unfinished_native_denominators() {
     let mut scenario = load_nominal_scenario();
@@ -333,6 +351,7 @@ fn test_censored_and_unfinished_native_denominators() {
             >= 0.0
     );
 }
+#[cfg(feature = "native-data")]
 #[test]
 fn test_export_binds_actual_compiler_identity() {
     let observed = std::process::Command::new(env!("CAREOPS_ED_BUILD_COMPILER"))
@@ -358,6 +377,7 @@ fn test_export_binds_actual_compiler_identity() {
     );
 }
 
+#[cfg(feature = "native-data")]
 #[test]
 fn test_native_uncertainty_uses_replication_sample_unit() {
     for replications in [1, 4] {

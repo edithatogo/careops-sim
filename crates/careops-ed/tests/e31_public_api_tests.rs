@@ -4,17 +4,24 @@ use careops_ed::disposition::api_runner::{
     allocate_replication_seeds, compute_sha256_hex, validate_scenario_source, ExitCodeDef,
     ValidationSuccess,
 };
+#[cfg(feature = "native-data")]
 use careops_ed::disposition::batch_runner::{run_batch_with_workers, BatchConfig};
+#[cfg(feature = "native-data")]
 use careops_ed::disposition::native_output::{
     export_native_batch, read_native_dataset, ExportLimits, NativeDataset, NativeFormat,
 };
+#[cfg(feature = "native-data")]
 use careops_ed::parse_scenario_json;
 use std::fs;
-use std::path::{Path, PathBuf};
+#[cfg(feature = "native-data")]
+use std::path::Path;
+use std::path::PathBuf;
+#[cfg(feature = "native-data")]
 struct TestTempDir {
     path: PathBuf,
 }
 
+#[cfg(feature = "native-data")]
 impl TestTempDir {
     fn new(prefix: &str) -> Self {
         let unique = format!(
@@ -36,6 +43,7 @@ impl TestTempDir {
     }
 }
 
+#[cfg(feature = "native-data")]
 impl Drop for TestTempDir {
     fn drop(&mut self) {
         let _ = fs::remove_dir_all(&self.path);
@@ -122,6 +130,7 @@ fn test_replication_seed_allocation_uniqueness() {
     }
 }
 
+#[cfg(feature = "native-data")]
 fn native(seed: u64, horizon: Option<u64>) -> NativeDataset {
     let scenario = parse_scenario_json(&fs::read_to_string(nominal_path()).unwrap()).unwrap();
     let tmp = TestTempDir::new("native-public");
@@ -147,6 +156,7 @@ fn native(seed: u64, horizon: Option<u64>) -> NativeDataset {
     .unwrap();
     read_native_dataset(&destination).unwrap()
 }
+#[cfg(feature = "native-data")]
 #[test]
 fn test_native_nominal_success_and_parsed_input_hash() {
     let data = native(42, None);
@@ -175,6 +185,7 @@ fn test_native_nominal_success_and_parsed_input_hash() {
     // Raw-file identity belongs to the CLI invocation, not a fabricated native manifest field.
     assert_eq!(manifest.raw_input_sha256, None);
 }
+#[cfg(feature = "native-data")]
 #[test]
 fn test_native_seed_override() {
     let data = native(9999, None);
@@ -189,6 +200,7 @@ fn test_native_seed_override() {
         Some(9999)
     );
 }
+#[cfg(feature = "native-data")]
 #[test]
 fn test_native_horizon_override_preserves_censoring() {
     let data = native(42, Some(7));

@@ -7,23 +7,30 @@ use careops_ed::disposition::api_runner::{
 use careops_ed::disposition::arrow_export::{
     compute_uncertainty, LocationTransitRecord, PositionKind,
 };
+#[cfg(feature = "native-data")]
 use careops_ed::disposition::batch_runner::{run_batch_with_workers, BatchConfig};
+#[cfg(feature = "native-data")]
 use careops_ed::disposition::composite_fixture::native_calibration::calibration_table;
 use careops_ed::disposition::composite_fixture::{
     export_patient_calibration_traces, ComposedPatient, CompositeEdFixture, PatientLifecycle,
 };
+#[cfg(feature = "native-data")]
 use careops_ed::disposition::native_output::{
     export_native_batch, read_native_dataset, ExportLimits, NativeFormat,
 };
 use careops_ed::disposition::operations::ExecutionFidelity;
 use careops_ed::{parse_scenario_json, run_scenario, Eligibility, RunSummary, ScenarioConfig};
 use std::fs;
-use std::path::{Path, PathBuf};
+#[cfg(feature = "native-data")]
+use std::path::Path;
+use std::path::PathBuf;
 use std::process::Command;
+#[cfg(feature = "native-data")]
 struct TestTempDir {
     path: PathBuf,
 }
 
+#[cfg(feature = "native-data")]
 impl TestTempDir {
     fn new(prefix: &str) -> Self {
         let unique = format!(
@@ -45,6 +52,7 @@ impl TestTempDir {
     }
 }
 
+#[cfg(feature = "native-data")]
 impl Drop for TestTempDir {
     fn drop(&mut self) {
         let _ = fs::remove_dir_all(&self.path);
@@ -144,6 +152,7 @@ fn test_downstream_parse_scenario_json_nominal_and_rejections() {
     );
 }
 
+#[cfg(feature = "native-data")]
 #[test]
 fn test_downstream_native_files_and_seed_allocation() {
     let scenario = parse_scenario_json(&fs::read_to_string(nominal_path()).unwrap()).unwrap();
@@ -178,9 +187,6 @@ fn test_downstream_native_files_and_seed_allocation() {
             Some(value)
         );
     }
-    let distinct: std::collections::HashSet<_> =
-        allocate_replication_seeds(100, 5).into_iter().collect();
-    assert_eq!(distinct.len(), 5);
 }
 #[test]
 fn test_downstream_typed_calibration_and_domain_fixtures() {
@@ -249,65 +255,69 @@ fn test_downstream_typed_calibration_and_domain_fixtures() {
     assert_eq!(traces[0].transit_ticks, 15);
     assert_eq!(traces[0].work_ticks, 10);
 
-    let table = calibration_table(&traces, "downstream-e43", "tick").unwrap();
-    assert_eq!(table.height(), 2);
-    for (row, case, start, end, work) in [(0, "case_201", 3, 13, 10), (1, "case_202", 5, 11, 6)] {
-        assert_eq!(
-            table.column("day").unwrap().u32().unwrap().get(row),
-            Some(1)
-        );
-        assert_eq!(
-            table.column("case_id").unwrap().str().unwrap().get(row),
-            Some(case)
-        );
-        for (name, value) in [
-            ("start_tick", start),
-            ("end_tick", end),
-            ("transit_ticks", 15),
-            ("work_ticks", work),
-            ("interval_ticks", work),
-        ] {
+    #[cfg(feature = "native-data")]
+    {
+        let table = calibration_table(&traces, "downstream-e43", "tick").unwrap();
+        assert_eq!(table.height(), 2);
+        for (row, case, start, end, work) in [(0, "case_201", 3, 13, 10), (1, "case_202", 5, 11, 6)]
+        {
+            assert_eq!(
+                table.column("day").unwrap().u32().unwrap().get(row),
+                Some(1)
+            );
+            assert_eq!(
+                table.column("case_id").unwrap().str().unwrap().get(row),
+                Some(case)
+            );
+            for (name, value) in [
+                ("start_tick", start),
+                ("end_tick", end),
+                ("transit_ticks", 15),
+                ("work_ticks", work),
+                ("interval_ticks", work),
+            ] {
+                assert_eq!(
+                    table
+                        .column(&format!("{name}_hi"))
+                        .unwrap()
+                        .u64()
+                        .unwrap()
+                        .get(row),
+                    Some(0)
+                );
+                assert_eq!(
+                    table
+                        .column(&format!("{name}_lo"))
+                        .unwrap()
+                        .u64()
+                        .unwrap()
+                        .get(row),
+                    Some(value)
+                );
+            }
+            for (name, value) in [
+                ("fixture_id", "downstream-e43"),
+                ("source_kind", "synthetic_fixture"),
+                ("time_unit", "tick"),
+                ("interval_basis", "end_minus_start"),
+                ("transit_source", "caller_supplied"),
+                ("transit_conversion", "not_applicable"),
+            ] {
+                assert_eq!(
+                    table.column(name).unwrap().str().unwrap().get(row),
+                    Some(value)
+                );
+            }
             assert_eq!(
                 table
-                    .column(&format!("{name}_hi"))
+                    .column("transit_source_seconds")
                     .unwrap()
-                    .u64()
-                    .unwrap()
-                    .get(row),
-                Some(0)
-            );
-            assert_eq!(
-                table
-                    .column(&format!("{name}_lo"))
-                    .unwrap()
-                    .u64()
+                    .f64()
                     .unwrap()
                     .get(row),
-                Some(value)
+                None
             );
         }
-        for (name, value) in [
-            ("fixture_id", "downstream-e43"),
-            ("source_kind", "synthetic_fixture"),
-            ("time_unit", "tick"),
-            ("interval_basis", "end_minus_start"),
-            ("transit_source", "caller_supplied"),
-            ("transit_conversion", "not_applicable"),
-        ] {
-            assert_eq!(
-                table.column(name).unwrap().str().unwrap().get(row),
-                Some(value)
-            );
-        }
-        assert_eq!(
-            table
-                .column("transit_source_seconds")
-                .unwrap()
-                .f64()
-                .unwrap()
-                .get(row),
-            None
-        );
     }
 
     // Also verify CompositeEdFixture export_calibration_traces
@@ -455,4 +465,11 @@ fn test_downstream_package_dry_run_and_license_verification() {
         pkg_stderr.contains("unexpected argument '--dry-run'"),
         "cargo package must report unexpected --dry-run argument: {pkg_stderr}"
     );
+}
+
+#[test]
+fn test_downstream_seed_allocation() {
+    let distinct: std::collections::HashSet<_> =
+        allocate_replication_seeds(100, 5).into_iter().collect();
+    assert_eq!(distinct.len(), 5);
 }
