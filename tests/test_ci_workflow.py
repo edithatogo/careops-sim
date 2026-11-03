@@ -227,6 +227,24 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertIn('"$CAREOPS_PYTHON" crates/careops-birthing-cli/read_batch.py', step)
         self.assertIn("--only-binary=:all: --no-deps", step)
 
+    def test_native_lane_executes_exact_ed_fixture_and_independent_typed_reader(self):
+        native = workflow_job(WORKFLOW.read_text(), "test")
+        step = native.split("- name: Independently verify ED native file protocols", 1)[1].split("      - name:", 1)[0]
+        self.assertNotIn("if:", step)
+        self.assertNotIn("continue-on-error", step)
+        self.assertIn("set -euo pipefail", step)
+        self.assertIn("POLARS_MAX_THREADS: '1'", step)
+        self.assertIn("requirements-native-readers.txt", native)
+        self.assertIn("test ! -e .artifacts/ci/native-files", step)
+        self.assertIn("--test r131_native_files actual_native_domain_fixture_is_published_only_to_explicit_fresh_destination -- --exact", step)
+        self.assertIn('"$CAREOPS_PYTHON" crates/careops-ed/test_native_files.py .artifacts/ci/native-files', step)
+        self.assertIn("pl.get_index_type() == pl.UInt32", step)
+        self.assertIn("pl.thread_pool_size() == 1", step)
+        self.assertIn("native-files-reader.log", step)
+        artifact = native.split("- name: Retain bounded failed native log", 1)[1]
+        self.assertIn(".artifacts/ci/nextest/native-files-fixture.log", artifact)
+        self.assertIn(".artifacts/ci/nextest/native-files-reader.log", artifact)
+
     def test_unit_lane_does_not_repeat_documentation_tests(self):
         workflow = WORKFLOW.read_text()
         native = workflow.split("  test:\n", 1)[1].split("  doctest:\n", 1)[0]
