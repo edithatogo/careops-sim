@@ -240,3 +240,52 @@ waived. Populated direct parent FFI and final full native/replay/performance/
 streaming/clean-package/coverage/mutation/security/hosted gates remain mandatory.
 Same sole chat01a19b9f owns careops-pr194-checks/careops-sim; no new runtime,
 merge, publication or clinical/site/operational acceptance is implied.
+
+
+## R13 continued local cutover checkpoint — 3 November 2026
+
+Reviewed implementation is integrated through9ac72c2; R13.2/R13.3 and R14 are
+still open. This dated section supersedes earlier next-action prose without
+rewriting immutable source/reader receipts or earlier failed benchmark attempts.
+
+- b0ddd0c: real CLI entrypoint/export/compare and separately versioned benchmark.
+  Release26case parity and14rehashed-file negatives pass. Slow10k-patient stdout
+  takes1.584seconds/74,645,504bytes peak RSS; unread live pipe terminates via TERM
+  in1.558seconds with one reap and no KILL. Existing10second/256MiB/8MiB budgets
+  are unchanged. Source bindings still match through9ac72c2. CLI13, guard20,
+  benchmark4 and strict CLI Clippy passed. The build source was dirty atd7c188f;
+  receipt binds exact hashes, not a false same-commit test claim.
+- cb7362d/d3e0cf8/5a62834: reviewed CI and Python consumer cutovers, actual native
+  typed readers, legacy example-runner removal and cold-CI release-build ordering.
+  Existing analytical, conservation, warm-up and timing thresholds are retained.
+  P5.2 six scenarios repeat with equal typed data/logical provenance; file byte
+  equality is not required. Supporting22+2+27 tests pass.
+- 9d126f3: E31(9), E33(8), E43(4), CLIconsumer(3) and nativeCLI(13) pass; real
+  cancellation/resume, worker equality and calibration/domain oracles retained.
+- 441e25a: capture/recovery migration reviewed independently by
+  /root/legacy_removal_review at exactdiff0ada5d922d076a76aea31b9dcebf708e7ba4f4820107cbf4427f93198ea0a161.
+  R11213/R1138/R1114 and minimal observer1 pass using the external target.
+  Actual native publication/readback remains under the original invocation
+  observer; full typed-frame equality, crash/restart and corruption checks remain.
+- 9ac72c2: unused dashboard fake JSON/CSV/Arrow-description exports removed.
+  Strict TypeScript5.7.2 typecheck/build, actual Node4 and Python8 checks pass.
+  Separate review found and fixed progress-heartbeat interference with delta
+  base ticks; accepted source has separate applied-state and progress clocks.
+  Existing configuration, state/spatial/replay/live exports are retained.
+
+Canonical Cargo Deny advisories/bans/licenses/sources passed at9d126f3 with
+unchanged dependency inputs; no exemptions were added. Twenty source-compatibility
+tests passed again at441e25a. Private command/result/hash receipts are retained
+as polars-release-final-root-01.json, polars-capture-consumer-result.json and
+polars-dashboard-source-result.json. Temporary isolated dashboard tools are
+verification inputs, not a new adopted repository dependency lock.
+
+Remaining work: reference/fixture/domain/C63/capability Rust consumers, production
+legacy API/serializer removal, B7 metadata-bearing native boundary, populated
+parent FFI and all final R14 source/package/performance/coverage/mutation/security/
+hosted checks. The known whole-workspace rustfmt reader wrapping drift is open.
+Runtime/data/Polars pins and genuine acceptance gates are unchanged. All completed
+packet claims were released after their normal-hook commits; historical frozen
+worktrees remain preserved. No archive or whole-layer completion follows from
+this checkpoint. Coordinator chat01a19b9f retains the registered Polars worktree
+and shared track surfaces; native scope is local synthetic CLI only.
