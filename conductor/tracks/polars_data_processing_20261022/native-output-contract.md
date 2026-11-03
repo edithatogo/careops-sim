@@ -52,3 +52,36 @@ strings remain distinct from null. Historical fixtures require actual readback.
 
 The metadata interfaces are existing locked dependencies, not a new backend.
 Their separate strict compatibility receipt does not renew A7 or complete R13.
+
+
+## Next bounded fixture view contract
+
+This is the reviewed interface for the next packet, not a claim of implemented
+or qualified source at63a30b8. CompositeEdFixture has no original capture-backed
+BatchRunDocument; never fabricate one or input/model provenance to use the native
+ED exporter. Keep to_run_summary as the authoritative online projection.
+
+A narrow composite_fixture::native_fixture::fixture_patient_table accepts that
+RunSummary and returns a Polars DataFrame under native-data. Schema is
+careops.ed.synthetic-fixture-patients.v2; source_kind is
+synthetic_fixture_snapshot. Columns carry fixture_id, seed, time_unit,
+horizon_ticks, patient_id, status and high/low UInt64 limbs for arrival_tick,
+start_tick, completion_tick, work_ticks, wait_ticks and elapsed_ticks. This u64
+producer's present high limbs are zero; optional pairs are both null together.
+Preserve every completed, in-flight and queued patient in source canonical order,
+with unique patient identity and no row loss/multiplication. Work and duration
+facts preserve the existing summary meaning. Caller-declared identity/seed/horizon
+is not an input hash, model/runtime identity, replication or observed movement.
+Keep the completed-only calibration_table separate for route/transit provenance.
+
+Migrate the three existing C62/E42-heldout/C64 consumers together. Preserve actual
+Macro/Micro execution, transit0/20, preemption/work conservation, disjoint and
+stochastic cohorts, uncertainty vectors, horizon censoring and existing timing
+oracles. C62/E42 wait means include all nonnull starts; C64 means remain
+completed-only. Keep actual online busy-bay utilization independent from endpoint
+interval occupancy; preserve the latter's end-before-start tie order and value3.
+Replace old full-row JSON/descriptor assertions with typed native frame and real
+interchange/hash checks. C64's genuine reassembled capture may use the existing
+native publisher. Domain/scalar checks stay enabled in minimal graphs; only
+actual native capabilities receive feature cfgs. Do not resurrect row/comparison
+DTOs or nominal CLI runs as substitutes for real fixture execution.

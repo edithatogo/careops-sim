@@ -289,3 +289,55 @@ packet claims were released after their normal-hook commits; historical frozen
 worktrees remain preserved. No archive or whole-layer completion follows from
 this checkpoint. Coordinator chat01a19b9f retains the registered Polars worktree
 and shared track surfaces; native scope is local synthetic CLI only.
+
+
+## Native boundary and consumer continuation — 4 November 2026
+
+Local source is integrated through63a30b8 with independent bounded review. This
+checkpoint does not close R13.2/R13.3 or R14 and does not overwrite earlier
+source-bound receipts. The eight coordination paths form one checkpoint join;
+no source implementation or plan checkbox is changed by this record.
+
+- 4357206: reference/analytical/capacity/calibration consumers use actual native
+  tables. Native48/minimal35 tests pass. The retired censor_status DTO assertion
+  was corrected to real completed status, exact completion limbs and zero
+  unfinished count; first failures remain in private receipts.
+- b215047: the native release workflow now exercises fresh native output roots
+  from the unpacked compiled binary, qualified PyArrow, file/control hashes,
+  actual5patient/1replication/5metric tables, logical repeat equality and five
+  zero comparison deltas. Synthetic/nonclinical assertions, build/package,
+  inventory and attestation gates remain. Exact extracted consumer script passed
+  outside source on macOS at compiled4357206;32support tests pass. This is not
+  Linux hosted or attestation proof. Binary SHA-256 is
+  d6efba2e2f0d972667b55b8f70b86a467c2935c81274606d183c67b974e8a6d0.
+- 443f506: C63 lifecycle/capability gates moved to the CLI crate without an ED
+  dependency cycle; nativeCLI24/EDnative5/EDminimal5 and a final focused identity
+  assertion pass. Real1000patient comparison takes31.924ms within the unchanged
+  100ms gate. Export227.317ms is a measurement; the original test had no export
+  threshold. Historical fixture/source oracles and every typed replay table remain.
+- 95fe28c: reviewed Birthing v2 source4d6f97b is preserved byte-for-byte across
+  four owned files. Exact-range preflight is clean; shared source-track Conductor
+  changes were not copied. Batch8/theatre27 plus actual PyArrow readback pass.
+- 63a30b8: B7 persists and checks11exact metadata fields in real Parquet/IPC.
+  Batch10/theatre27, actual2x148row native/PyArrow readback and26independently
+  rehashed metadata negatives pass. Shared checked rows retain original sequence,
+  canonical digest/identity and8MiB payload bound; only the second JSON parse is
+  removed. The single raw-domain decode is retained canonical-control validation.
+  Existing five native views suffice; persisting five new derived formats would
+  be extra scope. Uncertainty, policy, entity/null/zero, callbacks and recovery
+  remain unchanged. Independent review accepted final1490e3bf2032dbe46ad0f6f64a76cc238964e37b9e2c25fac02625efbe41310b.
+
+Normal hooks passed for every commit and claims were released immediately.
+The supported Cargo dev-profile clean retired only this lane's ED/CLI debug
+artifacts after all processes stopped; actual6.3GiB freed, release bytes verified
+unchanged, packages and receipts preserved. No environment or third-party cache
+was replaced. Commands/results/source hashes are in the private external
+polars-reference-consumer-result.json, polars-native-release-consumer-qualification.json,
+polars-c63-consumer-result.json and polars-b7-native-metadata-result.json.
+
+Remaining: all-patient fixture view and C62/E42-heldout/C64 consumers, production
+legacy serializers/reductions, active documentation, populated parent FFI, reader
+formatting repair with exact evidence, maintained-code audit and all final R14
+native/Python/performance/package/coverage/mutation/security/policy/hosted gates.
+Optional GPU/distributed/clinical/site/stable-release capability is not invented
+as an engineering closeout blocker. Runtime074/dataf347/Polars964 remain fixed.

@@ -68,7 +68,7 @@ qualification is claimed.
 
 ## Planned Polars migration
 
-[CareOps migration](tracks/polars_data_processing_20261022/index.md) follows accepted Kairos Track 70. R10–R12 retain scoped acceptance. Reviewed native CLI/release benchmark, CI and bounded Python/Rust/capture/dashboard cutovers are integrated through9ac72c2. All26frozen cases and unchanged stdout/RSS/time gates pass locally; current-head hosted proof is pending. Remaining legacy/B7 consumers and R14 acceptance keep the track in progress.
+[CareOps migration](tracks/polars_data_processing_20261022/index.md) follows accepted Kairos Track 70. R10–R12 retain scoped acceptance. Reviewed native CLI/release benchmark, CI and bounded Python/Rust/capture/dashboard/B7 cutovers are integrated through63a30b8. The earlier source-bound release checkpoint passed26frozen cases and unchanged stdout/RSS/time gates; final-source and current-head hosted proof remain open. Remaining fixture/legacy consumers and R14 acceptance keep the track in progress.
 
 ## Separate library adoption tracks
 

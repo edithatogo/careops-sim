@@ -67,7 +67,7 @@ required features and acceptance recipes. E2 is the functional headless MVP; E4
 is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.
 
 ---
-- [~] **Track: CareOps whole-layer Polars migration** — R10–R12 scoped engineering accepted. R13 native CLI release benchmark and reviewed CI/Python/Rust/capture/dashboard cutovers integrated through9ac72c2; remaining legacy/B7 consumers and R14 final/FFI/hosted gates open. [Track](tracks/polars_data_processing_20261022/index.md).
+- [~] **Track: CareOps whole-layer Polars migration** — R10–R12 scoped engineering accepted. R13 reviewed native CLI/CI/Python/Rust/capture/dashboard/B7 cutovers integrated through63a30b8; earlier release benchmark retains its source scope; remaining fixture/legacy consumers and R14 final/FFI/hosted gates open. [Track](tracks/polars_data_processing_20261022/index.md).
 
 ---
 - [ ] **Track: rand deterministic RNG adoption** — Proposed; implementation not started. [Track](tracks/rand_rng_adoption_20261022/index.md).

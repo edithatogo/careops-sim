@@ -232,3 +232,16 @@ storage link failures are retained as failed evidence. No new hosted run, push,
 whole R13/R14 acceptance or archive is claimed. Next: native CLI export/compare,
 main/default and all-known-consumer cutover, then removal and existing R14 gates.
 These are concrete unfinished tasks; the track remains in progress.
+
+
+## Integrator checkpoint — 4 November 2026
+
+Coordinator chat01a19b9f-69e7-7353-9b75-445d5653feb4 retains
+careops-pr194-checks/careops-sim on codex/polars-migration-integration.
+Reviewed source is63a30b8; packet claims are released, historical frozen worker
+worktrees and source4d6f97b remain preserved. Native scope is local synthetic CLI
+artifacts only. Next operation is the bounded native fixture projection and
+C62/E42-heldout/C64 migration, then production legacy removal and final R14.
+The [dated review](review-report.md#native-boundary-and-consumer-continuation--4-november-2026)
+records exact acceptance scopes and remaining gates. No whole-layer completion,
+archive, upstream source/pin mutation or merge is inferred.
