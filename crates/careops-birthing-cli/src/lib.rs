@@ -9,10 +9,11 @@ use kairo_ecs_arrow::{
     run_output::{self, RunOutput, RunOutputConfig, ThreadBudget},
 };
 use kairo_ecs_arrow::{EventLogRecord, EventStatus, SCHEMA_VERSION_V2};
-use polars::prelude::{DataFrame, SortMultipleOptions};
+use polars::prelude::{DataFrame, IpcStreamReader, ParquetReader, SerReader, SortMultipleOptions};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
+    collections::BTreeMap,
     fs,
     num::NonZeroUsize,
     path::{Path, PathBuf},
@@ -277,6 +278,32 @@ fn records(run: &str, rows: &[Row], offset: usize) -> Result<Vec<EventLogRecord>
         .collect()
 }
 
+fn capture_metadata(
+    input: &BatchInput,
+    run: &str,
+    index: usize,
+    seed: u64,
+    first_sequence: usize,
+    rows: usize,
+) -> Result<BTreeMap<String, String>> {
+    Ok([
+        ("schema_version", SCHEMA_VERSION_V2.to_string()),
+        ("run_id", run.to_string()),
+        ("effective_input_sha256", input.hash()?),
+        ("model_contract_sha256", MODEL_CONTRACT_SHA256.to_string()),
+        ("runtime_revision", RUNTIME_REVISION.to_string()),
+        ("data_revision", DATA_REVISION.to_string()),
+        ("time_unit", "second".to_string()),
+        ("replication_index", index.to_string()),
+        ("seed", seed.to_string()),
+        ("first_sequence", first_sequence.to_string()),
+        ("rows", rows.to_string()),
+    ]
+    .into_iter()
+    .map(|(k, v)| (format!("careops.{k}"), v))
+    .collect())
+}
+
 /// Publish original replication capture in finite parts. No export-time rerun.
 /// A domain manifest completes only after both actual formats and the upstream
 /// Parquet publication have completed. Partial attempts remain for diagnosis.
@@ -318,10 +345,12 @@ fn publish(
         let mut ipc = Vec::new();
         for (part, chunk) in rows.chunks(PART_ROWS).enumerate() {
             let capture = records(&run, chunk, part * PART_ROWS)?;
-            output.write_batch(&capture)?;
+            let metadata =
+                capture_metadata(input, &run, index, seed, part * PART_ROWS + 1, chunk.len())?;
+            output.write_batch_with_metadata(&capture, &metadata)?;
             let mut frame = io::records_to_dataframe(&capture)?;
             let mut bytes = Vec::new();
-            io::write_ipc_stream(&mut frame, &mut bytes)?;
+            io::write_ipc_stream_with_metadata(&mut frame, &mut bytes, &metadata)?;
             let file = format!("ipc-{part:05}.arrow");
             let mut sink = fs::OpenOptions::new()
                 .write(true)
@@ -436,6 +465,26 @@ pub fn replication_events(
     index: usize,
     seed: u64,
 ) -> Result<(ReplicationManifest, DataFrame)> {
+    let capture = checked_replication_capture(root, directory, input, index, seed)?;
+    Ok((capture.manifest, capture.events))
+}
+
+// Internal shared validation result: canonical Row decoding is retained once
+// for domain identity/digest control. Offline views reuse these already checked
+// original sequence/Row pairs instead of reparsing payload JSON a second time.
+pub(crate) struct CheckedCapture {
+    pub(crate) manifest: ReplicationManifest,
+    pub(crate) events: DataFrame,
+    pub(crate) run_id: String,
+    pub(crate) rows: Vec<(u64, Row)>,
+}
+pub(crate) fn checked_replication_capture(
+    root: &Path,
+    directory: &str,
+    input: &BatchInput,
+    index: usize,
+    seed: u64,
+) -> Result<CheckedCapture> {
     initialize_native_data()?;
     if !safe_component(directory)
         || !directory.starts_with(&format!("{}-attempt", input.batch_id))
@@ -507,16 +556,64 @@ pub fn replication_events(
         if hash(&bytes) != receipt.sha256 {
             return Err("IPC content hash mismatch".into());
         }
-        let frame = canonical_event_frame(io::read_ipc_stream(std::io::Cursor::new(bytes))?)?;
-        let other = canonical_event_frame(io::read_parquet(std::io::Cursor::new(read_bounded(
+        let expected = capture_metadata(
+            input,
+            &parquet.run_id,
+            index,
+            seed,
+            all.height() + 1,
+            receipt.rows,
+        )?;
+        let mut ipc_reader = IpcStreamReader::new(std::io::Cursor::new(bytes));
+        let metadata = ipc_reader
+            .custom_metadata()?
+            .ok_or("missing IPC capture metadata")?;
+        let actual: BTreeMap<String, String> = metadata
+            .iter()
+            .map(|(k, v)| (k.to_string(), v.to_string()))
+            .collect();
+        if actual != expected {
+            return Err("IPC capture metadata mismatch".into());
+        }
+        let frame = canonical_event_frame(ipc_reader.finish()?)?;
+        let mut parquet_reader = ParquetReader::new(std::io::Cursor::new(read_bounded(
             &dir.join(&parquet.parts[part].file_name),
             8 * 1024 * 1024,
-        )?))?)?;
+        )?));
+        let metadata = parquet_reader.get_metadata()?;
+        let mut actual = BTreeMap::new();
+        for entry in metadata.key_value_metadata.iter().flatten() {
+            if entry.key == "ARROW:schema" {
+                continue;
+            }
+            if actual
+                .insert(
+                    entry.key.clone(),
+                    entry
+                        .value
+                        .clone()
+                        .ok_or("missing Parquet metadata value")?,
+                )
+                .is_some()
+            {
+                return Err("duplicate Parquet metadata key".into());
+            }
+        }
+        if actual != expected {
+            return Err("Parquet capture metadata mismatch".into());
+        }
+        let other = canonical_event_frame(parquet_reader.finish()?)?;
         if !frame.equals_missing(&other)
             || frame.height() != receipt.rows
             || other.height() != parquet.parts[part].row_count
         {
             return Err("IPC/Parquet capture mismatch".into());
+        }
+        let sequences = frame.column("sequence")?.u64()?;
+        for offset in 0..frame.height() {
+            if sequences.get(offset) != Some((all.height() + offset + 1) as u64) {
+                return Err("native part sequence metadata mismatch".into());
+            }
         }
         if all
             .height()
@@ -533,12 +630,14 @@ pub fn replication_events(
     let records = io::dataframe_to_records(&all)?;
     let mut rows = Vec::with_capacity(records.len());
     for (i, record) in records.iter().enumerate() {
-        let row: Row = serde_json::from_str(
-            record
-                .payload_ref
-                .as_deref()
-                .ok_or("missing domain capture")?,
-        )?;
+        let payload = record
+            .payload_ref
+            .as_deref()
+            .ok_or("missing domain capture")?;
+        if payload.len() > 8 * 1024 * 1024 {
+            return Err("captured domain payload exceeds bound".into());
+        }
+        let row: Row = serde_json::from_str(payload)?;
         if record.sequence != (i + 1) as u64
             || record.schema_version != SCHEMA_VERSION_V2
             || record.time_scale != "second"
@@ -564,7 +663,17 @@ pub fn replication_events(
     {
         return Err("canonical capture digest mismatch".into());
     }
-    Ok((manifest, all))
+    let rows = records
+        .into_iter()
+        .map(|record| record.sequence)
+        .zip(rows)
+        .collect();
+    Ok(CheckedCapture {
+        manifest,
+        events: all,
+        run_id: parquet.run_id,
+        rows,
+    })
 }
 
 fn execute_replication(

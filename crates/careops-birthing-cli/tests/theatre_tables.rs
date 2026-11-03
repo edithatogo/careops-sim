@@ -467,6 +467,32 @@ fn actual_checked_io_views_match_across_worker_counts() {
         let (manifests, t) =
             read_theatre_tables(&root.path().join(&input.batch_id), &input, &reps).unwrap();
         assert_eq!(manifests.len(), 2);
+        // Verify original capture ordinals, not positions after domain filtering.
+        let mut expected = std::collections::BTreeSet::new();
+        for replication in &reps {
+            let (_, events) = careops_birthing_cli::replication_events(
+                &root.path().join(&input.batch_id),
+                &replication.directory,
+                &input,
+                replication.index,
+                replication.seed,
+            )
+            .unwrap();
+            let kinds = events.column("event_kind").unwrap().str().unwrap();
+            let sequences = events.column("sequence").unwrap().u64().unwrap();
+            for row in 0..events.height() {
+                if kinds.get(row) == Some("theatre_case") {
+                    expected.insert((replication.index as u64, sequences.get(row).unwrap()));
+                }
+            }
+        }
+        let replicas = t.cases.column("replication_index").unwrap().u64().unwrap();
+        let sequences = t.cases.column("capture_sequence").unwrap().u64().unwrap();
+        let actual: std::collections::BTreeSet<_> = (0..t.cases.height())
+            .map(|row| (replicas.get(row).unwrap(), sequences.get(row).unwrap()))
+            .collect();
+        assert_eq!(actual, expected);
+
         if let Some(p) = previous {
             let p: careops_birthing_cli::theatre_tables::TheatreTables = p;
             assert!(p.cases.equals_missing(&t.cases));

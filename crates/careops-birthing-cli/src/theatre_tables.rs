@@ -3,7 +3,8 @@
 //! manifest/model/input binding. No policy is reselected and no outcome inferred.
 //! Resource-failure detail remains in the original checked event capture.
 use crate::{
-    hash, replication_events, BatchInput, Replication, ReplicationManifest, Result, Row, MAX_ROWS,
+    checked_replication_capture, hash, BatchInput, Replication, ReplicationManifest, Result, Row,
+    MAX_ROWS,
 };
 use careops_core::experiment::{ExperimentError, ExperimentErrorKind};
 use careops_core::pathway::VersionedUrgencyAssessment;
@@ -1403,8 +1404,8 @@ fn qualify(
     })
 }
 
-/// Checked full-batch entry: preserve original row sequences while Polars selects
-/// the two captured payload kinds. Other details remain in replication_events.
+/// Checked full-batch entry: reuse canonical domain rows and original sequence
+/// numbers after native metadata/identity/digest validation. No second JSON parse.
 pub fn read_theatre_tables(
     batch_directory: &Path,
     input: &BatchInput,
@@ -1427,65 +1428,26 @@ pub fn read_theatre_tables(
     let mut manifests = Vec::new();
     let mut captures = Vec::new();
     for replication in replications {
-        let (manifest, events) = replication_events(
+        let capture = checked_replication_capture(
             batch_directory,
             &replication.directory,
             input,
             replication.index,
             replication.seed,
         )?;
-        if manifest.replication != *replication {
+        if capture.manifest.replication != *replication {
             return Err(invalid("supplied replication receipt mismatch"));
         }
-        let run_id = events
-            .column("run_id")
-            .map_err(invalid)?
-            .str()
-            .map_err(invalid)?
-            .get(0)
-            .ok_or_else(|| invalid("empty checked capture"))?
-            .to_owned();
-        let selected = events
-            .lazy()
-            .filter(
-                col("event_kind")
-                    .eq(lit("theatre_case"))
-                    .or(col("event_kind").eq(lit("theatre_callback"))),
-            )
-            .select([col("sequence"), col("payload_ref")])
-            .collect()
-            .map_err(invalid)?;
-        let sequence = selected
-            .column("sequence")
-            .map_err(invalid)?
-            .u64()
-            .map_err(invalid)?;
-        let payloads = selected
-            .column("payload_ref")
-            .map_err(invalid)?
-            .str()
-            .map_err(invalid)?;
-        let mut rows = Vec::with_capacity(selected.height());
-        for i in 0..selected.height() {
-            let payload = payloads
-                .get(i)
-                .ok_or_else(|| invalid("missing captured payload"))?;
-            if payload.len() > 8 * 1024 * 1024 {
-                return Err(invalid("captured theatre payload exceeds bound"));
-            }
-            rows.push((
-                sequence
-                    .get(i)
-                    .ok_or_else(|| invalid("missing capture sequence"))?,
-                serde_json::from_str(payload).map_err(invalid)?,
-            ));
-        }
         captures.push(TheatreCapture {
-            run_id,
+            run_id: capture.run_id,
             replication_index: replication.index as u64,
-            events: rows,
+            events: capture
+                .rows
+                .into_iter()
+                .filter(|(_, row)| matches!(row.kind.as_str(), "theatre_case" | "theatre_callback"))
+                .collect(),
         });
-        manifests.push(manifest);
+        manifests.push(capture.manifest);
     }
     let tables = theatre_tables(&captures)?;
     Ok((manifests, tables))
