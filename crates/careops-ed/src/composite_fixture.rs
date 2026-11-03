@@ -10,6 +10,9 @@
 #[cfg(feature = "native-data")]
 #[path = "calibration_table.rs"]
 pub mod native_calibration;
+#[cfg(feature = "native-data")]
+#[path = "fixture_table.rs"]
+pub mod native_fixture;
 
 use std::fmt::{Display, Formatter};
 

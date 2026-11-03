@@ -11,7 +11,7 @@
 //!      (3) 60 FPS snapshot capture (sampling every 16 ticks)
 //!      (4) Jittered / slow consumer (intermittent frame sampling and drops)
 //!    - Proves bit-for-bit identical RunSummary, patient outcomes, mean wait ticks, mean LOS,
-//!      and SHA-256 hashes across all 4 capture conditions.
+//!      and exact typed native frames across all 4 capture conditions; actual IPC files have verified hashes.
 //!
 //! 2. `test_snapshot_stream_and_slow_consumer_backpressure`:
 //!    - Bounded snapshot queue (ring buffer / capacity-bounded channel) for UI streaming.
@@ -26,29 +26,39 @@
 //!      - Entity IDs are alphanumeric strings.
 //!    - Tests serialization round-trip for browser/PixiJS consumption.
 //!
-//! 4. `test_distributed_and_pdes_export_bundle_compatibility`:
-//!    - Validates that Arrow export bundles (`generate_arrow_export_bundle`) and batch runs
+//! 4. `test_distributed_and_pdes_native_capture_compatibility`:
+//!    - Validates that native captured datasets and batch runs
 //!      (`run_batch_with_workers`) can be partitioned by replication ID, sent across distributed/PDES
 //!      worker channels, and reassembled into identical aggregate metrics and output files.
 
 use std::collections::VecDeque;
 use std::fs;
 use std::path::PathBuf;
+#[cfg(feature = "native-data")]
 use std::sync::mpsc;
+#[cfg(feature = "native-data")]
 use std::thread;
 
-use careops_ed::disposition::api_runner::{
-    allocate_replication_seeds, compute_sha256_hex, RunDocument,
-};
-use careops_ed::disposition::arrow_export::generate_arrow_export_bundle;
+#[cfg(feature = "native-data")]
+use careops_ed::disposition::api_runner::{allocate_replication_seeds, compute_sha256_hex};
+#[cfg(feature = "native-data")]
 use careops_ed::disposition::batch_runner::{
     compute_batch_aggregates, run_batch_with_workers, BatchConfig, BatchRunDocument,
 };
+#[cfg(feature = "native-data")]
+use careops_ed::disposition::composite_fixture::native_fixture::fixture_patient_table;
 use careops_ed::disposition::composite_fixture::{
     st003_verify_retained_occupancy, ComposedPatient, CompositeEdFixture, PatientLifecycle,
 };
+#[cfg(feature = "native-data")]
+use careops_ed::disposition::native_output::{
+    export_native_batch, read_native_dataset, ExportLimits, NativeFormat,
+};
 use careops_ed::disposition::operations::{BayPhase, ExecutionFidelity};
-use careops_ed::{parse_scenario_json, Eligibility, PatientStatus, RunSummary, ScenarioConfig};
+use careops_ed::{parse_scenario_json, ScenarioConfig};
+use careops_ed::{Eligibility, PatientStatus, RunSummary};
+#[cfg(feature = "native-data")]
+use polars::prelude::*;
 use serde::{Deserialize, Serialize};
 
 /// Maximum safe integer in JavaScript / WebAssembly IEEE 754 float representation (2^53 - 1).
@@ -459,7 +469,7 @@ fn run_simulation_under_snapshot_policy<F>(
     horizon_ticks: u64,
     mut should_capture: F,
     event_log: Option<&mut LosslessEventLog>,
-) -> (RunDocument, Vec<VisualizationSnapshot>)
+) -> (RunSummary, Vec<VisualizationSnapshot>)
 where
     F: FnMut(u64) -> bool,
 {
@@ -616,7 +626,7 @@ where
         assert!(fixture.verify_invariants(total_admitted).is_ok());
     }
 
-    let doc = fixture.to_run_document(scenario_id, seed, horizon_ticks);
+    let doc = fixture.to_run_summary(scenario_id, seed, horizon_ticks);
     (doc, snapshots)
 }
 
@@ -648,7 +658,7 @@ fn load_nominal_scenario() -> ScenarioConfig {
 ///   (3) 60 FPS snapshot capture (sampling every 16 ticks)
 ///   (4) Jittered / slow consumer (intermittent frame sampling and drops)
 /// - Simulation summary (RunSummary), patient outcomes, mean wait ticks, and mean LOS are bit-for-bit identical.
-/// - Serialized JSON run documents and SHA-256 hashes match identically.
+/// - Typed native fixture frames match, with real IPC schema/metadata/hash readback.
 #[test]
 fn test_visualization_render_rate_invariance() {
     let scenario_id = "c64-render-invariance-ed";
@@ -705,17 +715,17 @@ fn test_visualization_render_rate_invariance() {
     );
 
     // 1. Bit-for-bit identical RunSummary across all 4 conditions
-    assert_eq!(doc_headless.summary, doc_30fps.summary);
-    assert_eq!(doc_headless.summary, doc_60fps.summary);
-    assert_eq!(doc_headless.summary, doc_jittered.summary);
+    assert_eq!(doc_headless, doc_30fps);
+    assert_eq!(doc_headless, doc_60fps);
+    assert_eq!(doc_headless, doc_jittered);
 
     // 2. Bit-for-bit identical patient outcomes across all 4 conditions
-    assert_eq!(doc_headless.summary.patients.len(), 7);
-    for i in 0..doc_headless.summary.patients.len() {
-        let p_head = &doc_headless.summary.patients[i];
-        let p_30 = &doc_30fps.summary.patients[i];
-        let p_60 = &doc_60fps.summary.patients[i];
-        let p_jit = &doc_jittered.summary.patients[i];
+    assert_eq!(doc_headless.patients.len(), 7);
+    for i in 0..doc_headless.patients.len() {
+        let p_head = &doc_headless.patients[i];
+        let p_30 = &doc_30fps.patients[i];
+        let p_60 = &doc_60fps.patients[i];
+        let p_jit = &doc_jittered.patients[i];
 
         assert_eq!(p_head, p_30);
         assert_eq!(p_head, p_60);
@@ -736,10 +746,10 @@ fn test_visualization_render_rate_invariance() {
         (wait_sum as f64 / count, los_sum as f64 / count)
     };
 
-    let (mean_wait_head, mean_los_head) = compute_metrics(&doc_headless.summary);
-    let (mean_wait_30, mean_los_30) = compute_metrics(&doc_30fps.summary);
-    let (mean_wait_60, mean_los_60) = compute_metrics(&doc_60fps.summary);
-    let (mean_wait_jit, mean_los_jit) = compute_metrics(&doc_jittered.summary);
+    let (mean_wait_head, mean_los_head) = compute_metrics(&doc_headless);
+    let (mean_wait_30, mean_los_30) = compute_metrics(&doc_30fps);
+    let (mean_wait_60, mean_los_60) = compute_metrics(&doc_60fps);
+    let (mean_wait_jit, mean_los_jit) = compute_metrics(&doc_jittered);
 
     assert_eq!(mean_wait_head, mean_wait_30);
     assert_eq!(mean_wait_head, mean_wait_60);
@@ -749,29 +759,87 @@ fn test_visualization_render_rate_invariance() {
     assert_eq!(mean_los_head, mean_los_60);
     assert_eq!(mean_los_head, mean_los_jit);
 
-    // 4. Bit-for-bit identical serialized JSON run documents and SHA-256 hashes
-    let json_head = serde_json::to_string_pretty(&doc_headless).unwrap();
-    let json_30 = serde_json::to_string_pretty(&doc_30fps).unwrap();
-    let json_60 = serde_json::to_string_pretty(&doc_60fps).unwrap();
-    let json_jit = serde_json::to_string_pretty(&doc_jittered).unwrap();
-
-    assert_eq!(json_head, json_30);
-    assert_eq!(json_head, json_60);
-    assert_eq!(json_head, json_jit);
-
-    let hash_head = compute_sha256_hex(json_head.as_bytes());
-    let hash_30 = compute_sha256_hex(json_30.as_bytes());
-    let hash_60 = compute_sha256_hex(json_60.as_bytes());
-    let hash_jit = compute_sha256_hex(json_jit.as_bytes());
-
-    assert_eq!(hash_head, hash_30);
-    assert_eq!(hash_head, hash_60);
-    assert_eq!(hash_head, hash_jit);
-
-    println!(
-        "Render-rate invariance verified: SHA256={hash_head}, Completed={}, MeanWait={mean_wait_head:.2}, MeanLOS={mean_los_head:.2}",
-        doc_headless.summary.completed
-    );
+    // Actual typed fixture interchange replaces the retired alpha JSON bytes.
+    #[cfg(feature = "native-data")]
+    {
+        use kairo_ecs_arrow::polars_interop as io;
+        let root = tempfile::tempdir().unwrap();
+        let mut baseline = None;
+        for (index, summary) in [&doc_headless, &doc_30fps, &doc_60fps, &doc_jittered]
+            .into_iter()
+            .enumerate()
+        {
+            let mut frame = fixture_patient_table(summary).unwrap();
+            let completed = frame
+                .clone()
+                .lazy()
+                .filter(col("status").eq(lit("completed")))
+                .select([
+                    (col("wait_ticks_lo").cast(DataType::Float64).sum()
+                        / len().cast(DataType::Float64))
+                    .alias("mean_wait"),
+                    (col("elapsed_ticks_lo").cast(DataType::Float64).sum()
+                        / len().cast(DataType::Float64))
+                    .alias("mean_los"),
+                ])
+                .collect()
+                .unwrap();
+            assert_eq!(
+                completed.column("mean_wait").unwrap().f64().unwrap().get(0),
+                Some(mean_wait_head)
+            );
+            assert_eq!(
+                completed.column("mean_los").unwrap().f64().unwrap().get(0),
+                Some(mean_los_head)
+            );
+            let metadata: std::collections::BTreeMap<_, _> = [
+                (
+                    "careops.schema".to_string(),
+                    "careops.ed.synthetic-fixture-patients.v2".to_string(),
+                ),
+                (
+                    "careops.source_kind".to_string(),
+                    "synthetic_fixture_snapshot".to_string(),
+                ),
+                (
+                    "careops.fixture_id".to_string(),
+                    summary.scenario_id.clone(),
+                ),
+                ("careops.seed".to_string(), summary.seed.to_string()),
+                ("careops.time_unit".to_string(), summary.time_unit.clone()),
+                (
+                    "careops.horizon_ticks".to_string(),
+                    summary.horizon_ticks.to_string(),
+                ),
+            ]
+            .into_iter()
+            .collect();
+            let mut bytes = Vec::new();
+            io::write_ipc_stream_with_metadata(&mut frame, &mut bytes, &metadata).unwrap();
+            assert!(!bytes.is_empty());
+            let path = root.path().join(format!("fixture-{index}.arrow"));
+            fs::write(&path, &bytes).unwrap();
+            let received = fs::read(path).unwrap();
+            assert_eq!(compute_sha256_hex(&received), compute_sha256_hex(&bytes));
+            let mut reader = IpcStreamReader::new(std::io::Cursor::new(received));
+            let actual: std::collections::BTreeMap<String, String> = reader
+                .custom_metadata()
+                .unwrap()
+                .unwrap()
+                .iter()
+                .map(|(k, v)| (k.to_string(), v.to_string()))
+                .collect();
+            assert_eq!(actual, metadata);
+            let decoded = reader.finish().unwrap();
+            assert!(decoded.equals_missing(&frame));
+            if let Some(ref expected) = baseline {
+                assert!(decoded.equals_missing(expected));
+            } else {
+                baseline = Some(decoded);
+            }
+        }
+    }
+    println!("Render-rate invariance verified: Completed={}, MeanWait={mean_wait_head:.2}, MeanLOS={mean_los_head:.2}", doc_headless.completed);
 }
 
 /// 2. `test_snapshot_stream_and_slow_consumer_backpressure`:
@@ -1170,12 +1238,13 @@ fn test_wasm_compatible_payload_and_tick_bounds() {
     println!("Wasm-compatible payload and tick bounds verified");
 }
 
-/// 4. `test_distributed_and_pdes_export_bundle_compatibility`:
-/// - Validate that Arrow export bundles (`generate_arrow_export_bundle`) and batch runs
+/// 4. `test_distributed_and_pdes_native_capture_compatibility`:
+/// - Validate that native captured datasets and batch runs
 ///   (`run_batch_with_workers`) can be partitioned by replication ID, sent across distributed/PDES
 ///   worker channels, and reassembled into identical aggregate metrics and output files.
+#[cfg(feature = "native-data")]
 #[test]
-fn test_distributed_and_pdes_export_bundle_compatibility() {
+fn test_distributed_and_pdes_native_capture_compatibility() {
     let scenario = load_nominal_scenario();
     let total_replications = 6usize;
     let base_seed = 42u64;
@@ -1195,8 +1264,16 @@ fn test_distributed_and_pdes_export_bundle_compatibility() {
 
     let monolithic_doc = run_batch_with_workers(&scenario, &monolithic_config, None, None, None)
         .expect("monolithic batch run must succeed");
-    let monolithic_bundle = generate_arrow_export_bundle(&scenario, &monolithic_doc, None, None)
-        .expect("monolithic arrow export bundle must succeed");
+    let monolithic_output = tempfile::tempdir().unwrap();
+    let monolithic_manifest = export_native_batch(
+        &scenario,
+        &monolithic_doc,
+        monolithic_output.path(),
+        NativeFormat::Parquet,
+        ExportLimits::default(),
+    )
+    .unwrap();
+    let monolithic_data = read_native_dataset(monolithic_output.path()).unwrap();
 
     assert_eq!(monolithic_doc.replications.len(), total_replications);
     assert_eq!(monolithic_doc.total_replications, total_replications);
@@ -1314,9 +1391,16 @@ fn test_distributed_and_pdes_export_bundle_compatibility() {
         completed_at_epoch_ms: monolithic_doc.completed_at_epoch_ms,
     };
 
-    // Generate Arrow export bundle from reassembled document
-    let reassembled_bundle = generate_arrow_export_bundle(&scenario, &reassembled_doc, None, None)
-        .expect("reassembled arrow export bundle must succeed");
+    let reassembled_output = tempfile::tempdir().unwrap();
+    let reassembled_manifest = export_native_batch(
+        &scenario,
+        &reassembled_doc,
+        reassembled_output.path(),
+        NativeFormat::Parquet,
+        ExportLimits::default(),
+    )
+    .unwrap();
+    let reassembled_data = read_native_dataset(reassembled_output.path()).unwrap();
 
     // 3. Verify exact equivalence between Monolithic and Distributed/Reassembled runs
     // (a) Replication results match bit-for-bit
@@ -1339,44 +1423,36 @@ fn test_distributed_and_pdes_export_bundle_compatibility() {
         "Mean completion rate must match"
     );
 
-    // (c) Arrow export bundle patient records match bit-for-bit
     assert_eq!(
-        reassembled_bundle.patient_records.len(),
-        monolithic_bundle.patient_records.len()
+        reassembled_data.patients().height(),
+        monolithic_data.patients().height()
     );
-    assert_eq!(
-        reassembled_bundle.patient_records, monolithic_bundle.patient_records,
-        "Patient records must be bit-for-bit identical"
-    );
-
-    // (d) Arrow export bundle spatial records match bit-for-bit
-    assert_eq!(
-        reassembled_bundle.spatial_records.len(),
-        monolithic_bundle.spatial_records.len()
-    );
-    assert_eq!(
-        reassembled_bundle.spatial_records, monolithic_bundle.spatial_records,
-        "Spatial records must be bit-for-bit identical"
-    );
-
-    // (e) Arrow export bundle metrics match bit-for-bit
-    assert_eq!(
-        reassembled_bundle.metrics, monolithic_bundle.metrics,
-        "Metrics records must be bit-for-bit identical"
-    );
-
-    // (f) Serialized JSON and SHA-256 hashes match identically
-    let json_monolithic = serde_json::to_string_pretty(&monolithic_bundle).unwrap();
-    let json_reassembled = serde_json::to_string_pretty(&reassembled_bundle).unwrap();
-    assert_eq!(json_monolithic, json_reassembled);
-
-    let hash_monolithic = compute_sha256_hex(json_monolithic.as_bytes());
-    let hash_reassembled = compute_sha256_hex(json_reassembled.as_bytes());
-    assert_eq!(hash_monolithic, hash_reassembled);
-
-    println!(
-        "Distributed/PDES compatibility verified: Replications={total_replications}, Patients={}, Transits={}, SHA256={hash_reassembled}",
-        reassembled_bundle.patient_records.len(),
-        reassembled_bundle.spatial_records.len()
-    );
+    assert!(reassembled_data
+        .patients()
+        .equals_missing(monolithic_data.patients()));
+    assert!(reassembled_data
+        .replications()
+        .equals_missing(monolithic_data.replications()));
+    assert!(reassembled_data
+        .metrics()
+        .equals_missing(monolithic_data.metrics()));
+    for (root, manifest) in [
+        (monolithic_output.path(), &monolithic_manifest),
+        (reassembled_output.path(), &reassembled_manifest),
+    ] {
+        assert_eq!(
+            manifest
+                .tables
+                .iter()
+                .map(|t| t.name.as_str())
+                .collect::<Vec<_>>(),
+            ["patients", "replications", "metrics"]
+        );
+        for part in manifest.tables.iter().flat_map(|table| &table.parts) {
+            let bytes = fs::read(root.join(&part.file)).unwrap();
+            assert_eq!(bytes.len(), part.bytes);
+            assert_eq!(compute_sha256_hex(&bytes), part.sha256);
+        }
+    }
+    println!("Partitioned capture compatibility verified: Replications={total_replications}, Patients={}, ActualManifestSHA256={}", reassembled_data.patients().height(), reassembled_data.manifest_sha256());
 }
