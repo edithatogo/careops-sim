@@ -1,6 +1,6 @@
 #![cfg(feature = "native-data")]
 use careops_ed::capture::{self, CaptureCheckpoint, PartStore};
-use careops_ed::disposition::arrow_export::generate_arrow_export_bundle;
+use careops_ed::disposition::arrow_export::native_tables::patient_table;
 use careops_ed::disposition::batch_runner::{
     resume_batch_from_checkpoint, run_batch_with_workers, BatchConfig,
 };
@@ -332,8 +332,8 @@ fn real_process_crashes_recover_preserved_parts_and_exact_rows_at_1_2_4_workers(
                 None,
             )
             .unwrap();
-            let rows = generate_arrow_export_bundle(&scenario(), &final_doc, None, None).unwrap();
-            assert_eq!(rows.patient_records.len(), scenario().patients.len() * 4);
+            let rows = patient_table(&scenario(), &final_doc).unwrap();
+            assert_eq!(rows.height(), scenario().patients.len() * 4);
             for rep in &final_doc.replications {
                 let mut input = scenario();
                 input.seed = rep.seed;
@@ -348,32 +348,43 @@ fn real_process_crashes_recover_preserved_parts_and_exact_rows_at_1_2_4_workers(
                     )
                 );
                 for patient in oracle.patients {
-                    let row = rows
-                        .patient_records
-                        .iter()
-                        .find(|r| {
-                            r.replication_index == rep.replication_index
-                                && r.patient_id == patient.patient_id
+                    let row = (0..rows.height())
+                        .find(|&i| {
+                            rows.column("replication_index")
+                                .unwrap()
+                                .u64()
+                                .unwrap()
+                                .get(i)
+                                == Some(rep.replication_index as u64)
+                                && rows.column("patient_id").unwrap().str().unwrap().get(i)
+                                    == Some(patient.patient_id.as_str())
                         })
                         .unwrap();
-                    assert_eq!(
-                        (
-                            row.arrival_tick,
-                            row.start_tick,
-                            row.completion_tick,
-                            row.work_ticks,
-                            row.wait_ticks,
-                            row.elapsed_ticks
-                        ),
-                        (
-                            patient.arrival_tick,
-                            patient.start_tick,
-                            patient.completion_tick,
-                            patient.work_ticks,
-                            patient.wait_ticks,
-                            patient.elapsed_ticks
-                        )
-                    );
+                    for (name, expected) in [
+                        ("arrival_tick", Some(patient.arrival_tick)),
+                        ("start_tick", patient.start_tick),
+                        ("completion_tick", patient.completion_tick),
+                        ("work_ticks", Some(patient.work_ticks)),
+                        ("wait_ticks", patient.wait_ticks),
+                        ("elapsed_ticks", patient.elapsed_ticks),
+                    ] {
+                        assert_eq!(
+                            rows.column(&format!("{name}_hi"))
+                                .unwrap()
+                                .u64()
+                                .unwrap()
+                                .get(row),
+                            expected.map(|_| 0)
+                        );
+                        assert_eq!(
+                            rows.column(&format!("{name}_lo"))
+                                .unwrap()
+                                .u64()
+                                .unwrap()
+                                .get(row),
+                            expected
+                        );
+                    }
                 }
             }
             assert!(resume_batch_from_checkpoint(
@@ -466,7 +477,7 @@ fn completed_manifest_without_batch_document_is_recoverable_without_republishing
     for (name, bytes) in original {
         assert_eq!(fs::read(dir.join(name)).unwrap(), bytes);
     }
-    assert!(generate_arrow_export_bundle(&scenario(), &recovered, None, None).is_ok());
+    assert!(patient_table(&scenario(), &recovered).is_ok());
 }
 
 #[test]
@@ -487,7 +498,7 @@ fn export_rejects_every_checkpoint_envelope_drift() {
         checkpoint[key] = value;
         fs::write(&path, serde_json::to_vec(&checkpoint).unwrap()).unwrap();
         assert!(
-            generate_arrow_export_bundle(&scenario(), &doc, None, None).is_err(),
+            patient_table(&scenario(), &doc).is_err(),
             "accepted {key} drift"
         );
     }
@@ -507,7 +518,7 @@ fn compiled_model_is_bound_before_export_or_resume() {
     );
     checkpoint["model_contract_sha256"] = serde_json::json!("0".repeat(64));
     fs::write(&path, serde_json::to_vec(&checkpoint).unwrap()).unwrap();
-    assert!(generate_arrow_export_bundle(&scenario(), &doc, None, None).is_err());
+    assert!(patient_table(&scenario(), &doc).is_err());
     let parsed: CaptureCheckpoint = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
     let store = ParquetPartStore::open(path.parent().unwrap(), DEFAULT_LIMITS).unwrap();
     assert!(capture::resume_captured_batch(
@@ -564,7 +575,7 @@ fn internally_consistent_foreign_model_tag_is_readable_but_cannot_resume_executi
         serde_json::to_vec(&manifest).unwrap(),
     )
     .unwrap();
-    assert!(generate_arrow_export_bundle(&scenario(), &doc, None, None).is_ok());
+    assert!(patient_table(&scenario(), &doc).is_ok());
     assert!(
         capture::resume_captured_batch(&scenario(), &config(), DEFAULT_LIMITS, &dir, &store)
             .is_err()
@@ -592,7 +603,7 @@ fn unknown_nested_batch_version_rejects_export_resume_and_new_output_before_muta
             (name, bytes)
         })
         .collect();
-    assert!(generate_arrow_export_bundle(&scenario(), &doc, None, None).is_err());
+    assert!(patient_table(&scenario(), &doc).is_err());
     let mut unknown = config();
     unknown.schema_version = 99;
     assert!(

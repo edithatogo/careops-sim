@@ -1,12 +1,18 @@
-//! R11.1 red oracle against the real batch/export path. No capture implementation.
+//! R11.1 original-run invocation and typed capture/export oracle.
 
-use std::collections::{BTreeSet, HashMap};
+#[cfg(feature = "native-data")]
+use std::collections::BTreeSet;
+use std::collections::HashMap;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Mutex, OnceLock};
 
-use crate::disposition::arrow_export::generate_arrow_export_bundle;
+#[cfg(feature = "native-data")]
 use crate::disposition::batch_runner::{
     allocate_replication_seeds, run_batch_with_workers, BatchConfig,
+};
+#[cfg(feature = "native-data")]
+use crate::disposition::native_output::{
+    export_native_batch, read_native_dataset, ExportLimits, NativeFormat,
 };
 
 static CALLS: OnceLock<Mutex<HashMap<String, Vec<u64>>>> = OnceLock::new();
@@ -73,6 +79,7 @@ fn observer_isolates_concurrent_scenarios_and_cleans_up() {
     assert_eq!(b.seeds(), vec![1, 3, 5, 7]);
 }
 
+#[cfg(feature = "native-data")]
 fn assert_original_run_only(workers: usize) {
     let mut scenario = crate::parse_scenario_json(include_str!("../examples/nominal_mvp.json"))
         .expect("valid existing synthetic fixture");
@@ -107,31 +114,79 @@ fn assert_original_run_only(workers: usize) {
         sorted_seeds,
         "original batch must run each seed once"
     );
-    let bundle = generate_arrow_export_bundle(&scenario, &batch, None, None).unwrap();
+    let destination = tempfile::tempdir().unwrap();
+    export_native_batch(
+        &scenario,
+        &batch,
+        destination.path(),
+        NativeFormat::Parquet,
+        ExportLimits::default(),
+    )
+    .unwrap();
+    let data = read_native_dataset(destination.path()).unwrap();
+    let patients = data.patients();
     assert_eq!(
-        bundle.patient_records.len(),
+        patients.height(),
         reference.iter().map(|r| r.patients.len()).sum::<usize>()
     );
     let mut identities = BTreeSet::new();
-    for row in &bundle.patient_records {
+    for row in 0..patients.height() {
+        let replication = patients
+            .column("replication_index")
+            .unwrap()
+            .u64()
+            .unwrap()
+            .get(row)
+            .unwrap() as usize;
+        let patient_id = patients
+            .column("patient_id")
+            .unwrap()
+            .str()
+            .unwrap()
+            .get(row)
+            .unwrap();
         assert!(
-            identities.insert((row.replication_index, row.patient_id.clone())),
+            identities.insert((replication, patient_id)),
             "duplicate exported row"
         );
-        assert_eq!(row.seed, seeds[row.replication_index]);
-        let expected = reference[row.replication_index]
+        assert_eq!(
+            patients.column("seed").unwrap().u64().unwrap().get(row),
+            Some(seeds[replication])
+        );
+        let expected = reference[replication]
             .patients
             .iter()
-            .find(|p| p.patient_id == row.patient_id)
+            .find(|p| p.patient_id == patient_id)
             .unwrap();
-        assert_eq!(row.arrival_tick, expected.arrival_tick);
-        assert_eq!(row.start_tick, expected.start_tick);
-        assert_eq!(row.completion_tick, expected.completion_tick);
-        assert_eq!(row.wait_ticks, expected.wait_ticks);
-        assert_eq!(row.work_ticks, expected.work_ticks);
-        assert_eq!(row.elapsed_ticks, expected.elapsed_ticks);
+        for (name, expected) in [
+            ("arrival_tick", Some(expected.arrival_tick)),
+            ("start_tick", expected.start_tick),
+            ("completion_tick", expected.completion_tick),
+            ("wait_ticks", expected.wait_ticks),
+            ("work_ticks", Some(expected.work_ticks)),
+            ("elapsed_ticks", expected.elapsed_ticks),
+        ] {
+            assert_eq!(
+                patients
+                    .column(&format!("{name}_hi"))
+                    .unwrap()
+                    .u64()
+                    .unwrap()
+                    .get(row),
+                expected.map(|_| 0)
+            );
+            assert_eq!(
+                patients
+                    .column(&format!("{name}_lo"))
+                    .unwrap()
+                    .u64()
+                    .unwrap()
+                    .get(row),
+                expected
+            );
+        }
     }
-    // Deliberate behavioral red: current exporter adds four real simulation calls.
+    // Publishing and rereading production native files must not run any replication again.
     assert_eq!(
         observation.seeds(),
         sorted_seeds,
@@ -139,16 +194,19 @@ fn assert_original_run_only(workers: usize) {
     );
 }
 
+#[cfg(feature = "native-data")]
 #[test]
 fn export_invokes_each_replication_once_one_worker() {
     assert_original_run_only(1);
 }
 
+#[cfg(feature = "native-data")]
 #[test]
 fn export_invokes_each_replication_once_two_workers() {
     assert_original_run_only(2);
 }
 
+#[cfg(feature = "native-data")]
 #[test]
 fn export_invokes_each_replication_once_four_workers() {
     assert_original_run_only(4);
