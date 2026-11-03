@@ -20,7 +20,7 @@ DEFAULT_MSRV = "1.99"
 APPROVED_FEATURES = {
     "crates/careops-ed/Cargo.toml": {
         "default": ["native-data"],
-        "native-data": ["dep:kairo-ecs-arrow", "dep:polars", "dep:tempfile"],
+        "native-data": ["dep:kairo-ecs-arrow", "dep:polars", "dep:tempfile", "dep:polars-arrow-format", "dep:polars-parquet-format"],
     }
 }
 EXPECTED_FIXTURE_PATH = "tests/fixtures/d33-calibration-physical-v2/manifest.json"

@@ -165,6 +165,19 @@ class DependencySourcePolicyTests(unittest.TestCase):
 
 
 class CiWorkflowTests(unittest.TestCase):
+    def test_native_reader_install_precedes_context_consumers(self):
+        context = workflow_job(WORKFLOW.read_text(), "context")
+        schema = context.index("--require-hashes --only-binary=:all: -r requirements-schema-validation.lock")
+        readers = context.index("--only-binary=:all: --no-deps -r requirements-native-readers.txt")
+        check = context.index('"$CAREOPS_PYTHON" -m pip check', readers)
+        harness = context.index("- name: Run harness and incompatible-pin regressions")
+        benchmark = context.index("tools/ed_native_benchmarks.py --binary")
+        self.assertLess(schema, readers)
+        self.assertLess(readers, check)
+        self.assertLess(check, harness)
+        self.assertLess(harness, benchmark)
+        self.assertNotIn("continue-on-error", context[schema:harness])
+
     def test_scope_requires_explicit_boolean_outputs_and_consistency(self):
         for field, value in (("changed", ""), ("native", "typo"), ("context", "null")):
             selectors = {"native": "false", "context": "false", "policy": "false"}

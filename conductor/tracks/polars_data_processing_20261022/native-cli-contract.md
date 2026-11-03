@@ -60,3 +60,19 @@ CLI13tests, source-guard20tests, benchmark4tests and CLI Clippy pass. The full
 workspace rustfmt check exposes a pre-existing native_reader.rs wrapping drift
 at the qualified reader checkpoint; it remains a final gate to repair under a
 fresh scoped claim. This CLI checkpoint does not close R13/R14 or hosted gates.
+
+Consumer integration checkpoint: reviewed CI/support changes retain exact five
+metadata feature edges, install qualified native readers before the harness and
+switch CI to the native gated benchmark. The22support,2D34 and27workflow tests
+pass. Four migrated Python suites retain29tests; all executed against the exact
+qualified release binary, with a focused E31 incompatible-unit fixture repair
+reviewed separately after the initial failure. Six P5.2 scenarios each repeat
+with equal typed data and stable logical provenance; native file bytes need not
+match. The incompatible-unit fixture is explicitly retagged test transport, not
+a simulated time conversion. The ED model still rejects non-tick input.
+
+This combines two frozen reviewed packets (broader path count justified by the
+coherent CI/consumer join); source blobs match their private hash handoffs.
+Remaining live runner callers: D41 trust boundaries and ED E41/E42 analytical
+validation/sensitivity mirrors. Runner removal, Rust legacy serializers/consumers,
+calibration/dashboard/B7 boundaries, populated parent FFI and R14 remain open.

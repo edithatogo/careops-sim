@@ -29,7 +29,7 @@ class QualitySupportTests(unittest.TestCase):
             "default_msrv": "1.99",
             "packages": [
                 {"manifest": "Cargo.toml", "features": {}},
-                {"manifest": "crates/careops-ed/Cargo.toml", "features": {'default': ['native-data'], 'native-data': ['dep:kairo-ecs-arrow', 'dep:polars', 'dep:tempfile']}},
+                {"manifest": "crates/careops-ed/Cargo.toml", "features": {'default': ['native-data'], 'native-data': ['dep:kairo-ecs-arrow', 'dep:polars', 'dep:tempfile', 'dep:polars-arrow-format', 'dep:polars-parquet-format']}},
                 {"manifest": "crates/careops-ed-cli/Cargo.toml", "features": {}},
             ],
             "semver": {
@@ -55,7 +55,7 @@ class QualitySupportTests(unittest.TestCase):
         self.write("crates/careops-ed-cli/Cargo.toml", '[package]\nname = "careops-ed-cli"\nrust-version.workspace = true\n')
 
         with (self.root / "crates/careops-ed/Cargo.toml").open("a") as ed_manifest:
-            ed_manifest.write('\n[features]\ndefault = ["native-data"]\nnative-data = ["dep:kairo-ecs-arrow", "dep:polars", "dep:tempfile"]\n')
+            ed_manifest.write('\n[features]\ndefault = ["native-data"]\nnative-data = ["dep:kairo-ecs-arrow", "dep:polars", "dep:tempfile", "dep:polars-arrow-format", "dep:polars-parquet-format"]\n')
 
     def tearDown(self):
         self.temp.cleanup()
@@ -131,6 +131,22 @@ class QualitySupportTests(unittest.TestCase):
                    '[features]\nexperimental = []\n')
         errors = self.errors()
         self.assertTrue(any("approved feature" in error.lower() for error in errors), errors)
+
+    def test_feature_co_drift_cannot_drop_or_replace_qualified_dependency(self):
+        approved = list(self.config["packages"][1]["features"]["native-data"])
+        for candidate in (
+            [name for name in approved if name != "dep:tempfile"],
+            ["dep:kairo-data-types" if name == "dep:tempfile" else name for name in approved],
+            [name for name in approved if name != "dep:polars-arrow-format"],
+        ):
+            with self.subTest(candidate=candidate):
+                self.config["packages"][1]["features"]["native-data"] = candidate
+                self.write("crates/careops-ed/Cargo.toml",
+                           '[package]\nname = "careops-ed"\nrust-version.workspace = true\n'
+                           '[features]\ndefault = ["native-data"]\nnative-data = '
+                           + json.dumps(candidate) + '\n')
+                errors = self.errors()
+                self.assertTrue(any("approved feature" in error.lower() for error in errors), errors)
 
     def test_coverage_and_mutation_targets_cannot_be_rebound(self):
         self.config["coverage"]["file"] = "crates/careops-ed/src/other.rs"

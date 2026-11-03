@@ -340,6 +340,8 @@ jobs:
       - name: Install locked harness dependencies
         run: |
           "$CAREOPS_PYTHON" -m pip install --require-hashes --only-binary=:all: -r requirements-schema-validation.lock
+          "$CAREOPS_PYTHON" -m pip install --only-binary=:all: --no-deps -r requirements-native-readers.txt
+          "$CAREOPS_PYTHON" -m pip check
       - name: Run harness and incompatible-pin regressions
         run: |
           "$CAREOPS_PYTHON" -m unittest discover -s tests -v
@@ -360,7 +362,7 @@ jobs:
           test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
           cargo build --locked --release --package careops-ed-cli
-          "$CAREOPS_PYTHON" tools/ed_benchmarks.py --binary target/release/careops-ed --output .artifacts/ci/d34/report.json
+          "$CAREOPS_PYTHON" tools/ed_native_benchmarks.py --binary target/release/careops-ed --output .artifacts/ci/d34/report.json
       - name: Retain D3.4 benchmark report
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
