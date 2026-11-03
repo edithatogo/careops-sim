@@ -18,7 +18,6 @@ use std::fmt::{Display, Formatter};
 
 use serde::{Deserialize, Serialize};
 
-use crate::disposition::api_runner::{compute_sha256_hex, RunDocument, RunManifest};
 use crate::disposition::operations::{
     claim_task, preempt, select_dispatch_candidate, validate_procedure_staffing, BayPhase,
     ExecutionFidelity, OperationalError, PreemptConsent, ProcedureKind, StaffShift, SyntheticGraph,
@@ -649,117 +648,6 @@ impl CompositeEdFixture {
             patients,
         }
     }
-
-    /// Exports current fixture state into a RunDocument with provenance manifest.
-    pub fn to_run_document(&self, scenario_id: &str, seed: u64, horizon_ticks: u64) -> RunDocument {
-        let summary = self.to_run_summary(scenario_id, seed, horizon_ticks);
-        let manifest = RunManifest {
-            schema_version: 1,
-            scenario_id: scenario_id.to_string(),
-            input_file: format!("{scenario_id}.json"),
-            input_sha256: compute_sha256_hex(scenario_id.as_bytes()),
-            seed,
-            time_unit: "tick".to_string(),
-            horizon_ticks,
-        };
-        RunDocument {
-            manifest,
-            validation_taxonomy: Default::default(),
-            summary,
-        }
-    }
-}
-
-/// Converts a RunSummary into a standard CSV table.
-pub fn run_summary_to_csv(summary: &RunSummary) -> String {
-    let mut out = String::new();
-    out.push_str("patient_id,arrival_tick,start_tick,completion_tick,work_ticks,wait_ticks,elapsed_ticks,status\n");
-    for p in &summary.patients {
-        let start = p
-            .start_tick
-            .map(|t| t.to_string())
-            .unwrap_or_else(|| "".to_string());
-        let comp = p
-            .completion_tick
-            .map(|t| t.to_string())
-            .unwrap_or_else(|| "".to_string());
-        let wait = p
-            .wait_ticks
-            .map(|t| t.to_string())
-            .unwrap_or_else(|| "".to_string());
-        let elapsed = p
-            .elapsed_ticks
-            .map(|t| t.to_string())
-            .unwrap_or_else(|| "".to_string());
-        let status = match p.status {
-            PatientStatus::Completed => "completed",
-            PatientStatus::Unfinished => "unfinished",
-        };
-        out.push_str(&format!(
-            "{},{},{},{},{},{},{},{}\n",
-            p.patient_id, p.arrival_tick, start, comp, p.work_ticks, wait, elapsed, status
-        ));
-    }
-    out
-}
-
-/// Capacity comparison oracle results.
-#[derive(Clone, Debug, PartialEq)]
-pub struct CapacityComparison {
-    pub nominal_arrivals: usize,
-    pub nominal_completed: usize,
-    pub nominal_unfinished: usize,
-    pub nominal_mean_wait_ticks: f64,
-    pub constrained_arrivals: usize,
-    pub constrained_completed: usize,
-    pub constrained_unfinished: usize,
-    pub constrained_mean_wait_ticks: f64,
-    pub throughput_difference: i64,
-    pub wait_time_increased: bool,
-    pub unfinished_increased: bool,
-}
-
-/// Compares a nominal scenario run summary with a constrained scenario run summary.
-pub fn compare_capacity(nominal: &RunSummary, constrained: &RunSummary) -> CapacityComparison {
-    let nominal_waits: Vec<u64> = nominal
-        .patients
-        .iter()
-        .filter_map(|p| p.wait_ticks)
-        .collect();
-    let nominal_mean_wait = if !nominal_waits.is_empty() {
-        nominal_waits.iter().sum::<u64>() as f64 / nominal_waits.len() as f64
-    } else {
-        0.0
-    };
-
-    let constrained_waits: Vec<u64> = constrained
-        .patients
-        .iter()
-        .filter_map(|p| p.wait_ticks)
-        .collect();
-    let constrained_mean_wait = if !constrained_waits.is_empty() {
-        constrained_waits.iter().sum::<u64>() as f64 / constrained_waits.len() as f64
-    } else {
-        0.0
-    };
-
-    let throughput_difference = nominal.completed as i64 - constrained.completed as i64;
-    let wait_time_increased = constrained_mean_wait > nominal_mean_wait;
-    let unfinished_increased = constrained.unfinished > nominal.unfinished;
-
-    CapacityComparison {
-        nominal_arrivals: nominal.arrivals,
-        nominal_completed: nominal.completed,
-        nominal_unfinished: nominal.unfinished,
-        nominal_mean_wait_ticks: nominal_mean_wait,
-        constrained_arrivals: constrained.arrivals,
-        constrained_completed: constrained.completed,
-        constrained_unfinished: constrained.unfinished,
-        constrained_mean_wait_ticks: constrained_mean_wait,
-        throughput_difference,
-        wait_time_increased,
-        unfinished_increased,
-    }
 }
 
 /// Provenance of a synthetic transit parameter, never a movement observation.
@@ -828,21 +716,4 @@ fn calibration_records(
             work_ticks: p.work_elapsed_ticks,
         })
         .collect()
-}
-
-/// Converts calibration trace records into a standard CSV table.
-pub fn calibration_traces_to_csv(records: &[CalibrationTraceRecord]) -> String {
-    let mut out = String::from("case_id,day,start_tick,end_tick,transit_ticks,work_ticks\n");
-    for r in records {
-        out.push_str(&format!(
-            "{},{},{},{},{},{}\n",
-            r.case_id,
-            r.day,
-            r.start_tick.map(|v| v.to_string()).unwrap_or_default(),
-            r.end_tick.map(|v| v.to_string()).unwrap_or_default(),
-            r.transit_ticks,
-            r.work_ticks
-        ));
-    }
-    out
 }
