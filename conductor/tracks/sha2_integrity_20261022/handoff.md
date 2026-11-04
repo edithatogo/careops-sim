@@ -85,3 +85,27 @@ bindings; do not edit old Polars acceptance receipts or bypass the guard.
 [Phase review](../../evidence/sha2-r503-review-20261104/README.md) accepts R50
 at d1bccd5. R51.1 independent tests and recovery evidence must precede helper
 replacement; no runtime or R51/R52 acceptance yet. Existing owner/pins remain.
+
+## R51 accepted bounded implementation — 4 November 2026
+
+Same coordinator chat01a19b9f-69e7-7353-9b75-445d5653feb4, same standard Git worktree/branch and private
+ledger ownership; no upstream/native service/auth assignment changes. R50.3
+closeoutfd9c295 precedes tests-firstc6bccc5 and implementatione44946bfad91cc4ac74912c55ccf7ff8539a8a85.
+[Qualified source](../../evidence/sha2-r51-implementation-20261104/qualified-source.json)
+and [phase review](../../evidence/sha2-r51-implementation-20261104/phase-review.json)
+retain exact source/model/binary/test/receipt hashes and review fixes.
+
+Only ED's existing standard helper and normal workspace edge changed. Actual
+helper74→8 formatted lines; source net−68, manifest+1, plus explicit guard/test/
+evidence support. Existing correct standard uses, RNG/canonical input contracts,
+lock and runtime/data pins stay intact. Original840b… and successor4cb9… model
+IDs differ as intended. Actual successor reads original9-file artifact, refuses
+execution resume and preserves all bytes; original software is retained as a
+verified lossless archive. External original release bytes remain unchanged.
+
+Next R52.1: reuse unchanged source-bound receipts, then finish applicable full
+integration/coverage/mutation/hosted/platform/security and maintenance/build/runtime
+cost gates. Linux new-source `/dev/full` remains unverified on this Mac. All R52
+tasks stay unchecked; no full acceptance/archive, main/PR197/198 merge, stable
+release or clinical/operational approval is inferred. Do not regenerate old
+Polars/R501/R502 receipts, rewrite old model tags or relax source/lock controls.

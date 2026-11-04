@@ -46,3 +46,20 @@ semantics and pins stay unchanged. The historical shared-source guard still
 refuses this new manifest until a second commit anchors this actual checkpoint
 and new receipt. Do not regenerate old Polars/R501/R502 receipts or infer renewed
 A7, full hosted/workspace, coverage/mutation, release or clinical acceptance.
+
+## R51 phase review and successor guard
+
+[Phase review](phase-review.json) binds the immutable implementatione44946b and
+tests-firstc6bccc5 to the reviewed closed successor guard. The old receipt stays
+validated against its original profile. Only the exact qualified ED manifest
+edge may differ; the lock, other14 critical shared sources and5 digest/build/
+contract sources stay bound. Mutable source/receipt co-drift and unknown profile
+changes refuse. No historical receipt, source anchor or upstream pin is rewritten.
+
+The39-case guard run had38 passes and one obsolete historical-positive assertion
+failure. Review corrected that one assertion to retain the old receipt/anchor
+check, require the current immutable successor, and prove the exact single
+manifest delta. Its focused rerun passes;38 unchanged results are reused, not
+relabeled as a fresh full-suite run. R51 bounded local engineering is complete
+after final review; all R52 full acceptance tasks remain open. No track archive,
+main/PR197/198 merge, stable release or clinical acceptance is implied.

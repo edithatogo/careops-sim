@@ -14,3 +14,17 @@ agree on eight relocation/source/manifest/flags/features cases. Cargo-deny
 advisories/bans/licences/sources pass on the exact isolated closure. Local
 Rust1.99.1/Python3.15.1 verified; no fresh Linux/x86 runtime/MSRV1.88 claim.
 R50.3 review and parent R51 contracts/recovery/platform tests remain unaccepted.
+
+## R51 executed scope
+
+Tests-first c6bccc5 precedes implementatione44946b. Actual default parent tests:
+2 digest contracts (22 independent vectors),10 recovery tests including24
+process kills and4 invalid-part cases,5 C63 tests with100ms unchanged. Minimal
+normal graph adds2 executed digest contracts. Explicit original/actual successor
+artifact proof passes with different model IDs and9 original files unchanged.
+Current CLI26 frozen pairs and14 negatives/zero/oversized/slow/blocked stdout
+pass; strict affected Clippy,28 workflow-policy tests and canonical tool/metadata
+policy pass. macOS `/dev/full` remains unverified for the new-source Linux R52
+check. Closed successor guards retain all old source/receipt/lock/pin negatives
+and add digest/build/test source and receipt co-drift controls. No new full
+hosted/workspace/coverage/mutation or release pass is claimed.

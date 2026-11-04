@@ -20,3 +20,10 @@ not started. All R51/R52 gates remain.
 [Phase review](../../evidence/sha2-r503-review-20261104/README.md) accepts R50
 at d1bccd5. R51.1 independent tests and recovery evidence must precede helper
 replacement; no runtime or R51/R52 acceptance yet. Existing owner/pins remain.
+
+## R51 implemented; R52 next
+
+[Source qualification and phase review](../../evidence/sha2-r51-implementation-20261104/README.md)
+accept the bounded ED helper/normal edge and closed immutable successor guard.
+Actual old-artifact readability, changed-model execution refusal and no mutation
+are verified; R52 full acceptance and all broader gates remain pending.

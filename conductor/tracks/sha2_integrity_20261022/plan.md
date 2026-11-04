@@ -1,6 +1,6 @@
 # Plan: CareOps sha2
 
-R50.1 historical prerequisite verification and consumer inventory are accepted at snapshotecbf0ff. R50.2 exact dependency/value/build-identity qualification is accepted at sourcef1ef095. R50.3 phase review is accepted at d1bccd5; R51 tests-first bounded replacement is next. Runtime acceptance remains pending.
+R50.1 historical prerequisite verification and consumer inventory are accepted at snapshotecbf0ff. R50.2 exact dependency/value/build-identity qualification is accepted at sourcef1ef095. R50.3 phase review is accepted at d1bccd5; R51 bounded replacement is accepted at sourcee44946b with its closed successor guard. R52 broader acceptance remains pending.
 
 ## R50 — Evidence and scope
 
@@ -10,9 +10,9 @@ R50.1 historical prerequisite verification and consumer inventory are accepted a
 
 ## R51 — Bounded replacement
 
-- [ ] R51.1 Add failing independent contract and recovery tests before replacement.
-- [ ] R51.2 Replace only named machinery; delete duplicates, preserve semantic validation and version intentional changes.
-- [ ] R51.3 Conductor — review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.
+- [x] R51.1 Add failing independent contract and recovery tests before replacement. Tests-first commitc6bccc5; [baseline/controlled-red proof](../../evidence/sha2-r51-implementation-20261104/tests-first.json), real original artifact frozen before replacement.
+- [x] R51.2 Replace only named machinery; delete duplicates, preserve semantic validation and version intentional changes. Sourcee44946b replaces only ED crypto machinery with existing exact0.11.1; lock unchanged, real cross-build read/resume-refusal proof and26-case compatibility pass. [Source receipt](../../evidence/sha2-r51-implementation-20261104/qualified-source.json).
+- [x] R51.3 Conductor — review and verify phase (workflow.md); apply accepted fixes and record next-phase decision. [Phase evidence](../../evidence/sha2-r51-implementation-20261104/phase-review.json) binds the closed successor guard and review fixes; accept bounded local engineering only, R52 remains unaccepted.
 
 ## R52 — Acceptance
 

@@ -9,11 +9,12 @@
   "spec_approved": true,
   "implementation_started": true,
   "accepted_phases": [
-    "R50"
+    "R50",
+    "R51"
   ],
-  "active_phase": "R51",
+  "active_phase": "R52",
   "priority_class": "foundation",
-  "adoption_decision": "qualified_for_bounded_replacement",
+  "adoption_decision": "implemented_pending_R52_acceptance",
   "phase_dependencies": {
     "R50": [],
     "R51": [
@@ -39,7 +40,7 @@
     }
   ],
   "approval_basis": "User requested separate dependencies and revised sequencing; parent has direct implementation/test consumers.",
-  "runtime_adoption_status": "not_started",
+  "runtime_adoption_status": "implemented_pending_R52_acceptance",
   "external_dependency_history": [
     {
       "source_commit": "ecbf0ffc9b11f152a36b513cb9ff19bc48fffe40",
@@ -74,7 +75,25 @@
       "reviewer": "/root/ffi_packet_prepare",
       "evidence": "conductor/evidence/sha2-r503-review-20261104/README.md",
       "scope": "R50 phase review; bounded R51 preparation, no runtime acceptance."
+    },
+    "R51.1": {
+      "snapshot_source": "c6bccc5f950ccfc98ad34c40e2549db7fe6e63ba",
+      "evidence": "conductor/evidence/sha2-r51-implementation-20261104/tests-first.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Tests authored/committed before helper replacement; baseline green and deliberately failing controls, actual original artifact retained."
+    },
+    "R51.2": {
+      "snapshot_source": "e44946bfad91cc4ac74912c55ccf7ff8539a8a85",
+      "evidence": "conductor/evidence/sha2-r51-implementation-20261104/qualified-source.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Bounded parent ED helper/normal edge implementation and actual local contracts/recovery/consumer proof; no R52 acceptance."
+    },
+    "R51.3": {
+      "snapshot_source": "e44946bfad91cc4ac74912c55ccf7ff8539a8a85",
+      "evidence": "conductor/evidence/sha2-r51-implementation-20261104/phase-review.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Closed immutable successor guard and bounded local engineering phase review; wider gates remain."
     }
   },
-  "next_phase_decision": "R51.1 tests first, followed by bounded helper/normal-edge replacement and closed successor binding. R52 remains separate."
+  "next_phase_decision": "R52.1 broader acceptance next. Reuse exact unchanged source-bound R51 receipts where valid; finish applicable full integration/coverage/mutation/hosted/platform/security/cost gates, including new-source Linux /dev/full. No main/PR197/198 merge or clinical/release approval."
 }
