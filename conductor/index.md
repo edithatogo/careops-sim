@@ -86,7 +86,7 @@ records exact source/tested/final merge distinctions. PR197/198/main and release
 [SHA-2 R50.1 inventory](evidence/sha2-r501-inventory-20261104/README.md) verifies
 its historical upstream prerequisite and current consumers. [R50.2 qualification](evidence/sha2-r502-qualification-20261104/README.md)
 accepts exact0.11.1/default features, bounded value and build-identity compatibility
-as a replacement candidate. R50.3 phase review is next; runtime adoption remains pending.
+as a replacement candidate. R50 phase review is accepted; R51 tests first is next. Runtime acceptance remains pending.
 
 ## Robustness-first dependency decisions
 

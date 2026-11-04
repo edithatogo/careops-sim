@@ -79,3 +79,9 @@ replacement, including old-artifact readability and before-mutation foreign-
 model resume rejection. Equal SHA256 bytes do not preserve source-bound build
 identity. Preserve original tags/recovery software and qualify successor manifest
 bindings; do not edit old Polars acceptance receipts or bypass the guard.
+
+## R50.3 accepted; R51 next
+
+[Phase review](../../evidence/sha2-r503-review-20261104/README.md) accepts R50
+at d1bccd5. R51.1 independent tests and recovery evidence must precede helper
+replacement; no runtime or R51/R52 acceptance yet. Existing owner/pins remain.

@@ -8,10 +8,12 @@
   "updated_at": "2026-11-04",
   "spec_approved": true,
   "implementation_started": true,
-  "accepted_phases": [],
-  "active_phase": "R50",
+  "accepted_phases": [
+    "R50"
+  ],
+  "active_phase": "R51",
   "priority_class": "foundation",
-  "adoption_decision": "qualified_candidate_pending_phase_review",
+  "adoption_decision": "qualified_for_bounded_replacement",
   "phase_dependencies": {
     "R50": [],
     "R51": [
@@ -66,7 +68,13 @@
       "bindings": "conductor/evidence/sha2-r502-qualification-20261104/qualification.json",
       "reviewer": "/root/ffi_packet_prepare",
       "scope": "Exact existing0.11.1/default features, independent baseline/cost budgets and build-identity compatibility decision only; no production edge/helper or R50.3 acceptance."
+    },
+    "R50.3": {
+      "snapshot_source": "d1bccd55b6bcc02942d12c583a5b959c5e1dd637",
+      "reviewer": "/root/ffi_packet_prepare",
+      "evidence": "conductor/evidence/sha2-r503-review-20261104/README.md",
+      "scope": "R50 phase review; bounded R51 preparation, no runtime acceptance."
     }
   },
-  "next_phase_decision": "R50.3 phase review next; preserve empty accepted_phases and all R51/R52 gates. Candidate is qualified, not runtime adopted."
+  "next_phase_decision": "R51.1 tests first, followed by bounded helper/normal-edge replacement and closed successor binding. R52 remains separate."
 }

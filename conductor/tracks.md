@@ -93,7 +93,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
 - [ ] **Track: Conditional SUMO traffic co-simulation** — Proposed, conditional value gate unresolved. [Track](tracks/sumo_traffic_qualification_20261022/index.md).
 
 ---
-- [~] **Track: CareOps sha2** — R50.1 inventory and R50.2 exact dependency/value/build-identity qualification accepted; R50.3 phase review next. No runtime adoption.
+- [~] **Track: CareOps sha2** — R50.1 inventory and R50.2 exact dependency/value/build-identity qualification accepted; R50 phase review accepted; R51 tests first next. No runtime adoption.
   - Link: [sha2_integrity_20261022](tracks/sha2_integrity_20261022/index.md)
 
 ---
