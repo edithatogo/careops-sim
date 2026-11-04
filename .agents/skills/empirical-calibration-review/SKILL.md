@@ -26,3 +26,14 @@ Stop with `hold_for_evidence` if provenance, units, observation window, or cohor
 ## Output
 
 Return `ready_for_review`, `revise`, or `hold_for_evidence`; include provenance and mapping coverage, leakage/identifiability findings, metric checks, exact evidence, limitations, and unresolved data requirements. Do not describe statistical fit as clinical validity or generalize beyond the evaluated population and period.
+
+## Internal browser requirement — 5 November 2026
+
+Use the Codex internal browser for all browser access unless the user explicitly
+instructs otherwise, including sign-in, reauthentication, opening pages and
+browser-based QA. Do not launch or control an external browser. Existing explicit
+CLI-first instructions continue to apply to qualified CLI/API operations.
+If the internal browser is unavailable or cannot complete a required step, report
+the specific limitation instead of silently substituting another browser. This
+does not authorize authentication bypasses, credential changes, new access,
+publication, merge or deployment.

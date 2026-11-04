@@ -123,3 +123,14 @@ The [Luna MVP workpack](execution/mvp/README.md) covers all 80 MVP parent tasks 
 bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind reviewed
 context/commands just before dispatch. No autonomous execution or model
 qualification is claimed.
+
+## Internal browser requirement — 5 November 2026
+
+Use the Codex internal browser for all browser access unless the user explicitly
+instructs otherwise, including sign-in, reauthentication, opening pages and
+browser-based QA. Do not launch or control an external browser. Existing explicit
+CLI-first instructions continue to apply to qualified CLI/API operations.
+If the internal browser is unavailable or cannot complete a required step, report
+the specific limitation instead of silently substituting another browser. This
+does not authorize authentication bypasses, credential changes, new access,
+publication, merge or deployment.
