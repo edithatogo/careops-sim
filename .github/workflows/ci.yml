@@ -259,9 +259,27 @@ jobs:
           } >> "$GITHUB_ENV"
           echo "$toolchain_bin" >> "$GITHUB_PATH"
       - name: Run parent default-feature workspace tests
+        env:
+          CARGO_BUILD_JOBS: '1'
+          CARGO_INCREMENTAL: '0'
+          CARGO_PROFILE_DEV_DEBUG: '0'
+          CARGO_PROFILE_TEST_DEBUG: '0'
         run: |
           set -euo pipefail
           export CARGO_TARGET_DIR=.artifacts/ci/default/target
+          record_default_resources() {
+            df -h "$PWD" "$RUNNER_TEMP"
+            free -m
+          }
+          finish_default_lane() {
+            default_lane_exit=$?
+            trap - EXIT
+            set +e
+            record_default_resources 2>&1 | tee .artifacts/ci/default/resources-after.log
+            exit "$default_lane_exit"
+          }
+          trap finish_default_lane EXIT
+          record_default_resources | tee .artifacts/ci/default/resources-before.log
           cargo test --workspace --lib --bins --tests --locked 2>&1 | tee .artifacts/ci/default/tests.log
       - name: Retain bounded failed default-lane logs
         if: failure()
@@ -272,6 +290,8 @@ jobs:
             .artifacts/ci/default/toolchain-install.log
             .artifacts/ci/default/environment.log
             .artifacts/ci/default/tests.log
+            .artifacts/ci/default/resources-before.log
+            .artifacts/ci/default/resources-after.log
           retention-days: 7
           if-no-files-found: error
 

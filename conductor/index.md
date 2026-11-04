@@ -73,14 +73,21 @@ records accepted R10–R14 engineering. Source258bb6b passed both787-test native
 hosts,815+127 Python,26 frozen benchmarks, full117 mutation accounting, coverage,
 policy and the native Linux package. [Final source receipt](evidence/polars-r14-qualification-20261104/README.md)
 preserves original failures, actual source/merge distinctions, rollback and the
-net+3621 maintenance cost (qualified source+3615; archive fixture+6). All20 task IDs and three downstream prerequisites
+net+3645 maintenance cost (qualified source+3615; archive fixture+6; CI helper/tests+24). All20 task IDs and three downstream prerequisites
 remain; runtime074/data473/Polars964 and ownership are unchanged. The archive
-is documentation reconciliation; no main merge, release, clinical or new dispatch
-is implied.
+preserves dated source acceptance. PR199 passed final gates and merged into the
+existing Generic ED integration target; [post-archive receipt](evidence/polars-r14-qualification-20261104/post-archive-final-gates.json)
+records exact source/tested/final merge distinctions. PR197/198/main and release/clinical gates remain separate.
 
 ## Separate library adoption tracks
 
 [Library adoption programme](library-adoption.md) registers rand, rand_distr, ECharts, petgraph and Three.js separately, after accepted Polars delivery in both repositories. All implementation remains pending.
+
+[SHA-2 R50.1 inventory](evidence/sha2-r501-inventory-20261104/README.md) verifies
+its historical upstream prerequisite and current consumers. [R50.2 qualification](evidence/sha2-r502-qualification-20261104/README.md)
+accepts exact0.11.1/default features, bounded value and build-identity compatibility
+as a replacement candidate. R50/R51 bounded engineering is accepted; [implementation and guard](evidence/sha2-r51-implementation-20261104/README.md)
+are source-bound. R52 broader acceptance remains pending.
 
 ## Robustness-first dependency decisions
 

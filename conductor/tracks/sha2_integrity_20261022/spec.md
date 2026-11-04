@@ -1,6 +1,6 @@
 # CareOps sha2 adoption
 
-Planned only. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
+R50 evidence and R51 bounded parent replacement are accepted. The implementation awaits R52 broader acceptance. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
 
 ## Inputs and dependencies
 
@@ -8,7 +8,27 @@ Accepted Kairos Track 93 Phase 2 receipt; local milestones none. Do not block al
 
 ## Outputs and contract
 
-Replace sha256_simple (which is not SHA-256) only where retained contracts require SHA-256. Delete the obsolete pseudo-Parquet codec through Track 70 rather than repairing it into a parallel format. Qualify standard SHA-256 primitives and retained consumers before the specific migration task that needs them; do not require completed Polars outputs for this track to close. Version any changed digest/format contract; preserve historical artifacts and reject incompatible formats explicitly. Keep noncryptographic identity hashes and RNG stream assignments unchanged. CareOps already declares sha2 but still maintains handwritten SHA-256: package presence is not migration.
+The handwritten standard FIPS SHA-256 machinery inventoried in
+`compute_sha256_hex` in `crates/careops-ed/src/api_runner.rs` was replaced in
+R51 by the exact qualified workspace sha2 primitive; the public function and
+lowercase64hex/full-byte contract remain. The nonstandard
+`sha256_simple` is an upstream historical target and is absent from current
+parent production source. Polars already removed the obsolete parent pseudo-
+Parquet paths; do not reintroduce a parallel codec. Preserve the accepted upstream
+historical receipts and distinguish them from current runtime qualification.
+
+CareOps already declares and locks sha2 0.11.1. Core identity, birthing runtime and
+build scripts already used it; ED now also uses the qualified normal workspace
+dependency edge.
+R50.2 qualified the proposed normal ED runtime edge/default alloc+oid features,
+current minimal graph, independent digest parity and bounded value. Production edge/helper compilation and scoped contract/recovery/consumer checks
+are accepted in R51; broader R52 acceptance remains pending. Existing correct
+standard uses, canonical identity bytes and RNG assignments remain unchanged.
+A byte-identical standard digest does not need an invented format migration;
+actually changed digest/format contracts require explicit versioning. Current
+historical receipt limitations and source-bound manifest guards are recorded in
+[the R50.1 inventory](../../evidence/sha2-r501-inventory-20261104/README.md).
+
 
 ## Ownership
 

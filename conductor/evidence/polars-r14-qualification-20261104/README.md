@@ -253,3 +253,33 @@ Reviewer `/root/ffi_packet_prepare` approved this five-path recipe repair after
 18 focused tests and scope review. Its +24 support lines (+9 runner/+15 test)
 bring the same-scope cumulative maintenance delta to+3645; source258+3615 and
 archive900+3621 remain dated, unchanged audits. Fresh hosted acceptance is pending.
+
+## Post-archive final gates and PR199 merge — 4 November 2026
+
+Exact source `ecbf0ffc9b11f152a36b513cb9ff19bc48fffe40` passed all seven
+hosted workflows: 17 successful checks and the expected main-only attestation
+skip. CI41767445663 and native package41767445821 succeeded. Both native hosts
+passed787/787 with zero failures/ignored/skipped; Python passed816+127.
+Coverage512/578=88.5813% exceeds the unchanged80% floor. All117 mutants are
+accounted for (111 caught,2 existing reviewed equivalents,4 known unviable,
+zero timeouts), using the unchanged validator/catalog. All26 frozen compatibility
+pairs match,14 negatives reject, and full/zero/oversize/slow-output/blocked-pipe
+checks pass under the original budgets. Downloaded ELF/package and lock match.
+
+[PR199](https://github.com/edithatogo/careops-sim/pull/199) merged at
+2026-11-04T05:06:29Z into `codex/generic-ed-capability-qualification` as
+`d12559f77c3572bdf23e448dddab74b02c82777c`. The actual tested merge
+`26b1aebb4b142f42f9b50733937004e1888fa682`, final merge and source are distinct
+commits with complete tree `b8138d430565071f0341832e599540bbb0bf790e`.
+Independent reviewer `/root/ffi_packet_prepare` approved this exact source and
+target after live gate/artifact review. [Machine receipt](post-archive-final-gates.json)
+records counts, hashes and the preserved900c9cf failure. No hosted scheduling
+root cause is claimed. The bounded one-thread recipe retains all tests, zero
+retries, full-slot reservation and100ms C63 limit.
+
+Historical source258 acceptance remains unchanged. Current audited maintenance
+cost is+3645 lines (source258 +3615, archive fixture+6, CI helper/tests+24),
+not an overall reduction. Runtime074/data473/Polars964 pins and lane ownership
+remain unchanged. PR197/198/main, release, clinical and operational acceptance
+remain separate. R14 stays archived; SHA2 R50.1 inventory is accepted and R50.2
+is the next preparation candidate, without runtime adoption.

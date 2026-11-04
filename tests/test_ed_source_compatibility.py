@@ -267,7 +267,15 @@ class SharedImportPromotionTests(unittest.TestCase):
 
     def test_actual_current_shared_profile_and_immutable_first_receipt(self):
         gate.verify_binding(ROOT, self.join)
-        self.assertTrue(gate.strict_equal(gate.shared_bindings(ROOT), self.expected))
+        self.assertTrue(gate.strict_equal(self.receipt['promotion_bindings'], self.expected))
+        self.assertEqual((ROOT / gate.SHARED_RECEIPT).read_bytes(),
+                         gate.git_blob(ROOT, gate.SHARED_QUALIFICATION_COMMIT, gate.SHARED_RECEIPT))
+        current = gate.shared_bindings(ROOT)
+        successor = gate.shared_bindings(ROOT, gate.SHA2_QUALIFICATION_COMMIT)
+        self.assertTrue(gate.strict_equal(current, successor))
+        changed = [p for p, value in self.expected['source_sha256'].items()
+                   if current['source_sha256'][p] != value]
+        self.assertEqual(changed, ['crates/careops-ed/Cargo.toml'])
 
     def test_shared_promotion_requires_its_new_receipt(self):
         with mock.patch.object(gate, 'SHARED_RECEIPT', 'absent-shared-receipt.json'):
@@ -358,3 +366,87 @@ class SharedImportPromotionTests(unittest.TestCase):
             changed = dict(self.bindings, **{key: replacement})
             with self.subTest(pin=key), self.assertRaises(ValueError):
                 gate.validate_shared_receipt(self.receipt, self.expected, changed, self.reference)
+
+
+class Sha2ManifestSuccessorTests(unittest.TestCase):
+    def setUp(self):
+        self.old = gate.git_blob(ROOT, gate.SHARED_QUALIFICATION_COMMIT, 'crates/careops-ed/Cargo.toml')
+        self.new = self.old.replace(b'[dependencies]\n', b'[dependencies]\nsha2.workspace = true\n', 1)
+        self.lock = gate.git_blob(ROOT, gate.SHARED_QUALIFICATION_COMMIT, 'Cargo.lock')
+
+    def validate(self, manifest, lock=None):
+        gate.validate_sha2_successor_manifest(self.old, manifest, self.lock, self.lock if lock is None else lock)
+
+    def test_exact_normal_edge_only(self):
+        self.validate(self.new)
+
+    def test_unknown_dependency_feature_version_and_type_refuse(self):
+        for candidate in [self.old, self.new.replace(b'sha2.workspace = true', b'sha2.workspace = false'), self.new.replace(b'sha2.workspace = true', b'sha2 = "=0.11.2"'), self.new.replace(b'tempfile = {', b'unknown = "=1.0.0"\ntempfile = {'), self.new.replace(b'default = ["native-data"]', b'default = []'), self.new.replace(b'=3.27.0', b'=3.28.0')]:
+            with self.subTest(candidate=candidate):
+                with self.assertRaises(ValueError): self.validate(candidate)
+
+    def test_lock_drift_refuses_even_when_only_whitespace(self):
+        with self.assertRaises(ValueError): self.validate(self.new, self.lock + b'\n')
+
+
+class Sha2AnchoredSuccessorTests(unittest.TestCase):
+    def setUp(self):
+        self.join = json.loads((ROOT / gate.JOIN_PATH).read_bytes())
+        self.receipt = json.loads((ROOT / gate.SHA2_RECEIPT).read_bytes())
+
+    def test_actual_qualified_successor_and_original_receipt_both_validate(self):
+        gate.verify_binding(ROOT, self.join)
+
+    def test_original_exact_profile_remains_valid(self):
+        original = gate.shared_bindings
+        def historical(root, commit=None):
+            return original(root, gate.SHARED_QUALIFICATION_COMMIT if commit is None else commit)
+        with mock.patch.object(gate, 'shared_bindings', historical):
+            gate.verify_binding(ROOT, self.join)
+
+    def test_every_new_digest_build_and_contract_source_drift_refuses(self):
+        original = Path.read_bytes
+        for path in gate.SHA2_SOURCES:
+            selected = ROOT / path
+            def changed(current):
+                data = original(current)
+                return data + b'\n' if current == selected else data
+            with self.subTest(path=path), mock.patch.object(Path, 'read_bytes', changed):
+                with self.assertRaisesRegex(ValueError, 'exact binding mismatch'):
+                    gate.verify_binding(ROOT, self.join)
+
+    def test_mutable_receipt_and_source_codrift_cannot_rebind_successor(self):
+        selected = ROOT / gate.SHA2_SOURCES[0]
+        receipt_path = ROOT / gate.SHA2_RECEIPT
+        original = Path.read_bytes
+        altered = original(selected) + b'\n'
+        receipt = copy.deepcopy(self.receipt)
+        receipt['source_bindings'][0]['sha256'] = gate.digest(altered)
+        def changed(current):
+            if current == selected: return altered
+            if current == receipt_path: return json.dumps(receipt).encode()
+            return original(current)
+        with mock.patch.object(Path, 'read_bytes', changed):
+            with self.assertRaisesRegex(ValueError, 'immutable SHA2 successor'):
+                gate.verify_binding(ROOT, self.join)
+
+    def test_missing_changed_or_nonobject_receipt_refuses(self):
+        receipt_path = ROOT / gate.SHA2_RECEIPT
+        original = Path.read_bytes
+        for value in [b'[]', original(receipt_path)+b'\n']:
+            def changed(current): return value if current == receipt_path else original(current)
+            with self.subTest(value=value[:20]), mock.patch.object(Path, 'read_bytes', changed):
+                with self.assertRaisesRegex(ValueError, 'immutable SHA2 successor'):
+                    gate.verify_binding(ROOT, self.join)
+        with mock.patch.object(gate, 'SHA2_RECEIPT', 'missing-sha2-receipt.json'):
+            with self.assertRaisesRegex(ValueError, 'SHA2 successor needs exact compatibility'):
+                gate.verify_binding(ROOT, self.join)
+
+    def test_immutable_anchor_receipt_and_manifest_cannot_drift(self):
+        original = gate.git_blob
+        for path in [gate.SHA2_RECEIPT, 'crates/careops-ed/Cargo.toml']:
+            def changed(root, commit, name):
+                value = original(root, commit, name)
+                return value+b'\n' if commit == gate.SHA2_QUALIFICATION_COMMIT and name == path else value
+            with self.subTest(path=path), mock.patch.object(gate, 'git_blob', changed):
+                with self.assertRaises(ValueError): gate.verify_binding(ROOT, self.join)

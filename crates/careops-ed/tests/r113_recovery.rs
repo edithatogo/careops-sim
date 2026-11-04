@@ -620,3 +620,141 @@ fn unknown_nested_batch_version_rejects_export_resume_and_new_output_before_muta
     assert!(run_batch_with_workers(&scenario(), &unknown, Some(&output), None, None).is_err());
     assert!(!output.exists());
 }
+
+// Byte snapshots check that rejected recovery creates, removes or changes no file.
+fn r51_files(root: &Path) -> std::collections::BTreeMap<PathBuf, Vec<u8>> {
+    fn visit(base: &Path, dir: &Path, files: &mut std::collections::BTreeMap<PathBuf, Vec<u8>>) {
+        for entry in fs::read_dir(dir).unwrap() {
+            let path = entry.unwrap().path();
+            if path.is_dir() {
+                visit(base, &path, files);
+            } else {
+                files.insert(
+                    path.strip_prefix(base).unwrap().to_owned(),
+                    fs::read(path).unwrap(),
+                );
+            }
+        }
+    }
+    let mut files = std::collections::BTreeMap::new();
+    visit(root, root, &mut files);
+    files
+}
+
+#[test]
+fn r51_corrupt_truncated_and_invalid_part_hashes_reject_before_mutation() {
+    for kind in ["wrong", "truncated", "invalid", "input_bit"] {
+        let root = tempfile::tempdir().unwrap();
+        let doc =
+            run_batch_with_workers(&scenario(), &config(), Some(root.path()), None, None).unwrap();
+        let dir = root.path().join("capture");
+        let mut cp: CaptureCheckpoint =
+            serde_json::from_slice(&fs::read(dir.join("checkpoint.json")).unwrap()).unwrap();
+        let part = &mut cp.completed_replications[0].parts[0];
+        match kind {
+            "wrong" => {
+                part.sha256 = if part.sha256.starts_with('0') {
+                    "1"
+                } else {
+                    "0"
+                }
+                .to_owned()
+                    + &part.sha256[1..];
+            }
+            "truncated" => {
+                part.sha256.pop();
+            }
+            "invalid" => {
+                part.sha256 = "g".repeat(64);
+            }
+            "input_bit" => {
+                let path = dir.join(&part.name);
+                let mut bytes = fs::read(&path).unwrap();
+                bytes[0] ^= 1;
+                fs::write(path, bytes).unwrap();
+            }
+            _ => unreachable!(),
+        }
+        fs::write(
+            dir.join("checkpoint.json"),
+            serde_json::to_vec(&cp).unwrap(),
+        )
+        .unwrap();
+        let mut manifest: serde_json::Value =
+            serde_json::from_slice(&fs::read(dir.join("manifest.json")).unwrap()).unwrap();
+        manifest["replications"] = serde_json::to_value(&cp.completed_replications).unwrap();
+        fs::write(
+            dir.join("manifest.json"),
+            serde_json::to_vec(&manifest).unwrap(),
+        )
+        .unwrap();
+        let store = ObservedStore::new(root.path(), "none");
+        let before = r51_files(root.path());
+        assert!(patient_table(&scenario(), &doc).is_err(), "{kind}");
+        assert!(
+            capture::resume_captured_batch(&scenario(), &config(), DEFAULT_LIMITS, &dir, &store)
+                .is_err(),
+            "{kind}"
+        );
+        assert!(starts(root.path()).is_empty());
+        assert_eq!(r51_files(root.path()), before, "{kind}");
+    }
+}
+
+// Explicit parent-operated fixture: produce with the original compiled model,
+// then consume that unchanged artifact with the successor compiled model.
+#[test]
+fn r51_cross_build_artifact_fixture() {
+    let Ok(root) = std::env::var("CAREOPS_R51_ARTIFACT_ROOT") else {
+        return;
+    };
+    let root = PathBuf::from(root);
+    match std::env::var("CAREOPS_R51_ARTIFACT_MODE").unwrap().as_str() {
+        "produce" => {
+            assert!(!root.exists(), "never overwrite the original artifact");
+            fs::create_dir(&root).unwrap();
+            let doc =
+                run_batch_with_workers(&scenario(), &config(), Some(&root), None, None).unwrap();
+            assert!(patient_table(&scenario(), &doc).is_ok());
+            fs::write(
+                root.join("document.json"),
+                serde_json::to_vec(&doc).unwrap(),
+            )
+            .unwrap();
+            fs::write(
+                root.join("original-model.txt"),
+                capture::MODEL_CONTRACT_SHA256,
+            )
+            .unwrap();
+        }
+        "consume" => {
+            assert_ne!(
+                fs::read_to_string(root.join("original-model.txt")).unwrap(),
+                capture::MODEL_CONTRACT_SHA256
+            );
+            let doc: careops_ed::disposition::batch_runner::BatchRunDocument =
+                serde_json::from_slice(&fs::read(root.join("document.json")).unwrap()).unwrap();
+            let store = ObservedStore::new(&root, "none");
+            let before = r51_files(&root);
+            assert!(
+                patient_table(&scenario(), &doc).is_ok(),
+                "original artifact remains readable"
+            );
+            assert!(capture::resume_captured_batch(
+                &scenario(),
+                &config(),
+                DEFAULT_LIMITS,
+                &root.join("capture"),
+                &store
+            )
+            .is_err());
+            assert!(starts(&root).is_empty());
+            assert_eq!(
+                r51_files(&root),
+                before,
+                "foreign model rejection must precede mutation"
+            );
+        }
+        _ => panic!("unknown R51 fixture mode"),
+    }
+}

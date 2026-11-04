@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-04",
+  "review_status": "accepted_bounded_local_R51_engineering",
+  "implementation_source": "e44946bfad91cc4ac74912c55ccf7ff8539a8a85",
+  "tests_first_source": "c6bccc5f950ccfc98ad34c40e2549db7fe6e63ba",
+  "r50_phase_closeout": "fd9c295f0ae7c11d757ba73f2114143293461983",
+  "scope": "R51 bounded local engineering, not R52 full acceptance",
+  "reviewer": "/root/ffi_packet_prepare",
+  "source_bindings": [
+    {
+      "path": "tools/ed_source_compatibility.py",
+      "sha256": "522a225a725dcbd1f8c710f8a52f64b787aac7598055bc6ceb26ea8a8ff6dab3"
+    },
+    {
+      "path": "tests/test_ed_source_compatibility.py",
+      "sha256": "ad4956158caab08c9f2c3f0ac0491654f775ae7072662378f3442b397078c855"
+    }
+  ],
+  "guard": {
+    "source_anchor": "e44946bfad91cc4ac74912c55ccf7ff8539a8a85",
+    "receipt": "conductor/evidence/sha2-r51-implementation-20261104/qualified-source.json",
+    "old_shared_source_anchor": "a61f259ff3e553db8442b150bd767548ef9c6b73",
+    "semantics": "Always validate historical shared history/receipt against old exact profile; accept old profile or immutable qualified successor with only exact ED normal workspace edge, byte-identical lock, other14sharedsources and5digest/build/contract sources pinned to actual qualified source. Mutable receipt/source co-drift and every unknown source/profile refuse.",
+    "test_accounting": {
+      "initial_guard_suite_cases": 39,
+      "initial_passed": 38,
+      "initial_failed": 1,
+      "failure_reason": "Existing positive assertion incorrectly required current manifest to equal historical manifest after permitted successor",
+      "review_fix": "Preserve exact old receipt/old profile assertion; current profile must equal immutable successor and have exactly one EDmanifest source delta",
+      "focused_corrected_test_passed": 1,
+      "unmodified_38_results_reused": true,
+      "fresh_full_39_pass_not_claimed": true
+    },
+    "logs": [
+      {
+        "name": "sha2-r513-guard-tests.log",
+        "sha256": "3c32bde989137a8a548b083ed02b3e688fa72042a4e78091314d6b4b85612810"
+      },
+      {
+        "name": "sha2-r513-guard-positive-fixed.log",
+        "sha256": "ba6f652a60bdc04f4522fa4ca17c0daa405e439621428a2376726f53a77d3baa"
+      }
+    ]
+  },
+  "implementation_evidence": {
+    "receipt_sha256": "2a57968c6e223ffbf7a825f417253c7e847a29308f30effda57e581f23e6b562",
+    "tests_first_receipt_sha256": "e7b705982e39d5b6e3ae0c9d82d099fb0d3bc9be411d7618d68e8f3b28a2a957",
+    "native_tests": "17 default +2 minimal, existing100msC63limit unchanged",
+    "compatibility_cases": 26,
+    "adversarial_negative_cases": 14,
+    "cross_build": "Actualoriginal/successormodels differ;originalartifactreadable,resumerefused before mutation,9files unchanged",
+    "clippy": "affected native targets -Dwarnings pass",
+    "policy": "canonicalRust1.99.1/unchangedworkflow/locked all-feature external dependency policy plus28unit tests pass",
+    "full_history_audit_release": "Not a new pass; R52 remains open"
+  },
+  "review_fixes": [
+    "Keep actual8-line formatted helper accounting separate from historical4-line prototype",
+    "Preserve old source/receipt anchors; bind new actual-source receipt in a second commit",
+    "Correct only historical-positive guard assertion while preserving old anchor and all drift negatives"
+  ],
+  "ownership": {
+    "owner_chat": "01a19b9f-69e7-7353-9b75-445d5653feb4",
+    "worktree": "careops-sha2-inventory-20261104 standard Git worktree",
+    "native_scope": "Local synthetic tests/artifacts only; existing ownership retained",
+    "actual_paths_and_claims": "Private run ledger; no machine-path publication"
+  },
+  "remaining": [
+    "All R52 tasks unaccepted; no archive",
+    "New-source Linux /dev/full not verified on macOS",
+    "Applicable full workspace/integration/coverage/mutation/hosted/platform/security and net maintenance/build/runtime cost gates remain",
+    "No main/PR197/198 merge, release, clinical or operational approval"
+  ],
+  "reconciliation": {
+    "focused_tests": 63,
+    "focused_log_sha256": "26959a0044e3fb6bba7f6440f48959313981770940c2e5de03bb1e9371907763",
+    "context_tasks_mvp": "pass",
+    "task_records": 405,
+    "authorized_task_deltas": [
+      "R50.3",
+      "R51.1",
+      "R51.2",
+      "R51.3"
+    ],
+    "other401_task_records": "unchanged",
+    "other_dependency_rows": "unchanged",
+    "historical_receipts": "R501/R502/R14 bytes unchanged",
+    "runtime_lock_pins_after_source_anchor": "unchanged"
+  }
+}

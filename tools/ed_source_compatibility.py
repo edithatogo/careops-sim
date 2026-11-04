@@ -52,6 +52,16 @@ SHARED_SOURCES = (
     'tests/r143_native_domain_ffi.rs', 'tools/ed_native_benchmarks.py',
     'tools/ed_native_benchmark_process.py',
 )
+# Immutable actual source/receipt checkpoint; historical Polars anchors stay intact.
+SHA2_QUALIFICATION_COMMIT = 'e44946bfad91cc4ac74912c55ccf7ff8539a8a85'
+SHA2_RECEIPT = 'conductor/evidence/sha2-r51-implementation-20261104/qualified-source.json'
+SHA2_SOURCES = (
+    'crates/careops-ed/src/api_runner.rs', 'crates/careops-ed/build.rs',
+    'crates/careops-ed/tests/r51_sha2_contract.rs',
+    'crates/careops-ed/tests/r113_recovery.rs',
+    'crates/careops-ed/tests/c63_compatibility_replay_performance.rs',
+)
+
 SHARED_ROOT_FEATURES = {
     'default': [],
     'native-ffi-acceptance': ['dep:careops-ed', 'dep:careops-birthing-cli',
@@ -272,6 +282,18 @@ def validate_metadata_edges(root, lock_bytes, manifest_bytes):
         raise ValueError('data promotion scope or exact binding mismatch: unknown metadata dependency profile')
 
 
+def validate_sha2_successor_manifest(old_manifest, manifest, old_lock, lock):
+    """Only the qualified normal sha2 workspace edge; no other graph drift."""
+    try:
+        expected = tomllib.loads(old_manifest.decode())
+        expected['dependencies']['sha2'] = {'workspace': True}
+        actual = tomllib.loads(manifest.decode())
+    except (TypeError, ValueError, UnicodeError, KeyError) as error:
+        raise ValueError('SHA2 successor manifest is malformed') from error
+    if lock != old_lock or not strict_equal(actual, expected):
+        raise ValueError('SHA2 successor permits only the exact normal workspace edge')
+
+
 def native_bindings(root, data_bytes):
     return {
         'data_receipt_commit': DATA_RECEIPT_COMMIT,
@@ -485,6 +507,40 @@ def validate_shared_receipt(receipt, expected, bindings, reference):
     validate_receipt(receipt.get('summary_compatibility'), bindings, reference)
 
 
+def sha2_source_bindings(root, commit=None):
+    read = (lambda p: (Path(root) / p).read_bytes()) if commit is None else (lambda p: git_blob(root, commit, p))
+    return [{'path': p, 'sha256': digest(read(p))} for p in SHA2_SOURCES]
+
+
+def verify_sha2_successor(root, original, current):
+    """An independently qualified, immutable successor; unknown drift still fails."""
+    _, receipt = _anchored_receipt(
+        root, SHA2_RECEIPT, SHA2_QUALIFICATION_COMMIT,
+        'SHA2 successor needs exact compatibility evidence',
+        'immutable SHA2 successor compatibility receipt changed')
+    expected = shared_bindings(root, SHA2_QUALIFICATION_COMMIT)
+    # Every old source/profile binding except the one qualified manifest survives.
+    before, after = copy.deepcopy(original), copy.deepcopy(expected)
+    for value in (before, after):
+        del value['source_sha256']['crates/careops-ed/Cargo.toml']
+    validate_sha2_successor_manifest(
+        git_blob(root, SHARED_QUALIFICATION_COMMIT, 'crates/careops-ed/Cargo.toml'),
+        git_blob(root, SHA2_QUALIFICATION_COMMIT, 'crates/careops-ed/Cargo.toml'),
+        git_blob(root, SHARED_QUALIFICATION_COMMIT, 'Cargo.lock'),
+        git_blob(root, SHA2_QUALIFICATION_COMMIT, 'Cargo.lock'))
+    sources = sha2_source_bindings(root, SHA2_QUALIFICATION_COMMIT)
+    if (not strict_equal(before, after) or not strict_equal(current, expected)
+            or not strict_equal(sha2_source_bindings(root), sources)):
+        raise ValueError('data promotion scope or exact binding mismatch: SHA2 successor source/profile')
+    if (not isinstance(receipt, dict)
+            or type(receipt.get('schema_version')) is not int or receipt['schema_version'] != 1
+            or receipt.get('scope') != 'sha2_normal_edge_digest_parity_only'
+            or receipt.get('renewed_a7_acceptance') is not False
+            or not strict_equal(receipt.get('shared_bindings'), expected)
+            or not strict_equal(receipt.get('source_bindings'), sources)):
+        raise ValueError('data promotion scope or exact binding mismatch: SHA2 successor receipt')
+
+
 def verify_shared_promotion(root, join, bindings, reference):
     validate_shared_history(root, join, reference)
     _, receipt = _anchored_receipt(
@@ -492,6 +548,8 @@ def verify_shared_promotion(root, join, bindings, reference):
         'shared trusted import promotion needs exact compatibility evidence',
         'immutable shared trusted import compatibility receipt changed')
     expected = shared_bindings(root, SHARED_QUALIFICATION_COMMIT)
-    if not strict_equal(shared_bindings(root), expected):
-        raise ValueError('data promotion scope or exact binding mismatch: shared current source/profile')
+    # Always validate the original immutable receipt against its original profile.
     validate_shared_receipt(receipt, expected, bindings, reference)
+    current = shared_bindings(root)
+    if not strict_equal(current, expected):
+        verify_sha2_successor(root, expected, current)

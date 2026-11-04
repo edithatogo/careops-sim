@@ -1,0 +1,80 @@
+{
+  "source": "f1ef09551e9f07806a29fc14a255a6d64af5c122",
+  "task": "R50.2 decision-only",
+  "owner": "01a19b9f-69e7-7353-9b75-445d5653feb4",
+  "reviewer": "/root/ffi_packet_prepare",
+  "review": "Approved before execution with paired measurements/independent oracle refinements",
+  "scope": "Private probe only; no parent manifest/lock/runtime/pin edits; R50.3 and R51 separate",
+  "budgets": {
+    "samples": 7,
+    "min_sample_ns": 100000000,
+    "sizes_iterations": [
+      [
+        1024,
+        200000
+      ],
+      [
+        65536,
+        10000
+      ],
+      [
+        1048576,
+        1000
+      ]
+    ],
+    "warmup_hashes_per_process": 128,
+    "alternating_order": true,
+    "max_candidate_median_ratio": 1.1,
+    "tiny_bytes": 1024,
+    "tiny_max_excess_ns_per_hash": 1000,
+    "cold_fresh_target_build_seconds": 30,
+    "warm_build_seconds": 10,
+    "max_binary_growth_bytes": 262144,
+    "max_peak_rss_growth_bytes": 16777216,
+    "max_new_parent_registry_packages": 0
+  },
+  "inputs": [
+    {
+      "path": "Cargo.toml",
+      "sha256": "2000c30f811e10d72221596b10acbc3ab490c664f4d54f3027b3ac9e3f6f736e"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "816500fcc5e68397433f49cde34840389f61a70ddad63f464d0faea8b2112702"
+    },
+    {
+      "path": "crates/careops-ed/Cargo.toml",
+      "sha256": "4b08503f1f513ae9c2d45257b0b154fca1337f5217dff3f12c3d11e45c1f0942"
+    },
+    {
+      "path": "crates/careops-ed/src/api_runner.rs",
+      "sha256": "72e3d16bab30c6a40c5b4a2c7704b0cb9c6c89e215b4b8116b9aae6ad7743a3c"
+    },
+    {
+      "path": "crates/careops-ed/build.rs",
+      "sha256": "ba6d8ebc46810d2f47668126e4de1dafbfdf9149d55ff3777ecfd64e185b2b4b"
+    },
+    {
+      "path": "crates/careops-ed/src/capture.rs",
+      "sha256": "ab95ea4da526594fe1d6bce045006488f205812536df6e7b17b1144c207bb1bc"
+    },
+    {
+      "path": "crates/careops-ed/tests/r113_recovery.rs",
+      "sha256": "5b17b722b2a5baa491219875a7c3b612f5d9e85ac280ae8364c79a62aa96ca52"
+    }
+  ],
+  "commands": {
+    "build": "cargo build --locked --offline --release --bin probe [--features candidate] (fresh isolated target, shared populated registry cache)",
+    "rss": "/usr/bin/time -l probe bench SIZE ITERATIONS (same profile, 7 alternating pairs)",
+    "identity": "actual ED build.rs executable with controlled CARGO_MANIFEST_DIR/RUSTC/TARGET/PROFILE/flags/features; independent hashlib framed transcript"
+  },
+  "platform": "Local aarch64-apple-darwin only, no new hosted/platform/runtime acceptance",
+  "support_cost": "Qualification sources and receipts are added support burden, counted separately from proposed production helper deletion.",
+  "first_failure": {
+    "stage": "candidate compilation before performance samples",
+    "exit": 101,
+    "reason": "0.11.1 hybrid-array output lacks LowerHex; use existing repository per-byte lowercase formatter, no new encoding dependency",
+    "evidence": "Private first attempt command4 stderr retained",
+    "retry": "Fresh v2 targets; same frozen budgets/oracles, no failed performance sample discarded"
+  }
+}

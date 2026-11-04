@@ -7607,9 +7607,9 @@
       "id": "R50.1",
       "track_id": "sha2_integrity_20261022",
       "phase": "R50",
-      "objective": "Verify upstream receipt and local prerequisites; inventory direct consumers and retained/deleted paths.",
+      "objective": "Verify upstream receipt and local prerequisites; inventory direct consumers and retained/deleted paths. [Source-bound inventory](../../evidence/sha2-r501-inventory-20261104/README.md) verifies accepted Track93source5692/ancestry074 and current parent targets; no current-version/runtime adoption acceptance.",
       "kind": "contract_decision",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [],
       "source": {
         "path": "conductor/tracks/sha2_integrity_20261022/plan.md",
@@ -7635,9 +7635,9 @@
       "id": "R50.2",
       "track_id": "sha2_integrity_20261022",
       "phase": "R50",
-      "objective": "Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision.",
+      "objective": "Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision. [Qualification](../../evidence/sha2-r502-qualification-20261104/README.md) accepts0.11.1/default alloc+oid as a bounded replacement candidate, with unchanged model-build/recovery guards; no runtime adoption or R50.3 acceptance.",
       "kind": "contract_decision",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "R50.1"
       ],
@@ -7665,9 +7665,9 @@
       "id": "R50.3",
       "track_id": "sha2_integrity_20261022",
       "phase": "R50",
-      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision. [Review](../../evidence/sha2-r503-review-20261104/README.md) accepts R50 only and authorizes bounded R51 tests-first preparation.",
       "kind": "review_integrate",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "R50.2"
       ],
@@ -7692,9 +7692,9 @@
       "id": "R51.1",
       "track_id": "sha2_integrity_20261022",
       "phase": "R51",
-      "objective": "Add failing independent contract and recovery tests before replacement.",
+      "objective": "Add failing independent contract and recovery tests before replacement. Tests-first commitc6bccc5; [baseline/controlled-red proof](../../evidence/sha2-r51-implementation-20261104/tests-first.json), real original artifact frozen before replacement.",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "R50.3"
       ],
@@ -7722,9 +7722,9 @@
       "id": "R51.2",
       "track_id": "sha2_integrity_20261022",
       "phase": "R51",
-      "objective": "Replace only named machinery; delete duplicates, preserve semantic validation and version intentional changes.",
+      "objective": "Replace only named machinery; delete duplicates, preserve semantic validation and version intentional changes. Sourcee44946b replaces only ED crypto machinery with existing exact0.11.1; lock unchanged, real cross-build read/resume-refusal proof and26-case compatibility pass. [Source receipt](../../evidence/sha2-r51-implementation-20261104/qualified-source.json).",
       "kind": "bounded_work",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "R51.1"
       ],
@@ -7752,9 +7752,9 @@
       "id": "R51.3",
       "track_id": "sha2_integrity_20261022",
       "phase": "R51",
-      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md); apply accepted fixes and record next-phase decision. [Phase evidence](../../evidence/sha2-r51-implementation-20261104/phase-review.json) binds the closed successor guard and review fixes; accept bounded local engineering only, R52 remains unaccepted.",
       "kind": "review_integrate",
-      "accepted": false,
+      "accepted": true,
       "dependencies": [
         "R51.2"
       ],

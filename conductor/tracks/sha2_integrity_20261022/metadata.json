@@ -3,15 +3,18 @@
   "title": "CareOps sha2 adoption",
   "library": "sha2",
   "type": "refactor",
-  "status": "proposed",
+  "status": "in_progress",
   "created_at": "2026-10-22",
-  "updated_at": "2026-10-22",
+  "updated_at": "2026-11-04",
   "spec_approved": true,
-  "implementation_started": false,
-  "accepted_phases": [],
-  "active_phase": null,
+  "implementation_started": true,
+  "accepted_phases": [
+    "R50",
+    "R51"
+  ],
+  "active_phase": "R52",
   "priority_class": "foundation",
-  "adoption_decision": "pending_value_gate",
+  "adoption_decision": "implemented_pending_R52_acceptance",
   "phase_dependencies": {
     "R50": [],
     "R51": [
@@ -27,10 +30,70 @@
       "repository": "kairos",
       "track": "93",
       "phase": "2",
-      "status": "unresolved",
+      "status": "accepted",
       "gate_task": "R50.1",
-      "required_receipt": "Accepted bounded prerequisite commit and independent test evidence; no Polars completion dependency for sha2/tempfile/proptest"
+      "required_receipt": "Accepted bounded prerequisite commit and independent test evidence; no Polars completion dependency for sha2/tempfile/proptest",
+      "accepted_commit": "5692e6a9ee866131262d60103a84e2544dc51e4a",
+      "verified_runtime_pin": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+      "receipt": "conductor/evidence/sha2-r501-inventory-20261104/README.md",
+      "acceptance_scope": "Historical Track93Phase2 receipt and known-vector evidence verified at immutable source; not current0.11.1 runtime/multiblock/polyglot qualification."
     }
   ],
-  "approval_basis": "User requested separate dependencies and revised sequencing; parent has direct implementation/test consumers."
+  "approval_basis": "User requested separate dependencies and revised sequencing; parent has direct implementation/test consumers.",
+  "runtime_adoption_status": "implemented_pending_R52_acceptance",
+  "external_dependency_history": [
+    {
+      "source_commit": "ecbf0ffc9b11f152a36b513cb9ff19bc48fffe40",
+      "recorded_at": "2026-11-04",
+      "record": {
+        "repository": "kairos",
+        "track": "93",
+        "phase": "2",
+        "status": "unresolved",
+        "gate_task": "R50.1",
+        "required_receipt": "Accepted bounded prerequisite commit and independent test evidence; no Polars completion dependency for sha2/tempfile/proptest"
+      }
+    }
+  ],
+  "accepted_local_tasks": {
+    "R50.1": {
+      "snapshot_source": "ecbf0ffc9b11f152a36b513cb9ff19bc48fffe40",
+      "evidence": "conductor/evidence/sha2-r501-inventory-20261104/README.md",
+      "bindings": "conductor/evidence/sha2-r501-inventory-20261104/inventory.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Inventory and historical prerequisite verification only."
+    },
+    "R50.2": {
+      "snapshot_source": "f1ef09551e9f07806a29fc14a255a6d64af5c122",
+      "evidence": "conductor/evidence/sha2-r502-qualification-20261104/README.md",
+      "bindings": "conductor/evidence/sha2-r502-qualification-20261104/qualification.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Exact existing0.11.1/default features, independent baseline/cost budgets and build-identity compatibility decision only; no production edge/helper or R50.3 acceptance."
+    },
+    "R50.3": {
+      "snapshot_source": "d1bccd55b6bcc02942d12c583a5b959c5e1dd637",
+      "reviewer": "/root/ffi_packet_prepare",
+      "evidence": "conductor/evidence/sha2-r503-review-20261104/README.md",
+      "scope": "R50 phase review; bounded R51 preparation, no runtime acceptance."
+    },
+    "R51.1": {
+      "snapshot_source": "c6bccc5f950ccfc98ad34c40e2549db7fe6e63ba",
+      "evidence": "conductor/evidence/sha2-r51-implementation-20261104/tests-first.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Tests authored/committed before helper replacement; baseline green and deliberately failing controls, actual original artifact retained."
+    },
+    "R51.2": {
+      "snapshot_source": "e44946bfad91cc4ac74912c55ccf7ff8539a8a85",
+      "evidence": "conductor/evidence/sha2-r51-implementation-20261104/qualified-source.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Bounded parent ED helper/normal edge implementation and actual local contracts/recovery/consumer proof; no R52 acceptance."
+    },
+    "R51.3": {
+      "snapshot_source": "e44946bfad91cc4ac74912c55ccf7ff8539a8a85",
+      "evidence": "conductor/evidence/sha2-r51-implementation-20261104/phase-review.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Closed immutable successor guard and bounded local engineering phase review; wider gates remain."
+    }
+  },
+  "next_phase_decision": "R52.1 broader acceptance next. Reuse exact unchanged source-bound R51 receipts where valid; finish applicable full integration/coverage/mutation/hosted/platform/security/cost gates, including new-source Linux /dev/full. No main/PR197/198 merge or clinical/release approval."
 }
