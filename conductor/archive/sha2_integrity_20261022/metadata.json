@@ -3,18 +3,19 @@
   "title": "CareOps sha2 adoption",
   "library": "sha2",
   "type": "refactor",
-  "status": "in_progress",
+  "status": "complete",
   "created_at": "2026-10-22",
-  "updated_at": "2026-11-04",
+  "updated_at": "2026-11-05",
   "spec_approved": true,
   "implementation_started": true,
   "accepted_phases": [
     "R50",
-    "R51"
+    "R51",
+    "R52"
   ],
   "active_phase": "R52",
   "priority_class": "foundation",
-  "adoption_decision": "implemented_pending_R52_acceptance",
+  "adoption_decision": "accepted_bounded_engineering",
   "phase_dependencies": {
     "R50": [],
     "R51": [
@@ -40,7 +41,7 @@
     }
   ],
   "approval_basis": "User requested separate dependencies and revised sequencing; parent has direct implementation/test consumers.",
-  "runtime_adoption_status": "implemented_pending_R52_acceptance",
+  "runtime_adoption_status": "accepted_bounded_engineering",
   "external_dependency_history": [
     {
       "source_commit": "ecbf0ffc9b11f152a36b513cb9ff19bc48fffe40",
@@ -93,7 +94,31 @@
       "evidence": "conductor/evidence/sha2-r51-implementation-20261104/phase-review.json",
       "reviewer": "/root/ffi_packet_prepare",
       "scope": "Closed immutable successor guard and bounded local engineering phase review; wider gates remain."
+    },
+    "R52.1": {
+      "snapshot_source": "1d559a632f6e3ebe0c26f2c72317eb72e00269be",
+      "evidence": "conductor/evidence/sha2-r52-acceptance-20261104/acceptance.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Complete bounded current-consumer hosted/integration/coverage/mutation/security/platform/cost acceptance; no release or clinical certification."
+    },
+    "R52.2": {
+      "snapshot_source": "1d559a632f6e3ebe0c26f2c72317eb72e00269be",
+      "evidence": "conductor/evidence/sha2-r52-acceptance-20261104/acceptance.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Complete bounded current-consumer hosted/integration/coverage/mutation/security/platform/cost acceptance; no release or clinical certification."
+    },
+    "R52.3": {
+      "snapshot_source": "1d559a632f6e3ebe0c26f2c72317eb72e00269be",
+      "evidence": "conductor/evidence/sha2-r52-acceptance-20261104/acceptance.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Complete bounded current-consumer hosted/integration/coverage/mutation/security/platform/cost acceptance; no release or clinical certification."
     }
   },
-  "next_phase_decision": "R52.1 broader acceptance next. Reuse exact unchanged source-bound R51 receipts where valid; finish applicable full integration/coverage/mutation/hosted/platform/security/cost gates, including new-source Linux /dev/full. No main/PR197/198 merge or clinical/release approval."
+  "next_phase_decision": "Track complete and archived. Preserve source-bound receipts and unchanged ownership/pins. Clinical/site/operational, stable release, main and PR197/198/200 merges remain separate. Other dependency tracks retain their gates.",
+  "accepted_source_commit": "1d559a632f6e3ebe0c26f2c72317eb72e00269be",
+  "completion_evidence": [
+    "conductor/evidence/sha2-r52-acceptance-20261104/acceptance.json",
+    "conductor/evidence/sha2-r52-acceptance-20261104/README.md",
+    "conductor/archive/sha2_integrity_20261022/review-report.md"
+  ]
 }

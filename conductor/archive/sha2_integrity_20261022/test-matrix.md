@@ -28,3 +28,7 @@ policy pass. macOS `/dev/full` remains unverified for the new-source Linux R52
 check. Closed successor guards retain all old source/receipt/lock/pin negatives
 and add digest/build/test source and receipt co-drift controls. No new full
 hosted/workspace/coverage/mutation or release pass is claimed.
+
+## R52 final scope
+
+[Final source evidence](../../evidence/sha2-r52-acceptance-20261104/README.md) closes the earlier platform/hosted/quality gaps: Linux `/dev/full` passes; all7workflows and required aggregate pass. Both native791test suites, default779, Python825+127,512/578line coverage and117mutants complete, plus supplemental exact-helper fault controls. Reused R51 recovery and R50.2 paired costs remain exact-source bound; no broad local rebuild or portable speedup claim.

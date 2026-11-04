@@ -11,5 +11,5 @@
 - Noisy local1KiB benchmark and isolated build figures are bounded measurements; no portable/full-parent speedup claim. R51 consumer/platform gates remain.
 - Added qualification support exceeds proposed raw function-line savings; value rests on eliminating handwritten cryptographic machinery with an existing normal-transitive maintained library, with explicit cost limits.
 
-- R51 is bounded local engineering, not R52 full acceptance. Keep new-source Linux `/dev/full` and applicable hosted/full integration/coverage/mutation/security/cost gates open.
+- R52 closes the earlier new-source Linux `/dev/full`, hosted/full integration/coverage/mutation/security/cost gates at exact source1d559a6. Later source changes need applicable fresh gates; no clinical/release certification is implied.
 - Disk pressure can leave partial non-executable link outputs: retain failures, remove only terminal own partial outputs, serialize links and verify lossless binary archives; never treat a partial binary as runtime proof.

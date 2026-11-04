@@ -87,7 +87,7 @@ records exact source/tested/final merge distinctions. PR197/198/main and release
 its historical upstream prerequisite and current consumers. [R50.2 qualification](evidence/sha2-r502-qualification-20261104/README.md)
 accepts exact0.11.1/default features, bounded value and build-identity compatibility
 as a replacement candidate. R50/R51 bounded engineering is accepted; [implementation and guard](evidence/sha2-r51-implementation-20261104/README.md)
-are source-bound. R52 broader acceptance remains pending.
+are source-bound. R52 bounded engineering is complete at source1d559a6, including Linux `/dev/full`, full hosted/integration/quality/security/cost gates. [Archived track](archive/sha2_integrity_20261022/index.md) and [final source receipt](evidence/sha2-r52-acceptance-20261104/README.md) preserve all9tasks and distinguish this later documentation closeout.
 
 ## Robustness-first dependency decisions
 
