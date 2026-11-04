@@ -3,7 +3,7 @@
   "updated_at": "2026-11-04",
   "active_track": "polars_data_processing_20261022",
   "active_phase": "R14",
-  "next_action": "Whole-layer Polars R10-R14 engineering complete at source258bb6b, archived after full CI41718206221 and release41718206130 acceptance plus independent review. Retain archive as last-completed context; no new implementation task dispatched. Current archive documentation has separate focused integrity checks. Preserve ownership/runtime074/data473/Polars964 and separate release/clinical gates.",
+  "next_action": "Finish gated PR199 integration using the explicit native Polars pool1 recipe, preserving787/100ms/retries0. Archive900 macOS C63 measured222.199667ms and failed; local profile comparison does not establish cause. Require actual full fresh hosted acceptance before ready/merge; then prepare SHA2R50.1 inventory under a fresh owned packet. R14 source258 acceptance/history and runtime074/data473/Polars964 remain unchanged.",
   "context_paths": [
     "conductor/archive/polars_data_processing_20261022/plan.md",
     "conductor/archive/polars_data_processing_20261022/statistical-contract.md",
@@ -263,5 +263,13 @@
     "worktree": "careops-pr194-checks/careops-sim",
     "native_scope": "none",
     "next_operation": "No new implementation dispatch; preserve remaining independently owned tracks and external acceptance gates."
+  },
+  "polars_post_archive_ci": {
+    "pr": 199,
+    "failed_source": "900c9cfb2d5e8dc7c78b71715145fdb24aeb1dab",
+    "failed_run": 41734017689,
+    "failed_gate": "macOS C63 actual comparison222.199667ms versus100ms",
+    "native_recipe": "POLARS_MAX_THREADS=1, full787, existing reservation and zero retries",
+    "acceptance": "Require live full hosted success before merge; no pass inferred here."
   }
 }

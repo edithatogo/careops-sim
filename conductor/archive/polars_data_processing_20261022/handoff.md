@@ -400,3 +400,34 @@ source258/source40 audit remains+3615; its receipt is preserved. No runtime,
 manifest, lockfile, native test, benchmark oracle or CI configuration changed in
 the archive commit. Existing source258 hosted evidence is reused with this
 explicit distinction; no fresh archive-head native pass is inferred.
+
+## Post-archive PR gate — fixed native thread profile
+
+Archive-head900c9cf CI41734017689 completed with Linux/context/default/doc/Clippy/
+policy and package success, but macOS ran787:786 passed/1 C63 failure. Its actual
+comparison was222.199667ms against the unchanged100ms gate; required aggregate
+correctly failed. Preserve that failure. Slot reservation is supported by the
+pinned runner and existing real-process control; completion ordering does not
+prove overlap. No additional reservation/priority/retry/filter change is justified.
+
+One bounded local fresh-process configuration comparison of the existing
+source-identical C63 debug binary passed at29.476833ms with host-default Polars
+and33.4855ms with one thread. This does not reproduce the hosted failure or prove
+its cause. The native runner previously inherited a host-dependent Polars pool,
+unlike the existing benchmark and independent-reader recipes that select1.
+The runner now selects `POLARS_MAX_THREADS=1` for the complete native suite and
+records the child binding. A real-child regression proves inherited64 becomes1
+without mutating the parent environment. This is an explicit resource profile,
+not a claimed production optimization or established root-cause fix.
+
+All787 tests, replication worker controls, populated FFI selection, pinned tools,
+red control, full-slot reservation,100ms oracle and zero retries remain. Fresh
+complete hosted acceptance is required before PR199 can proceed to merge.
+R14's source258 engineering receipt and archived history stay source-bound;
+archive-head900 is not qualified by that earlier pass. No further source/pin
+promotion or new SHA-2 implementation is implied.
+
+Reviewer `/root/ffi_packet_prepare` approved this five-path recipe repair after
+18 focused tests and scope review. Its +24 support lines (+9 runner/+15 test)
+bring the same-scope cumulative maintenance delta to+3645; source258+3615 and
+archive900+3621 remain dated, unchanged audits. Fresh hosted acceptance is pending.
