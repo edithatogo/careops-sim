@@ -358,3 +358,24 @@ class SharedImportPromotionTests(unittest.TestCase):
             changed = dict(self.bindings, **{key: replacement})
             with self.subTest(pin=key), self.assertRaises(ValueError):
                 gate.validate_shared_receipt(self.receipt, self.expected, changed, self.reference)
+
+
+class Sha2ManifestSuccessorTests(unittest.TestCase):
+    def setUp(self):
+        self.old = gate.git_blob(ROOT, gate.SHARED_QUALIFICATION_COMMIT, 'crates/careops-ed/Cargo.toml')
+        self.new = self.old.replace(b'[dependencies]\n', b'[dependencies]\nsha2.workspace = true\n', 1)
+        self.lock = gate.git_blob(ROOT, gate.SHARED_QUALIFICATION_COMMIT, 'Cargo.lock')
+
+    def validate(self, manifest, lock=None):
+        gate.validate_sha2_successor_manifest(self.old, manifest, self.lock, self.lock if lock is None else lock)
+
+    def test_exact_normal_edge_only(self):
+        self.validate(self.new)
+
+    def test_unknown_dependency_feature_version_and_type_refuse(self):
+        for candidate in [self.old, self.new.replace(b'sha2.workspace = true', b'sha2.workspace = false'), self.new.replace(b'sha2.workspace = true', b'sha2 = "=0.11.2"'), self.new.replace(b'tempfile = {', b'unknown = "=1.0.0"\ntempfile = {'), self.new.replace(b'default = ["native-data"]', b'default = []'), self.new.replace(b'=3.27.0', b'=3.28.0')]:
+            with self.subTest(candidate=candidate):
+                with self.assertRaises(ValueError): self.validate(candidate)
+
+    def test_lock_drift_refuses_even_when_only_whitespace(self):
+        with self.assertRaises(ValueError): self.validate(self.new, self.lock + b'\n')
