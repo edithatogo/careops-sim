@@ -1,6 +1,6 @@
 # CareOps tempfile adoption
 
-Planned only. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
+R53.1 prerequisite and inventory accepted. Runtime adoption remains planned; R53.2 value/qualification and all later acceptance gates remain. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
 
 ## Inputs and dependencies
 
