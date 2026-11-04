@@ -17,6 +17,13 @@ from typing import Any
 CANONICAL_RUST = "1.99.1"
 # Schema v1 retains the field name; this now enforces the sole declared floor.
 DEFAULT_MSRV = "1.99"
+APPROVED_FEATURES = {
+    "Cargo.toml": {'default': [], 'native-ffi-acceptance': ['dep:careops-ed', 'dep:careops-birthing-cli', 'dep:kairo-data-arrow', 'dep:kairo-data-ffi', 'dep:serde_json', 'dep:tempfile']},
+    "crates/careops-ed/Cargo.toml": {
+        "default": ["native-data"],
+        "native-data": ["dep:kairo-ecs-arrow", "dep:polars", "dep:tempfile", "dep:polars-arrow-format", "dep:polars-parquet-format"],
+    }
+}
 EXPECTED_FIXTURE_PATH = "tests/fixtures/d33-calibration-physical-v2/manifest.json"
 EXPECTED_FIXTURE_SHA = "e37ade3d61550e58273989fd12c46091ddfdd1f01eaf55a8eb76af72eb1d4082"
 EXPECTED_COVERAGE_FILE = "crates/careops-ed/src/lib.rs"
@@ -134,7 +141,7 @@ def _validate_config(config: dict[str, Any], errors: list[str]) -> None:
                 for name, values in item["features"].items()
             ):
                 errors.append(f"config packages[{index}].features must map names to string lists")
-            elif item["features"] != {}:
+            elif item["features"] != APPROVED_FEATURES.get(item.get("manifest"), {}):
                 errors.append(f"config packages[{index}] has unapproved feature maps; contract review is required")
         if seen != list(EXPECTED_MANIFESTS):
             errors.append("config packages must list the exact reviewed manifests in order")
@@ -225,8 +232,6 @@ def _check_manifests(root: Path, config: dict[str, Any], errors: list[str]) -> N
             actual_features = None
         if actual_features is not None and actual_features != spec.get("features"):
             errors.append(f"{spec['manifest']} declared feature map differs from reviewed config")
-        if spec.get("features") != {}:
-            errors.append(f"{spec['manifest']} config contains unapproved feature maps; contract review is required")
         if index == 0:
             workspace = document.get("workspace")
             workspace_package = workspace.get("package") if isinstance(workspace, dict) else None

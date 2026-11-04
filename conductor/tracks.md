@@ -45,7 +45,7 @@ R/A/B DAG and reviewed packets.
 - [x] **Multi-domain core simulation abstractions and egress boundaries** — `careops_core_domain_abstractions_20261020`
   ([index](tracks/careops_core_domain_abstractions_20261020/index.md),
   [spec](tracks/careops_core_domain_abstractions_20261020/spec.md),
-  [plan](tracks/careops_core_domain_abstractions_20261020/plan.md)). Acceptance history: A0–A4.4 are accepted locally; the integrated A4 transfer and ward/community contracts passed workspace checks and reviewer-agent review per [A4 phase review](evidence/a4.4-phase-review-20261027/README.md). A5.1–A5.4 are accepted locally; the A5 phase passed independent reviewer-agent review and full workspace/Conductor checks per [A5.4 phase review](evidence/a5.4-phase-review-20261027/README.md). A6.1 is accepted at `e547b62` after independent reviewer-agent re-review; exact nominal fixture output parity and separate schema-version documentation are recorded in [A6.1 evidence](evidence/a6.1-ed-compatibility-20261027/README.md). A6.2 is accepted at `24f55b1` after independent reviewer-agent review; the synthetic ED→ward→community fixture and bounded limits are recorded in [A6.2 evidence](evidence/a6.2-ed-ward-community-20261027/README.md). A6.3 is accepted at `deba8a2` after reviewer-agent review and correction of the shared-scheduler wording; see [A6.3 evidence](evidence/a6.3-composition-scheduler-parity-20261027/README.md). A6.4 passed integrated A6 review, final workspace gates and reviewer-agent re-review at source `f2e09a3`; see [A6 phase review](evidence/a6.4-phase-review-20261027/README.md). A7.1–A7.4 are accepted at `ef613be` after exact-source independent review,766Python tests and all17hosted successes plus expected main-only attestation skip; see [A7 acceptance](evidence/a7-two-consumer-20261103/README.md). Core A0–A7 is complete for bounded generic synthetic engineering; PR197 remains unmerged and broader acceptance gates stay separate.
+  [plan](tracks/careops_core_domain_abstractions_20261020/plan.md)). Acceptance history: A0–A4.4 are accepted locally; the integrated A4 transfer and ward/community contracts passed workspace checks and reviewer-agent review per [A4 phase review](evidence/a4.4-phase-review-20261027/README.md). A5.1–A5.4 are accepted locally; the A5 phase passed independent reviewer-agent review and full workspace/Conductor checks per [A5.4 phase review](evidence/a5.4-phase-review-20261027/README.md). A6.1 is accepted at `e547b62` after independent reviewer-agent re-review; exact nominal fixture output parity and separate schema-version documentation are recorded in [A6.1 evidence](evidence/a6.1-ed-compatibility-20261027/README.md). A6.2 is accepted at `24f55b1` after independent reviewer-agent review; the synthetic ED→ward→community fixture and bounded limits are recorded in [A6.2 evidence](evidence/a6.2-ed-ward-community-20261027/README.md). A6.3 is accepted at `deba8a2` after reviewer-agent review and correction of the shared-scheduler wording; see [A6.3 evidence](evidence/a6.3-composition-scheduler-parity-20261027/README.md). A6.4 passed integrated A6 review, final workspace gates and reviewer-agent re-review at source `f2e09a3`; see [A6 phase review](evidence/a6.4-phase-review-20261027/README.md). A7.1–A7.4 are accepted at `ef613be` after exact-source independent review,766 Python tests and all17hosted successes plus expected main-only attestation skip; see [A7 acceptance](evidence/a7-two-consumer-20261103/README.md). Core A0–A7 is complete for bounded generic synthetic engineering; PR197 remains unmerged and broader acceptance gates stay separate.
 
 - [~] **Generic birthing suite simulation delivery** — `birthing_suite_delivery_20261020`
   ([index](tracks/birthing_suite_delivery_20261020/index.md),
@@ -67,7 +67,6 @@ required features and acceptance recipes. E2 is the functional headless MVP; E4
 is native v1. Visual/spatial import, live UI and advanced backends remain post-v1.
 
 ---
-- [~] **Track: CareOps whole-layer Polars migration** — R10 accepted for the bounded remote source; Track 70 receipt verified; R11.1 preparation next. Runtime replacement remains pending. [Track](tracks/polars_data_processing_20261022/index.md).
 
 ---
 - [ ] **Track: rand deterministic RNG adoption** — Proposed; implementation not started. [Track](tracks/rand_rng_adoption_20261022/index.md).
@@ -128,3 +127,15 @@ Polars inventory leads; sha2/tempfile/proptest are separate tracks with gates on
 ## Python runtime migration — 23 October 2026
 
 - [x] **Track: Python 3.15 migration and qualification** — [Accepted parent runtime](tracks/python315_runtime_qualification_20261023/index.md); main `43ea690`, protected PRs #178/#179, hosted and repo-local Python 3.15.1 handover verified.
+
+## Current Generic ED capability repair — 3 November 2026
+
+Generic ED remains in progress. E9.1–E9.4 are accepted at 18b6e8f after independent review, both diagnostic fixes,
+766 Python tests and15 hosted successes plus expected skip. The repair adds truthful
+executable mode reporting and fail-closed backend selection, with current CPU
+API/batch/recovery/export checks. PR198 is draft/unmerged, stacked on PR197.
+The current07410266 runtime contains native wgpu/TCP mechanisms, but ED does not
+consume them; device provenance/readback accounting, protocol identity and failed
+collective/frontier handling remain exact upstream integration blockers.
+See [current E9 evidence](evidence/ed-capability-qualification-20261103/README.md).
+Historical E0–E8 task marks are preserved and cannot certify current G3 modes.

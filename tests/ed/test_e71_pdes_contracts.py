@@ -153,6 +153,7 @@ class TestE71PdesContracts(unittest.TestCase):
         cmd = [
             "cargo",
             "test",
+            "--locked",
             "-p",
             "careops-ed",
             "--test",

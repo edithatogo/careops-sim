@@ -28,3 +28,19 @@ sha2 = "=0.11.1"
 
 [patch.crates-io]
 hashbrown = { git = "https://github.com/pola-rs/hashbrown", rev = "d76a6f81abd8f388676aff15068236a8d21c7e1a" }
+
+[features]
+default = []
+native-ffi-acceptance = ["dep:careops-ed", "dep:careops-birthing-cli", "dep:kairo-data-arrow", "dep:kairo-data-ffi", "dep:serde_json", "dep:tempfile"]
+[dependencies]
+careops-ed = { path = "crates/careops-ed", default-features = false, features = ["native-data"], optional = true }
+careops-birthing-cli = { path = "crates/careops-birthing-cli", optional = true }
+kairo-data-arrow = { package = "kairo-ecs-arrow", git = "https://github.com/edithatogo/kairos.git", rev = "473ff2c0e640a7e457f500593f6ea1f06602ab35", version = "=0.1.0", default-features = false, features = ["polars-native"], optional = true }
+kairo-data-ffi = { package = "kairo-ecs-arrow-ffi", git = "https://github.com/edithatogo/kairos.git", rev = "473ff2c0e640a7e457f500593f6ea1f06602ab35", version = "=0.1.0", default-features = false, features = ["native-data"], optional = true }
+serde_json = { workspace = true, optional = true }
+tempfile = { version = "=3.27.0", optional = true }
+
+[[test]]
+name = "r143_native_domain_ffi"
+path = "tests/r143_native_domain_ffi.rs"
+required-features = ["native-ffi-acceptance"]

@@ -59,6 +59,7 @@ class TestE82CoordinatorGvtContracts(unittest.TestCase):
         cmd = [
             "cargo",
             "test",
+            "--locked",
             "-p",
             "careops-ed",
             "--test",

@@ -21,15 +21,22 @@ class D34CiTests(unittest.TestCase):
     def test_context_benchmark_runs_after_quality_inventory_without_native_gate(self):
         context = workflow_job(WORKFLOW.read_text(), "context")
         quality = context.index("- name: Check reviewed support and flaky-test inventory")
-        benchmark = context.index("- name: Build and run representative ED benchmark")
+        benchmark = context.index("- name: Run representative ED benchmark")
         retention = context.index("- name: Retain D3.4 benchmark report")
         coverage = context.index("- name: Measure bounded synthetic ED library coverage")
         self.assertLess(quality, benchmark)
         self.assertLess(benchmark, retention)
         self.assertLess(retention, coverage)
 
-        step = context[benchmark:retention]
+        build = context.index("- name: Build native CLI for Python consumers")
+        harness = context.index("- name: Run harness and incompatible-pin regressions")
+        self.assertLess(build, harness)
+        self.assertLess(harness, quality)
+        self.assertIn("CAREOPS_ED_PROFILE: 'release'", context)
+        step = context[build:harness]
         self.assertNotIn("if:", step)
+        self.assertNotIn("if:", context[benchmark:retention])
+        self.assertNotIn("continue-on-error", context[benchmark:retention])
         self.assertIn("rustup toolchain install 1.99.1 --profile minimal", step)
         self.assertIn(
             "cargo build --locked --release --package careops-ed-cli",
@@ -48,12 +55,12 @@ class D34CiTests(unittest.TestCase):
             with self.subTest(binding=binding):
                 self.assertIn(binding, step)
         self.assertIn(
-            '"$CAREOPS_PYTHON" tools/ed_benchmarks.py --binary target/release/careops-ed '
+            '"$CAREOPS_PYTHON" tools/ed_native_benchmarks.py --binary target/release/careops-ed '
             "--output .artifacts/ci/d34/report.json",
-            step,
+            context[benchmark:retention],
         )
         self.assertNotIn("continue-on-error", step)
-        self.assertEqual("75", re.search(r"^    timeout-minutes: (\d+)$", context, re.M).group(1))
+        self.assertEqual("120", re.search(r"^    timeout-minutes: (\d+)$", context, re.M).group(1))
         self.assertIn("CARGO_PROFILE_DEV_DEBUG: '0'", context)
         self.assertIn("CARGO_PROFILE_TEST_DEBUG: '0'", context)
         self.assertIn("--timeout 180", context)

@@ -146,6 +146,11 @@ def untrusted_contract_errors(workflow):
 
 
 class DependencySourcePolicyTests(unittest.TestCase):
+    def test_policy_metadata_and_deny_both_include_activated_root_feature_graph(self):
+        source = (Path(__file__).parents[1] / "tools/ci_policy.py").read_text()
+        self.assertIn('[cargo, "metadata", "--locked", "--all-features", "--format-version", "1"]', source)
+        self.assertIn("[cargo, 'deny', '--locked', '--workspace', '--all-features'", source)
+
     SOURCE = "git+https://github.com/pola-rs/polars.git?rev=96439685eb2f95108f51087d2b76091917f2593c#96439685eb2f95108f51087d2b76091917f2593c"
 
     def metadata(self, kind="dev", source=None):
@@ -165,6 +170,23 @@ class DependencySourcePolicyTests(unittest.TestCase):
 
 
 class CiWorkflowTests(unittest.TestCase):
+    def test_native_reader_install_precedes_context_consumers(self):
+        context = workflow_job(WORKFLOW.read_text(), "context")
+        schema = context.index("--require-hashes --only-binary=:all: -r requirements-schema-validation.lock")
+        readers = context.index("--only-binary=:all: --no-deps -r requirements-native-readers.txt")
+        check = context.index('"$CAREOPS_PYTHON" -m pip check', readers)
+        harness = context.index("- name: Run harness and incompatible-pin regressions")
+        benchmark = context.index("tools/ed_native_benchmarks.py --binary")
+        self.assertLess(schema, readers)
+        self.assertLess(readers, check)
+        self.assertLess(check, harness)
+        build = context.index("- name: Build native CLI for Python consumers")
+        self.assertLess(check, build)
+        self.assertLess(build, harness)
+        self.assertIn("CAREOPS_ED_PROFILE: 'release'", context)
+        self.assertLess(harness, benchmark)
+        self.assertNotIn("continue-on-error", context[schema:harness])
+
     def test_scope_requires_explicit_boolean_outputs_and_consistency(self):
         for field, value in (("changed", ""), ("native", "typo"), ("context", "null")):
             selectors = {"native": "false", "context": "false", "policy": "false"}
@@ -208,8 +230,11 @@ class CiWorkflowTests(unittest.TestCase):
         for name, block in blocks:
             timeout = re.search(r"^    timeout-minutes: ([0-9]+)$", block, re.MULTILINE)
             self.assertIsNotNone(timeout)
-            self.assertLessEqual(int(timeout.group(1)), 75 if name == "context" else 20)
+            self.assertLessEqual(int(timeout.group(1)), 120 if name == "context" else 20)
             self.assertGreater(int(timeout.group(1)), 0)
+        context = workflow_job(workflow, "context")
+        self.assertIn("--jobs 2 --timeout 180", context)
+        self.assertIn("--all-features --all-targets --json", context)
         self.assertNotIn("actions/cache@", workflow)
         self.assertNotIn("pull_request_target", workflow)
         self.assertIn("cancel-in-progress: ${{ github.event_name == 'pull_request' }}", workflow)
@@ -223,6 +248,30 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertIn("cargo run --locked --package careops-birthing-cli", step)
         self.assertIn('"$CAREOPS_PYTHON" crates/careops-birthing-cli/read_batch.py', step)
         self.assertIn("--only-binary=:all: --no-deps", step)
+
+    def test_native_lane_executes_exact_ed_fixture_and_independent_typed_reader(self):
+        native = workflow_job(WORKFLOW.read_text(), "test")
+        step = native.split("- name: Independently verify ED native file protocols", 1)[1].split("      - name:", 1)[0]
+        self.assertNotIn("if:", step)
+        self.assertNotIn("continue-on-error", step)
+        self.assertIn("set -euo pipefail", step)
+        self.assertIn("POLARS_MAX_THREADS: '1'", step)
+        self.assertIn("requirements-native-readers.txt", native)
+        self.assertIn("test ! -e .artifacts/ci/native-files", step)
+        self.assertIn("--test r131_native_files actual_native_domain_fixture_is_published_only_to_explicit_fresh_destination -- --exact", step)
+        self.assertIn('"$CAREOPS_PYTHON" crates/careops-ed/test_native_files.py .artifacts/ci/native-files', step)
+        self.assertIn("pl.get_index_type() == pl.UInt32", step)
+        self.assertIn("pl.thread_pool_size() == 1", step)
+        self.assertIn("native-files-reader.log", step)
+        artifact = native.split("- name: Retain bounded failed native log", 1)[1]
+        self.assertIn(".artifacts/ci/nextest/native-files-fixture.log", artifact)
+        self.assertIn(".artifacts/ci/nextest/native-files-reader.log", artifact)
+        self.assertIn("test ! -e .artifacts/ci/native-output", step)
+        self.assertIn('CAREOPS_NATIVE_OUTPUT_FIXTURE="$PWD/.artifacts/ci/native-output"', step)
+        self.assertIn("--test r132_native_output qualified_native_output_fixture_requires_explicit_fresh_destination -- --exact", step)
+        self.assertIn('"$CAREOPS_PYTHON" crates/careops-ed/test_native_output.py .artifacts/ci/native-output', step)
+        self.assertIn(".artifacts/ci/nextest/native-output-fixture.log", artifact)
+        self.assertIn(".artifacts/ci/nextest/native-output-reader.log", artifact)
 
     def test_unit_lane_does_not_repeat_documentation_tests(self):
         workflow = WORKFLOW.read_text()
@@ -389,8 +438,11 @@ class CiWorkflowTests(unittest.TestCase):
         self.assertIn('license = "Apache-2.0"', fuzz_manifest)
         self.assertIn("[workspace]", fuzz_manifest)
         self.assertIn('libfuzzer-sys = "=0.4.13"', fuzz_manifest)
-        self.assertIn('careops-ed = { path = "../crates/careops-ed", version = "=0.1.0" }', fuzz_manifest)
+        self.assertIn('careops-ed = { default-features = false, path = "../crates/careops-ed", version = "=0.1.0" }', fuzz_manifest)
         self.assertIn('serde_json = "=1.0.151"', fuzz_manifest)
+        import tomllib
+        production = tomllib.loads((WORKFLOW.parents[2] / 'crates/careops-ed/Cargo.toml').read_text())
+        self.assertEqual(production['features']['default'], ['native-data'])
         fuzz_lock = (WORKFLOW.parents[2] / "fuzz" / "Cargo.lock").read_text()
         self.assertIn('name = "libfuzzer-sys"\nversion = "0.4.13"\nsource = "registry+https://github.com/rust-lang/crates.io-index"\nchecksum = ', fuzz_lock)
         workflow = WORKFLOW.read_text()

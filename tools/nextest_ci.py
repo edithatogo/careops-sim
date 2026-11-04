@@ -17,7 +17,8 @@ from install_nextest import InstallError, install_nextest
 
 
 VERSION = "1.99.1"
-SELECTION = ["--workspace", "--all-features", "--lib", "--bins", "--tests", "--locked"]
+SELECTION = ["--workspace", "--all-features", "--lib", "--bins", "--tests", "--locked",
+             "--features", "careops-sim/native-ffi-acceptance"]
 RED_TEST = "injected_failure_is_detected"
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 CARGO_RUNNING_LINE = re.compile(r"^\s*Running .+ \((.+)\)\s*$")
@@ -245,6 +246,21 @@ def _write_red_control(root, out_dir):
     return fixture
 
 
+def native_test_environment(initial_env, paths, nextest_path, out_dir):
+    """Select the bounded native acceptance recipe without changing the caller."""
+    command_env = initial_env.copy()
+    toolchain_bin = str(Path(paths["rustc"]).parent)
+    command_env.update({
+        "RUSTUP_TOOLCHAIN": VERSION,
+        "RUSTC": paths["rustc"],
+        "RUSTDOC": paths["rustdoc"],
+        "CARGO_TARGET_DIR": str(out_dir / "target"),
+        "POLARS_MAX_THREADS": "1",
+        "PATH": f"{Path(nextest_path).parent}:{toolchain_bin}:{initial_env.get('PATH', '')}",
+    })
+    return command_env
+
+
 def qualify(toolchain=VERSION):
     if toolchain != VERSION:
         raise QualificationError(f"only Rust {VERSION} is supported for nextest qualification")
@@ -256,7 +272,6 @@ def qualify(toolchain=VERSION):
     initial_env = os.environ.copy()
     initial_env["PYTHONDONTWRITEBYTECODE"] = "1"
     paths = _toolchain_paths(toolchain, initial_env)
-    toolchain_bin = str(Path(paths["rustc"]).parent)
     host = _record_toolchain(paths, initial_env, out_dir)
 
     install = install_nextest(install_dir)
@@ -266,14 +281,9 @@ def qualify(toolchain=VERSION):
         f"nextest_archive_sha256={install['archive_sha256']}\nnextest_binary_sha256={install['sha256']}\n"
     )
 
-    command_env = initial_env.copy()
-    command_env.update({
-        "RUSTUP_TOOLCHAIN": toolchain,
-        "RUSTC": paths["rustc"],
-        "RUSTDOC": paths["rustdoc"],
-        "CARGO_TARGET_DIR": str(out_dir / "target"),
-        "PATH": f"{Path(install['path']).parent}:{toolchain_bin}:{os.environ.get('PATH', '')}",
-    })
+    command_env = native_test_environment(initial_env, paths, install["path"], out_dir)
+    with (out_dir / "environment.log").open("a") as stream:
+        stream.write(f"polars_max_threads={command_env['POLARS_MAX_THREADS']}\n")
     cargo = paths["cargo"]
     all_list = _run([cargo, "test", *SELECTION, "--", "--list"], root, command_env,
                     out_dir / "cargo-all-list.log", merge_stderr=True)

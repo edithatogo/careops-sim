@@ -39,8 +39,10 @@ reuse against prior/current logical origin claims until actual handover.
 Actual Parquet/Zstd and IPC stream parts preserve generic Schema v2 typed IDs,
 u128 tick limbs and original sequence, with domain capture in payload_ref.
 The required domain manifest declares tick=second, normalized effective input,
-component revisions, exact normalized effective-input UTF-8 bytes and hashes. The generic file time_scale remains `ticks`;
-files alone do not establish a seconds mapping. Both formats are independently
+component revisions, exact normalized effective-input UTF-8 bytes and hashes.
+The actual native `time_scale` column declares `second`, matching the domain
+contract and embedded `careops.time_unit=second` metadata. This is the declared
+synthetic model unit, not empirical site calibration. Both formats are independently
 read with PyArrow26.0.0 and compared by capture sequence.
 
 This is a generic synthetic engineering fixture. It does not implement full
@@ -50,3 +52,34 @@ transport, fetal identity, clinical validation, site acceptance or full-spec app
 Operative `theatre_case` records preserve the complete actual callback list, all timing fields, transfer/incision/birth metrics (including non-breaches and zero targets), and their assessment/policy provenance. The independent reader checks the foreign keys, elapsed values, policy identity/rules and breach decisions against those actual records.
 
 Recovery requires the same model/build contract. A build-time SHA-256 binds sorted owned CareOps core/birthing/CLI Rust sources, their manifests, root manifest/lock, build receipt code, actual Rust compiler readback and target/profile/flags. The tag is part of canonical effective-input bytes, checkpoint metadata and each completed replication. A mismatched tag rejects before reusing files or starting pending work. This is an implementation/build contract under the qualified upstream pins, not a binary signature or permission to promote a runtime pin.
+
+Domain manifest v2 explicitly declares observation uncertainty contract v1 for
+actual delay-seconds, origin-occupied-seconds and target-breach observations.
+`method=not_estimated` means there is no declared sampling estimand for these case
+observations. The observation unit is `synthetic_case`; the experiment unit is
+`independent_replication`. Cases are not asserted IID, stochastic jitter is not
+called deterministic, and no zero uncertainty, population/batch estimate or CI is
+claimed. Independent replications can support a later explicitly defined estimator.
+Rust readback/recovery and the independent reader require the exact declaration;
+old v1 manifests are historical artifacts and do not silently gain this contract.
+
+## Native readback boundary
+
+Each real Parquet and IPC part carries the exact eleven `careops.` metadata
+fields: `schema_version`, `run_id`, `effective_input_sha256`,
+`model_contract_sha256`, `runtime_revision`, `data_revision`, `time_unit`,
+`replication_index`, `seed`, `first_sequence` and `rows`. Readback checks these
+against the domain contract and original part sequence before domain decoding;
+missing, altered or extra metadata is rejected. Both the actual `time_scale`
+column and validated domain contract declare `second`; the reader checks that
+agreement rather than inferring a unit conversion.
+
+The checked-capture reader decodes each bounded canonical payload into `Row`
+once and retains its original sequence. `read_theatre_tables` reuses those
+validated rows to derive native domain views; filtering does not renumber capture
+sequence. This is not a claim that all five derived views are separately persisted,
+or that payload parsing is eliminated. The existing payload bound and canonical
+identity checks remain in force.
+
+Project-owned code uses [Apache-2.0](../../LICENSE) with
+[NOTICE](../../NOTICE); upstream and separately governed content rights remain.

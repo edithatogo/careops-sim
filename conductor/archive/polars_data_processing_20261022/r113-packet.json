@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "packet_id": "R11.3.durable-capture",
+  "task_id": "R11.3",
+  "target_repo": ".",
+  "base_commit": "079c061d2bcc5a5fda373a3f9236d09235a2bca8",
+  "objective": "Close real crash windows with an ED-owned fsynced control journal, preserved pending attempts, model/runtime binding and complete checkpoint envelope validation; retain generic simulation/seed runner and acknowledged parts.",
+  "context_paths": [
+    "conductor/tracks/polars_data_processing_20261022/spec.md",
+    "conductor/tracks/polars_data_processing_20261022/agent-contract.md",
+    "crates/careops-ed/R112_CAPTURE.md"
+  ],
+  "input_paths": [
+    "conductor/tracks/polars_data_processing_20261022/spec.md"
+  ],
+  "input_hashes": {
+    "conductor/tracks/polars_data_processing_20261022/spec.md": "ad164e7622813caae80b1e77e4df7a3886150ab60d53e57dcea6e7797ecb37d0"
+  },
+  "context_budget_bytes": 24000,
+  "write_paths": [
+    "crates/careops-ed",
+    "crates/careops-ed-cli/src/main.rs",
+    "Cargo.lock",
+    ".careops-security/inventory.json",
+    "conductor/tracks/polars_data_processing_20261022",
+    "conductor/evidence/polars-integration-20261103",
+    "conductor/execution/tasks.json",
+    "conductor/current-state.json"
+  ],
+  "protected_paths": [
+    "libs/kairos",
+    "crates/careops-core",
+    "crates/careops-birthing",
+    "crates/careops-birthing-cli",
+    "model-inputs"
+  ],
+  "leaf_dependencies": [
+    "R11.1"
+  ],
+  "interface_contract": "Capture control v2; compiled model/runtime source and actual toolchain/features bind recovery. Initial and per-completed-replication checkpoints fsync+atomic rename+directory sync before acknowledgment. Known pending attempt parts may be explicitly archived on resume, never silently deleted/adopted; completed parts validated/preserved. Valid completed capture without final batch document can finalize without rerun. This is process-crash local-filesystem/completed-replication recovery, not within-run or hardware power-loss certification.",
+  "steps": [
+    "Meaningful3test red: missing model binding, unchecked envelope, complete-manifest crash rejection",
+    "Implement ED durable checkpoint commit around existing generic runner; preserve scientific/seed ordering and default CPU guards",
+    "Add real child-process kill at part/checkpoint/manifest windows, 1/2/4worker recovery and idempotence; error/sync/checkpoint drift negatives",
+    "Review exact committed source and run combined native/independent reader/full policy/hosted gates before R11 phase acceptance"
+  ],
+  "verification": [
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "careops-ed",
+        "--test",
+        "r113_recovery",
+        "--test",
+        "r111_capture_boundaries",
+        "--test",
+        "r112_production_capture"
+      ],
+      "cwd": ".",
+      "expected_exit": 0,
+      "oracle": "Actual crash-window recovery preserves acknowledged hashes/counts/seeds and fails before mutation on invalid model/envelopes; old fault/backpressure controls remain active."
+    }
+  ],
+  "acceptance": [
+    "No exporter simulation reruns",
+    "No skipped failed peer/model/control tests",
+    "Real process-kill evidence separate from injected EIO and power-loss claims",
+    "Original owners/pins/core/E9/B7 semantics remain protected"
+  ],
+  "result_path": "conductor/evidence/polars-integration-20261103/R11.md",
+  "stop_conditions": [
+    "Source/pin drift",
+    "Any scientific or generic engine change required",
+    "Unsupported physical/platform proof",
+    "Ownership conflict"
+  ],
+  "size_exception": "One serial durability contract spans coordinator/journal/store/native fault tests and mandatory evidence/build binding; no generic core or upstream writes.",
+  "status": "prepared"
+}

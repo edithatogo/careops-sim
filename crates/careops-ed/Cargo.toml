@@ -12,3 +12,16 @@ kairo-ecs-core.workspace = true
 kairo-ecs-types.workspace = true
 serde.workspace = true
 serde_json.workspace = true
+kairo-ecs-arrow = { git = "https://github.com/edithatogo/kairos.git", rev = "473ff2c0e640a7e457f500593f6ea1f06602ab35", version = "=0.1.0", features = ["polars-native"], optional = true }
+polars = { git = "https://github.com/pola-rs/polars.git", rev = "96439685eb2f95108f51087d2b76091917f2593c", version = "=0.55.1", default-features = false, features = ["parquet", "csv"], optional = true }
+tempfile = { version = "=3.27.0", optional = true }
+# Existing pinned Polars wire types for bounded native-file predecode inspection.
+polars-arrow-format = { version = "=0.2.1", default-features = false, features = ["ipc"], optional = true }
+polars-parquet-format = { version = "=0.1.0", default-features = false, optional = true }
+
+[features]
+default = ["native-data"]
+native-data = ["dep:kairo-ecs-arrow", "dep:polars", "dep:tempfile", "dep:polars-arrow-format", "dep:polars-parquet-format"]
+
+[build-dependencies]
+sha2.workspace = true

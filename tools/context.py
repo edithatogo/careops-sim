@@ -61,7 +61,8 @@ def validate_dependency_handoffs(root):
                 # Local track identifiers or bounded packet files; no path escape.
                 valid = False
                 if isinstance(follow, str) and follow.strip():
-                    for candidate in (root/'conductor/tracks'/follow/'spec.md', root/follow):
+                    for candidate in (root/'conductor/tracks'/follow/'spec.md',
+                                      root/'conductor/archive'/follow/'spec.md', root/follow):
                         if candidate.resolve().is_relative_to(root.resolve()) and candidate.is_file():
                             valid = True
                 if not valid:
@@ -102,12 +103,23 @@ def validate(root, check_git=True):
     except (OSError,ValueError,KeyError) as error:
         errors.append(f'Current state invalid: {error}');state={}
     tracks={}
-    for folder in sorted((root/'conductor/tracks').glob('*')):
+    archive_root=root/'conductor/archive'
+    folders=list((root/'conductor/tracks').glob('*'))
+    if archive_root.exists() and not archive_root.is_dir():
+        errors.append('Archive root must be a directory')
+    else:
+        folders.extend(archive_root.glob('*'))
+    for folder in sorted(folders):
         if not folder.is_dir():continue
         for name in REQUIRED:
             if not (folder/name).is_file():errors.append(f'Missing {folder.name}/{name}')
         try:
             metadata=json.loads((folder/'metadata.json').read_text())
+            if not isinstance(metadata,dict):raise ValueError('metadata must be an object')
+            if folder.name in tracks:raise ValueError(f'Duplicate track ID: {folder.name}')
+            archived=folder.parent==archive_root
+            if archived and metadata.get('status')!='complete':
+                raise ValueError('Archived track must be complete')
             if metadata['track_id']!=folder.name:errors.append(f'ID mismatch: {folder.name}')
             if metadata['status'] not in ('proposed','in_progress','complete','blocked'):
                 errors.append(f'Invalid status: {folder.name}')
@@ -115,7 +127,20 @@ def validate(root, check_git=True):
                 evidence=metadata.get('completion_evidence',[])
                 if not evidence or any(not (root/p).is_file() for p in evidence):
                     errors.append(f'Completion evidence missing: {folder.name}')
-            phases=set(re.findall(r'^## ([A-Z]\d+) —', (folder/'plan.md').read_text(),re.M))
+            plan_text=(folder/'plan.md').read_text()
+            if archived:
+                statuses=[];in_phase=False
+                for line in plan_text.splitlines():
+                    if re.match(r'## [A-Z]\d+ —',line):in_phase=True
+                    if not in_phase or not re.match(r'[-+*]\s+\[[^\]\r\n]*\](?:\s|$)',line):
+                        continue
+                    task=re.match(r'- \[([^\]\r\n]*)\] [A-Z]\d+\.\d+ (.*)',line)
+                    if task is None or task[1]!='x':
+                        raise ValueError('Archived track has incomplete or malformed tasks')
+                    statuses.append(task[1])
+                if not statuses:
+                    raise ValueError('Archived track has incomplete or missing tasks')
+            phases=set(re.findall(r'^## ([A-Z]\d+) —',plan_text,re.M))
             tracks[folder.name]=(metadata,phases)
         except (OSError,ValueError,KeyError) as error:
             errors.append(f'Invalid track {folder.name}: {error}')

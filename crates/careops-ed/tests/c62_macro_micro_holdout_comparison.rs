@@ -9,7 +9,7 @@
 //!    - Diverse patient cases with ATS 1-5 urgencies, diagnostic holds, urgent preemption, and boarding.
 //!    - Synthetic physical graph connecting triage, bays, diagnostics, discharge.
 //!    - Free-running Macro simulation (zero transit) and Micro simulation (graph transit added).
-//!    - Generates `RunDocument` for both, compares via `careops_ed::api_runner::compare_run_documents`.
+//!    - Projects actual online summaries into typed synthetic fixture views for comparison.
 //!    - Verifies throughput, avg wait ticks, avg LOS/elapsed ticks, peak bay occupancy.
 //!    - Verifies transit emission (0 for Macro, route duration for Micro).
 //!    - Verifies interruption counts and conserved work.
@@ -34,7 +34,8 @@
 use std::time::Instant;
 
 use careops_ed::arrivals::{generate_arrivals, ArrivalBin, ArrivalConfig, ArrivalModeCounts};
-use careops_ed::disposition::api_runner::compare_run_documents;
+#[cfg(feature = "native-data")]
+use careops_ed::disposition::composite_fixture::native_fixture::fixture_patient_table;
 use careops_ed::disposition::composite_fixture::{
     st003_verify_retained_occupancy, ComposedPatient, CompositeEdFixture, PatientLifecycle,
 };
@@ -42,7 +43,31 @@ use careops_ed::disposition::operations::{
     calculate_execution_duration, BayPhase, ExecutionFidelity, MovementEdge, OperationalError,
     SyntheticGraph,
 };
-use careops_ed::Eligibility;
+use careops_ed::{Eligibility, RunSummary};
+#[cfg(feature = "native-data")]
+use polars::prelude::*;
+
+// Independent endpoint-interval reference. This is not observed online bay use.
+// End events sort before starts at equal ticks, preserving the original definition.
+fn interval_peak(summary: &RunSummary) -> usize {
+    let mut events = Vec::new();
+    for patient in &summary.patients {
+        if let Some(start) = patient.start_tick {
+            events.push((start, 1i32));
+            events.push((
+                patient.completion_tick.unwrap_or(summary.horizon_ticks),
+                -1i32,
+            ));
+        }
+    }
+    events.sort_by(|a, b| a.0.cmp(&b.0).then(a.1.cmp(&b.1)));
+    let (mut current, mut peak) = (0i32, 0i32);
+    for (_, change) in events {
+        current += change;
+        peak = peak.max(current);
+    }
+    peak.max(0) as usize
+}
 
 /// Computes 1D Wasserstein-1 (Earth Mover's) distance between two empirical distributions.
 fn compute_w1_distance(sample_a: &[f64], sample_b: &[f64]) -> f64 {
@@ -496,94 +521,170 @@ fn test_macro_micro_holdout_comparison_through_api_runner() {
         );
     }
 
-    // Generate RunDocument for Macro and Micro
-    let macro_doc = macro_fixture.to_run_document("ed-holdout-macro", 42, 150);
-    let micro_doc = micro_fixture.to_run_document("ed-holdout-micro", 42, 150);
-
-    // Compare them through public API runner
-    let comparison = compare_run_documents(&macro_doc, &micro_doc)
-        .expect("comparison report must succeed between valid run documents");
-
-    assert_eq!(comparison.base_scenario_id, "ed-holdout-macro");
-    assert_eq!(comparison.candidate_scenario_id, "ed-holdout-micro");
-    assert_eq!(comparison.time_unit, "tick");
-
-    // Verify compared metrics: throughput, avg wait ticks, avg LOS/elapsed ticks, peak bay occupancy
-    let throughput_metric = comparison
-        .metrics
-        .iter()
-        .find(|m| m.metric_name == "completed")
-        .expect("throughput metric must be present");
-    assert_eq!(throughput_metric.base_value, 5.0);
-    assert_eq!(throughput_metric.candidate_value, 5.0);
-    assert_eq!(throughput_metric.delta, 0.0);
-
-    let wait_metric = comparison
-        .metrics
-        .iter()
-        .find(|m| m.metric_name == "mean_wait")
-        .expect("mean_wait metric must be present");
-    assert!(
-        wait_metric.candidate_value >= wait_metric.base_value,
-        "Micro transit contention cannot reduce wait times: candidate ({}) >= base ({})",
-        wait_metric.candidate_value,
-        wait_metric.base_value
-    );
-
-    let los_metric = comparison
-        .metrics
-        .iter()
-        .find(|m| m.metric_name == "mean_elapsed")
-        .expect("mean_elapsed (LOS) metric must be present");
-    assert!(
-        los_metric.candidate_value > los_metric.base_value,
-        "Micro transit strictly increases length of stay: micro ({}) > macro ({})",
-        los_metric.candidate_value,
-        los_metric.base_value
-    );
-    assert!(los_metric.delta > 0.0);
-    assert!(los_metric.percent_change.unwrap() > 0.0);
-
-    let peak_metric = comparison
-        .metrics
-        .iter()
-        .find(|m| m.metric_name == "peak_occupancy")
-        .expect("peak_occupancy metric must be present");
-    assert_eq!(peak_metric.base_value, 3.0);
-    assert_eq!(peak_metric.candidate_value, 3.0);
-    assert_eq!(peak_metric.delta, 0.0);
-
-    // Assert empirical superiority is not presumed:
-    // Neither fidelity is crowned superior; both outputs and percent changes are reported neutrally.
-    for m in &comparison.metrics {
-        // Confirm all values and deltas are finite and neutral
-        assert!(m.base_value.is_finite());
-        assert!(m.candidate_value.is_finite());
-        assert!(m.delta.is_finite());
-        if let Some(pct) = m.percent_change {
-            assert!(pct.is_finite());
-        }
-        // Denominator descriptions are objective
-        assert!(!m.denominator_description.is_empty());
-    }
-
-    // Diagnostics report objective mathematical changes neutrally
-    for diag in &comparison.diagnostics {
-        assert!(
-            !diag.contains("superior") && !diag.contains("inferior") && !diag.contains("better"),
-            "Empirical superiority must not be presumed in diagnostics: {diag}"
+    let macro_doc = macro_fixture.to_run_summary("ed-holdout-macro", 42, 150);
+    let micro_doc = micro_fixture.to_run_summary("ed-holdout-micro", 42, 150);
+    assert_eq!(macro_doc.scenario_id, "ed-holdout-macro");
+    assert_eq!(micro_doc.scenario_id, "ed-holdout-micro");
+    assert_eq!(macro_doc.time_unit, "tick");
+    assert_eq!(macro_doc.time_unit, micro_doc.time_unit);
+    #[cfg(feature = "native-data")]
+    let (macro_wait, micro_wait, macro_elapsed, micro_elapsed) = {
+        let a = fixture_patient_table(&macro_doc).unwrap();
+        let b = fixture_patient_table(&micro_doc).unwrap();
+        assert_eq!(a.height(), macro_doc.arrivals);
+        assert_eq!(b.height(), micro_doc.arrivals);
+        assert_eq!(
+            a.column("time_unit").unwrap().str().unwrap().get(0),
+            Some("tick")
         );
+        assert_eq!(
+            a.height() - a.column("wait_ticks_lo").unwrap().null_count(),
+            macro_doc.started
+        );
+        assert_eq!(
+            b.height() - b.column("wait_ticks_lo").unwrap().null_count(),
+            micro_doc.started
+        );
+        (
+            a.column("wait_ticks_lo")
+                .unwrap()
+                .u64()
+                .unwrap()
+                .mean()
+                .unwrap_or(0.0),
+            b.column("wait_ticks_lo")
+                .unwrap()
+                .u64()
+                .unwrap()
+                .mean()
+                .unwrap_or(0.0),
+            a.column("elapsed_ticks_lo")
+                .unwrap()
+                .u64()
+                .unwrap()
+                .mean()
+                .unwrap_or(0.0),
+            b.column("elapsed_ticks_lo")
+                .unwrap()
+                .u64()
+                .unwrap()
+                .mean()
+                .unwrap_or(0.0),
+        )
+    };
+    #[cfg(not(feature = "native-data"))]
+    let (macro_wait, micro_wait, macro_elapsed, micro_elapsed) = {
+        let mean = |values: Vec<u64>| {
+            if values.is_empty() {
+                0.0
+            } else {
+                values.iter().sum::<u64>() as f64 / values.len() as f64
+            }
+        };
+        (
+            mean(
+                macro_doc
+                    .patients
+                    .iter()
+                    .filter_map(|p| p.wait_ticks)
+                    .collect(),
+            ),
+            mean(
+                micro_doc
+                    .patients
+                    .iter()
+                    .filter_map(|p| p.wait_ticks)
+                    .collect(),
+            ),
+            mean(
+                macro_doc
+                    .patients
+                    .iter()
+                    .filter_map(|p| p.elapsed_ticks)
+                    .collect(),
+            ),
+            mean(
+                micro_doc
+                    .patients
+                    .iter()
+                    .filter_map(|p| p.elapsed_ticks)
+                    .collect(),
+            ),
+        )
+    };
+    assert_eq!(macro_doc.completed, 5);
+    assert_eq!(micro_doc.completed, 5);
+    assert_eq!(micro_doc.completed as f64 - macro_doc.completed as f64, 0.0);
+    assert!(
+        micro_wait >= macro_wait,
+        "Micro transit contention cannot reduce wait times"
+    );
+    assert!(
+        micro_elapsed > macro_elapsed,
+        "Micro transit strictly increases length of stay"
+    );
+    let elapsed_delta = micro_elapsed - macro_elapsed;
+    assert!(elapsed_delta > 0.0);
+    assert!((elapsed_delta / macro_elapsed) * 100.0 > 0.0);
+    let macro_peak = interval_peak(&macro_doc);
+    let micro_peak = interval_peak(&micro_doc);
+    assert_eq!(macro_peak, 3);
+    assert_eq!(micro_peak, 3);
+    assert_eq!(micro_peak as f64 - macro_peak as f64, 0.0);
+    // Numeric differences have explicit objective units/denominators. The old
+    // alpha diagnostic-string/DTO surface is retired; no replacement text is forged.
+    for (unit, denominator, base, candidate) in [
+        (
+            "patient",
+            "total presentation count",
+            macro_doc.arrivals as f64,
+            micro_doc.arrivals as f64,
+        ),
+        (
+            "patient",
+            "arrivals",
+            macro_doc.completed as f64,
+            micro_doc.completed as f64,
+        ),
+        (
+            "patient",
+            "arrivals",
+            macro_doc.unfinished as f64,
+            micro_doc.unfinished as f64,
+        ),
+        (
+            macro_doc.time_unit.as_str(),
+            "started patients with wait intervals",
+            macro_wait,
+            micro_wait,
+        ),
+        (
+            macro_doc.time_unit.as_str(),
+            "completed patients with elapsed intervals",
+            macro_elapsed,
+            micro_elapsed,
+        ),
+        (
+            "bay",
+            "peak concurrent endpoint intervals",
+            macro_peak as f64,
+            micro_peak as f64,
+        ),
+    ] {
+        assert!(!unit.is_empty() && !denominator.is_empty());
+        assert!(base.is_finite() && candidate.is_finite() && (candidate - base).is_finite());
+        if base > 0.0 {
+            assert!(((candidate - base) / base * 100.0).is_finite());
+        }
     }
 
     // Verify distance metrics between Macro and Micro LOS distributions
     let macro_los: Vec<f64> = macro_doc
-        .summary
         .patients
         .iter()
         .filter_map(|p| p.elapsed_ticks.map(|e| e as f64))
         .collect();
     let micro_los: Vec<f64> = micro_doc
-        .summary
         .patients
         .iter()
         .filter_map(|p| p.elapsed_ticks.map(|e| e as f64))
@@ -607,7 +708,7 @@ fn test_macro_micro_holdout_comparison_through_api_runner() {
     );
 
     // Verify joint queueing conservation across all completed patients
-    for p in &micro_doc.summary.patients {
+    for p in &micro_doc.patients {
         let wait = p.wait_ticks.unwrap_or(0);
         let work = p.work_ticks;
         let elapsed = p.elapsed_ticks.unwrap_or(0);
@@ -683,7 +784,7 @@ fn test_orthogonal_exogenous_vs_generative_arrivals_macro_micro() {
         for _ in 0..100 {
             fixture.advance_tick();
         }
-        fixture.to_run_document("exog-run", 42, 100)
+        fixture.to_run_summary("exog-run", 42, 100)
     };
 
     // Cell (1): Exogenous x Macro
@@ -693,27 +794,20 @@ fn test_orthogonal_exogenous_vs_generative_arrivals_macro_micro() {
 
     // Verify fixed demand under exogenous arrivals:
     // Identical presentation count, identical arrival ticks, identical patient identities
-    assert_eq!(exog_macro.summary.arrivals, 4);
-    assert_eq!(exog_micro.summary.arrivals, 4);
-    for (m, u) in exog_macro
-        .summary
-        .patients
-        .iter()
-        .zip(exog_micro.summary.patients.iter())
-    {
+    assert_eq!(exog_macro.arrivals, 4);
+    assert_eq!(exog_micro.arrivals, 4);
+    for (m, u) in exog_macro.patients.iter().zip(exog_micro.patients.iter()) {
         assert_eq!(m.patient_id, u.patient_id);
         assert_eq!(m.arrival_tick, u.arrival_tick);
     }
 
     // For uncongested patient Exog_1001 (arrived at 0, dispatched at 0), individual LOS delta is exactly 20 ticks
     let m_p1 = exog_macro
-        .summary
         .patients
         .iter()
         .find(|p| p.patient_id == "Exog_1001")
         .unwrap();
     let u_p1 = exog_micro
-        .summary
         .patients
         .iter()
         .find(|p| p.patient_id == "Exog_1001")
@@ -725,15 +819,41 @@ fn test_orthogonal_exogenous_vs_generative_arrivals_macro_micro() {
     );
 
     // Overall mean LOS delta reflects route transit plus queueing capacity multiplier
-    let exog_comp = compare_run_documents(&exog_macro, &exog_micro).unwrap();
-    let exog_los = exog_comp
-        .metrics
-        .iter()
-        .find(|m| m.metric_name == "mean_elapsed")
-        .unwrap();
+    #[cfg(feature = "native-data")]
+    let exog_delta = {
+        let a = fixture_patient_table(&exog_macro).unwrap();
+        let b = fixture_patient_table(&exog_micro).unwrap();
+        b.column("elapsed_ticks_lo")
+            .unwrap()
+            .u64()
+            .unwrap()
+            .mean()
+            .unwrap_or(0.0)
+            - a.column("elapsed_ticks_lo")
+                .unwrap()
+                .u64()
+                .unwrap()
+                .mean()
+                .unwrap_or(0.0)
+    };
+    #[cfg(not(feature = "native-data"))]
+    let exog_delta = {
+        let a: Vec<_> = exog_macro
+            .patients
+            .iter()
+            .filter_map(|p| p.elapsed_ticks)
+            .collect();
+        let b: Vec<_> = exog_micro
+            .patients
+            .iter()
+            .filter_map(|p| p.elapsed_ticks)
+            .collect();
+        b.iter().sum::<u64>() as f64 / b.len() as f64
+            - a.iter().sum::<u64>() as f64 / a.len() as f64
+    };
     assert!(
-        exog_los.delta >= 20.0,
-        "Under fixed exogenous demand, Micro LOS delta reflects synthetic route transit plus queueing"
+        exog_delta >= 20.0,
+        "Actual fidelity LOS delta retains original bound"
     );
 
     // 2. Endogenous/Generative arrival model
@@ -809,7 +929,7 @@ fn test_orthogonal_exogenous_vs_generative_arrivals_macro_micro() {
         for _ in 0..100 {
             fixture.advance_tick();
         }
-        fixture.to_run_document("gen-run", 42, 100)
+        fixture.to_run_summary("gen-run", 42, 100)
     };
 
     // Cell (3): Generative x Macro
@@ -818,22 +938,48 @@ fn test_orthogonal_exogenous_vs_generative_arrivals_macro_micro() {
     let gen_micro = run_generative(ExecutionFidelity::Micro);
 
     // Verify generative arrivals validate arrival process:
-    assert_eq!(gen_macro.summary.arrivals, 5);
-    assert_eq!(gen_micro.summary.arrivals, 5);
-    let gen_comp = compare_run_documents(&gen_macro, &gen_micro).unwrap();
-    let gen_los = gen_comp
-        .metrics
-        .iter()
-        .find(|m| m.metric_name == "mean_elapsed")
-        .unwrap();
+    assert_eq!(gen_macro.arrivals, 5);
+    assert_eq!(gen_micro.arrivals, 5);
+    #[cfg(feature = "native-data")]
+    let gen_delta = {
+        let a = fixture_patient_table(&gen_macro).unwrap();
+        let b = fixture_patient_table(&gen_micro).unwrap();
+        b.column("elapsed_ticks_lo")
+            .unwrap()
+            .u64()
+            .unwrap()
+            .mean()
+            .unwrap_or(0.0)
+            - a.column("elapsed_ticks_lo")
+                .unwrap()
+                .u64()
+                .unwrap()
+                .mean()
+                .unwrap_or(0.0)
+    };
+    #[cfg(not(feature = "native-data"))]
+    let gen_delta = {
+        let a: Vec<_> = gen_macro
+            .patients
+            .iter()
+            .filter_map(|p| p.elapsed_ticks)
+            .collect();
+        let b: Vec<_> = gen_micro
+            .patients
+            .iter()
+            .filter_map(|p| p.elapsed_ticks)
+            .collect();
+        b.iter().sum::<u64>() as f64 / b.len() as f64
+            - a.iter().sum::<u64>() as f64 / a.len() as f64
+    };
     assert!(
-        gen_los.delta >= 15.0,
-        "Generative arrivals validate arrival process with orthogonal fidelity scaling"
+        gen_delta >= 15.0,
+        "Actual fidelity LOS delta retains original bound"
     );
 
     // Cross-comparison between exogenous and generative:
     // Exogenous arrivals had fixed 4 patients; Generative arrivals had 5 sampled patients across bins
-    assert_ne!(exog_macro.summary.arrivals, gen_macro.summary.arrivals);
+    assert_ne!(exog_macro.arrivals, gen_macro.arrivals);
 }
 
 /// 3. `test_stochastic_and_structural_uncertainty_reporting`
@@ -933,25 +1079,33 @@ fn test_stochastic_and_structural_uncertainty_reporting() {
                 let _ = current_tick;
                 fixture.advance_tick();
             }
-            fixture.to_run_document(&format!("rep-{seed}"), seed, tight_horizon_ticks)
+            fixture.to_run_summary(&format!("rep-{seed}"), seed, tight_horizon_ticks)
         };
 
         let macro_doc = run_rep(ExecutionFidelity::Macro);
         let micro_doc = run_rep(ExecutionFidelity::Micro);
 
         let m_los: Vec<u64> = macro_doc
-            .summary
             .patients
             .iter()
             .filter_map(|p| p.elapsed_ticks)
             .collect();
         let u_los: Vec<u64> = micro_doc
-            .summary
             .patients
             .iter()
             .filter_map(|p| p.elapsed_ticks)
             .collect();
 
+        #[cfg(feature = "native-data")]
+        for (summary, expected) in [(&macro_doc, &m_los), (&micro_doc, &u_los)] {
+            let frame = fixture_patient_table(summary).unwrap();
+            let values = frame.column("elapsed_ticks_lo").unwrap().u64().unwrap();
+            let actual: Vec<_> = (0..frame.height())
+                .filter_map(|row| values.get(row))
+                .collect();
+            assert_eq!(&actual, expected);
+            assert_eq!(frame.height(), summary.arrivals);
+        }
         let m_mean = if !m_los.is_empty() {
             m_los.iter().sum::<u64>() as f64 / m_los.len() as f64
         } else {
@@ -968,8 +1122,8 @@ fn test_stochastic_and_structural_uncertainty_reporting() {
         structural_deltas.push(u_mean - m_mean);
 
         // Record exclusions (unfinished/censored cases at horizon cutoff)
-        macro_exclusions.push(macro_doc.summary.unfinished);
-        micro_exclusions.push(micro_doc.summary.unfinished);
+        macro_exclusions.push(macro_doc.unfinished);
+        micro_exclusions.push(micro_doc.unfinished);
     }
 
     // Measure stochastic uncertainty across replications

@@ -5,11 +5,32 @@
   "packages": [
     {
       "manifest": "Cargo.toml",
-      "features": {}
+      "features": {
+        "default": [],
+        "native-ffi-acceptance": [
+          "dep:careops-ed",
+          "dep:careops-birthing-cli",
+          "dep:kairo-data-arrow",
+          "dep:kairo-data-ffi",
+          "dep:serde_json",
+          "dep:tempfile"
+        ]
+      }
     },
     {
       "manifest": "crates/careops-ed/Cargo.toml",
-      "features": {}
+      "features": {
+        "default": [
+          "native-data"
+        ],
+        "native-data": [
+          "dep:kairo-ecs-arrow",
+          "dep:polars",
+          "dep:tempfile",
+          "dep:polars-arrow-format",
+          "dep:polars-parquet-format"
+        ]
+      }
     },
     {
       "manifest": "crates/careops-ed-cli/Cargo.toml",

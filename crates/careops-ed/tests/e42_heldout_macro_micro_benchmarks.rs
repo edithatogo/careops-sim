@@ -29,14 +29,17 @@
 use std::time::Instant;
 
 use careops_ed::arrivals::{generate_arrivals, ArrivalBin, ArrivalConfig, ArrivalModeCounts};
-use careops_ed::disposition::api_runner::{compare_run_documents, RunDocument};
+#[cfg(feature = "native-data")]
+use careops_ed::disposition::composite_fixture::native_fixture::fixture_patient_table;
 use careops_ed::disposition::composite_fixture::{
     ComposedPatient, CompositeEdFixture, PatientLifecycle,
 };
 use careops_ed::disposition::operations::{
     calculate_execution_duration, BayPhase, ExecutionFidelity, MovementEdge, SyntheticGraph,
 };
-use careops_ed::Eligibility;
+use careops_ed::{Eligibility, RunSummary};
+#[cfg(feature = "native-data")]
+use polars::prelude::*;
 
 /// Synthetic spatial transit graph connecting triage, bays, diagnostics, and discharge.
 fn build_benchmark_graph() -> SyntheticGraph {
@@ -195,7 +198,9 @@ fn create_disjoint_cohort_b() -> Vec<HeldoutPatientCase> {
 /// Detailed operational execution results for neutral comparison reporting.
 #[derive(Clone, Debug)]
 struct SimulationExecutionReport {
-    document: RunDocument,
+    summary: RunSummary,
+    #[cfg(feature = "native-data")]
+    patients: DataFrame,
     mean_wait: f64,
     max_wait: u64,
     mean_los: f64,
@@ -286,7 +291,9 @@ fn run_disjoint_cohort_simulation_with_capacity(
 
                 let p = ComposedPatient {
                     id: case.id,
-                    name: case.name.to_string(),
+                    // The summary exposes name as patient_id. Bind the declared
+                    // engine identity; repeated display labels are not keys.
+                    name: format!("{}:{}", case.name, case.id),
                     acuity: case.acuity,
                     arrival_tick: case.arrival_tick,
                     work_required_ticks: effective_work,
@@ -324,35 +331,70 @@ fn run_disjoint_cohort_simulation_with_capacity(
         fixture.advance_tick();
     }
 
-    let document = fixture.to_run_document(scenario_id, seed, horizon_ticks);
+    let summary = fixture.to_run_summary(scenario_id, seed, horizon_ticks);
 
-    let waits: Vec<u64> = document
-        .summary
-        .patients
-        .iter()
-        .filter_map(|p| p.wait_ticks)
-        .collect();
-    let mean_wait = if !waits.is_empty() {
-        waits.iter().sum::<u64>() as f64 / waits.len() as f64
-    } else {
-        0.0
+    #[cfg(feature = "native-data")]
+    let patients = fixture_patient_table(&summary).unwrap();
+    #[cfg(feature = "native-data")]
+    let (mean_wait, max_wait, mean_los, max_los) = (
+        patients
+            .column("wait_ticks_lo")
+            .unwrap()
+            .u64()
+            .unwrap()
+            .mean()
+            .unwrap_or(0.0),
+        patients
+            .column("wait_ticks_lo")
+            .unwrap()
+            .u64()
+            .unwrap()
+            .max()
+            .unwrap_or(0),
+        patients
+            .column("elapsed_ticks_lo")
+            .unwrap()
+            .u64()
+            .unwrap()
+            .mean()
+            .unwrap_or(0.0),
+        patients
+            .column("elapsed_ticks_lo")
+            .unwrap()
+            .u64()
+            .unwrap()
+            .max()
+            .unwrap_or(0),
+    );
+    #[cfg(not(feature = "native-data"))]
+    let (mean_wait, max_wait, mean_los, max_los) = {
+        let waits: Vec<u64> = summary
+            .patients
+            .iter()
+            .filter_map(|p| p.wait_ticks)
+            .collect();
+        let los: Vec<u64> = summary
+            .patients
+            .iter()
+            .filter_map(|p| p.elapsed_ticks)
+            .collect();
+        (
+            if waits.is_empty() {
+                0.0
+            } else {
+                waits.iter().sum::<u64>() as f64 / waits.len() as f64
+            },
+            waits.iter().copied().max().unwrap_or(0),
+            if los.is_empty() {
+                0.0
+            } else {
+                los.iter().sum::<u64>() as f64 / los.len() as f64
+            },
+            los.iter().copied().max().unwrap_or(0),
+        )
     };
-    let max_wait = waits.iter().copied().max().unwrap_or(0);
 
-    let los_series: Vec<u64> = document
-        .summary
-        .patients
-        .iter()
-        .filter_map(|p| p.elapsed_ticks)
-        .collect();
-    let mean_los = if !los_series.is_empty() {
-        los_series.iter().sum::<u64>() as f64 / los_series.len() as f64
-    } else {
-        0.0
-    };
-    let max_los = los_series.iter().copied().max().unwrap_or(0);
-
-    let completed_count = document.summary.completed as f64;
+    let completed_count = summary.completed as f64;
     let throughput_per_window = completed_count / (horizon_ticks as f64);
 
     let total_bay_capacity_ticks = (fixture.bays.len() as u64) * horizon_ticks;
@@ -363,7 +405,9 @@ fn run_disjoint_cohort_simulation_with_capacity(
     };
 
     SimulationExecutionReport {
-        document,
+        summary,
+        #[cfg(feature = "native-data")]
+        patients,
         mean_wait,
         max_wait,
         mean_los,
@@ -442,29 +486,55 @@ fn test_heldout_macro_micro_evaluation_disjoint_cohorts() {
     assert!(exog_macro.bay_utilization > 0.0 && exog_macro.bay_utilization <= 1.0);
     assert!(exog_micro.bay_utilization > 0.0 && exog_micro.bay_utilization <= 1.0);
 
-    // Compare via public API compare_run_documents
-    let exog_comp = compare_run_documents(&exog_macro.document, &exog_micro.document)
-        .expect("comparison report succeeds");
-
-    // Assert empirical superiority is not presumed:
-    // 1. Report metric deltas neutrally
-    for m in &exog_comp.metrics {
-        assert!(m.base_value.is_finite());
-        assert!(m.candidate_value.is_finite());
-        assert!(m.delta.is_finite());
-        assert!(!m.denominator_description.is_empty());
+    // Objective numeric facts replace the retired alpha comparison DTO/text.
+    #[cfg(feature = "native-data")]
+    {
+        assert_eq!(exog_macro.patients.height(), exog_macro.summary.arrivals);
+        assert_eq!(exog_micro.patients.height(), exog_micro.summary.arrivals);
     }
-
-    // 2. Diagnostics contain no value judgements ("superior", "inferior", "better", "worse")
-    for diag in &exog_comp.diagnostics {
-        let lower = diag.to_lowercase();
-        assert!(
-            !lower.contains("superior")
-                && !lower.contains("inferior")
-                && !lower.contains("better")
-                && !lower.contains("worse"),
-            "Empirical superiority must not be presumed in diagnostics: {diag}"
-        );
+    for (unit, denominator, base, candidate) in [
+        (
+            "patient",
+            "total presentations",
+            exog_macro.summary.arrivals as f64,
+            exog_micro.summary.arrivals as f64,
+        ),
+        (
+            "patient",
+            "arrivals",
+            exog_macro.summary.completed as f64,
+            exog_micro.summary.completed as f64,
+        ),
+        (
+            "patient",
+            "arrivals",
+            exog_macro.summary.unfinished as f64,
+            exog_micro.summary.unfinished as f64,
+        ),
+        (
+            "tick",
+            "nonnull started patient waits",
+            exog_macro.mean_wait,
+            exog_micro.mean_wait,
+        ),
+        (
+            "tick",
+            "nonnull completed elapsed intervals",
+            exog_macro.mean_los,
+            exog_micro.mean_los,
+        ),
+        (
+            "ratio",
+            "online bay capacity ticks",
+            exog_macro.bay_utilization,
+            exog_micro.bay_utilization,
+        ),
+    ] {
+        assert!(!unit.is_empty() && !denominator.is_empty());
+        assert!(base.is_finite() && candidate.is_finite() && (candidate - base).is_finite());
+        if base > 0.0 {
+            assert!(((candidate - base) / base * 100.0).is_finite());
+        }
     }
 
     // =========================================================================
@@ -558,18 +628,55 @@ fn test_heldout_macro_micro_evaluation_disjoint_cohorts() {
         42,
     );
 
-    let gen_comp = compare_run_documents(&gen_macro.document, &gen_micro.document)
-        .expect("generative comparison succeeds");
-
-    for diag in &gen_comp.diagnostics {
-        let lower = diag.to_lowercase();
-        assert!(
-            !lower.contains("superior")
-                && !lower.contains("inferior")
-                && !lower.contains("better")
-                && !lower.contains("worse"),
-            "Empirical superiority must not be presumed in diagnostics: {diag}"
-        );
+    // Objective numeric facts replace the retired alpha comparison DTO/text.
+    #[cfg(feature = "native-data")]
+    {
+        assert_eq!(gen_macro.patients.height(), gen_macro.summary.arrivals);
+        assert_eq!(gen_micro.patients.height(), gen_micro.summary.arrivals);
+    }
+    for (unit, denominator, base, candidate) in [
+        (
+            "patient",
+            "total presentations",
+            gen_macro.summary.arrivals as f64,
+            gen_micro.summary.arrivals as f64,
+        ),
+        (
+            "patient",
+            "arrivals",
+            gen_macro.summary.completed as f64,
+            gen_micro.summary.completed as f64,
+        ),
+        (
+            "patient",
+            "arrivals",
+            gen_macro.summary.unfinished as f64,
+            gen_micro.summary.unfinished as f64,
+        ),
+        (
+            "tick",
+            "nonnull started patient waits",
+            gen_macro.mean_wait,
+            gen_micro.mean_wait,
+        ),
+        (
+            "tick",
+            "nonnull completed elapsed intervals",
+            gen_macro.mean_los,
+            gen_micro.mean_los,
+        ),
+        (
+            "ratio",
+            "online bay capacity ticks",
+            gen_macro.bay_utilization,
+            gen_micro.bay_utilization,
+        ),
+    ] {
+        assert!(!unit.is_empty() && !denominator.is_empty());
+        assert!(base.is_finite() && candidate.is_finite() && (candidate - base).is_finite());
+        if base > 0.0 {
+            assert!(((candidate - base) / base * 100.0).is_finite());
+        }
     }
 
     // Both arrival modes yield coherent comparative metrics
@@ -860,7 +967,7 @@ fn test_representative_demand_memory_and_leak_benchmarks() {
 
         let elapsed_secs = elapsed.as_secs_f64().max(1e-9);
         let steps_per_sec = (horizon_ticks as f64) / elapsed_secs;
-        let patients_per_sec = (report.document.summary.completed as f64) / elapsed_secs;
+        let patients_per_sec = (report.summary.completed as f64) / elapsed_secs;
 
         println!(
             "  N={:<4} patients | Input Size: {:>6} B | Elapsed: {:>8.2?} | Steps/sec: {:>10.0} | Pat/sec: {:>10.0} | Completed: {}/{}",
@@ -869,7 +976,7 @@ fn test_representative_demand_memory_and_leak_benchmarks() {
             elapsed,
             steps_per_sec,
             patients_per_sec,
-            report.document.summary.completed,
+            report.summary.completed,
             n_patients
         );
 
@@ -884,7 +991,7 @@ fn test_representative_demand_memory_and_leak_benchmarks() {
             steps_per_sec > 100.0,
             "Step throughput must exceed 100 steps/sec"
         );
-        assert!(report.document.summary.completed > 0);
+        assert!(report.summary.completed > 0);
     }
 
     // =========================================================================

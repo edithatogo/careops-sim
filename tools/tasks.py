@@ -81,10 +81,29 @@ def derive(root):
     tasks = []
     phase_tasks = {}
     metas = []
-    for folder in sorted((root/'conductor/tracks').iterdir()):
+    track_ids = set()
+    archive_root = root/'conductor/archive'
+    folders = list((root/'conductor/tracks').iterdir())
+    if archive_root.exists():
+        if not archive_root.is_dir():
+            raise ValueError('Archive root must be a directory')
+        folders.extend(archive_root.iterdir())
+    for folder in sorted(folders):
         if not folder.is_dir():
             continue
+        archived = folder.parent == archive_root
+        if archived and not (folder/'metadata.json').is_file():
+            raise ValueError(f'Archived track metadata missing: {folder.name}')
         meta = json.loads((folder/'metadata.json').read_text())
+        if not isinstance(meta, dict):
+            raise ValueError(f'Invalid track metadata: {folder.name}')
+        if archived:
+            if meta.get('status') != 'complete':
+                raise ValueError(f'Archived track must be complete: {folder.name}')
+            evidence = meta.get('completion_evidence', [])
+            if (not isinstance(evidence, list) or not evidence
+                    or any(not isinstance(path, str) or not (root/path).is_file() for path in evidence)):
+                raise ValueError(f'Archived track completion evidence missing: {folder.name}')
         metas.append(meta)
         for field in ('task_dependency_overrides', 'leaf_dependency_overrides'):
             overrides = meta.get(field, {})
@@ -93,6 +112,12 @@ def derive(root):
                 for dependencies in overrides.values()
             ):
                 raise ValueError(f'Invalid {field}')
+        if meta.get('track_id') != folder.name:
+            raise ValueError(f'Track ID mismatch: {folder.name}')
+        if meta['track_id'] in track_ids:
+            raise ValueError(f'Duplicate track ID: {meta["track_id"]}')
+        track_ids.add(meta['track_id'])
+        first_task = len(tasks)
         plan = folder/'plan.md'
         lines = plan.read_text().splitlines()
         phase = None
@@ -143,6 +168,9 @@ def derive(root):
                 'model_route': 'coordinator' if kind != 'bounded_work' else 'gpt-6-luna_candidate_after_packet_review',
                 'phase_acceptance_source': str(plan.relative_to(root)) + '#' + phase,
             })
+        if archived and (len(tasks) == first_task
+                         or any(not task['accepted'] for task in tasks[first_task:])):
+            raise ValueError(f'Archived track has incomplete or missing tasks: {folder.name}')
         for leaf_id, dependencies in meta.get('leaf_dependency_overrides', {}).items():
             parent_id = '.'.join(leaf_id.split('.')[:2])
             parent = next((task for task in tasks if task['id'] == parent_id and task['track_id'] == meta['track_id']), None)

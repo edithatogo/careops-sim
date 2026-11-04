@@ -1,6 +1,5 @@
 use careops_ed::disposition::composite_fixture::{
-    compare_capacity, run_summary_to_csv, st001_validate_compatible_offer,
-    st002_evaluate_offer_policy, st003_verify_retained_occupancy,
+    st001_validate_compatible_offer, st002_evaluate_offer_policy, st003_verify_retained_occupancy,
     st004_verify_boarder_recurrent_care, st005_evaluate_ambulance_offload,
     st006_receiver_staff_delay, st007_enforce_multi_role_procedure,
     st008_validate_ward_policy_causal_claim, st009_validate_deterioration_hazard, BoundaryError,
@@ -365,7 +364,7 @@ fn test_macro_micro_synthetic_graph_transit() {
 }
 
 #[test]
-fn test_csv_export_and_capacity_comparison_oracle() {
+fn test_typed_patient_export_and_capacity_comparison_oracle() {
     let nominal_source = include_str!("../examples/nominal_mvp.json");
     let constrained_source = include_str!("../examples/constrained_mvp.json");
 
@@ -375,16 +374,133 @@ fn test_csv_export_and_capacity_comparison_oracle() {
     let nominal_summary = run_scenario(&nominal_cfg).unwrap();
     let constrained_summary = run_scenario(&constrained_cfg).unwrap();
 
-    // Verify CSV output
-    let csv = run_summary_to_csv(&nominal_summary);
-    assert!(csv.contains("patient_id,arrival_tick,start_tick"));
-    assert!(csv.contains("patient-001,1,1,4,3,0,3,completed"));
+    // Online domain summaries retain the independent capacity oracle.
+    assert_eq!(nominal_summary.completed, 5);
+    assert_eq!(constrained_summary.completed, 5);
+    let nominal_waits: Vec<_> = nominal_summary
+        .patients
+        .iter()
+        .filter_map(|p| p.wait_ticks)
+        .collect();
+    let constrained_waits: Vec<_> = constrained_summary
+        .patients
+        .iter()
+        .filter_map(|p| p.wait_ticks)
+        .collect();
+    let nominal_mean = nominal_waits.iter().sum::<u64>() as f64 / nominal_waits.len() as f64;
+    let constrained_mean =
+        constrained_waits.iter().sum::<u64>() as f64 / constrained_waits.len() as f64;
+    assert!(constrained_mean > nominal_mean);
+    assert_eq!(nominal_mean, 0.4);
+    assert_eq!(constrained_mean, 4.2);
+    let patient = nominal_summary
+        .patients
+        .iter()
+        .find(|p| p.patient_id == "patient-001")
+        .unwrap();
+    assert_eq!(
+        (
+            patient.arrival_tick,
+            patient.start_tick,
+            patient.completion_tick,
+            patient.work_ticks,
+            patient.wait_ticks,
+            patient.elapsed_ticks,
+            patient.status
+        ),
+        (
+            1,
+            Some(1),
+            Some(4),
+            3,
+            Some(0),
+            Some(3),
+            careops_ed::PatientStatus::Completed
+        )
+    );
 
-    // Verify Capacity Comparison
-    let comparison = compare_capacity(&nominal_summary, &constrained_summary);
-    assert_eq!(comparison.nominal_completed, 5);
-    assert_eq!(comparison.constrained_completed, 5);
-    assert!(comparison.wait_time_increased);
-    assert_eq!(comparison.nominal_mean_wait_ticks, 0.4);
-    assert_eq!(comparison.constrained_mean_wait_ticks, 4.2);
+    #[cfg(feature = "native-data")]
+    {
+        use careops_ed::disposition::batch_runner::{run_batch_with_workers, BatchConfig};
+        use careops_ed::disposition::native_output::{
+            export_native_batch, read_native_dataset, ExportLimits, NativeFormat,
+        };
+        for (scenario, expected_wait) in [(&nominal_cfg, 0.4), (&constrained_cfg, 4.2)] {
+            let config = BatchConfig {
+                scenario_id: scenario.scenario_id.clone(),
+                replications: 1,
+                base_seed: scenario.seed,
+                ..BatchConfig::default()
+            };
+            let batch = run_batch_with_workers(scenario, &config, None, None, None).unwrap();
+            let destination = tempfile::tempdir().unwrap();
+            export_native_batch(
+                scenario,
+                &batch,
+                destination.path(),
+                NativeFormat::Parquet,
+                ExportLimits::default(),
+            )
+            .unwrap();
+            let data = read_native_dataset(destination.path()).unwrap();
+            assert_eq!(
+                data.replications()
+                    .column("completed")
+                    .unwrap()
+                    .u64()
+                    .unwrap()
+                    .get(0),
+                Some(5)
+            );
+            assert_eq!(
+                data.replications()
+                    .column("mean_wait_ticks")
+                    .unwrap()
+                    .f64()
+                    .unwrap()
+                    .get(0),
+                Some(expected_wait)
+            );
+            if scenario.scenario_id == nominal_cfg.scenario_id {
+                let patients = data.patients();
+                let row = (0..patients.height())
+                    .find(|&i| {
+                        patients.column("patient_id").unwrap().str().unwrap().get(i)
+                            == Some("patient-001")
+                    })
+                    .unwrap();
+                for (name, expected) in [
+                    ("arrival_tick", 1),
+                    ("start_tick", 1),
+                    ("completion_tick", 4),
+                    ("work_ticks", 3),
+                    ("wait_ticks", 0),
+                    ("elapsed_ticks", 3),
+                ] {
+                    assert_eq!(
+                        patients
+                            .column(&format!("{name}_hi"))
+                            .unwrap()
+                            .u64()
+                            .unwrap()
+                            .get(row),
+                        Some(0)
+                    );
+                    assert_eq!(
+                        patients
+                            .column(&format!("{name}_lo"))
+                            .unwrap()
+                            .u64()
+                            .unwrap()
+                            .get(row),
+                        Some(expected)
+                    );
+                }
+                assert_eq!(
+                    patients.column("status").unwrap().str().unwrap().get(row),
+                    Some("completed")
+                );
+            }
+        }
+    }
 }

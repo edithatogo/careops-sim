@@ -28,11 +28,11 @@
 | Track | Specification | Phased implementation plan | Status |
 | --- | --- | --- | --- |
 | Repository reconciliation & Kairos upgrade | [Specification](tracks/repo_reconciliation_kairos_upgrade_20261020/spec.md) | [Plan](tracks/repo_reconciliation_kairos_upgrade_20261020/plan.md) | Complete: R0–R3 accepted; pin 44261eb retained, with missing E6/E8 hardware capabilities kept as external dispatch gates |
-| Multi-domain core abstractions & boundaries | [Specification](tracks/careops_core_domain_abstractions_20261020/spec.md) | [Plan](tracks/careops_core_domain_abstractions_20261020/plan.md) | In progress: A0–A6 accepted locally; A7.1–A7.4 incomplete, with A7.1 gated on birthing B7.4 |
-| Generic birthing suite delivery | [Specification](tracks/birthing_suite_delivery_20261020/spec.md) | [Plan](tracks/birthing_suite_delivery_20261020/plan.md) | Planned; B0 evidence intake independent, B1 after A5 |
+| Multi-domain core abstractions & boundaries | [Specification](tracks/careops_core_domain_abstractions_20261020/spec.md) | [Plan](tracks/careops_core_domain_abstractions_20261020/plan.md) | A0–A7 bounded engineering complete at544a1e2; PR197 unmerged; broader acceptance remains separate |
+| Generic birthing suite delivery | [Specification](tracks/birthing_suite_delivery_20261020/spec.md) | [Plan](tracks/birthing_suite_delivery_20261020/plan.md) | B0–B7 bounded engineering accepted; full specification and clinical/site/operational gates open |
 | ED parameters and example inputs | [Specification](tracks/ed_parameter_evidence_20260927/spec.md) | [Plan](tracks/ed_parameter_evidence_20260927/plan.md) | Historical P0–P5 generic catalogue/model coverage accepted; Cairns-specific values and empirical hospital validity remain separate |
 | Development readiness | [Specification](tracks/development_readiness_20260925/spec.md) | [Plan](tracks/development_readiness_20260925/plan.md) | Historical plan tasks checked; dated evidence retained |
-| Generic ED delivery | [Specification](tracks/generic_ed_delivery_20260925/spec.md) | [Plan](tracks/generic_ed_delivery_20260925/plan.md) | Historical plan tasks checked; capability scope still subject to R0 |
+| Generic ED delivery | [Specification](tracks/generic_ed_delivery_20260925/spec.md) | [Plan](tracks/generic_ed_delivery_20260925/plan.md) | Historical E0–E8 checks retained; E9 CPU/CLI capability repair accepted at 18b6e8f; G3 modes unqualified |
 | DES queues and preemption | [Specification](tracks/des_queue_preemption_20260925/spec.md) | [Plan](tracks/des_queue_preemption_20260925/plan.md) | Q0–Q5 experimental development accepted; release and ED MVP separate |
 | Empirical calibration and validation | [Specification](tracks/empirical_calibration_20260925/spec.md) | [Plan](tracks/empirical_calibration_20260925/plan.md) | Historical plan tasks checked; dated evidence retained |
 
@@ -66,9 +66,17 @@ bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind review
 context/commands just before dispatch. No autonomous execution or model
 qualification is claimed.
 
-## Planned Polars migration
+## Completed Polars migration
 
-[CareOps migration](tracks/polars_data_processing_20261022/index.md) follows accepted Kairos Track 70. R10 entry/reference phase accepted for the bounded remote source; R11.1 preparation is next. Runtime replacement remains pending.
+[Archived CareOps migration](archive/polars_data_processing_20261022/index.md)
+records accepted R10–R14 engineering. Source258bb6b passed both787-test native
+hosts,815+127 Python,26 frozen benchmarks, full117 mutation accounting, coverage,
+policy and the native Linux package. [Final source receipt](evidence/polars-r14-qualification-20261104/README.md)
+preserves original failures, actual source/merge distinctions, rollback and the
+net+3621 maintenance cost (qualified source+3615; archive fixture+6). All20 task IDs and three downstream prerequisites
+remain; runtime074/data473/Polars964 and ownership are unchanged. The archive
+is documentation reconciliation; no main merge, release, clinical or new dispatch
+is implied.
 
 ## Separate library adoption tracks
 
