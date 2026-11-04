@@ -1,6 +1,6 @@
 # CareOps sha2 adoption
 
-R50.1 prerequisite verification and consumer inventory are accepted; runtime adoption and the value decision remain planned. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
+R50.1 inventory and R50.2 dependency/value/build-identity decision are accepted; R50.3 phase review and runtime adoption remain pending. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
 
 ## Inputs and dependencies
 
@@ -17,8 +17,9 @@ historical receipts and distinguish them from current runtime qualification.
 
 CareOps already declares and locks sha2 0.11.1. Core identity, birthing runtime and
 build scripts already use it; ED currently has it only as a build dependency.
-R50.2 must assess the normal ED runtime edge, exact features/minimal graph,
-independent digest parity and net value before replacement. Existing correct
+R50.2 qualified the proposed normal ED runtime edge/default alloc+oid features,
+current minimal graph, independent digest parity and bounded value. Production
+edge/helper compilation and recovery/consumer acceptance remain R51/R52. Existing correct
 standard uses, canonical identity bytes and RNG assignments remain unchanged.
 A byte-identical standard digest does not need an invented format migration;
 actually changed digest/format contracts require explicit versioning. Current

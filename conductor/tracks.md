@@ -93,7 +93,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
 - [ ] **Track: Conditional SUMO traffic co-simulation** — Proposed, conditional value gate unresolved. [Track](tracks/sumo_traffic_qualification_20261022/index.md).
 
 ---
-- [~] **Track: CareOps sha2** — R50.1 historical prerequisite and current consumer inventory accepted; R50.2 exact current dependency/value qualification next. No runtime adoption.
+- [~] **Track: CareOps sha2** — R50.1 inventory and R50.2 exact dependency/value/build-identity qualification accepted; R50.3 phase review next. No runtime adoption.
   - Link: [sha2_integrity_20261022](tracks/sha2_integrity_20261022/index.md)
 
 ---
@@ -122,7 +122,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
 
 ## Inventory-first Polars sequencing — 23 October 2026
 
-Polars inventory leads; sha2/tempfile/proptest are separate tracks with gates only on demonstrated dependent migration tasks. See [sequencing](dependency-sequencing.md). SHA2 R50.1 inventory is accepted; other implementation/acceptance statuses remain unchanged. No runtime adoption follows from the inventory.
+Polars inventory leads; sha2/tempfile/proptest are separate tracks with gates only on demonstrated dependent migration tasks. See [sequencing](dependency-sequencing.md). SHA2 R50.1/R50.2 evidence and candidate decision are accepted; R50.3 and other implementation/acceptance statuses remain unchanged. No runtime adoption follows.
 
 ## Python runtime migration — 23 October 2026
 

@@ -1,0 +1,611 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-04",
+  "source": "f1ef09551e9f07806a29fc14a255a6d64af5c122",
+  "task": "R50.2",
+  "decision": "candidate_for_bounded_replacement_after_R50.3",
+  "runtime_adoption": "not_started",
+  "exact_dependency": {
+    "observed_at": "2026-11-04T05:18:44.350312+00:00",
+    "sha2_candidate": {
+      "kind": "crate",
+      "name": "sha2",
+      "version": "0.11.1",
+      "rust_version": "1.88",
+      "released_at": "2026-10-12T18:58:22.836567Z",
+      "source": "https://crates.io/api/v1/crates/sha2",
+      "status": "candidate_unvalidated"
+    },
+    "scope": "Existing refresh_versions.query exact target; main CRATES omits sha2, no unrelated global candidate file changed.",
+    "exact_version": {
+      "num": "0.11.1",
+      "checksum": "47d7069beb7d6ac7b9acd1039986e73443f24234f41074da099d6f994ac9ad19",
+      "yanked": false,
+      "license": "MIT OR Apache-2.0",
+      "rust_version": "1.88",
+      "features": {
+        "alloc": [
+          "digest/alloc"
+        ],
+        "default": [
+          "alloc",
+          "oid"
+        ],
+        "oid": [
+          "digest/oid"
+        ],
+        "zeroize": [
+          "digest/zeroize"
+        ]
+      },
+      "created_at": "2026-10-12T18:58:22.836567Z",
+      "updated_at": "2026-10-12T18:58:22.836567Z"
+    },
+    "exact_source": "https://crates.io/api/v1/crates/sha2/0.11.1",
+    "response_sha256": "5984aeac1f75d6e2fdc1407c5e1d4b052d6a9a44d7e50b98a02e23196f099f33"
+  },
+  "crate_archive_sha256": "47d7069beb7d6ac7b9acd1039986e73443f24234f41074da099d6f994ac9ad19",
+  "graph": {
+    "packages_with_checksums": [
+      [
+        "block-buffer",
+        "0.12.1",
+        "d2f6c7dbe95a6ed67ad9f18e57daf93a2f034c524b99fd2b76d18fdfeb6660aa"
+      ],
+      [
+        "cfg-if",
+        "1.0.5",
+        "4e7648175b45a9a48536d676f68d918270699102aa8dab5496df06904c914600"
+      ],
+      [
+        "const-oid",
+        "0.10.2",
+        "a6ef517f0926dd24a1582492c791b6a4818a4d94e789a334894aa15b0d12f55c"
+      ],
+      [
+        "cpufeatures",
+        "0.3.1",
+        "5ca28b0ae3115b884660db4118d803791fd6756b6e88f39c0f3f7859060d7566"
+      ],
+      [
+        "crypto-common",
+        "0.2.2",
+        "ce6e4c961d6cd6c9a86db418387425e8bdeaf05b3c8bc1411e6dca4c252f1453"
+      ],
+      [
+        "digest",
+        "0.11.3",
+        "f1dd6dbb5841937940781866fa1281a1ff7bd3bf827091440879f9994983d5c2"
+      ],
+      [
+        "hybrid-array",
+        "0.4.15",
+        "27f864f10dfb56725ce5ce5472bc52252c8f93a4ab86327122cebf62c5f59a17"
+      ],
+      [
+        "libc",
+        "0.2.189",
+        "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2"
+      ],
+      [
+        "sha2",
+        "0.11.1",
+        "47d7069beb7d6ac7b9acd1039986e73443f24234f41074da099d6f994ac9ad19"
+      ],
+      [
+        "typenum",
+        "1.20.1",
+        "b6f5e870be6c3b371b77fe0ee0bafb859fa4964b4404c27de1d380043c4dda20"
+      ]
+    ],
+    "resolved_features": {
+      "block-buffer": [],
+      "cfg-if": [],
+      "const-oid": [],
+      "cpufeatures": [],
+      "crypto-common": [],
+      "digest": [
+        "alloc",
+        "block-api",
+        "default",
+        "oid"
+      ],
+      "hybrid-array": [],
+      "libc": [],
+      "sha2": [
+        "alloc",
+        "default",
+        "oid"
+      ],
+      "sha2-r502-probe": [
+        "candidate"
+      ],
+      "typenum": [
+        "const-generics"
+      ]
+    },
+    "new_registry_packages_or_versions": 0,
+    "parent_minimal_normal_path": "careops-ed -> careops-core -> sha2=0.11.1 (default alloc/oid already enabled)",
+    "proposed_edge": "[dependencies] sha2.workspace = true in ED, after phase acceptance; no manifest/lock change in R50.2",
+    "graph_scope": "Current parent normal tree and isolated candidate closure, structurally same existing default features; direct parent-edge runtime compilation remains R51."
+  },
+  "licence_msrv": {
+    "sha2_licence": "MIT OR Apache-2.0, both upstream notices retained; project support sources Apache-2.0",
+    "sha2_declared_msrv": "1.88",
+    "maximum_declared_closure_msrv": "1.88",
+    "workspace_floor": "1.99",
+    "verified_local_compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13) (Homebrew)",
+    "verified_cargo": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+    "python": "Python 3.15.1",
+    "limit": "No fresh1.88 compiler run; currentworkspace1.99.1 verified, upstream pinned CI declares1.88 matrix."
+  },
+  "security": {
+    "cargo_deny_version": "0.20.2",
+    "exit": 0,
+    "checks": [
+      "advisories",
+      "bans",
+      "licenses",
+      "sources"
+    ],
+    "advisory_database_commit": "965bf9ad083b58e6340d65829d85217b18be9290",
+    "database_source": "https://github.com/RustSec/advisory-db",
+    "deny_log_sha256": "4fada8cb7d96a46f46ecc70266236d70b398baba821ea3267c4db61333f18860",
+    "warnings": "Three unused licence allowance warnings (BSD2/BSD3/Unicode); no advisory, banned-version, licence or source failure; no ignores/exemptions.",
+    "scope": "Full isolated candidate closure including all lockfile target packages; not a new full parent audit.",
+    "upstream_tag": {
+      "ref": "refs/tags/sha2-v0.11.1",
+      "node_id": "MDM6UmVmNzQxMDY3NzQ6cmVmcy90YWdzL3NoYTItdjAuMTEuMQ==",
+      "url": "https://api.github.com/repos/RustCrypto/hashes/git/refs/tags/sha2-v0.11.1",
+      "object": {
+        "sha": "138dc5a05b93f8e49cda177fc6cfd7cc43673e5d",
+        "type": "commit",
+        "url": "https://api.github.com/repos/RustCrypto/hashes/git/commits/138dc5a05b93f8e49cda177fc6cfd7cc43673e5d"
+      }
+    },
+    "upstream_ci_sha256": "960d61b7f85730468891026084ce52824337cb5173c3c9b756c5e742ab1fed39",
+    "upstream_security_policy_sha256": "78907890ae909a48c11b59f09e2c796e88b5ebcaaf1f5083ea79079dd8990446",
+    "maintenance": "Current stable0.11.1 released2026-10-12, non-yanked; tagged CI covers MSRV/stable, Linux x86/x86_64, macOS, no_std targets and forced software backends; upstream security policy supports most recent release with private advisory reporting. No independent security certification claimed.",
+    "policy": {
+      "actual_private_file_sha256": "fa17ff242ed38a6c8a80a788b323cb0e1961ff38c099ee3c005cd9eb95939a03",
+      "normalized_content": "[advisories]\ndb-path=\"${PRIVATE}/sha2-r502-advisory-db\"\nyanked=\"deny\"\nunmaintained=\"all\"\n[bans]\nmultiple-versions=\"deny\"\nwildcards=\"deny\"\n[licenses]\nallow=[\"Apache-2.0\",\"MIT\",\"BSD-2-Clause\",\"BSD-3-Clause\",\"Unicode-3.0\"]\n[sources]\nunknown-registry=\"deny\"\nunknown-git=\"deny\"\n",
+      "normalization": "Only private database directory is replaced; all advisories/bans/licences/sources and absence of ignore list preserved."
+    }
+  },
+  "independent_baseline": {
+    "vectors": [
+      {
+        "bytes": 0,
+        "expected": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 3,
+        "expected": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+      },
+      {
+        "bytes": 56,
+        "expected": "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1"
+      },
+      {
+        "bytes": 1,
+        "expected": "4a64a107f0cb32536e5bce6c98c393db21cca7f4ea187ba8c4dca8b51d4ea80a"
+      },
+      {
+        "bytes": 55,
+        "expected": "59aaae80b8e7958f5757b4ac9274f1fd57ec0dc7aa8349319102316781b92006"
+      },
+      {
+        "bytes": 56,
+        "expected": "dca902d31487ffab357ce36cc5abc6947fbb69127ec04c468ba5687268c4bf7c"
+      },
+      {
+        "bytes": 63,
+        "expected": "b8e655e9e7ad413b96f0a371eb1d6db71dcca27f4eee35892517cbe4bfaa6f9a"
+      },
+      {
+        "bytes": 64,
+        "expected": "e5146be62accc56709594cb45c651b361df94f622cbb09b91ea3ca7a2060bd53"
+      },
+      {
+        "bytes": 65,
+        "expected": "4b6c6774f0cbcd776a90e187b9494e04ca880c0afe3ea1c5cad51c8bbcb41f74"
+      },
+      {
+        "bytes": 127,
+        "expected": "b4f5398bf618d741f2ab0f6e2fcde06f4949c20d476b5f6e1d4bf8618bc8973a"
+      },
+      {
+        "bytes": 128,
+        "expected": "ed045c7c319e0c9286e1dea21c80bfd4a08eca43e02e13ee8a7a2c8b4b2baec9"
+      },
+      {
+        "bytes": 129,
+        "expected": "d6f2fca0407b3f98c9ce29ae92a6cdf489506450fdbb29172f6b18987bc685db"
+      },
+      {
+        "bytes": 1024,
+        "expected": "575383deff0775797e1ff4c82da069141937c843a81cbe50959a96bcfa88140e"
+      },
+      {
+        "bytes": 65536,
+        "expected": "d8f32a3b4c195f65444e342b0c61bdaf114802e84ab7821a1f88e3f66ea15100"
+      },
+      {
+        "bytes": 1048576,
+        "expected": "ea53eb498f9b7dc054aae73924bf25c569604d2c20aa9016f0b8714a1c180c7b"
+      },
+      {
+        "bytes": 256,
+        "expected": "40aff2e9d2d8922e47afd4648e6967497158785fbd1da870e7110266bf944880"
+      },
+      {
+        "bytes": 1000000,
+        "expected": "cdc76e5c9914fb9281a1c7e284d73e67f1809a48a497200e046d39ccc7112cd0"
+      },
+      {
+        "bytes": 8,
+        "expected": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+      },
+      {
+        "bytes": 8,
+        "expected": "7c9fa136d4413fa6173637e883b6998d32e1d675f88cddff9dcbcf331820f4b8"
+      },
+      {
+        "bytes": 8,
+        "expected": "01acecb507abfe1a354aa8064f4af5d3f1acd019e37db3c11c97523b71c76e9d"
+      },
+      {
+        "bytes": 8,
+        "expected": "e6ad6c9a3a3b7658c35bacf6553fcb8ffe34387534a648fe18f875b8f7a86ddb"
+      },
+      {
+        "bytes": 8,
+        "expected": "12a3ae445661ce5dee78d0650d33362dec29c4f82af05e7e57fb595bbbacf0ca"
+      }
+    ],
+    "hashlib_matches_both_implementations": true,
+    "negative_controls": {
+      "scope": "Independent probe comparator, not parent parser/recovery acceptance",
+      "controls": [
+        {
+          "implementation": "baseline",
+          "control": "bit-flipped-input-vs-original",
+          "rejected": true
+        },
+        {
+          "implementation": "baseline",
+          "control": "truncated-expected",
+          "rejected": true
+        },
+        {
+          "implementation": "baseline",
+          "control": "invalid-expected",
+          "rejected": true
+        },
+        {
+          "implementation": "candidate",
+          "control": "bit-flipped-input-vs-original",
+          "rejected": true
+        },
+        {
+          "implementation": "candidate",
+          "control": "truncated-expected",
+          "rejected": true
+        },
+        {
+          "implementation": "candidate",
+          "control": "invalid-expected",
+          "rejected": true
+        }
+      ]
+    },
+    "raw_probe_report_sha256": "f742ca495482f770dfe6dff62c92efd528cc9b02b9255f07806e6ff59a9cb833",
+    "exact_baseline_source_sha256": "535a4acdbdfbd16d8d496ebe4f2d7e43bd32f2e16ab5d63cf71143a089c8d67e",
+    "baseline_lines": 74
+  },
+  "cost": {
+    "build": {
+      "baseline": {
+        "cold_seconds": 2.0839967080028146,
+        "warm_seconds": 0.0705531250059721,
+        "binary_bytes": 455888,
+        "binary_sha256": "3a2789012165a9f6ca3decb427681df2bb385d18efbead653724db41729c3635"
+      },
+      "candidate": {
+        "cold_seconds": 6.760255165994749,
+        "warm_seconds": 0.053856958002143074,
+        "binary_bytes": 455840,
+        "binary_sha256": "0be3c6906dc253424f94b5159ef6324d301944cc6b84c9bf1906c1a180c31d2b"
+      }
+    },
+    "conditions": "Fresh isolated target per implementation, existing populated shared registry/cache; release profile, same formatter contract,128 warmup hashes/process,7counterbalanced pairs each workload; no parent/Polars cold-build claim. No sample reruns or changed performance budgets.",
+    "binary_growth_bytes": -48,
+    "performance": [
+      {
+        "bytes": 1024,
+        "iterations": 200000,
+        "ns_per_hash": {
+          "baseline": [
+            42909.600835,
+            7897.95583,
+            6023.56229,
+            15557.731045,
+            12708.081045,
+            6716.908125,
+            7219.106665
+          ],
+          "candidate": [
+            7254.89625,
+            8341.403125,
+            11834.566875,
+            9774.59271,
+            1997.023125,
+            2175.56271,
+            1957.40521
+          ]
+        },
+        "peak_rss_bytes": {
+          "baseline": [
+            1949696,
+            2031616,
+            2031616,
+            1949696,
+            2015232,
+            2015232,
+            2031616
+          ],
+          "candidate": [
+            1998848,
+            1998848,
+            1998848,
+            1998848,
+            1966080,
+            1982464,
+            1998848
+          ]
+        },
+        "candidate_median_ratio": 0.9185789850131385
+      },
+      {
+        "bytes": 65536,
+        "iterations": 10000,
+        "ns_per_hash": {
+          "baseline": [
+            338321.5,
+            340742.1542,
+            342655.3458,
+            347297.7084,
+            490696.2709,
+            466363.4792,
+            343294.1708
+          ],
+          "candidate": [
+            33667.1875,
+            33578.2958,
+            33655.2416,
+            33077.2083,
+            48853.9625,
+            55437.325,
+            33339.3709
+          ]
+        },
+        "peak_rss_bytes": {
+          "baseline": [
+            2359296,
+            2392064,
+            2359296,
+            2392064,
+            2392064,
+            2392064,
+            2392064
+          ],
+          "candidate": [
+            2080768,
+            2064384,
+            2048000,
+            2097152,
+            2080768,
+            2080768,
+            2080768
+          ]
+        },
+        "candidate_median_ratio": 0.09803615809022062
+      },
+      {
+        "bytes": 1048576,
+        "iterations": 1000,
+        "ns_per_hash": {
+          "baseline": [
+            7114050.541,
+            5555482.25,
+            5276501.875,
+            5516019.0,
+            5456008.75,
+            5384528.583,
+            5312557.334
+          ],
+          "candidate": [
+            523842.833,
+            525923.125,
+            507638.833,
+            514538.417,
+            501745.875,
+            506451.917,
+            517484.459
+          ]
+        },
+        "peak_rss_bytes": {
+          "baseline": [
+            6307840,
+            6324224,
+            6324224,
+            6324224,
+            5242880,
+            6324224,
+            6324224
+          ],
+          "candidate": [
+            3080192,
+            3063808,
+            3063808,
+            3080192,
+            3063808,
+            3080192,
+            3047424
+          ]
+        },
+        "candidate_median_ratio": 0.09430674336803438
+      }
+    ],
+    "all_frozen_budgets_pass": true,
+    "net_maintenance": {
+      "existing_production_helper_lines": 74,
+      "proposed_helper_lines": 4,
+      "proposed_production_function_delta": -70,
+      "scope": "Function bodies/signature only; obsolete doc/allow cleanup evaluated in R51. Runtime deletion not performed.",
+      "qualification_support_source_lines": 223,
+      "tradeoff": "Added one-off reproducible qualification/support burden exceeds proposed raw line deletion. No total-net-reduction claim. Value is eliminating handwritten compression/padding with an already-normal-transitive maintained primitive, zero added registry packages, independent parity and measured acceptable costs."
+    },
+    "performance_interpretation": "Local finite budget pass only. 1KiB raw samples show large host variance; no portable8% speedup or full-application improvement is inferred."
+  },
+  "build_identity": {
+    "source_build_script_sha256": "ba6d8ebc46810d2f47668126e4de1dafbfdf9149d55ff3777ecfd64e185b2b4b",
+    "compiler_version_sha256": "646e2c57dbb7913a825d5a05af4eaa43e0db4267d09e45fb23562baab258c382",
+    "controlled_env": {
+      "TARGET": "aarch64-apple-darwin",
+      "PROFILE": "release",
+      "OPT_LEVEL": "3",
+      "DEBUG": "false",
+      "CARGO_ENCODED_RUSTFLAGS": "",
+      "CARGO_CFG_TARGET_FEATURE": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh"
+    },
+    "cases": [
+      {
+        "case": "actual_current_source",
+        "sha256": "531ec81a2d3f7f98be33f752a5d0c37197293b79d12f9c7a637f649200a1d61e",
+        "independent_transcript_matches": true,
+        "exit": 0
+      },
+      {
+        "case": "same_bytes_relocated",
+        "sha256": "531ec81a2d3f7f98be33f752a5d0c37197293b79d12f9c7a637f649200a1d61e",
+        "independent_transcript_matches": true,
+        "exit": 0
+      },
+      {
+        "case": "added_documentation",
+        "sha256": "531ec81a2d3f7f98be33f752a5d0c37197293b79d12f9c7a637f649200a1d61e",
+        "independent_transcript_matches": true,
+        "exit": 0
+      },
+      {
+        "case": "proposed_helper_only",
+        "sha256": "94fc6c014e817a772c42319b2d2d73c7697df879787399df41b1804811c896ef",
+        "independent_transcript_matches": true,
+        "exit": 0
+      },
+      {
+        "case": "proposed_normal_edge_only",
+        "sha256": "603c8fb986c826d736177e922e923b9b1f1f9a68bd9700aca70a4ae73e2e478d",
+        "independent_transcript_matches": true,
+        "exit": 0
+      },
+      {
+        "case": "changed_compiler_flags",
+        "sha256": "8bb39aef0595efcb7899ae327b6c7013107a3407495913d1bf6f758054c94ee2",
+        "independent_transcript_matches": true,
+        "exit": 0
+      },
+      {
+        "case": "changed_feature_binding",
+        "sha256": "18922cc6d7ed9cf24da1da8fb926ace2e2c944148bbe05f36400857343fbdcab",
+        "independent_transcript_matches": true,
+        "exit": 0
+      },
+      {
+        "case": "restored_inputs",
+        "sha256": "531ec81a2d3f7f98be33f752a5d0c37197293b79d12f9c7a637f649200a1d61e",
+        "independent_transcript_matches": true,
+        "exit": 0
+      }
+    ],
+    "status": "pass_actual_build_script_and_independent_transcript",
+    "compatibility_decision": "Standard file digests unchanged; changed model-build identity intentionally rejects old execution resume. Read historical artifacts with original recorded model tag/qualified original software. Do not rewrite old tags, bypass checks or invent a format version for equal SHA256 semantics."
+  },
+  "historical_artifact_contract": {
+    "standard_digest": "Identical standard lowercase64hex on tested exact bytes, no invented digest-format version change.",
+    "model_identity": "Source/helper/manifest/flags changes intentionally change source-bound model-build.v1 identity; never rewrite historical tags or bypass resume mismatch.",
+    "read_and_resume": "Existing r113 test proves internally consistent foreign-tag artifacts readable and execution resume rejected; source inspection plus unchanged prior full787hosted qualification retained as historical evidence, no new runtime test run claimed. Original qualified binary remains recovery route for original run; cross-model resume is unsupported.",
+    "r51_obligations": [
+      "Add independent failing parent contract/recovery controls before helper replacement",
+      "Exercise actual parent consumer old-artifact read/foreign-model execution rejection before mutation using preserved tags",
+      "Qualify successor source-manifest guard while preserving old Polars receipts",
+      "Run applicable native platform/consumer gates; no R50.2 hosted runtime adoption claim"
+    ]
+  },
+  "preserved_failures": [
+    {
+      "stage": "first candidate compile",
+      "exit": 101,
+      "reason": "LowerHex unsupported on0.11.1 output; changed probe to existing byte formatter before any performance sample",
+      "log_sha256": "c0f095f357937c7192fefcc03d5c391ad897ca1ae875c11bd06bebee5efea9a7"
+    },
+    {
+      "stage": "independent build transcript first attempt",
+      "exit": 1,
+      "reason": "Python lexical slash ordering differs from Rust component Path ordering for careops-ed vs careops-ed-cli; corrected transcript sorting by Path.parts, actual build.rs unchanged",
+      "log_sha256": "0f008e0fb9a77249a2555faf58af0d7c4b2e8b4a1180426f65aebfaf43a80201"
+    }
+  ],
+  "scope_boundaries": [
+    "No parent production source, Cargo manifest/lock, upstream/pin or test-oracle change",
+    "R50.2 only; accepted_phases remains empty, R50.3 and R51/R52 unaccepted",
+    "No Linux/x86_64 R50.2 probe performance, fresh hosted, release/clinical/production acceptance inferred",
+    "Private source paths retained in ownership ledger; tracked portable paths preserve privacy gates"
+  ],
+  "source_bindings": [
+    {
+      "path": "Cargo.toml",
+      "sha256": "2000c30f811e10d72221596b10acbc3ab490c664f4d54f3027b3ac9e3f6f736e"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "816500fcc5e68397433f49cde34840389f61a70ddad63f464d0faea8b2112702"
+    },
+    {
+      "path": "crates/careops-ed/Cargo.toml",
+      "sha256": "4b08503f1f513ae9c2d45257b0b154fca1337f5217dff3f12c3d11e45c1f0942"
+    },
+    {
+      "path": "crates/careops-ed/src/api_runner.rs",
+      "sha256": "72e3d16bab30c6a40c5b4a2c7704b0cb9c6c89e215b4b8116b9aae6ad7743a3c"
+    },
+    {
+      "path": "crates/careops-ed/build.rs",
+      "sha256": "ba6d8ebc46810d2f47668126e4de1dafbfdf9149d55ff3777ecfd64e185b2b4b"
+    },
+    {
+      "path": "crates/careops-ed/src/capture.rs",
+      "sha256": "ab95ea4da526594fe1d6bce045006488f205812536df6e7b17b1144c207bb1bc"
+    },
+    {
+      "path": "crates/careops-ed/tests/r113_recovery.rs",
+      "sha256": "5b17b722b2a5baa491219875a7c3b612f5d9e85ac280ae8364c79a62aa96ca52"
+    }
+  ],
+  "commands": {
+    "probe": "repo-local Python3.15.1 qualify.py --repo ${REPO} --out ${PRIVATE}/sha2-r502-probe-v2; all child argv/exits/timings/stdout-stderr hashes in raw probe report",
+    "identity": "repo-local Python3.15.1 identity.py --repo ${REPO} --probe ${PRIVATE}/sha2-r502-probe-v2",
+    "security": "cargo deny --manifest-path ${PROBE}/candidate/Cargo.toml --features candidate --locked --config ${PRIVATE}/sha2-r502-deny.toml check advisories bans licenses sources",
+    "build_and_measurement": "Exact Cargo/bin/profile/RSS commands and immutable budgets in packet.json and durable scripts"
+  },
+  "owner": "01a19b9f-69e7-7353-9b75-445d5653feb4",
+  "reviewer": "/root/ffi_packet_prepare",
+  "review_status": "accepted_R50.2_decision_only_after_fixes",
+  "review_fixes": [
+    "Preserve normalized cargo-deny policy and actual private policy SHA256",
+    "Disclose noisy1KiB as budget pass, no portable speedup claim",
+    "Allow later documentation checkout only after unchanged runtime/manifests/lock and source ancestry checks; original tested source remains distinct",
+    "Public source-hash records use explicit path/sha256 pairs to avoid generic-api-key false positive on api_runner filename; no hash or hook-policy change."
+  ]
+}

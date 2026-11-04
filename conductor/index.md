@@ -84,9 +84,9 @@ records exact source/tested/final merge distinctions. PR197/198/main and release
 [Library adoption programme](library-adoption.md) registers rand, rand_distr, ECharts, petgraph and Three.js separately, after accepted Polars delivery in both repositories. All implementation remains pending.
 
 [SHA-2 R50.1 inventory](evidence/sha2-r501-inventory-20261104/README.md) verifies
-its historical upstream prerequisite and current consumers. R50.2 current-version,
-normal ED dependency edge and value qualification are next; runtime adoption
-remains pending.
+its historical upstream prerequisite and current consumers. [R50.2 qualification](evidence/sha2-r502-qualification-20261104/README.md)
+accepts exact0.11.1/default features, bounded value and build-identity compatibility
+as a replacement candidate. R50.3 phase review is next; runtime adoption remains pending.
 
 ## Robustness-first dependency decisions
 

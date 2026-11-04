@@ -55,3 +55,27 @@ semantics remain identical. R50.2/R51 must qualify existing build-ID, recovery
 and historical-artifact contracts; no promise that every provenance hash stays
 unchanged is made. The R50.1 inventory already binds both build scripts. No
 runtime, format-version or dependency decision is accepted here.
+
+## R50.2 accepted qualification — 4 November 2026
+
+The same coordinator and standard Git SHA2 worktree own this follow-on at
+sourcef1ef095. Private `sha2-r502-lease.json`/context/packet receipts retain the
+actual checkout, claim and operation; no native/auth/upstream scope or other
+lane changed. [Qualification](../../evidence/sha2-r502-qualification-20261104/README.md)
+records exact0.11.1/default alloc+oid, independent parity, fixed-budget local
+costs, security policy/database and actual build-identity checks. Reviewer
+`/root/ffi_packet_prepare` approved the decision after the security-policy
+receipt fix. Both initial compile/transcript failures are preserved.
+
+The existing normal ED→core→sha2 closure means the proposed direct edge adds no
+registry package/version. Replacing74 function lines with4 removes handwritten
+crypto;223 added support lines mean no overall net-line saving is claimed.
+The result is a candidate for bounded replacement, not runtime adoption.
+No source, parent manifest/lock, pin, old receipt or execution-resume guard changed.
+
+R50.3 phase review/decision is next; accepted_phases remains empty and all
+R51/R52 tasks remain unchecked. Bind the future failing parent tests before
+replacement, including old-artifact readability and before-mutation foreign-
+model resume rejection. Equal SHA256 bytes do not preserve source-bound build
+identity. Preserve original tags/recovery software and qualify successor manifest
+bindings; do not edit old Polars acceptance receipts or bypass the guard.
