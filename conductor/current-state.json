@@ -3,7 +3,7 @@
   "updated_at": "2026-11-04",
   "active_track": "sha2_integrity_20261022",
   "active_phase": "R50",
-  "next_action": "Prepare SHA2R50.2 exact current0.11.1 normal ED edge/features/minimal graph, independent digest parity and value/cost decision. R50.1 inventory/historical prerequisite accepted; no runtime adoption or R51 dispatch. Finish PR199 live final gates/merge separately in the frozen Polars integration lane; no main or PR199 merge is implied by this inventory.",
+  "next_action": "Prepare SHA2 R50.2 exact current0.11.1 normal ED edge/features/minimal graph, independent digest parity and value/cost decision, including model-build identity/recovery compatibility. R50.1 inventory accepted; no runtime adoption or R51 dispatch. Polars PR199 merged into existing Generic ED integration target; PR197/198 and main remain separate.",
   "context_paths": [
     "conductor/tracks/sha2_integrity_20261022/spec.md",
     "conductor/tracks/sha2_integrity_20261022/plan.md",
@@ -266,11 +266,21 @@
   },
   "polars_post_archive_ci": {
     "pr": 199,
-    "failed_source": "900c9cfb2d5e8dc7c78b71715145fdb24aeb1dab",
-    "failed_run": 41734017689,
-    "failed_gate": "macOS C63 actual comparison222.199667ms versus100ms",
-    "native_recipe": "POLARS_MAX_THREADS=1, full787, existing reservation and zero retries",
-    "acceptance": "Require live full hosted success before merge; no pass inferred here."
+    "source": "ecbf0ffc9b11f152a36b513cb9ff19bc48fffe40",
+    "ci_run": 41767445663,
+    "native_package_run": 41767445821,
+    "status": "success_merged_existing_integration_target",
+    "merge_commit": "d12559f77c3572bdf23e448dddab74b02c82777c",
+    "merge_target": "codex/generic-ed-capability-qualification",
+    "evidence": "conductor/evidence/polars-r14-qualification-20261104/post-archive-final-gates.json",
+    "native_recipe": {
+      "POLARS_MAX_THREADS": "1",
+      "native_tests": 787,
+      "retries": 0,
+      "reservation": "existing full-slot reservation unchanged",
+      "macos_c63_limit_ms": 100
+    },
+    "acceptance": "Exact final hosted gates passed; different tested/final merge commits have the same complete source tree. No main or release acceptance."
   },
   "sha2_r501_review": {
     "status": "accepted_inventory_only",
@@ -280,5 +290,15 @@
     "upstream_receipt_source": "5692e6a9ee866131262d60103a84e2544dc51e4a",
     "next_task": "R50.2",
     "runtime_adoption": "not_started"
-  }
+  },
+  "polars_post_archive_ci_history": [
+    {
+      "pr": 199,
+      "failed_source": "900c9cfb2d5e8dc7c78b71715145fdb24aeb1dab",
+      "failed_run": 41734017689,
+      "failed_gate": "macOS C63 actual comparison222.199667ms versus100ms",
+      "native_recipe": "POLARS_MAX_THREADS=1, full787, existing reservation and zero retries",
+      "acceptance": "Require live full hosted success before merge; no pass inferred here."
+    }
+  ]
 }

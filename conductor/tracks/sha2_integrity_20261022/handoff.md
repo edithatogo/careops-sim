@@ -40,5 +40,18 @@ Account for source-bound manifest guards without rewriting old receipts. R50.3
 phase closeout and all R51/R52 tasks remain pending. No runtime replacement,
 new dependency installation or new worker/native operation is dispatched.
 
-PR199 final integration gates run independently in the existing Polars lane.
-No PR199/main merge or fresh hosted acceptance is inferred by this inventory.
+PR199 final gates passed and it merged into the existing Generic ED integration
+target as d12559f77c3572bdf23e448dddab74b02c82777c; see the
+[post-archive receipt](../../evidence/polars-r14-qualification-20261104/post-archive-final-gates.json).
+PR197/198/main remain separate; the inventory alone proves no runtime adoption.
+
+## R50.2 model-build identity boundary
+
+ED `build.rs` hashes core/ED/CLI Rust sources and manifests, selected runtime
+sources, root manifest/lock, build script, compiler identity and build flags.
+Replacing the handwritten primitive or adding the normal dependency changes
+those bytes and therefore model-build identity even when standard SHA256 digest
+semantics remain identical. R50.2/R51 must qualify existing build-ID, recovery
+and historical-artifact contracts; no promise that every provenance hash stays
+unchanged is made. The R50.1 inventory already binds both build scripts. No
+runtime, format-version or dependency decision is accepted here.

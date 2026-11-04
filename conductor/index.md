@@ -73,10 +73,11 @@ records accepted R10–R14 engineering. Source258bb6b passed both787-test native
 hosts,815+127 Python,26 frozen benchmarks, full117 mutation accounting, coverage,
 policy and the native Linux package. [Final source receipt](evidence/polars-r14-qualification-20261104/README.md)
 preserves original failures, actual source/merge distinctions, rollback and the
-net+3621 maintenance cost (qualified source+3615; archive fixture+6). All20 task IDs and three downstream prerequisites
+net+3645 maintenance cost (qualified source+3615; archive fixture+6; CI helper/tests+24). All20 task IDs and three downstream prerequisites
 remain; runtime074/data473/Polars964 and ownership are unchanged. The archive
-is documentation reconciliation; no main merge, release, clinical or new dispatch
-is implied.
+preserves dated source acceptance. PR199 passed final gates and merged into the
+existing Generic ED integration target; [post-archive receipt](evidence/polars-r14-qualification-20261104/post-archive-final-gates.json)
+records exact source/tested/final merge distinctions. PR197/198/main and release/clinical gates remain separate.
 
 ## Separate library adoption tracks
 

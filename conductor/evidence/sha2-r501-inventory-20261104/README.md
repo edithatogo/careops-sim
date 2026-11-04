@@ -66,3 +66,14 @@ The proposed ED normal-dependency edit also touches a source currently bound by 
 ## Checkpoint verification
 
 Repo-local Python3.15.1 was verified. Focused38 task/16 context/9 dependency-handoff tests pass; context/tasks/MVP checks pass at25 tracks,110 milestones,405 task records and82/258 MVP parents/leaves. Only R50.1’s accepted flag/objective changes; the other404 task records and all other dependency rows remain unchanged. This is inventory/integrity evidence, not a native/runtime or current-library pass.
+
+## R50.2 model-build identity boundary
+
+ED `build.rs` hashes core/ED/CLI Rust sources and manifests, selected runtime
+sources, root manifest/lock, build script, compiler identity and build flags.
+Replacing the handwritten primitive or adding the normal dependency changes
+those bytes and therefore model-build identity even when standard SHA256 digest
+semantics remain identical. R50.2/R51 must qualify existing build-ID, recovery
+and historical-artifact contracts; no promise that every provenance hash stays
+unchanged is made. The R50.1 inventory already binds both build scripts. No
+runtime, format-version or dependency decision is accepted here.
