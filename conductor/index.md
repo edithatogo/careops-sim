@@ -82,6 +82,11 @@ is implied.
 
 [Library adoption programme](library-adoption.md) registers rand, rand_distr, ECharts, petgraph and Three.js separately, after accepted Polars delivery in both repositories. All implementation remains pending.
 
+[SHA-2 R50.1 inventory](evidence/sha2-r501-inventory-20261104/README.md) verifies
+its historical upstream prerequisite and current consumers. R50.2 current-version,
+normal ED dependency edge and value qualification are next; runtime adoption
+remains pending.
+
 ## Robustness-first dependency decisions
 
 [Separate dependency tracks and sequencing](robust-dependencies.md) prioritise existing-system robustness. [Value gates](dependency-value-policy.md) prevent adoption for its own sake. SUMO conditional; Rapier deferred.

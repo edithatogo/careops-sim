@@ -1,6 +1,6 @@
 # CareOps sha2 adoption
 
-Planned only. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
+R50.1 prerequisite verification and consumer inventory are accepted; runtime adoption and the value decision remain planned. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
 
 ## Inputs and dependencies
 
@@ -8,7 +8,23 @@ Accepted Kairos Track 93 Phase 2 receipt; local milestones none. Do not block al
 
 ## Outputs and contract
 
-Replace sha256_simple (which is not SHA-256) only where retained contracts require SHA-256. Delete the obsolete pseudo-Parquet codec through Track 70 rather than repairing it into a parallel format. Qualify standard SHA-256 primitives and retained consumers before the specific migration task that needs them; do not require completed Polars outputs for this track to close. Version any changed digest/format contract; preserve historical artifacts and reject incompatible formats explicitly. Keep noncryptographic identity hashes and RNG stream assignments unchanged. CareOps already declares sha2 but still maintains handwritten SHA-256: package presence is not migration.
+The current parent replacement candidate is the handwritten standard FIPS SHA-256
+`compute_sha256_hex` in `crates/careops-ed/src/api_runner.rs`. The nonstandard
+`sha256_simple` is an upstream historical target and is absent from current
+parent production source. Polars already removed the obsolete parent pseudo-
+Parquet paths; do not reintroduce a parallel codec. Preserve the accepted upstream
+historical receipts and distinguish them from current runtime qualification.
+
+CareOps already declares and locks sha2 0.11.1. Core identity, birthing runtime and
+build scripts already use it; ED currently has it only as a build dependency.
+R50.2 must assess the normal ED runtime edge, exact features/minimal graph,
+independent digest parity and net value before replacement. Existing correct
+standard uses, canonical identity bytes and RNG assignments remain unchanged.
+A byte-identical standard digest does not need an invented format migration;
+actually changed digest/format contracts require explicit versioning. Current
+historical receipt limitations and source-bound manifest guards are recorded in
+[the R50.1 inventory](../../evidence/sha2-r501-inventory-20261104/README.md).
+
 
 ## Ownership
 

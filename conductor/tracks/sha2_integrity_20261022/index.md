@@ -7,3 +7,9 @@
 - [test-matrix.md](test-matrix.md)
 - [risk-register.md](risk-register.md)
 - [handoff.md](handoff.md)
+
+R50.1 inventory and accepted historical prerequisite verification are complete.
+[Current source-bound inventory](../../evidence/sha2-r501-inventory-20261104/README.md)
+identifies the standard handwritten ED helper and retained existing sha2 uses.
+R50.2 exact current dependency/value qualification is next; runtime adoption is
+not started. All R51/R52 gates remain.

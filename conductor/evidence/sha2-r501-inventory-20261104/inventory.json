@@ -1,0 +1,557 @@
+{
+  "schema": "careops.private.sha2-r501-inventory.v1",
+  "status": "accepted_R50.1_inventory_and_historical_prerequisite_only",
+  "source": "ecbf0ffc9b11f152a36b513cb9ff19bc48fffe40",
+  "runtime_pin": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+  "data_source": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+  "accepted_upstream_receipt_source": "5692e6a9ee866131262d60103a84e2544dc51e4a",
+  "upstream_receipts": [
+    {
+      "path": "conductor/tracks/93-sha2-integrity/metadata.json",
+      "accepted_commit": "5692e6a9ee866131262d60103a84e2544dc51e4a",
+      "accepted_sha256": "d8f62055dff2c302883d4b7c8d46b311f56e8293dbf82d30778db4ebfa342be9",
+      "runtime_pin": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+      "current_sha256": "d8f62055dff2c302883d4b7c8d46b311f56e8293dbf82d30778db4ebfa342be9",
+      "same_bytes": true
+    },
+    {
+      "path": "conductor/tracks/93-sha2-integrity/evidence/phase2-closeout-report.md",
+      "accepted_commit": "5692e6a9ee866131262d60103a84e2544dc51e4a",
+      "accepted_sha256": "1dd491721e9a634283e0389f495b85054186135fc9cbe2dbdfbb39428144c2e3",
+      "runtime_pin": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+      "current_sha256": "1dd491721e9a634283e0389f495b85054186135fc9cbe2dbdfbb39428144c2e3",
+      "same_bytes": true
+    },
+    {
+      "path": "conductor/tracks/93-sha2-integrity/plan.md",
+      "accepted_commit": "5692e6a9ee866131262d60103a84e2544dc51e4a",
+      "accepted_sha256": "41558fa4267149277a788540a36b9ce1cd34c2dd6a1dc5909702180900296007",
+      "runtime_pin": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+      "current_sha256": "41558fa4267149277a788540a36b9ce1cd34c2dd6a1dc5909702180900296007",
+      "same_bytes": true
+    },
+    {
+      "path": "crates/kairo-ecs-arrow/tests/track93_phase1_sha2_verification.rs",
+      "accepted_commit": "5692e6a9ee866131262d60103a84e2544dc51e4a",
+      "accepted_sha256": "f2fea6f1328fc4a2fdbbb042d4fbc5ad74b4d9ecb9289a9c2ba7191b5a22606e",
+      "runtime_pin": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+      "current_sha256": "f2fea6f1328fc4a2fdbbb042d4fbc5ad74b4d9ecb9289a9c2ba7191b5a22606e",
+      "same_bytes": true
+    },
+    {
+      "path": "bindings/python/tests/test_track93_sha2_polyglot.py",
+      "accepted_commit": "5692e6a9ee866131262d60103a84e2544dc51e4a",
+      "accepted_sha256": "f7199e3b8d5f8d433f642af16cdb2b13769047856739dd1c80965cd879b068e9",
+      "runtime_pin": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+      "current_sha256": "f7199e3b8d5f8d433f642af16cdb2b13769047856739dd1c80965cd879b068e9",
+      "same_bytes": true
+    }
+  ],
+  "consumers": [
+    {
+      "path": "crates/careops-birthing-cli/build.rs",
+      "sha256": "35792e403568874f97b53cc92847be41bb4c3273e86dd5a119332de3e47fae8d",
+      "evidence_occurrences": [
+        {
+          "line": 1,
+          "text": "use sha2::{Digest, Sha256};"
+        },
+        {
+          "line": 38,
+          "text": "let mut digest = Sha256::new();"
+        }
+      ],
+      "scope": "production/build"
+    },
+    {
+      "path": "crates/careops-birthing-cli/src/lib.rs",
+      "sha256": "e192716b29e918feae6e3368e60a4418f7e1ebe0e0f9a517d50d5451b93aa619",
+      "evidence_occurrences": [
+        {
+          "line": 14,
+          "text": "use sha2::{Digest, Sha256};"
+        },
+        {
+          "line": 161,
+          "text": "Sha256::digest(bytes)"
+        }
+      ],
+      "scope": "production/build"
+    },
+    {
+      "path": "crates/careops-core/src/identity.rs",
+      "sha256": "588fcea5fc750c07ef14b2e6e921fc8a1d28b3e3ae658d59a2c2a7991a3213cd",
+      "evidence_occurrences": [
+        {
+          "line": 9,
+          "text": "use sha2::{Digest, Sha256};"
+        },
+        {
+          "line": 909,
+          "text": "let mut hasher = Sha256::new();"
+        },
+        {
+          "line": 931,
+          "text": "let mut hasher = Sha256::new();"
+        }
+      ],
+      "scope": "production/build"
+    },
+    {
+      "path": "crates/careops-core/tests/identity_contract.rs",
+      "sha256": "81180ac52b334d34f15c6c98ded2c666a9ebd1e93386590a5d566f0f44b466bb",
+      "evidence_occurrences": [
+        {
+          "line": 8,
+          "text": "use sha2::{Digest, Sha256};"
+        },
+        {
+          "line": 33,
+          "text": "let mut hash = Sha256::new();"
+        }
+      ],
+      "scope": "test/support"
+    },
+    {
+      "path": "crates/careops-ed-cli/src/lib.rs",
+      "sha256": "42c3a61a5742e26f634689b9fc320c3f16104714a8cd6fa8cbeeb529fb138906",
+      "evidence_occurrences": [
+        {
+          "line": 5,
+          "text": "check_safe_cli_path, compute_sha256_hex, validate_scenario_source, CancellationToken,"
+        },
+        {
+          "line": 272,
+          "text": "|| self.raw_input_sha256 != compute_sha256_hex(raw)"
+        },
+        {
+          "line": 274,
+          "text": "!= compute_sha256_hex(&serde_json::to_vec(scenario).map_err(invalid)?)"
+        },
+        {
+          "line": 381,
+          "text": "\"dataset_manifest\":\"manifest.json\", \"dataset_manifest_sha256\":compute_sha256_hex(&bounded_read(&destination.join(\"manifest.json\"), ExportLimits::default().max_manifest_bytes)?),"
+        },
+        {
+          "line": 382,
+          "text": "\"conversion_receipt\":\"conversion.json\", \"conversion_receipt_sha256\":compute_sha256_hex(&bounded_read(&destination.join(\"conversion.json\"), MAX_CONTROL_BYTES)?)});"
+        },
+        {
+          "line": 609,
+          "text": "let invocation_digest = format!(\"{}\\n\", compute_sha256_hex(&invocation_bytes));"
+        },
+        {
+          "line": 669,
+          "text": "raw_input_sha256: compute_sha256_hex(&raw),"
+        },
+        {
+          "line": 670,
+          "text": "parsed_input_sha256: compute_sha256_hex("
+        },
+        {
+          "line": 703,
+          "text": "format!(\"{}\\n\", compute_sha256_hex(&invocation_bytes)).as_bytes(),"
+        },
+        {
+          "line": 731,
+          "text": "invocation_sha256: compute_sha256_hex(&invocation_bytes),"
+        },
+        {
+          "line": 733,
+          "text": "batch_sha256: compute_sha256_hex(&bounded_read("
+        },
+        {
+          "line": 738,
+          "text": "dataset_manifest_sha256: compute_sha256_hex(&bounded_read("
+        }
+      ],
+      "scope": "production/build"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/c63_native_contract.rs",
+      "sha256": "269b8b67e719f540a679f60cdead776c4b35a8937901b36430c9a7718cdfa272",
+      "evidence_occurrences": [
+        {
+          "line": 2,
+          "text": "use careops_ed::disposition::api_runner::{compute_sha256_hex, ExitCodeDef, ValidationError};"
+        },
+        {
+          "line": 82,
+          "text": "compute_sha256_hex(NOMINAL.as_bytes())"
+        },
+        {
+          "line": 182,
+          "text": "compute_sha256_hex(&fs::read(output.join(&part.file)).unwrap()),"
+        }
+      ],
+      "scope": "test/support"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/native_cli.rs",
+      "sha256": "8f7e33254bfee9dc18a54fc64e78839d277c901d051a42a29778f5744fac1164",
+      "evidence_occurrences": [
+        {
+          "line": 1,
+          "text": "use careops_ed::disposition::api_runner::{compute_sha256_hex, CancellationToken, ExitCodeDef};"
+        },
+        {
+          "line": 99,
+          "text": "compute_sha256_hex(&std::fs::read(output.join(\"invocation.json\")).unwrap())"
+        },
+        {
+          "line": 103,
+          "text": "compute_sha256_hex(&std::fs::read(output.join(\"batch_run.json\")).unwrap())"
+        },
+        {
+          "line": 107,
+          "text": "compute_sha256_hex(&std::fs::read(output.join(\"data/manifest.json\")).unwrap())"
+        },
+        {
+          "line": 130,
+          "text": "compute_sha256_hex(&std::fs::read(output.join(\"input.json\")).unwrap())"
+        },
+        {
+          "line": 566,
+          "text": "part[\"sha256\"] = compute_sha256_hex(text.as_bytes()).into();"
+        },
+        {
+          "line": 606,
+          "text": "part[\"sha256\"] = compute_sha256_hex(text.as_bytes()).into();"
+        }
+      ],
+      "scope": "test/support"
+    },
+    {
+      "path": "crates/careops-ed/build.rs",
+      "sha256": "ba6d8ebc46810d2f47668126e4de1dafbfdf9149d55ff3777ecfd64e185b2b4b",
+      "evidence_occurrences": [
+        {
+          "line": 1,
+          "text": "use sha2::{Digest, Sha256};"
+        },
+        {
+          "line": 47,
+          "text": "let mut digest = Sha256::new();"
+        }
+      ],
+      "scope": "production/build"
+    },
+    {
+      "path": "crates/careops-ed/src/api_runner.rs",
+      "sha256": "72e3d16bab30c6a40c5b4a2c7704b0cb9c6c89e215b4b8116b9aae6ad7743a3c",
+      "evidence_occurrences": [
+        {
+          "line": 87,
+          "text": "pub fn compute_sha256_hex(data: &[u8]) -> String {"
+        }
+      ],
+      "scope": "production/build"
+    },
+    {
+      "path": "crates/careops-ed/src/capture.rs",
+      "sha256": "ab95ea4da526594fe1d6bce045006488f205812536df6e7b17b1144c207bb1bc",
+      "evidence_occurrences": [
+        {
+          "line": 24,
+          "text": "use crate::disposition::api_runner::compute_sha256_hex;"
+        },
+        {
+          "line": 223,
+          "text": "effective_input_sha256: compute_sha256_hex("
+        },
+        {
+          "line": 226,
+          "text": "parsed_input_sha256: compute_sha256_hex("
+        },
+        {
+          "line": 284,
+          "text": "sha256: compute_sha256_hex(&bytes),"
+        },
+        {
+          "line": 435,
+          "text": "if bytes.len() != part.bytes || compute_sha256_hex(&bytes) != part.sha256 {"
+        }
+      ],
+      "scope": "production/build"
+    },
+    {
+      "path": "crates/careops-ed/src/native_output.rs",
+      "sha256": "33516ba922fda4ec5ec84cdf51fd9d563f345ef89802f676a2dfc4be828da3d0",
+      "evidence_occurrences": [
+        {
+          "line": 519,
+          "text": "crate::disposition::api_runner::compute_sha256_hex(&bytes);"
+        },
+        {
+          "line": 586,
+          "text": "let receipt = serde_json::json!({\"schema\":\"careops.ed.native-conversion.v1\",\"source_manifest_sha256\":dataset.manifest_sha256,\"target_manifest_sha256\":crate::disposition::api_runner::compute_sha256_hex(&target)});"
+        }
+      ],
+      "scope": "production/build"
+    },
+    {
+      "path": "crates/careops-ed/src/native_reader.rs",
+      "sha256": "c50d6da701afda2a00db3b358106087463d9d4272dd230e122f83a46efefd5e0",
+      "evidence_occurrences": [
+        {
+          "line": 267,
+          "text": "|| crate::disposition::api_runner::compute_sha256_hex(&content) != part.sha256"
+        },
+        {
+          "line": 347,
+          "text": "manifest_sha256: crate::disposition::api_runner::compute_sha256_hex(&bytes),"
+        }
+      ],
+      "scope": "production/build"
+    },
+    {
+      "path": "crates/careops-ed/src/native_tables.rs",
+      "sha256": "3c2b2e0c8d2b178b7372fa69be2b58b6dd12d696ae3c272b6013bbc6ba3edad3",
+      "evidence_occurrences": [
+        {
+          "line": 202,
+          "text": "if crate::disposition::api_runner::compute_sha256_hex(&bytes) != part.sha256 {"
+        }
+      ],
+      "scope": "production/build"
+    },
+    {
+      "path": "crates/careops-ed/tests/c63_compatibility_replay_performance.rs",
+      "sha256": "1e2066799f66e889ff10b30031ba33faa58ff5e83f247e20c299bc6005f36bd4",
+      "evidence_occurrences": [
+        {
+          "line": 12,
+          "text": "compute_sha256_hex, validate_scenario_source, ExitCodeDef, ValidationSuccess,"
+        },
+        {
+          "line": 154,
+          "text": "compute_sha256_hex(b\"\"),"
+        },
+        {
+          "line": 158,
+          "text": "compute_sha256_hex(b\"abc\"),"
+        },
+        {
+          "line": 173,
+          "text": "compute_sha256_hex(&bytes),"
+        },
+        {
+          "line": 181,
+          "text": "compute_sha256_hex(&input),"
+        },
+        {
+          "line": 211,
+          "text": "compute_sha256_hex(&serde_json::to_vec(&first).unwrap()),"
+        },
+        {
+          "line": 212,
+          "text": "compute_sha256_hex(&serde_json::to_vec(&second).unwrap())"
+        },
+        {
+          "line": 295,
+          "text": "let hash_1 = compute_sha256_hex(&rep_bytes_1);"
+        },
+        {
+          "line": 296,
+          "text": "let hash_2 = compute_sha256_hex(&rep_bytes_2);"
+        },
+        {
+          "line": 297,
+          "text": "let hash_4 = compute_sha256_hex(&rep_bytes_4);"
+        }
+      ],
+      "scope": "test/support"
+    },
+    {
+      "path": "crates/careops-ed/tests/c64_handoff_contracts.rs",
+      "sha256": "4d985c289b9dc39bb8de9418706429ff1ffcf24325dc12d0d56cea0233a7aa17",
+      "evidence_occurrences": [
+        {
+          "line": 43,
+          "text": "use careops_ed::disposition::api_runner::{allocate_replication_seeds, compute_sha256_hex};"
+        },
+        {
+          "line": 823,
+          "text": "assert_eq!(compute_sha256_hex(&received), compute_sha256_hex(&bytes));"
+        },
+        {
+          "line": 1454,
+          "text": "assert_eq!(compute_sha256_hex(&bytes), part.sha256);"
+        }
+      ],
+      "scope": "test/support"
+    },
+    {
+      "path": "crates/careops-ed/tests/e31_public_api_tests.rs",
+      "sha256": "d73107f763c17fa5cf566db685a93c0cf2f651ba552a832530e9416c9fce894b",
+      "evidence_occurrences": [
+        {
+          "line": 4,
+          "text": "allocate_replication_seeds, compute_sha256_hex, validate_scenario_source, ExitCodeDef,"
+        },
+        {
+          "line": 40,
+          "text": "let empty_sha = compute_sha256_hex(b\"\");"
+        },
+        {
+          "line": 46,
+          "text": "let test_sha = compute_sha256_hex(b\"careops-sim-deterministic-test\");"
+        },
+        {
+          "line": 152,
+          "text": "compute_sha256_hex(&serde_json::to_vec(&scenario).unwrap())"
+        }
+      ],
+      "scope": "test/support"
+    },
+    {
+      "path": "crates/careops-ed/tests/e42_sensitivity_identifiability_warmup.rs",
+      "sha256": "6682cdef5488ed321ce92b51f5798e80b4f1365f5e2fc2e9184c43f7febd63de",
+      "evidence_occurrences": [
+        {
+          "line": 46,
+          "text": "compute_sha256_hex, validate_scenario_source, ExitCodeDef,"
+        },
+        {
+          "line": 1213,
+          "text": "let summary_hash = compute_sha256_hex(&summary_bytes);"
+        }
+      ],
+      "scope": "test/support"
+    },
+    {
+      "path": "crates/careops-ed/tests/r111_capture_boundaries.rs",
+      "sha256": "703ab37cff4dbbaebe8fa08a7ee749c30fa0803670d283ee1be851accd81132d",
+      "evidence_occurrences": [
+        {
+          "line": 13,
+          "text": "use careops_ed::disposition::api_runner::compute_sha256_hex;"
+        },
+        {
+          "line": 403,
+          "text": "compute_sha256_hex(&store.read_part(&part.name, 4096).unwrap()),"
+        },
+        {
+          "line": 497,
+          "text": "rep.parts[0].sha256 = compute_sha256_hex(&bytes);"
+        },
+        {
+          "line": 510,
+          "text": "rep.parts[0].sha256 = compute_sha256_hex(&bytes);"
+        },
+        {
+          "line": 520,
+          "text": "rep.parts[0].sha256 = compute_sha256_hex(&bytes);"
+        }
+      ],
+      "scope": "test/support"
+    },
+    {
+      "path": "crates/careops-ed/tests/r112_production_capture.rs",
+      "sha256": "a835cd6a1f066608a5a7320e8dda3179eae2d92ec8737c8992f9e2c912ec7b62",
+      "evidence_occurrences": [
+        {
+          "line": 475,
+          "text": "use careops_ed::disposition::api_runner::compute_sha256_hex;"
+        },
+        {
+          "line": 504,
+          "text": "part.sha256 = compute_sha256_hex(&bytes);"
+        }
+      ],
+      "scope": "test/support"
+    },
+    {
+      "path": "crates/careops-ed/tests/r113_recovery.rs",
+      "sha256": "5b17b722b2a5baa491219875a7c3b612f5d9e85ac280ae8364c79a62aa96ca52",
+      "evidence_occurrences": [
+        {
+          "line": 561,
+          "text": "part.sha256 = careops_ed::disposition::api_runner::compute_sha256_hex(&bytes);"
+        }
+      ],
+      "scope": "test/support"
+    },
+    {
+      "path": "crates/careops-ed/tests/r131_native_files.rs",
+      "sha256": "95d75b4536f6f4ee498211366ee650a679875ae3bd6f7b7f453bad351c8d6123",
+      "evidence_occurrences": [
+        {
+          "line": 53,
+          "text": "use careops_ed::disposition::api_runner::compute_sha256_hex;"
+        },
+        {
+          "line": 209,
+          "text": "files.push(json!({\"format\":format,\"path\":file,\"bytes\":bytes.len(),\"sha256\":compute_sha256_hex(&bytes)}));"
+        },
+        {
+          "line": 259,
+          "text": "let effective_hash = compute_sha256_hex(&effective);"
+        },
+        {
+          "line": 260,
+          "text": "let parsed_hash = compute_sha256_hex(&parsed);"
+        }
+      ],
+      "scope": "test/support"
+    },
+    {
+      "path": "crates/careops-ed/tests/r132_native_reader.rs",
+      "sha256": "0a5a3af64b4c63398a8f5d5d9453622cb38199af021e2a0ee024ce61945fa826",
+      "evidence_occurrences": [
+        {
+          "line": 65,
+          "text": "careops_ed::disposition::api_runner::compute_sha256_hex(&source_manifest)"
+        },
+        {
+          "line": 160,
+          "text": "part.sha256 = careops_ed::disposition::api_runner::compute_sha256_hex(changed.as_bytes());"
+        },
+        {
+          "line": 208,
+          "text": "part.sha256 = careops_ed::disposition::api_runner::compute_sha256_hex(&bytes);"
+        }
+      ],
+      "scope": "test/support"
+    }
+  ],
+  "qualification_boundary": "Track93 historical acceptance verified, not a fresh runtime/library version pass. Historical sha2 0.10.8/9 is not the current locked0.11.1 qualification; exact currentversion/features/MSRV/policy/value remainsR50.2. No installation, pin orruntime change.",
+  "next_leaf": "R50.2 exact current dependency/version and measured value decision; R51 needs its own bound packet afterR50closeout.",
+  "evidence_limits": [
+    "Historical Rust tests assert known empty/abc/56-byte digests; multiblock checks only32-byte/64-hexshape.",
+    "Historical Python file namedpolyglotparity computesPythonhashlib only; no Rustdigestcomparison.",
+    "No historical receipt overclaim is promoted to current fullbyte/polygot runtime proof; futureR50.2/R51 independentoracle gate remains."
+  ],
+  "future_scope_notes": [
+    "ED sha2 is build-only today; proposed normal runtime edge is not yet accepted.",
+    "crates/careops-ed/Cargo.toml is in SHARED_SOURCES; preserve historical receipts and plan an explicitly reviewed successor qualification if runtime edge changes."
+  ],
+  "review": {
+    "reviewer": "/root/ffi_packet_prepare",
+    "date": "2026-11-04",
+    "decision": "Approve R50.1 only; current-version/value/runtime/replacement gates remain pending.",
+    "clarifications": [
+      "ED sha2 is currently build-only; proposed normal runtime edge requires R50.2.",
+      "Current target is standard handwritten SHA256; historical pseudo-hash is absent from parent."
+    ]
+  },
+  "runtime_adoption": "not_started",
+  "checkpoint_verification": {
+    "python": "3.15.1, isolated repo-local interpreter verified",
+    "focused_tests": {
+      "tasks": 38,
+      "context": 16,
+      "dependency_handoffs": 9
+    },
+    "planning": {
+      "tracks": 25,
+      "milestones": 110,
+      "task_records": 405,
+      "local_links": 2083,
+      "mvp_parents": 82,
+      "mvp_leaves": 258
+    },
+    "scope": "Documentation/metadata inventory checkpoint; no fresh native/runtime/library qualification inferred.",
+    "preservation": "OnlyR50.1 accepted/objective changed; other404task records and allotherdependency rows unchanged."
+  }
+}
