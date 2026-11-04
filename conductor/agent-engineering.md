@@ -128,8 +128,11 @@ qualification is claimed.
 
 Use the Codex internal browser for all browser access unless the user explicitly
 instructs otherwise, including sign-in, reauthentication, opening pages and
-browser-based QA. Do not launch or control an external browser. Existing explicit
-CLI-first instructions continue to apply to qualified CLI/API operations.
+browser-based QA and other web interactions. Do not launch or control an external
+browser. Generic CLI-first preferences are not an exception for these operations.
+An exception requires an explicit user instruction covering that operation or a
+higher-priority requirement; report genuine conflicts instead of broadening it.
+Non-browser local build, test and file operations remain separate.
 If the internal browser is unavailable or cannot complete a required step, report
 the specific limitation instead of silently substituting another browser. This
 does not authorize authentication bypasses, credential changes, new access,
