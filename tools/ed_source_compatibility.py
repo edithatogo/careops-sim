@@ -272,6 +272,18 @@ def validate_metadata_edges(root, lock_bytes, manifest_bytes):
         raise ValueError('data promotion scope or exact binding mismatch: unknown metadata dependency profile')
 
 
+def validate_sha2_successor_manifest(old_manifest, manifest, old_lock, lock):
+    """Only the qualified normal sha2 workspace edge; no other graph drift."""
+    try:
+        expected = tomllib.loads(old_manifest.decode())
+        expected['dependencies']['sha2'] = {'workspace': True}
+        actual = tomllib.loads(manifest.decode())
+    except (TypeError, ValueError, UnicodeError, KeyError) as error:
+        raise ValueError('SHA2 successor manifest is malformed') from error
+    if lock != old_lock or not strict_equal(actual, expected):
+        raise ValueError('SHA2 successor permits only the exact normal workspace edge')
+
+
 def native_bindings(root, data_bytes):
     return {
         'data_receipt_commit': DATA_RECEIPT_COMMIT,
