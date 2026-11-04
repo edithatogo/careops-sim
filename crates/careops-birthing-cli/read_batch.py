@@ -3,7 +3,7 @@
 
 Run with the repository-local Python3.15.1 and pinned reader requirements.
 The required domain manifest carries tick=second and effective-input provenance;
-the generic event-log time_scale column remains its schema's literal `ticks`.
+the generic event-log time_scale column explicitly records `second` as well.
 """
 import hashlib
 import json
@@ -92,6 +92,42 @@ def validate_theatre(rows, expected_input):
     return checked
 
 
+def validate_uncertainty(manifest):
+    expected = {
+        'schema': 'careops.birthing.observation-uncertainty.v1',
+        'method': 'not_estimated',
+        'reason': 'case_observations_no_declared_sampling_estimand',
+        'observation_unit': 'synthetic_case',
+        'experiment_unit': 'independent_replication',
+        'metrics': ['delay_seconds', 'origin_occupied_seconds', 'target_breach'],
+    }
+    actual = manifest.get('uncertainty')
+    if (type(manifest.get('schema_version')) is not int
+            or manifest['schema_version'] != 2 or actual != expected):
+        raise ValueError('missing or unsupported observation uncertainty contract')
+    return actual
+
+
+def validate_native_metadata(actual, manifest, native, index, first_sequence, rows):
+    expected = {
+        'careops.schema_version': '2',
+        'careops.run_id': native['run_id'],
+        'careops.effective_input_sha256': manifest['effective_input_sha256'],
+        'careops.model_contract_sha256': manifest['replication']['model_contract_sha256'],
+        'careops.runtime_revision': manifest['runtime_revision'],
+        'careops.data_revision': manifest['data_revision'],
+        'careops.time_unit': manifest['tick_unit'],
+        'careops.replication_index': str(index),
+        'careops.seed': str(manifest['replication']['seed']),
+        'careops.first_sequence': str(first_sequence),
+        'careops.rows': str(rows),
+    }
+    decoded = {k.decode('utf-8'): v.decode('utf-8') for k, v in (actual or {}).items()
+               if k != b'ARROW:schema'}
+    if decoded != expected:
+        raise ValueError('native capture metadata mismatch')
+
+
 def read_batch(root, expected_input):
     batch = root / expected_input['batch_id']
     completed = load(batch / 'batch_manifest.json')
@@ -99,29 +135,34 @@ def read_batch(root, expected_input):
         raise ValueError("incomplete batch")
     reports = []
     model_contract = None
+    uncertainty = None
     for index, result in enumerate(completed):
         if result['index'] != index:
             raise ValueError("unordered or duplicated replication")
         name = result['directory']
-        if Path(name).name != name or '/' in name or '\\' in name:
+        if (Path(name).name != name or '/' in name or '\\' in name
+                or not name.startswith(expected_input['batch_id'] + '-attempt')
+                or not name.endswith(f'-rep{index}')):
             raise ValueError("invalid replication path")
         directory = batch / name
         if directory.is_symlink():
             raise ValueError("symlink replication")
         manifest = load(directory / 'birthing_manifest.json')
+        uncertainty = validate_uncertainty(manifest)
         model = result['model_contract_sha256']
         if (len(model) != 64 or any(c not in '0123456789abcdef' for c in model)
                 or (model_contract is not None and model_contract != model)):
             raise ValueError('mixed or malformed model/build contract identity')
         model_contract = model
         native = load(directory / 'run_manifest.json')
-        if (manifest['schema_version'] != 1 or not manifest['completed']
+        if (manifest['schema_version'] != 2 or not manifest['completed']
                 or manifest['input'] != expected_input or manifest['tick_unit'] != 'second'
                 or manifest['replication'] != result
                 or manifest['runtime_revision'] != '07410266bf54b6f73c59db2f8cbfbc5697c53734'
-                or manifest['data_revision'] != '4134a3733ba7e833a8c520621ec2af5a4bd4b31a'
+                or manifest['data_revision'] != '473ff2c0e640a7e457f500593f6ea1f06602ab35'
                 or native['status'] != 'Completed' or native['time_scale'] != 'second'
-                or native['replication_id'] != index or native['seed'] != result['seed']):
+                or native['replication_id'] != index or native['seed'] != result['seed']
+                or native['run_id'] != name.removesuffix(f'-rep{index}')):
             raise ValueError("unbound source/input/completion metadata")
         encoded_input = manifest['effective_input_json'].encode('utf-8')
         bound = json.loads(manifest['effective_input_json'])
@@ -141,7 +182,9 @@ def read_batch(root, expected_input):
             raw = path.read_bytes()
             if digest(raw) != receipt['sha256']:
                 raise ValueError("IPC hash mismatch")
-            table = ipc.open_stream(pa.BufferReader(raw)).read_all()
+            stream = ipc.open_stream(pa.BufferReader(raw))
+            validate_native_metadata(stream.schema.metadata, manifest, native, index, len(capture) + 1, receipt['rows'])
+            table = stream.read_all()
             parquet_part = native['parts'][part]
             if parquet_part['file_name'] != f'part-{part+1:05}.parquet':
                 raise ValueError("invalid Parquet part")
@@ -151,6 +194,7 @@ def read_batch(root, expected_input):
             if fnv64(path.read_bytes()) != parquet_part['file_hash']:
                 raise ValueError('Parquet content hash mismatch')
             parquet = pq.ParquetFile(path)
+            validate_native_metadata(parquet.metadata.metadata, manifest, native, index, len(capture) + 1, receipt['rows'])
             for row_group in range(parquet.metadata.num_row_groups):
                 for column in range(parquet.metadata.num_columns):
                     if parquet.metadata.row_group(row_group).column(column).compression != 'ZSTD':
@@ -166,6 +210,8 @@ def read_batch(root, expected_input):
             right = sorted(other.to_pylist(), key=lambda row: row['sequence'])
             if left != right or len(left) != receipt['rows'] or len(right) != parquet_part['row_count']:
                 raise ValueError("independent format/value/count mismatch")
+            if [row['sequence'] for row in left] != list(range(len(capture) + 1, len(capture) + 1 + receipt['rows'])):
+                raise ValueError('native part sequence metadata mismatch')
             capture.extend(left)
         capture.sort(key=lambda row: row['sequence'])
         rows = []
@@ -173,7 +219,7 @@ def read_batch(root, expected_input):
             row = json.loads(record['payload_ref'])
             if (record['schema_version'] != 2 or record['run_id'] != native['run_id']
                     or record['sequence'] != sequence or record['event_id_index'] != sequence
-                    or record['event_id_gen'] != 0 or record['time_scale'] != 'ticks'
+                    or record['event_id_gen'] != 0 or record['time_scale'] != 'second'
                     or record['priority'] != 0
                     or record['entity_id_gen'] != (0 if row['person'] else None)
                     or (record['time_ticks_hi'] << 64) + record['time_ticks_lo'] != row['tick']
@@ -193,7 +239,8 @@ def read_batch(root, expected_input):
         reports.append({'index': index, 'seed': result['seed'], 'rows': len(rows),
                         'canonical_sha256': canonical, 'births': len(births),
                         'policy_metrics_checked': validate_theatre(rows, expected_input)})
-    return {'reader': 'PyArrow', 'version': pa.__version__, 'model_contract_sha256': model_contract, 'replications': reports}
+    return {'reader': 'PyArrow', 'version': pa.__version__, 'model_contract_sha256': model_contract,
+            'uncertainty': uncertainty, 'replications': reports}
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 """Task E4.2: Sensitivity, identifiability, warm-up observation windows, and benchmark reporting.
 
 Verifies:
-1. CLI/runner handling of sensitivity scenarios:
+1. Actual native CLI handling of sensitivity scenarios:
    - Capacity response surface monotonicity (wait times decrease with capacity).
    - Arrival demand scaling and queue formation under capacity saturation.
    - CLI parameter overrides (--seed, --horizon) on sensitivity scenarios.
@@ -13,7 +13,7 @@ Verifies:
    - Measurement of execution duration, patient throughput (patients/sec), and simulation step rate.
 4. Neutral comparative evaluation and uncertainty diagnostics:
    - Objective metric deltas with explicit units and denominators.
-   - Standard error calculations for stochastic uncertainty.
+   - Qualified per-run replication uncertainty; paired-difference uncertainty explicitly not estimated.
    - Absence of evaluative/normative value judgements ("superior", "inferior", "better", "worse") in diagnostics.
    - Preservation of software verification vs domain validation taxonomy and regulatory disclaimer.
 """
@@ -21,13 +21,12 @@ Verifies:
 import json
 import math
 from pathlib import Path
-import subprocess
 import tempfile
 import time
 import unittest
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
-RUNNER_BIN = ROOT_DIR / "target/debug/examples/runner"
+from native_cli_support import NativeCliCase, invoke, native_tick, metric_rows, read_run
 NOMINAL_SCENARIO = ROOT_DIR / "crates/careops-ed/examples/nominal_mvp.json"
 CONSTRAINED_SCENARIO = ROOT_DIR / "crates/careops-ed/examples/constrained_mvp.json"
 
@@ -127,31 +126,12 @@ def build_sensitivity_scenario(
     }
 
 
-class E42SensitivityBenchmarksTests(unittest.TestCase):
+class E42SensitivityBenchmarksTests(NativeCliCase):
     """Integration test suite for Task E4.2 sensitivity, warm-up windows, and benchmarks."""
 
-    @classmethod
-    def setUpClass(cls):
-        # Ensure runner example binary is compiled
-        proc = subprocess.run(
-            ["cargo", "build", "--locked", "-p", "careops-ed", "--example", "runner"],
-            cwd=ROOT_DIR,
-            capture_output=True,
-            text=True,
-        )
-        if proc.returncode != 0:
-            raise RuntimeError(f"Failed to build runner: {proc.stderr}")
-        assert RUNNER_BIN.exists(), f"Runner binary not found at {RUNNER_BIN}"
 
-    def run_cmd(self, *args):
-        """Invoke runner example binary."""
-        proc = subprocess.run(
-            [str(RUNNER_BIN), *args],
-            cwd=ROOT_DIR,
-            capture_output=True,
-            text=True,
-        )
-        return proc
+
+
 
     def test_capacity_sensitivity_response_surface(self):
         """Evaluate parameter response surface over bay capacity C in {1, 2, 4}.
@@ -183,14 +163,11 @@ class E42SensitivityBenchmarksTests(unittest.TestCase):
                 scen_file = Path(tmp_dir) / f"scen_c{cap}.json"
                 scen_file.write_text(json.dumps(scen, indent=2))
 
-                proc = self.run_cmd("run", str(scen_file))
-                self.assertEqual(proc.returncode, 0, f"Run failed for C={cap}: {proc.stderr}")
-
-                doc = json.loads(proc.stdout)
-                summary = doc["summary"]
+                _, tables = self.run_scenario(scen_file)
+                summary = tables['replications'].to_pylist()[0]
                 self.assertEqual(summary["completed"], 4)
 
-                waits = [p["wait_ticks"] for p in summary["patients"] if p["wait_ticks"] is not None]
+                waits = [native_tick(p, 'wait_ticks') for p in tables['patients'].to_pylist() if native_tick(p, 'wait_ticks') is not None]
                 mean_wait = sum(waits) / len(waits) if waits else 0.0
                 mean_waits[cap] = mean_wait
 
@@ -238,10 +215,8 @@ class E42SensitivityBenchmarksTests(unittest.TestCase):
                 scen_file = Path(tmp_dir) / f"scen_n{count}.json"
                 scen_file.write_text(json.dumps(scen, indent=2))
 
-                proc = self.run_cmd("run", str(scen_file))
-                self.assertEqual(proc.returncode, 0, proc.stderr)
-                doc = json.loads(proc.stdout)
-                demand_results[count] = doc["summary"]
+                _, tables = self.run_scenario(scen_file)
+                demand_results[count] = tables['replications'].to_pylist()[0]
 
             # Count=2: both finish easily within horizon
             self.assertEqual(demand_results[2]["completed"], 2)
@@ -256,23 +231,10 @@ class E42SensitivityBenchmarksTests(unittest.TestCase):
             )
 
     def test_cli_sensitivity_parameter_overrides(self):
-        """CLI runner must support --seed and --horizon overrides for sensitivity testing."""
-        proc = self.run_cmd(
-            "run",
-            str(NOMINAL_SCENARIO),
-            "--seed",
-            "7777",
-            "--horizon",
-            "12",
-        )
-        self.assertEqual(proc.returncode, 0, proc.stderr)
-        doc = json.loads(proc.stdout)
-
-        # Overrides reflected in manifest and execution summary
-        self.assertEqual(doc["manifest"]["seed"], 7777)
-        self.assertEqual(doc["manifest"]["horizon_ticks"], 12)
-        self.assertEqual(doc["summary"]["seed"], 7777)
-        self.assertEqual(doc["summary"]["horizon_ticks"], 12)
+        manifest, tables = self.run_scenario(NOMINAL_SCENARIO, '--seed', 7777, '--horizon', 12)
+        self.assertEqual((manifest['base_seed'], manifest['horizon_ticks']), (7777, 12))
+        replication = tables['replications'].to_pylist()[0]
+        self.assertEqual((replication['seed'], replication['horizon_ticks']), (7777, 12))
 
     def test_warmup_window_and_startup_bias_elimination(self):
         """Evaluate cold-start transient detection vs steady-state observation window.
@@ -305,33 +267,31 @@ class E42SensitivityBenchmarksTests(unittest.TestCase):
             scen_file = Path(tmp_dir) / "warmup.json"
             scen_file.write_text(json.dumps(scenario, indent=2))
 
-            proc = self.run_cmd("run", str(scen_file))
-            self.assertEqual(proc.returncode, 0, proc.stderr)
-            doc = json.loads(proc.stdout)
+            _, tables = self.run_scenario(scen_file)
             completed_patients = [
-                p for p in doc["summary"]["patients"]
+                p for p in tables['patients'].to_pylist()
                 if p["status"].lower() == "completed"
             ]
 
             # Patient 0 arrives at empty system: wait = 0
-            self.assertEqual(completed_patients[0]["wait_ticks"], 0)
+            self.assertEqual(native_tick(completed_patients[0], 'wait_ticks'), 0)
 
             # Warm-up cutoff at tick 15 (covers initial 4 patients)
             warmup_cutoff = 15
             warmup_waits = [
-                p["wait_ticks"]
+                native_tick(p, 'wait_ticks')
                 for p in completed_patients
-                if p["arrival_tick"] < warmup_cutoff
+                if native_tick(p, 'arrival_tick') < warmup_cutoff
             ]
             observation_waits = [
-                p["wait_ticks"]
+                native_tick(p, 'wait_ticks')
                 for p in completed_patients
-                if p["arrival_tick"] >= warmup_cutoff
+                if native_tick(p, 'arrival_tick') >= warmup_cutoff
             ]
 
             mean_warmup_wait = sum(warmup_waits) / len(warmup_waits)
             mean_obs_wait = sum(observation_waits) / len(observation_waits)
-            mean_overall_wait = sum(p["wait_ticks"] for p in completed_patients) / len(completed_patients)
+            mean_overall_wait = sum(native_tick(p, 'wait_ticks') for p in completed_patients) / len(completed_patients)
 
             # Cold-start bias elimination:
             # Steady-state observation wait is strictly higher than warm-up startup wait
@@ -372,13 +332,14 @@ class E42SensitivityBenchmarksTests(unittest.TestCase):
             scen_file = Path(tmp_dir) / "bench.json"
             scen_file.write_text(json.dumps(scenario, indent=2))
 
+            output = Path(tmp_dir) / 'native'
             t0 = time.perf_counter()
-            proc = self.run_cmd("run", str(scen_file))
+            proc = invoke('run', scen_file, '--output-dir', output)
             elapsed_sec = time.perf_counter() - t0
 
             self.assertEqual(proc.returncode, 0, proc.stderr)
-            doc = json.loads(proc.stdout)
-            summary = doc["summary"]
+            _, tables = read_run(output)
+            summary = tables['replications'].to_pylist()[0]
 
             # Bounded execution latency: 50 patients in under 0.5s
             self.assertLess(
@@ -397,69 +358,32 @@ class E42SensitivityBenchmarksTests(unittest.TestCase):
             self.assertGreater(steps_per_sec, 400.0)
 
     def test_neutral_comparison_reporting_and_uncertainty_diagnostics(self):
-        """Verify neutral comparative evaluation, uncertainty diagnostics, and validation taxonomy."""
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            base_file = Path(tmp_dir) / "base.json"
-            cand_file = Path(tmp_dir) / "cand.json"
-
-            # Base: nominal capacity
-            self.assertEqual(
-                self.run_cmd("run", str(NOMINAL_SCENARIO), "-o", str(base_file)).returncode,
-                0,
-            )
-            # Candidate: constrained capacity
-            self.assertEqual(
-                self.run_cmd("run", str(CONSTRAINED_SCENARIO), "-o", str(cand_file)).returncode,
-                0,
-            )
-
-            # Compare runs
-            proc = self.run_cmd("compare", str(base_file), str(cand_file))
-            self.assertEqual(proc.returncode, 0, proc.stderr)
-
-            comp = json.loads(proc.stdout)
-
-            # 1. Structural compatibility verification
-            self.assertIn("metrics", comp)
-            self.assertIn("diagnostics", comp)
-            self.assertIn("validation_taxonomy", comp)
-
-            # 2. Metric comparisons include units, denominators, and uncertainty (standard error)
-            metrics_by_name = {m["metric_name"]: m for m in comp["metrics"]}
-            self.assertIn("mean_wait", metrics_by_name)
-            self.assertIn("mean_elapsed", metrics_by_name)
-            self.assertIn("completed", metrics_by_name)
-
-            wait_m = metrics_by_name["mean_wait"]
-            self.assertEqual(wait_m["unit"], "tick")
-            self.assertIn("completed patients", wait_m["denominator_description"])
-            self.assertTrue(math.isfinite(wait_m["base_value"]))
-            self.assertTrue(math.isfinite(wait_m["candidate_value"]))
-            self.assertTrue(math.isfinite(wait_m["delta"]))
-
-            # Standard errors reported when applicable
-            if wait_m["base_se"] is not None:
-                self.assertTrue(math.isfinite(wait_m["base_se"]))
-            if wait_m["candidate_se"] is not None:
-                self.assertTrue(math.isfinite(wait_m["candidate_se"]))
-
-            # 3. Neutrality Principle: No value judgements in diagnostics
-            for diag in comp["diagnostics"]:
-                lower_diag = diag.to_lowercase() if hasattr(diag, "to_lowercase") else diag.lower()
-                for forbidden in ["superior", "inferior", "better", "worse", "ideal", "winner"]:
-                    self.assertNotIn(
-                        forbidden,
-                        lower_diag,
-                        f"Diagnostic must remain neutral and not presume superiority: '{diag}'",
-                    )
-
-            # 4. Validation taxonomy non-conflation disclaimer
-            tax = comp["validation_taxonomy"]
-            self.assertEqual(tax["verification_scope"], "software_verification")
-            self.assertEqual(tax["validation_scope"], "none")
-            self.assertEqual(tax["provenance_class"], "synthetic")
-            self.assertIn("Software verification", tax["disclaimer"])
-            self.assertIn("does NOT constitute clinical domain validation", tax["disclaimer"])
+        """Qualified per-run uncertainty stays separate from unestimated differences."""
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            _, left = self.run_ok(directory / 'left', NOMINAL_SCENARIO, 'batch', '--replications', 4)
+            _, right = self.run_ok(directory / 'right', CONSTRAINED_SCENARIO, 'batch', '--replications', 4)
+            result = invoke('compare', directory / 'left/data', directory / 'right/data')
+            self.assertEqual(result.returncode, 0, result.stderr)
+            report = json.loads(result.stdout)
+            self.assertEqual(report['uncertainty_method'], 'not_estimated')
+            self.assertEqual(report['uncertainty_reason'], 'paired_difference_method_unqualified')
+            wait = {row['name']: row for row in report['metrics']}['mean_wait_ticks']
+            self.assertEqual(wait['unit'], 'tick')
+            self.assertAlmostEqual(wait['delta'], 3.8)
+            for value in [wait['left'], wait['right'], wait['delta']]:
+                self.assertTrue(math.isfinite(value))
+            for tables, expected in [(left, 0.4), (right, 4.2)]:
+                metric = metric_rows(tables)['mean_wait_ticks']
+                self.assertEqual(metric['denominator_name'], 'included_replications')
+                self.assertEqual(metric['uncertainty_replications'], 4)
+                self.assertEqual(metric['ddof'], 1)
+                self.assertEqual(metric['standard_error'], 0.0)
+                self.assertAlmostEqual(metric['ci_95_lower'], expected)
+                self.assertAlmostEqual(metric['ci_95_upper'], expected)
+            for forbidden in ['superior', 'inferior', 'better', 'worse', 'ideal', 'winner']:
+                self.assertNotIn(forbidden, result.stdout.lower())
+            self.assertIn('does NOT constitute clinical domain validation', invoke('--help').stdout)
 
 
 if __name__ == "__main__":

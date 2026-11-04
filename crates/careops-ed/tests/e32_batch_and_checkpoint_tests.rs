@@ -233,7 +233,11 @@ fn test_batch_checkpointing_interval() {
     assert_eq!(res.status, "complete");
 
     // Both checkpoint.json and batch_run.json must exist
-    let chk_path = temp_dir.path().join("checkpoint.json");
+    let chk_path = temp_dir.path().join(if cfg!(feature = "native-data") {
+        "capture/checkpoint.json"
+    } else {
+        "checkpoint.json"
+    });
     let run_path = temp_dir.path().join("batch_run.json");
 
     assert!(chk_path.exists(), "checkpoint.json must exist");
@@ -247,7 +251,12 @@ fn test_batch_checkpointing_interval() {
     );
 
     let chk_bytes = fs::read(&chk_path).unwrap();
-    let checkpoint: BatchCheckpoint = serde_json::from_slice(&chk_bytes).unwrap();
+    #[cfg(feature = "native-data")]
+    let checkpoint: careops_ed::capture::CaptureCheckpoint =
+        serde_json::from_slice(&chk_bytes).unwrap();
+    #[cfg(not(feature = "native-data"))]
+    let checkpoint: careops_ed::disposition::batch_runner::BatchCheckpoint =
+        serde_json::from_slice(&chk_bytes).unwrap();
     assert_eq!(checkpoint.batch_id, "checkpoint-test");
     assert_eq!(checkpoint.total_replications, 4);
 }
@@ -468,7 +477,7 @@ fn test_load_completed_batch_rejections() {
 
 #[test]
 fn test_compute_batch_aggregates_empty() {
-    let (mean, se, rate) = compute_batch_aggregates(&[]);
+    let (mean, se, rate) = compute_batch_aggregates(&[]).unwrap();
     assert_eq!(mean, 0.0);
     assert_eq!(se, 0.0);
     assert_eq!(rate, 0.0);

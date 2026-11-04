@@ -1,7 +1,7 @@
 """Task E4.1: Analytic limiting cases, invariant/differential tests, and verification vs validation.
 
 Verifies:
-1. Distinction between software verification and domain validation (CLI validation taxonomy & disclaimer).
+1. Distinction between software verification and domain validation (CLI validation disclaimer and native model provenance).
 2. Analytic Limiting Cases & Oracles:
    - No-contention / infinite-capacity limiting case (W = 0 when C >= Lambda).
    - Deterministic single-server D/D/1 queue recurrence (Report 12 hand-computable oracle).
@@ -15,52 +15,25 @@ Verifies:
    - Explicit disclaimer of site-specific validity.
 """
 
-import json
-from pathlib import Path
-import subprocess
 import unittest
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
-CLI_PATH = ROOT_DIR / "target/debug/careops-ed"
+from native_cli_support import NativeCliCase, NOMINAL, invoke
 
 
-class E41AnalyticLimitsAndValidationTests(unittest.TestCase):
+class E41AnalyticLimitsAndValidationTests(NativeCliCase):
     """Test suite for Task E4.1 software verification and validation boundaries."""
 
-    @classmethod
-    def setUpClass(cls):
-        # Ensure the careops-ed CLI binary is available
-        subprocess.run(
-            ["cargo", "build", "--locked", "-p", "careops-ed-cli"],
-            cwd=ROOT_DIR,
-            check=True,
-            capture_output=True,
-        )
-
-    def run_cli(self, scenario_rel_path: str):
-        full_path = ROOT_DIR / scenario_rel_path
-        proc = subprocess.run(
-            [str(CLI_PATH), "run", str(full_path)],
-            cwd=ROOT_DIR,
-            capture_output=True,
-            text=True,
-        )
-        return proc
-
     def test_verification_vs_validation_taxonomy_and_disclaimer(self):
-        """CLI run output must explicitly distinguish software verification from domain validation."""
-        proc = self.run_cli("crates/careops-ed/examples/nominal_mvp.json")
-        self.assertEqual(proc.returncode, 0, f"CLI run failed: {proc.stderr}")
-
-        doc = json.loads(proc.stdout)
-        self.assertIn("validation_taxonomy", doc)
-        tax = doc["validation_taxonomy"]
-
-        self.assertEqual(tax["verification_scope"], "software_verification")
-        self.assertEqual(tax["validation_scope"], "none")
-        self.assertEqual(tax["provenance_class"], "synthetic")
-        self.assertIn("Software verification of simulation mechanics", tax["disclaimer"])
-        self.assertIn("does NOT constitute clinical domain validation", tax["disclaimer"])
+        """Real CLI help retains the validation boundary; native data binds the synthetic input."""
+        help_output = invoke('--help')
+        self.assertEqual(help_output.returncode, 0, help_output.stderr)
+        self.assertIn('Software verification of simulation mechanics', help_output.stdout)
+        self.assertIn('does NOT constitute clinical domain validation', help_output.stdout)
+        manifest, tables = self.run_scenario(NOMINAL)
+        self.assertEqual(manifest['scenario_id'], 'nominal-ed-mvp')
+        self.assertEqual(manifest['schema'], 'careops.ed.native-output.v1')
+        self.assertEqual(len(manifest['model_contract_sha256']), 64)
+        self.assertEqual(tables['patients'].num_rows, 5)
 
     def test_dd1_queue_oracle_hand_computable_recurrence(self):
         """Verify the D/D/1 deterministic queue recurrence matching Report 12 hand calculation."""
@@ -123,14 +96,11 @@ class E41AnalyticLimitsAndValidationTests(unittest.TestCase):
 
     def test_terminal_patient_conservation_law(self):
         """Conservation law: Admitted = Completed + Censored."""
-        proc = self.run_cli("crates/careops-ed/examples/nominal_mvp.json")
-        self.assertEqual(proc.returncode, 0)
-        doc = json.loads(proc.stdout)
-        summary = doc["summary"]
-
-        arrivals = summary["arrivals"]
-        completed = summary["completed"]
-        censored = summary["unfinished"]
+        _, tables = self.run_scenario(NOMINAL)
+        replication, = tables['replications'].to_pylist()
+        arrivals = replication['arrivals']
+        completed = replication['completed']
+        censored = replication['unfinished']
 
         self.assertEqual(
             arrivals,

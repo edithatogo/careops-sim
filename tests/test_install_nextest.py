@@ -2,6 +2,7 @@ import hashlib
 import io
 import json
 import os
+import subprocess
 from pathlib import Path
 import sys
 import tarfile
@@ -167,6 +168,11 @@ class NextestInstallerTests(unittest.TestCase):
 
 
 class NextestDiscoveryTests(unittest.TestCase):
+    def test_native_discovery_and_execution_share_exact_populated_ffi_selection(self):
+        self.assertEqual(nextest_ci.SELECTION, [
+            "--workspace", "--all-features", "--lib", "--bins", "--tests", "--locked",
+            "--features", "careops-sim/native-ffi-acceptance"])
+
     def test_cargo_and_nextest_names_and_ignored_state_compare_as_multisets(self):
         cargo_all = (
             "Running unittests src/lib.rs (target/debug/deps/lib-same-111)\n"
@@ -249,6 +255,20 @@ class NextestDiscoveryTests(unittest.TestCase):
         ):
             with self.subTest(summary=invalid), self.assertRaises(nextest_ci.QualificationError):
                 nextest_ci.validate_run_summary(invalid, {"test_count": 3, "ignored_count": 1})
+
+    def test_native_recipe_binds_child_polars_pool_without_mutating_parent(self):
+        inherited = dict(os.environ, POLARS_MAX_THREADS="64")
+        before = inherited.copy()
+        paths = {name: f"/qualified/bin/{name}" for name in ("rustc", "rustdoc", "cargo")}
+        env = nextest_ci.native_test_environment(
+            inherited, paths, "/qualified/nextest/bin/cargo-nextest", Path("/qualified/output"))
+        child = subprocess.run(
+            [sys.executable, "-c", "import os; print(os.environ['POLARS_MAX_THREADS'])"],
+            env=env, capture_output=True, text=True, check=True)
+        self.assertEqual(child.stdout.strip(), "1")
+        self.assertEqual(inherited, before)
+        self.assertEqual(env["RUSTC"], paths["rustc"])
+        self.assertEqual(env["CARGO_TARGET_DIR"], "/qualified/output/target")
 
     def test_helper_rejects_unsupported_and_wrong_hosts(self):
         self.assertEqual(nextest_ci.supported_host("Darwin", "arm64"), "aarch64-apple-darwin")

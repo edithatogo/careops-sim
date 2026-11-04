@@ -1,213 +1,142 @@
-"""Public API and CLI test suite for Phase E3.1.
-
-Verifies:
-1. validate/run/compare/export subcommands and deterministic exit codes.
-2. Fresh-user walkthrough and help interface.
-3. Reference scenario selection and parameter overrides (--seed, --horizon).
-4. Output overwrite protection (exit code 6) and atomic file persistence.
-5. Comparative evaluation with units, denominators, uncertainty, and incompatible scenario diagnostics (exit code 5).
-6. Multi-format exports (JSON, CSV, Arrow schema metadata).
-"""
-
+"""E31 fresh-user native CLI contract: real tables, finite controls and errors."""
 import json
 from pathlib import Path
-import subprocess
 import tempfile
 import unittest
-
-ROOT_DIR = Path(__file__).resolve().parents[2]
-RUNNER_BIN = ROOT_DIR / "target/debug/examples/runner"
-NOMINAL_SCENARIO = ROOT_DIR / "crates/careops-ed/examples/nominal_mvp.json"
-CONSTRAINED_SCENARIO = ROOT_DIR / "crates/careops-ed/examples/constrained_mvp.json"
-MALFORMED_SCENARIO = ROOT_DIR / "crates/careops-ed/examples/malformed_mvp.json"
+from native_cli_support import (NativeCliCase, NOMINAL, CONSTRAINED, MALFORMED,
+                                invoke, control, sha, read_dataset, metric_rows, stable_rows)
 
 
-class E31CliApiSuiteTests(unittest.TestCase):
-    """End-to-end CLI execution and API contract verification for E3.1."""
-
-    @classmethod
-    def setUpClass(cls):
-        # Ensure runner example binary is built
-        subprocess.run(
-            ["cargo", "build", "--locked", "-p", "careops-ed", "--example", "runner"],
-            cwd=ROOT_DIR,
-            check=True,
-            capture_output=True,
-        )
-
-    def run_cmd(self, *args):
-        proc = subprocess.run(
-            [str(RUNNER_BIN), *args],
-            cwd=ROOT_DIR,
-            capture_output=True,
-            text=True,
-        )
-        return proc
-
+class E31CliApiSuiteTests(NativeCliCase):
     def test_fresh_user_help_walkthrough(self):
-        proc = self.run_cmd("--help")
-        self.assertEqual(proc.returncode, 0)
-        self.assertIn("Usage: careops-ed <command>", proc.stdout)
-        self.assertIn("validate <scenario.json>", proc.stdout)
-        self.assertIn("run <scenario.json>", proc.stdout)
-        self.assertIn("compare <base_run.json> <candidate_run.json>", proc.stdout)
-        self.assertIn("export <run.json>", proc.stdout)
-        self.assertIn("Exit Codes:", proc.stdout)
-        self.assertIn("6  Output file already exists", proc.stdout)
+        proc = invoke('--help')
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        for text in ['validate INPUT.json', 'run INPUT.json --output-dir FRESH',
+                     'compare LEFT_DATASET RIGHT_DATASET', 'export DATASET', 'Parquet/Zstd']:
+            self.assertIn(text, proc.stdout)
 
     def test_missing_or_unknown_command_returns_usage_error(self):
-        proc_empty = self.run_cmd()
-        self.assertEqual(proc_empty.returncode, 2)
-        self.assertIn("missing command", proc_empty.stderr)
-
-        proc_unknown = self.run_cmd("unknown_action")
-        self.assertEqual(proc_unknown.returncode, 2)
-        self.assertIn("unknown command 'unknown_action'", proc_unknown.stderr)
+        for args in [(), ('unknown_action',)]:
+            with self.subTest(args=args):
+                self.assertEqual(invoke(*args).returncode, 2)
 
     def test_validate_nominal_scenario(self):
-        proc = self.run_cmd("validate", str(NOMINAL_SCENARIO))
-        self.assertEqual(proc.returncode, 0, f"Validation failed: {proc.stderr}")
-        self.assertIn("valid scenario 'nominal-ed-mvp'", proc.stdout)
-        self.assertIn("schema v1", proc.stdout)
-        self.assertIn("5 patients", proc.stdout)
+        proc = invoke('validate', NOMINAL)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        report = json.loads(proc.stdout)
+        self.assertEqual(report['scenario_id'], 'nominal-ed-mvp')
+        self.assertEqual(report['patient_count'], 5)
+        self.assertEqual(report['schema_version'], 1)
 
     def test_validate_missing_and_malformed_scenarios(self):
-        proc_missing = self.run_cmd("validate", "non_existent_scenario.json")
-        self.assertEqual(proc_missing.returncode, 3)
-        self.assertIn("scenario file not found", proc_missing.stderr)
-
-        proc_malformed = self.run_cmd("validate", str(MALFORMED_SCENARIO))
-        self.assertEqual(proc_malformed.returncode, 4)
-        self.assertIn("invalid scenario", proc_malformed.stderr)
+        self.assertEqual(invoke('validate', NOMINAL.parent / 'absent.json').returncode, 3)
+        self.assertEqual(invoke('validate', MALFORMED).returncode, 4)
 
     def test_run_nominal_stdout(self):
-        proc = self.run_cmd("run", str(NOMINAL_SCENARIO))
-        self.assertEqual(proc.returncode, 0, f"Run failed: {proc.stderr}")
-
-        doc = json.loads(proc.stdout)
-        self.assertEqual(doc["manifest"]["scenario_id"], "nominal-ed-mvp")
-        self.assertEqual(doc["manifest"]["seed"], 42)
-        self.assertEqual(doc["summary"]["completed"], 5)
-        self.assertEqual(doc["summary"]["unfinished"], 0)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'run'
+            manifest, tables = self.run_ok(root)
+            self.assertEqual(manifest['scenario_id'], 'nominal-ed-mvp')
+            self.assertEqual(manifest['base_seed'], 42)
+            self.assertEqual(tables['patients'].num_rows, 5)
+            rep = tables['replications'].to_pylist()[0]
+            self.assertEqual((rep['completed'], rep['unfinished']), (5, 0))
+            self.assertEqual(control(root / 'invocation.json')['raw_input_sha256'], sha(NOMINAL))
+            self.assertLess((root / 'manifest.json').stat().st_size, 128 * 1024)
 
     def test_run_overrides_seed_and_horizon(self):
-        proc = self.run_cmd(
-            "run",
-            str(NOMINAL_SCENARIO),
-            "--seed",
-            "9999",
-            "--horizon",
-            "7",
-        )
-        self.assertEqual(proc.returncode, 0)
-        doc = json.loads(proc.stdout)
-        self.assertEqual(doc["manifest"]["seed"], 9999)
-        self.assertEqual(doc["manifest"]["horizon_ticks"], 7)
-        self.assertEqual(doc["summary"]["seed"], 9999)
-        self.assertEqual(doc["summary"]["horizon_ticks"], 7)
-        # Shortened horizon prevents last patient from completing
-        self.assertLess(doc["summary"]["completed"], 5)
-        self.assertGreater(doc["summary"]["unfinished"], 0)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'run'
+            manifest, tables = self.run_ok(root, NOMINAL, 'run', '--seed', 9999, '--horizon', 7)
+            self.assertEqual((manifest['base_seed'], manifest['horizon_ticks']), (9999, 7))
+            rep = tables['replications'].to_pylist()[0]
+            self.assertEqual((rep['seed'], rep['horizon_ticks']), (9999, 7))
+            self.assertLess(rep['completed'], 5)
+            self.assertGreater(rep['unfinished'], 0)
+            patients = tables['patients'].to_pylist()
+            self.assertTrue(any(row['completion_tick_lo'] is None for row in patients))
 
     def test_run_output_overwrite_protection(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            out_file = Path(temp_dir) / "run_result.json"
-
-            # First run: writes output file
-            proc1 = self.run_cmd("run", str(NOMINAL_SCENARIO), "--output", str(out_file))
-            self.assertEqual(proc1.returncode, 0)
-            self.assertTrue(out_file.exists())
-
-            # Second run without --overwrite: must fail with exit code 6
-            proc2 = self.run_cmd("run", str(NOMINAL_SCENARIO), "--output", str(out_file))
-            self.assertEqual(proc2.returncode, 6)
-            self.assertIn("already exists", proc2.stderr)
-
-            # Third run with --overwrite: succeeds
-            proc3 = self.run_cmd(
-                "run",
-                str(NOMINAL_SCENARIO),
-                "--output",
-                str(out_file),
-                "--overwrite",
-            )
-            self.assertEqual(proc3.returncode, 0)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'run'
+            self.run_ok(root)
+            original = sha(root / 'manifest.json')
+            self.assertEqual(invoke('run', NOMINAL, '--output-dir', root).returncode, 6)
+            self.assertEqual(invoke('run', NOMINAL, '--output-dir', root, '--overwrite').returncode, 2)
+            self.assertEqual(sha(root / 'manifest.json'), original)
 
     def test_compare_runs_lifecycle_and_diagnostics(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            nom_out = Path(temp_dir) / "nominal.json"
-            con_out = Path(temp_dir) / "constrained.json"
-
-            self.assertEqual(
-                self.run_cmd("run", str(NOMINAL_SCENARIO), "--output", str(nom_out)).returncode,
-                0,
-            )
-            self.assertEqual(
-                self.run_cmd("run", str(CONSTRAINED_SCENARIO), "--output", str(con_out)).returncode,
-                0,
-            )
-
-            proc_comp = self.run_cmd("compare", str(nom_out), str(con_out))
-            self.assertEqual(proc_comp.returncode, 0, f"Compare failed: {proc_comp.stderr}")
-
-            rep = json.loads(proc_comp.stdout)
-            self.assertEqual(rep["base_scenario_id"], "nominal-ed-mvp")
-            self.assertEqual(rep["candidate_scenario_id"], "constrained-ed-mvp")
-            self.assertEqual(rep["time_unit"], "tick")
-
-            metrics = {m["metric_name"]: m for m in rep["metrics"]}
-            self.assertIn("mean_wait", metrics)
-            self.assertEqual(metrics["mean_wait"]["unit"], "tick")
-            self.assertIn("denominator_description", metrics["mean_wait"])
-            self.assertAlmostEqual(metrics["mean_wait"]["base_value"], 0.4)
-            self.assertAlmostEqual(metrics["mean_wait"]["candidate_value"], 4.2)
-            self.assertGreater(metrics["mean_wait"]["delta"], 0)
-
-            # Check diagnostics explain findings
-            self.assertTrue(any("increased mean wait" in d for d in rep["diagnostics"]))
+        with tempfile.TemporaryDirectory() as directory:
+            roots = [Path(directory) / name for name in ['nominal', 'constrained']]
+            _, left = self.run_ok(roots[0])
+            _, right = self.run_ok(roots[1], CONSTRAINED)
+            proc = invoke('compare', *(root / 'data' for root in roots))
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            report = json.loads(proc.stdout)
+            self.assertEqual(report['uncertainty_method'], 'not_estimated')
+            self.assertEqual(report['uncertainty_reason'], 'paired_difference_method_unqualified')
+            waits = {m['name']: m for m in report['metrics']}['mean_wait_ticks']
+            self.assertEqual(waits['unit'], 'tick')
+            self.assertAlmostEqual(waits['left'], 0.4)
+            self.assertAlmostEqual(waits['right'], 4.2)
+            self.assertAlmostEqual(waits['delta'], 3.8)
+            for tables in [left, right]:
+                self.assertEqual(metric_rows(tables)['mean_wait_ticks']['denominator_name'], 'included_replications')
 
     def test_compare_incompatible_scenario_rejected(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            nom_out = Path(temp_dir) / "nominal.json"
-            cand_out = Path(temp_dir) / "mismatched.json"
-
-            self.assertEqual(
-                self.run_cmd("run", str(NOMINAL_SCENARIO), "--output", str(nom_out)).returncode,
-                0,
-            )
-
-            # Create run document with incompatible time unit
-            data = json.loads(nom_out.read_text())
-            data["manifest"]["time_unit"] = "second"
-            cand_out.write_text(json.dumps(data))
-
-            proc_comp = self.run_cmd("compare", str(nom_out), str(cand_out))
-            self.assertEqual(proc_comp.returncode, 5)
-            self.assertIn("incompatible time units", proc_comp.stderr)
+        import csv
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            changed = json.loads(NOMINAL.read_text()); changed['time_unit'] = 'second'
+            scenario = directory / 'seconds.json'; scenario.write_text(json.dumps(changed))
+            # The ED model has no seconds conversion; reject that input first.
+            invalid = invoke('run', scenario, '--output-dir', directory / 'invalid')
+            self.assertEqual(invalid.returncode, 4)
+            self.assertFalse((directory / 'invalid').exists())
+            self.run_ok(directory / 'left')
+            right = directory / 'right'
+            exported = invoke('export', directory / 'left/data', '--output-dir', right, '--format', 'csv')
+            self.assertEqual(exported.returncode, 0, exported.stderr)
+            # Construct an explicitly incompatible transport fixture, not a
+            # simulated conversion. CSV carries typed metadata in its manifest.
+            manifest = control(right / 'manifest.json'); manifest['time_unit'] = 'second'
+            for table in manifest['tables']:
+                for part in table['parts']:
+                    path = right / part['file']
+                    with path.open(newline='') as stream:
+                        reader = csv.DictReader(stream); names = reader.fieldnames; rows = list(reader)
+                    for row in rows:
+                        if 'time_unit' in row: row['time_unit'] = 'second'
+                        if row.get('unit') == 'tick': row['unit'] = 'second'
+                    with path.open('w', newline='') as stream:
+                        writer = csv.DictWriter(stream, fieldnames=names, lineterminator='\n')
+                        writer.writeheader(); writer.writerows(rows)
+                    part['bytes'] = path.stat().st_size; part['sha256'] = sha(path)
+            (right / 'manifest.json').write_text(json.dumps(manifest))
+            read_dataset(right)
+            # Conversion validates the independently rehashed native fixture
+            # before comparison, distinguishing incompatibility from corruption.
+            checked = invoke('export', right, '--output-dir', directory / 'checked', '--format', 'ipc')
+            self.assertEqual(checked.returncode, 0, checked.stderr)
+            proc = invoke('compare', directory / 'left/data', directory / 'checked')
+            self.assertEqual(proc.returncode, 5)
+            self.assertIn('compatible units', proc.stderr)
 
     def test_export_formats(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            run_file = Path(temp_dir) / "run.json"
-            self.assertEqual(
-                self.run_cmd("run", str(NOMINAL_SCENARIO), "--output", str(run_file)).returncode,
-                0,
-            )
-
-            # 1. Export CSV
-            proc_csv = self.run_cmd("export", str(run_file), "--format", "csv")
-            self.assertEqual(proc_csv.returncode, 0)
-            self.assertIn("patient_id,arrival_tick", proc_csv.stdout)
-            self.assertIn("patient-001", proc_csv.stdout)
-
-            # 2. Export Arrow schema metadata
-            proc_arrow = self.run_cmd("export", str(run_file), "--format", "arrow")
-            self.assertEqual(proc_arrow.returncode, 0)
-            arrow_doc = json.loads(proc_arrow.stdout)
-            self.assertIn("arrow_schema", arrow_doc)
-            fields = {f["name"]: f for f in arrow_doc["arrow_schema"]["fields"]}
-            self.assertIn("wait_ticks", fields)
-            self.assertEqual(fields["wait_ticks"]["denominator"], "started_patients")
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            _, source = self.run_ok(directory / 'run')
+            for format in ['parquet', 'ipc', 'csv']:
+                destination = directory / format
+                proc = invoke('export', directory / 'run/data', '--output-dir', destination, '--format', format)
+                self.assertEqual(proc.returncode, 0, proc.stderr)
+                manifest, actual = read_dataset(destination)
+                self.assertEqual(manifest['format'], format)
+                self.assertEqual(stable_rows(source), stable_rows(actual))
+                receipt = json.loads(proc.stdout)
+                self.assertEqual(receipt['dataset_manifest_sha256'], sha(destination / 'manifest.json'))
+                self.assertEqual(invoke('export', directory / 'run/data', '--output-dir', destination).returncode, 6)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

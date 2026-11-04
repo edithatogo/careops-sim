@@ -343,7 +343,8 @@ dependencies = [
  "careops-birthing",
  "careops-core",
  "kairo-ecs-arrow",
- "kairo-ecs-types 0.0.0 (git+https://github.com/edithatogo/kairos.git?rev=4134a3733ba7e833a8c520621ec2af5a4bd4b31a)",
+ "kairo-ecs-types 0.0.0 (git+https://github.com/edithatogo/kairos.git?rev=473ff2c0e640a7e457f500593f6ea1f06602ab35)",
+ "polars",
  "serde",
  "serde_json",
  "sha2",
@@ -368,11 +369,17 @@ name = "careops-ed"
 version = "0.1.0"
 dependencies = [
  "careops-core",
+ "kairo-ecs-arrow",
  "kairo-ecs-core",
  "kairo-ecs-rng",
  "kairo-ecs-types 0.0.0",
+ "polars",
+ "polars-arrow-format",
+ "polars-parquet-format",
  "serde",
  "serde_json",
+ "sha2",
+ "tempfile",
 ]
 
 [[package]]
@@ -388,6 +395,14 @@ dependencies = [
 [[package]]
 name = "careops-sim"
 version = "0.1.0"
+dependencies = [
+ "careops-birthing-cli",
+ "careops-ed",
+ "kairo-ecs-arrow",
+ "kairo-ecs-arrow-ffi",
+ "serde_json",
+ "tempfile",
+]
 
 [[package]]
 name = "castaway"
@@ -1415,12 +1430,12 @@ dependencies = [
 [[package]]
 name = "kairo-ecs-arrow"
 version = "0.1.0"
-source = "git+https://github.com/edithatogo/kairos.git?rev=4134a3733ba7e833a8c520621ec2af5a4bd4b31a#4134a3733ba7e833a8c520621ec2af5a4bd4b31a"
+source = "git+https://github.com/edithatogo/kairos.git?rev=473ff2c0e640a7e457f500593f6ea1f06602ab35#473ff2c0e640a7e457f500593f6ea1f06602ab35"
 dependencies = [
  "cap-fs-ext",
  "cap-primitives",
  "kairo-ecs-fs-guard",
- "kairo-ecs-types 0.0.0 (git+https://github.com/edithatogo/kairos.git?rev=4134a3733ba7e833a8c520621ec2af5a4bd4b31a)",
+ "kairo-ecs-types 0.0.0 (git+https://github.com/edithatogo/kairos.git?rev=473ff2c0e640a7e457f500593f6ea1f06602ab35)",
  "polars",
  "polars-arrow",
  "same-file",
@@ -1428,6 +1443,14 @@ dependencies = [
  "serde_json",
  "sha2",
  "tempfile",
+]
+
+[[package]]
+name = "kairo-ecs-arrow-ffi"
+version = "0.1.0"
+source = "git+https://github.com/edithatogo/kairos.git?rev=473ff2c0e640a7e457f500593f6ea1f06602ab35#473ff2c0e640a7e457f500593f6ea1f06602ab35"
+dependencies = [
+ "kairo-ecs-arrow",
 ]
 
 [[package]]
@@ -1454,7 +1477,7 @@ dependencies = [
 [[package]]
 name = "kairo-ecs-fs-guard"
 version = "0.1.0"
-source = "git+https://github.com/edithatogo/kairos.git?rev=4134a3733ba7e833a8c520621ec2af5a4bd4b31a#4134a3733ba7e833a8c520621ec2af5a4bd4b31a"
+source = "git+https://github.com/edithatogo/kairos.git?rev=473ff2c0e640a7e457f500593f6ea1f06602ab35#473ff2c0e640a7e457f500593f6ea1f06602ab35"
 dependencies = [
  "cc",
 ]
@@ -1481,7 +1504,7 @@ version = "0.0.0"
 [[package]]
 name = "kairo-ecs-types"
 version = "0.0.0"
-source = "git+https://github.com/edithatogo/kairos.git?rev=4134a3733ba7e833a8c520621ec2af5a4bd4b31a#4134a3733ba7e833a8c520621ec2af5a4bd4b31a"
+source = "git+https://github.com/edithatogo/kairos.git?rev=473ff2c0e640a7e457f500593f6ea1f06602ab35#473ff2c0e640a7e457f500593f6ea1f06602ab35"
 
 [[package]]
 name = "lazy_static"

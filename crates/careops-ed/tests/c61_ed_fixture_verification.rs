@@ -15,8 +15,8 @@
 //!    confirming that transit ticks (route duration) and work ticks (service duration) are non-zero, correctly measured, and match the known parameters.
 
 use careops_ed::disposition::composite_fixture::{
-    calibration_traces_to_csv, export_patient_calibration_traces, st003_verify_retained_occupancy,
-    BoundaryError, ComposedPatient, CompositeEdFixture, PatientLifecycle,
+    export_patient_calibration_traces, st003_verify_retained_occupancy, BoundaryError,
+    ComposedPatient, CompositeEdFixture, PatientLifecycle,
 };
 use careops_ed::disposition::operations::{
     claim_task, select_dispatch_candidate, BayPhase, ExecutionFidelity, MovementEdge,
@@ -684,7 +684,7 @@ fn test_c61_trace_export_calibration_compatible_records() {
         assert_eq!(trace.day, 1);
         assert!(trace.case_id.starts_with("case_"));
         assert_eq!(
-            trace.end_tick - trace.start_tick,
+            trace.end_tick.unwrap() - trace.start_tick.unwrap(),
             trace.work_ticks,
             "service duration matches tick difference"
         );
@@ -693,11 +693,88 @@ fn test_c61_trace_export_calibration_compatible_records() {
     // Also test standalone helper export_patient_calibration_traces
     let standalone_traces =
         export_patient_calibration_traces(&fixture.completed, 1, known_transit_ticks);
-    assert_eq!(traces, standalone_traces);
+    assert_eq!(traces.len(), standalone_traces.len());
+    for (route, supplied) in traces.iter().zip(&standalone_traces) {
+        assert_eq!(
+            (
+                route.case_id.as_str(),
+                route.day,
+                route.start_tick,
+                route.end_tick,
+                route.transit_ticks,
+                route.work_ticks
+            ),
+            (
+                supplied.case_id.as_str(),
+                supplied.day,
+                supplied.start_tick,
+                supplied.end_tick,
+                supplied.transit_ticks,
+                supplied.work_ticks
+            )
+        );
+        assert_eq!(route.transit_source.as_str(), "route_model");
+        assert_eq!(supplied.transit_source.as_str(), "caller_supplied");
+    }
 
-    // Verify CSV export
-    let csv = calibration_traces_to_csv(&traces);
-    assert!(csv.contains("case_id,day,start_tick,end_tick,transit_ticks,work_ticks"));
-    assert!(csv.contains("case_1001,1,"));
-    assert!(csv.contains("case_1002,1,"));
+    assert_eq!(
+        traces
+            .iter()
+            .map(|t| t.case_id.as_str())
+            .collect::<std::collections::BTreeSet<_>>(),
+        ["case_1001", "case_1002"].into_iter().collect()
+    );
+    #[cfg(feature = "native-data")]
+    {
+        let table = fixture
+            .calibration_table(1, &["edge.waiting_to_bay"], "c61-synthetic", "second")
+            .unwrap();
+        assert_eq!(table.height(), traces.len());
+        for trace in &traces {
+            let row = (0..table.height())
+                .find(|&i| {
+                    table.column("case_id").unwrap().str().unwrap().get(i)
+                        == Some(trace.case_id.as_str())
+                })
+                .unwrap();
+            assert_eq!(
+                table.column("day").unwrap().u32().unwrap().get(row),
+                Some(1)
+            );
+            assert_eq!(
+                table
+                    .column("transit_source")
+                    .unwrap()
+                    .str()
+                    .unwrap()
+                    .get(row),
+                Some("route_model")
+            );
+            for (name, expected) in [
+                ("start_tick", trace.start_tick),
+                ("end_tick", trace.end_tick),
+                ("transit_ticks", Some(known_transit_ticks)),
+                ("work_ticks", Some(known_work_ticks)),
+            ] {
+                assert_eq!(
+                    table
+                        .column(&format!("{name}_hi"))
+                        .unwrap()
+                        .u64()
+                        .unwrap()
+                        .get(row),
+                    expected.map(|_| 0)
+                );
+                assert_eq!(
+                    table
+                        .column(&format!("{name}_lo"))
+                        .unwrap()
+                        .u64()
+                        .unwrap()
+                        .get(row),
+                    expected
+                );
+            }
+        }
+    }
 }

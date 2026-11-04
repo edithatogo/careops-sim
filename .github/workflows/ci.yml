@@ -168,7 +168,7 @@ jobs:
             echo "RUSTDOC=$rustdoc_path"
           } >> "$GITHUB_ENV"
           echo "$toolchain_bin" >> "$GITHUB_PATH"
-      - name: Verify nextest discovery, failure handling and test suite
+      - name: Verify nextest discovery, failure handling and populated domain FFI suite
         run: |
           set -euo pipefail
           "$CAREOPS_PYTHON" tools/nextest_ci.py --toolchain 1.99.1
@@ -176,11 +176,24 @@ jobs:
         run: |
           set -euo pipefail
           "$CAREOPS_PYTHON" -m ensurepip
-          "$CAREOPS_PYTHON" -m pip install --only-binary=:all: --no-deps -r crates/careops-birthing-cli/requirements-reader.txt
+          "$CAREOPS_PYTHON" -m pip install --only-binary=:all: --no-deps -r requirements-native-readers.txt
           mkdir -m700 .artifacts/ci/birthing-output
           cargo run --locked --package careops-birthing-cli -- crates/careops-birthing-cli/fixtures/synthetic.json .artifacts/ci/birthing-output 4
           "$CAREOPS_PYTHON" crates/careops-birthing-cli/read_batch.py .artifacts/ci/birthing-output crates/careops-birthing-cli/fixtures/synthetic.json
           "$CAREOPS_PYTHON" crates/careops-birthing-cli/test_reader.py target/debug/careops-birthing
+      - name: Independently verify ED native file protocols
+        env:
+          POLARS_MAX_THREADS: '1'
+        run: |
+          set -euo pipefail
+          "$CAREOPS_PYTHON" -c 'import sys, polars as pl, pyarrow as pa; assert sys.version_info[:3] == (3, 15, 1); assert pl.__version__ == "2.1.0"; assert pa.__version__ == "26.0.0"; assert pl.get_index_type() == pl.UInt32; assert pl.thread_pool_size() == 1; print(sys.version, pl.__version__, pa.__version__, pl.get_index_type(), pl.thread_pool_size())'
+          "$CAREOPS_PYTHON" -m pip check
+          test ! -e .artifacts/ci/native-files
+          CAREOPS_R131_FILES_DESTINATION="$PWD/.artifacts/ci/native-files" cargo test --locked --package careops-ed --test r131_native_files actual_native_domain_fixture_is_published_only_to_explicit_fresh_destination -- --exact 2>&1 | tee .artifacts/ci/nextest/native-files-fixture.log
+          "$CAREOPS_PYTHON" crates/careops-ed/test_native_files.py .artifacts/ci/native-files 2>&1 | tee .artifacts/ci/nextest/native-files-reader.log
+          test ! -e .artifacts/ci/native-output
+          CAREOPS_NATIVE_OUTPUT_FIXTURE="$PWD/.artifacts/ci/native-output" cargo test --locked --package careops-ed --test r132_native_output qualified_native_output_fixture_requires_explicit_fresh_destination -- --exact 2>&1 | tee .artifacts/ci/nextest/native-output-fixture.log
+          "$CAREOPS_PYTHON" crates/careops-ed/test_native_output.py .artifacts/ci/native-output 2>&1 | tee .artifacts/ci/nextest/native-output-reader.log
       - name: Retain bounded failed native log
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -195,6 +208,10 @@ jobs:
             .artifacts/ci/nextest/nextest-list.json
             .artifacts/ci/nextest/red-control.log
             .artifacts/ci/nextest/tests.log
+            .artifacts/ci/nextest/native-files-fixture.log
+            .artifacts/ci/nextest/native-files-reader.log
+            .artifacts/ci/nextest/native-output-fixture.log
+            .artifacts/ci/nextest/native-output-reader.log
           retention-days: 7
           if-no-files-found: error
 
@@ -290,12 +307,15 @@ jobs:
         run: cargo test --doc --workspace --all-features --locked
 
   context:
-    # Reuse qualified PR191's finite native-data profile for this same heavy graph.
-    # Preserve the 180s per-mutant oracle, coverage floor and compiler concurrency.
-    timeout-minutes: 75
+    # Run41683463668 reached115/117 mutations before the90minute whole-job
+    # deadline (18minutes setup/coverage plus72minutes mutations). Reserve a
+    # finite120minutes for the complete catalog; retain2workers and180s per
+    # mutant, exact source/equivalence validation and the coverage floor.
+    timeout-minutes: 120
     env:
       CARGO_PROFILE_DEV_DEBUG: '0'
       CARGO_PROFILE_TEST_DEBUG: '0'
+      CAREOPS_ED_PROFILE: 'release'
     name: context
     needs: scope
     if: needs.scope.outputs.context == 'true'
@@ -321,14 +341,9 @@ jobs:
       - name: Install locked harness dependencies
         run: |
           "$CAREOPS_PYTHON" -m pip install --require-hashes --only-binary=:all: -r requirements-schema-validation.lock
-      - name: Run harness and incompatible-pin regressions
-        run: |
-          "$CAREOPS_PYTHON" -m unittest discover -s tests -v
-      - name: Check reviewed support and flaky-test inventory
-        run: |
-          "$CAREOPS_PYTHON" tools/quality_support.py --root .
-          "$CAREOPS_PYTHON" tools/quality_flakes.py --config .config/d33-quality-gates.json
-      - name: Build and run representative ED benchmark
+          "$CAREOPS_PYTHON" -m pip install --only-binary=:all: --no-deps -r requirements-native-readers.txt
+          "$CAREOPS_PYTHON" -m pip check
+      - name: Build native CLI for Python consumers
         run: |
           set -euo pipefail
           rustup toolchain install 1.99.1 --profile minimal
@@ -341,7 +356,20 @@ jobs:
           test "$(command -v rustdoc)" = "$rustdoc_path"
           test "$(command -v cargo)" = "$cargo_path"
           cargo build --locked --release --package careops-ed-cli
-          "$CAREOPS_PYTHON" tools/ed_benchmarks.py --binary target/release/careops-ed --output .artifacts/ci/d34/report.json
+          printf 'RUSTUP_TOOLCHAIN=1.99.1\nRUSTC=%s\nRUSTDOC=%s\n' "$rustc_path" "$rustdoc_path" >> "$GITHUB_ENV"
+          echo "$toolchain_bin" >> "$GITHUB_PATH"
+      - name: Run harness and incompatible-pin regressions
+        run: |
+          "$CAREOPS_PYTHON" -m unittest discover -s tests -v
+          "$CAREOPS_PYTHON" -m unittest discover -s tests/ed -v
+      - name: Check reviewed support and flaky-test inventory
+        run: |
+          "$CAREOPS_PYTHON" tools/quality_support.py --root .
+          "$CAREOPS_PYTHON" tools/quality_flakes.py --config .config/d33-quality-gates.json
+      - name: Run representative ED benchmark
+        run: |
+          set -euo pipefail
+          "$CAREOPS_PYTHON" tools/ed_native_benchmarks.py --binary target/release/careops-ed --output .artifacts/ci/d34/report.json
       - name: Retain D3.4 benchmark report
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

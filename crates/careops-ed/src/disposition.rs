@@ -21,6 +21,9 @@ pub mod batch_runner;
 pub mod boarding;
 #[path = "composite_fixture.rs"]
 pub mod composite_fixture;
+#[cfg(feature = "native-data")]
+#[path = "native_output.rs"]
+pub mod native_output;
 #[path = "operations.rs"]
 pub mod operations;
 

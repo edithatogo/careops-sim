@@ -5,7 +5,7 @@ Verifies:
    on intentional input errors (zero capacity, negative horizon, invalid triage distribution).
 2. Scenario Runner & Comparator: nominal vs surge outcome metrics, wait time inflation calculation,
    signed deltas, bed saturation diagnostics, and standard error.
-3. Multi-Format Exporters: JSON run document, CSV comparison tables, and Arrow telemetry schemas.
+3. Native artifact consumers: real typed datasets replace manufactured export documents.
 4. Spatial Layout & Topology: synthetic_layout_v1 parsing, coordinate bounds, room locations,
    and metric shortest path calculations via route edges.
 5. Spatial Overlays & Provenance: room occupancy heatmaps, queue depth badges, staff allocations,
@@ -23,6 +23,9 @@ from pathlib import Path
 import re
 from typing import Any, Dict, List, Optional, Set, Tuple
 import unittest
+import tempfile
+
+from tests.ed.native_cli_support import NOMINAL, invoke, read_run
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CONTRACTS_DIR = REPO_ROOT / "apps" / "dashboard" / "contracts"
@@ -356,50 +359,18 @@ class TestDashboardUISpatial(unittest.TestCase):
         self.assertEqual(wait_delta["unit"], "ticks")
         self.assertEqual(wait_delta["denominator"], "waiting patients")
 
-    def test_multi_format_exports(self):
-        """Verifies JSON run documents, CSV comparisons, and Arrow telemetry schema exports."""
-        nominal_run = simulate_scenario(self.nominal_scenario)
-        surge_run = simulate_scenario(self.surge_scenario)
-        comp = compare_runs(nominal_run, surge_run)
-
-        # 1. JSON Export
-        export_json = json.dumps({
-            "schema_version": "careops_ed.run_document.v1",
-            "run_metrics": nominal_run,
-        }, indent=2)
-        parsed = json.loads(export_json)
-        self.assertEqual(parsed["schema_version"], "careops_ed.run_document.v1")
-        self.assertEqual(parsed["run_metrics"]["scenario_name"], "Nominal ED Flow")
-
-        # 2. CSV Export
-        lines = [
-            f"# Scenario Comparison: {comp['baseline_name']} vs {comp['comparison_name']}",
-            "metric,unit,denominator,baseline,comparison,absolute_delta,percent_change",
-        ]
-        for d in comp["deltas"]:
-            lines.append(f"{d['metric']},{d['unit']},{d['denominator']},{d['baseline']},{d['comparison']},{d['absolute_delta']},{d['percent_change']}")
-        csv_text = "\n".join(lines)
-        self.assertIn("mean_wait_ticks,ticks,waiting patients", csv_text)
-        self.assertIn("peak_bed_utilization,ratio,available beds", csv_text)
-
-        # 3. Arrow Telemetry Schema
-        arrow_schema = {
-            "format": "arrow-ipc-schema-v1",
-            "fields": [
-                {"name": "tick", "type": "int64", "nullable": False},
-                {"name": "entity_id", "type": "int64", "nullable": False},
-                {"name": "location_id", "type": "utf8", "nullable": False},
-                {"name": "x_mm", "type": "int64", "nullable": False},
-                {"name": "y_mm", "type": "int64", "nullable": False},
-                {"name": "provenance", "type": "utf8", "nullable": False},
-            ],
-            "metadata": {
-                "careops.abi.version": "careops_ed.abi.v1",
-                "careops.spatial.version": "careops_ed.spatial.v1",
-            },
-        }
-        self.assertEqual(arrow_schema["format"], "arrow-ipc-schema-v1")
-        self.assertEqual(arrow_schema["metadata"]["careops.abi.version"], "careops_ed.abi.v1")
+    def test_native_artifact_exports(self):
+        """Actual producer files replace the retired dashboard export descriptions."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "native"
+            proc = invoke("run", NOMINAL, "--output-dir", root)
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            manifest, tables = read_run(root)
+            self.assertEqual(manifest["format"], "parquet")
+            self.assertEqual(set(tables), {"patients", "replications", "metrics"})
+            self.assertEqual(tables["patients"].num_rows, 5)
+            self.assertEqual(tables["metrics"].num_rows, 5)
+            self.assertEqual(tables["patients"]["patient_id"].null_count, 0)
 
     def test_spatial_layout_and_route_topology(self):
         """Verifies synthetic layout loading, location definitions, and route distance metrics."""

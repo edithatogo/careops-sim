@@ -16,7 +16,7 @@ import {
   CommandAckEnvelope,
   ProgressEnvelope,
   ErrorEnvelope,
-  SimulationMessage,
+  AbiEnvelope,
 } from "../../contracts/protocol.js";
 
 export type ConnectionState = "disconnected" | "connecting" | "connected" | "resync_required" | "closed";
@@ -25,10 +25,12 @@ export class SimulationWebSocketClient {
   private url: string;
   private state: ConnectionState;
   private lastSeenSequence: number;
+  private clientSequence: number;
   private currentRunId: string | null;
   private currentTick: string;
+  private lastStateTick: string;
   private pendingCommands: Map<string, (ack: CommandAckEnvelope) => void>;
-  private messageHistory: SimulationMessage[];
+  private messageHistory: AbiEnvelope[];
   private maxHistorySize: number;
 
   private onSnapshotCallback?: (snapshot: SnapshotEnvelope) => void;
@@ -40,8 +42,10 @@ export class SimulationWebSocketClient {
     this.url = url;
     this.state = "disconnected";
     this.lastSeenSequence = 0;
+    this.clientSequence = 0;
     this.currentRunId = null;
     this.currentTick = "0";
+    this.lastStateTick = "0";
     this.pendingCommands = new Map();
     this.messageHistory = [];
     this.maxHistorySize = 1000;
@@ -91,7 +95,7 @@ export class SimulationWebSocketClient {
       command_id: commandId,
       client_nonce: clientNonce,
       run_id: this.currentRunId ?? "DEFAULT-RUN",
-      client_sequence: ++this.lastSeenSequence,
+      client_sequence: ++this.clientSequence,
       action,
       payload,
     };
@@ -104,7 +108,7 @@ export class SimulationWebSocketClient {
    */
   handleIncomingMessage(jsonString: string): boolean {
     try {
-      const msg = JSON.parse(jsonString) as SimulationMessage;
+      const msg = JSON.parse(jsonString) as AbiEnvelope;
 
       // Push to bounded ring buffer
       this.messageHistory.push(msg);
@@ -116,8 +120,9 @@ export class SimulationWebSocketClient {
         case "snapshot": {
           const snapshot = msg as SnapshotEnvelope;
           this.currentRunId = snapshot.run_id;
-          this.lastSeenSequence = snapshot.sequence_number;
+          this.lastSeenSequence = snapshot.sequence;
           this.currentTick = snapshot.sim_tick;
+          this.lastStateTick = snapshot.sim_tick;
           this.state = "connected";
           if (this.onSnapshotCallback) this.onSnapshotCallback(snapshot);
           return true;
@@ -125,17 +130,16 @@ export class SimulationWebSocketClient {
 
         case "delta": {
           const delta = msg as DeltaEnvelope;
-          // Sequencing & gap detection
-          if (delta.base_tick !== undefined) {
-            // Check sequence gap
-            if (delta.sequence_number > this.lastSeenSequence + 1) {
-              this.state = "resync_required";
-              // Must request full snapshot refresh
-              return false;
-            }
+          if (delta.run_id !== this.currentRunId ||
+              delta.sequence !== this.lastSeenSequence + 1 ||
+              delta.base_sequence !== this.lastSeenSequence ||
+              delta.base_tick !== this.lastStateTick) {
+            this.state = "resync_required";
+            return false;
           }
-          this.lastSeenSequence = delta.sequence_number;
+          this.lastSeenSequence = delta.sequence;
           this.currentTick = delta.sim_tick;
+          this.lastStateTick = delta.sim_tick;
           this.state = "connected";
           if (this.onDeltaCallback) this.onDeltaCallback(delta);
           return true;
@@ -153,7 +157,7 @@ export class SimulationWebSocketClient {
 
         case "progress": {
           const progress = msg as ProgressEnvelope;
-          this.currentTick = progress.sim_tick;
+          this.currentTick = progress.current_tick;
           if (this.onProgressCallback) this.onProgressCallback(progress);
           return true;
         }

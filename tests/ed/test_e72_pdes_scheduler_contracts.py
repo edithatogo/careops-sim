@@ -86,6 +86,7 @@ class TestE72PdesSchedulerContracts(unittest.TestCase):
         cmd = [
             "cargo",
             "test",
+            "--locked",
             "-p",
             "careops-ed",
             "--test",

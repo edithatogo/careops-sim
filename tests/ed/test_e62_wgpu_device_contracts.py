@@ -350,7 +350,7 @@ class TestE62WgpuDeviceContracts(unittest.TestCase):
 
     def test_05_native_cargo_test_verification(self):
         """Executes native cargo test e62_wgpu_wgsl_device_path and verifies 0 test failures."""
-        cmd = ["cargo", "test", "-p", "careops-ed", "--test", "e62_wgpu_wgsl_device_path"]
+        cmd = ["cargo", "test", "--locked", "-p", "careops-ed", "--test", "e62_wgpu_wgsl_device_path"]
         proc = subprocess.run(
             cmd,
             cwd=str(REPO_ROOT),

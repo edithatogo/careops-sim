@@ -13,6 +13,174 @@ fn private_root() -> tempfile::TempDir {
     root
 }
 
+fn ipc_metadata(bytes: &[u8]) -> std::collections::BTreeMap<String, String> {
+    use polars::prelude::*;
+    IpcStreamReader::new(std::io::Cursor::new(bytes))
+        .custom_metadata()
+        .unwrap()
+        .map(|m| {
+            m.iter()
+                .map(|(k, v)| (k.to_string(), v.to_string()))
+                .collect()
+        })
+        .unwrap_or_default()
+}
+fn parquet_metadata(bytes: &[u8]) -> std::collections::BTreeMap<String, String> {
+    use polars::prelude::*;
+    ParquetReader::new(std::io::Cursor::new(bytes))
+        .get_metadata()
+        .unwrap()
+        .key_value_metadata
+        .iter()
+        .flatten()
+        .filter(|kv| kv.key != "ARROW:schema")
+        .map(|kv| (kv.key.clone(), kv.value.clone().unwrap()))
+        .collect()
+}
+fn rewrite_first_part(
+    directory: &std::path::Path,
+    frame: &mut polars::prelude::DataFrame,
+    metadata: &std::collections::BTreeMap<String, String>,
+) {
+    use kairo_ecs_arrow::polars_interop as io;
+    let domain_path = directory.join("birthing_manifest.json");
+    let native_path = directory.join("run_manifest.json");
+    let mut domain: serde_json::Value =
+        serde_json::from_slice(&std::fs::read(&domain_path).unwrap()).unwrap();
+    let mut native: serde_json::Value =
+        serde_json::from_slice(&std::fs::read(&native_path).unwrap()).unwrap();
+    let mut ipc = Vec::new();
+    io::write_ipc_stream_with_metadata(frame, &mut ipc, metadata).unwrap();
+    let mut parquet = Vec::new();
+    io::write_parquet_zstd_with_metadata(frame, &mut parquet, metadata).unwrap();
+    std::fs::write(
+        directory.join(domain["ipc"][0]["file"].as_str().unwrap()),
+        &ipc,
+    )
+    .unwrap();
+    std::fs::write(
+        directory.join(native["parts"][0]["file_name"].as_str().unwrap()),
+        &parquet,
+    )
+    .unwrap();
+    domain["ipc"][0]["sha256"] = careops_birthing_cli::hash(&ipc).into();
+    native["parts"][0]["file_hash"] = format!("{:016x}", io::calculate_checksum(&parquet)).into();
+    std::fs::write(domain_path, serde_json::to_vec(&domain).unwrap()).unwrap();
+    std::fs::write(native_path, serde_json::to_vec(&native).unwrap()).unwrap();
+}
+
+#[test]
+fn native_part_metadata_binds_both_formats_to_actual_capture() {
+    use careops_birthing_cli::{DATA_REVISION, MODEL_CONTRACT_SHA256, RUNTIME_REVISION};
+    let mut input = input();
+    input.replications = 1;
+    let root = private_root();
+    let result = run_batch(root.path(), &input, 1, false, None).unwrap();
+    let directory = root.path().join(&input.batch_id).join(&result[0].directory);
+    let manifest = validate_replication(
+        &root.path().join(&input.batch_id),
+        &result[0].directory,
+        &input,
+        0,
+        input.seed,
+    )
+    .unwrap();
+    let mut first = 1usize;
+    for (part, receipt) in manifest.ipc.iter().enumerate() {
+        let metadata = ipc_metadata(&std::fs::read(directory.join(&receipt.file)).unwrap());
+        let expected: std::collections::BTreeMap<_, _> = [
+            ("schema_version", "2".to_string()),
+            (
+                "run_id",
+                result[0]
+                    .directory
+                    .strip_suffix("-rep0")
+                    .unwrap()
+                    .to_string(),
+            ),
+            ("effective_input_sha256", input.hash().unwrap()),
+            ("model_contract_sha256", MODEL_CONTRACT_SHA256.to_string()),
+            ("runtime_revision", RUNTIME_REVISION.to_string()),
+            ("data_revision", DATA_REVISION.to_string()),
+            ("time_unit", "second".to_string()),
+            ("replication_index", "0".to_string()),
+            ("seed", input.seed.to_string()),
+            ("first_sequence", first.to_string()),
+            ("rows", receipt.rows.to_string()),
+        ]
+        .into_iter()
+        .map(|(k, v)| (format!("careops.{k}"), v))
+        .collect();
+        assert_eq!(metadata, expected);
+        assert_eq!(
+            parquet_metadata(
+                &std::fs::read(directory.join(format!("part-{:05}.parquet", part + 1))).unwrap()
+            ),
+            expected
+        );
+        first += receipt.rows;
+    }
+    assert_eq!(first - 1, result[0].rows);
+}
+
+#[test]
+fn rehashed_metadata_changes_refuse_before_domain_projection() {
+    use kairo_ecs_arrow::polars_interop as io;
+    for key in [
+        "schema_version",
+        "run_id",
+        "effective_input_sha256",
+        "model_contract_sha256",
+        "runtime_revision",
+        "data_revision",
+        "time_unit",
+        "replication_index",
+        "seed",
+        "first_sequence",
+        "rows",
+        "missing",
+        "extra",
+        "parquet_only",
+    ] {
+        let mut input = input();
+        input.replications = 1;
+        input.scenario.days = 1;
+        let root = private_root();
+        let result = run_batch(root.path(), &input, 1, false, None).unwrap();
+        let batch = root.path().join(&input.batch_id);
+        let directory = batch.join(&result[0].directory);
+        let bytes = std::fs::read(directory.join("ipc-00000.arrow")).unwrap();
+        let mut metadata = ipc_metadata(&bytes);
+        match key {
+            "missing" => {
+                metadata.remove("careops.seed");
+            }
+            "extra" => {
+                metadata.insert("careops.unknown".into(), "unqualified".into());
+            }
+            "parquet_only" => {
+                metadata.insert("careops.run_id".into(), "foreign".into());
+            }
+            _ => {
+                metadata.insert(format!("careops.{key}"), "foreign".into());
+            }
+        }
+        let mut frame = io::read_ipc_stream(std::io::Cursor::new(&bytes)).unwrap();
+        rewrite_first_part(&directory, &mut frame, &metadata);
+        if key == "parquet_only" {
+            let path = directory.join("birthing_manifest.json");
+            let mut manifest: serde_json::Value =
+                serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+            manifest["ipc"][0]["sha256"] = careops_birthing_cli::hash(&bytes).into();
+            std::fs::write(directory.join("ipc-00000.arrow"), &bytes).unwrap();
+            std::fs::write(path, serde_json::to_vec(&manifest).unwrap()).unwrap();
+        }
+        let error =
+            validate_replication(&batch, &result[0].directory, &input, 0, input.seed).unwrap_err();
+        assert!(error.to_string().contains("metadata"), "{key}: {error}");
+    }
+}
+
 #[test]
 fn actual_multiday_routes_callbacks_conservation_and_named_streams() {
     let input = input();
@@ -201,30 +369,19 @@ fn completed_formats_cannot_change_capture_status_even_with_updated_file_hashes(
     let result = run_batch(root.path(), &input, 1, false, None).unwrap();
     let batch = root.path().join(&input.batch_id);
     let directory = batch.join(&result[0].directory);
-    let domain_path = directory.join("birthing_manifest.json");
-    let native_path = directory.join("run_manifest.json");
-    let mut domain: serde_json::Value =
-        serde_json::from_slice(&std::fs::read(&domain_path).unwrap()).unwrap();
-    let mut native: serde_json::Value =
-        serde_json::from_slice(&std::fs::read(&native_path).unwrap()).unwrap();
-    let ipc_path = directory.join(domain["ipc"][0]["file"].as_str().unwrap());
-    let parquet_path = directory.join(native["parts"][0]["file_name"].as_str().unwrap());
-    let frame =
-        io::read_ipc_stream(std::io::Cursor::new(std::fs::read(&ipc_path).unwrap())).unwrap();
+    let bytes = std::fs::read(directory.join("ipc-00000.arrow")).unwrap();
+    let metadata = ipc_metadata(&bytes);
+    let frame = io::read_ipc_stream(std::io::Cursor::new(bytes)).unwrap();
     let mut rows = io::dataframe_to_records(&frame).unwrap();
     rows[0].status = EventStatus::Error;
     let mut changed = io::records_to_dataframe(&rows).unwrap();
-    let mut ipc = Vec::new();
-    io::write_ipc_stream(&mut changed, &mut ipc).unwrap();
-    let mut parquet = Vec::new();
-    io::write_parquet_zstd(&mut changed, &mut parquet).unwrap();
-    domain["ipc"][0]["sha256"] = careops_birthing_cli::hash(&ipc).into();
-    native["parts"][0]["file_hash"] = format!("{:016x}", io::calculate_checksum(&parquet)).into();
-    std::fs::write(ipc_path, ipc).unwrap();
-    std::fs::write(parquet_path, parquet).unwrap();
-    std::fs::write(domain_path, serde_json::to_vec(&domain).unwrap()).unwrap();
-    std::fs::write(native_path, serde_json::to_vec(&native).unwrap()).unwrap();
-    assert!(validate_replication(&batch, &result[0].directory, &input, 0, input.seed).is_err());
+    rewrite_first_part(&directory, &mut changed, &metadata);
+    let error =
+        validate_replication(&batch, &result[0].directory, &input, 0, input.seed).unwrap_err();
+    assert!(
+        error.to_string().contains("canonical capture identity"),
+        "{error}"
+    );
 }
 
 #[test]
@@ -250,4 +407,75 @@ fn unknown_versions_units_and_unbounded_profiles_fail_before_output() {
         assert!(run_batch(root.path(), &input, 1, false, None).is_err());
         assert_eq!(std::fs::read_dir(root.path()).unwrap().count(), 0);
     }
+}
+
+#[test]
+fn uncertainty_is_explicit_and_cannot_be_silently_changed_or_omitted() {
+    let mut input = input();
+    input.replications = 1;
+    input.scenario.days = 1;
+    let root = private_root();
+    let results = run_batch(root.path(), &input, 1, false, None).unwrap();
+    let batch = root.path().join(&input.batch_id);
+    let result = &results[0];
+    let path = batch.join(&result.directory).join("birthing_manifest.json");
+    let original: serde_json::Value =
+        serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+    assert_eq!(original["schema_version"], 2);
+    assert_eq!(
+        original["uncertainty"],
+        serde_json::json!({
+            "schema": "careops.birthing.observation-uncertainty.v1",
+            "method": "not_estimated",
+            "reason": "case_observations_no_declared_sampling_estimand",
+            "observation_unit": "synthetic_case",
+            "experiment_unit": "independent_replication",
+            "metrics": ["delay_seconds", "origin_occupied_seconds", "target_breach"]
+        })
+    );
+    for key in [
+        "schema",
+        "method",
+        "reason",
+        "observation_unit",
+        "experiment_unit",
+        "metrics",
+    ] {
+        let mut changed = original.clone();
+        changed["uncertainty"].as_object_mut().unwrap().remove(key);
+        std::fs::write(&path, serde_json::to_vec(&changed).unwrap()).unwrap();
+        assert!(
+            validate_replication(&batch, &result.directory, &input, 0, result.seed).is_err(),
+            "missing {key}"
+        );
+        let mut changed = original.clone();
+        changed["uncertainty"][key] = if key == "metrics" {
+            serde_json::json!(["delay_seconds"])
+        } else {
+            "invented".into()
+        };
+        std::fs::write(&path, serde_json::to_vec(&changed).unwrap()).unwrap();
+        assert!(
+            validate_replication(&batch, &result.directory, &input, 0, result.seed).is_err(),
+            "altered {key}"
+        );
+    }
+    for mode in 0..3 {
+        let mut changed = original.clone();
+        match mode {
+            0 => {
+                changed.as_object_mut().unwrap().remove("uncertainty");
+            }
+            1 => {
+                changed["uncertainty"]["population_ci"] = serde_json::json!([0, 0]);
+            }
+            _ => {
+                changed["schema_version"] = 1.into();
+            }
+        }
+        std::fs::write(&path, serde_json::to_vec(&changed).unwrap()).unwrap();
+        assert!(validate_replication(&batch, &result.directory, &input, 0, result.seed).is_err());
+    }
+    std::fs::write(&path, serde_json::to_vec(&original).unwrap()).unwrap();
+    validate_replication(&batch, &result.directory, &input, 0, result.seed).unwrap();
 }

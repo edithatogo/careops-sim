@@ -1,8 +1,54 @@
 //! Executable ED modes must not be inferred from upstream features or fixture labels.
-use careops_ed::disposition::api_runner::execute_cli_args;
-
-fn call(args: &[&str]) -> careops_ed::disposition::api_runner::CliOutput {
-    execute_cli_args(&args.iter().map(|s| s.to_string()).collect::<Vec<_>>())
+use careops_ed::disposition::api_runner::ExitCodeDef;
+use careops_ed::disposition::native_output::read_native_dataset;
+use careops_ed_cli::execute;
+use std::path::PathBuf;
+use std::sync::atomic::{AtomicUsize, Ordering};
+static NEXT: AtomicUsize = AtomicUsize::new(0);
+struct Temp(PathBuf);
+impl Temp {
+    fn new() -> Self {
+        let path = std::env::temp_dir().join(format!(
+            "capability-native-{}-{}",
+            std::process::id(),
+            NEXT.fetch_add(1, Ordering::SeqCst)
+        ));
+        std::fs::create_dir(&path).unwrap();
+        Self(path)
+    }
+}
+impl Drop for Temp {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_dir_all(&self.0);
+    }
+}
+struct Output {
+    exit_code: ExitCodeDef,
+    stdout: String,
+    stderr: String,
+}
+fn call(args: &[&str]) -> Output {
+    let mut bytes = Vec::new();
+    let result = execute(
+        &args.iter().map(|s| s.to_string()).collect::<Vec<_>>(),
+        &mut bytes,
+        None,
+    );
+    let (exit_code, stderr) = match result {
+        Ok(()) => (ExitCodeDef::Success, String::new()),
+        Err(e) => (e.code, e.to_string()),
+    };
+    Output {
+        exit_code,
+        stdout: String::from_utf8(bytes).unwrap(),
+        stderr,
+    }
+}
+fn nominal() -> PathBuf {
+    std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .unwrap()
+        .join("careops-ed/examples/nominal_mvp.json")
 }
 
 #[test]
@@ -64,14 +110,29 @@ fn unsupported_execution_is_rejected_before_input_or_output_side_effects() {
 
 #[test]
 fn backend_selection_is_strict_and_does_not_change_cpu_results() {
-    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
-    let scenario = root.join("examples/nominal_mvp.json");
+    let temp = Temp::new();
+    let scenario = nominal();
     let path = scenario.to_str().unwrap();
-    let default = call(&["run", path]);
-    let explicit = call(&["run", path, "--backend", "cpu_serial"]);
+    let default_root = temp.0.join("default");
+    let explicit_root = temp.0.join("explicit");
+    let default = call(&["run", path, "--output-dir", default_root.to_str().unwrap()]);
+    let explicit = call(&[
+        "run",
+        path,
+        "--output-dir",
+        explicit_root.to_str().unwrap(),
+        "--backend",
+        "cpu_serial",
+    ]);
     assert_eq!(default.exit_code as i32, 0);
     assert_eq!(explicit.exit_code as i32, 0);
-    assert_eq!(default.stdout, explicit.stdout);
+    let default = read_native_dataset(&default_root.join("data")).unwrap();
+    let explicit = read_native_dataset(&explicit_root.join("data")).unwrap();
+    assert!(default.patients().equals_missing(explicit.patients()));
+    assert!(default
+        .replications()
+        .equals_missing(explicit.replications()));
+    assert!(default.metrics().equals_missing(explicit.metrics()));
     for args in [
         vec!["run", path, "--backend"],
         vec!["run", path, "--backend", "cuda"],
@@ -102,18 +163,11 @@ fn backend_selection_is_strict_and_does_not_change_cpu_results() {
 
 #[test]
 fn explicit_cpu_batch_runs_and_unavailable_modes_create_no_artifacts() {
-    let scenario =
-        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("examples/nominal_mvp.json");
+    let temp = Temp::new();
+    let scenario = nominal();
     let scenario = scenario.to_str().unwrap();
-    let root = std::env::temp_dir().join(format!(
-        "careops_capabilities_{}_{}",
-        std::process::id(),
-        std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .unwrap()
-            .as_nanos()
-    ));
-    for (command, output_flag) in [("run", "--output"), ("batch", "--output-dir")] {
+    let root = temp.0.join("unavailable");
+    for (command, output_flag) in [("run", "--output-dir"), ("batch", "--output-dir")] {
         let output = root.join(command);
         let out = call(&[
             command,
@@ -129,7 +183,7 @@ fn explicit_cpu_batch_runs_and_unavailable_modes_create_no_artifacts() {
             "unsupported backend must not create outputs"
         );
     }
-    let output = root.join("batch");
+    let output = temp.0.join("batch");
     let out = call(&[
         "batch",
         scenario,
@@ -144,5 +198,11 @@ fn explicit_cpu_batch_runs_and_unavailable_modes_create_no_artifacts() {
     ]);
     assert_eq!(out.exit_code as i32, 0, "{}", out.stderr);
     assert!(output.join("batch_run.json").is_file());
-    std::fs::remove_dir_all(root).unwrap();
+    assert_eq!(
+        read_native_dataset(&output.join("data"))
+            .unwrap()
+            .replications()
+            .height(),
+        2
+    );
 }

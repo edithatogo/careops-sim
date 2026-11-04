@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03",
-  "active_track": "generic_ed_delivery_20260925",
-  "active_phase": "E9",
-  "next_action": "Generic ED E9.1\u2013E9.4 accepted at18b6e8f after independent review, both diagnostic fixes and15applicable hosted successes plus expectedskip;766Python tests and zero viable criticalED mutants/timeouts. Next final documentation-head gates and stacked PR198 integration review. Generic ED remains in_progress: Metal/PDES/protocol/failed-peer frontier and actual multi-host acceptance blocked with existing Kairos owners; ED native columnar outputs remain separate Polars/PR191. No next mechanism packet dispatched. Core PR197 remains unmerged; previous worktrees/private native ownership preserved.",
+  "updated_at": "2026-11-04",
+  "active_track": "polars_data_processing_20261022",
+  "active_phase": "R14",
+  "next_action": "Finish gated PR199 integration using the explicit native Polars pool1 recipe, preserving787/100ms/retries0. Archive900 macOS C63 measured222.199667ms and failed; local profile comparison does not establish cause. Require actual full fresh hosted acceptance before ready/merge; then prepare SHA2R50.1 inventory under a fresh owned packet. R14 source258 acceptance/history and runtime074/data473/Polars964 remain unchanged.",
   "context_paths": [
-    "conductor/tracks/generic_ed_delivery_20260925/plan.md",
-    "conductor/execution/packets/ED.capabilities.json",
-    "conductor/evidence/ed-capability-qualification-20261103/README.md",
-    "conductor/evidence/ed-capability-qualification-20261103/upstream-blockers.md"
+    "conductor/archive/polars_data_processing_20261022/plan.md",
+    "conductor/archive/polars_data_processing_20261022/statistical-contract.md",
+    "conductor/archive/polars_data_processing_20261022/native-output-contract.md",
+    "conductor/archive/polars_data_processing_20261022/native-cli-contract.md"
   ],
   "submodule_pins": {
     "libs/kairos": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
@@ -143,16 +143,133 @@
     "next_operation": "R10.4 accepted; prepare R11.1 with fresh exact-source packet and named failing trace/recovery oracles. Advanced source integration remains separate."
   },
   "polars_phase_review": {
-    "task": "R10.4",
-    "status": "accepted",
-    "reviewed_commit": "e65570b7a1046dafb15511ab5118b46b587f2f5d",
-    "evidence": "conductor/tracks/polars_data_processing_20261022/review-report.md",
-    "next_task": "R11.1 preparation",
-    "owner_chat": "01a1876f-9b26-71e0-b55c-daeb9d9a1335",
-    "worktree": "careops-r103-remote/careops-sim",
-    "paths": "Polars track and affected Conductor metadata only",
+    "task": "R12.4",
+    "status": "accepted_local_engineering",
+    "reviewed_commit": "65731f093a9ff1e11005782bbe9d544c4dd5cbab",
+    "evidence": "conductor/archive/polars_data_processing_20261022/review-report.md",
+    "next_task": "R13.1 preparation",
+    "owner_chat": "01a19b9f-69e7-7353-9b75-445d5653feb4",
+    "worktree": "careops-pr194-checks/careops-sim",
+    "paths": "Bounded Polars parent implementation and Conductor integration; future source writes need fresh claims",
     "native_scope": "none",
     "global_dispatch": "Other lane A1/A2 resume state preserved."
   },
-  "completed_engineering_track": "careops_core_domain_abstractions_20261020"
+  "completed_engineering_track": "careops_core_domain_abstractions_20261020",
+  "polars_data_source_adoption": {
+    "parent_commit": "43511e665706cf31c434758675ce291d8c12547b",
+    "data_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
+    "runtime_commit": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+    "scope": "data-only source adoption, actual26frozen summary cases, ED/B7 native and independent files; parent hosted pending",
+    "evidence": "conductor/evidence/polars-integration-20261103/data-source-compatibility.json"
+  },
+  "polars_native_prerequisites": {
+    "native_output": "f6297fd124f9bf543095db029a774e1b894d7533",
+    "native_output_ci": "ae20548b70b73fdb8de3dad5dba8353bf56c4e94",
+    "native_cli_core": "acf217bf06b9a5325c12d6845fa50b1ad742b301",
+    "scope": "local reviewed library/CI/callableCLI only; main unchanged; no whole R13 or binary acceptance",
+    "hosted_checkpoint": "92d8daaac10c4e96a2d38d70b8cd649752a91bcb",
+    "hosted_checkpoint_results": {
+      "success": 17,
+      "expected_skip": 1
+    }
+  },
+  "polars_native_cutover_checkpoint": {
+    "source_commit": "f7563a8bfaf3a8da623b2373cc369883aca609f6",
+    "native_cli": "b0ddd0c1ea02b99667a643199051b3e303a35b8e",
+    "ci_python": "cb7362de175eba735e42ba4182ce846630af067e",
+    "runner_removal": "d3e0cf81ded59720e956070082f8dae4a7a50ba3",
+    "ci_ordering": "5a6283470c20717aa49c99e6edeb9c6dfd8eeea1",
+    "rust_consumers": "9d126f3c63af8f1ae82ead510e76576573bb83a1",
+    "capture_consumers": "441e25abae99412ee6b8d20bf1dbafddadb39f11",
+    "scope": "R13 reviewed local engineering accepted; final R14 and current-head hosted acceptance remain open",
+    "review": "conductor/archive/polars_data_processing_20261022/review-report.md",
+    "reference_consumers": "4357206fd91b241ddf577634b3124d7601c17f42",
+    "native_release_consumer": "b215047f0b7ee33a4a1d0d3ec632a37b124aaade",
+    "c63_capabilities": "443f50696c4d7c338786cde450198fa2968e3d44",
+    "birthing_uncertainty": "95fe28cd09bfae055d35cf75b109c741099b5da1",
+    "birthing_metadata": "63a30b8e9418fa2146d665f37950a6519aa2b122",
+    "fixture_consumers": "a44a938",
+    "legacy_removal": "2a4dbec",
+    "final_consumers": "28c2dd1",
+    "current_guides_ci": "e494e44",
+    "reader_format_parity": "7b9892b",
+    "locked_consumer_calls": "66abaea",
+    "e61_receipt_repair": "1d1e5a4",
+    "b7_mutation_metadata": "9b406d3",
+    "native_temp_isolation": "f7563a8"
+  },
+  "polars_r13_phase_review": {
+    "status": "accepted_local_engineering",
+    "source_commit": "f7563a8bfaf3a8da623b2373cc369883aca609f6",
+    "evidence": "conductor/evidence/polars-r13-acceptance-20261104/README.md",
+    "rust_workspace_passed": 776,
+    "rust_ignored": 0,
+    "python_top_level_passed": 796,
+    "python_ed_scope": "126 passed in full discovery plus corrected exact E61 case passed; all127 accounted, not a fresh full rerun",
+    "hosted_current_head": "pending",
+    "next_task": "R14.1 final acceptance; upstream shared-import prerequisite first",
+    "owner_chat": "01a19b9f-69e7-7353-9b75-445d5653feb4",
+    "worktree": "careops-pr194-checks/careops-sim",
+    "native_scope": "none"
+  },
+  "polars_r14_source_qualification": {
+    "status": "scoped_source_and_local_evidence_qualified_final_acceptance_open",
+    "source_commit": "86dcc7c8da1b612ef136b65700066a36bad623a3",
+    "first_adoption_snapshot": "a61f259ff3e553db8442b150bd767548ef9c6b73",
+    "data_commit": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+    "runtime_commit": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+    "polars_commit": "96439685eb2f95108f51087d2b76091917f2593c",
+    "evidence": "conductor/evidence/polars-r14-qualification-20261104/README.md",
+    "release_binary_sha256": "c4e7ed9f5158b23f6e8d667dbbe69d53a1a1db285bd87232881cc02c6deee033",
+    "qualified_scope": "3 populated domain FFI tests;30 source guard tests;68 support checks;26 frozen release cases and14 negatives; historical conversion1+3;12 measured commands;current unpacked package consumer",
+    "python_scope": "806-case discovery:801 passed and5 stale-binary checks failed; corrected exact5 passed with hash-verified external binary. Not a fresh full806 pass.",
+    "full_workspace_scope": "All-features attempt exhausted disk during build before tests; no fresh full-suite result. Owned terminal dev-cache cleanup preserved release bytes; coherent qualification remains required.",
+    "parent_hosted": {
+      "ci_run": "41678403314",
+      "native_release_run": "41678403333",
+      "acceptance": "CI aggregate and native/coverage/mutation pending; no final acceptance",
+      "native_release": "success at exact86dcc7c; main-only attestation expected skip",
+      "context_first_attempt": "failed before build/tests: Rustup preinstalled partially installed toolchain conflicts with bin/cargo-clippy; original log preserved; bounded fresh-runner retry pending",
+      "native_first_attempt": "787 tests:786 passed, C63 comparison114.640ms failed100ms; exact timed-case scheduling reservation requires full fresh qualification",
+      "native_release_compiled_commit": "3df1a74527e8eaf767a99d2cbf50dcf46de62e6e",
+      "native_release_head_commit": "86dcc7c8da1b612ef136b65700066a36bad623a3",
+      "native_release_equal_git_tree": "371c7f59eea239326cca16141980317c3a9f3c7d"
+    },
+    "upstream_hosted": {
+      "source": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+      "run": "41667625899",
+      "qualified_operating_systems": 3
+    },
+    "maintained_code_scope": {
+      "baseline": "92d8daaac10c4e96a2d38d70b8cd649752a91bcb",
+      "production_runtime_net_lines": 859,
+      "tests_support_net_lines": 2564,
+      "aggregate_net_lines": 3423,
+      "scope": "six audited prefixes and tracked rs/py/ts/mjs; not repository-wide"
+    },
+    "owner_chat": "01a19b9f-69e7-7353-9b75-445d5653feb4",
+    "worktree": "careops-pr194-checks/careops-sim",
+    "native_scope": "local synthetic artifacts only; existing ownership retained",
+    "r14_checkboxes": "all remain unchecked until final acceptance",
+    "clippy": "workspace/all-features/all-targets locked -D warnings passed locally"
+  },
+  "polars_r14_phase_review": {
+    "task": "R14.4",
+    "status": "accepted_engineering_archived",
+    "reviewed_commit": "258bb6b41f4682e140c06cb66a20155eb83d91a2",
+    "evidence": "conductor/evidence/polars-r14-qualification-20261104/final-source.json",
+    "archive": "conductor/archive/polars_data_processing_20261022",
+    "owner_chat": "01a19b9f-69e7-7353-9b75-445d5653feb4",
+    "worktree": "careops-pr194-checks/careops-sim",
+    "native_scope": "none",
+    "next_operation": "No new implementation dispatch; preserve remaining independently owned tracks and external acceptance gates."
+  },
+  "polars_post_archive_ci": {
+    "pr": 199,
+    "failed_source": "900c9cfb2d5e8dc7c78b71715145fdb24aeb1dab",
+    "failed_run": 41734017689,
+    "failed_gate": "macOS C63 actual comparison222.199667ms versus100ms",
+    "native_recipe": "POLARS_MAX_THREADS=1, full787, existing reservation and zero retries",
+    "acceptance": "Require live full hosted success before merge; no pass inferred here."
+  }
 }
