@@ -1,0 +1,19 @@
+{
+  "source": "9c016ba795e397fdb378faf13da25f04bc4783cb",
+  "ci_run": 41785318984,
+  "job": 126427405442,
+  "status": "failed_before_tests",
+  "evidence": "Multiple native linker processes terminated with signal7(SIGBUS); no default-feature suite result.",
+  "cause": "Resource pressure is a hypothesis; original logs lack disk/memory telemetry, no proved GNUld/disk/OOM attribution.",
+  "log_sha256": "72d5fc054d02b163c950241cbb895b8c6e90aadf4505412c3409808a3a01eba7",
+  "repair": "Default lane only: serialCargo,incremental0,dev/testdebug0,before/after disk+memory telemetry preserving original test exit.",
+  "preserved": [
+    "Rust1.99.1canonicalbindings",
+    "cargo test --workspace --lib --bins --tests --locked",
+    "samefeatures/testselectors/optimizations/thresholds/retries0/timeout",
+    "existingCIaggregate/securitygate"
+  ],
+  "required": "Complete fresh hosted required gates at repairedhead; cancelled/interrupted9C jobs are not passes.",
+  "reviewer": "/root/ffi_packet_prepare",
+  "review": "GO bounded CIrecipe only; actual newhead proof pending"
+}
