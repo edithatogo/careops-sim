@@ -1,5 +1,4 @@
 use std::fs;
-use std::path::PathBuf;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 use careops_core::experiment::{
@@ -24,15 +23,15 @@ impl IndexedReplication for TestReplication {
     }
 }
 
-fn temp_dir(label: &str) -> PathBuf {
-    static NEXT_ID: AtomicUsize = AtomicUsize::new(0);
-    let path = std::env::temp_dir().join(format!(
-        "careops_experiment_contract_{label}_{}_{}",
-        std::process::id(),
-        NEXT_ID.fetch_add(1, Ordering::Relaxed)
-    ));
-    fs::create_dir_all(&path).expect("temporary directory should be created");
-    path
+fn temp_dir(label: &str) -> tempfile::TempDir {
+    let mut builder = tempfile::Builder::new();
+    builder.prefix(label);
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        builder.permissions(std::fs::Permissions::from_mode(0o700));
+    }
+    builder.tempdir().unwrap()
 }
 
 #[test]
@@ -82,7 +81,8 @@ fn run_rejects_result_with_wrong_replication_identity() {
 
 #[test]
 fn resume_rejects_malformed_checkpoint_identity_and_index_sets() {
-    let output_dir = temp_dir("malformed-checkpoint");
+    let output_owner = temp_dir("malformed-checkpoint");
+    let output_dir = output_owner.path();
     let checkpoint_path = output_dir.join("checkpoint.json");
     let base_seed = 29;
     let seeds = allocate_replication_seeds(base_seed, 2);

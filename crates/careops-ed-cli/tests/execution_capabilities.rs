@@ -3,25 +3,23 @@ use careops_ed::disposition::api_runner::ExitCodeDef;
 use careops_ed::disposition::native_output::read_native_dataset;
 use careops_ed_cli::execute;
 use std::path::PathBuf;
-use std::sync::atomic::{AtomicUsize, Ordering};
-static NEXT: AtomicUsize = AtomicUsize::new(0);
-struct Temp(PathBuf);
+struct Temp(tempfile::TempDir);
 impl Temp {
     fn new() -> Self {
-        let path = std::env::temp_dir().join(format!(
-            "capability-native-{}-{}",
-            std::process::id(),
-            NEXT.fetch_add(1, Ordering::SeqCst)
-        ));
-        std::fs::create_dir(&path).unwrap();
-        Self(path)
+        let owner = {
+            let mut builder = tempfile::Builder::new();
+            builder.prefix("capability-native-");
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                builder.permissions(std::fs::Permissions::from_mode(0o700));
+            }
+            builder.tempdir().unwrap()
+        };
+        Self(owner)
     }
 }
-impl Drop for Temp {
-    fn drop(&mut self) {
-        let _ = std::fs::remove_dir_all(&self.0);
-    }
-}
+
 struct Output {
     exit_code: ExitCodeDef,
     stdout: String,
@@ -113,8 +111,8 @@ fn backend_selection_is_strict_and_does_not_change_cpu_results() {
     let temp = Temp::new();
     let scenario = nominal();
     let path = scenario.to_str().unwrap();
-    let default_root = temp.0.join("default");
-    let explicit_root = temp.0.join("explicit");
+    let default_root = temp.0.path().join("default");
+    let explicit_root = temp.0.path().join("explicit");
     let default = call(&["run", path, "--output-dir", default_root.to_str().unwrap()]);
     let explicit = call(&[
         "run",
@@ -166,7 +164,7 @@ fn explicit_cpu_batch_runs_and_unavailable_modes_create_no_artifacts() {
     let temp = Temp::new();
     let scenario = nominal();
     let scenario = scenario.to_str().unwrap();
-    let root = temp.0.join("unavailable");
+    let root = temp.0.path().join("unavailable");
     for (command, output_flag) in [("run", "--output-dir"), ("batch", "--output-dir")] {
         let output = root.join(command);
         let out = call(&[
@@ -183,7 +181,7 @@ fn explicit_cpu_batch_runs_and_unavailable_modes_create_no_artifacts() {
             "unsupported backend must not create outputs"
         );
     }
-    let output = temp.0.join("batch");
+    let output = temp.0.path().join("batch");
     let out = call(&[
         "batch",
         scenario,

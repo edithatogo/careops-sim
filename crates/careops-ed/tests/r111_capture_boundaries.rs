@@ -17,22 +17,20 @@ use careops_ed::{parse_scenario_json, run_scenario, PatientResult, ScenarioConfi
 fn failure(e: impl std::fmt::Display) -> ExperimentError {
     ExperimentError::new(ExperimentErrorKind::OutputWriteFailed, e.to_string())
 }
-static NEXT: AtomicUsize = AtomicUsize::new(0);
-struct Temp(PathBuf);
+struct Temp(tempfile::TempDir);
 impl Temp {
     fn new() -> Self {
-        let path = std::env::temp_dir().join(format!(
-            "r111-{}-{}",
-            std::process::id(),
-            NEXT.fetch_add(1, Ordering::Relaxed)
-        ));
-        fs::create_dir(&path).unwrap();
-        Self(path)
-    }
-}
-impl Drop for Temp {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
+        let owner = {
+            let mut builder = tempfile::Builder::new();
+            builder.prefix("r111-");
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                builder.permissions(std::fs::Permissions::from_mode(0o700));
+            }
+            builder.tempdir().unwrap()
+        };
+        Self(owner)
     }
 }
 
@@ -311,12 +309,12 @@ fn save_checkpoint(dir: &Path, checkpoint: &CaptureCheckpoint) {
 fn backpressure_waits_for_real_ack_and_preserves_rows() {
     let temp = Temp::new();
     let gate = Arc::new(Gate::default());
-    let mut store = FsFixture::new(temp.0.join("parts"));
+    let mut store = FsFixture::new(temp.0.path().join("parts"));
     store.gate = Some(gate.clone());
     let finished = AtomicBool::new(false);
     let input = scenario();
     let cfg = config(1);
-    let dir = temp.0.join("checkpoints");
+    let dir = temp.0.path().join("checkpoints");
     std::thread::scope(|scope| {
         let thread = scope.spawn(|| {
             let r = run_captured_batch(&input, &cfg, limits(), &dir, &store);
@@ -347,7 +345,7 @@ fn byte_limit_applies_during_encoding_and_rejects_oversized_rows() {
     assert_eq!(writer.written(), 3);
     assert_eq!(bytes, b"abc");
     let temp = Temp::new();
-    let store = FsFixture::new(temp.0.join("parts"));
+    let store = FsFixture::new(temp.0.path().join("parts"));
     let mut input = scenario();
     input.patients[0].patient_id = "x".repeat(512);
     let error = run_captured_batch(
@@ -358,7 +356,7 @@ fn byte_limit_applies_during_encoding_and_rejects_oversized_rows() {
             max_bytes: 128,
             max_patient_id_bytes: 1024,
         },
-        &temp.0.join("checkpoints"),
+        &temp.0.path().join("checkpoints"),
         &store,
     )
     .unwrap_err();
@@ -379,13 +377,13 @@ fn real_filesystem_faults_propagate_and_never_publish_completion() {
         Stage::Manifest,
     ] {
         let temp = Temp::new();
-        let store = FsFixture::new(temp.0.join("parts"));
+        let store = FsFixture::new(temp.0.path().join("parts"));
         store.inject(stage, if stage == Stage::Manifest { 0 } else { 1 });
         let error = run_captured_batch(
             &scenario(),
             &config(1),
             limits(),
-            &temp.0.join("checkpoints"),
+            &temp.0.path().join("checkpoints"),
             &store,
         )
         .unwrap_err();
@@ -397,7 +395,7 @@ fn real_filesystem_faults_propagate_and_never_publish_completion() {
         assert!(error.message.contains("injected"));
         assert!(!store.is_complete().unwrap(), "{stage:?}");
         // A later failing replication/publication cannot mutate already committed work.
-        let saved = checkpoint(&temp.0.join("checkpoints"));
+        let saved = checkpoint(&temp.0.path().join("checkpoints"));
         for part in &saved.completed_replications[0].parts {
             assert_eq!(
                 compute_sha256_hex(&store.read_part(&part.name, 4096).unwrap()),
@@ -410,8 +408,8 @@ fn real_filesystem_faults_propagate_and_never_publish_completion() {
 #[test]
 fn checkpoint_write_failure_cannot_be_reported_complete() {
     let temp = Temp::new();
-    let store = FsFixture::new(temp.0.join("parts"));
-    let dir = temp.0.join("checkpoints");
+    let store = FsFixture::new(temp.0.path().join("parts"));
+    let dir = temp.0.path().join("checkpoints");
     fs::create_dir(&dir).unwrap();
     // Obstruct the actual durable control path; no checkpoint can be acknowledged.
     fs::create_dir(dir.join("checkpoint.json")).unwrap();
@@ -420,9 +418,9 @@ fn checkpoint_write_failure_cannot_be_reported_complete() {
 }
 
 fn interrupted(temp: &Temp) -> (FsFixture, PathBuf) {
-    let store = FsFixture::new(temp.0.join("parts"));
+    let store = FsFixture::new(temp.0.path().join("parts"));
     store.inject(Stage::BeforeWrite, 1);
-    let dir = temp.0.join("checkpoints");
+    let dir = temp.0.path().join("checkpoints");
     assert!(run_captured_batch(&scenario(), &config(1), limits(), &dir, &store).is_err());
     let saved = checkpoint(&dir);
     assert_eq!(saved.completed_replications.len(), 1);
@@ -542,9 +540,9 @@ fn input_drift_and_unacknowledged_part_reject_without_implicit_replay() {
     assert!(resume_captured_batch(&input, &config(1), limits(), &dir, &store).is_err());
     assert_eq!(*store.starts.lock().unwrap(), before);
     let temp = Temp::new();
-    let store = FsFixture::new(temp.0.join("parts"));
+    let store = FsFixture::new(temp.0.path().join("parts"));
     store.inject(Stage::AfterCommit, 1);
-    let dir = temp.0.join("checkpoints");
+    let dir = temp.0.path().join("checkpoints");
     assert!(run_captured_batch(&scenario(), &config(1), limits(), &dir, &store).is_err());
     let before = store.starts.lock().unwrap().clone();
     assert!(resume_captured_batch(&scenario(), &config(1), limits(), &dir, &store).is_err());
@@ -554,9 +552,9 @@ fn input_drift_and_unacknowledged_part_reject_without_implicit_replay() {
 #[test]
 fn manifest_failure_recovers_from_real_complete_checkpoint_without_reexecution() {
     let temp = Temp::new();
-    let store = FsFixture::new(temp.0.join("parts"));
+    let store = FsFixture::new(temp.0.path().join("parts"));
     store.inject(Stage::Manifest, 0);
-    let dir = temp.0.join("checkpoints");
+    let dir = temp.0.path().join("checkpoints");
     assert!(run_captured_batch(&scenario(), &config(2), limits(), &dir, &store).is_err());
     assert!(checkpoint(&dir).pending_indices.is_empty());
     assert!(!store.is_complete().unwrap());
@@ -570,7 +568,7 @@ fn manifest_failure_recovers_from_real_complete_checkpoint_without_reexecution()
 #[test]
 fn actual_codec_framing_controls_batch_split_and_byte_cap() {
     let temp = Temp::new();
-    let mut store = FsFixture::new(temp.0.join("parts"));
+    let mut store = FsFixture::new(temp.0.path().join("parts"));
     store.padding = 512;
     let rows = run_scenario(&scenario()).unwrap().patients;
     let sample = CaptureBatch {
@@ -595,7 +593,7 @@ fn actual_codec_framing_controls_batch_split_and_byte_cap() {
         &scenario(),
         &config(2),
         cap,
-        &temp.0.join("checkpoints"),
+        &temp.0.path().join("checkpoints"),
         &store,
     )
     .unwrap();
@@ -609,7 +607,7 @@ fn actual_codec_framing_controls_batch_split_and_byte_cap() {
 #[test]
 fn capture_wait_aggregate_overflow_is_a_typed_error_not_a_panic() {
     let temp = Temp::new();
-    let store = FsFixture::new(temp.0.join("parts"));
+    let store = FsFixture::new(temp.0.path().join("parts"));
     let mut input = scenario();
     input.horizon_ticks = u64::MAX - 1;
     for (index, patient) in input.patients.iter_mut().enumerate() {
@@ -631,8 +629,14 @@ fn capture_wait_aggregate_overflow_is_a_typed_error_not_a_panic() {
         replications: 1,
         ..config(1)
     };
-    let error = run_captured_batch(&input, &cfg, limits(), &temp.0.join("checkpoints"), &store)
-        .unwrap_err();
+    let error = run_captured_batch(
+        &input,
+        &cfg,
+        limits(),
+        &temp.0.path().join("checkpoints"),
+        &store,
+    )
+    .unwrap_err();
     assert_eq!(error.kind, ExperimentErrorKind::MalformedConfig);
     assert!(error.message.contains("wait sum overflow"));
     assert!(!store.is_complete().unwrap());
@@ -641,7 +645,7 @@ fn capture_wait_aggregate_overflow_is_a_typed_error_not_a_panic() {
 #[test]
 fn pure_encoding_work_scales_with_parts_not_patient_prefixes() {
     let temp = Temp::new();
-    let store = FsFixture::new(temp.0.join("parts"));
+    let store = FsFixture::new(temp.0.path().join("parts"));
     let mut input = scenario();
     let template = input.patients[0].clone();
     input.patients = (0..100)
@@ -655,8 +659,14 @@ fn pure_encoding_work_scales_with_parts_not_patient_prefixes() {
         max_rows: 8,
         ..limits()
     };
-    let result =
-        run_captured_batch(&input, &config(1), cap, &temp.0.join("checkpoints"), &store).unwrap();
+    let result = run_captured_batch(
+        &input,
+        &config(1),
+        cap,
+        &temp.0.path().join("checkpoints"),
+        &store,
+    )
+    .unwrap();
     let parts: usize = result.iter().map(|r| r.parts.len()).sum();
     assert_eq!(parts, 4 * 13);
     assert_eq!(
@@ -670,13 +680,13 @@ fn pure_encoding_work_scales_with_parts_not_patient_prefixes() {
 #[test]
 fn non_cap_encoder_error_is_propagated_without_publication_or_retry() {
     let temp = Temp::new();
-    let mut store = FsFixture::new(temp.0.join("parts"));
+    let mut store = FsFixture::new(temp.0.path().join("parts"));
     store.fail_encode = true;
     let error = run_captured_batch(
         &scenario(),
         &config(1),
         limits(),
-        &temp.0.join("checkpoints"),
+        &temp.0.path().join("checkpoints"),
         &store,
     )
     .unwrap_err();

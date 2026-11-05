@@ -5,26 +5,28 @@ use careops_ed::disposition::native_output::read_native_dataset;
 use careops_ed_cli::execute;
 use serde_json::Value;
 use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicUsize, Ordering};
-static NEXT: AtomicUsize = AtomicUsize::new(0);
-struct Temp(PathBuf);
+struct Temp(tempfile::TempDir);
 impl Temp {
     fn new() -> Self {
-        let root = std::env::temp_dir().join(format!(
-            "cli-consumer-{}-{}",
-            std::process::id(),
-            NEXT.fetch_add(1, Ordering::SeqCst)
-        ));
-        std::fs::create_dir(&root).unwrap();
-        Self(root)
+        let owner = {
+            let mut builder = tempfile::Builder::new();
+            builder.prefix("cli-consumer-");
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                builder.permissions(std::fs::Permissions::from_mode(0o700));
+            }
+            builder.tempdir().unwrap()
+        };
+        Self(owner)
     }
     fn source(&self, name: &str, text: &str) -> PathBuf {
-        let path = self.0.join(name);
+        let path = self.0.path().join(name);
         std::fs::write(&path, text).unwrap();
         path
     }
     fn run(&self, source: &Path, name: &str, extra: &[&str]) -> PathBuf {
-        let output = self.0.join(name);
+        let output = self.0.path().join(name);
         let mut args = vec![
             "run".into(),
             source.display().to_string(),
@@ -36,11 +38,7 @@ impl Temp {
         output.join("data")
     }
 }
-impl Drop for Temp {
-    fn drop(&mut self) {
-        let _ = std::fs::remove_dir_all(&self.0);
-    }
-}
+
 fn invoke(args: &[String]) -> Result<Value, careops_ed::disposition::api_runner::ValidationError> {
     let mut output = Vec::new();
     execute(args, &mut output, None)?;
@@ -108,7 +106,7 @@ fn native_run_compare_export_lifecycle_and_signed_deltas() {
         .unwrap();
     assert_eq!(zero["left"], 0.0);
     assert!(zero["delta"].as_f64().unwrap().is_finite());
-    let export = temp.0.join("csv");
+    let export = temp.0.path().join("csv");
     invoke(&[
         "export".into(),
         a.display().to_string(),
@@ -142,7 +140,7 @@ fn native_compare_rejects_incompatible_units_and_manifest_schema() {
     let mut seconds: Value = serde_json::from_str(NOMINAL).unwrap();
     seconds["time_unit"] = "second".into();
     let source = temp.source("seconds.json", &serde_json::to_string(&seconds).unwrap());
-    let rejected_root = temp.0.join("seconds");
+    let rejected_root = temp.0.path().join("seconds");
     let invalid_args = vec![
         "run".into(),
         source.display().to_string(),
@@ -157,7 +155,7 @@ fn native_compare_rejects_incompatible_units_and_manifest_schema() {
         !rejected_root.exists(),
         "unsupported physical units are rejected before output IO"
     );
-    let b = temp.run(&temp.0.join("nominal.json"), "second-native", &[]);
+    let b = temp.run(&temp.0.path().join("nominal.json"), "second-native", &[]);
     let args = vec![
         "compare".into(),
         a.display().to_string(),
@@ -202,7 +200,7 @@ fn native_help_validation_and_retired_flags_have_no_output_side_effects() {
     assert_eq!(
         invoke(&[
             "validate".into(),
-            temp.0.join("missing").display().to_string()
+            temp.0.path().join("missing").display().to_string()
         ])
         .unwrap_err()
         .code,
@@ -214,7 +212,7 @@ fn native_help_validation_and_retired_flags_have_no_output_side_effects() {
         "--export-spatial",
         "--spatial-rev",
     ] {
-        let output = temp.0.join("forbidden");
+        let output = temp.0.path().join("forbidden");
         let args = vec![
             "run".into(),
             source.display().to_string(),

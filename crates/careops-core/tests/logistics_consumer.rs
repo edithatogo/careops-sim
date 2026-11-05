@@ -7,8 +7,7 @@
 //! - Checkpointing and crash recovery: resuming an interrupted batch finishes remaining replications
 //!   without duplicates and matches unbroken baseline.
 
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::sync::atomic::Ordering;
 use std::sync::Arc;
 
@@ -181,31 +180,24 @@ pub fn compute_logistics_aggregates(results: &[LogisticsReplicationResult]) -> L
     }
 }
 
-struct TestTempDir {
-    path: PathBuf,
-}
+struct TestTempDir(tempfile::TempDir);
 
 impl TestTempDir {
     fn new(prefix: &str) -> Self {
-        let unique = format!(
-            "careops_logistics_{}_{}_{}",
-            prefix,
-            std::process::id(),
-            current_epoch_ms()
-        );
-        let path = std::env::temp_dir().join(unique);
-        fs::create_dir_all(&path).expect("failed to create temp dir");
-        Self { path }
+        let owner = {
+            let mut builder = tempfile::Builder::new();
+            builder.prefix(prefix);
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                builder.permissions(std::fs::Permissions::from_mode(0o700));
+            }
+            builder.tempdir().unwrap()
+        };
+        Self(owner)
     }
-
     fn path(&self) -> &Path {
-        &self.path
-    }
-}
-
-impl Drop for TestTempDir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.path);
+        self.0.path()
     }
 }
 

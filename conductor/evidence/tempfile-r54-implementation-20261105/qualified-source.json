@@ -1,0 +1,362 @@
+{
+  "schema_version": 1,
+  "scope": "tempfile_core_staging_and_test_ownership_only",
+  "renewed_a7_acceptance": false,
+  "base_commit": "20801f11dfa2af9bc3389a4bd931a787bcbc8534",
+  "shared_bindings": {
+    "from_data_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
+    "to_data_commit": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+    "runtime_commit": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+    "polars_commit": "96439685eb2f95108f51087d2b76091917f2593c",
+    "source_sha256": {
+      "Cargo.toml": "2000c30f811e10d72221596b10acbc3ab490c664f4d54f3027b3ac9e3f6f736e",
+      "Cargo.lock": "fce102632a15102516d17671a170e58a598f185c67ab976ba1bffb766c3891f8",
+      "crates/careops-ed/Cargo.toml": "236995aaf076e8db608c8bf1665a036616635cb26bbcf037daa2ee0726341bcc",
+      "crates/careops-birthing-cli/Cargo.toml": "df70889e7bc7d160507a02398e0f53f724bd6d040f825b96bb6b3f1005f0b28a",
+      "crates/careops-ed/src/native_output.rs": "33516ba922fda4ec5ec84cdf51fd9d563f345ef89802f676a2dfc4be828da3d0",
+      "crates/careops-ed/src/native_reader.rs": "c50d6da701afda2a00db3b358106087463d9d4272dd230e122f83a46efefd5e0",
+      "crates/careops-ed-cli/src/lib.rs": "42c3a61a5742e26f634689b9fc320c3f16104714a8cd6fa8cbeeb529fb138906",
+      "crates/careops-ed-cli/src/main.rs": "d5a01a124e324772570b4337d2cdca8b6cbdb06bf0e7729be20f65d24224f999",
+      "crates/careops-birthing-cli/src/lib.rs": "e192716b29e918feae6e3368e60a4418f7e1ebe0e0f9a517d50d5451b93aa619",
+      "crates/careops-birthing-cli/read_batch.py": "d769d4dd6896cd0daa5d5a312c4cb3e9d2a8fb55856c751df67a3c2f8dd9bcd1",
+      "crates/careops-ed/test_native_output.py": "7d8da1a234fb06f2382d324eeada4211291b7433bcc6ed36c086b475d31c1051",
+      "crates/careops-ed/test_native_files.py": "cd1cd0d06b9392e2fbd0b678b99c3f67d0f7401ce9ac9733629804d09e59512e",
+      "tests/r143_native_domain_ffi.rs": "bb7f3713bb05cf40fd1695d5fcc546399e36857d559488288d6939e9cee3bfdd",
+      "tools/ed_native_benchmarks.py": "b02558f1f4b329ddf5795bc7b70d4df630e0f0e371a4bc32928065e3c2ffab88",
+      "tools/ed_native_benchmark_process.py": "3ef5c9c5c60ba01e0d7155a4839c4158acbeb7c099970dd527ebb16cb22d46b2"
+    },
+    "root_features": {
+      "default": [],
+      "native-ffi-acceptance": [
+        "dep:careops-ed",
+        "dep:careops-birthing-cli",
+        "dep:kairo-data-arrow",
+        "dep:kairo-data-ffi",
+        "dep:serde_json",
+        "dep:tempfile"
+      ]
+    },
+    "root_test_targets": [
+      {
+        "name": "r143_native_domain_ffi",
+        "path": "tests/r143_native_domain_ffi.rs",
+        "required-features": [
+          "native-ffi-acceptance"
+        ]
+      }
+    ],
+    "root_optional_dependencies": {
+      "careops-ed": {
+        "path": "crates/careops-ed",
+        "default-features": false,
+        "features": [
+          "native-data"
+        ],
+        "optional": true
+      },
+      "careops-birthing-cli": {
+        "path": "crates/careops-birthing-cli",
+        "optional": true
+      },
+      "kairo-data-arrow": {
+        "package": "kairo-ecs-arrow",
+        "git": "https://github.com/edithatogo/kairos.git",
+        "rev": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+        "version": "=0.1.0",
+        "default-features": false,
+        "features": [
+          "polars-native"
+        ],
+        "optional": true
+      },
+      "kairo-data-ffi": {
+        "package": "kairo-ecs-arrow-ffi",
+        "git": "https://github.com/edithatogo/kairos.git",
+        "rev": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+        "version": "=0.1.0",
+        "default-features": false,
+        "features": [
+          "native-data"
+        ],
+        "optional": true
+      },
+      "serde_json": {
+        "workspace": true,
+        "optional": true
+      },
+      "tempfile": {
+        "version": "=3.27.0",
+        "optional": true
+      }
+    },
+    "historical_receipts": {
+      "conductor/evidence/polars-integration-20261103/source-compatibility.json": {
+        "commit": "079c061d2bcc5a5fda373a3f9236d09235a2bca8",
+        "sha256": "0cefeeb2fa4d81d3add8ad066c72674e24c9f99b64243176398b54291e2c362b"
+      },
+      "conductor/evidence/polars-integration-20261103/data-source-compatibility.json": {
+        "commit": "43511e665706cf31c434758675ce291d8c12547b",
+        "sha256": "42be7ff2b2963b227fb12c4bdbfb355023e39945fb6ac0b1f930570b5ab07077"
+      },
+      "conductor/evidence/polars-integration-20261103/native-reader-source-compatibility.json": {
+        "commit": "1b6ca2deaead85f1bc0da50c1d6aa00df54e2cba",
+        "sha256": "785ec51a58193771eb79f3034d89cbfcf891bd81e4ea2e1eee7d1c30d0833551"
+      },
+      "conductor/evidence/polars-integration-20261103/native-cli-source-compatibility.json": {
+        "commit": "b0ddd0c1ea02b99667a643199051b3e303a35b8e",
+        "sha256": "2f1734524d3e90678f421f2bb00142391c8a34b71de22922e0e7c500cefcc626"
+      },
+      "conductor/evidence/polars-integration-20261103/native-reader-format-source-compatibility.json": {
+        "commit": "7b9892b28bfabe7f26f7fa9d292f74ba0d6484bb",
+        "sha256": "0032af3aa2b8b4161858995c2911de6273bedefbf1d4f8a89deb2488e0ee1b06"
+      }
+    }
+  },
+  "source_bindings": [
+    {
+      "path": "Cargo.lock",
+      "sha256": "fce102632a15102516d17671a170e58a598f185c67ab976ba1bffb766c3891f8"
+    },
+    {
+      "path": "crates/careops-core/Cargo.toml",
+      "sha256": "2fbb80147c87e43b7c202971c2ea8136eeb089b8f8f8f6e0b89d9c8cfce896f4"
+    },
+    {
+      "path": "crates/careops-core/src/experiment/io.rs",
+      "sha256": "35ce7bc39768befd33b935b79663fe0810fe2b9146e98602646876a2c5e2e3bd"
+    },
+    {
+      "path": "crates/careops-core/tests/experiment_runner_contract.rs",
+      "sha256": "2eb405f8cbf22a77f736cadb3e6b4b506b5ea40fc19edd3a828fdd8be4c0b064"
+    },
+    {
+      "path": "crates/careops-core/tests/logistics_consumer.rs",
+      "sha256": "4c7085022c70249e0b637464fed192d449a6a6c0a68af29ae1868324450fc8b2"
+    },
+    {
+      "path": "crates/careops-core/tests/profile_loader_tests.rs",
+      "sha256": "bf4ca6728fd2ab4604dddaa08e6e989dd1ea93431533af66314c388a2395ac42"
+    },
+    {
+      "path": "crates/careops-core/tests/r54_tempfile_contract.rs",
+      "sha256": "5ae7c2304c4d4930696fd40396166d8747a39aac56650ef0f56637e0c2df3094"
+    },
+    {
+      "path": "crates/careops-ed-cli/Cargo.toml",
+      "sha256": "bfeb24eff67b2c540ad400714de40cb4ce89a50f5416ea8040f710b767dc1dca"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/c63_native_contract.rs",
+      "sha256": "fe72f8dd131199b54767c9dda4f625fa8357a05df3c7ff971dff4700476473a7"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/consumer_contract.rs",
+      "sha256": "e29ab91d426d46ea630fb82a400d794152c85d97e03ef41c6d09b19bcc6320d8"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/execution_capabilities.rs",
+      "sha256": "0c01c6195948ead047ff722fb873954d259a31c386472b37e4a60f7d3ed30bb9"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/native_cli.rs",
+      "sha256": "bf92cec49b315ee8cbbfd491a7689d2c6519a293f0866187b39c74bfcb1fbb89"
+    },
+    {
+      "path": "crates/careops-ed/Cargo.toml",
+      "sha256": "236995aaf076e8db608c8bf1665a036616635cb26bbcf037daa2ee0726341bcc"
+    },
+    {
+      "path": "crates/careops-ed/tests/e32_batch_and_checkpoint_tests.rs",
+      "sha256": "1b0f93034cbb53538edf9c8524391d3e1ac90aba4c3f61029f9f9da0a0abc1d0"
+    },
+    {
+      "path": "crates/careops-ed/tests/ed_ward_community_composition.rs",
+      "sha256": "0b5bc26c9c87a587aac8984acbb88b4aa1fa09b3048463408426377040ad1892"
+    },
+    {
+      "path": "crates/careops-ed/tests/r111_capture_boundaries.rs",
+      "sha256": "73993355fbf0d21aebcb315fed83444766d627e91d369560982f2bf82b157469"
+    }
+  ],
+  "local_results": {
+    "core": 157,
+    "affected_ED": 38,
+    "distinct_CLI": 24,
+    "original_artifact_consume": 1,
+    "candidate_artifact_produce": 1,
+    "ignored": 0
+  },
+  "compatibility": {
+    "cases": 26,
+    "report_sha256": "3a6a2cb4899de9213302bd9a0fb2ee9ab895bca4123312f99752e3718e056e96",
+    "binary_sha256": "37364243a5c0c86df9501ac2ce73a3db5739f489a896e1232a0790f7b2dad8ab",
+    "all_input_and_summary_hashes_equal": true,
+    "adversarial_checks": {
+      "rejected": [
+        "batch-control-hash",
+        "invocation-model-binding",
+        "duplicate-control-key",
+        "float-seed",
+        "float-horizon",
+        "float-seed-list",
+        "float-table-rows",
+        "part-hash",
+        "row-offset",
+        "boolean-requiredness-alias",
+        "float-provenance-self-declared",
+        "float-provenance-physical",
+        "wrong-sequence-rehashed",
+        "wrong-patient-rehashed"
+      ],
+      "original_bytes_restored": true,
+      "zero_work": "pass",
+      "oversized_input_preflight": "pass",
+      "dev_full": "unverified",
+      "slow_stdout_consumer": {
+        "exit_code": 0,
+        "elapsed_seconds": 5.598459667002317,
+        "peak_rss_bytes": 93995008,
+        "stdout_overflow": false,
+        "timed_out": false,
+        "killed": false,
+        "stdout_read_count": 60,
+        "max_read_gap_seconds": 5.45647645900317,
+        "status": "pass",
+        "bytes": 3797047,
+        "output_sha256": "4feb7ecf26b2eb03dbf2aaca61db2c0aa08f54c7f9b640217a2d6a93152547a4",
+        "input_sha256": "83df8fe2f9ba8e1c651a9a894754fb06550adc112ba670b164cd69071d93c962",
+        "consumer_quantum_bytes": 65536,
+        "delay_seconds_per_quantum": 0.001
+      },
+      "blocked_child_termination": {
+        "status": "pass",
+        "stdout_read": false,
+        "observed_live_unread_pipe": true,
+        "exit_code": -15,
+        "peak_rss_bytes": 94388224,
+        "elapsed_seconds": 4.687776582999504,
+        "term_sent": true,
+        "kill_escalated": false,
+        "wait4_reaps": 1
+      }
+    },
+    "budgets": {
+      "max_wall_seconds": 10.0,
+      "max_rss_bytes": 268435456,
+      "max_output_bytes": 8388608
+    },
+    "scope": "Actual local candidate debug binary, frozen26cases; Linux/devfull and release/platform/fullquality remainR55",
+    "private_command_binding": "Exact slow-consumer argv retained in hash-bound private raw report; workstation paths omitted from public receipt."
+  },
+  "build": {
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13) (Homebrew)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.3\n",
+    "link_command": "cargo rustc --locked -p careops-ed-cli --bin careops-ed -- -Cstrip=none -Clink-arg=-Wl,-S",
+    "environment": {
+      "CARGO_BUILD_JOBS": "1",
+      "CARGO_INCREMENTAL": "0",
+      "CARGO_PROFILE_DEV_DEBUG": "0",
+      "CARGO_PROFILE_TEST_DEBUG": "0",
+      "POLARS_MAX_THREADS": "1"
+    },
+    "binary_bytes": 353485544,
+    "limitation": "Homebrew1.99.1 local probe, separate from R532Rustupflavour; initialobjcopydiskfullcorruptoutputsretained, successfulCLIonlynonstriplinkseparatelyqualified; __eh_framewarning retained. No portable/fullcoldclaim."
+  },
+  "cross_build": {
+    "original_model": "840b4545f64e47497c650594f80cd210231eec13b495edd1a06608b05e2271d9",
+    "candidate_model": "d882080bba3e0c563dc21d18728ae67668f63bc7150252ab067945457f2251ae",
+    "foreign_model_refusal_before_mutation": true,
+    "unchanged_original_artifact_files": 9,
+    "actual_test": "r113_recovery::r51_cross_build_artifact_fixture"
+  },
+  "graph": {
+    "version": "3.27.0",
+    "features": [
+      "default",
+      "getrandom"
+    ],
+    "workspace_lock_rows": [
+      "careops-core",
+      "careops-ed-cli"
+    ],
+    "new_registry_versions": 0,
+    "ED_dev_edge": "exact3.27.0; existing optional normal edge retained; no ED lock-rowdelta"
+  },
+  "maintenance": {
+    "formatted_production_prefix_before": 42,
+    "formatted_production_prefix_after": 49,
+    "core_helper_increase": 7,
+    "migration_14file_net_lines": -5,
+    "new_contract_test_lines": 158,
+    "no_overall_reduction_claim": true,
+    "test_directories": "10namedmanualfiles nowRAII; private barePathhelpers nowretainowner; intentional.keep only explicitlibrarycontracttest",
+    "retained": "EDdurable checkpoint,Parquetpublish, Pythonstdlib, ignoredwriteerrorpolicy, runtime/data/polars pins"
+  },
+  "logs": [
+    {
+      "name": "tempfile-r541-red.log",
+      "sha256": "60b447a47b2aa3a8529005563c0643713eecfe21653fc337f663e6eca8039c9f"
+    },
+    {
+      "name": "tempfile-r541-red-v2.log",
+      "sha256": "e3745395aaba6f8c0aaf34337aad7ffe270902eba216b4da7e6043ce809e5320"
+    },
+    {
+      "name": "tempfile-r542-core-green.log",
+      "sha256": "8df0ca6654d7a1b2773d774fc74105ea35bf66753f2eac38964fc899b21358bd"
+    },
+    {
+      "name": "tempfile-r542-core-green-v2.log",
+      "sha256": "3b510ccd182ffa6bb6634a51d2999d9e065b1db2ca011857371ebe78682b4b09"
+    },
+    {
+      "name": "tempfile-r542-core-import-cleanup.log",
+      "sha256": "baacc38b80c7085a62473b7d95555f98ccab0ceeb735b101995d2e2affb9e4e0"
+    },
+    {
+      "name": "tempfile-r542-ed-green.log",
+      "sha256": "7a1670a6ce7ca77535468f0840fba7ca9723c20c47ffdb06d422a842adcedc2d"
+    },
+    {
+      "name": "tempfile-r542-ed-green-v2.log",
+      "sha256": "1a9031969b89ed50b974392ffa44b048838e626906193cf487537ffeeda8b2f3"
+    },
+    {
+      "name": "tempfile-r542-cli-green.log",
+      "sha256": "63d0fbaf23e3651d07141a5c0612ea68182f2f0639b376bd56129137e5b40853"
+    },
+    {
+      "name": "tempfile-r542-cli-green-v2.log",
+      "sha256": "558a9d00d4a08aff35390e8392872357a12f0d102c2d23e5265482b83213a645"
+    },
+    {
+      "name": "tempfile-r542-cli-green-v3.log",
+      "sha256": "a7f0f159713258d4b00cfca21bf94022507565bbcdfc34190a3b345009f2d8ae"
+    },
+    {
+      "name": "tempfile-r542-cli-link-only.log",
+      "sha256": "a079547a0c6e69dbec1e181686070fd0fb6a984ce89a64e7457b3182cddd5542"
+    },
+    {
+      "name": "tempfile-r542-old-artifact-consume.log",
+      "sha256": "53a56f3cb1c8f975ca4092544007333efd9dbee5c992a54b71359ea8abe6100a"
+    },
+    {
+      "name": "tempfile-r542-current-artifact-produce.log",
+      "sha256": "95bfaeb1ad536c3cb527d3af45936c8a50b3106c037267f6c53578a5851a150d"
+    },
+    {
+      "name": "tempfile-r542-native-compat.log",
+      "sha256": "3acecdc716f7aa796628420f1612ada44972e63201448a7dda37eebc825752d3"
+    }
+  ],
+  "source_review": {
+    "reviewer": "/root/tempfile_phase_review",
+    "decision": "GO source and focused tests; strict successor and R54phase review still pending"
+  },
+  "remaining": [
+    "immutable successor guard anchored after this commit",
+    "minimal/non-native consumer compile and R54phase review",
+    "R55 hosted/integration/platform/security/quality/fullappcost"
+  ]
+}
