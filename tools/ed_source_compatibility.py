@@ -107,6 +107,16 @@ THISERROR_SOURCES = tuple(sorted(set(TEMPFILE_SOURCES) | set(THISERROR_ERROR_SOU
     'crates/careops-ed/tests/fixtures/r57_error_ed.json',
 }))
 
+# First actual dev-contract checkpoint and its independently frozen qualification.
+PROPTEST_BASE_COMMIT = 'dfc11e803d2548804512b5c5359dc1eb117bc01f'
+PROPTEST_QUALIFICATION_COMMIT = '2911b93d92aab8dc106c55aa50eea587d516df87'
+PROPTEST_QUALIFICATION = 'conductor/evidence/proptest-r592-qualification-20261105/qualification.json'
+PROPTEST_RECEIPT = 'conductor/evidence/proptest-r60-implementation-20261105/qualified-source.json'
+PROPTEST_SOURCES = tuple(sorted(set(THISERROR_SOURCES) | {
+    'crates/careops-core/tests/r60_proptest_contract.rs',
+    'crates/careops-core/tests/fixtures/r60-proptest-regressions.txt',
+}))
+
 SHARED_ROOT_FEATURES = {
     'default': [],
     'native-ffi-acceptance': ['dep:careops-ed', 'dep:careops-birthing-cli',
@@ -712,8 +722,11 @@ def validate_thiserror_successor_profile(old_manifests, manifests, old_lock, loc
         raise ValueError('thiserror successor permits only qualified edges and root/fuzz lock rows')
 
 
-def verify_thiserror_successor(root, original, current):
+def verify_thiserror_successor(root, original, current, *, source_checkpoint=None):
     """Contract checkpoint only; does not assert renewed application acceptance."""
+    if source_checkpoint is not None and source_checkpoint != THISERROR_QUALIFICATION_COMMIT:
+        raise ValueError('unsupported historical thiserror source checkpoint')
+    read = (lambda p: (Path(root) / p).read_bytes()) if source_checkpoint is None else (lambda p: git_blob(root, source_checkpoint, p))
     previous = shared_bindings(root, TEMPFILE_QUALIFICATION_COMMIT)
     verify_tempfile_successor(root, original, previous,
                               source_checkpoint=TEMPFILE_QUALIFICATION_COMMIT)
@@ -733,7 +746,7 @@ def verify_thiserror_successor(root, original, current):
         raise ValueError('data promotion scope or exact binding mismatch: thiserror shared history')
     changed = {'Cargo.lock', 'crates/careops-core/Cargo.toml', 'crates/careops-ed/Cargo.toml'}
     old_sources = tempfile_source_bindings(root, TEMPFILE_QUALIFICATION_COMMIT)
-    current_sources = thiserror_source_bindings(root)
+    current_sources = thiserror_source_bindings(root, source_checkpoint)
     retained = {b['path']: b['sha256'] for b in current_sources}
     candidate = qualification['build_identity']['candidate_source_bindings']
     if (not strict_equal(current, expected) or not strict_equal(current_sources, sources)
@@ -744,9 +757,9 @@ def verify_thiserror_successor(root, original, current):
     paths = ('crates/careops-core/Cargo.toml', 'crates/careops-ed/Cargo.toml')
     validate_thiserror_successor_profile(
         {p: git_blob(root, THISERROR_BASE_COMMIT, p) for p in paths},
-        {p: (Path(root) / p).read_bytes() for p in paths},
-        git_blob(root, THISERROR_BASE_COMMIT, 'Cargo.lock'), (Path(root) / 'Cargo.lock').read_bytes(),
-        git_blob(root, THISERROR_BASE_COMMIT, 'fuzz/Cargo.lock'), (Path(root) / 'fuzz/Cargo.lock').read_bytes(),
+        {p: read(p) for p in paths},
+        git_blob(root, THISERROR_BASE_COMMIT, 'Cargo.lock'), read('Cargo.lock'),
+        git_blob(root, THISERROR_BASE_COMMIT, 'fuzz/Cargo.lock'), read('fuzz/Cargo.lock'),
         qualification)
     if (not isinstance(receipt, dict) or type(receipt.get('schema_version')) is not int
             or receipt['schema_version'] != 1 or receipt.get('scope') != 'thiserror_eight_error_declarations_only'
@@ -767,6 +780,72 @@ def verify_thiserror_successor(root, original, current):
             raise ValueError('thiserror tests-first receipt hash mismatch')
 
 
+def proptest_source_bindings(root, commit=None):
+    read = (lambda p: (Path(root) / p).read_bytes()) if commit is None else (lambda p: git_blob(root, commit, p))
+    return [{'path': p, 'sha256': digest(read(p))} for p in PROPTEST_SOURCES]
+
+
+def validate_proptest_successor_profile(old_manifest, manifest, lock, qualification):
+    """One dev edge and the exact prequalified whole lock, never a version waiver."""
+    try:
+        expected = tomllib.loads(old_manifest.decode())
+        expected['dev-dependencies']['proptest'] = {
+            'version': '=1.12.0', 'default-features': False, 'features': ['std']}
+        actual = tomllib.loads(manifest.decode())
+        # Parse before comparing the immutable complete-byte projection.
+        tomllib.loads(lock.decode())
+        lock_hash = qualification['graph']['projected_lock_sha256']
+    except (TypeError, ValueError, UnicodeError, KeyError) as error:
+        raise ValueError('proptest successor profile is malformed') from error
+    if not strict_equal(actual, expected) or digest(lock) != lock_hash:
+        raise ValueError('data promotion scope or exact binding mismatch: proptest successor permits only qualified dev edge and exact root lock')
+
+
+def verify_proptest_successor(root, original, current):
+    """Current-only bounded dev successor; all prior immutable checkpoints survive."""
+    previous = shared_bindings(root, THISERROR_QUALIFICATION_COMMIT)
+    verify_thiserror_successor(root, original, previous,
+                               source_checkpoint=THISERROR_QUALIFICATION_COMMIT)
+    qraw, qualification = _anchored_receipt(
+        root, PROPTEST_QUALIFICATION, PROPTEST_BASE_COMMIT,
+        'proptest qualification required', 'immutable proptest qualification changed')
+    _, receipt = _anchored_receipt(
+        root, PROPTEST_RECEIPT, PROPTEST_QUALIFICATION_COMMIT,
+        'proptest source checkpoint required', 'immutable proptest source checkpoint changed')
+    expected = shared_bindings(root, PROPTEST_QUALIFICATION_COMMIT)
+    sources = proptest_source_bindings(root, PROPTEST_QUALIFICATION_COMMIT)
+    actual_sources = proptest_source_bindings(root)
+    before, after = copy.deepcopy(previous), copy.deepcopy(expected)
+    for profile in (before, after):
+        del profile['source_sha256']['Cargo.lock']
+    retained = {b['path']: b['sha256'] for b in actual_sources}
+    changed = {'Cargo.lock', 'crates/careops-core/Cargo.toml'}
+    if (not strict_equal(before, after) or not strict_equal(current, expected)
+            or not strict_equal(actual_sources, sources)
+            or any(retained[b['path']] != b['sha256']
+                   for b in thiserror_source_bindings(root, THISERROR_QUALIFICATION_COMMIT)
+                   if b['path'] not in changed)
+            or retained['crates/careops-core/tests/r60_proptest_contract.rs']
+               != qualification['build_identity']['implementation_source_sha256']):
+        raise ValueError('data promotion scope or exact binding mismatch: proptest source/profile')
+    validate_proptest_successor_profile(
+        git_blob(root, THISERROR_QUALIFICATION_COMMIT, 'crates/careops-core/Cargo.toml'),
+        (Path(root) / 'crates/careops-core/Cargo.toml').read_bytes(),
+        (Path(root) / 'Cargo.lock').read_bytes(), qualification)
+    if (not isinstance(receipt, dict) or type(receipt.get('schema_version')) is not int
+            or receipt['schema_version'] != 1
+            or receipt.get('scope') != 'proptest_core_dev_contract_checkpoint_only'
+            or receipt.get('renewed_a7_acceptance') is not False
+            or receipt.get('base_commit') != PROPTEST_BASE_COMMIT
+            or not strict_equal(receipt.get('shared_bindings'), expected)
+            or not strict_equal(receipt.get('source_bindings'), sources)
+            or not strict_equal(receipt.get('exact_dependency'), qualification['exact_dependency'])
+            or qualification.get('decision') != 'adopt_for_bounded_R60'
+            or receipt.get('qualification') != {'commit': PROPTEST_BASE_COMMIT,
+                'path': PROPTEST_QUALIFICATION, 'sha256': digest(qraw)}):
+        raise ValueError('data promotion scope or exact binding mismatch: proptest receipt')
+
+
 def verify_shared_promotion(root, join, bindings, reference):
     validate_shared_history(root, join, reference)
     _, receipt = _anchored_receipt(
@@ -777,4 +856,4 @@ def verify_shared_promotion(root, join, bindings, reference):
     # Always validate the original immutable receipt against its original profile.
     validate_shared_receipt(receipt, expected, bindings, reference)
     current = shared_bindings(root)
-    verify_thiserror_successor(root, expected, current)
+    verify_proptest_successor(root, expected, current)

@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "status": "accepted_local_checkpoint_only",
+  "scope": "closed_proptest_dev_successor_and_local_application_checks",
+  "implementation_commit": "2911b93d92aab8dc106c55aa50eea587d516df87",
+  "qualification_commit": "dfc11e803d2548804512b5c5359dc1eb117bc01f",
+  "guard_source_sha256": "278ebd1d04f7ea9cd90033d0ca4bb886780f51dfa35be97ad75857b6b401b3b5",
+  "new_guard_tests_sha256": "8cd4ec281e3472381012c1b40db32d4de3af3828a2bc3d3857ed6c1c99b45807",
+  "historical_guard_tests_sha256": "ae8d4d7d34fc08da8bcf82ca289171b2a1ad1ab03e5dfff9e965f713f815d704",
+  "guard": {
+    "current_source_bindings": 31,
+    "shared_profile_bindings": 15,
+    "earlier_sha2_bindings": 5,
+    "historical_tempfile_bindings": 16,
+    "historical_thiserror_bindings": 29,
+    "historical_reader": "Only the fixed 7e8c271 thiserror snapshot; default remains current and refuses the new profile. Prior E091 Tempfile adapter is unchanged; every historical receipt still checks actual bytes against its immutable anchor.",
+    "current_acceptance": "Only exact 2911b93 source profile and the R59 prequalified dev manifest/root lock; no fallback.",
+    "tests_first": {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_proptest_source_compatibility.py",
+        "-k",
+        "test_current_profile_is_accepted",
+        "-v"
+      ],
+      "cwd": "$WORKTREE",
+      "source": "2911b93d92aab8dc106c55aa50eea587d516df87",
+      "exit": 1,
+      "stderr_sha256": "8e48347745643141f85dd75fd2b5edef1e41065d59f37df0298046f5c218ccb0",
+      "cause": "Prior strict thiserror guard rejects changed core manifest/root lock, before new guard implementation"
+    },
+    "new_regressions": {
+      "passed": 7,
+      "failed": 0,
+      "seconds": 201.694,
+      "exit": 0
+    },
+    "historical_regressions": {
+      "initial_full_suite": {
+        "tests": 54,
+        "passed": 52,
+        "failures": 2,
+        "seconds": 617.955,
+        "exit": 1
+      },
+      "reused_unchanged_successes": 52,
+      "corrected_nodes": [
+        {
+          "name": "SharedImportPromotionTests.test_actual_current_shared_profile_and_immutable_first_receipt",
+          "fix": "Compare the actual current profile to the new immutable proptest checkpoint; retain historical SHA-2 and original-receipt assertions.",
+          "exit": 0,
+          "passed": 1
+        },
+        {
+          "name": "EDSourceCompatibilityTests.test_unknown_revision_and_changed_lock_or_manifest_fail",
+          "fix": "Retain the established data-promotion error prefix in the new validator; rejection conditions and existing assertion stay unchanged.",
+          "exit": 0,
+          "passed": 1
+        }
+      ],
+      "new_closed_profile_node_after_error_message_fix": {
+        "exit": 0,
+        "passed": 1
+      },
+      "fresh_full_green_suite_claim": false,
+      "remaining": "All 61 guard tests must run in full same-head R61 CI."
+    },
+    "reviewer": "/root/tempfile_phase_review",
+    "review": "Reviewer-agent GO for implementation, corrected current-profile assertion and error-prefix compatibility fix; no remaining source findings. Full R61 gates remain open."
+  },
+  "compatibility": {
+    "cases": 26,
+    "all_input_and_summary_hashes_equal": true,
+    "binary_sha256": "6587e9235951ea9a4e1d7f03820456715fdf240544af370e3ad1041395447a87",
+    "adversarial_rejections": [
+      "batch-control-hash",
+      "invocation-model-binding",
+      "duplicate-control-key",
+      "float-seed",
+      "float-horizon",
+      "float-seed-list",
+      "float-table-rows",
+      "part-hash",
+      "row-offset",
+      "boolean-requiredness-alias",
+      "float-provenance-self-declared",
+      "float-provenance-physical",
+      "wrong-sequence-rehashed",
+      "wrong-patient-rehashed"
+    ],
+    "original_bytes_restored": true,
+    "zero_work": "pass",
+    "oversized_input_preflight": "pass",
+    "slow_stdout_consumer": "pass",
+    "blocked_child_termination": "pass",
+    "dev_full": "unverified_locally_requires_Linux",
+    "budget_profile": {
+      "max_wall_seconds": 10.0,
+      "max_rss_bytes": 268435456,
+      "max_output_bytes": 8388608
+    },
+    "command": [
+      "$QUALIFIED_READER_PYTHON",
+      "tools/ed_native_benchmarks.py",
+      "--binary",
+      "$EXTERNAL_TARGET/debug/careops-ed",
+      "--output",
+      "$PACKET/r602-native-benchmark-v2.json"
+    ],
+    "cwd": "$WORKTREE",
+    "python": "3.15.1",
+    "readers": {
+      "pyarrow": "26.0.0",
+      "polars": "2.1.0"
+    },
+    "exit": 0,
+    "first_attempt": "Owned minimal .venv lacked pyarrow; retained failure and reused the already qualified native-reader environment read-only. No dependency or environment replacement.",
+    "build_warning": "macOS debug CLI linker reports a large __eh_frame compact-unwind warning; build succeeds. No production compiler flags or warning gates changed."
+  },
+  "recovery": {
+    "records": [
+      {
+        "mode": "consume",
+        "label": "sha2-original",
+        "argv": [
+          "$EXTERNAL_TARGET/debug/deps/r113_recovery-e7ba4452a7becef0",
+          "--exact",
+          "r51_cross_build_artifact_fixture",
+          "--nocapture"
+        ],
+        "environment": {
+          "CAREOPS_R51_ARTIFACT_ROOT": "$ARTIFACT",
+          "CAREOPS_R51_ARTIFACT_MODE": "consume",
+          "POLARS_MAX_THREADS": "1"
+        },
+        "exit": 0,
+        "seconds": 0.33309808299236465,
+        "binary_sha256": "84b15eaa0ccced0a9a21cd4718832f0c58fc276c111b612fad39cb32650b6112",
+        "files": {
+          "batch_run.json": "f0c64f39ecdd77629d663e8a3c1dca2610c44261a7279897c6db0d20c00c1f5f",
+          "original-model.txt": "e5a4dc703432f3d4c8d0961d2c7baa3fe48350f594b730c6d0a70393f5e2268d",
+          "document.json": "a194298eb43fdab2fa0f0cd00881c4edfed903d1dbd6d3fef5e965782054b8a7",
+          "capture/rep-00000000-seq-0000000000000000.part": "9b8dc73a282e4102e7e53f9cd918830ed1ddc06ab4f6320638b6427dc06b8f35",
+          "capture/checkpoint.json": "0f8c4c04496447d09535231330adeea71a8ede248f39678a5540274299c8a4cc",
+          "capture/rep-00000002-seq-0000000000000000.part": "0af5a1e1677c45af3b6f9f277284a44a4ed891f8070ac44e9c9515c9c6cd50a3",
+          "capture/rep-00000003-seq-0000000000000000.part": "29e81f3053c16fe1c1f2c948f3ca73c1c4029302a2c8ad722e308cfb0a564782",
+          "capture/manifest.json": "c6e1eef047f77c7480a7462ebe118a1776fc3e18b1112202ca3b99c7c89c9c12",
+          "capture/rep-00000001-seq-0000000000000000.part": "506f3370f6c8d1d4db833530c746d93eeb87ede0d0266ae55166345ce1a8d404"
+        },
+        "prior_files_unchanged": true,
+        "model": "840b4545f64e47497c650594f80cd210231eec13b495edd1a06608b05e2271d9"
+      },
+      {
+        "mode": "consume",
+        "label": "tempfile-prior",
+        "argv": [
+          "$EXTERNAL_TARGET/debug/deps/r113_recovery-e7ba4452a7becef0",
+          "--exact",
+          "r51_cross_build_artifact_fixture",
+          "--nocapture"
+        ],
+        "environment": {
+          "CAREOPS_R51_ARTIFACT_ROOT": "$ARTIFACT",
+          "CAREOPS_R51_ARTIFACT_MODE": "consume",
+          "POLARS_MAX_THREADS": "1"
+        },
+        "exit": 0,
+        "seconds": 0.048883875002502464,
+        "binary_sha256": "84b15eaa0ccced0a9a21cd4718832f0c58fc276c111b612fad39cb32650b6112",
+        "files": {
+          "batch_run.json": "5c0710340aa5da05923523936488adb4314e98ee0bba81a8e9a420efebb84945",
+          "original-model.txt": "e5b34c949cfdeb5ef767ffca29a532c42da0e17bd59a5b056ff140088ebc35f8",
+          "document.json": "0e8a84ac9dcab74e27cf0a32db9347e0232bcff68d877eb4d30972091f8ac386",
+          "capture/rep-00000000-seq-0000000000000000.part": "17ff7467c7794ed17dff424e50fc60bd1ce0c6c7f60a82bef9c570a14f06b7b5",
+          "capture/checkpoint.json": "d0d569e062bb392d551b2d83007d5c3d87f55360edcd7f3180d1ed7626df7357",
+          "capture/rep-00000002-seq-0000000000000000.part": "a4e0b46866033efdded4b983eeadb0c9944efa047828a7d4d23da3ddc554914a",
+          "capture/rep-00000003-seq-0000000000000000.part": "18c4ca8adbd8b28dff347b424e65f844d1a9adcaf20a49ea6eb8696c82be745a",
+          "capture/manifest.json": "ba325ecde969cab5d62598ecdc7ddcaf3617f5091b24beb99437d9776fac843d",
+          "capture/rep-00000001-seq-0000000000000000.part": "6425a24f8e12d2b72ae943a5632a2ab671dbbfac3b9c9ecbc114738c9d0aaafe"
+        },
+        "prior_files_unchanged": true,
+        "model": "d882080bba3e0c563dc21d18728ae67668f63bc7150252ab067945457f2251ae"
+      },
+      {
+        "mode": "consume",
+        "label": "thiserror-prior",
+        "argv": [
+          "$EXTERNAL_TARGET/debug/deps/r113_recovery-e7ba4452a7becef0",
+          "--exact",
+          "r51_cross_build_artifact_fixture",
+          "--nocapture"
+        ],
+        "environment": {
+          "CAREOPS_R51_ARTIFACT_ROOT": "$ARTIFACT",
+          "CAREOPS_R51_ARTIFACT_MODE": "consume",
+          "POLARS_MAX_THREADS": "1"
+        },
+        "exit": 0,
+        "seconds": 0.046021209011087194,
+        "binary_sha256": "84b15eaa0ccced0a9a21cd4718832f0c58fc276c111b612fad39cb32650b6112",
+        "files": {
+          "batch_run.json": "97be19bedc555843a5d6fe9d12dd5e81a9b2879e5858c0a1d819190e1f1d7bb4",
+          "original-model.txt": "9c77d848e4d9f2fcc27e72f56ad7921657d15048ca7583b6ccae45b9923bd9f6",
+          "document.json": "057d7c19791c5a3d98ef5397ea2a8d453550a18ca3f10f21703125f9f89097e7",
+          "capture/rep-00000000-seq-0000000000000000.part": "70c488ae2678df35279bb6064ccf2116a137b05e30a3482f9373631d0162f332",
+          "capture/checkpoint.json": "450de01eea4299a1fb5b959c876ea63b2c619a6026a13114cdc814d029862c3c",
+          "capture/rep-00000002-seq-0000000000000000.part": "71658e569613a60fccb3dea8b38038cd6ba714c8bc5368faeb2add0ec0e3c75a",
+          "capture/rep-00000003-seq-0000000000000000.part": "6551ca0d724d6c0165944b1ef210cd5b927197f9b3ac4f9ca4972d9995db804c",
+          "capture/manifest.json": "1a36b9521bcf5cbdcc99d5d0abe5505b34f06a7dc4aea191853f79b753dea087",
+          "capture/rep-00000001-seq-0000000000000000.part": "7be8ef76494e443586e9fbaf8d12b448b7e65dc64cba478339cd6123e08c5500"
+        },
+        "prior_files_unchanged": true,
+        "model": "2dc052294bed1cc30491e69b09f7789bfe7e10f31597f89bac0588f4b99e57d3"
+      },
+      {
+        "mode": "produce",
+        "label": "proptest-current",
+        "argv": [
+          "$EXTERNAL_TARGET/debug/deps/r113_recovery-e7ba4452a7becef0",
+          "--exact",
+          "r51_cross_build_artifact_fixture",
+          "--nocapture"
+        ],
+        "environment": {
+          "CAREOPS_R51_ARTIFACT_ROOT": "$ARTIFACT",
+          "CAREOPS_R51_ARTIFACT_MODE": "produce",
+          "POLARS_MAX_THREADS": "1"
+        },
+        "exit": 0,
+        "seconds": 0.25165500000002794,
+        "binary_sha256": "84b15eaa0ccced0a9a21cd4718832f0c58fc276c111b612fad39cb32650b6112",
+        "files": {
+          "batch_run.json": "2efe391f13d4008515c0df3904ef28ec77daa8f3e097ed9542a9ca5c2122bb40",
+          "original-model.txt": "1baff262980468aa5b0c28826373054cc9c34e6a12130ad073d0b148e4b83a16",
+          "document.json": "3db2997957c06d11d822b0db7f79a3a9194fc7a4d0963488012dcb16aee8d319",
+          "capture/rep-00000000-seq-0000000000000000.part": "837313e8ec345eadd6c22ff2c8e1352fdcdc34fe74d900f07cb7df768ebe55ee",
+          "capture/checkpoint.json": "a0ad0dfbb0b59f33d887da376718da38a3227bf284908976eabca375daf90553",
+          "capture/rep-00000002-seq-0000000000000000.part": "63275d6f60d996722406d1269ea0dcc99feb4159fcfedaf7f72c17e5f4e05a7c",
+          "capture/rep-00000003-seq-0000000000000000.part": "a992f51a4f4b42b6c91aebe08a3a613d5c65cafb024d768ff1538865a1506895",
+          "capture/manifest.json": "7c86ed2e86c96a66c334b69a2e1639817264a7f7ddec8c0287d994f643cf2e55",
+          "capture/rep-00000001-seq-0000000000000000.part": "880b9144468cbe2a43910a9fd208c475eb2dbe2581a3d7b8f85c42be9a8b4af1"
+        },
+        "prior_files_unchanged": null,
+        "model": "54ecd00fe6cb1782ced022eae2d7ea77979ff7367b966dc81c90cbfa1dd75aa3"
+      }
+    ],
+    "scope": "Actual old-artifact reads and foreign-model resume refusal before mutation; all nine files per old artifact remain unchanged. Nine current-artifact files were produced and hashed.",
+    "current_model": "54ecd00fe6cb1782ced022eae2d7ea77979ff7367b966dc81c90cbfa1dd75aa3"
+  },
+  "maintenance": {
+    "production_code_changed": false,
+    "production_deleted": 0,
+    "old_root_proptest1_8_removed": true,
+    "new_framework_count": 0,
+    "qualification_and_guard_support_included_in_cost": true,
+    "superseded_paths_retained": [],
+    "retained_validation": "All existing deterministic conformance and fuzz tests remain; no second property framework or runtime implementation introduced."
+  },
+  "logs": [
+    {
+      "path": "r602-red.json",
+      "sha256": "f45172128c197fdba0a333a86939ede566f1247a705bee4cc8a4e0e2e0823cbd"
+    },
+    {
+      "path": "r602-red.stderr",
+      "sha256": "8e48347745643141f85dd75fd2b5edef1e41065d59f37df0298046f5c218ccb0"
+    },
+    {
+      "path": "r602-focused-tests.log",
+      "sha256": "3dcef2be300a0d4ce1e6ff72e9121235a91d6e2b99ab2752e9c52730cacf982b"
+    },
+    {
+      "path": "r602-positive-fixed.log",
+      "sha256": "e5eb32537c957057cdbace0f05824b1960bf0039295fd90c91da7f4380d388c6"
+    },
+    {
+      "path": "r602-consume-thiserror.log",
+      "sha256": "6968007ca4c9d32a79a133eea2d4b95c6ecf0e72983b139d76ed1fe2b7a8931e"
+    },
+    {
+      "path": "r602-cross-build.json",
+      "sha256": "840a7b3ec96a6bbb016936dea7622e769f3fa4fa0281431b3ffbfa03f659a6d1"
+    },
+    {
+      "path": "r602-cross-build.py",
+      "sha256": "af9e83ef93bdf82d03dcf0efec02c9b28d599da36b2d55f33fdf69d11718dadf"
+    },
+    {
+      "path": "r602-cli-build.log",
+      "sha256": "b3309b24e31ef4c2c1f926738ca41658f76e06c2a0b33d10f3a31ca54c7ad32a"
+    },
+    {
+      "path": "r602-native-benchmark.log",
+      "sha256": "f565bbf5b78c9115b2cabf52b4bfc565e9e049dcbc14d579811b85434863daf5"
+    },
+    {
+      "path": "r602-native-benchmark-v2.log",
+      "sha256": "3acecdc716f7aa796628420f1612ada44972e63201448a7dda37eebc825752d3"
+    },
+    {
+      "path": "r602-native-benchmark-v2.json",
+      "sha256": "aefa46f0d31ddb5b0fddaec0daf36af2f2d7118d7b18a1b61d0c789d5ecd99c1"
+    },
+    {
+      "path": "r602-historical-tests.log",
+      "sha256": "7dccf32fb9b34b5b6ace9a5c4cf7c8082d4828299bf39489c0a7be56847f66a5"
+    },
+    {
+      "path": "r602-error-prefix-fixed.log",
+      "sha256": "96bdd771e2354592b3d3a0909ab7122f1b6cb068f88e7401fc09b0cbd781e210"
+    },
+    {
+      "path": "r602-profile-message-check.log",
+      "sha256": "65234baa70b01a904420a9c56ef409b1f03484dd82d780fb04745a001e126d75"
+    },
+    {
+      "path": "r602-format.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "r602-context-check.log",
+      "sha256": "2e84d5cc6410e303fe6f87f56f0a497dbbfed7ebc4e8c40903470b6b7eaf5439"
+    },
+    {
+      "path": "r602-tasks-check.log",
+      "sha256": "9b554cd90733d8422cdbdc0f950a0ff463224f7c2a9d737889fe133c6876324c"
+    },
+    {
+      "path": "r602-mvp-check.log",
+      "sha256": "3c7b9a3062f62964126c8db247833e935b8557a4baeffb7a30525cbe5f410966"
+    }
+  ],
+  "remaining": [
+    "R60 phase Conductor reconciliation",
+    "Full same-head R61 hosted, platform, integration, coverage/117-mutation, security, package and cost gates",
+    "Linux /dev/full",
+    "No merge, release, clinical/site acceptance or pin promotion"
+  ]
+}
