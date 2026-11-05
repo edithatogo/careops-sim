@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "scope": "R55 fuzz lock repair; final hosted acceptance remains pending",
+  "base_commit": "41d90e9b4e9b55f1c636c7b8a58ac00d019992c2",
+  "reason": "Hosted policy job126987493322 failed original --locked fuzz metadata after core acquired its normal Tempfile edge.",
+  "unchanged_existing_packages": 34,
+  "changed_existing_package": {
+    "name": "careops-core",
+    "version": "0.1.0",
+    "only_added_dependency": "tempfile"
+  },
+  "added_registry_packages": [
+    {
+      "name": "bitflags",
+      "version": "2.13.2",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "3ded4057c258ba199e2d26386d3af3780957ecaee6c4ef4041c6b4b8b97c0b06"
+    },
+    {
+      "name": "errno",
+      "version": "0.3.14",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
+    },
+    {
+      "name": "fastrand",
+      "version": "2.5.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "da7c62ceae207dd37ea5b845da6a0696c799f85e97da1ab5b7910be3c1c80223"
+    },
+    {
+      "name": "linux-raw-sys",
+      "version": "0.12.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "32a66949e030da00e8c7d4434b251670a91556f4144941d37452769c25d58a53"
+    },
+    {
+      "name": "once_cell",
+      "version": "1.21.4",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50"
+    },
+    {
+      "name": "rustix",
+      "version": "1.1.6",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "e5e76742e5294153d4dde1207dbec5bdd81eef6fabdc0d2118babadabfd858aa"
+    },
+    {
+      "name": "tempfile",
+      "version": "3.27.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "32497e9a4c7b38532efcdebeef879707aa9f794296a4f0244f6f69e9bc8574bd"
+    },
+    {
+      "name": "windows-link",
+      "version": "0.2.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "f0805222e57f7521d6a62e36fa9163bc891acd422f971defe97d64e70d0a4fe5"
+    },
+    {
+      "name": "windows-sys",
+      "version": "0.61.2",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "ae137229bcbd6cdf0f7b80a31df61766145077ddf49416a728b02cb3921ff3fc"
+    }
+  ],
+  "root_tuple_match": true,
+  "root_lock_sha256": "fce102632a15102516d17671a170e58a598f185c67ab976ba1bffb766c3891f8",
+  "fuzz_lock_sha256": "960811fc902593832530a52bbab9431bcc9aaf5dd08aec698986d2497c4ce897",
+  "commands": [
+    {
+      "command": "cargo metadata --offline --manifest-path fuzz/Cargo.toml --format-version 1",
+      "exit": 101,
+      "meaning": "Generated lock; cache lacked arbitrary1.5.0, so metadata did not complete."
+    },
+    {
+      "command": "cargo metadata --locked --manifest-path fuzz/Cargo.toml --format-version 1",
+      "exit": 0
+    },
+    {
+      "command": "cargo deny --manifest-path fuzz/Cargo.toml --config fuzz/deny.toml --locked check",
+      "exit": 0
+    }
+  ],
+  "private_logs": {
+    "tempfile-r55-policy-failure-41d90e9.log": "5804e891f2df61cc0501762c4e399e4a269f42612366ff4805ca8b4ba26fb99f",
+    "tempfile-r55-fuzz-metadata.stderr": "ec45b35d958baa339b077bae2dd33f17adc58e077e8103154401fc21e2e92ff4",
+    "tempfile-r55-fuzz-metadata-locked.stderr": "5c88e67c9184823d406dc440218920a110956b7f7ba0c62299d07b99e2004e8a",
+    "tempfile-r55-fuzz-deny.stdout": "f1a0fca39d4280363937aabd77783990ea6480bd9ca257816de3b68fc8efa845",
+    "tempfile-r55-fuzz-deny.stderr": "b11a2a0eaff074c9d7dff64747f6e5098c83a301ade0c1f6d828d9ea13b07223"
+  },
+  "runtime_r54_bindings_unchanged": true,
+  "hosted_acceptance": false,
+  "review": "Read-only reviewer final GO; requested cwd/toolchain/closure-limit clarifications applied.",
+  "cwd": "repository root; exact private command-context receipt retained",
+  "toolchain": {
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13) (Homebrew)"
+  },
+  "fuzz_closure": {
+    "before": 35,
+    "after": 44,
+    "added": 9,
+    "scope": "metadata and policy audits only; no fuzz compilation or cost timing claim"
+  },
+  "private_command_context": {
+    "file": "tempfile-r55-fuzz-command-context.json",
+    "sha256": "97481483b66b72ed78bfe805d545788e74cea37cbe846c38ae8c76497499f13f"
+  }
+}
