@@ -7,32 +7,30 @@
 
 use std::collections::HashMap;
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use careops_core::profile::{
     JurisdictionProfile, ProfileErrorKind, ProfileLoader, RuntimeOverrides, SiteProfile, SiteType,
 };
 
-struct TempDir {
-    path: PathBuf,
-}
+struct TempDir(tempfile::TempDir);
 
 impl TempDir {
-    fn new(name: &str) -> Self {
-        let unique = format!("careops_profile_test_{}_{}", name, std::process::id());
-        let path = std::env::temp_dir().join(unique);
-        fs::create_dir_all(&path).expect("failed to create temp dir");
-        Self { path }
+    fn new(prefix: &str) -> Self {
+        let owner = {
+            let mut builder = tempfile::Builder::new();
+            builder.prefix(prefix);
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                builder.permissions(std::fs::Permissions::from_mode(0o700));
+            }
+            builder.tempdir().unwrap()
+        };
+        Self(owner)
     }
-
     fn path(&self) -> &Path {
-        &self.path
-    }
-}
-
-impl Drop for TempDir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.path);
+        self.0.path()
     }
 }
 

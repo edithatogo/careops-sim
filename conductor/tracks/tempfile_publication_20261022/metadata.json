@@ -3,15 +3,18 @@
   "title": "CareOps tempfile adoption",
   "library": "tempfile",
   "type": "refactor",
-  "status": "proposed",
+  "status": "in_progress",
   "created_at": "2026-10-22",
-  "updated_at": "2026-10-22",
+  "updated_at": "2026-11-05",
   "spec_approved": true,
-  "implementation_started": false,
-  "accepted_phases": [],
-  "active_phase": null,
+  "implementation_started": true,
+  "accepted_phases": [
+    "R53",
+    "R54"
+  ],
+  "active_phase": "R55",
   "priority_class": "foundation",
-  "adoption_decision": "pending_value_gate",
+  "adoption_decision": "adopt_bounded_R54",
   "phase_dependencies": {
     "R53": [],
     "R54": [
@@ -27,10 +30,74 @@
       "repository": "kairos",
       "track": "94",
       "phase": "2",
-      "status": "unresolved",
+      "status": "accepted",
       "gate_task": "R53.1",
-      "required_receipt": "Accepted bounded prerequisite commit and independent test evidence; no Polars completion dependency for sha2/tempfile/proptest"
+      "required_receipt": "Accepted bounded prerequisite commit and independent test evidence; no Polars completion dependency for sha2/tempfile/proptest",
+      "accepted_commit": "5692e6a9ee866131262d60103a84e2544dc51e4a",
+      "verified_runtime_pin": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+      "receipt": "conductor/evidence/tempfile-r531-inventory-20261105/inventory.json",
+      "acceptance_scope": "Historical Track94Phase2 receipt/ancestry and test-source limits verified; no fresh current-version/platform/crash-durability qualification."
     }
   ],
-  "approval_basis": "User requested separate dependencies and revised sequencing; parent has direct implementation/test consumers."
+  "approval_basis": "User requested separate dependencies and revised sequencing; parent has direct implementation/test consumers.",
+  "external_dependency_history": [
+    {
+      "source_commit": "88bdfd67c622d06868331af80dc4db54daa98891",
+      "record": {
+        "repository": "kairos",
+        "track": "94",
+        "phase": "2",
+        "status": "unresolved",
+        "gate_task": "R53.1",
+        "required_receipt": "Accepted bounded prerequisite commit and independent test evidence; no Polars completion dependency for sha2/tempfile/proptest"
+      }
+    }
+  ],
+  "runtime_adoption_status": "bounded_core_staging_and_test_ownership_locally_accepted_pending_R55",
+  "next_phase_decision": "R54 accepted after independent review and actual48guard/28minimal tests, native/artifact/26compat controls. Next R55.1 full hosted/platform/integration/quality/security/cost gates.",
+  "accepted_local_tasks": {
+    "R53.1": {
+      "snapshot_source": "88bdfd67c622d06868331af80dc4db54daa98891",
+      "evidence": "conductor/evidence/tempfile-r531-inventory-20261105/inventory.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Historical prerequisite and current retained/migrated consumer inventory only."
+    },
+    "R53.2": {
+      "snapshot_source": "f2d7ffc3792321c731c893d797dd4fcd10f1a1f7",
+      "execution_checkout": "52108bfb1c6610365b1a685725bd310aed642f8e",
+      "evidence": "conductor/evidence/tempfile-r532-qualification-20261105/qualification.json",
+      "reviewer": "/root/ffi_packet_prepare",
+      "scope": "Exact dependency/current security/compatibility/value/graph/build-identity decision only; no runtime or R53 phase acceptance."
+    },
+    "R53.3": {
+      "source_commit": "20801f11dfa2af9bc3389a4bd931a787bcbc8534",
+      "reviewer": "/root/tempfile_phase_review",
+      "evidence": "conductor/evidence/tempfile-r533-review-20261105/README.md"
+    },
+    "R54.1": {
+      "source_checkpoint": "e0911cccc73988e1d8faf900cdde1b225ad045be",
+      "evidence": "conductor/evidence/tempfile-r54-implementation-20261105/phase-review.json",
+      "reviewer": "/root/tempfile_phase_review",
+      "scope": "Bounded local engineering; R55 acceptance remains separate."
+    },
+    "R54.2": {
+      "source_checkpoint": "e0911cccc73988e1d8faf900cdde1b225ad045be",
+      "evidence": "conductor/evidence/tempfile-r54-implementation-20261105/phase-review.json",
+      "reviewer": "/root/tempfile_phase_review",
+      "scope": "Bounded local engineering; R55 acceptance remains separate."
+    },
+    "R54.3": {
+      "source_checkpoint": "e0911cccc73988e1d8faf900cdde1b225ad045be",
+      "evidence": "conductor/evidence/tempfile-r54-implementation-20261105/phase-review.json",
+      "reviewer": "/root/tempfile_phase_review",
+      "scope": "Bounded local engineering; R55 acceptance remains separate."
+    }
+  },
+  "decision_history": [
+    {
+      "source_commit": "52108bfb1c6610365b1a685725bd310aed642f8e",
+      "adoption_decision": "pending_value_gate",
+      "runtime_adoption_status": "not_started"
+    }
+  ]
 }

@@ -5,31 +5,33 @@ use careops_ed_cli::execute;
 use serde_json::Value;
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicUsize, Ordering};
 use std::time::Instant;
 
-static NEXT: AtomicUsize = AtomicUsize::new(0);
 const NOMINAL: &str = include_str!("../../careops-ed/examples/nominal_mvp.json");
 const CONSTRAINED: &str = include_str!("../../careops-ed/examples/constrained_mvp.json");
 const MALFORMED: &str = include_str!("../../careops-ed/examples/malformed_mvp.json");
-struct Temp(PathBuf);
+struct Temp(tempfile::TempDir);
 impl Temp {
     fn new() -> Self {
-        let root = std::env::temp_dir().join(format!(
-            "c63-native-{}-{}",
-            std::process::id(),
-            NEXT.fetch_add(1, Ordering::SeqCst)
-        ));
-        fs::create_dir(&root).unwrap();
-        Self(root)
+        let owner = {
+            let mut builder = tempfile::Builder::new();
+            builder.prefix("c63-native-");
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                builder.permissions(std::fs::Permissions::from_mode(0o700));
+            }
+            builder.tempdir().unwrap()
+        };
+        Self(owner)
     }
     fn source(&self, name: &str, text: &str) -> PathBuf {
-        let path = self.0.join(name);
+        let path = self.0.path().join(name);
         fs::write(&path, text).unwrap();
         path
     }
     fn run(&self, source: &Path, name: &str, extra: &[&str]) -> PathBuf {
-        let root = self.0.join(name);
+        let root = self.0.path().join(name);
         let mut args = vec![
             "run".into(),
             source.display().to_string(),
@@ -41,11 +43,7 @@ impl Temp {
         root
     }
 }
-impl Drop for Temp {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
-    }
-}
+
 fn invoke(args: &[String]) -> Result<Value, ValidationError> {
     let mut stdout = Vec::new();
     execute(args, &mut stdout, None)?;
@@ -68,7 +66,7 @@ fn native_c63_manifest_lifecycle_and_real_format_contracts() {
     );
     let missing = invoke(&[
         "validate".into(),
-        temp.0.join("missing.json").display().to_string(),
+        temp.0.path().join("missing.json").display().to_string(),
     ])
     .unwrap_err();
     assert_eq!(missing.code, ExitCodeDef::FileNotFound);
@@ -144,7 +142,7 @@ fn native_c63_manifest_lifecycle_and_real_format_contracts() {
     );
 
     for format in ["csv", "ipc", "parquet"] {
-        let output = temp.0.join(format);
+        let output = temp.0.path().join(format);
         invoke(&[
             "export".into(),
             root.join("data").display().to_string(),
@@ -222,7 +220,7 @@ fn native_c63_invalid_inputs_reject_before_output() {
             .code,
         ExitCodeDef::MalformedConfig
     );
-    let output = temp.0.join("zero-output");
+    let output = temp.0.path().join("zero-output");
     assert_eq!(
         invoke(&[
             "run".into(),
@@ -255,7 +253,7 @@ fn native_c63_invalid_inputs_reject_before_output() {
         .code,
         ExitCodeDef::MalformedConfig
     );
-    let destination = temp.0.join("bad-export");
+    let destination = temp.0.path().join("bad-export");
     assert_eq!(
         invoke(&[
             "export".into(),
@@ -315,7 +313,7 @@ fn native_c63_actual_thousand_patient_comparison_and_export_latency() {
         .find(|m| m["name"] == "mean_elapsed_ticks")
         .unwrap();
     assert!(elapsed_metric["delta"].as_f64().unwrap() > 0.0);
-    let export = temp.0.join("export");
+    let export = temp.0.path().join("export");
     let start = Instant::now();
     let report = invoke(&[
         "export".into(),

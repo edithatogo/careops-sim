@@ -1,0 +1,92 @@
+{
+  "source": "f2d7ffc3792321c731c893d797dd4fcd10f1a1f7",
+  "execution_checkout": "52108bfb1c6610365b1a685725bd310aed642f8e",
+  "task": "R53.2 decision-only",
+  "reviewer": "/root/ffi_packet_prepare",
+  "pre_execution_review": "GO; explicit API/permission/sync/lowdisk/minimal-graph refinements approved before experiments.",
+  "candidate": {
+    "name": "tempfile",
+    "version": "3.27.0",
+    "features": [
+      "default",
+      "getrandom"
+    ],
+    "target": "core atomic_write_file overwrite API; test wrappers as secondary future targets",
+    "permissions": "Unix0666 & childumask, not NamedTempFile default0600",
+    "sync": "No fsync added to nonsync core API; ED sync/recovery kept unchanged"
+  },
+  "budgets": {
+    "samples_per_size": 7,
+    "sizes": [
+      1024,
+      1048576
+    ],
+    "minimum_timed_ns": 100000000,
+    "warmup_writes": 8,
+    "order": "counterbalanced alternating pairs",
+    "large_candidate_median_ratio_max": 1.25,
+    "tiny_pass_rule": "ratio<=1.25 OR excess<=250000ns/write",
+    "tiny_max_excess_ns": 250000,
+    "cold_fresh_target_seconds_max": 30,
+    "warm_build_seconds_max": 10,
+    "binary_growth_bytes_max": 262144,
+    "peak_rss_growth_bytes_max": 16777216,
+    "new_parent_registry_packages_max": 0,
+    "disk_stop_free_bytes": 33554432
+  },
+  "oracles": [
+    "Actual core io/error baseline; Python independent bytes/mode oracle at child umask0022/0077",
+    "Nestedparent/basename/overwrite/error-kind/destination-directory failure+cleanup",
+    "PIDstaging sentinel baseline destroys/candidate preserves",
+    "8concurrent TempDir owners, ordinary error+normal cleanup and explicitkeep",
+    "Library-only no-clobber oldoutput preservation; no new core argument",
+    "Postpersist syncerror doesnotmeanrollback; no powerloss/SIGKILL claim",
+    "Child-onlyRLIMIT_FSIZE128 and SIGXFSZignore actualpartialwrite: originalscratchremains/candidateclean/oldoutputunchanged",
+    "Actualbuild.rs+independenthashlib transcript: source/coremanifest/flags/features change identity; relocation/docsstable",
+    "Exactchecksum/features/license/currentclosure/MSRV/security + globalvsminimalnodesdelta"
+  ],
+  "inputs": [
+    {
+      "path": "Cargo.toml",
+      "sha256": "2000c30f811e10d72221596b10acbc3ab490c664f4d54f3027b3ac9e3f6f736e"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "816500fcc5e68397433f49cde34840389f61a70ddad63f464d0faea8b2112702"
+    },
+    {
+      "path": "crates/careops-core/Cargo.toml",
+      "sha256": "cb5603c9a47a04308df8b63aecd63176fe81549e73026a6d363071010e849678"
+    },
+    {
+      "path": "crates/careops-core/src/experiment/io.rs",
+      "sha256": "69995cec21eaa7c408c8a5da1d7a45fab4469d06d234cc0a179cf443cd18311a"
+    },
+    {
+      "path": "crates/careops-core/src/experiment/error.rs",
+      "sha256": "f4efd11c143e5c2f81530f9ea446899ca228149ad96b3d32ace01e64e300334c"
+    },
+    {
+      "path": "crates/careops-core/src/experiment/runner.rs",
+      "sha256": "584c74d85ac8161ec10d4a3b7c7fa6e0992749d234b242ca7267e06a107b9e23"
+    },
+    {
+      "path": "crates/careops-ed/build.rs",
+      "sha256": "ba6d8ebc46810d2f47668126e4de1dafbfdf9149d55ff3777ecfd64e185b2b4b"
+    },
+    {
+      "path": "crates/careops-ed/src/capture.rs",
+      "sha256": "ab95ea4da526594fe1d6bce045006488f205812536df6e7b17b1144c207bb1bc"
+    },
+    {
+      "path": "tools/ed_source_compatibility.py",
+      "sha256": "522a225a725dcbd1f8c710f8a52f64b787aac7598055bc6ceb26ea8a8ff6dab3"
+    },
+    {
+      "path": "deny.toml",
+      "sha256": "1cb5797be47e8d12c240a1bbb3c72eb7f3478d3a9a39a7b40e48bfc7effe6359"
+    }
+  ],
+  "scope": "Private probes only, no parent runtime/manifest/lock/pin or sourceguard edit; R53.3/R54/R55 pending.",
+  "limitations": "Local aarch64/pagecacheIO/fresh isolated target/shared registrycache. No fullapp cold/platform/physicaldurability or adoption claim."
+}

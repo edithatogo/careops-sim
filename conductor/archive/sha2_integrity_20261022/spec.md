@@ -1,6 +1,6 @@
 # CareOps sha2 adoption
 
-R50 evidence and R51 bounded parent replacement are accepted. The implementation awaits R52 broader acceptance. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
+R50 evidence and R51 bounded parent replacement are accepted. R52 broader bounded engineering acceptance is complete at1d559a6; this track is archived. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
 
 ## Inputs and dependencies
 
@@ -22,7 +22,7 @@ build scripts already used it; ED now also uses the qualified normal workspace
 dependency edge.
 R50.2 qualified the proposed normal ED runtime edge/default alloc+oid features,
 current minimal graph, independent digest parity and bounded value. Production edge/helper compilation and scoped contract/recovery/consumer checks
-are accepted in R51; broader R52 acceptance remains pending. Existing correct
+are accepted in R51; broader R52 bounded acceptance is complete; see the source-bound final receipt. Existing correct
 standard uses, canonical identity bytes and RNG assignments remain unchanged.
 A byte-identical standard digest does not need an invented format migration;
 actually changed digest/format contracts require explicit versioning. Current

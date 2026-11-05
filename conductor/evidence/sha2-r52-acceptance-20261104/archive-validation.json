@@ -1,0 +1,124 @@
+{
+  "status": "pass",
+  "qualified_source": "1d559a632f6e3ebe0c26f2c72317eb72e00269be",
+  "archive_branch": "codex/sha2-r52-closeout-20261104",
+  "source_head_at_execution": "1d559a632f6e3ebe0c26f2c72317eb72e00269be",
+  "scope": "Documentation/archive integration only; not fresh hosted source proof or native reruns. Exact private cwd/command receipts retained in local evidence.",
+  "python": "3.15.1 verified repo-local interpreter",
+  "focused_tests_passed": 63,
+  "commands": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_context.py",
+        "-v"
+      ],
+      "exit": 0,
+      "tests": 16,
+      "log_name": "sha2-r52-archive-focused-0.log",
+      "log_sha256": "620068488b269efc96afd6efbcd89afc923cc3cb4f253625196b13ec1db2d27f"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_tasks.py",
+        "-v"
+      ],
+      "exit": 0,
+      "tests": 38,
+      "log_name": "sha2-r52-archive-focused-1.log",
+      "log_sha256": "f4b666fc259cee5e12d45e0e325a8e588ee95f98bf66a51ed6388156ef7c4b3e"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_dependency_handoffs.py",
+        "-v"
+      ],
+      "exit": 0,
+      "tests": 9,
+      "log_name": "sha2-r52-archive-focused-2.log",
+      "log_sha256": "107c6e2f82710fdbe9c298200ec48f4ad1aa79de98c1bdd7492e14e5f7311306"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/context.py",
+        "check"
+      ],
+      "exit": 0,
+      "tests": null,
+      "log_name": "sha2-r52-archive-focused-3.log",
+      "log_sha256": "03bd149796475940290634816c8daa72e3b40b83549f05dc75b4ea1e06737a49"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "check"
+      ],
+      "exit": 0,
+      "tests": null,
+      "log_name": "sha2-r52-archive-focused-4.log",
+      "log_sha256": "9b554cd90733d8422cdbdc0f950a0ff463224f7c2a9d737889fe133c6876324c"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/mvp.py",
+        "check"
+      ],
+      "exit": 0,
+      "tests": null,
+      "log_name": "sha2-r52-archive-focused-5.log",
+      "log_sha256": "3c7b9a3062f62964126c8db247833e935b8557a4baeffb7a30525cbe5f410966"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "tests": null,
+      "log_name": "sha2-r52-archive-focused-6.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "all_405_task_ids_and_dependencies_preserved": true,
+  "all_9_sha2_tasks_accepted": true,
+  "tracks": 25,
+  "milestones": 110,
+  "mvp_parents": 82,
+  "mvp_leaves": 258,
+  "other_dependency_rows_byte_semantics_unchanged": true,
+  "source_and_historical_receipt_bindings_unchanged": 30,
+  "changed_tracked_paths_only_conductor_and_path_inventory": true,
+  "native_config_schema_fixture_equivalence": "No source/runtime/dependency/config/schema/fixture changes from qualified source; exact Git changes limited to Conductor and path inventory. Archive does not claim current-head hosted green.",
+  "archive_review": {
+    "reviewer": "/root/ffi_packet_prepare",
+    "decision": "GO documentation-only archive",
+    "base_commit": "1d559a632f6e3ebe0c26f2c72317eb72e00269be",
+    "scope": "All7focused log hashes/63tests,405IDs/dependencies,9SHAaccepted/396othertasksunchanged,otherdependencyrowsunchanged,all30preservedbindings,all9archivefiles,inventory/navigation/sourceequivalence.",
+    "fix_applied": "Clarify resume wording: qualified source1D; archive on a separate documentation closeout branch.",
+    "limits": "No hosted archive-head claim, no new PR or merge."
+  }
+}

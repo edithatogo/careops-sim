@@ -2,7 +2,6 @@ use std::fs;
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
-use std::time::{SystemTime, UNIX_EPOCH};
 
 use serde::{Deserialize, Serialize};
 
@@ -334,17 +333,15 @@ fn compose_nominal_replication(replication_index: usize, seed: u64) -> Compositi
     }
 }
 
-fn test_output_dir(label: &str) -> PathBuf {
-    let nonce = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .unwrap()
-        .as_nanos();
-    let path = std::env::temp_dir().join(format!(
-        "careops-a63-{label}-{}-{nonce}",
-        std::process::id()
-    ));
-    fs::create_dir_all(&path).unwrap();
-    path
+fn test_output_dir(label: &str) -> tempfile::TempDir {
+    let mut builder = tempfile::Builder::new();
+    builder.prefix(label);
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        builder.permissions(std::fs::Permissions::from_mode(0o700));
+    }
+    builder.tempdir().unwrap()
 }
 
 #[test]
@@ -802,7 +799,8 @@ fn interrupted_integrated_batch_resumes_to_the_uninterrupted_result() {
     )
     .unwrap();
 
-    let output_dir = test_output_dir("recovery");
+    let output_owner = test_output_dir("recovery");
+    let output_dir = output_owner.path();
     let cancel_token = CancellationToken::new();
     let completed_calls = Arc::new(AtomicUsize::new(0));
     let calls = Arc::clone(&completed_calls);
@@ -821,7 +819,7 @@ fn interrupted_integrated_batch_resumes_to_the_uninterrupted_result() {
         1,
         Some(1),
         (),
-        Some(&output_dir),
+        Some(output_dir),
         Some(&cancel_token),
         None,
         interrupted_runner,
@@ -839,7 +837,7 @@ fn interrupted_integrated_batch_resumes_to_the_uninterrupted_result() {
     let (checkpoint, resumed) = resume_generic_batch::<CompositionReplication, (), _>(
         &checkpoint_path,
         2,
-        &output_dir,
+        output_dir,
         None,
         None,
         runner,
@@ -856,7 +854,6 @@ fn interrupted_integrated_batch_resumes_to_the_uninterrupted_result() {
         replications,
         "recovery must contain every replication identity once"
     );
-    fs::remove_dir_all(output_dir).unwrap();
 }
 
 #[test]

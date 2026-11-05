@@ -21,34 +21,24 @@ use careops_ed::disposition::batch_runner::{
 };
 use careops_ed::parse_scenario_json;
 
-struct TestTempDir {
-    path: PathBuf,
-}
+struct TestTempDir(tempfile::TempDir);
 
 impl TestTempDir {
     fn new(prefix: &str) -> Self {
-        let unique = format!(
-            "careops_batch_test_{}_{}_{}",
-            prefix,
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
-        );
-        let path = std::env::temp_dir().join(unique);
-        fs::create_dir_all(&path).unwrap();
-        Self { path }
+        let owner = {
+            let mut builder = tempfile::Builder::new();
+            builder.prefix(prefix);
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                builder.permissions(std::fs::Permissions::from_mode(0o700));
+            }
+            builder.tempdir().unwrap()
+        };
+        Self(owner)
     }
-
     fn path(&self) -> &Path {
-        &self.path
-    }
-}
-
-impl Drop for TestTempDir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.path);
+        self.0.path()
     }
 }
 

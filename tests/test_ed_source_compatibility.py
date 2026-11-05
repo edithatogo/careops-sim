@@ -272,10 +272,13 @@ class SharedImportPromotionTests(unittest.TestCase):
                          gate.git_blob(ROOT, gate.SHARED_QUALIFICATION_COMMIT, gate.SHARED_RECEIPT))
         current = gate.shared_bindings(ROOT)
         successor = gate.shared_bindings(ROOT, gate.SHA2_QUALIFICATION_COMMIT)
-        self.assertTrue(gate.strict_equal(current, successor))
+        sha2_changed = [p for p, value in self.expected['source_sha256'].items()
+                        if successor['source_sha256'][p] != value]
+        self.assertEqual(sha2_changed, ['crates/careops-ed/Cargo.toml'])
+        self.assertTrue(gate.strict_equal(current, gate.shared_bindings(ROOT, gate.TEMPFILE_QUALIFICATION_COMMIT)))
         changed = [p for p, value in self.expected['source_sha256'].items()
                    if current['source_sha256'][p] != value]
-        self.assertEqual(changed, ['crates/careops-ed/Cargo.toml'])
+        self.assertEqual(changed, ['Cargo.lock', 'crates/careops-ed/Cargo.toml'])
 
     def test_shared_promotion_requires_its_new_receipt(self):
         with mock.patch.object(gate, 'SHARED_RECEIPT', 'absent-shared-receipt.json'):
@@ -450,3 +453,95 @@ class Sha2AnchoredSuccessorTests(unittest.TestCase):
                 return value+b'\n' if commit == gate.SHA2_QUALIFICATION_COMMIT and name == path else value
             with self.subTest(path=path), mock.patch.object(gate, 'git_blob', changed):
                 with self.assertRaises(ValueError): gate.verify_binding(ROOT, self.join)
+
+
+class TempfileManifestSuccessorTests(unittest.TestCase):
+    def setUp(self):
+        self.old = {p: gate.git_blob(ROOT, gate.TEMPFILE_BASE_COMMIT, p) for p in gate.TEMPFILE_MANIFESTS}
+        self.new = {p: gate.git_blob(ROOT, gate.TEMPFILE_QUALIFICATION_COMMIT, p) for p in gate.TEMPFILE_MANIFESTS}
+        self.old_lock = gate.git_blob(ROOT, gate.TEMPFILE_BASE_COMMIT, 'Cargo.lock')
+        self.lock = gate.git_blob(ROOT, gate.TEMPFILE_QUALIFICATION_COMMIT, 'Cargo.lock')
+
+    def validate(self, manifests=None, lock=None):
+        gate.validate_tempfile_successor_profile(self.old, self.new if manifests is None else manifests,
+                                                self.old_lock, self.lock if lock is None else lock)
+
+    def test_exact_three_edges_and_two_workspace_rows(self):
+        self.validate()
+
+    def test_manifest_versions_features_unknown_edges_and_types_refuse(self):
+        for path in gate.TEMPFILE_MANIFESTS:
+            for transform in [lambda b: b.replace(b'=3.27.0', b'=3.28.0'),
+                              lambda b: b + b'unknown = "=1.0.0"\n',
+                              lambda b: b.replace(b'tempfile = "=3.27.0"', b'tempfile = false'),
+                              lambda b: b.replace(b'tempfile = "=3.27.0"', b'tempfile = { version = "=3.27.0", default-features = false }')]:
+                manifests = dict(self.new); manifests[path] = transform(manifests[path])
+                with self.subTest(path=path), self.assertRaises(ValueError): self.validate(manifests)
+
+    def test_registry_checksum_version_extra_row_root_and_other_workspace_changes_refuse(self):
+        for lock in [self.old_lock, self.lock.replace(b'version = 4', b'version = 3', 1),
+                     self.lock.replace(b'checksum = "', b'checksum = "0', 1),
+                     self.lock + b'\n[[package]]\nname="unknown"\nversion="1.0.0"\n',
+                     self.lock.replace(b'"serde_json",', b'"serde_json",\n "unknown",', 1)]:
+            with self.subTest(lock=lock[:20]), self.assertRaises(ValueError): self.validate(lock=lock)
+
+
+class TempfileAnchoredSuccessorTests(unittest.TestCase):
+    def setUp(self):
+        self.join = json.loads((ROOT / gate.JOIN_PATH).read_bytes())
+
+    def test_actual_qualified_successor_preserves_old_receipts(self):
+        gate.verify_binding(ROOT, self.join)
+
+    def test_every_new_bound_file_refuses_unknown_drift(self):
+        original = Path.read_bytes
+        for path in gate.TEMPFILE_SOURCES:
+            selected = ROOT / path
+            def changed(current):
+                data = original(current)
+                return data + b'\n' if current == selected else data
+            with self.subTest(path=path), mock.patch.object(Path, 'read_bytes', changed):
+                with self.assertRaisesRegex(ValueError, 'exact binding mismatch'):
+                    gate.verify_binding(ROOT, self.join)
+
+    def test_source_and_receipt_codrift_cannot_rebind(self):
+        original = Path.read_bytes
+        selected = ROOT / 'crates/careops-core/src/experiment/io.rs'
+        altered = original(selected) + b'\n'
+        receipt = json.loads((ROOT / gate.TEMPFILE_RECEIPT).read_bytes())
+        for row in receipt['source_bindings']:
+            if row['path'] == 'crates/careops-core/src/experiment/io.rs': row['sha256'] = gate.digest(altered)
+        def changed(current):
+            if current == selected: return altered
+            if current == ROOT / gate.TEMPFILE_RECEIPT: return json.dumps(receipt).encode()
+            return original(current)
+        with mock.patch.object(Path, 'read_bytes', changed), self.assertRaisesRegex(ValueError, 'immutable Tempfile successor'):
+            gate.verify_binding(ROOT, self.join)
+
+    def test_missing_nonobject_modified_receipt_and_missing_anchor_refuse(self):
+        original = Path.read_bytes
+        for value in [b'[]', original(ROOT / gate.TEMPFILE_RECEIPT) + b'\n']:
+            def changed(current): return value if current == ROOT / gate.TEMPFILE_RECEIPT else original(current)
+            with mock.patch.object(Path, 'read_bytes', changed), self.assertRaisesRegex(ValueError, 'immutable Tempfile successor'):
+                gate.verify_binding(ROOT, self.join)
+        with mock.patch.object(gate, 'TEMPFILE_QUALIFICATION_COMMIT', '0' * 40), self.assertRaisesRegex(ValueError, 'frozen source object'):
+            gate.verify_binding(ROOT, self.join)
+        with mock.patch.object(gate, 'TEMPFILE_RECEIPT', 'missing-tempfile-receipt.json'), self.assertRaisesRegex(ValueError, 'Tempfile successor needs exact'):
+            gate.verify_binding(ROOT, self.join)
+
+    def test_changed_base_anchor_cannot_inherit_acceptance(self):
+        original = gate.git_blob
+        def changed(root, commit, path):
+            value = original(root, commit, path)
+            return value + b'\n' if commit == gate.TEMPFILE_BASE_COMMIT and path == 'Cargo.lock' else value
+        with mock.patch.object(gate, 'git_blob', changed), self.assertRaisesRegex(ValueError, 'base differs'):
+            gate.verify_binding(ROOT, self.join)
+
+    def test_initial_tempfile_receipt_is_immutable(self):
+        original = Path.read_bytes
+        selected = ROOT / gate.TEMPFILE_INITIAL_RECEIPT
+        def changed(current):
+            value = original(current)
+            return value + b'\n' if current == selected else value
+        with mock.patch.object(Path, 'read_bytes', changed), self.assertRaisesRegex(ValueError, 'immutable Tempfile initial'):
+            gate.verify_binding(ROOT, self.join)

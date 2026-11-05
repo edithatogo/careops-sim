@@ -62,6 +62,33 @@ SHA2_SOURCES = (
     'crates/careops-ed/tests/c63_compatibility_replay_performance.rs',
 )
 
+# Immutable Tempfile adoption checkpoint; original Polars/SHA2 anchors are retained.
+TEMPFILE_BASE_COMMIT = '20801f11dfa2af9bc3389a4bd931a787bcbc8534'
+TEMPFILE_QUALIFICATION_COMMIT = 'e0911cccc73988e1d8faf900cdde1b225ad045be'
+TEMPFILE_INITIAL_COMMIT = '006545af178185b7dbe84933423e524d33c39ed7'
+TEMPFILE_INITIAL_RECEIPT = 'conductor/evidence/tempfile-r54-implementation-20261105/qualified-source.json'
+TEMPFILE_RECEIPT = 'conductor/evidence/tempfile-r54-implementation-20261105/qualified-source-v2.json'
+TEMPFILE_MANIFESTS = ('crates/careops-core/Cargo.toml', 'crates/careops-ed/Cargo.toml',
+                      'crates/careops-ed-cli/Cargo.toml')
+TEMPFILE_SOURCES = (
+    'Cargo.lock',
+    'crates/careops-core/Cargo.toml',
+    'crates/careops-core/src/experiment/io.rs',
+    'crates/careops-core/tests/experiment_runner_contract.rs',
+    'crates/careops-core/tests/logistics_consumer.rs',
+    'crates/careops-core/tests/profile_loader_tests.rs',
+    'crates/careops-core/tests/r54_tempfile_contract.rs',
+    'crates/careops-ed-cli/Cargo.toml',
+    'crates/careops-ed-cli/tests/c63_native_contract.rs',
+    'crates/careops-ed-cli/tests/consumer_contract.rs',
+    'crates/careops-ed-cli/tests/execution_capabilities.rs',
+    'crates/careops-ed-cli/tests/native_cli.rs',
+    'crates/careops-ed/Cargo.toml',
+    'crates/careops-ed/tests/e32_batch_and_checkpoint_tests.rs',
+    'crates/careops-ed/tests/ed_ward_community_composition.rs',
+    'crates/careops-ed/tests/r111_capture_boundaries.rs',
+)
+
 SHARED_ROOT_FEATURES = {
     'default': [],
     'native-ffi-acceptance': ['dep:careops-ed', 'dep:careops-birthing-cli',
@@ -541,6 +568,94 @@ def verify_sha2_successor(root, original, current):
         raise ValueError('data promotion scope or exact binding mismatch: SHA2 successor receipt')
 
 
+def tempfile_source_bindings(root, commit=None):
+    read = (lambda p: (Path(root) / p).read_bytes()) if commit is None else (lambda p: git_blob(root, commit, p))
+    return [{'path': p, 'sha256': digest(read(p))} for p in TEMPFILE_SOURCES]
+
+
+def validate_tempfile_successor_profile(old_manifests, manifests, old_lock, lock):
+    """Exactly three named edges and two workspace rows; no registry/other drift."""
+    try:
+        expected = {p: tomllib.loads(old_manifests[p].decode()) for p in TEMPFILE_MANIFESTS}
+        actual = {p: tomllib.loads(manifests[p].decode()) for p in TEMPFILE_MANIFESTS}
+        expected[TEMPFILE_MANIFESTS[0]]['dependencies']['tempfile'] = '=3.27.0'
+        for path in TEMPFILE_MANIFESTS[1:]:
+            expected[path]['dev-dependencies'] = {'tempfile': '=3.27.0'}
+        expected_lock = tomllib.loads(old_lock.decode())
+        for name in ('careops-core', 'careops-ed-cli'):
+            nodes = [p for p in expected_lock['package'] if p['name'] == name]
+            if len(nodes) != 1:
+                raise ValueError('nonunique workspace node')
+            nodes[0]['dependencies'] = sorted(nodes[0]['dependencies'] + ['tempfile'])
+        actual_lock = tomllib.loads(lock.decode())
+    except (TypeError, ValueError, UnicodeError, KeyError) as error:
+        raise ValueError('Tempfile successor profile is malformed') from error
+    if not strict_equal(actual, expected) or not strict_equal(actual_lock, expected_lock):
+        raise ValueError('Tempfile successor permits only exact dependency edges/workspace lock rows')
+
+
+def verify_tempfile_successor(root, original, current):
+    """Retain every earlier oracle and accept only this immutable successor."""
+    sha2_profile = shared_bindings(root, SHA2_QUALIFICATION_COMMIT)
+    verify_sha2_successor(root, original, sha2_profile)
+    if not strict_equal(shared_bindings(root, TEMPFILE_BASE_COMMIT), sha2_profile):
+        raise ValueError('Tempfile base differs from the qualified SHA2 profile')
+    initial_raw, initial = _anchored_receipt(
+        root, TEMPFILE_INITIAL_RECEIPT, TEMPFILE_INITIAL_COMMIT,
+        'Tempfile initial checkpoint needs exact compatibility evidence',
+        'immutable Tempfile initial compatibility receipt changed')
+    _, receipt = _anchored_receipt(
+        root, TEMPFILE_RECEIPT, TEMPFILE_QUALIFICATION_COMMIT,
+        'Tempfile successor needs exact compatibility evidence',
+        'immutable Tempfile successor compatibility receipt changed')
+    expected = shared_bindings(root, TEMPFILE_QUALIFICATION_COMMIT)
+    before, after = copy.deepcopy(sha2_profile), copy.deepcopy(expected)
+    for profile in (before, after):
+        for path in ('Cargo.lock', 'crates/careops-ed/Cargo.toml'):
+            del profile['source_sha256'][path]
+    validate_tempfile_successor_profile(
+        {p: git_blob(root, TEMPFILE_BASE_COMMIT, p) for p in TEMPFILE_MANIFESTS},
+        {p: git_blob(root, TEMPFILE_QUALIFICATION_COMMIT, p) for p in TEMPFILE_MANIFESTS},
+        git_blob(root, TEMPFILE_BASE_COMMIT, 'Cargo.lock'),
+        git_blob(root, TEMPFILE_QUALIFICATION_COMMIT, 'Cargo.lock'))
+    sources = tempfile_source_bindings(root, TEMPFILE_QUALIFICATION_COMMIT)
+    if (not strict_equal(before, after) or not strict_equal(current, expected)
+            or not strict_equal(tempfile_source_bindings(root), sources)):
+        raise ValueError('data promotion scope or exact binding mismatch: Tempfile successor source/profile')
+    fields = {'schema_version', 'scope', 'renewed_a7_acceptance', 'base_commit',
+              'shared_bindings', 'source_bindings', 'local_results', 'compatibility',
+              'build', 'cross_build', 'graph', 'maintenance', 'logs', 'source_review', 'remaining'}
+    local = {'core': 157, 'affected_ED': 38, 'distinct_CLI': 24, 'original_artifact_consume': 1,
+             'candidate_artifact_produce': 1, 'ignored': 0}
+    if (not isinstance(receipt, dict) or set(receipt) != fields
+            or type(receipt.get('schema_version')) is not int or receipt['schema_version'] != 1
+            or receipt.get('scope') != 'tempfile_core_staging_and_test_ownership_only'
+            or receipt.get('renewed_a7_acceptance') is not False
+            or receipt.get('base_commit') != TEMPFILE_BASE_COMMIT
+            or not strict_equal(receipt.get('shared_bindings'), expected)
+            or not strict_equal(receipt.get('source_bindings'), sources)
+            or not strict_equal(receipt.get('local_results'), local)):
+        raise ValueError('data promotion scope or exact binding mismatch: Tempfile successor receipt')
+    review = receipt.get('source_review')
+    fix = review.get('review_fix') if isinstance(review, dict) else None
+    changed_tests = ['crates/careops-core/tests/experiment_runner_contract.rs',
+                     'crates/careops-ed/tests/ed_ward_community_composition.rs']
+    if (not isinstance(initial, dict) or not isinstance(fix, dict)
+            or fix.get('prior_checkpoint') != TEMPFILE_INITIAL_COMMIT
+            or fix.get('prior_receipt') != TEMPFILE_INITIAL_RECEIPT
+            or fix.get('prior_receipt_sha256') != digest(initial_raw)
+            or not strict_equal(fix.get('changed_test_paths'), changed_tests)
+            or not strict_equal(initial.get('shared_bindings'), expected)
+            or not strict_equal([b for b in initial.get('source_bindings', []) if b['path'] not in changed_tests],
+                                [b for b in sources if b['path'] not in changed_tests])):
+        raise ValueError('Tempfile review fix cannot inherit unknown production/profile changes')
+    compatibility = receipt.get('compatibility')
+    if (not isinstance(compatibility, dict) or type(compatibility.get('cases')) is not int
+            or compatibility['cases'] != 26
+            or compatibility.get('all_input_and_summary_hashes_equal') is not True):
+        raise ValueError('Tempfile successor needs all 26 frozen compatibility cases')
+
+
 def verify_shared_promotion(root, join, bindings, reference):
     validate_shared_history(root, join, reference)
     _, receipt = _anchored_receipt(
@@ -552,4 +667,7 @@ def verify_shared_promotion(root, join, bindings, reference):
     validate_shared_receipt(receipt, expected, bindings, reference)
     current = shared_bindings(root)
     if not strict_equal(current, expected):
-        verify_sha2_successor(root, expected, current)
+        if strict_equal(current, shared_bindings(root, SHA2_QUALIFICATION_COMMIT)):
+            verify_sha2_successor(root, expected, current)
+        else:
+            verify_tempfile_successor(root, expected, current)

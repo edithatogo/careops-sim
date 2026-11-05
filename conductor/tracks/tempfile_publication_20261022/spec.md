@@ -1,6 +1,6 @@
 # CareOps tempfile adoption
 
-Planned only. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
+R53 qualification and R54 bounded core/test-owner replacement are accepted locally. R55 hosted/platform/integration/quality/security and cost acceptance remains pending. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
 
 ## Inputs and dependencies
 

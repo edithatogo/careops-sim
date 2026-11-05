@@ -109,3 +109,7 @@ cost gates. Linux new-source `/dev/full` remains unverified on this Mac. All R52
 tasks stay unchecked; no full acceptance/archive, main/PR197/198 merge, stable
 release or clinical/operational approval is inferred. Do not regenerate old
 Polars/R501/R502 receipts, rewrite old model tags or relax source/lock controls.
+
+## R52 terminal handoff —5November2026
+
+All R52 bounded acceptance gates pass at source1d559a6/testedmergee10a3af. [Final receipt](../../evidence/sha2-r52-acceptance-20261104/acceptance.json) records actual all7hosted workflows, Linux/mac791each, default779, Python825+127, coverage512/578,117mutants fully accounted, Linux26/14negative/devfull, package/security/cost and review. Historical pending statements above are dated history. The coordinator retains ownership; no native scope or upstream writes. Next operation is separately prepared DAG work, not an implied merge or release.

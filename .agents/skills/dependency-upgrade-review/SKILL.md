@@ -26,3 +26,17 @@ If the pin, policy, or source snapshot is missing or stale, stop with `hold_for_
 ## Output
 
 Return `candidate`, `no_change`, `revise`, or `hold_for_evidence`; include proposed version and source, dependency path, compatibility/security/licence evidence, exact verification plan/results, rollback, and unverified platforms. A green audit does not approve a version or release.
+
+## Internal browser requirement — 5 November 2026
+
+Use the Codex internal browser for all browser access unless the user explicitly
+instructs otherwise, including sign-in, reauthentication, opening pages and
+browser-based QA and other web interactions. Do not launch or control an external
+browser. Generic CLI-first preferences are not an exception for these operations.
+An exception requires an explicit user instruction covering that operation or a
+higher-priority requirement; report genuine conflicts instead of broadening it.
+Non-browser local build, test and file operations remain separate.
+If the internal browser is unavailable or cannot complete a required step, report
+the specific limitation instead of silently substituting another browser. This
+does not authorize authentication bypasses, credential changes, new access,
+publication, merge or deployment.
