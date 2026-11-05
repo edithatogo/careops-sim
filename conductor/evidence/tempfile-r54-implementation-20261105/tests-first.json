@@ -1,0 +1,31 @@
+{
+  "source": "935c13b812fb0acc9047fc06c63f4f6a06ad90b3",
+  "step": "R54.1 tests before production replacement",
+  "command": "cargo test --locked -p careops-core --test r54_tempfile_contract -- --nocapture",
+  "environment": {
+    "CARGO_BUILD_JOBS": "1",
+    "CARGO_INCREMENTAL": "0",
+    "CARGO_PROFILE_DEV_DEBUG": "0",
+    "CARGO_PROFILE_TEST_DEBUG": "0"
+  },
+  "exit": 101,
+  "passed": 3,
+  "failed": 3,
+  "failed_tests": [
+    "unrelated_pid_staging_is_preserved",
+    "simultaneous_writers_publish_one_complete_payload",
+    "actual_write_fault_preserves_destination_and_cleans_scratch"
+  ],
+  "log_sha256": "e3745395aaba6f8c0aaf34337aad7ffe270902eba216b4da7e6043ce809e5320",
+  "limit": "child-only shell file size limit1block, ignoredXFSZ; originaldestination preserved; not powerloss proof",
+  "production_helper_sha256": "69995cec21eaa7c408c8a5da1d7a45fab4469d06d234cc0a179cf443cd18311a",
+  "first_attempt_retained": {
+    "log_sha256": "60b447a47b2aa3a8529005563c0643713eecfe21653fc337f663e6eca8039c9f",
+    "limitation": "Inherited regular log descriptor affected by file-size limit; not cleanup assertion proof."
+  },
+  "observed_partial_scratch_bytes": 1024,
+  "oracle_review_fixes": [
+    "Piped fault child stdout/stderr to avoid RLIMIT affecting log descriptor",
+    "Join every writer before inspecting failures"
+  ]
+}
