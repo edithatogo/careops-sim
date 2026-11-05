@@ -275,7 +275,7 @@ class SharedImportPromotionTests(unittest.TestCase):
         sha2_changed = [p for p, value in self.expected['source_sha256'].items()
                         if successor['source_sha256'][p] != value]
         self.assertEqual(sha2_changed, ['crates/careops-ed/Cargo.toml'])
-        self.assertTrue(gate.strict_equal(current, gate.shared_bindings(ROOT, gate.TEMPFILE_QUALIFICATION_COMMIT)))
+        self.assertTrue(gate.strict_equal(current, gate.shared_bindings(ROOT, gate.THISERROR_QUALIFICATION_COMMIT)))
         changed = [p for p, value in self.expected['source_sha256'].items()
                    if current['source_sha256'][p] != value]
         self.assertEqual(changed, ['Cargo.lock', 'crates/careops-ed/Cargo.toml'])
@@ -401,11 +401,15 @@ class Sha2AnchoredSuccessorTests(unittest.TestCase):
         gate.verify_binding(ROOT, self.join)
 
     def test_original_exact_profile_remains_valid(self):
-        original = gate.shared_bindings
-        def historical(root, commit=None):
-            return original(root, gate.SHARED_QUALIFICATION_COMMIT if commit is None else commit)
-        with mock.patch.object(gate, 'shared_bindings', historical):
-            gate.verify_binding(ROOT, self.join)
+        expected = gate.shared_bindings(ROOT, gate.SHARED_QUALIFICATION_COMMIT)
+        gate.validate_shared_receipt(
+            json.loads((ROOT / gate.SHARED_RECEIPT).read_bytes()), expected,
+            json.loads((ROOT / gate.SHARED_RECEIPT).read_bytes())['summary_compatibility']['bindings'],
+            json.loads((ROOT / gate.REFERENCE).read_bytes()))
+        gate.verify_sha2_successor(ROOT, expected,
+                                   gate.shared_bindings(ROOT, gate.SHA2_QUALIFICATION_COMMIT))
+        with self.assertRaises(ValueError):
+            gate.verify_thiserror_successor(ROOT, expected, expected)
 
     def test_every_new_digest_build_and_contract_source_drift_refuses(self):
         original = Path.read_bytes
@@ -545,3 +549,85 @@ class TempfileAnchoredSuccessorTests(unittest.TestCase):
             return value + b'\n' if current == selected else value
         with mock.patch.object(Path, 'read_bytes', changed), self.assertRaisesRegex(ValueError, 'immutable Tempfile initial'):
             gate.verify_binding(ROOT, self.join)
+
+
+class ThiserrorSuccessorTests(unittest.TestCase):
+    def setUp(self):
+        self.original = gate.shared_bindings(ROOT, gate.SHARED_QUALIFICATION_COMMIT)
+        self.current = gate.shared_bindings(ROOT)
+
+    def verify(self):
+        gate.verify_thiserror_successor(ROOT, self.original, self.current)
+
+    def test_actual_closed_contract_checkpoint(self):
+        self.assertEqual(len(gate.THISERROR_SOURCES), 29)
+        self.verify()
+
+    def test_historical_tempfile_adapter_is_explicit_and_fixed(self):
+        previous = gate.shared_bindings(ROOT, gate.TEMPFILE_QUALIFICATION_COMMIT)
+        gate.verify_tempfile_successor(ROOT, self.original, previous,
+                                      source_checkpoint=gate.TEMPFILE_QUALIFICATION_COMMIT)
+        with self.assertRaises(ValueError):
+            gate.verify_tempfile_successor(ROOT, self.original, previous)
+        for selector in (True, 'HEAD', gate.THISERROR_QUALIFICATION_COMMIT):
+            with self.subTest(selector=selector), self.assertRaises(ValueError):
+                gate.verify_tempfile_successor(ROOT, self.original, previous, source_checkpoint=selector)
+
+    def test_all_29_current_files_refuse_drift(self):
+        original = Path.read_bytes
+        for path in gate.THISERROR_SOURCES:
+            def changed(current, selected=ROOT / path):
+                data = original(current)
+                return data + b'\n' if current == selected else data
+            with self.subTest(path=path), mock.patch.object(Path, 'read_bytes', changed):
+                with self.assertRaises(ValueError): self.verify()
+
+    def test_omitted_binding_and_source_receipt_codrift_refuse(self):
+        original = Path.read_bytes
+        path = ROOT / gate.THISERROR_ERROR_SOURCES[0]
+        receipt_path = ROOT / gate.THISERROR_RECEIPT
+        altered = original(path) + b'\n'
+        for omit in (False, True):
+            receipt = json.loads(original(receipt_path))
+            if omit: receipt['source_bindings'].pop()
+            else:
+                for row in receipt['source_bindings']:
+                    if row['path'] == gate.THISERROR_ERROR_SOURCES[0]: row['sha256'] = gate.digest(altered)
+            def changed(current):
+                if current == path: return altered
+                if current == receipt_path: return json.dumps(receipt).encode()
+                return original(current)
+            with self.subTest(omit=omit), mock.patch.object(Path, 'read_bytes', changed):
+                with self.assertRaisesRegex(ValueError, 'immutable thiserror source'): self.verify()
+
+    def test_qualification_and_source_receipt_anchors_refuse_drift(self):
+        original = gate.git_blob
+        for anchor, path in [(gate.THISERROR_BASE_COMMIT, gate.THISERROR_QUALIFICATION),
+                             (gate.THISERROR_QUALIFICATION_COMMIT, gate.THISERROR_RECEIPT)]:
+            def changed(root, commit, name):
+                data = original(root, commit, name)
+                return data + b' ' if (commit, name) == (anchor, path) else data
+            with self.subTest(path=path), mock.patch.object(gate, 'git_blob', changed):
+                with self.assertRaisesRegex(ValueError, 'immutable thiserror'): self.verify()
+
+    def test_closed_manifest_root_and_fuzz_projection(self):
+        paths = ('crates/careops-core/Cargo.toml', 'crates/careops-ed/Cargo.toml')
+        old = {p: gate.git_blob(ROOT, gate.THISERROR_BASE_COMMIT, p) for p in paths}
+        current = {p: (ROOT / p).read_bytes() for p in paths}
+        old_lock = gate.git_blob(ROOT, gate.THISERROR_BASE_COMMIT, 'Cargo.lock')
+        old_fuzz = gate.git_blob(ROOT, gate.THISERROR_BASE_COMMIT, 'fuzz/Cargo.lock')
+        lock = (ROOT / 'Cargo.lock').read_bytes(); fuzz = (ROOT / 'fuzz/Cargo.lock').read_bytes()
+        q = json.loads((ROOT / gate.THISERROR_QUALIFICATION).read_bytes())
+        def validate(manifests=current, root_lock=lock, fuzz_lock=fuzz):
+            gate.validate_thiserror_successor_profile(old, manifests, old_lock, root_lock, old_fuzz, fuzz_lock, q)
+        validate()
+        for p in paths:
+            for before, after in [(b'=2.0.21', b'=2.0.22'),
+                                  (b'thiserror = "=2.0.21"', b'thiserror = { version = "=2.0.21", features = ["unknown"] }')]:
+                altered = dict(current); altered[p] = current[p].replace(before, after)
+                with self.subTest(path=p), self.assertRaises(ValueError): validate(manifests=altered)
+        for raw, key in [(lock, 'root_lock'), (fuzz, 'fuzz_lock')]:
+            for altered in [raw.replace(b'checksum = "', b'checksum = "0', 1),
+                            raw + b'\n[[package]]\nname="unknown"\nversion="1.0.0"\n',
+                            raw + b'\nunknown_metadata = true\n']:
+                with self.subTest(key=key), self.assertRaises(ValueError): validate(**{key: altered})

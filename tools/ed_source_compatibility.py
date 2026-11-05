@@ -89,6 +89,24 @@ TEMPFILE_SOURCES = (
     'crates/careops-ed/tests/r111_capture_boundaries.rs',
 )
 
+# First actual eight-enum implementation and independent prior qualification.
+THISERROR_BASE_COMMIT = '483cd84d58572db3b945658f57be080751a1c181'
+THISERROR_QUALIFICATION_COMMIT = '7e8c271ed2ba57af77a8e623ffdf75897be6bb40'
+THISERROR_QUALIFICATION = 'conductor/evidence/thiserror-r562-qualification-20261105/qualification.json'
+THISERROR_RECEIPT = 'conductor/evidence/thiserror-r57-implementation-20261105/qualified-source.json'
+THISERROR_ERROR_SOURCES = tuple(
+    f'crates/careops-{crate}/src/{name}.rs'
+    for crate, names in [('core', ('capacity', 'identity', 'birth', 'transfer')),
+                         ('ed', ('arrivals', 'identity', 'operations', 'composite_fixture'))]
+    for name in names)
+THISERROR_SOURCES = tuple(sorted(set(TEMPFILE_SOURCES) | set(THISERROR_ERROR_SOURCES) | {
+    'fuzz/Cargo.lock',
+    'crates/careops-core/tests/r57_thiserror_contract.rs',
+    'crates/careops-core/tests/fixtures/r57_error_core.json',
+    'crates/careops-ed/tests/r57_thiserror_contract.rs',
+    'crates/careops-ed/tests/fixtures/r57_error_ed.json',
+}))
+
 SHARED_ROOT_FEATURES = {
     'default': [],
     'native-ffi-acceptance': ['dep:careops-ed', 'dep:careops-birthing-cli',
@@ -594,8 +612,10 @@ def validate_tempfile_successor_profile(old_manifests, manifests, old_lock, lock
         raise ValueError('Tempfile successor permits only exact dependency edges/workspace lock rows')
 
 
-def verify_tempfile_successor(root, original, current):
+def verify_tempfile_successor(root, original, current, *, source_checkpoint=None):
     """Retain every earlier oracle and accept only this immutable successor."""
+    if source_checkpoint is not None and source_checkpoint != TEMPFILE_QUALIFICATION_COMMIT:
+        raise ValueError('unsupported historical Tempfile source checkpoint')
     sha2_profile = shared_bindings(root, SHA2_QUALIFICATION_COMMIT)
     verify_sha2_successor(root, original, sha2_profile)
     if not strict_equal(shared_bindings(root, TEMPFILE_BASE_COMMIT), sha2_profile):
@@ -620,7 +640,7 @@ def verify_tempfile_successor(root, original, current):
         git_blob(root, TEMPFILE_QUALIFICATION_COMMIT, 'Cargo.lock'))
     sources = tempfile_source_bindings(root, TEMPFILE_QUALIFICATION_COMMIT)
     if (not strict_equal(before, after) or not strict_equal(current, expected)
-            or not strict_equal(tempfile_source_bindings(root), sources)):
+            or not strict_equal(tempfile_source_bindings(root, source_checkpoint), sources)):
         raise ValueError('data promotion scope or exact binding mismatch: Tempfile successor source/profile')
     fields = {'schema_version', 'scope', 'renewed_a7_acceptance', 'base_commit',
               'shared_bindings', 'source_bindings', 'local_results', 'compatibility',
@@ -656,6 +676,97 @@ def verify_tempfile_successor(root, original, current):
         raise ValueError('Tempfile successor needs all 26 frozen compatibility cases')
 
 
+def thiserror_source_bindings(root, commit=None):
+    read = (lambda p: (Path(root) / p).read_bytes()) if commit is None else (lambda p: git_blob(root, commit, p))
+    return [{'path': p, 'sha256': digest(read(p))} for p in THISERROR_SOURCES]
+
+
+def validate_thiserror_successor_profile(old_manifests, manifests, old_lock, lock,
+                                        old_fuzz, fuzz, qualification):
+    """Closed whole-object projection; preserve the separately qualified fuzz Syn."""
+    try:
+        expected = {p: tomllib.loads(b.decode()) for p, b in old_manifests.items()}
+        actual = {p: tomllib.loads(b.decode()) for p, b in manifests.items()}
+        for value in expected.values():
+            value['dependencies']['thiserror'] = '=2.0.21'
+        def projected(raw, added=()):
+            value = tomllib.loads(raw.decode())
+            for name in ('careops-core', 'careops-ed'):
+                nodes = [p for p in value['package'] if p['name'] == name]
+                if len(nodes) != 1:
+                    raise ValueError('nonunique workspace node')
+                nodes[0]['dependencies'] = sorted(nodes[0]['dependencies'] + ['thiserror'])
+            value['package'].extend(copy.deepcopy(added))
+            if added:
+                value['package'].sort(key=lambda p: (p['name'], p['version'], p.get('source', '')))
+            return value
+        expected_lock = projected(old_lock)
+        actual_lock = tomllib.loads(lock.decode())
+        expected_fuzz = projected(old_fuzz, qualification['graph']['fuzz']['added_packages'])
+        actual_fuzz = tomllib.loads(fuzz.decode())
+    except (TypeError, ValueError, UnicodeError, KeyError) as error:
+        raise ValueError('thiserror successor profile is malformed') from error
+    if (not strict_equal(actual, expected) or not strict_equal(actual_lock, expected_lock)
+            or not strict_equal(actual_fuzz, expected_fuzz)
+            or digest(fuzz) != qualification['graph']['fuzz']['projected_lock_sha256']):
+        raise ValueError('thiserror successor permits only qualified edges and root/fuzz lock rows')
+
+
+def verify_thiserror_successor(root, original, current):
+    """Contract checkpoint only; does not assert renewed application acceptance."""
+    previous = shared_bindings(root, TEMPFILE_QUALIFICATION_COMMIT)
+    verify_tempfile_successor(root, original, previous,
+                              source_checkpoint=TEMPFILE_QUALIFICATION_COMMIT)
+    qualification_raw, qualification = _anchored_receipt(
+        root, THISERROR_QUALIFICATION, THISERROR_BASE_COMMIT,
+        'thiserror qualification required', 'immutable thiserror qualification changed')
+    _, receipt = _anchored_receipt(
+        root, THISERROR_RECEIPT, THISERROR_QUALIFICATION_COMMIT,
+        'thiserror source checkpoint required', 'immutable thiserror source checkpoint changed')
+    expected = shared_bindings(root, THISERROR_QUALIFICATION_COMMIT)
+    sources = thiserror_source_bindings(root, THISERROR_QUALIFICATION_COMMIT)
+    before, after = copy.deepcopy(previous), copy.deepcopy(expected)
+    for profile in (before, after):
+        for path in ('Cargo.lock', 'crates/careops-ed/Cargo.toml'):
+            del profile['source_sha256'][path]
+    if not strict_equal(before, after):
+        raise ValueError('data promotion scope or exact binding mismatch: thiserror shared history')
+    changed = {'Cargo.lock', 'crates/careops-core/Cargo.toml', 'crates/careops-ed/Cargo.toml'}
+    old_sources = tempfile_source_bindings(root, TEMPFILE_QUALIFICATION_COMMIT)
+    current_sources = thiserror_source_bindings(root)
+    retained = {b['path']: b['sha256'] for b in current_sources}
+    candidate = qualification['build_identity']['candidate_source_bindings']
+    if (not strict_equal(current, expected) or not strict_equal(current_sources, sources)
+            or any(retained[b['path']] != b['sha256'] for b in old_sources if b['path'] not in changed)
+            or set(b['path'] for b in candidate) != set(THISERROR_ERROR_SOURCES)
+            or any(retained[b['path']] != b['sha256'] for b in candidate)):
+        raise ValueError('data promotion scope or exact binding mismatch: thiserror source/profile')
+    paths = ('crates/careops-core/Cargo.toml', 'crates/careops-ed/Cargo.toml')
+    validate_thiserror_successor_profile(
+        {p: git_blob(root, THISERROR_BASE_COMMIT, p) for p in paths},
+        {p: (Path(root) / p).read_bytes() for p in paths},
+        git_blob(root, THISERROR_BASE_COMMIT, 'Cargo.lock'), (Path(root) / 'Cargo.lock').read_bytes(),
+        git_blob(root, THISERROR_BASE_COMMIT, 'fuzz/Cargo.lock'), (Path(root) / 'fuzz/Cargo.lock').read_bytes(),
+        qualification)
+    if (not isinstance(receipt, dict) or type(receipt.get('schema_version')) is not int
+            or receipt['schema_version'] != 1 or receipt.get('scope') != 'thiserror_eight_error_declarations_only'
+            or receipt.get('renewed_a7_acceptance') is not False
+            or receipt.get('base_commit') != THISERROR_BASE_COMMIT
+            or not strict_equal(receipt.get('shared_bindings'), expected)
+            or not strict_equal(receipt.get('source_bindings'), sources)
+            or receipt.get('qualification') != {'commit': THISERROR_BASE_COMMIT,
+                'path': THISERROR_QUALIFICATION, 'sha256': digest(qualification_raw)}):
+        raise ValueError('data promotion scope or exact binding mismatch: thiserror receipt')
+    for commit_key, path_key, hash_key in (
+            ('initial_commit', 'initial_receipt', 'initial_receipt_sha256'),
+            ('review_fix_commit', 'review_fix_receipt', 'review_fix_receipt_sha256')):
+        evidence = receipt['tests_first']
+        raw, _ = _anchored_receipt(root, evidence[path_key], evidence[commit_key],
+                                   'thiserror tests-first receipt required', 'immutable thiserror tests-first receipt changed')
+        if digest(raw) != evidence[hash_key]:
+            raise ValueError('thiserror tests-first receipt hash mismatch')
+
+
 def verify_shared_promotion(root, join, bindings, reference):
     validate_shared_history(root, join, reference)
     _, receipt = _anchored_receipt(
@@ -666,8 +777,4 @@ def verify_shared_promotion(root, join, bindings, reference):
     # Always validate the original immutable receipt against its original profile.
     validate_shared_receipt(receipt, expected, bindings, reference)
     current = shared_bindings(root)
-    if not strict_equal(current, expected):
-        if strict_equal(current, shared_bindings(root, SHA2_QUALIFICATION_COMMIT)):
-            verify_sha2_successor(root, expected, current)
-        else:
-            verify_tempfile_successor(root, expected, current)
+    verify_thiserror_successor(root, expected, current)
