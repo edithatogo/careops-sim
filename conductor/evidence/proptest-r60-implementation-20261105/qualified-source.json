@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "scope": "proptest_core_dev_contract_checkpoint_only",
+  "renewed_a7_acceptance": false,
+  "base_commit": "dfc11e803d2548804512b5c5359dc1eb117bc01f",
+  "qualification": {
+    "commit": "dfc11e803d2548804512b5c5359dc1eb117bc01f",
+    "path": "conductor/evidence/proptest-r592-qualification-20261105/qualification.json",
+    "sha256": "265bac26eec9b6b6042ed10d88fa9f45362c091f57cec4c4bd5034ac1060e5ce"
+  },
+  "shared_bindings": {
+    "from_data_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
+    "to_data_commit": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+    "runtime_commit": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+    "polars_commit": "96439685eb2f95108f51087d2b76091917f2593c",
+    "source_sha256": {
+      "Cargo.toml": "2000c30f811e10d72221596b10acbc3ab490c664f4d54f3027b3ac9e3f6f736e",
+      "Cargo.lock": "e0624ba6766f4afa1e4d48ffdfc78a7436fd89f7bf55275f6af0bf813b812c44",
+      "crates/careops-ed/Cargo.toml": "9f4ab07bfaffa077464f2150690289690c1ef903fb0241daef30db18114f1c7f",
+      "crates/careops-birthing-cli/Cargo.toml": "df70889e7bc7d160507a02398e0f53f724bd6d040f825b96bb6b3f1005f0b28a",
+      "crates/careops-ed/src/native_output.rs": "33516ba922fda4ec5ec84cdf51fd9d563f345ef89802f676a2dfc4be828da3d0",
+      "crates/careops-ed/src/native_reader.rs": "c50d6da701afda2a00db3b358106087463d9d4272dd230e122f83a46efefd5e0",
+      "crates/careops-ed-cli/src/lib.rs": "42c3a61a5742e26f634689b9fc320c3f16104714a8cd6fa8cbeeb529fb138906",
+      "crates/careops-ed-cli/src/main.rs": "d5a01a124e324772570b4337d2cdca8b6cbdb06bf0e7729be20f65d24224f999",
+      "crates/careops-birthing-cli/src/lib.rs": "e192716b29e918feae6e3368e60a4418f7e1ebe0e0f9a517d50d5451b93aa619",
+      "crates/careops-birthing-cli/read_batch.py": "d769d4dd6896cd0daa5d5a312c4cb3e9d2a8fb55856c751df67a3c2f8dd9bcd1",
+      "crates/careops-ed/test_native_output.py": "7d8da1a234fb06f2382d324eeada4211291b7433bcc6ed36c086b475d31c1051",
+      "crates/careops-ed/test_native_files.py": "cd1cd0d06b9392e2fbd0b678b99c3f67d0f7401ce9ac9733629804d09e59512e",
+      "tests/r143_native_domain_ffi.rs": "bb7f3713bb05cf40fd1695d5fcc546399e36857d559488288d6939e9cee3bfdd",
+      "tools/ed_native_benchmarks.py": "b02558f1f4b329ddf5795bc7b70d4df630e0f0e371a4bc32928065e3c2ffab88",
+      "tools/ed_native_benchmark_process.py": "3ef5c9c5c60ba01e0d7155a4839c4158acbeb7c099970dd527ebb16cb22d46b2"
+    },
+    "root_features": {
+      "default": [],
+      "native-ffi-acceptance": [
+        "dep:careops-ed",
+        "dep:careops-birthing-cli",
+        "dep:kairo-data-arrow",
+        "dep:kairo-data-ffi",
+        "dep:serde_json",
+        "dep:tempfile"
+      ]
+    },
+    "root_test_targets": [
+      {
+        "name": "r143_native_domain_ffi",
+        "path": "tests/r143_native_domain_ffi.rs",
+        "required-features": [
+          "native-ffi-acceptance"
+        ]
+      }
+    ],
+    "root_optional_dependencies": {
+      "careops-ed": {
+        "path": "crates/careops-ed",
+        "default-features": false,
+        "features": [
+          "native-data"
+        ],
+        "optional": true
+      },
+      "careops-birthing-cli": {
+        "path": "crates/careops-birthing-cli",
+        "optional": true
+      },
+      "kairo-data-arrow": {
+        "package": "kairo-ecs-arrow",
+        "git": "https://github.com/edithatogo/kairos.git",
+        "rev": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+        "version": "=0.1.0",
+        "default-features": false,
+        "features": [
+          "polars-native"
+        ],
+        "optional": true
+      },
+      "kairo-data-ffi": {
+        "package": "kairo-ecs-arrow-ffi",
+        "git": "https://github.com/edithatogo/kairos.git",
+        "rev": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+        "version": "=0.1.0",
+        "default-features": false,
+        "features": [
+          "native-data"
+        ],
+        "optional": true
+      },
+      "serde_json": {
+        "workspace": true,
+        "optional": true
+      },
+      "tempfile": {
+        "version": "=3.27.0",
+        "optional": true
+      }
+    },
+    "historical_receipts": {
+      "conductor/evidence/polars-integration-20261103/source-compatibility.json": {
+        "commit": "079c061d2bcc5a5fda373a3f9236d09235a2bca8",
+        "sha256": "0cefeeb2fa4d81d3add8ad066c72674e24c9f99b64243176398b54291e2c362b"
+      },
+      "conductor/evidence/polars-integration-20261103/data-source-compatibility.json": {
+        "commit": "43511e665706cf31c434758675ce291d8c12547b",
+        "sha256": "42be7ff2b2963b227fb12c4bdbfb355023e39945fb6ac0b1f930570b5ab07077"
+      },
+      "conductor/evidence/polars-integration-20261103/native-reader-source-compatibility.json": {
+        "commit": "1b6ca2deaead85f1bc0da50c1d6aa00df54e2cba",
+        "sha256": "785ec51a58193771eb79f3034d89cbfcf891bd81e4ea2e1eee7d1c30d0833551"
+      },
+      "conductor/evidence/polars-integration-20261103/native-cli-source-compatibility.json": {
+        "commit": "b0ddd0c1ea02b99667a643199051b3e303a35b8e",
+        "sha256": "2f1734524d3e90678f421f2bb00142391c8a34b71de22922e0e7c500cefcc626"
+      },
+      "conductor/evidence/polars-integration-20261103/native-reader-format-source-compatibility.json": {
+        "commit": "7b9892b28bfabe7f26f7fa9d292f74ba0d6484bb",
+        "sha256": "0032af3aa2b8b4161858995c2911de6273bedefbf1d4f8a89deb2488e0ee1b06"
+      }
+    }
+  },
+  "source_bindings": [
+    {
+      "path": "Cargo.lock",
+      "sha256": "e0624ba6766f4afa1e4d48ffdfc78a7436fd89f7bf55275f6af0bf813b812c44"
+    },
+    {
+      "path": "crates/careops-core/Cargo.toml",
+      "sha256": "df6bc4fe96946f3b57393beab3b80ae4c431461bea9fc3ad96d408c17932cf21"
+    },
+    {
+      "path": "crates/careops-core/src/birth.rs",
+      "sha256": "34bb0d0c2b36ea169a0e8943bc76b17ae3f09ead35cbbfd96fa6cde68ec89d74"
+    },
+    {
+      "path": "crates/careops-core/src/capacity.rs",
+      "sha256": "bf54b7d1fdfb03ab70d46b8530521d72a2d3b37815b2f15502bf77f6042c6ead"
+    },
+    {
+      "path": "crates/careops-core/src/experiment/io.rs",
+      "sha256": "35ce7bc39768befd33b935b79663fe0810fe2b9146e98602646876a2c5e2e3bd"
+    },
+    {
+      "path": "crates/careops-core/src/identity.rs",
+      "sha256": "1421c39ea40d466b77bfd78c132714cf6496b527b4290a71855c8b89fe1013a1"
+    },
+    {
+      "path": "crates/careops-core/src/transfer.rs",
+      "sha256": "283729e27e6dd5c72d38d0bf8e0f51f9533a06e7d0bc7bbea649c1a734658bff"
+    },
+    {
+      "path": "crates/careops-core/tests/experiment_runner_contract.rs",
+      "sha256": "a6895359b33671483dd8347d3162dd37703e6cbfa7e48e946bf374302c6f002f"
+    },
+    {
+      "path": "crates/careops-core/tests/fixtures/r57_error_core.json",
+      "sha256": "ae4de1b8eda84a4a74b7a13d80d3632daf186c590865ebb5864cf4a007913f10"
+    },
+    {
+      "path": "crates/careops-core/tests/fixtures/r60-proptest-regressions.txt",
+      "sha256": "87f2dd4846ce1006e4341fe99c03272379223422e23321fa291f96b96f784706"
+    },
+    {
+      "path": "crates/careops-core/tests/logistics_consumer.rs",
+      "sha256": "4c7085022c70249e0b637464fed192d449a6a6c0a68af29ae1868324450fc8b2"
+    },
+    {
+      "path": "crates/careops-core/tests/profile_loader_tests.rs",
+      "sha256": "bf4ca6728fd2ab4604dddaa08e6e989dd1ea93431533af66314c388a2395ac42"
+    },
+    {
+      "path": "crates/careops-core/tests/r54_tempfile_contract.rs",
+      "sha256": "5ae7c2304c4d4930696fd40396166d8747a39aac56650ef0f56637e0c2df3094"
+    },
+    {
+      "path": "crates/careops-core/tests/r57_thiserror_contract.rs",
+      "sha256": "b471987f3de9a4264971bc2e3b2d9ccf833e5384281e5ab450960c22a712acd9"
+    },
+    {
+      "path": "crates/careops-core/tests/r60_proptest_contract.rs",
+      "sha256": "ecbc900080a67a5593742a0719ca8232ea6ad1a8481cc58c1eefa01d1b4ccbc3"
+    },
+    {
+      "path": "crates/careops-ed-cli/Cargo.toml",
+      "sha256": "bfeb24eff67b2c540ad400714de40cb4ce89a50f5416ea8040f710b767dc1dca"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/c63_native_contract.rs",
+      "sha256": "fe72f8dd131199b54767c9dda4f625fa8357a05df3c7ff971dff4700476473a7"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/consumer_contract.rs",
+      "sha256": "e29ab91d426d46ea630fb82a400d794152c85d97e03ef41c6d09b19bcc6320d8"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/execution_capabilities.rs",
+      "sha256": "0c01c6195948ead047ff722fb873954d259a31c386472b37e4a60f7d3ed30bb9"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/native_cli.rs",
+      "sha256": "bf92cec49b315ee8cbbfd491a7689d2c6519a293f0866187b39c74bfcb1fbb89"
+    },
+    {
+      "path": "crates/careops-ed/Cargo.toml",
+      "sha256": "9f4ab07bfaffa077464f2150690289690c1ef903fb0241daef30db18114f1c7f"
+    },
+    {
+      "path": "crates/careops-ed/src/arrivals.rs",
+      "sha256": "669ec3cf84429352ff562116e0adb919906faead5ba84984718ce352233b9daa"
+    },
+    {
+      "path": "crates/careops-ed/src/composite_fixture.rs",
+      "sha256": "04c44c1fb474e86c4964b68d30a19f548d9e65dda6aa497e3c6b3811c56fe19c"
+    },
+    {
+      "path": "crates/careops-ed/src/identity.rs",
+      "sha256": "a4abc983d44a94c51c465a144ad8d87013e4431f0baaaad0d8d2a2983b335c7c"
+    },
+    {
+      "path": "crates/careops-ed/src/operations.rs",
+      "sha256": "c317b380af5fdc4cc51814bac427c7585a2d9e32c5e001ea9f836cbd050b1da7"
+    },
+    {
+      "path": "crates/careops-ed/tests/e32_batch_and_checkpoint_tests.rs",
+      "sha256": "1b0f93034cbb53538edf9c8524391d3e1ac90aba4c3f61029f9f9da0a0abc1d0"
+    },
+    {
+      "path": "crates/careops-ed/tests/ed_ward_community_composition.rs",
+      "sha256": "6b0ca9509165fea134a4aa56ac48cfd63b80ba2e822db16472d82b08b0030ff1"
+    },
+    {
+      "path": "crates/careops-ed/tests/fixtures/r57_error_ed.json",
+      "sha256": "6536336b9339b5e23fd5056cef172f4d86f5e13a3bc6228e9e7031103afe47a2"
+    },
+    {
+      "path": "crates/careops-ed/tests/r111_capture_boundaries.rs",
+      "sha256": "73993355fbf0d21aebcb315fed83444766d627e91d369560982f2bf82b157469"
+    },
+    {
+      "path": "crates/careops-ed/tests/r57_thiserror_contract.rs",
+      "sha256": "94acc8c5d16b955f6855058a083d13bd587822677a1204150ede7bcfb1f2ad91"
+    },
+    {
+      "path": "fuzz/Cargo.lock",
+      "sha256": "5e71851838b9a874a0f3faced50104a7fc4cbca3f86d592e3d42a4daede1ab2a"
+    }
+  ],
+  "exact_dependency": {
+    "crate": "proptest",
+    "version": "1.12.0",
+    "default-features": false,
+    "features": [
+      "std"
+    ],
+    "edge": "careops-core dev-dependencies",
+    "declared_msrv": "1.88",
+    "parent_floor": "1.99",
+    "license": "MIT OR Apache-2.0"
+  },
+  "tests_first": {
+    "private_contract_sha256": "ecbc900080a67a5593742a0719ca8232ea6ad1a8481cc58c1eefa01d1b4ccbc3",
+    "before_adoption": "Independent contract comparison controls fail with structured minimal counterexamples;fixed-seed andshrink/persistence controls verified inR59before active dev adoption. Existing fixedconformance tests retained.",
+    "controls": [
+      "observed capacity corrupted:TestError::Fail minimal1",
+      "canonical outcomes swapped:TestError::Fail unit",
+      "valid prefix committed before failure:TestError::Fail unit",
+      "expected scalar failure shrinks10;stored replay executeswithzero newrandomcases"
+    ],
+    "actual_parent_command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "careops-core",
+      "--test",
+      "r60_proptest_contract"
+    ],
+    "cwd": "$WORKTREE",
+    "environment": {
+      "CARGO_TARGET_DIR": "$EXTERNAL_TARGET",
+      "TMPDIR": "$PACKET",
+      "CARGO_BUILD_JOBS": "1",
+      "CARGO_INCREMENTAL": "0",
+      "CARGO_PROFILE_DEV_DEBUG": "0",
+      "CARGO_PROFILE_TEST_DEBUG": "0"
+    },
+    "exit": 0,
+    "passed": 7,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 0,
+    "log": "r601-actual-tests.log",
+    "log_sha256": "d3882ac3c64f1a104abb4046f0c295ce6e06f99ec65c2ed6eecb0bbe5e909d3e"
+  },
+  "maintenance": {
+    "production_code_changed": false,
+    "production_deleted": 0,
+    "superseded_production_paths": [],
+    "old_framework1_8_removed_from_root_resolution": true,
+    "new_property_frameworks": 0,
+    "new_direct_test_edge": 1,
+    "retained_existing_tests": true,
+    "corpus": "Source-relative empty positive failure-persistence corpus;known semantic minimal boundaries live in explicit tests. Expected-failure shrink/persistence uses isolated temporary file."
+  },
+  "remaining": [
+    "Current source guard intentionally still refuses new model profile until independently reviewed strict successor",
+    "Actual old-artifact consume/candidate produce andforeign resume refusal",
+    "26frozen compatibilitycases and existingR61acceptancegates"
+  ]
+}
