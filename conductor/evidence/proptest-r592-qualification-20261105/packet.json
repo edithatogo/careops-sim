@@ -18,7 +18,7 @@
     "capacity": "Independent u128 totals/containment/residual capacity and plain tuple transitions;full snapshot preserved on rejection.",
     "identity": "Independent set/count model and contract-framed identity reference verified by Python hashlib vectors;expected canonical outcomes,duplicates,lifecycle statuses. Do not use private/public SUT ID helper as oracle.",
     "rollback": "An otherwise-valid batch executes a valid canonical prefix before later EventConflict;checkpoint and subsequent valid behavior unchanged.",
-    "checkpoint": "Restored prefix+suffix versus uninterrupted same-tick sequence and independent cardinality/status expectations.",
+    "checkpoint": "Restored prefix+suffix versus uninterrupted identical sequence of complete batches at strictly increasing sealed ticks; independent cardinality/status expectations. Never split a tick across checkpoint and suffix.",
     "negative_controls": "Lost capacity,swapped canonical outcomes and committed-prefix rollback counterfactuals rejected by the same property oracles;structured TestError failure/minimal values.",
     "framework": "Fixed-seed same-version replay;bounded shrinking;file persistence replay with zero new random cases;explicit saved semantic regressions."
   },
@@ -54,5 +54,6 @@
     "Independent seed/shrink/negative controls and generated-domain contracts",
     "Build/binary/test execution costs and production build-identity impacts",
     "Reviewer-agent adopt/defer/reject decision before R60"
-  ]
+  ],
+  "measurement_scope": "Exact standalone baseline=1.8.0 and candidate=1.12.0, both default-features=false/std; identical bound harness and compiler/profile, fresh target directories. Complete new suite wall/RSS measured after compilation. Freeze harness/reproducer hash before measurements."
 }
