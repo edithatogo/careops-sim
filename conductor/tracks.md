@@ -95,7 +95,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
 ---
 
 ---
-- [~] **Track: CareOps tempfile** — R53.1 inventory and R53.2 exact candidate/value/lock-identity qualification accepted; R53.3 phase review next, no remaining-target runtime adoption.
+- [~] **Track: CareOps tempfile** — R53.1 inventory and R53.2 exact candidate/value/lock-identity qualification accepted; R53 phase review accepted; R54 tests-first replacement next. No remaining-target runtime adoption yet.
   - Link: [tempfile_publication_20261022](tracks/tempfile_publication_20261022/index.md)
 
 ---

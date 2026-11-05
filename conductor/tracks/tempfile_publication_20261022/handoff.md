@@ -11,3 +11,7 @@ Previous handoff at source88bdfd6 contained unrelated Valhalla/travel-matrix tem
 ## R53.2 handoff — 5 November 2026
 
 The same coordinator/standard Git worktree retains ownership, now on `codex/tempfile-qualification-20261105`; exact absolute path/claim is in the private packet. [R53.2 evidence](../../evidence/tempfile-r532-qualification-20261105/qualification.json) qualifies a bounded candidate only. The core normal edge adds7 minimal nodes and updates its workspace lock row; CLI dev edge also changes its row. R54 must retain original model/recovery tags, issue a new exact immutable source+node-only-lock successor receipt and preserve historical Polars/SHA2 sources/receipts. Actual artifact read/resume and whole-application/platform gates remain. Current core runner ignores four write errors; no lifecycle policy was changed. Next operation is R53.3 review, not implementation/merge.
+
+## R53 phase handoff — 5 November 2026
+
+Reviewer `/root/tempfile_phase_review` approves exact20801f1, no findings. Same coordinator/worktree now owns branch `codex/tempfile-replacement-20261105`. Next R54.1 tests-first; R54 source/manifest/lock writes require a fresh bounded claim. R55 remains unaccepted.
