@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "task": "R56.2",
+  "source": "e16616f43d1705d4033cd0ef1f20791e5c487fb7",
+  "decision": "qualification_only_no_parent_adoption",
+  "candidate": {
+    "name": "thiserror",
+    "version": "2.0.21",
+    "features": [
+      "default",
+      "std"
+    ]
+  },
+  "inputs": [
+    {
+      "path": "crates/careops-core/src/capacity.rs",
+      "type": "CapacityError",
+      "sha256": "d3500bf715079f7e2f65d06b769d80f3a08851d8a64aaf6c697b78707a3e981d"
+    },
+    {
+      "path": "crates/careops-core/src/identity.rs",
+      "type": "IdentityError",
+      "sha256": "588fcea5fc750c07ef14b2e6e921fc8a1d28b3e3ae658d59a2c2a7991a3213cd"
+    },
+    {
+      "path": "crates/careops-core/src/birth.rs",
+      "type": "BirthMessageError",
+      "sha256": "f671627369da67166591d1278bd29da701dc7b2b532496748d5e2ea94fa1bdca"
+    },
+    {
+      "path": "crates/careops-core/src/transfer.rs",
+      "type": "TransferError",
+      "sha256": "3a6272de2ecbb7c2fea58720a703174660eac2f69e60e4f4c34e67107d92a601"
+    },
+    {
+      "path": "crates/careops-ed/src/arrivals.rs",
+      "type": "ArrivalError",
+      "sha256": "139ec1e37c5be167bf703d866bf2886ae9af0ed75040b953ad9bd77af456b0bd"
+    },
+    {
+      "path": "crates/careops-ed/src/identity.rs",
+      "type": "EdIdentityError",
+      "sha256": "8dd4dc89a6fcb169b8fba78279fedbaf6271c4c04911ac4cc819ae910de1d01b"
+    },
+    {
+      "path": "crates/careops-ed/src/operations.rs",
+      "type": "OperationalError",
+      "sha256": "e9f1e8438c2039fb8371e6dec3b48c190a2c216705d75e2f1fbff94f7fc13f5d"
+    },
+    {
+      "path": "crates/careops-ed/src/composite_fixture.rs",
+      "type": "BoundaryError",
+      "sha256": "48a6e7b5f3fea4a9ad5d989ec89eb024fa1a0f21a3d4981a8410bb872bdb3729"
+    }
+  ],
+  "scope": "Eight existing nontrivial error enums; isolated fixtures only. Four core and four ED declaration/Display/Error regions, no domain logic. Retain seven trivial wrappers, code-label tables, From implementations and currently non-Error enums. Scope exception to five-file default: two separately owned four-file batches sharing one explicit error-format/source contract.",
+  "independent_oracle": "Frozen original manual implementations plus reviewed literal message/variant/trait/source(None) fixtures; source-chain and message behavioral negative controls. No invented baseline defect for a maintainability refactor.",
+  "budgets": {
+    "cold_fresh_target_seconds_max": 30,
+    "warm_build_seconds_max": 1.0,
+    "binary_growth_bytes_max": 131072,
+    "peak_rss_growth_bytes_max": 4194304,
+    "candidate_median_ratio_max": 1.15,
+    "tiny_max_excess_ns": 500,
+    "samples_per_workload": 7,
+    "minimum_timed_ns": 200000000,
+    "disk_stop_free_bytes": 536870912
+  },
+  "commands": [
+    "Run source-hash-bound isolated baseline/candidate behavior/cost/negative controls under exact1.99.1 plus dependency-floor1.99.0; retain all outputs.",
+    "Qualify actual root/minimal/fuzz/target feature and lock projections in isolated copies; preserve only exact declared dependency-row deltas.",
+    "Run configured locked root/fuzz cargo-deny security/license/source/bans; no policy edits."
+  ],
+  "protected": [
+    "Public enum names/variants/fields/traits/From conversions",
+    "Exact Display strings and formatting behavior",
+    "source() None, including nested Identity errors; no #[from], #[source], or transparent changes",
+    "FFI/code labels/serde/output/RNG/clinical semantics",
+    "All historical guards/receipts and upstream pins"
+  ],
+  "required_after_value": "R57 exact actual-source contract tests and successor guard; R58 full coherent existing hosted/platform/integration/coverage117mutation/security/package/cost gates.",
+  "review": "Scope/budgets accepted by reviewer conditional on these frozen execution/workload/reproducer details; no timing begun.",
+  "workload": {
+    "unit": "nanoseconds per formatted error across the complete fixed variant/payload corpus",
+    "selection": "Every selected variant; nested BirthMessage/EdIdentity values cover every IdentityError; three fixed ASCII/Unicode/quoted-newline payloads for each string field.",
+    "warmup_cycles": 128,
+    "pilot_cycles": 64,
+    "target_sample_ns": 400000000,
+    "acceptance_rule": "candidate_median/baseline_median <=1.15 OR candidate_median-baseline_median <=500 ns per formatted error",
+    "paired_order": "Seven pairs; baseline,candidate for even pair index; candidate,baseline for odd.",
+    "anti_elision": "black_box input error reference and checksum; assert per-cycle byte-length checksum times cycles; no allocations of fixture corpus in timed interval",
+    "targets": "Separate fresh baseline/candidate targets, same populated registry cache",
+    "format": "Local aarch64 Mach-O; no ELF/full-app/cold-platform inference"
+  },
+  "reproducer_sha256": "78c6687c702ebb8d9fbf7a9293cdb9f5c1bf05f554adae7a7d72d1e4f616f5b5",
+  "toolchain": {
+    "rustc_vV": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1\n",
+    "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27)\n"
+  },
+  "execution": {
+    "argv": [
+      "${REPO}/.venv/bin/python",
+      "${REPO}/conductor/evidence/thiserror-r562-qualification-20261105/qualify.py",
+      "--repo",
+      "${REPO}",
+      "--out",
+      "${EVIDENCE}/thiserror-r562-probe-v2"
+    ],
+    "cwd": "${REPO}",
+    "private_exact_context": "thiserror-r562-context.json",
+    "outputs": "Private source files, logs, raw per-command receipts, baseline/candidate binaries and complete JSON report"
+  },
+  "pre_timing_setup_failure": {
+    "attempt": "probe-v1",
+    "exit": 101,
+    "stage": "offline metadata before build or timing",
+    "reason": "syn3.0.6 missing from registry cache; original locked fetch populates the same cache before fresh isolated targets.",
+    "retained_log_sha256": "9996f539ddc5f0b7c88862ff812270f3ec9378eeeb9cccc89fd319f41dc044a5",
+    "budgets_or_oracles_changed": false
+  }
+}

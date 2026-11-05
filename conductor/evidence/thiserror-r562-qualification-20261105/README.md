@@ -1,0 +1,13 @@
+# thiserror R56.2 candidate qualification
+
+[Structured result](qualification.json) qualifies exact2.0.21/default std for a bounded replacement decision. R56 candidate qualification and phase review are accepted. Parent runtime adoption and all R57/R58 acceptance remain.
+
+The proposed eight nontrivial enum conversions cover87 variants and125 cases; seven trivial wrappers, code-label tables, non-Error enums and manual From conversions remain. Original manual versus derive output bytes, trait/Debug/source(None) contracts and literal anchors match. Both compiled wrong-message and source-chain controls fail correctly with exit101. No production functional failure is invented for this maintenance refactor.
+
+Official current release/checksums and105+17 extracted source-file comparisons pass; both exact manifests declare Rust1.77. Rust1.99.0 dependency-floor compilation and125-case parity pass. Root uses Syn3.0.6; existing separate fuzz Syn3.0.9 is retained and independently passes the same125-case derives. Fresh configured current/projected root and fuzz advisories/bans/licences/sources all pass, no new exemptions. Root SECURITY.md is absent; no response SLA is claimed.
+
+Three actual manifest/lock resolver projections add only core/ED normal edges and their two workspace rows; root registry versions/checksums remain unchanged. Fuzz44→46 adds only thiserror and thiserror-impl, preserves every old registry object and its existing Syn3.0.9. Core host and wasm normal metadata exclude Polars; wasm compilation/runtime is unverified. Metadata-only source stubs are never compiled as parent tests.
+
+Local Mach-O probe grows112bytes; cold builds1.48→6.25s, warm0.026→0.159s. Noisy medians57.04→91.30ns/error (+34.25ns,1.60045 ratio) pass only the frozen500ns absolute OR rule, not the1.15 ratio rule. All raw samples and pre-set budgets remain; no speedup/full-app claim. The formatted candidate removes115production lines; qualification support adds339lines. Actual parent runtime changes remain zero and no overall code reduction is claimed.
+
+Twenty independent build-identity controls execute the real source-bound build.rs against a Python framed-hash oracle. Eight source changes, both manifests and real lock rows intentionally change identity; relocation/documentation preserve it. R57 must add the exact closed successor receipt/guard and actual artifact/read/resume controls, retaining original Tempfile/SHA2/Polars receipts and all pins. The first offline cache misses and naive fuzz dependency-equality refusals are retained; the distinct Syn closure is qualified rather than normalized away.

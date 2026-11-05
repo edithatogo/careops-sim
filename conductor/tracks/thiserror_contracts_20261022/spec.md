@@ -1,10 +1,10 @@
 # CareOps thiserror adoption
 
-Planned only. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
+R56 qualification and R57 bounded replacement accepted; R58 full acceptance remains. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
 
 ## Inputs and dependencies
 
-Accepted Kairos Track 95 Phase 2 receipt; local milestones ['polars_data_processing_20261022:R14']. Do not wait for Polars to finish when this track is its prerequisite.
+Accepted Kairos Track 95 Phase 2 receipt; local milestones ['polars_data_processing_20261022:R14']. Parent PolarsR14 prerequisite is accepted; upstream95 receipt is historical with explicit source-chain/MSRV/features limitations.
 
 ## Outputs and contract
 

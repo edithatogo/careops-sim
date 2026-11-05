@@ -37,32 +37,20 @@ struct EdAdmissionRecord {
     service_id: ServiceId,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(thiserror::Error, Clone, Copy, Debug, Eq, PartialEq)]
 pub enum EdIdentityError {
+    #[error("synthetic ED identity key is empty or too long")]
     InvalidSourceKey,
+    #[error("different ED source keys derived the same event ID")]
     SourceKeyCollision,
+    #[error("admission key was reused with different person or service")]
     AdmissionKeyConflict,
+    #[error("ED identity key derivation produced a zero or colliding ID")]
     IdCollision,
+    #[error("{0}")]
     Ledger(IdentityError),
 }
-impl std::fmt::Display for EdIdentityError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::InvalidSourceKey => f.write_str("synthetic ED identity key is empty or too long"),
-            Self::SourceKeyCollision => {
-                f.write_str("different ED source keys derived the same event ID")
-            }
-            Self::AdmissionKeyConflict => {
-                f.write_str("admission key was reused with different person or service")
-            }
-            Self::IdCollision => {
-                f.write_str("ED identity key derivation produced a zero or colliding ID")
-            }
-            Self::Ledger(error) => error.fmt(f),
-        }
-    }
-}
-impl std::error::Error for EdIdentityError {}
+
 impl From<IdentityError> for EdIdentityError {
     fn from(value: IdentityError) -> Self {
         Self::Ledger(value)

@@ -156,54 +156,43 @@ pub struct IdentityCounts {
     pub deaths: u64,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(thiserror::Error, Clone, Copy, Debug, Eq, PartialEq)]
 pub enum IdentityError {
+    #[error("identity identifiers must be non-zero")]
     InvalidIdentifier,
+    #[error("synthetic identity source key is empty or too long")]
     InvalidSourceKey,
+    #[error("identity tick batch must contain at least one command")]
     EmptyBatch,
+    #[error("identity tick has already been sealed")]
     TimeAlreadySealed,
+    #[error("new identity event arrived after its logical tick was sealed")]
     LateEvent,
+    #[error("identity event ID was reused with different content")]
     EventConflict,
+    #[error("deterministic identity derivation collided")]
     IdCollision,
+    #[error("identity command references an unknown person")]
     UnknownPerson,
+    #[error("identity command references an unknown episode")]
     UnknownEpisode,
+    #[error("deceased person cannot enter a new service episode")]
     PersonDeceased,
+    #[error("person death requires every service episode to be explicitly exited")]
     OpenEpisodesAtDeath,
+    #[error("service episode is already exited")]
     EpisodeAlreadyExited,
+    #[error("invalid relationship or birth-parent cycle")]
     InvalidRelationship,
+    #[error("relationship already exists")]
     RelationshipExists,
+    #[error("relationship does not exist")]
     UnknownRelationship,
+    #[error("birth event and infant ordinal already identify a person")]
     BirthOrdinalExists,
+    #[error("invalid or unsupported identity checkpoint")]
     InvalidCheckpoint,
 }
-
-impl std::fmt::Display for IdentityError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let message = match self {
-            Self::InvalidIdentifier => "identity identifiers must be non-zero",
-            Self::InvalidSourceKey => "synthetic identity source key is empty or too long",
-            Self::EmptyBatch => "identity tick batch must contain at least one command",
-            Self::TimeAlreadySealed => "identity tick has already been sealed",
-            Self::LateEvent => "new identity event arrived after its logical tick was sealed",
-            Self::EventConflict => "identity event ID was reused with different content",
-            Self::IdCollision => "deterministic identity derivation collided",
-            Self::UnknownPerson => "identity command references an unknown person",
-            Self::UnknownEpisode => "identity command references an unknown episode",
-            Self::PersonDeceased => "deceased person cannot enter a new service episode",
-            Self::OpenEpisodesAtDeath => {
-                "person death requires every service episode to be explicitly exited"
-            }
-            Self::EpisodeAlreadyExited => "service episode is already exited",
-            Self::InvalidRelationship => "invalid relationship or birth-parent cycle",
-            Self::RelationshipExists => "relationship already exists",
-            Self::UnknownRelationship => "relationship does not exist",
-            Self::BirthOrdinalExists => "birth event and infant ordinal already identify a person",
-            Self::InvalidCheckpoint => "invalid or unsupported identity checkpoint",
-        };
-        f.write_str(message)
-    }
-}
-impl std::error::Error for IdentityError {}
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]

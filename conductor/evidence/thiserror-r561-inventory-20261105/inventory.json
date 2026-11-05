@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "status": "accepted_inventory_only",
+  "snapshot_source": "e06b6cfa0f8b50333e52d4a6710353a0d4dfe8a2",
+  "task": "R56.1",
+  "runtime_adoption": false,
+  "parent_polars_prerequisite": {
+    "evidence": "conductor/evidence/polars-r14-qualification-20261104/post-archive-final-gates.json",
+    "sha256": "8f45589d781d531db6fd10a8d4249a626f4cefab533a37ad445036feb79aad57",
+    "accepted_merge": "d12559f77c3572bdf23e448dddab74b02c82777c",
+    "accepted_source": "ecbf0ffc9b11f152a36b513cb9ff19bc48fffe40",
+    "accepted_source_is_ancestor": true,
+    "scope": "Accepted R14 source ancestry, archive metadata and preserved exact final-merge receipt; do not conflate source ancestry with separately created integration-target merge ancestry.",
+    "original_merge_ancestry_probe": {
+      "exit": 128,
+      "disposition": "Exact final merge object not present locally; no accepted-merge ancestry claim. Accepted source ancestry verified separately."
+    }
+  },
+  "upstream": {
+    "repository": "edithatogo/kairos",
+    "track": "95",
+    "phase": "2",
+    "published_accepted_commit": "72790b5a7f3d1b09eedfd189ff07302d1141d6c1",
+    "tested_implementation": "9ef83106033f7fd6d6db15f8624564fd537b078a",
+    "pr": 314,
+    "pr_merged_into_main": true,
+    "source_parity": [
+      {
+        "path": "crates/kairo-ecs-cli/src/contracts.rs",
+        "sha256": "e8baac63bd43d0400ebcf674297ded52b76b5e2a97e6613658774a6ec0411759"
+      },
+      {
+        "path": "crates/kairo-ecs-cli/src/scenario.rs",
+        "sha256": "2ba4e4a0db14cdd0b3eb75601883b82b01ba690c7950dee636eb6f9e9b35a53d"
+      },
+      {
+        "path": "crates/kairo-ecs-debug/src/contracts.rs",
+        "sha256": "a63e6a57595f647db39f15db6310c6db52e13dc97020da2ff3580945b3e73785"
+      },
+      {
+        "path": "crates/kairo-ecs-debug/src/lib.rs",
+        "sha256": "e21fc2932322b5054e64b33470a4d1bcebab9425ad05e17a9278e06b2e11bbe8"
+      }
+    ],
+    "receipt_hashes": {
+      "plan.md": "67c09ecbb1337de6b21619ce722a7b0bd0cddeac81937f249d6eeae1a877b95f",
+      "metadata.json": "4552af68559265df9eb5f5ba8a333646117d47fcc4c5565dbad9e4b1372e499a",
+      "handoff.md": "8ce2b2d9b602f627b00038e3f586cb35c5254dab435e70a6b5f87d6fd9262702",
+      "review-report.md": "262ea07b81d442b08da909e5675e2731806d35343bafb27b486bd1dce12d8687",
+      "evidence/phase0-qualification.md": "bd2c56bd2c4c98b07cf1e7bb75786d0e1867b4e54aa649d6793e8be7abb9fecb"
+    },
+    "runtime_pin": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+    "pin_contains_adoption": false,
+    "limits": [
+      "Historical owner-reported71 tests/review/audit, not fresh current-platform proof.",
+      "ScenarioError Io source() changed None\u2192Some(io_error); historical preserved-source-chain claim is inaccurate. Parent must preserve its own source semantics independently.",
+      "Historical MSRV1.61/default derive prose is inaccurate: exact2.0.21 manifests declare1.77/default std. Fresh R56.2 qualification required.",
+      "No upstream code, public error API or pin is imported/promoted by this inventory."
+    ]
+  },
+  "direct_consumers": [
+    {
+      "path": "crates/careops-core/src/birth.rs",
+      "sha256": "f671627369da67166591d1278bd29da701dc7b2b532496748d5e2ea94fa1bdca",
+      "error_types": [
+        "BirthMessageError"
+      ],
+      "manual_display_types": [
+        "BirthMessageError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-core/src/capacity.rs",
+      "sha256": "d3500bf715079f7e2f65d06b769d80f3a08851d8a64aaf6c697b78707a3e981d",
+      "error_types": [
+        "CapacityError"
+      ],
+      "manual_display_types": [
+        "CapacityError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-core/src/experiment/error.rs",
+      "sha256": "f4efd11c143e5c2f81530f9ea446899ca228149ad96b3d32ace01e64e300334c",
+      "error_types": [
+        "ExperimentError"
+      ],
+      "manual_display_types": [
+        "ExperimentErrorKind",
+        "ExperimentError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-core/src/identity.rs",
+      "sha256": "588fcea5fc750c07ef14b2e6e921fc8a1d28b3e3ae658d59a2c2a7991a3213cd",
+      "error_types": [
+        "IdentityError"
+      ],
+      "manual_display_types": [
+        "IdentityError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-core/src/pathway/error.rs",
+      "sha256": "bd3897ef205bd1620a048a239ee84b19205178fc731b2cc021a3ce66a3ee3a74",
+      "error_types": [
+        "PathwayError"
+      ],
+      "manual_display_types": [
+        "PathwayErrorKind",
+        "PathwayError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-core/src/profile/error.rs",
+      "sha256": "d470888cbbedd70600707428ae41217e7dcb7562a2fc8d012158c256a22825ad",
+      "error_types": [
+        "ProfileError"
+      ],
+      "manual_display_types": [
+        "ProfileErrorKind",
+        "ProfileError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-core/src/transfer.rs",
+      "sha256": "3a6272de2ecbb7c2fea58720a703174660eac2f69e60e4f4c34e67107d92a601",
+      "error_types": [
+        "TransferError"
+      ],
+      "manual_display_types": [
+        "TransferError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-ed/src/api_runner.rs",
+      "sha256": "d65caaf94ea6102270584ca88f4dc2b994175d6988b587c93c5f016286d9fefc",
+      "error_types": [
+        "ValidationError"
+      ],
+      "manual_display_types": [
+        "ExitCodeDef",
+        "ValidationError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-ed/src/arrivals.rs",
+      "sha256": "139ec1e37c5be167bf703d866bf2886ae9af0ed75040b953ad9bd77af456b0bd",
+      "error_types": [
+        "ArrivalError"
+      ],
+      "manual_display_types": [
+        "ArrivalError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-ed/src/composite_fixture.rs",
+      "sha256": "48a6e7b5f3fea4a9ad5d989ec89eb024fa1a0f21a3d4981a8410bb872bdb3729",
+      "error_types": [
+        "BoundaryError"
+      ],
+      "manual_display_types": [
+        "BoundaryError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-ed/src/identity.rs",
+      "sha256": "8dd4dc89a6fcb169b8fba78279fedbaf6271c4c04911ac4cc819ae910de1d01b",
+      "error_types": [
+        "EdIdentityError"
+      ],
+      "manual_display_types": [
+        "EdIdentityError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-ed/src/lib.rs",
+      "sha256": "16be17474be52f923196d652f432dcecb3bebfc8866f14114f721a8d4e6a6352",
+      "error_types": [
+        "ScenarioError",
+        "SimulationError"
+      ],
+      "manual_display_types": [
+        "ScenarioError",
+        "SimulationError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-ed/src/operations.rs",
+      "sha256": "e9f1e8438c2039fb8371e6dec3b48c190a2c216705d75e2f1fbff94f7fc13f5d",
+      "error_types": [
+        "OperationalError"
+      ],
+      "manual_display_types": [
+        "OperationalError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    },
+    {
+      "path": "crates/careops-ed/src/pathway.rs",
+      "sha256": "145da08ca7d45e6f9ee8c8eea0a0d08a11efd58f01ceb62d6aa19cf80b689ad6",
+      "error_types": [
+        "PathwayError"
+      ],
+      "manual_display_types": [
+        "PathwayError"
+      ],
+      "source_contract_static": "Empty Error implementations: source() None; must be confirmed independently at R57.",
+      "disposition": "R56.2 value qualification pending; no replacement authority."
+    }
+  ],
+  "manual_error_type_count": 15,
+  "lock": {
+    "thiserror": "2.0.21",
+    "thiserror_impl": "2.0.21",
+    "root_sha256": "fce102632a15102516d17671a170e58a598f185c67ab976ba1bffb766c3891f8",
+    "direct_core_or_ed_dependency": false
+  },
+  "retained_boundaries": [
+    "ExitCodeDef and ErrorKind Display code-label tables",
+    "Enums not currently implementing Error; do not add traits merely for migration",
+    "Typed variants/fields/constructors, serde, FFI mappings and sensitive-field behavior",
+    "Simulation logic/RNG/profile/site/public output contracts",
+    "Original Polars/SHA2/Tempfile receipts and strict successor guards"
+  ],
+  "next": "R56.2 exact dependency, current security/compatibility/build identity and bounded value/cost qualification; no adoption yet.",
+  "private_readbacks": {
+    "thiserror-r561-upstream-commit.json": "976b34b5d3b882dbf8d7e83acdbcc64ec555189653287619a2985d15399195e4",
+    "thiserror-r561-upstream-pr314.json": "f389ec8ddcb3238abdef6ada777b2276e94672578fa49945776c93b979d6465f",
+    "thiserror-r56-version-refresh-disposition.json": "c1eee274bc07aea4ed8d56f67c9c884ae6376199572a0c69479b7a60c8d120ac"
+  },
+  "review": {
+    "reviewer": "/root/tempfile_phase_review",
+    "decision": "R56.1 GO, historical prerequisites and inventory only",
+    "date": "2026-11-05",
+    "findings_applied": "Bound upstream source-chain/MSRV/features claims; distinguish accepted source ancestry from separate merge receipt.",
+    "next_task": "R56.2",
+    "runtime_or_phase_acceptance": false
+  }
+}

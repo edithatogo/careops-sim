@@ -4,46 +4,28 @@
 //! allocation leases, resolve clinical eligibility, or expand local calendars.
 
 use std::collections::{BTreeMap, BTreeSet};
-use std::error::Error;
-use std::fmt::{Display, Formatter};
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(thiserror::Error, Clone, Debug, PartialEq, Eq)]
 pub enum CapacityError {
+    #[error("invalid capacity snapshot: {0}")]
     InvalidCapacity(&'static str),
+    #[error("invalid capacity transition: {0}")]
     InvalidTransition(&'static str),
+    #[error("identifier must not be blank")]
     InvalidIdentifier,
+    #[error("UTC interval must have start < end")]
     InvalidInterval,
+    #[error("calendar intervals must not overlap")]
     OverlappingIntervals,
+    #[error("conflicting capacity declarations for pool {0}")]
     ConflictingPool(String),
+    #[error("pool capacities must share a resource unit and snapshot time before aggregation")]
     IncompatiblePoolAggregate,
+    #[error("local time was explicitly rejected as nonexistent")]
     NonexistentLocalTime,
+    #[error("capacity or time arithmetic overflow")]
     ArithmeticOverflow,
 }
-
-impl Display for CapacityError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::InvalidCapacity(reason) => write!(f, "invalid capacity snapshot: {reason}"),
-            Self::InvalidTransition(reason) => write!(f, "invalid capacity transition: {reason}"),
-            Self::InvalidIdentifier => write!(f, "identifier must not be blank"),
-            Self::InvalidInterval => write!(f, "UTC interval must have start < end"),
-            Self::OverlappingIntervals => write!(f, "calendar intervals must not overlap"),
-            Self::ConflictingPool(pool) => {
-                write!(f, "conflicting capacity declarations for pool {pool}")
-            }
-            Self::IncompatiblePoolAggregate => write!(
-                f,
-                "pool capacities must share a resource unit and snapshot time before aggregation"
-            ),
-            Self::NonexistentLocalTime => {
-                write!(f, "local time was explicitly rejected as nonexistent")
-            }
-            Self::ArithmeticOverflow => write!(f, "capacity or time arithmetic overflow"),
-        }
-    }
-}
-
-impl Error for CapacityError {}
 
 /// Counts at one instant, in one resource unit. `None` is unknown; `Some(0)`
 /// is known zero. Open/staffed are gross ceilings before dispositions.

@@ -10,55 +10,41 @@
 //! unit of one resource; space is a separate lifecycle. Multi-person sedation,
 //! resuscitation, and assisted transfer need a dedicated non-overlapping team.
 
-use std::fmt::{Display, Formatter};
-
 use crate::Eligibility;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(thiserror::Error, Clone, Copy, Debug, PartialEq, Eq)]
 pub enum OperationalError {
+    #[error("staff role is not eligible for this task and zone")]
     Ineligible,
+    #[error("no on-duty staff are free to claim")]
     Unavailable,
+    #[error("shift shrink would drop in-flight work")]
     CapacityInUse,
+    #[error("handover requires an active assignment")]
     NotAssigned,
+    #[error("elapsed work exceeds the recorded duration")]
     Accounting,
+    #[error("treatment space is not available")]
     SpaceUnavailable,
+    #[error("treatment space is reserved for another patient")]
     ReservedForOther,
+    #[error("treatment space is still being cleaned")]
     CleaningInProgress,
+    #[error("blocked diagnostics retain the treatment space")]
     DiagnosticBlocked,
+    #[error("boarding retains the treatment space until transfer")]
     BoardingRetained,
+    #[error(
+        "atomic multi-resource acquisition is unsupported in v1; use phased sequential claims"
+    )]
     AtomicMultiResourceUnsupported,
+    #[error("multi-person procedure requires dedicated composite team approximation")]
     UnsupportedMultiRole,
+    #[error("target location is unreachable in directed movement graph")]
     RouteUnreachable,
+    #[error("movement edge is currently marked inaccessible")]
     EdgeInaccessible,
 }
-
-impl Display for OperationalError {
-    fn fmt(&self, formatter: &mut Formatter<'_>) -> std::fmt::Result {
-        let message = match self {
-            Self::Ineligible => "staff role is not eligible for this task and zone",
-            Self::Unavailable => "no on-duty staff are free to claim",
-            Self::CapacityInUse => "shift shrink would drop in-flight work",
-            Self::NotAssigned => "handover requires an active assignment",
-            Self::Accounting => "elapsed work exceeds the recorded duration",
-            Self::SpaceUnavailable => "treatment space is not available",
-            Self::ReservedForOther => "treatment space is reserved for another patient",
-            Self::CleaningInProgress => "treatment space is still being cleaned",
-            Self::DiagnosticBlocked => "blocked diagnostics retain the treatment space",
-            Self::BoardingRetained => "boarding retains the treatment space until transfer",
-            Self::AtomicMultiResourceUnsupported => {
-                "atomic multi-resource acquisition is unsupported in v1; use phased sequential claims"
-            }
-            Self::UnsupportedMultiRole => {
-                "multi-person procedure requires dedicated composite team approximation"
-            }
-            Self::RouteUnreachable => "target location is unreachable in directed movement graph",
-            Self::EdgeInaccessible => "movement edge is currently marked inaccessible",
-        };
-        formatter.write_str(message)
-    }
-}
-
-impl std::error::Error for OperationalError {}
 
 /// Scheduled staff for one role. `on_break` and `active` never exceed `scheduled`.
 #[derive(Clone, Debug, PartialEq, Eq)]

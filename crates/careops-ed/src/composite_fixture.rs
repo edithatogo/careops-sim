@@ -14,8 +14,6 @@ pub mod native_calibration;
 #[path = "fixture_table.rs"]
 pub mod native_fixture;
 
-use std::fmt::{Display, Formatter};
-
 use serde::{Deserialize, Serialize};
 
 use crate::disposition::operations::{
@@ -26,51 +24,27 @@ use crate::disposition::operations::{
 use crate::{Eligibility, PatientResult, PatientStatus, RunSummary};
 
 /// Boundary and specification errors for ST001–ST009.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(thiserror::Error, Clone, Copy, Debug, PartialEq, Eq)]
 pub enum BoundaryError {
+    #[error("ST001: bed offer destination is not compatible with patient clinical eligibility")]
     IncompatibleOfferDestination,
+    #[error(
+        "ST002: immediate expiry is not an accepted universal default; explicit policy required"
+    )]
     ImmediateExpiryDefaultProhibited,
+    #[error("ST003: boarder must retain ED bay occupancy until physical departure is complete")]
     PrematureBayReleaseBeforePhysicalTransfer,
+    #[error("ST004: dedicating a full-time 1:1 nurse per boarder by default is prohibited")]
     ExcessiveBoarderStaffReservation,
+    #[error("ST005: receiving bay saturation blocks ambulance offload and delays crew release")]
     AmbulanceOffloadBlockedBySaturation,
+    #[error("ST006: offload delayed because receiving staff are unavailable or unassigned")]
     ReceiverStaffUnavailable,
+    #[error("ST008: external offer stream cannot claim causal effects of inpatient ward discharge policy")]
     ProhibitedCausalWardPolicyClaim,
+    #[error("ST009: deterioration hazard cannot be an implicit default; explicit model required")]
     UnsupportedImplicitDeteriorationHazard,
 }
-
-impl Display for BoundaryError {
-    fn fmt(&self, formatter: &mut Formatter<'_>) -> std::fmt::Result {
-        let message = match self {
-            Self::IncompatibleOfferDestination => {
-                "ST001: bed offer destination is not compatible with patient clinical eligibility"
-            }
-            Self::ImmediateExpiryDefaultProhibited => {
-                "ST002: immediate expiry is not an accepted universal default; explicit policy required"
-            }
-            Self::PrematureBayReleaseBeforePhysicalTransfer => {
-                "ST003: boarder must retain ED bay occupancy until physical departure is complete"
-            }
-            Self::ExcessiveBoarderStaffReservation => {
-                "ST004: dedicating a full-time 1:1 nurse per boarder by default is prohibited"
-            }
-            Self::AmbulanceOffloadBlockedBySaturation => {
-                "ST005: receiving bay saturation blocks ambulance offload and delays crew release"
-            }
-            Self::ReceiverStaffUnavailable => {
-                "ST006: offload delayed because receiving staff are unavailable or unassigned"
-            }
-            Self::ProhibitedCausalWardPolicyClaim => {
-                "ST008: external offer stream cannot claim causal effects of inpatient ward discharge policy"
-            }
-            Self::UnsupportedImplicitDeteriorationHazard => {
-                "ST009: deterioration hazard cannot be an implicit default; explicit model required"
-            }
-        };
-        formatter.write_str(message)
-    }
-}
-
-impl std::error::Error for BoundaryError {}
 
 /// Bed offer status for external admission boundary.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
