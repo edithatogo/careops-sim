@@ -1,12 +1,14 @@
 # Plan: CareOps thiserror
 
-All tasks pending.
+R56 candidate qualification accepted; R57 actual-source tests and bounded replacement next. No runtime adoption or R58 acceptance.
 
 ## R56 — Evidence and scope
 
-- [ ] R56.1 Verify upstream receipt and local prerequisites; inventory direct consumers and retained/deleted paths.
-- [ ] R56.2 Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision.
-- [ ] R56.3 Conductor — review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.
+- [x] R56.1 Verify upstream receipt and local prerequisites; inventory direct consumers and retained/deleted paths.
+- [x] R56.2 Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision.
+- [x] R56.3 Conductor — review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.
+
+[R56 qualification and review](../../evidence/thiserror-r562-qualification-20261105/qualification.json) binds exact2.0.21/default std, published historical prerequisite limits,125-case independent parity/negative controls, current security/graph/identity and frozen costs.
 
 ## R57 — Bounded replacement
 

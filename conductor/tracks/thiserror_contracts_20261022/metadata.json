@@ -8,10 +8,12 @@
   "updated_at": "2026-11-05",
   "spec_approved": true,
   "implementation_started": true,
-  "accepted_phases": [],
-  "active_phase": "R56",
+  "accepted_phases": [
+    "R56"
+  ],
+  "active_phase": "R57",
   "priority_class": "foundation",
-  "adoption_decision": "pending_value_gate",
+  "adoption_decision": "candidate_for_bounded_R57",
   "phase_dependencies": {
     "R56": [],
     "R57": [
@@ -32,10 +34,46 @@
       "repository": "kairos",
       "track": "95",
       "phase": "2",
+      "status": "accepted",
+      "gate_task": "R56.1",
+      "required_receipt": "Accepted bounded prerequisite commit and independent test evidence; no Polars completion dependency for sha2/tempfile/proptest",
+      "accepted_commit": "72790b5a7f3d1b09eedfd189ff07302d1141d6c1",
+      "tested_implementation": "9ef83106033f7fd6d6db15f8624564fd537b078a",
+      "receipt": "conductor/evidence/thiserror-r561-inventory-20261105/inventory.json",
+      "acceptance_scope": "Historical owner acceptance and source parity only; upstream source-chain/MSRV/features inaccuracies bounded; current parent runtime074 does not contain adoption and no pin promotion."
+    }
+  ],
+  "approval_basis": "User requested separate dependencies and revised sequencing; parent has direct implementation/test consumers.",
+  "accepted_local_tasks": {
+    "R56.1": {
+      "snapshot_source": "e06b6cf",
+      "evidence_commit": "e16616f",
+      "evidence": "conductor/evidence/thiserror-r561-inventory-20261105/inventory.json",
+      "reviewer": "/root/tempfile_phase_review",
+      "scope": "Historical published prerequisite and current inventory only."
+    },
+    "R56.2": {
+      "snapshot_source": "e16616f43d1705d4033cd0ef1f20791e5c487fb7",
+      "evidence": "conductor/evidence/thiserror-r562-qualification-20261105/qualification.json",
+      "reviewer": "/root/tempfile_phase_review",
+      "scope": "Candidate/value decision only; no parent adoption."
+    },
+    "R56.3": {
+      "snapshot_source": "e16616f43d1705d4033cd0ef1f20791e5c487fb7",
+      "evidence": "conductor/evidence/thiserror-r562-qualification-20261105/qualification.json",
+      "reviewer": "/root/tempfile_phase_review",
+      "scope": "Candidate/value decision only; no parent adoption."
+    }
+  },
+  "external_dependency_history": [
+    {
+      "repository": "kairos",
+      "track": "95",
+      "phase": "2",
       "status": "unresolved",
       "gate_task": "R56.1",
       "required_receipt": "Accepted bounded prerequisite commit and independent test evidence; no Polars completion dependency for sha2/tempfile/proptest"
     }
   ],
-  "approval_basis": "User requested separate dependencies and revised sequencing; parent has direct implementation/test consumers."
+  "next_phase_decision": "R56 accepted after exact current qualification and independent review; R57.1 actual-source tests first, then only the eight qualified enums and exact core/ED/fuzz graph projection. All R58 full gates remain."
 }

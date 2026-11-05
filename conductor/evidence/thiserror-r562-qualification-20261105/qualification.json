@@ -1,0 +1,843 @@
+{
+  "schema_version": 1,
+  "source": "e16616f43d1705d4033cd0ef1f20791e5c487fb7",
+  "recorded_at": "2026-11-05",
+  "task": "R56.2",
+  "status": "accepted_candidate_only",
+  "decision": "qualified_for_bounded_R57_after_R56_phase_review",
+  "runtime_adoption": false,
+  "current_release": {
+    "kind": "crate",
+    "name": "thiserror",
+    "version": "2.0.21",
+    "rust_version": "1.77",
+    "released_at": "2026-09-23T20:24:07.771104Z",
+    "source": "https://crates.io/api/v1/crates/thiserror",
+    "status": "candidate_unvalidated"
+  },
+  "registry_source_integrity": {
+    "checked_at_utc": "2026-11-05T03:43:04.665050+00:00",
+    "source": "e16616f",
+    "exact_packages": [
+      {
+        "name": "thiserror",
+        "version": "2.0.21",
+        "checksum": "09e52cb86a36cede5cb101bf8908837b3e4c6e5e59fe7fd85c23fb56200d189e",
+        "not_yanked": true,
+        "released_at": "2026-09-23T20:24:07.771104Z",
+        "rust_version": "1.77",
+        "license": "MIT OR Apache-2.0",
+        "features": {
+          "default": [
+            "std"
+          ],
+          "std": []
+        },
+        "repository": "https://github.com/dtolnay/thiserror",
+        "all_registry_archive_files_equal_cached_source": 105,
+        "registry_source": "https://crates.io/api/v1/crates/thiserror/2.0.21"
+      },
+      {
+        "name": "thiserror-impl",
+        "version": "2.0.21",
+        "checksum": "fe5197923287db20a58125f0bc85c062f7f2c892de97b18c356f9efb14b28524",
+        "not_yanked": true,
+        "released_at": "2026-09-23T20:24:05.038819Z",
+        "rust_version": "1.77",
+        "license": "MIT OR Apache-2.0",
+        "features": {},
+        "repository": "https://github.com/dtolnay/thiserror",
+        "all_registry_archive_files_equal_cached_source": 17,
+        "registry_source": "https://crates.io/api/v1/crates/thiserror-impl/2.0.21"
+      }
+    ],
+    "first_attempt": "Local registry archive cache empty; fresh official archives retained privately and checked instead. No source or registry cache was replaced.",
+    "scope": "Official current metadata/checksums and every cached extracted file verified; not build/platform/security acceptance."
+  },
+  "maintenance": {
+    "repository": "dtolnay/thiserror",
+    "archived": false,
+    "latest_stable_release": "2026-09-23",
+    "tests": "Exact release archive includes tested derive cases; selected actual125-case corpus executed locally.",
+    "security_policy": "Root SECURITY.md returned404; no security-response SLA inferred. Configured fresh advisory/source/license/bans audits pass without exemptions."
+  },
+  "scope": "Eight existing nontrivial error enums; isolated fixtures only. Four core and four ED declaration/Display/Error regions, no domain logic. Retain seven trivial wrappers, code-label tables, From implementations and currently non-Error enums. Scope exception to five-file default: two separately owned four-file batches sharing one explicit error-format/source contract.",
+  "oracle": {
+    "all_variants": 87,
+    "cases": 125,
+    "exact_manual_vs_derive_output_sha256": "ef6a354db36f7bbd1cdc2b48c9b3e458beb2fe32d6674b810b21dfa3ffc90c6a",
+    "literal_anchors_and_from_conversions": true,
+    "source_none_on_all_cases": true,
+    "bad_message_exit": 101,
+    "bad_source_exit": 101,
+    "first_failure": "Offline metadata missed syn3.0.6 before building; cache fetched with original lock; fresh-targetv2 run retained. No baseline functional defect manufactured."
+  },
+  "cost": {
+    "build": {
+      "baseline": {
+        "cold_seconds": 1.480195875003119,
+        "warm_seconds": 0.025819750007940456,
+        "binary_bytes": 509504,
+        "binary_sha256": "56e18dfd57b49b6a7657cd01ceb4e4231be992b83b2da76b24e9c84f16a7ee7d",
+        "binary_format": "Mach-O"
+      },
+      "candidate": {
+        "cold_seconds": 6.252887084003305,
+        "warm_seconds": 0.15931466700567398,
+        "binary_bytes": 509616,
+        "binary_sha256": "2be43326b94a7f13dc00aecfb56791211c6bb316e16fc61384ee20779288f037",
+        "binary_format": "Mach-O"
+      }
+    },
+    "performance": {
+      "unit": "ns per formatted error over complete variant corpus",
+      "loops": 67778,
+      "values": {
+        "baseline": [
+          128.71296491486913,
+          53.936247750007375,
+          57.04332273008941,
+          46.36896432470713,
+          44.85549883443005,
+          67.43932638909381,
+          161.45141987075453
+        ],
+        "candidate": [
+          91.29524329428428,
+          105.86126766797486,
+          48.49434424149429,
+          48.850659506034404,
+          209.80025967127978,
+          154.86573814512084,
+          64.20495830505473
+        ]
+      },
+      "rss": {
+        "baseline": [
+          2097152,
+          2080768,
+          2097152,
+          2080768,
+          2080768,
+          2097152,
+          2080768
+        ],
+        "candidate": [
+          2097152,
+          2097152,
+          2097152,
+          2097152,
+          2097152,
+          2080768,
+          2080768
+        ]
+      },
+      "ratio": 1.60045451290178,
+      "excess_ns": 34.25192056419487
+    },
+    "frozen_gates": {
+      "baseline_cold": true,
+      "baseline_warm": true,
+      "candidate_cold": true,
+      "candidate_warm": true,
+      "all_variant_message_trait_source_parity": true,
+      "bad-message_refuses": true,
+      "bad-source_refuses": true,
+      "latency": true,
+      "rss": true,
+      "binary_growth": true
+    },
+    "all_frozen_gates_pass": true,
+    "latency_decision": "Ratio1.60045 exceeds1.15, but +34.2519ns/error passes frozen500ns absolute OR rule; noisy samples retained, no speedup claim.",
+    "scope": "Local Mach-O isolated error-format probe; not full application or platform proof."
+  },
+  "compatibility": {
+    "parent_floor": {
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: aarch64-apple-darwin\nrelease: 1.99.0\nLLVM version: 23.1.1\n",
+      "exit": 0,
+      "seconds": 7.460507708994555,
+      "source_sha256": "03c1cdfea093c41ca7d31f7441812c587b8c93e308213c6f34fcdff99207f833",
+      "cases_exit": 0,
+      "cases_sha256": "ef6a354db36f7bbd1cdc2b48c9b3e458beb2fe32d6674b810b21dfa3ffc90c6a",
+      "exact125case_parity": true,
+      "binary_sha256": "c07ef26dec4bc4ab9c6757c07cdef113936b6cf4181da0501ce9bb7282e748bb",
+      "raw_case_readback": "thiserror-r562-parent-floor-cases.stdout",
+      "controlled_environment": {
+        "RUSTUP_TOOLCHAIN": "1.99.0",
+        "CARGO_BUILD_JOBS": "1",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_TARGET_DIR": "private parent-floor target",
+        "RUSTC": "exact rustup-selected1.99.0 compiler recorded above"
+      }
+    },
+    "fuzz_macro_closure": {
+      "compiler": "Rust1.99.1",
+      "exit": 0,
+      "cases": 125,
+      "case_output_sha256": "ef6a354db36f7bbd1cdc2b48c9b3e458beb2fe32d6674b810b21dfa3ffc90c6a",
+      "binary_sha256": "2112bee5e4ee1639ea0f1ec959de22c910bfad60762a4a4a1effa4db4ad9c22d",
+      "syn": {
+        "name": "syn",
+        "version": "3.0.9",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "d78c8dee4c7bf0e14673097256fed6142ce9d3b85a408189d07482442145823b",
+        "dependencies": [
+          "proc-macro2",
+          "quote",
+          "unicode-ident"
+        ]
+      },
+      "exact_root_baseline_parity": true,
+      "scope": "Same125-case derive corpus with existing fuzz Syn3.0.9; no full fuzz-target compile claim."
+    },
+    "features": {
+      "source": "e16616f",
+      "new_core_minimal_host_nodes": [
+        [
+          "thiserror",
+          "2.0.21"
+        ],
+        [
+          "thiserror-impl",
+          "2.0.21"
+        ]
+      ],
+      "core_host_no_polars": true,
+      "core_wasm_normal_metadata_no_polars": true,
+      "wasm_scope": "Metadata only, no wasm compilation/runtime qualification.",
+      "thiserror_features": [
+        "default",
+        "std"
+      ],
+      "macro_scope": "thiserror-impl is compiler proc-macro; distinguish its compiler closure from runtime formatting.",
+      "identity_protected_inputs_unchanged": true,
+      "root_and_fuzz_old_locks_unchanged": true
+    }
+  },
+  "graph": {
+    "workspace_variants": [
+      {
+        "name": "core-normal",
+        "edges": [
+          [
+            "careops-core",
+            "dependencies"
+          ]
+        ],
+        "exit": 0,
+        "before_lock_sha256": "fce102632a15102516d17671a170e58a598f185c67ab976ba1bffb766c3891f8",
+        "after_lock_sha256": "0f4e39739ea6e7bca984460b4140ea62115f81b5a1cc59cef4818c5c880b2588",
+        "changed_workspace_package_rows": [
+          "careops-core"
+        ],
+        "registry_packages_versions_sources_checksums_unchanged": true,
+        "all_other_package_rows_identical": true,
+        "metadata_stdout_sha256": "fb03476229c2b3ec085c1cb63dca448dbd11855e5a8449128555609aff2d0369"
+      },
+      {
+        "name": "ed-normal",
+        "edges": [
+          [
+            "careops-ed",
+            "dependencies"
+          ]
+        ],
+        "exit": 0,
+        "before_lock_sha256": "fce102632a15102516d17671a170e58a598f185c67ab976ba1bffb766c3891f8",
+        "after_lock_sha256": "8d6dc325f34a0bf39fd33b179d8b7098ffa3e202426af81caa2fffc02cfe7ac6",
+        "changed_workspace_package_rows": [
+          "careops-ed"
+        ],
+        "registry_packages_versions_sources_checksums_unchanged": true,
+        "all_other_package_rows_identical": true,
+        "metadata_stdout_sha256": "b2bc4b95f87e52515c6b904f5ebd0cb294037bf95765aa5073c401184cd1043d"
+      },
+      {
+        "name": "combined",
+        "edges": [
+          [
+            "careops-core",
+            "dependencies"
+          ],
+          [
+            "careops-ed",
+            "dependencies"
+          ]
+        ],
+        "exit": 0,
+        "before_lock_sha256": "fce102632a15102516d17671a170e58a598f185c67ab976ba1bffb766c3891f8",
+        "after_lock_sha256": "420ae3cec84a0b3e65a347b1c50edeeca6cc9c70a154f791e12a67325a086d2b",
+        "changed_workspace_package_rows": [
+          "careops-core",
+          "careops-ed"
+        ],
+        "registry_packages_versions_sources_checksums_unchanged": true,
+        "all_other_package_rows_identical": true,
+        "metadata_stdout_sha256": "2d601d44ee8ca39ad0fe33cca9a17320fb6286eb8ac7427600c96f12ec1a2c75"
+      }
+    ],
+    "root_registry_packages_versions_sources_checksums_unchanged": true,
+    "only_root_lock_rows": [
+      "careops-core",
+      "careops-ed"
+    ],
+    "source_manifests": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "2000c30f811e10d72221596b10acbc3ab490c664f4d54f3027b3ac9e3f6f736e"
+      },
+      {
+        "path": "crates/careops-birthing/Cargo.toml",
+        "sha256": "5c63b2ee082cf928118ae777901c040351e9808722d1d42beb88e431889a25b7"
+      },
+      {
+        "path": "crates/careops-birthing-cli/Cargo.toml",
+        "sha256": "df70889e7bc7d160507a02398e0f53f724bd6d040f825b96bb6b3f1005f0b28a"
+      },
+      {
+        "path": "crates/careops-core/Cargo.toml",
+        "sha256": "2fbb80147c87e43b7c202971c2ea8136eeb089b8f8f8f6e0b89d9c8cfce896f4"
+      },
+      {
+        "path": "crates/careops-ed/Cargo.toml",
+        "sha256": "236995aaf076e8db608c8bf1665a036616635cb26bbcf037daa2ee0726341bcc"
+      },
+      {
+        "path": "crates/careops-ed-cli/Cargo.toml",
+        "sha256": "bfeb24eff67b2c540ad400714de40cb4ce89a50f5416ea8040f710b767dc1dca"
+      },
+      {
+        "path": "libs/kairos/Cargo.toml",
+        "sha256": "de78b28e83f1af8181811fd3480ddad1fce7d35a19b1d1baa6d2b7926ad6b197"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-abm/Cargo.toml",
+        "sha256": "34bc38194d58b32e9661f968cccf76788b0636eac6011bbc0b64f8d6bda60943"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-arrow/Cargo.toml",
+        "sha256": "b7ba8cd6f83754919cda8128ac726d9e03121e887b9cb08dd1610ba0dd819caf"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-bench/Cargo.toml",
+        "sha256": "df17ebf5393a97141f46ebfc387d754b86d94d3802d3617164d2c3f51a71d91a"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-cli/Cargo.toml",
+        "sha256": "c81aaa2ecad7b20ecf8cf9f130b4ce2843cbaa797ab0e748a33fda33bc9fbe40"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-core/Cargo.toml",
+        "sha256": "ba89ab5f0cfed3c9ef4f1c8eca29b457aed21f1855bb567e45b57e48ef646789"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-cs-bridge/Cargo.toml",
+        "sha256": "6de61e67fa6b14ba4cc4e8f068a81a2cf8880ff30cb6e711d0fb931bf8972cac"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-cuda/Cargo.toml",
+        "sha256": "99cd28e45f235d5ca44887bcf42760aa092aff2148d94088ea6f26a5c2bf6ae9"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-debug/Cargo.toml",
+        "sha256": "33d90b26d29ac58457ca31ee59be5ab089b9d43e4d0527072d97697c852a1910"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-des/Cargo.toml",
+        "sha256": "4c715dbb7c4f0d9b714a9cbcca8aafee7dc99f4dc351b4e91bd003fabbc43690"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-diplomat/Cargo.toml",
+        "sha256": "d0d41bb0f58ae49e6aa613a15a9e97195609d94dd41061c325c2105205948beb"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-ffi/Cargo.toml",
+        "sha256": "43c4d568ab2e563a901958163c865d0dbd5bb459b0edd3f631486862b33895ff"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-fmi/Cargo.toml",
+        "sha256": "b22708cb861c4eb3384271bae3a1d38c177c38e380e639f51b125e572b4f978d"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-game-ontology/Cargo.toml",
+        "sha256": "106aaaee9bc5970405244c9c71add5737b55793650a7d0a39e7996e351ea6162"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-game-theory/Cargo.toml",
+        "sha256": "051ed145b5de75d64c626b9723032eb6d056c7e8410b5b8a76f2602ccf6a71e7"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-gpu/Cargo.toml",
+        "sha256": "91530a0f276b0ac7115d57f9d37f663020369378344f3a9e733fb65bb1121f70"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-grpc/Cargo.toml",
+        "sha256": "520fdc2bb1d6b1f93c4b98c6f1ebb582cba8cca01cbc7e5b73eb9ea6d956aaf8"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-ml/Cargo.toml",
+        "sha256": "c7068bb2f6d3e0ad61a110e182bad3087a77f5eba4d3c894279bd408012367c4"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-mpi/Cargo.toml",
+        "sha256": "571a6ecc41172cd655007f5805bdc3cb307269a1fb9d59488297da069c338227"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-pdes/Cargo.toml",
+        "sha256": "c1e5a100da17c3699087cb8a50daa0683125ea5332647fa45839cbc9bed80276"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-rng/Cargo.toml",
+        "sha256": "53898ac26fcb42b2afd35537c46a75a8b06c5f85ddf4541b6fde1005ded36c60"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-state/Cargo.toml",
+        "sha256": "64afc505aff63198b76894cb0c3f8e79c91130bf9d86816473bb491f2e61699e"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-streaming/Cargo.toml",
+        "sha256": "1bdf4011bdc06c9506c4b415a0dfbfe87b439a6f4e927f4a269b5bfa00f2cdc1"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-types/Cargo.toml",
+        "sha256": "772abd5b321f6c5806a8dfcb6c53c6d633ed6fc4201070f5f8149a72315e0288"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-uniffi/Cargo.toml",
+        "sha256": "276470efab56533e797b02a2d8404cbbaa812b25a4565da339a1233d6d558e36"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-viz/Cargo.toml",
+        "sha256": "760ac4fd9d8911f55df40acd77f8242bc8815e51e069c91aff2dc94b436f233c"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-wasm/Cargo.toml",
+        "sha256": "2717ec77fbaf341ab071d9c5088e1f1bb00f83fa5a202b2dc416b61634aa579a"
+      },
+      {
+        "path": "libs/kairos/crates/kairo-ecs-webgpu/Cargo.toml",
+        "sha256": "24aa90ff8b4dfc21eea2c0530ef94f8c0d18805e16208a623b12a92d8aa4134c"
+      },
+      {
+        "path": "libs/kairos/examples/fmi-co-simulation/basic-import/Cargo.toml",
+        "sha256": "fea76c0adc3b78c77c57ebbd1b671062ecf2476c097b78ff29b021b0df75a12d"
+      },
+      {
+        "path": "libs/kairos/examples/ml-surrogate/de-surrogate/Cargo.toml",
+        "sha256": "43666be5d29794535c4ffa1fdbf6c203f8e12400547dd71d152965ee6e8ef626"
+      },
+      {
+        "path": "libs/kairos/examples/viz/headless-snapshot/Cargo.toml",
+        "sha256": "adee63d0925088a473ece9df62bc548193c32082a8969f4e64c8d9b494975e62"
+      },
+      {
+        "path": "libs/kairos/fuzz/Cargo.toml",
+        "sha256": "a6b9846d4a51a6d15c53032e6c09a5633a91cc345b26fefe2451dd10b6609e39"
+      },
+      {
+        "path": "libs/kairos/templates/Cargo.toml",
+        "sha256": "12ade025561492d23e057a3c2904048eda7a7a29191fc81e597a6600270a4a51"
+      }
+    ],
+    "fuzz": {
+      "before_packages": 44,
+      "after_packages": 46,
+      "changed_workspace_rows": [
+        "careops-core",
+        "careops-ed"
+      ],
+      "added_packages": [
+        {
+          "name": "thiserror",
+          "version": "2.0.21",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "checksum": "09e52cb86a36cede5cb101bf8908837b3e4c6e5e59fe7fd85c23fb56200d189e",
+          "dependencies": [
+            "thiserror-impl"
+          ]
+        },
+        {
+          "name": "thiserror-impl",
+          "version": "2.0.21",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "checksum": "fe5197923287db20a58125f0bc85c062f7f2c892de97b18c356f9efb14b28524",
+          "dependencies": [
+            "proc-macro2",
+            "quote",
+            "syn"
+          ]
+        }
+      ],
+      "all_other_package_objects_unchanged": true,
+      "added_thiserror_package_versions_sources_checksums_match_root": true,
+      "fuzz_syn_preserved": "3.0.9",
+      "root_thiserror_impl_syn": "3.0.6",
+      "dependency_limit": "Different existing syn closures; no normalization/parity claim. Compile125-case derives with fuzz3.0.9 before acceptance.",
+      "projected_lock_sha256": "5e71851838b9a874a0f3faced50104a7fc4cbca3f86d592e3d42a4daede1ab2a",
+      "scope": "Metadata-only separate fuzz-lock projection; existing versions retained."
+    },
+    "scope": "Exact manifests and real resolver locks; uncompiled metadata-only target stubs, not parent build acceptance."
+  },
+  "security": {
+    "root": {
+      "exit": 0,
+      "stdout_sha256": "f1a0fca39d4280363937aabd77783990ea6480bd9ca257816de3b68fc8efa845",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fuzz": {
+      "exit": 0,
+      "stdout_sha256": "f1a0fca39d4280363937aabd77783990ea6480bd9ca257816de3b68fc8efa845",
+      "stderr_sha256": "b11a2a0eaff074c9d7dff64747f6e5098c83a301ade0c1f6d828d9ea13b07223"
+    },
+    "candidate": {
+      "exit": 0,
+      "stdout_sha256": "f1a0fca39d4280363937aabd77783990ea6480bd9ca257816de3b68fc8efa845",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "candidate-fuzz": {
+      "exit": 0,
+      "stdout_sha256": "f1a0fca39d4280363937aabd77783990ea6480bd9ca257816de3b68fc8efa845",
+      "stderr_sha256": "b11a2a0eaff074c9d7dff64747f6e5098c83a301ade0c1f6d828d9ea13b07223"
+    }
+  },
+  "build_identity": {
+    "actual_build_script_sha256": "ba6d8ebc46810d2f47668126e4de1dafbfdf9149d55ff3777ecfd64e185b2b4b",
+    "actual_executable_sha256": "4bb6b56e0ff9c5ccdac775d17e6408d8b5a7792222a007c31c57117b538c543a",
+    "cases": [
+      {
+        "label": "baseline",
+        "actual": "51ba5ee39d878bf4013dd0b6eccc9688e1a9f3ab4a062306d8115b9dbc0df41b",
+        "independent": "51ba5ee39d878bf4013dd0b6eccc9688e1a9f3ab4a062306d8115b9dbc0df41b",
+        "exit": 0,
+        "stdout_sha256": "e04ff1d54ec1780eb0731ae2ab4f5476974126dc9cdf73c168f787b7b3a658a3"
+      },
+      {
+        "label": "relocation",
+        "actual": "51ba5ee39d878bf4013dd0b6eccc9688e1a9f3ab4a062306d8115b9dbc0df41b",
+        "independent": "51ba5ee39d878bf4013dd0b6eccc9688e1a9f3ab4a062306d8115b9dbc0df41b",
+        "exit": 0,
+        "stdout_sha256": "627ddb79d2bf9c45d7e574fb05fd2e2e26cb4be2f4d952d3e65b338a7ed350ed"
+      },
+      {
+        "label": "documentation-only",
+        "actual": "51ba5ee39d878bf4013dd0b6eccc9688e1a9f3ab4a062306d8115b9dbc0df41b",
+        "independent": "51ba5ee39d878bf4013dd0b6eccc9688e1a9f3ab4a062306d8115b9dbc0df41b",
+        "exit": 0,
+        "stdout_sha256": "e04ff1d54ec1780eb0731ae2ab4f5476974126dc9cdf73c168f787b7b3a658a3"
+      },
+      {
+        "label": "CapacityError-declaration-source",
+        "actual": "44088e1805fc8f524dbd91faf1de11e572ce57856130dc4d354985d5ea891422",
+        "independent": "44088e1805fc8f524dbd91faf1de11e572ce57856130dc4d354985d5ea891422",
+        "exit": 0,
+        "stdout_sha256": "6813145c096d4b8f0ddcf7ad63d8ea03bc028f214f92ca130795653fb0c351ee"
+      },
+      {
+        "label": "IdentityError-declaration-source",
+        "actual": "dcc2f236cc8cdfd6e909396472a5dc28cab94d59014f877787f843303d3c8a79",
+        "independent": "dcc2f236cc8cdfd6e909396472a5dc28cab94d59014f877787f843303d3c8a79",
+        "exit": 0,
+        "stdout_sha256": "bda32b1c1b941ff37d9762e958c74717f1f00760895bb2f6abc1bc72c1702c22"
+      },
+      {
+        "label": "BirthMessageError-declaration-source",
+        "actual": "cdc593ab61ac7536fd039326fdb0910a6aaffa8f9b802e216e58a7bd967342d2",
+        "independent": "cdc593ab61ac7536fd039326fdb0910a6aaffa8f9b802e216e58a7bd967342d2",
+        "exit": 0,
+        "stdout_sha256": "51001f8d04b0b91a1c430853bf5a447138932325978d1bad5d6099a5fd01a995"
+      },
+      {
+        "label": "TransferError-declaration-source",
+        "actual": "a087e0d177583b309a384095eb58f7b083dc83f9d735d6d2e9f4f8fc33d4440a",
+        "independent": "a087e0d177583b309a384095eb58f7b083dc83f9d735d6d2e9f4f8fc33d4440a",
+        "exit": 0,
+        "stdout_sha256": "dd73e170a46654ec4c4bcc042083730949e160584db17662ff7d91cc1bee3496"
+      },
+      {
+        "label": "ArrivalError-declaration-source",
+        "actual": "d22fe9d1b6d446b6c40c37d6d717a0e79247bbd781d621cb8693101bc2d7cf6b",
+        "independent": "d22fe9d1b6d446b6c40c37d6d717a0e79247bbd781d621cb8693101bc2d7cf6b",
+        "exit": 0,
+        "stdout_sha256": "36f1ebbf46acc7b43aac0d5f73b358ea399cea046164ff66ab5e6198424c57d1"
+      },
+      {
+        "label": "EdIdentityError-declaration-source",
+        "actual": "fd416d0aa811bfa21892ff1d4439ff5c24d8a213a9f2297a0b45f12502930eab",
+        "independent": "fd416d0aa811bfa21892ff1d4439ff5c24d8a213a9f2297a0b45f12502930eab",
+        "exit": 0,
+        "stdout_sha256": "96af1cae16857bd6e566aecb99db427abe453d319d78db7a282011350e43ae84"
+      },
+      {
+        "label": "OperationalError-declaration-source",
+        "actual": "bf76763de10782280c4ccbac42ce0a3a9afc33549204f40d41807c3b553be122",
+        "independent": "bf76763de10782280c4ccbac42ce0a3a9afc33549204f40d41807c3b553be122",
+        "exit": 0,
+        "stdout_sha256": "8839a1c0ac31516a94dcf76cbe0d371c4cc8d178588dda3d1b99f95a14c9939f"
+      },
+      {
+        "label": "BoundaryError-declaration-source",
+        "actual": "adf96609e50d9ee893f137a1939ac745c2f71445ed628c6d834c8812e7a37009",
+        "independent": "adf96609e50d9ee893f137a1939ac745c2f71445ed628c6d834c8812e7a37009",
+        "exit": 0,
+        "stdout_sha256": "02d46d2c14bfc95680ab3e470e3d29d24c446f661ada167c7e37843ed69a7d4e"
+      },
+      {
+        "label": "core-normal-manifest",
+        "actual": "b6b9579c093fec0277009fdef8225391437c9d9e8b1dc70f92eaca694fd9d11c",
+        "independent": "b6b9579c093fec0277009fdef8225391437c9d9e8b1dc70f92eaca694fd9d11c",
+        "exit": 0,
+        "stdout_sha256": "768379f551eb4399a8ace70a72efd817ae32d77f273a03b301431caa8dcfd4de"
+      },
+      {
+        "label": "core-normal-lock-row",
+        "actual": "7868f1e4bf3281ffb4c9b896ec9c55dde1465c2a36943aaa3fd2d7f6791aea0f",
+        "independent": "7868f1e4bf3281ffb4c9b896ec9c55dde1465c2a36943aaa3fd2d7f6791aea0f",
+        "exit": 0,
+        "stdout_sha256": "89e32028fd03697f9b8530118bc1c7517addae919736dc2d3b55e960e9936bdd"
+      },
+      {
+        "label": "ed-normal-manifest",
+        "actual": "e58f6a05080196590690ae4f00336f994ff67542d4f4f6705bc79e7c1bf392d2",
+        "independent": "e58f6a05080196590690ae4f00336f994ff67542d4f4f6705bc79e7c1bf392d2",
+        "exit": 0,
+        "stdout_sha256": "12992410085ed9b710a843d8458a73dcf7e042375bc12e21311429fad799c327"
+      },
+      {
+        "label": "ed-normal-lock-row",
+        "actual": "7d0c609f31d46ebc3dc5e22a463312008232b9a77d73f42ad44b1ffac85cc557",
+        "independent": "7d0c609f31d46ebc3dc5e22a463312008232b9a77d73f42ad44b1ffac85cc557",
+        "exit": 0,
+        "stdout_sha256": "9103d7b51203180f85c5af3a710bd7bff8d2302cb5948273e7abac24c23e52ae"
+      },
+      {
+        "label": "all-eight-error-declarations",
+        "actual": "340ae2e39cff4a4d6ab2413310f629aca170fc74054b364f97e39661019cf410",
+        "independent": "340ae2e39cff4a4d6ab2413310f629aca170fc74054b364f97e39661019cf410",
+        "exit": 0,
+        "stdout_sha256": "c9ce164cb87d051fbda89651842f2d470b3bf9a6bd82d34a84d7f56e4ec6835b"
+      },
+      {
+        "label": "all-eight-with-both-edges-and-actual-lock",
+        "actual": "43dd11f6b6970169bf3695425d0701eff105f325ea14179593ec32551bc57c2a",
+        "independent": "43dd11f6b6970169bf3695425d0701eff105f325ea14179593ec32551bc57c2a",
+        "exit": 0,
+        "stdout_sha256": "ecf5b2df55d090050332b8a588092097cf6c30e5bb602b45d851cbb8d4a0be25"
+      },
+      {
+        "label": "compiler-flags",
+        "actual": "89dc925b1ffed48b7645327f87d43817fa0b7b3446080c5d2e78e2e75c154c53",
+        "independent": "89dc925b1ffed48b7645327f87d43817fa0b7b3446080c5d2e78e2e75c154c53",
+        "exit": 0,
+        "stdout_sha256": "09393abe7f1c0ba20b5ea1ba132f662bdd5a6faaff163fd4c7b5b1b6cfaef2bc"
+      },
+      {
+        "label": "minimal-features",
+        "actual": "6ab92875603ba1b37f36205b4fcd3e6ea0a0eba459f77ae3976d35b4e5b52dad",
+        "independent": "6ab92875603ba1b37f36205b4fcd3e6ea0a0eba459f77ae3976d35b4e5b52dad",
+        "exit": 0,
+        "stdout_sha256": "bdbcbdfd34dea99f5b77b6019dd76649b88fc487ed4ebb0e4e5d722faa820779"
+      },
+      {
+        "label": "declared-floor-compiler",
+        "actual": "3be9247aa53521daff9dd6e2bd9b9bd01c3c8bd93444b7f931cefd37416dcdbd",
+        "independent": "3be9247aa53521daff9dd6e2bd9b9bd01c3c8bd93444b7f931cefd37416dcdbd",
+        "exit": 0,
+        "stdout_sha256": "2c2ea0a9781f1f9315bf952193a5a0acfa7dc7544f5caa483b0e68e1677221d3"
+      }
+    ],
+    "baseline": "51ba5ee39d878bf4013dd0b6eccc9688e1a9f3ab4a062306d8115b9dbc0df41b",
+    "candidate": "43dd11f6b6970169bf3695425d0701eff105f325ea14179593ec32551bc57c2a",
+    "candidate_source_bindings": [
+      {
+        "path": "crates/careops-core/src/capacity.rs",
+        "sha256": "bf54b7d1fdfb03ab70d46b8530521d72a2d3b37815b2f15502bf77f6042c6ead"
+      },
+      {
+        "path": "crates/careops-core/src/identity.rs",
+        "sha256": "1421c39ea40d466b77bfd78c132714cf6496b527b4290a71855c8b89fe1013a1"
+      },
+      {
+        "path": "crates/careops-core/src/birth.rs",
+        "sha256": "34bb0d0c2b36ea169a0e8943bc76b17ae3f09ead35cbbfd96fa6cde68ec89d74"
+      },
+      {
+        "path": "crates/careops-core/src/transfer.rs",
+        "sha256": "283729e27e6dd5c72d38d0bf8e0f51f9533a06e7d0bc7bbea649c1a734658bff"
+      },
+      {
+        "path": "crates/careops-ed/src/arrivals.rs",
+        "sha256": "669ec3cf84429352ff562116e0adb919906faead5ba84984718ce352233b9daa"
+      },
+      {
+        "path": "crates/careops-ed/src/identity.rs",
+        "sha256": "a4abc983d44a94c51c465a144ad8d87013e4431f0baaaad0d8d2a2983b335c7c"
+      },
+      {
+        "path": "crates/careops-ed/src/operations.rs",
+        "sha256": "c317b380af5fdc4cc51814bac427c7585a2d9e32c5e001ea9f836cbd050b1da7"
+      },
+      {
+        "path": "crates/careops-ed/src/composite_fixture.rs",
+        "sha256": "04c44c1fb474e86c4964b68d30a19f548d9e65dda6aa497e3c6b3811c56fe19c"
+      }
+    ],
+    "protected_inputs_unchanged": true,
+    "scope": "Actual source-bound build.rs and exact locked SHA2 closure freshly compiled by the probe compiler; independent Python transcript. No full ED app build or new candidate artifact read/resume proof.",
+    "required_successor": "R57 must issue an immutable closed source/manifest/root-lock successor preserving original Tempfile/SHA2/Polars anchors. Require actual candidate old-artifact reading and foreign-model resume refusal; this controlled identity fixture is not that runtime evidence."
+  },
+  "maintenance_value": {
+    "actual_parent_runtime_changes": 0,
+    "candidate_only": true,
+    "candidate_files": [
+      {
+        "path": "crates/careops-core/src/capacity.rs",
+        "before_lines": 413,
+        "after_lines": 395,
+        "net_lines": -18,
+        "candidate_sha256": "bf54b7d1fdfb03ab70d46b8530521d72a2d3b37815b2f15502bf77f6042c6ead"
+      },
+      {
+        "path": "crates/careops-core/src/identity.rs",
+        "before_lines": 948,
+        "after_lines": 937,
+        "net_lines": -11,
+        "candidate_sha256": "1421c39ea40d466b77bfd78c132714cf6496b527b4290a71855c8b89fe1013a1"
+      },
+      {
+        "path": "crates/careops-core/src/birth.rs",
+        "before_lines": 332,
+        "after_lines": 320,
+        "net_lines": -12,
+        "candidate_sha256": "34bb0d0c2b36ea169a0e8943bc76b17ae3f09ead35cbbfd96fa6cde68ec89d74"
+      },
+      {
+        "path": "crates/careops-core/src/transfer.rs",
+        "before_lines": 1610,
+        "after_lines": 1600,
+        "net_lines": -10,
+        "candidate_sha256": "283729e27e6dd5c72d38d0bf8e0f51f9533a06e7d0bc7bbea649c1a734658bff"
+      },
+      {
+        "path": "crates/careops-ed/src/arrivals.rs",
+        "before_lines": 672,
+        "after_lines": 660,
+        "net_lines": -12,
+        "candidate_sha256": "669ec3cf84429352ff562116e0adb919906faead5ba84984718ce352233b9daa"
+      },
+      {
+        "path": "crates/careops-ed/src/identity.rs",
+        "before_lines": 331,
+        "after_lines": 319,
+        "net_lines": -12,
+        "candidate_sha256": "a4abc983d44a94c51c465a144ad8d87013e4431f0baaaad0d8d2a2983b335c7c"
+      },
+      {
+        "path": "crates/careops-ed/src/operations.rs",
+        "before_lines": 668,
+        "after_lines": 654,
+        "net_lines": -14,
+        "candidate_sha256": "c317b380af5fdc4cc51814bac427c7585a2d9e32c5e001ea9f836cbd050b1da7"
+      },
+      {
+        "path": "crates/careops-ed/src/composite_fixture.rs",
+        "before_lines": 719,
+        "after_lines": 693,
+        "net_lines": -26,
+        "candidate_sha256": "04c44c1fb474e86c4964b68d30a19f548d9e65dda6aa497e3c6b3811c56fe19c"
+      }
+    ],
+    "proposed_production_net_lines": -115,
+    "retained_types": 7,
+    "qualification_support_lines": {
+      "graph.py": 59,
+      "identity.py": 90,
+      "qualify.py": 190
+    },
+    "scope": "Formatted eight-file declaration-only candidate; actual adoption/total-code cost remain R57/R58. No overall line-count reduction claimed."
+  },
+  "root_runtime_manifests_locks_pins_changed": false,
+  "private_receipts": [
+    {
+      "name": "thiserror-r562-current-release.json",
+      "sha256": "7a4a157c9b011df3d6e434d185d7d23926a2671e13861d590de05c3545780ef7"
+    },
+    {
+      "name": "thiserror-r562-source-integrity.json",
+      "sha256": "8df520ad81b5779a6cafd494ea9ab60f68a7784fdb08332d3a8fd37ec80cb0c0"
+    },
+    {
+      "name": "thiserror-r562-probe-v2/report-private.json",
+      "sha256": "d9e0dabab78ef38d5642e3d93845ebde864f0e93f84a375efa86e957ff464244"
+    },
+    {
+      "name": "thiserror-r562-parent-floor.json",
+      "sha256": "8b819c157b8fecfd8af892d28ebd5bff0c19bcecaaf3ee6e6dd3e67a5a5186b7"
+    },
+    {
+      "name": "thiserror-r562-fuzz-macro-result.json",
+      "sha256": "6074cc2f0953fa060a67f34c2277373657b73b9fceb60b893977dd22fa4cd72b"
+    },
+    {
+      "name": "thiserror-r562-fuzz-projection.json",
+      "sha256": "129925b92885dc8aad6ae419f02983ef61725c59b4fa341b562c95a560fb6360"
+    },
+    {
+      "name": "thiserror-r562-feature-boundaries.json",
+      "sha256": "1d1f38076e999c4b706de9b71a168210973092a99ce1ca8d19680e5b99c6289d"
+    },
+    {
+      "name": "thiserror-r562-maintenance.json",
+      "sha256": "c2f83a8a6760ee9df4490ff537df6f736d5d56fb74addf3d0923d32effc30874"
+    },
+    {
+      "name": "thiserror-r562-graph-v2/graph-report.json",
+      "sha256": "ae59e6aa2811346f8c46585a6b945bc340f68e352af1e947bc3e7d9a5a14bc00"
+    },
+    {
+      "name": "thiserror-r562-identity-v1/identity-report.json",
+      "sha256": "ea84cbdef5bcdd1b8fc11a2521a5570581c5601909d90bb3da4ee6fa39e09477"
+    },
+    {
+      "name": "thiserror-r562-maintenance-repo.json",
+      "sha256": "0cf5bf4549ec3272ab1ba2a4f0a78064ae792abc73ffb153c75b973bb0de2f6a"
+    },
+    {
+      "name": "thiserror-r562-security-policy-readback.json",
+      "sha256": "ae84475a3a17bf993440739f7d67fdf427b2cccf8c599113de02f22528e8461d"
+    }
+  ],
+  "reproducers": [
+    {
+      "path": "conductor/evidence/thiserror-r562-qualification-20261105/graph.py",
+      "sha256": "fc3b7ab77186c4bdeadea356428748375f9f5019544759e115036ec67750a2d5"
+    },
+    {
+      "path": "conductor/evidence/thiserror-r562-qualification-20261105/identity.py",
+      "sha256": "f88ad1339fef7ab81cb2eb9782b2b635c2f647cfdeaef700998a61d720c33194"
+    },
+    {
+      "path": "conductor/evidence/thiserror-r562-qualification-20261105/packet.json",
+      "sha256": "8cea722e708d95417d576b551a3c74a02bd631175d74ed76054ab849756275a3"
+    },
+    {
+      "path": "conductor/evidence/thiserror-r562-qualification-20261105/qualify.py",
+      "sha256": "78c6687c702ebb8d9fbf7a9293cdb9f5c1bf05f554adae7a7d72d1e4f616f5b5"
+    }
+  ],
+  "remaining": [
+    "Actual R57 source/contract/recovery and closed successor guard",
+    "Full R58 hosted/integration/platform/coverage117mutation/security/package/cost gates"
+  ],
+  "reviewer": "/root/tempfile_phase_review",
+  "private_command_ledger": {
+    "name": "thiserror-r562-command-ledger.json",
+    "sha256": "67c5acd53f0883c0ac825ba660945c6b20c5248beef4fa2aeeeb7b0e417f127f",
+    "scope": "Exact executed audit/fuzz projection/build argv/cwd/tool/environment and retained logs; workstation paths private."
+  },
+  "final_review": {
+    "reviewer": "/root/tempfile_phase_review",
+    "decision": "R56.2 technical GO; command provenance clarification applied",
+    "scope": "Eight candidate diffs,125-case parity/negative controls/cost/source/floor, exact resolver/fuzz closures,20 actual build-identity controls, fresh current/projected audits",
+    "limitations": "No parent adoption or full-app/platform/artifact acceptance; all R57/R58 gates remain."
+  }
+}
