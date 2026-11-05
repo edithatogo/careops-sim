@@ -103,7 +103,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
   - Link: [thiserror_contracts_20261022](tracks/thiserror_contracts_20261022/index.md)
 
 ---
-- [~] **Track: CareOps proptest**
+- [x] **Track: CareOps proptest** — R59–R61 complete at qualified source c62d53a; all configured gates and final review pass. PR203 draft/frozen; separate documentation closeout.
   - Link: [proptest_invariants_20261022](tracks/proptest_invariants_20261022/index.md)
 
 ---

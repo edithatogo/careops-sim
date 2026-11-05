@@ -57,7 +57,7 @@ CAD adapters are separately qualified later. The backend remains authoritative.
 
 ## Dependency sequencing refinement
 
-See [current sequencing](dependency-sequencing.md): Polars inventory first, with sha2/tempfile/proptest gated only at demonstrated dependent tasks; thiserror after CLI foundation and before RNG; diagnostics/concurrency/state-machine additions conditional. No implementation acceptance.
+See [current sequencing](dependency-sequencing.md): Polars inventory first, with sha2/tempfile/proptest gated only at demonstrated dependent tasks; thiserror after CLI foundation and before RNG; diagnostics/concurrency/state-machine additions conditional. Sequencing alone is not acceptance. [proptest R59–R61](evidence/proptest-r61-acceptance-20261105/README.md) now qualifies exact 1.12.0/std as a core dev-only dependency at source c62d53a; normal graphs and production algorithms remain unchanged. Other planned choices retain their own gates.
 
 ## Validation/tooling refinement
 
