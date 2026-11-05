@@ -275,7 +275,7 @@ class SharedImportPromotionTests(unittest.TestCase):
         sha2_changed = [p for p, value in self.expected['source_sha256'].items()
                         if successor['source_sha256'][p] != value]
         self.assertEqual(sha2_changed, ['crates/careops-ed/Cargo.toml'])
-        self.assertTrue(gate.strict_equal(current, gate.shared_bindings(ROOT, gate.THISERROR_QUALIFICATION_COMMIT)))
+        self.assertTrue(gate.strict_equal(current, gate.shared_bindings(ROOT, gate.PROPTEST_QUALIFICATION_COMMIT)))
         changed = [p for p, value in self.expected['source_sha256'].items()
                    if current['source_sha256'][p] != value]
         self.assertEqual(changed, ['Cargo.lock', 'crates/careops-ed/Cargo.toml'])
@@ -554,10 +554,11 @@ class TempfileAnchoredSuccessorTests(unittest.TestCase):
 class ThiserrorSuccessorTests(unittest.TestCase):
     def setUp(self):
         self.original = gate.shared_bindings(ROOT, gate.SHARED_QUALIFICATION_COMMIT)
-        self.current = gate.shared_bindings(ROOT)
+        self.current = gate.shared_bindings(ROOT, gate.THISERROR_QUALIFICATION_COMMIT)
 
     def verify(self):
-        gate.verify_thiserror_successor(ROOT, self.original, self.current)
+        gate.verify_thiserror_successor(ROOT, self.original, self.current,
+                                       source_checkpoint=gate.THISERROR_QUALIFICATION_COMMIT)
 
     def test_actual_closed_contract_checkpoint(self):
         self.assertEqual(len(gate.THISERROR_SOURCES), 29)
@@ -573,13 +574,13 @@ class ThiserrorSuccessorTests(unittest.TestCase):
             with self.subTest(selector=selector), self.assertRaises(ValueError):
                 gate.verify_tempfile_successor(ROOT, self.original, previous, source_checkpoint=selector)
 
-    def test_all_29_current_files_refuse_drift(self):
-        original = Path.read_bytes
+    def test_all_29_historical_source_anchors_refuse_drift(self):
+        original = gate.git_blob
         for path in gate.THISERROR_SOURCES:
-            def changed(current, selected=ROOT / path):
-                data = original(current)
-                return data + b'\n' if current == selected else data
-            with self.subTest(path=path), mock.patch.object(Path, 'read_bytes', changed):
+            def changed(root, commit, name, selected=path):
+                data = original(root, commit, name)
+                return data + b'\n' if commit == gate.THISERROR_QUALIFICATION_COMMIT and name == selected else data
+            with self.subTest(path=path), mock.patch.object(gate, 'git_blob', changed):
                 with self.assertRaises(ValueError): self.verify()
 
     def test_omitted_binding_and_source_receipt_codrift_refuse(self):
@@ -613,10 +614,10 @@ class ThiserrorSuccessorTests(unittest.TestCase):
     def test_closed_manifest_root_and_fuzz_projection(self):
         paths = ('crates/careops-core/Cargo.toml', 'crates/careops-ed/Cargo.toml')
         old = {p: gate.git_blob(ROOT, gate.THISERROR_BASE_COMMIT, p) for p in paths}
-        current = {p: (ROOT / p).read_bytes() for p in paths}
+        current = {p: gate.git_blob(ROOT, gate.THISERROR_QUALIFICATION_COMMIT, p) for p in paths}
         old_lock = gate.git_blob(ROOT, gate.THISERROR_BASE_COMMIT, 'Cargo.lock')
         old_fuzz = gate.git_blob(ROOT, gate.THISERROR_BASE_COMMIT, 'fuzz/Cargo.lock')
-        lock = (ROOT / 'Cargo.lock').read_bytes(); fuzz = (ROOT / 'fuzz/Cargo.lock').read_bytes()
+        lock = gate.git_blob(ROOT, gate.THISERROR_QUALIFICATION_COMMIT, 'Cargo.lock'); fuzz = gate.git_blob(ROOT, gate.THISERROR_QUALIFICATION_COMMIT, 'fuzz/Cargo.lock')
         q = json.loads((ROOT / gate.THISERROR_QUALIFICATION).read_bytes())
         def validate(manifests=current, root_lock=lock, fuzz_lock=fuzz):
             gate.validate_thiserror_successor_profile(old, manifests, old_lock, root_lock, old_fuzz, fuzz_lock, q)

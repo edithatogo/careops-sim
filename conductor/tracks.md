@@ -103,7 +103,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
   - Link: [thiserror_contracts_20261022](tracks/thiserror_contracts_20261022/index.md)
 
 ---
-- [ ] **Track: CareOps proptest**
+- [~] **Track: CareOps proptest**
   - Link: [proptest_invariants_20261022](tracks/proptest_invariants_20261022/index.md)
 
 ---

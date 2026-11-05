@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "task": "R59.1",
+  "recorded_at": "2026-11-05T07:25:46.656215+00:00",
+  "source": "3e6c4aaf007ae050d41a4db13209f439cd69348a",
+  "status": "accepted_prerequisite_and_inventory_only",
+  "upstream": {
+    "PR": 305,
+    "merged": true,
+    "published_merge": "418b6bc593f0e4108ece5d11a669ad21dfb87a14",
+    "tested_head": "2e8782b60ab99ff2460db750c6096dd481c94fb7",
+    "producer_sources": [
+      {
+        "path": "crates/kairo-ecs-core/Cargo.toml",
+        "tested_and_published_blob": "48173a02780bfdb931831435d7196e644a3a9a1d",
+        "sha256": "ba89ab5f0cfed3c9ef4f1c8eca29b457aed21f1855bb567e45b57e48ef646789"
+      },
+      {
+        "path": "crates/kairo-ecs-core/tests/track96_phase0_proptest_baseline.rs",
+        "tested_and_published_blob": "f24db7134474c2a8600e3377505ec73ee9cec338",
+        "sha256": "e6e9d0d9e28695d47b1f274908ad3904a22692f12224daaeeb2ad2e147405720"
+      },
+      {
+        "path": "crates/kairo-ecs-core/tests/track96_phase1_proptest_invariants.rs",
+        "tested_and_published_blob": "65aee1902282edd9fcb2fa3a736f9cfd2bda4b0d",
+        "sha256": "a5ad7b8914b672f4bcec431dc04683e97bd6507d6c29f1cbd72b7c731e4b4b2e"
+      }
+    ],
+    "parity_scope": "Three producer contract files independently match byte-for-byte; historical owner reports whole-tree parity,51tests and phase acceptance. GitHub triple-dot compare is not treated as a direct full-tree comparison. No fresh upstream acceptance or current-pin promotion.",
+    "version_features": "Historical adopted1.12.0/defaultfalse/std;current registry/source qualification remainsR59.2."
+  },
+  "runtime_pin_unchanged": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+  "current": {
+    "direct_parent_edges": [],
+    "resolved_proptest": "1.8.0",
+    "consumer": "Existing Kairoscore dev dependency is an implicit parent-workspace member;own CareOps domain tests currently use fixed conformance examples.",
+    "retained_core_test_files": 17,
+    "new_properties_present": false
+  },
+  "accepted_consumer_scope": [
+    "Core capacity disposition conservation and rejected-transition rollback,independent widened-u128/tuple oracle",
+    "Core identity/cardinality/canonical batch order,independent logical set/count and expected outcome sequence",
+    "Core identity checkpoint prefix+suffix recovery against uninterrupted execution and independent counts/statuses"
+  ],
+  "required_framework_value": "Required independent domain properties,deterministic full-u64 generation support,bounded shrinking and persisted minimal regressions;reuse proptest rather than implement a generator/shrinker. No production-code reduction is proposed.",
+  "proposed_edge": {
+    "manifest": "crates/careops-core/Cargo.toml",
+    "kind": "dev-dependencies",
+    "name": "proptest",
+    "version": "=1.12.0",
+    "default-features": false,
+    "features": [
+      "std"
+    ]
+  },
+  "protected": [
+    "All existing conformance/fuzz tests",
+    "Production algorithms,normal RNG streams,profiles,FFI/output schemas,publishers",
+    "All earlier source guards and immutable receipts;current dev manifest/root lock need a separately qualified strict successor before runtime acceptance",
+    "All earlier PR qualified heads and worktree/native owners"
+  ],
+  "reference_design": {
+    "capacity": "u128 arithmetic independently checks totals/containment/residual capacity;plain tuple model checks transitions;errors retain complete snapshot.",
+    "identity": "Distinct logical event keys and independent set/count model;assert expected canonical outcomes as well as permutation equality.",
+    "rollback": "Otherwise-valid batch applies at least one valid canonical command before a later canonical failure;require specific error,unchanged checkpoint and unchanged subsequent valid behavior.",
+    "checkpoint": "Restored prefix+suffix matches uninterrupted result and independent lifecycle counts/statuses.",
+    "controls": "Perturb conservation/order results and valid-prefix commit state;oracles reject;inspect structured TestError for deterministic seed replay/shrinking."
+  },
+  "source_bindings": [
+    {
+      "path": "Cargo.toml",
+      "sha256": "2000c30f811e10d72221596b10acbc3ab490c664f4d54f3027b3ac9e3f6f736e"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "420ae3cec84a0b3e65a347b1c50edeeca6cc9c70a154f791e12a67325a086d2b"
+    },
+    {
+      "path": "crates/careops-core/Cargo.toml",
+      "sha256": "0871747693ead816082350bc52036444f07a9979e7451495002e4f90189f7ebd"
+    },
+    {
+      "path": "crates/careops-core/src/capacity.rs",
+      "sha256": "bf54b7d1fdfb03ab70d46b8530521d72a2d3b37815b2f15502bf77f6042c6ead"
+    },
+    {
+      "path": "crates/careops-core/src/identity.rs",
+      "sha256": "1421c39ea40d466b77bfd78c132714cf6496b527b4290a71855c8b89fe1013a1"
+    },
+    {
+      "path": "crates/careops-core/tests/capacity_contract.rs",
+      "sha256": "680855c1390981a8d975d1d24cb573de60fec0b0eae62b5bce1aa14493c1c91b"
+    },
+    {
+      "path": "crates/careops-core/tests/identity_contract.rs",
+      "sha256": "81180ac52b334d34f15c6c98ded2c666a9ebd1e93386590a5d566f0f44b466bb"
+    },
+    {
+      "path": "fuzz/Cargo.toml",
+      "sha256": "dfdd1b453562cdd3479be4e27a2cebebdca8b7012052aabd4ba37b824160990e"
+    },
+    {
+      "path": "fuzz/Cargo.lock",
+      "sha256": "5e71851838b9a874a0f3faced50104a7fc4cbca3f86d592e3d42a4daede1ab2a"
+    },
+    {
+      "path": "fuzz/fuzz_targets/parse_scenario_json.rs",
+      "sha256": "128e6a38f30f7eacb8488c9f7c06fd24fd4ce0d6c4a2a65f5094852d623d2413"
+    }
+  ],
+  "private_upstream_readback": {
+    "name": "upstream-source-parity.json",
+    "sha256": "7a264647a36bab53a455f0a5dd0f7d2c244b8725402a1f56315437d759c45312"
+  },
+  "review": {
+    "reviewer": "/root/tempfile_phase_review",
+    "decision": "R59 inventory/scope sound for qualification;not adoption GO",
+    "limits": "Generation support is not exhaustive range coverage;freeze case/sequence/shrink/persistence settings before implementation."
+  },
+  "remaining": [
+    "R59.2 exact graph/features/platform/floor/security/build identity/value/cost qualification",
+    "R59.3 reviewed adopt/defer/reject decision",
+    "All R60/R61 implementation and acceptance tasks"
+  ],
+  "production_or_dependency_changes": false
+}
