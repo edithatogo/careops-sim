@@ -1,6 +1,6 @@
 # CareOps thiserror adoption
 
-R56 candidate qualification accepted; R57 bounded replacement and R58 acceptance remain. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
+R56 qualification and R57 bounded replacement accepted; R58 full acceptance remains. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
 
 ## Inputs and dependencies
 

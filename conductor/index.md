@@ -109,4 +109,4 @@ are source-bound. R52 bounded engineering is complete at source1d559a6, includin
 
 ## thiserror candidate qualification
 
-[Accepted R56 candidate](evidence/thiserror-r562-qualification-20261105/qualification.json) qualifies eight nontrivial error enum conversions with exact2.0.21/default std and preserved source(None), messages/variants/FFI. [Track](tracks/thiserror_contracts_20261022/index.md) proceeds to R57 actual-source tests and closed successor guard; R58 full acceptance remains. No parent adoption or pin/merge/release change follows from qualification.
+[Accepted R56 candidate](evidence/thiserror-r562-qualification-20261105/qualification.json) qualifies eight nontrivial error enum conversions with exact2.0.21/default std and preserved source(None), messages/variants/FFI. [R57 accepted bounded replacement](evidence/thiserror-r57-implementation-20261105/phase-review.json) adds125actual contract cases,54guard regressions and artifact/recovery/26case local proof. [Track](tracks/thiserror_contracts_20261022/index.md) proceeds to full R58 hosted/platform/quality/security/package/cost gates. No pin/merge/release change.
