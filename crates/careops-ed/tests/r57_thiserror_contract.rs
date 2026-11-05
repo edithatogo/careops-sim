@@ -43,449 +43,205 @@ fn all_frozen_variants_messages_traits_and_absent_sources() {
     let data = oracle();
     let cases = &data["cases"];
     let mut seen = BTreeSet::new();
-    {
-        let error = ArrivalError::InvalidVersion;
-        check(cases, &mut seen, "ArrivalError::InvalidVersion", error);
+    macro_rules! case {
+        ($label:literal, $error:expr) => {
+            check(cases, &mut seen, $label, $error)
+        };
     }
-    {
-        let error = ArrivalError::InvalidProvenance;
-        check(cases, &mut seen, "ArrivalError::InvalidProvenance", error);
-    }
-    {
-        let error = ArrivalError::InvalidHorizon;
-        check(cases, &mut seen, "ArrivalError::InvalidHorizon", error);
-    }
-    {
-        let error = ArrivalError::LimitExceeded;
-        check(cases, &mut seen, "ArrivalError::LimitExceeded", error);
-    }
-    {
-        let error = ArrivalError::InvalidMode;
-        check(cases, &mut seen, "ArrivalError::InvalidMode", error);
-    }
-    {
-        let error = ArrivalError::DuplicateMode;
-        check(cases, &mut seen, "ArrivalError::DuplicateMode", error);
-    }
-    {
-        let error = ArrivalError::InvalidBin;
-        check(cases, &mut seen, "ArrivalError::InvalidBin", error);
-    }
-    {
-        let error = ArrivalError::OverlappingBins;
-        check(cases, &mut seen, "ArrivalError::OverlappingBins", error);
-    }
-    {
-        let error = ArrivalError::CountMismatch;
-        check(cases, &mut seen, "ArrivalError::CountMismatch", error);
-    }
-    {
-        let error = ArrivalError::ArithmeticOverflow;
-        check(cases, &mut seen, "ArrivalError::ArithmeticOverflow", error);
-    }
-    {
-        let error = ArrivalError::SamplingExhausted;
-        check(cases, &mut seen, "ArrivalError::SamplingExhausted", error);
-    }
-    {
-        let error = EdIdentityError::InvalidSourceKey;
-        assert_copy(&error);
-        check(cases, &mut seen, "EdIdentityError::InvalidSourceKey", error);
-    }
-    {
-        let error = EdIdentityError::SourceKeyCollision;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::SourceKeyCollision",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::AdmissionKeyConflict;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::AdmissionKeyConflict",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::IdCollision;
-        assert_copy(&error);
-        check(cases, &mut seen, "EdIdentityError::IdCollision", error);
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::InvalidIdentifier);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(InvalidIdentifier)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::InvalidSourceKey);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(InvalidSourceKey)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::EmptyBatch);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(EmptyBatch)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::TimeAlreadySealed);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(TimeAlreadySealed)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::LateEvent);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(LateEvent)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::EventConflict);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(EventConflict)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::IdCollision);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(IdCollision)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::UnknownPerson);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(UnknownPerson)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::UnknownEpisode);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(UnknownEpisode)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::PersonDeceased);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(PersonDeceased)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::OpenEpisodesAtDeath);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(OpenEpisodesAtDeath)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::EpisodeAlreadyExited);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(EpisodeAlreadyExited)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::InvalidRelationship);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(InvalidRelationship)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::RelationshipExists);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(RelationshipExists)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::UnknownRelationship);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(UnknownRelationship)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::BirthOrdinalExists);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(BirthOrdinalExists)",
-            error,
-        );
-    }
-    {
-        let error = EdIdentityError::Ledger(IdentityError::InvalidCheckpoint);
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "EdIdentityError::Ledger(InvalidCheckpoint)",
-            error,
-        );
-    }
-    {
-        let error = OperationalError::Ineligible;
-        assert_copy(&error);
-        check(cases, &mut seen, "OperationalError::Ineligible", error);
-    }
-    {
-        let error = OperationalError::Unavailable;
-        assert_copy(&error);
-        check(cases, &mut seen, "OperationalError::Unavailable", error);
-    }
-    {
-        let error = OperationalError::CapacityInUse;
-        assert_copy(&error);
-        check(cases, &mut seen, "OperationalError::CapacityInUse", error);
-    }
-    {
-        let error = OperationalError::NotAssigned;
-        assert_copy(&error);
-        check(cases, &mut seen, "OperationalError::NotAssigned", error);
-    }
-    {
-        let error = OperationalError::Accounting;
-        assert_copy(&error);
-        check(cases, &mut seen, "OperationalError::Accounting", error);
-    }
-    {
-        let error = OperationalError::SpaceUnavailable;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "OperationalError::SpaceUnavailable",
-            error,
-        );
-    }
-    {
-        let error = OperationalError::ReservedForOther;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "OperationalError::ReservedForOther",
-            error,
-        );
-    }
-    {
-        let error = OperationalError::CleaningInProgress;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "OperationalError::CleaningInProgress",
-            error,
-        );
-    }
-    {
-        let error = OperationalError::DiagnosticBlocked;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "OperationalError::DiagnosticBlocked",
-            error,
-        );
-    }
-    {
-        let error = OperationalError::BoardingRetained;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "OperationalError::BoardingRetained",
-            error,
-        );
-    }
-    {
-        let error = OperationalError::AtomicMultiResourceUnsupported;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "OperationalError::AtomicMultiResourceUnsupported",
-            error,
-        );
-    }
-    {
-        let error = OperationalError::UnsupportedMultiRole;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "OperationalError::UnsupportedMultiRole",
-            error,
-        );
-    }
-    {
-        let error = OperationalError::RouteUnreachable;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "OperationalError::RouteUnreachable",
-            error,
-        );
-    }
-    {
-        let error = OperationalError::EdgeInaccessible;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "OperationalError::EdgeInaccessible",
-            error,
-        );
-    }
-    {
-        let error = BoundaryError::IncompatibleOfferDestination;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "BoundaryError::IncompatibleOfferDestination",
-            error,
-        );
-    }
-    {
-        let error = BoundaryError::ImmediateExpiryDefaultProhibited;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "BoundaryError::ImmediateExpiryDefaultProhibited",
-            error,
-        );
-    }
-    {
-        let error = BoundaryError::PrematureBayReleaseBeforePhysicalTransfer;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "BoundaryError::PrematureBayReleaseBeforePhysicalTransfer",
-            error,
-        );
-    }
-    {
-        let error = BoundaryError::ExcessiveBoarderStaffReservation;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "BoundaryError::ExcessiveBoarderStaffReservation",
-            error,
-        );
-    }
-    {
-        let error = BoundaryError::AmbulanceOffloadBlockedBySaturation;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "BoundaryError::AmbulanceOffloadBlockedBySaturation",
-            error,
-        );
-    }
-    {
-        let error = BoundaryError::ReceiverStaffUnavailable;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "BoundaryError::ReceiverStaffUnavailable",
-            error,
-        );
-    }
-    {
-        let error = BoundaryError::ProhibitedCausalWardPolicyClaim;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "BoundaryError::ProhibitedCausalWardPolicyClaim",
-            error,
-        );
-    }
-    {
-        let error = BoundaryError::UnsupportedImplicitDeteriorationHazard;
-        assert_copy(&error);
-        check(
-            cases,
-            &mut seen,
-            "BoundaryError::UnsupportedImplicitDeteriorationHazard",
-            error,
-        );
-    }
+    assert_copy(&EdIdentityError::InvalidSourceKey);
+    assert_copy(&OperationalError::Ineligible);
+    assert_copy(&BoundaryError::IncompatibleOfferDestination);
+    case!("ArrivalError::InvalidVersion", ArrivalError::InvalidVersion);
+    case!(
+        "ArrivalError::InvalidProvenance",
+        ArrivalError::InvalidProvenance
+    );
+    case!("ArrivalError::InvalidHorizon", ArrivalError::InvalidHorizon);
+    case!("ArrivalError::LimitExceeded", ArrivalError::LimitExceeded);
+    case!("ArrivalError::InvalidMode", ArrivalError::InvalidMode);
+    case!("ArrivalError::DuplicateMode", ArrivalError::DuplicateMode);
+    case!("ArrivalError::InvalidBin", ArrivalError::InvalidBin);
+    case!(
+        "ArrivalError::OverlappingBins",
+        ArrivalError::OverlappingBins
+    );
+    case!("ArrivalError::CountMismatch", ArrivalError::CountMismatch);
+    case!(
+        "ArrivalError::ArithmeticOverflow",
+        ArrivalError::ArithmeticOverflow
+    );
+    case!(
+        "ArrivalError::SamplingExhausted",
+        ArrivalError::SamplingExhausted
+    );
+    case!(
+        "EdIdentityError::InvalidSourceKey",
+        EdIdentityError::InvalidSourceKey
+    );
+    case!(
+        "EdIdentityError::SourceKeyCollision",
+        EdIdentityError::SourceKeyCollision
+    );
+    case!(
+        "EdIdentityError::AdmissionKeyConflict",
+        EdIdentityError::AdmissionKeyConflict
+    );
+    case!("EdIdentityError::IdCollision", EdIdentityError::IdCollision);
+    case!(
+        "EdIdentityError::Ledger(InvalidIdentifier)",
+        EdIdentityError::Ledger(IdentityError::InvalidIdentifier)
+    );
+    case!(
+        "EdIdentityError::Ledger(InvalidSourceKey)",
+        EdIdentityError::Ledger(IdentityError::InvalidSourceKey)
+    );
+    case!(
+        "EdIdentityError::Ledger(EmptyBatch)",
+        EdIdentityError::Ledger(IdentityError::EmptyBatch)
+    );
+    case!(
+        "EdIdentityError::Ledger(TimeAlreadySealed)",
+        EdIdentityError::Ledger(IdentityError::TimeAlreadySealed)
+    );
+    case!(
+        "EdIdentityError::Ledger(LateEvent)",
+        EdIdentityError::Ledger(IdentityError::LateEvent)
+    );
+    case!(
+        "EdIdentityError::Ledger(EventConflict)",
+        EdIdentityError::Ledger(IdentityError::EventConflict)
+    );
+    case!(
+        "EdIdentityError::Ledger(IdCollision)",
+        EdIdentityError::Ledger(IdentityError::IdCollision)
+    );
+    case!(
+        "EdIdentityError::Ledger(UnknownPerson)",
+        EdIdentityError::Ledger(IdentityError::UnknownPerson)
+    );
+    case!(
+        "EdIdentityError::Ledger(UnknownEpisode)",
+        EdIdentityError::Ledger(IdentityError::UnknownEpisode)
+    );
+    case!(
+        "EdIdentityError::Ledger(PersonDeceased)",
+        EdIdentityError::Ledger(IdentityError::PersonDeceased)
+    );
+    case!(
+        "EdIdentityError::Ledger(OpenEpisodesAtDeath)",
+        EdIdentityError::Ledger(IdentityError::OpenEpisodesAtDeath)
+    );
+    case!(
+        "EdIdentityError::Ledger(EpisodeAlreadyExited)",
+        EdIdentityError::Ledger(IdentityError::EpisodeAlreadyExited)
+    );
+    case!(
+        "EdIdentityError::Ledger(InvalidRelationship)",
+        EdIdentityError::Ledger(IdentityError::InvalidRelationship)
+    );
+    case!(
+        "EdIdentityError::Ledger(RelationshipExists)",
+        EdIdentityError::Ledger(IdentityError::RelationshipExists)
+    );
+    case!(
+        "EdIdentityError::Ledger(UnknownRelationship)",
+        EdIdentityError::Ledger(IdentityError::UnknownRelationship)
+    );
+    case!(
+        "EdIdentityError::Ledger(BirthOrdinalExists)",
+        EdIdentityError::Ledger(IdentityError::BirthOrdinalExists)
+    );
+    case!(
+        "EdIdentityError::Ledger(InvalidCheckpoint)",
+        EdIdentityError::Ledger(IdentityError::InvalidCheckpoint)
+    );
+    case!("OperationalError::Ineligible", OperationalError::Ineligible);
+    case!(
+        "OperationalError::Unavailable",
+        OperationalError::Unavailable
+    );
+    case!(
+        "OperationalError::CapacityInUse",
+        OperationalError::CapacityInUse
+    );
+    case!(
+        "OperationalError::NotAssigned",
+        OperationalError::NotAssigned
+    );
+    case!("OperationalError::Accounting", OperationalError::Accounting);
+    case!(
+        "OperationalError::SpaceUnavailable",
+        OperationalError::SpaceUnavailable
+    );
+    case!(
+        "OperationalError::ReservedForOther",
+        OperationalError::ReservedForOther
+    );
+    case!(
+        "OperationalError::CleaningInProgress",
+        OperationalError::CleaningInProgress
+    );
+    case!(
+        "OperationalError::DiagnosticBlocked",
+        OperationalError::DiagnosticBlocked
+    );
+    case!(
+        "OperationalError::BoardingRetained",
+        OperationalError::BoardingRetained
+    );
+    case!(
+        "OperationalError::AtomicMultiResourceUnsupported",
+        OperationalError::AtomicMultiResourceUnsupported
+    );
+    case!(
+        "OperationalError::UnsupportedMultiRole",
+        OperationalError::UnsupportedMultiRole
+    );
+    case!(
+        "OperationalError::RouteUnreachable",
+        OperationalError::RouteUnreachable
+    );
+    case!(
+        "OperationalError::EdgeInaccessible",
+        OperationalError::EdgeInaccessible
+    );
+    case!(
+        "BoundaryError::IncompatibleOfferDestination",
+        BoundaryError::IncompatibleOfferDestination
+    );
+    case!(
+        "BoundaryError::ImmediateExpiryDefaultProhibited",
+        BoundaryError::ImmediateExpiryDefaultProhibited
+    );
+    case!(
+        "BoundaryError::PrematureBayReleaseBeforePhysicalTransfer",
+        BoundaryError::PrematureBayReleaseBeforePhysicalTransfer
+    );
+    case!(
+        "BoundaryError::ExcessiveBoarderStaffReservation",
+        BoundaryError::ExcessiveBoarderStaffReservation
+    );
+    case!(
+        "BoundaryError::AmbulanceOffloadBlockedBySaturation",
+        BoundaryError::AmbulanceOffloadBlockedBySaturation
+    );
+    case!(
+        "BoundaryError::ReceiverStaffUnavailable",
+        BoundaryError::ReceiverStaffUnavailable
+    );
+    case!(
+        "BoundaryError::ProhibitedCausalWardPolicyClaim",
+        BoundaryError::ProhibitedCausalWardPolicyClaim
+    );
+    case!(
+        "BoundaryError::UnsupportedImplicitDeteriorationHazard",
+        BoundaryError::UnsupportedImplicitDeteriorationHazard
+    );
     assert_eq!(seen.len(), 54);
     assert_eq!(seen.len(), cases.as_object().unwrap().len());
     println!("validated {} frozen public error cases", seen.len());
 }
+
 #[derive(Clone, PartialEq, Eq)]
 struct Counterfactual {
     message: String,
