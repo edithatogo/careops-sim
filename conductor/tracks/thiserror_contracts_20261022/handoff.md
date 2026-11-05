@@ -15,3 +15,7 @@ Next R57.1 actual-source contract tests before adoption. Migrate only four core 
 ## R57 phase decision — 5 November 2026
 
 Same chat and standard Git worktree retain integration ownership on `codex/thiserror-replacement-20261105`; inventory branch483 remains frozen. Exact replacement7e8 and reviewed guardb46 preserve the runtime074 pin and existing PR200/201 heads. [R57 acceptance](../../evidence/thiserror-r57-implementation-20261105/phase-review.json) closes only local bounded replacement. Next publish a separate frozen draft source for all original R58 hosted/platform/integration/quality/security/package/cost gates, including Linux `/dev/full`. No merge/release or ownership transfer.
+
+## R58 final handoff — 5 November 2026
+
+Same coordinator chat and standard Git worktree retain integration ownership, now on `codex/thiserror-r58-closeout-20261105`. Replacement source42e4 remains frozen on `codex/thiserror-replacement-20261105` and draft PR202. [R58 acceptance](../../evidence/thiserror-r58-acceptance-20261105/acceptance.json) closes all configured gates and final review at testedmerge23db with an identical complete tree. This is a separate documentation closeout, not a later-head hosted claim. Earlier inventory/replacement assignments, receipts, PR200/201 and runtime074 remain unchanged. No merge/release/pin promotion or new-track dispatch; select the next authorized track separately.

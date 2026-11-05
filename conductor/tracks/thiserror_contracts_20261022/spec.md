@@ -1,6 +1,6 @@
 # CareOps thiserror adoption
 
-R56 qualification and R57 bounded replacement accepted; R58 full acceptance remains. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
+R56–R58 bounded engineering is accepted at source42e4b0d; all configured gates and final review pass. PR202 remains draft/frozen, with separate documentation closeout. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
 
 ## Inputs and dependencies
 

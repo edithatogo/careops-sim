@@ -235,7 +235,7 @@ reviews the phase evidence and risk/release notes; full queue phase remains open
 
 ## Dependency sequencing refinement
 
-See [current sequencing](dependency-sequencing.md): Polars inventory first, with sha2/tempfile/proptest gated only at demonstrated dependent tasks; thiserror after CLI foundation and before RNG; diagnostics/concurrency/state-machine additions conditional. No implementation acceptance.
+See [current sequencing](dependency-sequencing.md): Polars inventory first, with sha2/tempfile/proptest gated only at demonstrated dependent tasks; thiserror after CLI foundation and before RNG; diagnostics/concurrency/state-machine additions conditional. [thiserror R56–R58 bounded engineering](evidence/thiserror-r58-acceptance-20261105/README.md) is accepted at source42e4 after all configured gates; other capabilities retain their own acceptance requirements.
 
 ## Validation/tooling refinement
 

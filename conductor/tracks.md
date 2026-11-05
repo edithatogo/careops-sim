@@ -99,7 +99,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
   - Link: [tempfile_publication_20261022](tracks/tempfile_publication_20261022/index.md)
 
 ---
-- [~] **Track: CareOps thiserror** — R56 qualification and R57 bounded replacement accepted at b46de20; R58 full hosted/platform/quality/security/package/cost gates next.
+- [x] **Track: CareOps thiserror** — R56–R58 complete at qualified source42e4b0d; all configured gates and final review pass. PR202 draft/frozen; separate documentation closeout.
   - Link: [thiserror_contracts_20261022](tracks/thiserror_contracts_20261022/index.md)
 
 ---
