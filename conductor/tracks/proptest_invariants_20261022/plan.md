@@ -1,12 +1,12 @@
 # Plan: CareOps proptest
 
-R59.1 prerequisite and inventory accepted;exact current dependency/value qualification is next. No adoption or R60/R61 acceptance.
+R59 qualification accepted for bounded R60 implementation. No active dependency adoption or R60/R61 acceptance at this checkpoint.
 
 ## R59 — Evidence and scope
 
 - [x] R59.1 Verify upstream receipt and local prerequisites; inventory direct consumers and retained/deleted paths.
-- [ ] R59.2 Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision.
-- [ ] R59.3 Conductor — review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.
+- [x] R59.2 Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision.
+- [x] R59.3 Conductor — review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.
 
 ## R60 — Bounded replacement
 
@@ -22,6 +22,8 @@ R59.1 prerequisite and inventory accepted;exact current dependency/value qualifi
 
 ## Dispatch boundary
 
-Legacy R-prefix reservations are not write authority. Resolve narrow parent file claims; no submodule edits. The historical Kairos96 prerequisite is accepted within the R59.1 receipt scope. Current dependency/value qualification and all R60/R61 gates remain pending.
+Legacy R-prefix reservations are not write authority. Resolve narrow parent file claims; no submodule edits. The historical Kairos96 prerequisite is accepted within the R59.1 receipt scope. Current dependency/value qualification is accepted for bounded R60;all R60/R61 implementation and acceptance gates remain pending.
 
 [R59.1 inventory](../../evidence/proptest-r591-inventory-20261105/inventory.json) verifies published418b6bc/tested2e8782b source parity for three producer contract files and identifies independent parent core property consumers. Runtime074 and all conformance/fuzz tests remain unchanged.
+
+[R59 qualification](../../evidence/proptest-r592-qualification-20261105/qualification.json) records exact1.12.0/std, independent contracts, observed costs, policy/graph/floor evidence and reviewer fixes. R60/R61 remain open.
