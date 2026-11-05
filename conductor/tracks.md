@@ -99,7 +99,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
   - Link: [tempfile_publication_20261022](tracks/tempfile_publication_20261022/index.md)
 
 ---
-- [ ] **Track: CareOps thiserror**
+- [~] **Track: CareOps thiserror** — R56 prerequisite/current-consumer qualification active; no runtime adoption or phase acceptance.
   - Link: [thiserror_contracts_20261022](tracks/thiserror_contracts_20261022/index.md)
 
 ---
