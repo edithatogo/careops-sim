@@ -244,47 +244,37 @@ pub enum ApplyOutcome {
     StaleIgnored,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(thiserror::Error, Clone, Copy, Debug, Eq, PartialEq)]
 pub enum TransferError {
+    #[error("unsupported transfer envelope version")]
     UnsupportedEnvelopeVersion,
+    #[error("transfer identifiers must be non-zero")]
     InvalidIdentifier,
+    #[error("invalid transfer request")]
     InvalidRequest,
+    #[error("unknown transfer operation")]
     UnknownOperation,
+    #[error("unknown transfer person")]
     UnknownPerson,
+    #[error("transfer command is invalid in the current state")]
     InvalidTransition,
+    #[error("transfer operation revision overflow")]
     RevisionOverflow,
+    #[error("transfer revision gap is too large")]
     RevisionGapOverflow,
+    #[error("message ID was reused with different content")]
     MessageConflict,
+    #[error("too many pending transfer messages")]
     TooManyPendingMessages,
+    #[error("resource is already claimed or conflicts with this transfer")]
     ResourceConflict,
+    #[error("transfer event time regresses within an operation")]
     TimeRegression,
+    #[error("transfer event sequence overflow")]
     SequenceOverflow,
+    #[error("invalid or unsupported transfer checkpoint")]
     InvalidCheckpoint,
 }
-
-impl std::fmt::Display for TransferError {
-    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let message = match self {
-            Self::UnsupportedEnvelopeVersion => "unsupported transfer envelope version",
-            Self::InvalidIdentifier => "transfer identifiers must be non-zero",
-            Self::InvalidRequest => "invalid transfer request",
-            Self::UnknownOperation => "unknown transfer operation",
-            Self::UnknownPerson => "unknown transfer person",
-            Self::InvalidTransition => "transfer command is invalid in the current state",
-            Self::RevisionOverflow => "transfer operation revision overflow",
-            Self::RevisionGapOverflow => "transfer revision gap is too large",
-            Self::MessageConflict => "message ID was reused with different content",
-            Self::TooManyPendingMessages => "too many pending transfer messages",
-            Self::ResourceConflict => "resource is already claimed or conflicts with this transfer",
-            Self::TimeRegression => "transfer event time regresses within an operation",
-            Self::SequenceOverflow => "transfer event sequence overflow",
-            Self::InvalidCheckpoint => "invalid or unsupported transfer checkpoint",
-        };
-        formatter.write_str(message)
-    }
-}
-
-impl std::error::Error for TransferError {}
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]

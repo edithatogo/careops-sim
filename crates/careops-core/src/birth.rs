@@ -66,40 +66,28 @@ pub struct BirthMessageResult {
     pub recipients: Vec<BirthRecipient>,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(thiserror::Error, Clone, Copy, Debug, Eq, PartialEq)]
 pub enum BirthMessageError {
+    #[error("birth message identifiers and destinations must be non-zero")]
     InvalidIdentifier,
+    #[error("birth event must contain at least one infant")]
     EmptyInfantSet,
+    #[error("infant ordinals must be unique within a birth event")]
     DuplicateInfantOrdinal,
+    #[error("birth event keys must be unique within the message")]
     DuplicateEventKey,
+    #[error("birth event is already registered by another message")]
     BirthEventAlreadyRegistered,
+    #[error("birth message ID was reused with different content")]
     MessagePayloadConflict,
+    #[error("birth message references an unknown maternal person")]
     UnknownMother,
+    #[error("{0}")]
     Identity(IdentityError),
+    #[error("invalid or unsupported birth-message checkpoint")]
     InvalidCheckpoint,
 }
 
-impl std::fmt::Display for BirthMessageError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let message = match self {
-            Self::InvalidIdentifier => {
-                "birth message identifiers and destinations must be non-zero"
-            }
-            Self::EmptyInfantSet => "birth event must contain at least one infant",
-            Self::DuplicateInfantOrdinal => "infant ordinals must be unique within a birth event",
-            Self::DuplicateEventKey => "birth event keys must be unique within the message",
-            Self::BirthEventAlreadyRegistered => {
-                "birth event is already registered by another message"
-            }
-            Self::MessagePayloadConflict => "birth message ID was reused with different content",
-            Self::UnknownMother => "birth message references an unknown maternal person",
-            Self::Identity(error) => return error.fmt(f),
-            Self::InvalidCheckpoint => "invalid or unsupported birth-message checkpoint",
-        };
-        f.write_str(message)
-    }
-}
-impl std::error::Error for BirthMessageError {}
 impl From<IdentityError> for BirthMessageError {
     fn from(value: IdentityError) -> Self {
         Self::Identity(value)
