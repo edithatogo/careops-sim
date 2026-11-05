@@ -1,7 +1,7 @@
-# Handoff
+# proptest adoption handoff
 
-Updated 2026-10-22. Planning only; implementation not started.
+Coordinator chat `01a19b9f-69e7-7353-9b75-445d5653feb4` retains parent integration ownership in the existing standard Git worktree `careops-sha2-inventory-20261104`, branch `codex/proptest-inventory-20261105`, based on documentation closeout d0317ff. The source thiserror PR202 remains frozen at42e4; prior PR200/201 and all pins remain unchanged. Exact worktree path, advisory leases, source hashes and raw execution records remain in the private packet.
 
-No adoption if existing validated travel-time matrices answer the question; C++ service operations must justify extra maintenance. OSRM is an alternative to reassess only if Valhalla fails, not a second installed engine.
+The user authorizes proptest R59–R61 implementation and review. Next operation is R59.1 published Kairos96 prerequisite verification and a current consumer inventory, followed by the existing value gate. No upstream/native ownership transfers or new track dispatches. Runtime, output, clinical/site, merge and release gates remain intact.
 
-Prerequisites and ownership are explicit in metadata/spec; value decision remains pending. Planning evidence: [review](../../robust-dependencies-review.md). No runtime/pin/service/deployment change.
+The earlier travel-matrix/Valhalla text was an unrelated planning template; it is superseded here and retained in Git history. It is not a proptest acceptance requirement.
