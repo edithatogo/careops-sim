@@ -15,3 +15,11 @@ The same coordinator/standard Git worktree retains ownership, now on `codex/temp
 ## R53 phase handoff — 5 November 2026
 
 Reviewer `/root/tempfile_phase_review` approves exact20801f1, no findings. Same coordinator/worktree now owns branch `codex/tempfile-replacement-20261105`. Next R54.1 tests-first; R54 source/manifest/lock writes require a fresh bounded claim. R55 remains unaccepted.
+
+## R54 implementation checkpoint — 5 November 2026
+
+Same coordinator/worktree/branch retains all parent ownership. Actual core staging and10manual-directory test files migrated at006545a; tests-first66747ed preserved. Reviewed test-only borrowed-path fixes and exact v2receipt are at e0911cc. Core overwrite/error/0666&umask/nonsync contract and ED durable publishers/RNG/pins unchanged. Actual157core/38ED/24CLI plus26compatibility and actual foreign-model artifact/recovery controls passed;9affected test reruns and core/ED clippy pass. Strict immutable successor guard must close before R54 acceptance. All R55 gates remain pending.
+
+## R54 phase decision
+
+Independent final review approves R54 with48guard/28no-default tests, native/source/artifact receipts and scoped clippy checks. Existing coordinator owns next R55.1 hosted/native/platform/quality/security/cost qualification on the same branch. Keep existing SHA2 PR200/source1D frozen; publish only this Tempfile source and a separate draft PR for full gates. No merge/release/pin promotion.

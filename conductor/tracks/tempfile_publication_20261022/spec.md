@@ -1,6 +1,6 @@
 # CareOps tempfile adoption
 
-R53.1 inventory and R53.2 exact candidate qualification are accepted. Remaining-target runtime adoption stays planned; R53.3 phase review and all R54/R55 acceptance gates remain. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
+R53 qualification and R54 bounded core/test-owner replacement are accepted locally. R55 hosted/platform/integration/quality/security and cost acceptance remains pending. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
 
 ## Inputs and dependencies
 

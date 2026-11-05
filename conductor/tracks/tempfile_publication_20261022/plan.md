@@ -1,6 +1,6 @@
 # Plan: CareOps tempfile
 
-R53.1 inventory and R53.2 exact candidate qualification accepted; R53 phase review accepted; all R54/R55 tasks remain pending.
+R53 and R54 bounded engineering accepted; R55 full acceptance remains pending.
 
 ## R53 — Evidence and scope
 
@@ -10,9 +10,11 @@ R53.1 inventory and R53.2 exact candidate qualification accepted; R53 phase revi
 
 ## R54 — Bounded replacement
 
-- [ ] R54.1 Add failing independent contract and recovery tests before replacement.
-- [ ] R54.2 Replace only named machinery; delete duplicates, preserve semantic validation and version intentional changes.
-- [ ] R54.3 Conductor — review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.
+- [x] R54.1 Add failing independent contract and recovery tests before replacement.
+- [x] R54.2 Replace only named machinery; delete duplicates, preserve semantic validation and version intentional changes.
+- [x] R54.3 Conductor — review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.
+
+[R54 phase review](../../evidence/tempfile-r54-implementation-20261105/phase-review.json) binds tests-first66747ed, implementation006545a, reviewed test-only v2e0911cc and exact guard/test hashes; full48guard/28minimal consumers plus source-bound native/artifact controls pass. No R55 hosted acceptance inferred.
 
 ## R55 — Acceptance
 

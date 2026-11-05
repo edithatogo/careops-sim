@@ -13,3 +13,7 @@
 - Actual core/CLI workspace lock rows change even without new registry versions, invalidating the old byte-identical-lock successor rule; R54 needs a new exact closed receipt and model/recovery proof.
 - NamedTempFile defaults0600 and TempDir is not automatically private under every umask; preserve output creation semantics and explicitly protect scratch directories.
 - Cached objects from differently built compilers may be ABI-incompatible even with identical release labels; qualify actual compiler/closure and retain old recovery software.
+
+## R54 observed risks
+
+Local disk-full stripping created tiny nonexecutables; those consumer tests initially never executed. Preserve raw failed logs and corrupt outputs; completed reruns pass after owned lossless cache/binary preservation and exact rebuild. No chmod or skip bypass. The accepted standalone CLI uses recorded local nonstrip link flags; actual Linux release/platform and full cost/quality/security gates remain R55. Test-only needless-borrow fixes issue a separate immutable v2receipt; original source/receipts are preserved.
