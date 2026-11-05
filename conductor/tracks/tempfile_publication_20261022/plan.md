@@ -1,6 +1,6 @@
 # Plan: CareOps tempfile
 
-R53 and R54 bounded engineering accepted; R55 full acceptance remains pending.
+R53–R55 bounded engineering accepted; all nine tasks complete.
 
 ## R53 — Evidence and scope
 
@@ -18,9 +18,11 @@ R53 and R54 bounded engineering accepted; R55 full acceptance remains pending.
 
 ## R55 — Acceptance
 
-- [ ] R55.1 Run independent oracle, mutation/recovery controls and measure net maintenance/build/runtime cost.
-- [ ] R55.2 Record accepted immutable parent/upstream commits, exact features, receipts and remaining Polars obligations.
-- [ ] R55.3 Conductor — review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.
+- [x] R55.1 Run independent oracle, mutation/recovery controls and measure net maintenance/build/runtime cost.
+- [x] R55.2 Record accepted immutable parent/upstream commits, exact features, receipts and remaining Polars obligations.
+- [x] R55.3 Conductor — review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.
+
+[R55 acceptance](../../evidence/tempfile-r55-acceptance-20261105/acceptance.json) binds exacte86c992 and all six hosted workflows, required checks, complete quality and reviewed source/platform/package/cost evidence. Later documentation closeout is distinct.
 
 ## Dispatch boundary
 

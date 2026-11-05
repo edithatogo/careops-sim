@@ -1,0 +1,584 @@
+{
+  "status": "accepted_bounded_engineering",
+  "qualified_source": "e86c9926efa5f1af13d189983be802717deb5ebf",
+  "actual_tested_merge": "efcc6900b7afd4b4132714502761041a111ba15f",
+  "equal_complete_tree": "43a0549466d0185d2b40cf9cc2a70dd998d48990",
+  "dependency": {
+    "name": "tempfile",
+    "version": "3.27.0",
+    "features": [
+      "default",
+      "getrandom"
+    ],
+    "new_root_registry_versions": 0,
+    "new_minimal_core_nodes": 7,
+    "workspace_lock_rows": [
+      "careops-core",
+      "careops-ed-cli"
+    ],
+    "fuzz_lock_added_packages": 9,
+    "minimal_node_scope": "R532 qualified aarch64 minimal core graph"
+  },
+  "cost_reuse": {
+    "scope": "Same measured function operations/control flow; formatting/docs/import order/closure braces only; reviewer verified exact TF/version/features/closure. Bounded page-cache measurements, not fresh full-app or speedup.",
+    "rustc": "1.99.1-aarch64-apple-darwin",
+    "ratios": [
+      1.0621760649700687,
+      1.138475087727167
+    ],
+    "all_frozen_cost_gates_pass": true,
+    "build": {
+      "baseline": {
+        "cold_seconds": 6.916780917003052,
+        "warm_seconds": 0.029404749991954304,
+        "binary_bytes": 475328,
+        "binary_sha256": "e80d803d982a9ead5a58aee480c670ac6a2725e567aefa03814bb4e97c92d789"
+      },
+      "candidate": {
+        "cold_seconds": 10.33918820800318,
+        "warm_seconds": 0.03407816700928379,
+        "binary_bytes": 482848,
+        "binary_sha256": "570f519297a6db843fae81f936457b5c109ce5881bc21e100207f772f7bf6275"
+      }
+    },
+    "receipt_sha256": "6e39b04b0ed71ae9c6816fedc295f3e065c55f40e71806339eeadaeb676aa130"
+  },
+  "maintenance": {
+    "formatted_production_prefix_before": 42,
+    "formatted_production_prefix_after": 49,
+    "core_helper_net_lines": 7,
+    "tracked_code_support_net_lines": 367,
+    "fuzz_lock_added_lines": 76,
+    "scope": "No overall line-count reduction; registry metadata/docs/receipts/inventory disclosed separately."
+  },
+  "failure_disposition": {
+    "original_policy_job": 126987493322,
+    "reason": "Separate fuzz lock missing core normal Tempfile edge; original --locked failed.",
+    "repair_commit": "e86c9926efa5f1af13d189983be802717deb5ebf",
+    "repair_review": "GO /root/tempfile_phase_review; no policy/threshold/skip changes",
+    "first_full_local_python": "828 reported,827pass +setup error +1missingbinary failure; correct externalbinary reruns6D41+1P52PASS yields834distinctPASS. Hosted full clean suite remains required."
+  },
+  "preserved_gates": [
+    "80percentcoverage",
+    "complete117mutationaccounting",
+    "26frozencasesandLinuxdevfull",
+    "fullnativeLinuxMac/default/integration/security/package",
+    "no merge/release/pin promotion"
+  ],
+  "completed_readbacks": {
+    "default": {
+      "job": 126993177212,
+      "status": "success",
+      "summed_test_result_groups": 108,
+      "summed_tests": {
+        "passed": 787,
+        "failed": 0,
+        "ignored": 0
+      },
+      "log_sha256": "328639929bfd5876dbfd050626b96bcea3f64c643cb0768786edf4b4d9a8e2e2",
+      "scope": "Actual default-feature Cargo workspace lib/bins/tests; distinct from all-features Nextest."
+    },
+    "package": {
+      "archive_sha256": "3ea0027d01c6d763ffb78b14008460158ea790b68f5e58f82091efa2219ae9d4",
+      "package_sha256": "6d95f34fd818ac9a51b59c5c88d22721f523cb16cf0992fa6ba34d30760ec073",
+      "binary_sha256": "80d22573df46c504cf62284b8db21b3d2d2aecff3f9ef6ededd8ee4b142a14ab",
+      "binary_bytes": 109598312,
+      "candidate_bytes_delta_from_sha2": 15136,
+      "consumer": {
+        "schema": "careops.native-package-consumer.v1",
+        "binary_sha256": "80d22573df46c504cf62284b8db21b3d2d2aecff3f9ef6ededd8ee4b142a14ab",
+        "repeat_equal": true,
+        "comparison_equal": true,
+        "table_rows": {
+          "patients": 5,
+          "replications": 1,
+          "metrics": 5
+        }
+      },
+      "spdx_entry_hashes_verified": 9,
+      "spdx_package_checksum_matches": true,
+      "lock_equal": true,
+      "project_license_and_explicit_notice_hashes_equal": true,
+      "notice_scope": "Explicit project and pinned upstream notices; not complete binary dependency closure.",
+      "actual_compiled": "efcc6900b7afd4b4132714502761041a111ba15f",
+      "build": {
+        "binarySha256": "80d22573df46c504cf62284b8db21b3d2d2aecff3f9ef6ededd8ee4b142a14ab",
+        "noticeScope": "Explicit project and pinned upstream notices; not a complete binary dependency closure.",
+        "noticeSha256": {
+          "kairos/LICENSE": "89aa297769053c92bd0dedbccdc3957c92c61fda61e0aa9ae6aaf75e8e0c135e",
+          "kairos/LICENSE-APACHE": "2191d05c6ee7c145480916b745bd020484adb61653be943c43cff10bc22927a1",
+          "kairos/LICENSE-MIT": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1",
+          "kairos/LICENSE.md": "2b43fe15610ec068bd69e4cef58ce92d5fb1a722f10db97d7771f7a82b9d2e06",
+          "project": "2ca384a053844c2027426fdb5e07c751250cd01b6e9497757e8fadf5648e5426"
+        },
+        "scope": "Actual native CLI package; runtime qualification and signatures are separate.",
+        "sourceCommit": "efcc6900b7afd4b4132714502761041a111ba15f"
+      },
+      "scope": "Actual ELF bytes verified locally; Linux execution proof is the hosted unpacked consumer. No Mac ELF execution/signing/stable release claim.",
+      "release_build_observation": {
+        "baseline_seconds": 554,
+        "candidate_seconds": 545,
+        "compiler": "rustc1.99.1 x86_64-unknown-linux-gnu",
+        "profile": "release optimized",
+        "log_sha256": "a378afa3f2cbb6e9e0d1eb743ee766db39d35e3b2474304aa2c840f583b113ef",
+        "scope": "Actual runner observations, not paired cold-build or causal speedup."
+      }
+    },
+    "security": {
+      "run": 41950345244,
+      "job": 126993176956,
+      "status": "success",
+      "policy_subchecks": {
+        "actionlint": 0,
+        "zizmor": 0,
+        "gitleaks": 0,
+        "cargo_deny_root_locked_all_features": 0,
+        "cargo_deny_fuzz_locked": 0
+      },
+      "log_sha256": "a12ea8a38ad5ffbcb9cd54fa7d2e1db9118368a32c77b590f84212affd1f4582",
+      "advisory_db_commit": "Not exposed by successful log; no invented hash."
+    },
+    "linux": {
+      "archive": "x86_64-unknown-linux-gnu",
+      "archive_sha256": "682c21b777c333e96fd532e114d3a5a894e0729ab88d94c0a9f20f8419695428",
+      "failed": 0,
+      "host": "x86_64-unknown-linux-gnu",
+      "ignored_count": 0,
+      "passed": 797,
+      "red_control_exit": 100,
+      "run_count": 797,
+      "sha256": "aac21fea56e7ae3f45b5b7c606e02d62d4ec5b3578658fefe4a98a5f29c4bf1a",
+      "skipped": 0,
+      "test_count": 797,
+      "toolchain": "1.99.1",
+      "version": "cargo-nextest 0.9.146 (8af696ddc 2026-09-21)\nrelease: 0.9.146\ncommit-hash: 8af696ddcce8fff2962d6a5168b6d138b8616a35\ncommit-date: 2026-09-21\nhost: x86_64-unknown-linux-gnu",
+      "job": 126993177050,
+      "status": "success",
+      "log_sha256": "44ed5271ff19386764fddc41eee90199d0a11ec94ee9b400e109ba164b9b6d2b",
+      "independent_birthing_and_ed_readers": "pass in completed job"
+    },
+    "macos": {
+      "archive": "universal-apple-darwin",
+      "archive_sha256": "39785160b3c2f6ed9a765049cf4fa79f3b39aa02eb7598a5a0e2a1a0b9ffb9a8",
+      "failed": 0,
+      "host": "aarch64-apple-darwin",
+      "ignored_count": 0,
+      "passed": 797,
+      "red_control_exit": 100,
+      "run_count": 797,
+      "sha256": "7a558b157d164ab4fb6cb1a48cbac5a57b7b8ad99f5d3492eb6eda64faf91df0",
+      "skipped": 0,
+      "test_count": 797,
+      "toolchain": "1.99.1",
+      "version": "cargo-nextest 0.9.146 (8af696ddc 2026-09-21)\nrelease: 0.9.146\ncommit-hash: 8af696ddcce8fff2962d6a5168b6d138b8616a35\ncommit-date: 2026-09-21\nhost: aarch64-apple-darwin",
+      "job": 126993177052,
+      "status": "success",
+      "log_sha256": "d5f8911eb5359861cc017ce460b0bbc6e77e394a2953c401e50de9ef589aa52e",
+      "independent_birthing_and_ed_readers": "pass in completed job"
+    },
+    "compatibility": {
+      "source": "e86c9926efa5f1af13d189983be802717deb5ebf",
+      "actual_tested_merge": "efcc6900b7afd4b4132714502761041a111ba15f",
+      "run": 41950345244,
+      "cases": 26,
+      "all_input_and_canonical_summary_hashes_equal": true,
+      "negative_files_rejected": 14,
+      "dev_full": "pass",
+      "zero_work": "pass",
+      "oversized_input_preflight": "pass",
+      "slow_stdout": "pass",
+      "blocked_pipe": "pass",
+      "budgets": {
+        "max_wall_seconds": 10.0,
+        "max_rss_bytes": 268435456,
+        "max_output_bytes": 8388608
+      },
+      "max_case_wall_seconds": 1.6729318359999752,
+      "max_case_child_rss_bytes": 144793600,
+      "raw_report_sha256": "11ce17cf8341c8a916c62fd89c844cb9c67938cddff17a6e932e36b0f378aed2",
+      "binary_sha256": "80d22573df46c504cf62284b8db21b3d2d2aecff3f9ef6ededd8ee4b142a14ab",
+      "scope": "Fresh Linux actualrelease26frozenpairs +14negative/io/backpressure; timestamps/rawoutputhashes not cross-run oracles."
+    },
+    "quality": {
+      "source": "e86c9926efa5f1af13d189983be802717deb5ebf",
+      "job": 126993176998,
+      "status": "success",
+      "full_python_suites": [
+        834,
+        127
+      ],
+      "coverage": {
+        "file": "crates/careops-ed/src/lib.rs",
+        "functions": {
+          "count": 49,
+          "covered": 37,
+          "percent": 75.51020408163265
+        },
+        "lines": {
+          "count": 578,
+          "covered": 512,
+          "percent": 88.58131487889273
+        }
+      },
+      "mutations": {
+        "baseline": "Success",
+        "cargo_mutants_version": "27.1.0",
+        "catalog_sha256": "45357afa3f76ccd75e04463839b8350c1ca393be411407ee218806e7e89ac4bb",
+        "caught": 111,
+        "equivalent_misses": [
+          {
+            "column": 60,
+            "line": 763,
+            "name": "crates/careops-ed/src/lib.rs:763:60: replace || with && in run_scenario_with_capture"
+          },
+          {
+            "column": 43,
+            "line": 828,
+            "name": "crates/careops-ed/src/lib.rs:828:43: replace || with && in run_scenario_with_capture"
+          }
+        ],
+        "missed": 2,
+        "source": "crates/careops-ed/src/lib.rs",
+        "source_sha256": "16be17474be52f923196d652f432dcecb3bebfc8866f14114f721a8d4e6a6352",
+        "timeout": 0,
+        "total_mutants": 117,
+        "unviable": 4
+      },
+      "context_log_sha256": "28fb5d84300ae4e6bacd6f1fc19dc05aa05cb652796982dd75d0b052a4681501",
+      "quality_artifact_files": {
+        "mutations.log": "6e77e956cb15213dc607fefbf4bd994dfcbec13259df7ab3a6bb3f1dfc8e4452",
+        "coverage.json": "04e8d986b970b999fb7002d8ae447117c84bb75c6a84ddfb2bd25bada23e5a80",
+        "mutations/mutants.out/outcomes.json": "385c5bd3583f9470d6ce3adfb87c6e0ee043158ac2b1ee5ef4cdefdf294aa00a",
+        "mutations/mutants.out/missed.txt": "3efe0b20478cc5bae017e9361a5a5752fc9d9ff3012b47445fedd1d07d925d10",
+        "mutations/mutants.out/mutants.json": "45357afa3f76ccd75e04463839b8350c1ca393be411407ee218806e7e89ac4bb",
+        "mutations/mutants.out/unviable.txt": "430e945b92c0a199fb283c46403c71ed5281a6954c5f33ed4ab960d3f622cb6b"
+      },
+      "limits": "Original80percentfloor/117catalog/2existingreviewedequivalents/4knownunviables; no new exemptions; library catalogue scope retained.",
+      "receipt_correction": "Terminal actual validator selected; earlier synthetic unittest record is retained in raw log and excluded from acceptance."
+    }
+  },
+  "workflow_runs": [
+    {
+      "id": 41950345402,
+      "name": "Native CLI release candidate",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 79,
+      "jobs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345402/jobs",
+      "logs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345402/logs",
+      "workflow_id": 388579955
+    },
+    {
+      "id": 41950345136,
+      "name": "Cargo dependency lock qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 78,
+      "jobs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345136/jobs",
+      "logs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345136/logs",
+      "workflow_id": 388586919
+    },
+    {
+      "id": 41950345193,
+      "name": "Agent harness",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 614,
+      "jobs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345193/jobs",
+      "logs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345193/logs",
+      "workflow_id": 373625391
+    },
+    {
+      "id": 41950345380,
+      "name": "Shared source security",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 183,
+      "jobs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345380/jobs",
+      "logs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345380/logs",
+      "workflow_id": 388532096
+    },
+    {
+      "id": 41950345220,
+      "name": "Privacy protection",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 78,
+      "jobs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345220/jobs",
+      "logs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345220/logs",
+      "workflow_id": 399232407
+    },
+    {
+      "id": 41950345244,
+      "name": "ci",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 639,
+      "jobs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345244/jobs",
+      "logs_url": "https://api.github.com/repos/edithatogo/careops-sim/actions/runs/41950345244/logs",
+      "workflow_id": 373539520
+    }
+  ],
+  "ci_jobs": [
+    {
+      "id": 126993101285,
+      "name": "scope",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 126993176883,
+      "name": "clippy",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 126993176901,
+      "name": "doctest",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 126993176956,
+      "name": "policy",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 126993176981,
+      "name": "fmt",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 126993176998,
+      "name": "context",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 126993177050,
+      "name": "test (ubuntu-24.04)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 126993177052,
+      "name": "test (macos-15)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 126993177212,
+      "name": "default (Rust 1.99.1, default features)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 127022628658,
+      "name": "Required checks",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "preserved_bindings": [
+    {
+      "path": "Cargo.lock",
+      "sha256": "fce102632a15102516d17671a170e58a598f185c67ab976ba1bffb766c3891f8"
+    },
+    {
+      "path": "crates/careops-core/Cargo.toml",
+      "sha256": "2fbb80147c87e43b7c202971c2ea8136eeb089b8f8f8f6e0b89d9c8cfce896f4"
+    },
+    {
+      "path": "crates/careops-core/src/experiment/io.rs",
+      "sha256": "35ce7bc39768befd33b935b79663fe0810fe2b9146e98602646876a2c5e2e3bd"
+    },
+    {
+      "path": "crates/careops-core/tests/experiment_runner_contract.rs",
+      "sha256": "a6895359b33671483dd8347d3162dd37703e6cbfa7e48e946bf374302c6f002f"
+    },
+    {
+      "path": "crates/careops-core/tests/logistics_consumer.rs",
+      "sha256": "4c7085022c70249e0b637464fed192d449a6a6c0a68af29ae1868324450fc8b2"
+    },
+    {
+      "path": "crates/careops-core/tests/profile_loader_tests.rs",
+      "sha256": "bf4ca6728fd2ab4604dddaa08e6e989dd1ea93431533af66314c388a2395ac42"
+    },
+    {
+      "path": "crates/careops-core/tests/r54_tempfile_contract.rs",
+      "sha256": "5ae7c2304c4d4930696fd40396166d8747a39aac56650ef0f56637e0c2df3094"
+    },
+    {
+      "path": "crates/careops-ed-cli/Cargo.toml",
+      "sha256": "bfeb24eff67b2c540ad400714de40cb4ce89a50f5416ea8040f710b767dc1dca"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/c63_native_contract.rs",
+      "sha256": "fe72f8dd131199b54767c9dda4f625fa8357a05df3c7ff971dff4700476473a7"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/consumer_contract.rs",
+      "sha256": "e29ab91d426d46ea630fb82a400d794152c85d97e03ef41c6d09b19bcc6320d8"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/execution_capabilities.rs",
+      "sha256": "0c01c6195948ead047ff722fb873954d259a31c386472b37e4a60f7d3ed30bb9"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/native_cli.rs",
+      "sha256": "bf92cec49b315ee8cbbfd491a7689d2c6519a293f0866187b39c74bfcb1fbb89"
+    },
+    {
+      "path": "crates/careops-ed/Cargo.toml",
+      "sha256": "236995aaf076e8db608c8bf1665a036616635cb26bbcf037daa2ee0726341bcc"
+    },
+    {
+      "path": "crates/careops-ed/tests/e32_batch_and_checkpoint_tests.rs",
+      "sha256": "1b0f93034cbb53538edf9c8524391d3e1ac90aba4c3f61029f9f9da0a0abc1d0"
+    },
+    {
+      "path": "crates/careops-ed/tests/ed_ward_community_composition.rs",
+      "sha256": "6b0ca9509165fea134a4aa56ac48cfd63b80ba2e822db16472d82b08b0030ff1"
+    },
+    {
+      "path": "crates/careops-ed/tests/r111_capture_boundaries.rs",
+      "sha256": "73993355fbf0d21aebcb315fed83444766d627e91d369560982f2bf82b157469"
+    }
+  ],
+  "upstream": {
+    "accepted_prerequisite": "5692e6a9ee866131262d60103a84e2544dc51e4a",
+    "runtime_pin": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+    "data_pin": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+    "polars_pin": "96439685eb2f95108f51087d2b76091917f2593c",
+    "renewed_A7_acceptance": false
+  },
+  "workflow_applicability": {
+    "selected": [
+      "ci",
+      "Native CLI release candidate",
+      "Cargo dependency lock qualification",
+      "Shared source security",
+      "Privacy protection",
+      "Agent harness"
+    ],
+    "not_selected": [
+      "Schema dependency lock qualification",
+      "Schema development candidates"
+    ],
+    "reason": "OriginalconfiguredPRpathfilters unchanged; alltriggerinputs byteidentical tobase1D; no dispatchwaiverorCIedit. HistoricalR52seventhwasSchema dependency lock qualification41787210820, notpreviewcanary.",
+    "unchanged_inputs": [
+      {
+        "path": "requirements-schema-validation.txt",
+        "sha256": "67fcc67e78013678c851fea9b933facd03361ab399cba302b4ee3ce18125d1c2"
+      },
+      {
+        "path": "requirements-schema-validation.lock",
+        "sha256": "964f6d6061c09dc1d7812cd627eb864e9c44570ad923d527788c8e64c5e0ed25"
+      },
+      {
+        "path": ".github/workflows/schema-lock-refresh.yml",
+        "sha256": "bccec66c05cdda394c0dc9674f02718c370649075dd508d1261e1211042d0c1f"
+      },
+      {
+        "path": ".github/workflows/ci.yml",
+        "sha256": "f9d314016873f1a3c4c7e3c73efc908cd149d288e9cb8e2898156d47c706b374"
+      },
+      {
+        "path": ".github/workflows/schema-development-canary.yml",
+        "sha256": "42f4376541e0e9db1ad91d2ad21d853b9132faa64eb383c192d0ace66ec8f925"
+      },
+      {
+        "path": "tests/test_schema_canary.py",
+        "sha256": "31fb252cd8a336bdf1f80167a1727ffcc6354a4559a2b49ab20f40b456b5de64"
+      }
+    ],
+    "review": "/root/tempfile_phase_review GO toscopealignment"
+  },
+  "private_receipt_hashes": [
+    {
+      "name": "tempfile-r55-source-freeze.json",
+      "sha256": "f2f06916fe538389c90d293a908ceae57864027480a7d4848a20082dbb7862bc"
+    },
+    {
+      "name": "tempfile-r55-default-e86c992.json",
+      "sha256": "53971d3a40f440494c748449f781564c0aa717d72896f487b21fd4f894acac4d"
+    },
+    {
+      "name": "tempfile-r55-benchmark-readback-e86c992.json",
+      "sha256": "ad2823ee887441bc1e28226a0a219b12a77341d54904a6e245e17c69ae152674"
+    },
+    {
+      "name": "tempfile-r55-package-e86c992.readback.json",
+      "sha256": "7826f342e25492fb66ac23a6c27ab765434b1d5f7bb852ccbe2d26a6f23dd17f"
+    },
+    {
+      "name": "tempfile-r55-quality-readback-e86c992.json",
+      "sha256": "8f633ed4fbaf13e3fede86ffd109917e0dd0a677f4a87fab4b604e6423bb01b7"
+    },
+    {
+      "name": "tempfile-r55-final-runs.json",
+      "sha256": "1020816b0effd3b9df032a043e9babff60c16cdf85a626dada09777215760bea"
+    },
+    {
+      "name": "tempfile-r55-final-jobs.json",
+      "sha256": "28ea60f5e7de8ad18dfcbfc0fd88e5341c3832800ad99955fdd900bfa12e6465"
+    },
+    {
+      "name": "tempfile-r55-final-artifacts.json",
+      "sha256": "fe7a177ba4478e012c1ea607ec8bdedceef1146fc01ed53e102f81560dcfd7ef"
+    },
+    {
+      "name": "tempfile-r55-maintenance-audit.json",
+      "sha256": "6848faf7c5e0a5ba21c64c6c98dbcde9fffdf56388a575c72d34cd061b8ec43c"
+    }
+  ],
+  "retained_contracts": [
+    "Overwrite-only API and OutputWriteFailed",
+    "0666&umask output creation; private test directories",
+    "Core helper remains nonsync; four caller ignored-write policies unchanged",
+    "ED durable checkpoint/Parquet/RNG/profile/pins unchanged",
+    "Actual old artifacts readable and changed-model resume refused; R54immutable receipts retained",
+    "Track70 owns end-to-end durable publication acceptance; supporting track does not certify physical crash durability"
+  ],
+  "closeout_disposition": {
+    "branch": "codex/tempfile-r55-closeout-20261105",
+    "source_pr": 201,
+    "preserve_pr_head": "e86c9926efa5f1af13d189983be802717deb5ebf",
+    "scope": "Separate documentation-only follow-on; qualified source remains distinct from later closeout commit. No merge/release/pin promotion."
+  },
+  "review": {
+    "reviewer": "/root/tempfile_phase_review",
+    "decision": "Final R55 GO; no remaining findings",
+    "reviewed_at": "2026-11-05",
+    "source": "e86c9926efa5f1af13d189983be802717deb5ebf",
+    "scope": "Exact source/tested merge and all six terminal workflows/required checks; full native/default/integration/26 Linux devfull/coverage117mutation/security/package/cost and original failure dispositions.",
+    "correction_applied": "Selected terminal actual mutation catalogue45357afa; excluded earlier synthetic unittest output, recomputed retained receipt hash.",
+    "constraints": [
+      "Separate documentation-only closeout",
+      "PR201 remains draft/frozen at qualified source",
+      "No merge/release/pin promotion; existing durability/clinical boundaries retained"
+    ]
+  },
+  "closeout_checks": {
+    "private_receipt": "tempfile-r55-closeout-checks.json",
+    "sha256": "0696f5fe07131a20adb6a023ff5649acb3b5ce832c9f9c883fe3e28639a9e07c",
+    "tests": {
+      "focused": 16,
+      "dag": 38,
+      "handoffs": 9
+    },
+    "context_tasks_mvp_diff": "pass",
+    "source_bindings": "16 unchanged",
+    "graph": "405IDs/edges unchanged; only R55.1\u20133 newly accepted"
+  },
+  "closeout_review": {
+    "reviewer": "/root/tempfile_phase_review",
+    "decision": "GO after one current index sentence correction",
+    "findings_applied": [
+      "Update stale Conductor index to completed R53\u2013R55 with acceptance link/source vs docs distinction."
+    ],
+    "limits": "No runtime rerun for documentation-only correction; final context/diff and expanded claim checked."
+  }
+}

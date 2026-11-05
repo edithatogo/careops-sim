@@ -3,18 +3,19 @@
   "title": "CareOps tempfile adoption",
   "library": "tempfile",
   "type": "refactor",
-  "status": "in_progress",
+  "status": "complete",
   "created_at": "2026-10-22",
   "updated_at": "2026-11-05",
   "spec_approved": true,
   "implementation_started": true,
   "accepted_phases": [
     "R53",
-    "R54"
+    "R54",
+    "R55"
   ],
   "active_phase": "R55",
   "priority_class": "foundation",
-  "adoption_decision": "adopt_bounded_R54",
+  "adoption_decision": "accepted_bounded_engineering",
   "phase_dependencies": {
     "R53": [],
     "R54": [
@@ -53,8 +54,8 @@
       }
     }
   ],
-  "runtime_adoption_status": "bounded_core_staging_and_test_ownership_locally_accepted_pending_R55",
-  "next_phase_decision": "R54 accepted after independent review and actual48guard/28minimal tests, native/artifact/26compat controls. Next R55.1 full hosted/platform/integration/quality/security/cost gates.",
+  "runtime_adoption_status": "bounded_core_staging_and_named_test_ownership_accepted",
+  "next_phase_decision": "R53\u2013R55 complete at e86c992, all configured gates passed and independent final review accepted. Separate documentation closeout; PR201 remains draft/frozen, no merge/release/pin promotion.",
   "accepted_local_tasks": {
     "R53.1": {
       "snapshot_source": "88bdfd67c622d06868331af80dc4db54daa98891",
@@ -91,6 +92,24 @@
       "evidence": "conductor/evidence/tempfile-r54-implementation-20261105/phase-review.json",
       "reviewer": "/root/tempfile_phase_review",
       "scope": "Bounded local engineering; R55 acceptance remains separate."
+    },
+    "R55.1": {
+      "source_commit": "e86c9926efa5f1af13d189983be802717deb5ebf",
+      "evidence": "conductor/evidence/tempfile-r55-acceptance-20261105/acceptance.json",
+      "reviewer": "/root/tempfile_phase_review",
+      "scope": "Bounded actual configured hosted/platform/integration/quality/security/package/cost acceptance."
+    },
+    "R55.2": {
+      "source_commit": "e86c9926efa5f1af13d189983be802717deb5ebf",
+      "evidence": "conductor/evidence/tempfile-r55-acceptance-20261105/acceptance.json",
+      "reviewer": "/root/tempfile_phase_review",
+      "scope": "Bounded actual configured hosted/platform/integration/quality/security/package/cost acceptance."
+    },
+    "R55.3": {
+      "source_commit": "e86c9926efa5f1af13d189983be802717deb5ebf",
+      "evidence": "conductor/evidence/tempfile-r55-acceptance-20261105/acceptance.json",
+      "reviewer": "/root/tempfile_phase_review",
+      "scope": "Bounded actual configured hosted/platform/integration/quality/security/package/cost acceptance."
     }
   },
   "decision_history": [
@@ -98,6 +117,16 @@
       "source_commit": "52108bfb1c6610365b1a685725bd310aed642f8e",
       "adoption_decision": "pending_value_gate",
       "runtime_adoption_status": "not_started"
+    },
+    {
+      "source_commit": "e86c9926efa5f1af13d189983be802717deb5ebf",
+      "adoption_decision": "adopt_bounded_R54",
+      "runtime_adoption_status": "bounded_core_staging_and_test_ownership_locally_accepted_pending_R55"
     }
+  ],
+  "completion_evidence": [
+    "conductor/evidence/tempfile-r55-acceptance-20261105/acceptance.json",
+    "conductor/evidence/tempfile-r55-acceptance-20261105/README.md",
+    "conductor/evidence/tempfile-r54-implementation-20261105/phase-review.json"
   ]
 }

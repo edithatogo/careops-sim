@@ -17,3 +17,7 @@
 ## R54 observed risks
 
 Local disk-full stripping created tiny nonexecutables; those consumer tests initially never executed. Preserve raw failed logs and corrupt outputs; completed reruns pass after owned lossless cache/binary preservation and exact rebuild. No chmod or skip bypass. The accepted standalone CLI uses recorded local nonstrip link flags; actual Linux release/platform and full cost/quality/security gates remain R55. Test-only needless-borrow fixes issue a separate immutable v2receipt; original source/receipts are preserved.
+
+## R55 dispositions
+
+All configured current-source gates pass with independent review. The separate fuzz lock failure was fixed without policy changes; all9new fuzz package tuples match the root lock. Observed ELF growth15136bytes and original +6.2%/+13.8% page-cache costs are disclosed. Prior failed builds/logs and historical receipts remain. Physical crash durability and future consumer/platform qualification retain their named owners; PR201 remains draft/frozen and no merge/release/pin promotion is performed.

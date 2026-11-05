@@ -1,6 +1,6 @@
 # CareOps tempfile adoption
 
-R53 qualification and R54 bounded core/test-owner replacement are accepted locally. R55 hosted/platform/integration/quality/security and cost acceptance remains pending. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
+R53–R55 bounded core/test-owner adoption is complete at qualified sourcee86c992. [R55 acceptance](../../evidence/tempfile-r55-acceptance-20261105/README.md) records actual hosted/platform/integration/quality/security/package/cost gates and remaining scope limits. Apply [value policy](../../dependency-value-policy.md) and [sequencing](../../dependency-sequencing.md).
 
 ## Inputs and dependencies
 

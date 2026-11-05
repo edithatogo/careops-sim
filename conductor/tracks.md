@@ -95,7 +95,7 @@ is native v1. Visual/spatial import, live UI and advanced backends remain post-v
 ---
 
 ---
-- [~] **Track: CareOps tempfile** — R53/R54 bounded core staging and test-owner replacement accepted locally; R55 full acceptance next. Hosted/platform/quality/security/cost gates remain.
+- [x] **Track: CareOps tempfile** — R53–R55 complete at sourcee86c992; all hosted/platform/quality/security/package/cost gates passed and reviewed. PR201 draft/frozen; separate documentation closeout.
   - Link: [tempfile_publication_20261022](tracks/tempfile_publication_20261022/index.md)
 
 ---

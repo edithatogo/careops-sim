@@ -16,4 +16,4 @@
 
 [Qualification](../../evidence/tempfile-r532-qualification-20261105/README.md) records exact3.27.0/default getrandom, source integrity/security, parent-floor compile, independent filesystem outcomes, frozen costs and changed lock/model identity. At that checkpoint, R53.3 remained next; later bounded adoption is recorded below.
 
-Current state: R53/R54 bounded engineering accepted; R55 acceptance pending. [R54 review](../../evidence/tempfile-r54-implementation-20261105/phase-review.json).
+Current state: R53–R55 complete; [final acceptance](../../evidence/tempfile-r55-acceptance-20261105/README.md). PR201 qualified sourcee86c992 remains draft/frozen; later Conductor closeout is documentation only. [R54 review](../../evidence/tempfile-r54-implementation-20261105/phase-review.json).

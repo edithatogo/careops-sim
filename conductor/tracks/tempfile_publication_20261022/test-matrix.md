@@ -1,8 +1,8 @@
 # Test matrix
 
-Future oracle: Concurrent directory creation/isolation; cleanup on normal/error paths; intentional retained diagnostics; same-filesystem publication, failure before/after persist, no-clobber and old-output preservation. End-to-end process-kill/disk-full/manifest recovery remains mandatory in Polars and is not certified by this supporting track.
+Required oracle (executed within the scope below): Concurrent directory creation/isolation; cleanup on normal/error paths; intentional retained diagnostics; same-filesystem publication, failure before/after persist, no-clobber and old-output preservation. End-to-end process-kill/disk-full/manifest recovery remains mandatory in Polars and is not certified by this supporting track.
 
-Run focused native tests plus applicable existing CI lanes; record cwd/commit/toolchain/seed/input hashes/exit codes/raw artifacts. Planning: `python3 tools/tasks.py check` and `python3 tools/context.py check`. No runtime acceptance yet.
+Run focused native tests plus applicable existing CI lanes; record cwd/commit/toolchain/seed/input hashes/exit codes/raw artifacts. Planning: `python3 tools/tasks.py check` and `python3 tools/context.py check`. Bounded runtime acceptance is recorded in the R55 receipt below.
 
 ## R53.1 evidence boundary
 
@@ -15,3 +15,7 @@ Historical source/receipt/ancestry and current static inventory verified; no fre
 ## R54 implementation evidence
 
 [Source checkpoint](../../evidence/tempfile-r54-implementation-20261105/qualified-source.json) and [reviewed test-only successor](../../evidence/tempfile-r54-implementation-20261105/qualified-source-v2.json) preserve actual tests-first3FAIL/3PASS, final157core/38ED/24CLI,9review-fix reruns,26native cases/adversarial controls and actual old-artifact reading/foreign-model resume refusal. Initial compile and disk-full/strip corrupt artifacts were not passes. Local debug link flags and limited cost scope are explicit. Strict source guard/phase review and R55 full acceptance remain required.
+
+## R55 final acceptance
+
+[Final receipt](../../evidence/tempfile-r55-acceptance-20261105/acceptance.json) binds all six hosted workflows/required checks;787default,797native per Linux/macOS,834+127Python,26frozen Linux cases/devfull/adversarial controls,512/578coverage and complete117mutation accounting, fresh security/package and measured cost. Original thresholds and receipt/recovery boundaries remain. No later documentation-head hosted claim.
