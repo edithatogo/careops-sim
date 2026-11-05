@@ -1,0 +1,134 @@
+{
+  "status": "GO_R53.2",
+  "source": "f2d7ffc3792321c731c893d797dd4fcd10f1a1f7",
+  "reviewer": "/root/ffi_packet_prepare",
+  "focused_tests_passed": 63,
+  "commands": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_context.py",
+        "-v"
+      ],
+      "exit": 0,
+      "tests": 16,
+      "log_name": "tempfile-r532-focused-0.log",
+      "log_sha256": "cd8c154f4f4700d62302eec7d6ea9982459133a0d12fba2812dc1d8f5f2ccf7e"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_tasks.py",
+        "-v"
+      ],
+      "exit": 0,
+      "tests": 38,
+      "log_name": "tempfile-r532-focused-1.log",
+      "log_sha256": "0b5d68f1d7fe8249b9bae4bebe70d888f628acc725437b111355423ee5e91402"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_dependency_handoffs.py",
+        "-v"
+      ],
+      "exit": 0,
+      "tests": 9,
+      "log_name": "tempfile-r532-focused-2.log",
+      "log_sha256": "f49d522c159a4d73e37618e970d82240d7bffdf3f106fea1a358aa786bad08a6"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/context.py",
+        "check"
+      ],
+      "exit": 0,
+      "tests": null,
+      "log_name": "tempfile-r532-focused-3.log",
+      "log_sha256": "f2b113729c3137a1c56bcb45514af10e9db39d01d668ccc3826eb6f7b9c7742d"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/tasks.py",
+        "check"
+      ],
+      "exit": 0,
+      "tests": null,
+      "log_name": "tempfile-r532-focused-4.log",
+      "log_sha256": "9b554cd90733d8422cdbdc0f950a0ff463224f7c2a9d737889fe133c6876324c"
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/mvp.py",
+        "check"
+      ],
+      "exit": 0,
+      "tests": null,
+      "log_name": "tempfile-r532-focused-5.log",
+      "log_sha256": "3c7b9a3062f62964126c8db247833e935b8557a4baeffb7a30525cbe5f410966"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "tests": null,
+      "log_name": "tempfile-r532-focused-6.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "all405_task_ids_and_dependencies_preserved": true,
+  "all404_other_task_records_unchanged": true,
+  "all7_later_tempfile_tasks_pending": true,
+  "other_dependency_rows_and_exact_prior_history_preserved": true,
+  "accepted_phases": [],
+  "parent_runtime_manifests_lock_pins_config_unchanged": true,
+  "accounting_fix": {
+    "baseline_non_test_prefix_lines": 42,
+    "candidate_non_test_prefix_lines": 28,
+    "baseline_whole_file_lines": 58,
+    "candidate_fixture_whole_file_lines": 45,
+    "preserved_inline_tests_sha256": "40c9354b0b878d42eb84b3e9c966d50ccddb5f3c0be501b2a215d51f2194d18c",
+    "extra_separator_lines": 1
+  },
+  "final_review": {
+    "reviewer": "/root/ffi_packet_prepare",
+    "decision": "GO R53.2 decision only",
+    "findings_remaining": [],
+    "scope": "All source/behavior/frozen-cost/security/MSRV/archive integrity/actual graph-lock/14identity bindings and focused63 checks verified; exact prior histories and unrelated rows retained.",
+    "fixes_applied": [
+      "Explicit production-prefix42\u219228 vs wholefixture58\u219245 counting with preserved inline-test suffix/one separator;279supportlines disclosed",
+      "Actual workspace node-only lock deltas included in model identity, not byte-identical-lock assumption",
+      "Retain original failures and correct compiler-flavour/cache/independent ordering/metadata resolution setup without changing frozen budgets"
+    ],
+    "remaining_gates": [
+      "R53.3 phase review",
+      "R54 tests-first and exact new closed source/lock successor receipt",
+      "R54 actual candidate artifact/recovery proof",
+      "R55 full hosted/platform/integration/quality/security/whole-app costs"
+    ]
+  }
+}

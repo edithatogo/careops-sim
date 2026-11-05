@@ -103,4 +103,6 @@ are source-bound. R52 bounded engineering is complete at source1d559a6, includin
 
 ## Tempfile prerequisite inventory
 
-[Tempfile R53.1](evidence/tempfile-r531-inventory-20261105/README.md) verifies historical Track94 and inventories current retained/migrated consumers. Next R53.2; no current-version/runtime or phase acceptance. Ownership/pins and Polars durability gates remain.
+[Tempfile R53.1](evidence/tempfile-r531-inventory-20261105/README.md) verifies historical Track94 and inventories current retained/migrated consumers. That inventory did not qualify current-version/runtime or phase acceptance. R53.2 candidate evidence follows below; ownership/pins and Polars durability gates remain.
+
+[Tempfile R53.2 qualification](evidence/tempfile-r532-qualification-20261105/README.md) records exact current dependency, private compatibility/value/security and model-build/lock effects. Next R53.3; later adoption and acceptance remain gated.

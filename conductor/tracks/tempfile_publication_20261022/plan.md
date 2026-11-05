@@ -1,11 +1,11 @@
 # Plan: CareOps tempfile
 
-R53.1 historical prerequisite and source-bound inventory accepted; R53.2 and later tasks remain pending.
+R53.1 inventory and R53.2 exact candidate qualification accepted; R53.3 phase review and all R54/R55 tasks remain pending.
 
 ## R53 — Evidence and scope
 
 - [x] R53.1 Verify upstream receipt and local prerequisites; inventory direct consumers and retained/deleted paths. [Inventory](../../evidence/tempfile-r531-inventory-20261105/README.md) binds source88bdfd6, upstream5692/runtime074/data473 and exact receipt limits; no runtime or R53 phase acceptance.
-- [ ] R53.2 Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision.
+- [x] R53.2 Qualify exact version/features/licence/MSRV/security, independent baseline and cost budgets; record value decision. [Qualification](../../evidence/tempfile-r532-qualification-20261105/README.md) binds exact3.27/default-getrandom, independent failures, frozen costs, actual lock-row and model-identity changes. No parent adoption or R53 phase closeout.
 - [ ] R53.3 Conductor — review and verify phase (workflow.md); apply accepted fixes and record next-phase decision.
 
 ## R54 — Bounded replacement
