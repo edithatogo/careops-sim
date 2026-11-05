@@ -1,0 +1,276 @@
+{
+  "snapshot_source": "e16616f43d1705d4033cd0ef1f20791e5c487fb7",
+  "original_case_output_sha256": "ef6a354db36f7bbd1cdc2b48c9b3e458beb2fe32d6674b810b21dfa3ffc90c6a",
+  "cases": {
+    "ArrivalError::InvalidVersion": {
+      "display": "version must be 1",
+      "debug": "InvalidVersion",
+      "source": null
+    },
+    "ArrivalError::InvalidProvenance": {
+      "display": "provenance must be 'synthetic_tick_fixture'",
+      "debug": "InvalidProvenance",
+      "source": null
+    },
+    "ArrivalError::InvalidHorizon": {
+      "display": "horizon_ticks must be positive",
+      "debug": "InvalidHorizon",
+      "source": null
+    },
+    "ArrivalError::LimitExceeded": {
+      "display": "arrival configuration exceeds a bounded limit",
+      "debug": "LimitExceeded",
+      "source": null
+    },
+    "ArrivalError::InvalidMode": {
+      "display": "mode must be 1..64 ASCII identifier bytes",
+      "debug": "InvalidMode",
+      "source": null
+    },
+    "ArrivalError::DuplicateMode": {
+      "display": "mode occurs more than once in a bin",
+      "debug": "DuplicateMode",
+      "source": null
+    },
+    "ArrivalError::InvalidBin": {
+      "display": "bin must satisfy 0 <= start < end <= horizon",
+      "debug": "InvalidBin",
+      "source": null
+    },
+    "ArrivalError::OverlappingBins": {
+      "display": "arrival bins overlap",
+      "debug": "OverlappingBins",
+      "source": null
+    },
+    "ArrivalError::CountMismatch": {
+      "display": "mode total does not match acuity counts",
+      "debug": "CountMismatch",
+      "source": null
+    },
+    "ArrivalError::ArithmeticOverflow": {
+      "display": "arrival count or tick arithmetic overflowed",
+      "debug": "ArithmeticOverflow",
+      "source": null
+    },
+    "ArrivalError::SamplingExhausted": {
+      "display": "bounded unbiased sampling exhausted its draw budget",
+      "debug": "SamplingExhausted",
+      "source": null
+    },
+    "EdIdentityError::InvalidSourceKey": {
+      "display": "synthetic ED identity key is empty or too long",
+      "debug": "InvalidSourceKey",
+      "source": null
+    },
+    "EdIdentityError::SourceKeyCollision": {
+      "display": "different ED source keys derived the same event ID",
+      "debug": "SourceKeyCollision",
+      "source": null
+    },
+    "EdIdentityError::AdmissionKeyConflict": {
+      "display": "admission key was reused with different person or service",
+      "debug": "AdmissionKeyConflict",
+      "source": null
+    },
+    "EdIdentityError::IdCollision": {
+      "display": "ED identity key derivation produced a zero or colliding ID",
+      "debug": "IdCollision",
+      "source": null
+    },
+    "EdIdentityError::Ledger(InvalidIdentifier)": {
+      "display": "identity identifiers must be non-zero",
+      "debug": "Ledger(InvalidIdentifier)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(InvalidSourceKey)": {
+      "display": "synthetic identity source key is empty or too long",
+      "debug": "Ledger(InvalidSourceKey)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(EmptyBatch)": {
+      "display": "identity tick batch must contain at least one command",
+      "debug": "Ledger(EmptyBatch)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(TimeAlreadySealed)": {
+      "display": "identity tick has already been sealed",
+      "debug": "Ledger(TimeAlreadySealed)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(LateEvent)": {
+      "display": "new identity event arrived after its logical tick was sealed",
+      "debug": "Ledger(LateEvent)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(EventConflict)": {
+      "display": "identity event ID was reused with different content",
+      "debug": "Ledger(EventConflict)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(IdCollision)": {
+      "display": "deterministic identity derivation collided",
+      "debug": "Ledger(IdCollision)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(UnknownPerson)": {
+      "display": "identity command references an unknown person",
+      "debug": "Ledger(UnknownPerson)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(UnknownEpisode)": {
+      "display": "identity command references an unknown episode",
+      "debug": "Ledger(UnknownEpisode)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(PersonDeceased)": {
+      "display": "deceased person cannot enter a new service episode",
+      "debug": "Ledger(PersonDeceased)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(OpenEpisodesAtDeath)": {
+      "display": "person death requires every service episode to be explicitly exited",
+      "debug": "Ledger(OpenEpisodesAtDeath)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(EpisodeAlreadyExited)": {
+      "display": "service episode is already exited",
+      "debug": "Ledger(EpisodeAlreadyExited)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(InvalidRelationship)": {
+      "display": "invalid relationship or birth-parent cycle",
+      "debug": "Ledger(InvalidRelationship)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(RelationshipExists)": {
+      "display": "relationship already exists",
+      "debug": "Ledger(RelationshipExists)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(UnknownRelationship)": {
+      "display": "relationship does not exist",
+      "debug": "Ledger(UnknownRelationship)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(BirthOrdinalExists)": {
+      "display": "birth event and infant ordinal already identify a person",
+      "debug": "Ledger(BirthOrdinalExists)",
+      "source": null
+    },
+    "EdIdentityError::Ledger(InvalidCheckpoint)": {
+      "display": "invalid or unsupported identity checkpoint",
+      "debug": "Ledger(InvalidCheckpoint)",
+      "source": null
+    },
+    "OperationalError::Ineligible": {
+      "display": "staff role is not eligible for this task and zone",
+      "debug": "Ineligible",
+      "source": null
+    },
+    "OperationalError::Unavailable": {
+      "display": "no on-duty staff are free to claim",
+      "debug": "Unavailable",
+      "source": null
+    },
+    "OperationalError::CapacityInUse": {
+      "display": "shift shrink would drop in-flight work",
+      "debug": "CapacityInUse",
+      "source": null
+    },
+    "OperationalError::NotAssigned": {
+      "display": "handover requires an active assignment",
+      "debug": "NotAssigned",
+      "source": null
+    },
+    "OperationalError::Accounting": {
+      "display": "elapsed work exceeds the recorded duration",
+      "debug": "Accounting",
+      "source": null
+    },
+    "OperationalError::SpaceUnavailable": {
+      "display": "treatment space is not available",
+      "debug": "SpaceUnavailable",
+      "source": null
+    },
+    "OperationalError::ReservedForOther": {
+      "display": "treatment space is reserved for another patient",
+      "debug": "ReservedForOther",
+      "source": null
+    },
+    "OperationalError::CleaningInProgress": {
+      "display": "treatment space is still being cleaned",
+      "debug": "CleaningInProgress",
+      "source": null
+    },
+    "OperationalError::DiagnosticBlocked": {
+      "display": "blocked diagnostics retain the treatment space",
+      "debug": "DiagnosticBlocked",
+      "source": null
+    },
+    "OperationalError::BoardingRetained": {
+      "display": "boarding retains the treatment space until transfer",
+      "debug": "BoardingRetained",
+      "source": null
+    },
+    "OperationalError::AtomicMultiResourceUnsupported": {
+      "display": "atomic multi-resource acquisition is unsupported in v1; use phased sequential claims",
+      "debug": "AtomicMultiResourceUnsupported",
+      "source": null
+    },
+    "OperationalError::UnsupportedMultiRole": {
+      "display": "multi-person procedure requires dedicated composite team approximation",
+      "debug": "UnsupportedMultiRole",
+      "source": null
+    },
+    "OperationalError::RouteUnreachable": {
+      "display": "target location is unreachable in directed movement graph",
+      "debug": "RouteUnreachable",
+      "source": null
+    },
+    "OperationalError::EdgeInaccessible": {
+      "display": "movement edge is currently marked inaccessible",
+      "debug": "EdgeInaccessible",
+      "source": null
+    },
+    "BoundaryError::IncompatibleOfferDestination": {
+      "display": "ST001: bed offer destination is not compatible with patient clinical eligibility",
+      "debug": "IncompatibleOfferDestination",
+      "source": null
+    },
+    "BoundaryError::ImmediateExpiryDefaultProhibited": {
+      "display": "ST002: immediate expiry is not an accepted universal default; explicit policy required",
+      "debug": "ImmediateExpiryDefaultProhibited",
+      "source": null
+    },
+    "BoundaryError::PrematureBayReleaseBeforePhysicalTransfer": {
+      "display": "ST003: boarder must retain ED bay occupancy until physical departure is complete",
+      "debug": "PrematureBayReleaseBeforePhysicalTransfer",
+      "source": null
+    },
+    "BoundaryError::ExcessiveBoarderStaffReservation": {
+      "display": "ST004: dedicating a full-time 1:1 nurse per boarder by default is prohibited",
+      "debug": "ExcessiveBoarderStaffReservation",
+      "source": null
+    },
+    "BoundaryError::AmbulanceOffloadBlockedBySaturation": {
+      "display": "ST005: receiving bay saturation blocks ambulance offload and delays crew release",
+      "debug": "AmbulanceOffloadBlockedBySaturation",
+      "source": null
+    },
+    "BoundaryError::ReceiverStaffUnavailable": {
+      "display": "ST006: offload delayed because receiving staff are unavailable or unassigned",
+      "debug": "ReceiverStaffUnavailable",
+      "source": null
+    },
+    "BoundaryError::ProhibitedCausalWardPolicyClaim": {
+      "display": "ST008: external offer stream cannot claim causal effects of inpatient ward discharge policy",
+      "debug": "ProhibitedCausalWardPolicyClaim",
+      "source": null
+    },
+    "BoundaryError::UnsupportedImplicitDeteriorationHazard": {
+      "display": "ST009: deterioration hazard cannot be an implicit default; explicit model required",
+      "debug": "UnsupportedImplicitDeteriorationHazard",
+      "source": null
+    }
+  }
+}

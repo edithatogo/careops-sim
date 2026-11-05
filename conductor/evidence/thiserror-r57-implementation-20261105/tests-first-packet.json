@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "base_commit": "483cd84d58572db3b945658f57be080751a1c181",
+  "scope": "Actual public core/ED error constructors and frozen pre-migration output oracle; no runtime edits. Two crate packets share one Error/Display/source(None) boundary.",
+  "cases": {
+    "core": 71,
+    "ed": 54
+  },
+  "oracle_source": "Actual original manual implementation output in reviewed R56 probe; literal anchors/valid compiled message/source controls already executed before adoption.",
+  "source_output_sha256": "ef6a354db36f7bbd1cdc2b48c9b3e458beb2fe32d6674b810b21dfa3ffc90c6a",
+  "commands": [
+    "cargo test --locked -p careops-core --test r57_thiserror_contract -- --nocapture",
+    "cargo test --locked -p careops-ed --test r57_thiserror_contract -- --nocapture"
+  ],
+  "native_recipe": "Existing external target, CARGO_BUILD_JOBS1, INCREMENTAL0, dev/test DEBUG0, POLARS_MAX_THREADS1; zero retries.",
+  "expected": "Both baseline suites pass3tests each; within-suite valid counterfactuals must panic on only the wrong message or unexpected source. No baseline production defect manufactured.",
+  "file_bindings": [
+    {
+      "path": "crates/careops-core/tests/r57_thiserror_contract.rs",
+      "sha256": "7806e79b369e01c3cdcc394522fde6ecdb0a92b6f5200bf1af0ef564b4398a74"
+    },
+    {
+      "path": "crates/careops-core/tests/fixtures/r57_error_core.json",
+      "sha256": "ae4de1b8eda84a4a74b7a13d80d3632daf186c590865ebb5864cf4a007913f10"
+    },
+    {
+      "path": "crates/careops-ed/tests/r57_thiserror_contract.rs",
+      "sha256": "6066570831a1af61d7408eeef5fd9e9b8e3a92148772e2a97d38a0df05700deb"
+    },
+    {
+      "path": "crates/careops-ed/tests/fixtures/r57_error_ed.json",
+      "sha256": "6536336b9339b5e23fd5056cef172f4d86f5e13a3bc6228e9e7031103afe47a2"
+    }
+  ]
+}
