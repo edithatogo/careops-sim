@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "scope": "thiserror_eight_error_declarations_only",
+  "renewed_a7_acceptance": false,
+  "base_commit": "483cd84d58572db3b945658f57be080751a1c181",
+  "qualification": {
+    "commit": "483cd84d58572db3b945658f57be080751a1c181",
+    "path": "conductor/evidence/thiserror-r562-qualification-20261105/qualification.json",
+    "sha256": "826c932cfd23490bc1d8db6b1d93607dcb35ef7dd456bb1286c71182e694b01f"
+  },
+  "shared_bindings": {
+    "from_data_commit": "f34750533c07e9e868481606e5fe5c89ec9b76be",
+    "to_data_commit": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+    "runtime_commit": "07410266bf54b6f73c59db2f8cbfbc5697c53734",
+    "polars_commit": "96439685eb2f95108f51087d2b76091917f2593c",
+    "source_sha256": {
+      "Cargo.toml": "2000c30f811e10d72221596b10acbc3ab490c664f4d54f3027b3ac9e3f6f736e",
+      "Cargo.lock": "420ae3cec84a0b3e65a347b1c50edeeca6cc9c70a154f791e12a67325a086d2b",
+      "crates/careops-ed/Cargo.toml": "9f4ab07bfaffa077464f2150690289690c1ef903fb0241daef30db18114f1c7f",
+      "crates/careops-birthing-cli/Cargo.toml": "df70889e7bc7d160507a02398e0f53f724bd6d040f825b96bb6b3f1005f0b28a",
+      "crates/careops-ed/src/native_output.rs": "33516ba922fda4ec5ec84cdf51fd9d563f345ef89802f676a2dfc4be828da3d0",
+      "crates/careops-ed/src/native_reader.rs": "c50d6da701afda2a00db3b358106087463d9d4272dd230e122f83a46efefd5e0",
+      "crates/careops-ed-cli/src/lib.rs": "42c3a61a5742e26f634689b9fc320c3f16104714a8cd6fa8cbeeb529fb138906",
+      "crates/careops-ed-cli/src/main.rs": "d5a01a124e324772570b4337d2cdca8b6cbdb06bf0e7729be20f65d24224f999",
+      "crates/careops-birthing-cli/src/lib.rs": "e192716b29e918feae6e3368e60a4418f7e1ebe0e0f9a517d50d5451b93aa619",
+      "crates/careops-birthing-cli/read_batch.py": "d769d4dd6896cd0daa5d5a312c4cb3e9d2a8fb55856c751df67a3c2f8dd9bcd1",
+      "crates/careops-ed/test_native_output.py": "7d8da1a234fb06f2382d324eeada4211291b7433bcc6ed36c086b475d31c1051",
+      "crates/careops-ed/test_native_files.py": "cd1cd0d06b9392e2fbd0b678b99c3f67d0f7401ce9ac9733629804d09e59512e",
+      "tests/r143_native_domain_ffi.rs": "bb7f3713bb05cf40fd1695d5fcc546399e36857d559488288d6939e9cee3bfdd",
+      "tools/ed_native_benchmarks.py": "b02558f1f4b329ddf5795bc7b70d4df630e0f0e371a4bc32928065e3c2ffab88",
+      "tools/ed_native_benchmark_process.py": "3ef5c9c5c60ba01e0d7155a4839c4158acbeb7c099970dd527ebb16cb22d46b2"
+    },
+    "root_features": {
+      "default": [],
+      "native-ffi-acceptance": [
+        "dep:careops-ed",
+        "dep:careops-birthing-cli",
+        "dep:kairo-data-arrow",
+        "dep:kairo-data-ffi",
+        "dep:serde_json",
+        "dep:tempfile"
+      ]
+    },
+    "root_test_targets": [
+      {
+        "name": "r143_native_domain_ffi",
+        "path": "tests/r143_native_domain_ffi.rs",
+        "required-features": [
+          "native-ffi-acceptance"
+        ]
+      }
+    ],
+    "root_optional_dependencies": {
+      "careops-ed": {
+        "path": "crates/careops-ed",
+        "default-features": false,
+        "features": [
+          "native-data"
+        ],
+        "optional": true
+      },
+      "careops-birthing-cli": {
+        "path": "crates/careops-birthing-cli",
+        "optional": true
+      },
+      "kairo-data-arrow": {
+        "package": "kairo-ecs-arrow",
+        "git": "https://github.com/edithatogo/kairos.git",
+        "rev": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+        "version": "=0.1.0",
+        "default-features": false,
+        "features": [
+          "polars-native"
+        ],
+        "optional": true
+      },
+      "kairo-data-ffi": {
+        "package": "kairo-ecs-arrow-ffi",
+        "git": "https://github.com/edithatogo/kairos.git",
+        "rev": "473ff2c0e640a7e457f500593f6ea1f06602ab35",
+        "version": "=0.1.0",
+        "default-features": false,
+        "features": [
+          "native-data"
+        ],
+        "optional": true
+      },
+      "serde_json": {
+        "workspace": true,
+        "optional": true
+      },
+      "tempfile": {
+        "version": "=3.27.0",
+        "optional": true
+      }
+    },
+    "historical_receipts": {
+      "conductor/evidence/polars-integration-20261103/source-compatibility.json": {
+        "commit": "079c061d2bcc5a5fda373a3f9236d09235a2bca8",
+        "sha256": "0cefeeb2fa4d81d3add8ad066c72674e24c9f99b64243176398b54291e2c362b"
+      },
+      "conductor/evidence/polars-integration-20261103/data-source-compatibility.json": {
+        "commit": "43511e665706cf31c434758675ce291d8c12547b",
+        "sha256": "42be7ff2b2963b227fb12c4bdbfb355023e39945fb6ac0b1f930570b5ab07077"
+      },
+      "conductor/evidence/polars-integration-20261103/native-reader-source-compatibility.json": {
+        "commit": "1b6ca2deaead85f1bc0da50c1d6aa00df54e2cba",
+        "sha256": "785ec51a58193771eb79f3034d89cbfcf891bd81e4ea2e1eee7d1c30d0833551"
+      },
+      "conductor/evidence/polars-integration-20261103/native-cli-source-compatibility.json": {
+        "commit": "b0ddd0c1ea02b99667a643199051b3e303a35b8e",
+        "sha256": "2f1734524d3e90678f421f2bb00142391c8a34b71de22922e0e7c500cefcc626"
+      },
+      "conductor/evidence/polars-integration-20261103/native-reader-format-source-compatibility.json": {
+        "commit": "7b9892b28bfabe7f26f7fa9d292f74ba0d6484bb",
+        "sha256": "0032af3aa2b8b4161858995c2911de6273bedefbf1d4f8a89deb2488e0ee1b06"
+      }
+    }
+  },
+  "source_bindings": [
+    {
+      "path": "Cargo.lock",
+      "sha256": "420ae3cec84a0b3e65a347b1c50edeeca6cc9c70a154f791e12a67325a086d2b"
+    },
+    {
+      "path": "crates/careops-core/Cargo.toml",
+      "sha256": "0871747693ead816082350bc52036444f07a9979e7451495002e4f90189f7ebd"
+    },
+    {
+      "path": "crates/careops-core/src/birth.rs",
+      "sha256": "34bb0d0c2b36ea169a0e8943bc76b17ae3f09ead35cbbfd96fa6cde68ec89d74"
+    },
+    {
+      "path": "crates/careops-core/src/capacity.rs",
+      "sha256": "bf54b7d1fdfb03ab70d46b8530521d72a2d3b37815b2f15502bf77f6042c6ead"
+    },
+    {
+      "path": "crates/careops-core/src/experiment/io.rs",
+      "sha256": "35ce7bc39768befd33b935b79663fe0810fe2b9146e98602646876a2c5e2e3bd"
+    },
+    {
+      "path": "crates/careops-core/src/identity.rs",
+      "sha256": "1421c39ea40d466b77bfd78c132714cf6496b527b4290a71855c8b89fe1013a1"
+    },
+    {
+      "path": "crates/careops-core/src/transfer.rs",
+      "sha256": "283729e27e6dd5c72d38d0bf8e0f51f9533a06e7d0bc7bbea649c1a734658bff"
+    },
+    {
+      "path": "crates/careops-core/tests/experiment_runner_contract.rs",
+      "sha256": "a6895359b33671483dd8347d3162dd37703e6cbfa7e48e946bf374302c6f002f"
+    },
+    {
+      "path": "crates/careops-core/tests/fixtures/r57_error_core.json",
+      "sha256": "ae4de1b8eda84a4a74b7a13d80d3632daf186c590865ebb5864cf4a007913f10"
+    },
+    {
+      "path": "crates/careops-core/tests/logistics_consumer.rs",
+      "sha256": "4c7085022c70249e0b637464fed192d449a6a6c0a68af29ae1868324450fc8b2"
+    },
+    {
+      "path": "crates/careops-core/tests/profile_loader_tests.rs",
+      "sha256": "bf4ca6728fd2ab4604dddaa08e6e989dd1ea93431533af66314c388a2395ac42"
+    },
+    {
+      "path": "crates/careops-core/tests/r54_tempfile_contract.rs",
+      "sha256": "5ae7c2304c4d4930696fd40396166d8747a39aac56650ef0f56637e0c2df3094"
+    },
+    {
+      "path": "crates/careops-core/tests/r57_thiserror_contract.rs",
+      "sha256": "b471987f3de9a4264971bc2e3b2d9ccf833e5384281e5ab450960c22a712acd9"
+    },
+    {
+      "path": "crates/careops-ed-cli/Cargo.toml",
+      "sha256": "bfeb24eff67b2c540ad400714de40cb4ce89a50f5416ea8040f710b767dc1dca"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/c63_native_contract.rs",
+      "sha256": "fe72f8dd131199b54767c9dda4f625fa8357a05df3c7ff971dff4700476473a7"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/consumer_contract.rs",
+      "sha256": "e29ab91d426d46ea630fb82a400d794152c85d97e03ef41c6d09b19bcc6320d8"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/execution_capabilities.rs",
+      "sha256": "0c01c6195948ead047ff722fb873954d259a31c386472b37e4a60f7d3ed30bb9"
+    },
+    {
+      "path": "crates/careops-ed-cli/tests/native_cli.rs",
+      "sha256": "bf92cec49b315ee8cbbfd491a7689d2c6519a293f0866187b39c74bfcb1fbb89"
+    },
+    {
+      "path": "crates/careops-ed/Cargo.toml",
+      "sha256": "9f4ab07bfaffa077464f2150690289690c1ef903fb0241daef30db18114f1c7f"
+    },
+    {
+      "path": "crates/careops-ed/src/arrivals.rs",
+      "sha256": "669ec3cf84429352ff562116e0adb919906faead5ba84984718ce352233b9daa"
+    },
+    {
+      "path": "crates/careops-ed/src/composite_fixture.rs",
+      "sha256": "04c44c1fb474e86c4964b68d30a19f548d9e65dda6aa497e3c6b3811c56fe19c"
+    },
+    {
+      "path": "crates/careops-ed/src/identity.rs",
+      "sha256": "a4abc983d44a94c51c465a144ad8d87013e4431f0baaaad0d8d2a2983b335c7c"
+    },
+    {
+      "path": "crates/careops-ed/src/operations.rs",
+      "sha256": "c317b380af5fdc4cc51814bac427c7585a2d9e32c5e001ea9f836cbd050b1da7"
+    },
+    {
+      "path": "crates/careops-ed/tests/e32_batch_and_checkpoint_tests.rs",
+      "sha256": "1b0f93034cbb53538edf9c8524391d3e1ac90aba4c3f61029f9f9da0a0abc1d0"
+    },
+    {
+      "path": "crates/careops-ed/tests/ed_ward_community_composition.rs",
+      "sha256": "6b0ca9509165fea134a4aa56ac48cfd63b80ba2e822db16472d82b08b0030ff1"
+    },
+    {
+      "path": "crates/careops-ed/tests/fixtures/r57_error_ed.json",
+      "sha256": "6536336b9339b5e23fd5056cef172f4d86f5e13a3bc6228e9e7031103afe47a2"
+    },
+    {
+      "path": "crates/careops-ed/tests/r111_capture_boundaries.rs",
+      "sha256": "73993355fbf0d21aebcb315fed83444766d627e91d369560982f2bf82b157469"
+    },
+    {
+      "path": "crates/careops-ed/tests/r57_thiserror_contract.rs",
+      "sha256": "94acc8c5d16b955f6855058a083d13bd587822677a1204150ede7bcfb1f2ad91"
+    },
+    {
+      "path": "fuzz/Cargo.lock",
+      "sha256": "5e71851838b9a874a0f3faced50104a7fc4cbca3f86d592e3d42a4daede1ab2a"
+    }
+  ],
+  "local_results": {
+    "core_full_at_partial_checkpoint": {
+      "commit": "36925bfa84a207c3cbf656d98af76dc3a403fb76",
+      "passed": 160,
+      "failed": 0,
+      "ignored": 0
+    },
+    "core_contract_current": 3,
+    "core_cases": 71,
+    "ED_contract_current": 3,
+    "ED_cases": 54,
+    "affected_ED_current": 30,
+    "case_total": 125,
+    "counterfactual_checks": 4,
+    "ignored": 0,
+    "core_clippy_exit": 0,
+    "ED_clippy_exit": 0
+  },
+  "graph": {
+    "version": "2.0.21",
+    "features": [
+      "default",
+      "std"
+    ],
+    "root_workspace_rows": [
+      "careops-core",
+      "careops-ed"
+    ],
+    "new_root_registry_packages": 0,
+    "fuzz_workspace_rows": [
+      "careops-core",
+      "careops-ed"
+    ],
+    "new_fuzz_packages": [
+      "thiserror",
+      "thiserror-impl"
+    ],
+    "fuzz_syn_preserved": "3.0.9",
+    "root_thiserror_impl_syn": "3.0.6"
+  },
+  "tests_first": {
+    "initial_commit": "77c28c8b1aa9db36be2a8b9fb4e08312d7df5665",
+    "initial_receipt": "conductor/evidence/thiserror-r57-implementation-20261105/tests-first.json",
+    "initial_receipt_sha256": "180d02a061922b255fade60e58c8ad6f8660e658ce17dfba1b7390b3312f30d2",
+    "review_fix_commit": "93921537923fe7db5176e4bbff784438cb0ebd94",
+    "review_fix_receipt": "conductor/evidence/thiserror-r57-implementation-20261105/tests-first-v2.json",
+    "review_fix_receipt_sha256": "b3e73f2fda90f61c77a7a58fdb20c88c187cf88e33e127b2ef63a45e50655b22",
+    "fixture_values_unchanged": true,
+    "case_count": 125
+  },
+  "logs": [
+    {
+      "name": "thiserror-r572-ed-tests.log",
+      "sha256": "25b9830e6f1e4ffd26435afd05c4aa63f555053b80f1da754aedfc35f7fad08e"
+    },
+    {
+      "name": "thiserror-r572-ed-clippy.log",
+      "sha256": "8ff6ee13c42afc5e777bd431df3e9fd90ebc155105dbc27b79f5fbcd577b1457"
+    },
+    {
+      "name": "thiserror-r572-core-combined.log",
+      "sha256": "d50ab9ce8893113cdb99892e4a66985b3d5cd4938c7439f2b56fac03045dfcce"
+    }
+  ],
+  "private_command_ledger": {
+    "name": "thiserror-r572-ed-command-ledger.json",
+    "sha256": "30546351b5907e40d2284d4775c7b6fd039a433e5b490a9915f7296dbe9c54de"
+  },
+  "maintenance": {
+    "formatted_production_net_lines": -115,
+    "test_plumbing_review_reduction": 474,
+    "seven_trivial_wrappers_retained": true,
+    "manual_From_conversions_retained": true,
+    "no_overall_code_reduction_claim": true
+  },
+  "remaining": [
+    "Closed immutable successor guard and its independent negatives",
+    "Actual candidate old-artifact read and foreign-model resume refusal",
+    "Current26case application compatibility and every original R58 hosted/platform/integration/coverage117mutation/security/package/cost gate"
+  ],
+  "review": {
+    "reviewer": "/root/tempfile_phase_review",
+    "scope": "Whole-eight implementation checkpoint GO:29bindings,8qualified hashes, exact graphs/immutable qualification/tests-first anchors, actual30ED+3core contracts, clippy and command/log hashes; core160 remains at369partial.",
+    "no_R57_phase_or_R58_acceptance": true,
+    "decision": "GO; no findings. Strict successor and all actual artifact/application/final acceptance gates remain."
+  }
+}

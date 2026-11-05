@@ -5,8 +5,6 @@
 //! or prevalence claim.
 
 use std::collections::{BTreeSet, HashSet};
-use std::error::Error;
-use std::fmt::{Display, Formatter};
 
 use kairo_ecs_rng::{derive_entity_seed, DeterministicStream};
 use kairo_ecs_types::EntityId;
@@ -54,41 +52,31 @@ pub struct GeneratedArrival {
     pub acuity: u8,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(thiserror::Error, Clone, Debug, PartialEq, Eq)]
 pub enum ArrivalError {
+    #[error("version must be 1")]
     InvalidVersion,
+    #[error("provenance must be 'synthetic_tick_fixture'")]
     InvalidProvenance,
+    #[error("horizon_ticks must be positive")]
     InvalidHorizon,
+    #[error("arrival configuration exceeds a bounded limit")]
     LimitExceeded,
+    #[error("mode must be 1..64 ASCII identifier bytes")]
     InvalidMode,
+    #[error("mode occurs more than once in a bin")]
     DuplicateMode,
+    #[error("bin must satisfy 0 <= start < end <= horizon")]
     InvalidBin,
+    #[error("arrival bins overlap")]
     OverlappingBins,
+    #[error("mode total does not match acuity counts")]
     CountMismatch,
+    #[error("arrival count or tick arithmetic overflowed")]
     ArithmeticOverflow,
+    #[error("bounded unbiased sampling exhausted its draw budget")]
     SamplingExhausted,
 }
-
-impl Display for ArrivalError {
-    fn fmt(&self, formatter: &mut Formatter<'_>) -> std::fmt::Result {
-        let description = match self {
-            Self::InvalidVersion => "version must be 1",
-            Self::InvalidProvenance => "provenance must be 'synthetic_tick_fixture'",
-            Self::InvalidHorizon => "horizon_ticks must be positive",
-            Self::LimitExceeded => "arrival configuration exceeds a bounded limit",
-            Self::InvalidMode => "mode must be 1..64 ASCII identifier bytes",
-            Self::DuplicateMode => "mode occurs more than once in a bin",
-            Self::InvalidBin => "bin must satisfy 0 <= start < end <= horizon",
-            Self::OverlappingBins => "arrival bins overlap",
-            Self::CountMismatch => "mode total does not match acuity counts",
-            Self::ArithmeticOverflow => "arrival count or tick arithmetic overflowed",
-            Self::SamplingExhausted => "bounded unbiased sampling exhausted its draw budget",
-        };
-        formatter.write_str(description)
-    }
-}
-
-impl Error for ArrivalError {}
 
 /// Generate deterministic count-conditioned arrivals for synthetic tick fixtures.
 ///
