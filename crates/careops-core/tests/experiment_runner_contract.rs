@@ -107,7 +107,7 @@ fn resume_rejects_malformed_checkpoint_identity_and_index_sets() {
     let result = resume_generic_batch::<TestReplication, (), _>(
         &checkpoint_path,
         1,
-        &output_dir,
+        output_dir,
         None,
         None,
         |index, seed, _| {
@@ -140,7 +140,7 @@ fn resume_rejects_malformed_checkpoint_identity_and_index_sets() {
     let error = resume_generic_batch::<TestReplication, (), _>(
         &checkpoint_path,
         1,
-        &output_dir,
+        output_dir,
         None,
         None,
         |index, seed, _| {
@@ -166,7 +166,7 @@ fn resume_rejects_malformed_checkpoint_identity_and_index_sets() {
     let error = resume_generic_batch::<TestReplication, (), _>(
         &checkpoint_path,
         1,
-        &output_dir,
+        output_dir,
         None,
         None,
         |index, seed, _| {

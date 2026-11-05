@@ -819,7 +819,7 @@ fn interrupted_integrated_batch_resumes_to_the_uninterrupted_result() {
         1,
         Some(1),
         (),
-        Some(&output_dir),
+        Some(output_dir),
         Some(&cancel_token),
         None,
         interrupted_runner,
@@ -837,7 +837,7 @@ fn interrupted_integrated_batch_resumes_to_the_uninterrupted_result() {
     let (checkpoint, resumed) = resume_generic_batch::<CompositionReplication, (), _>(
         &checkpoint_path,
         2,
-        &output_dir,
+        output_dir,
         None,
         None,
         runner,
