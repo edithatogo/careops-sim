@@ -13,6 +13,35 @@ def task(name,deps=(),paths=('src',),accepted=False):
     return {'id':name,'dependencies':list(deps),'write_reservations':list(paths),'accepted':accepted}
 
 class SchedulingTests(unittest.TestCase):
+    def test_optional_game_profile_does_not_block_runtime_consumer_acceptance(self):
+        by_id = {t['id']: t for t in tasks.derive(tasks.ROOT)['tasks']}
+
+        def prerequisites(identifier):
+            found = set()
+            pending = list(by_id[identifier]['dependencies'])
+            while pending:
+                current = pending.pop()
+                if current not in found:
+                    found.add(current)
+                    pending.extend(by_id[current]['dependencies'])
+            return found
+
+        for identifier in ('R76.6', 'R77.1', 'R77.2'):
+            with self.subTest(gate=identifier):
+                self.assertNotIn('R76.5', prerequisites(identifier))
+        self.assertTrue(
+            {'R75.4', 'R76.0', 'R76.1', 'R76.2', 'R76.3', 'R76.4'}
+            <= prerequisites('R77.2'))
+        self.assertEqual(by_id['R76.5']['dependencies'], ['R75.2'])
+
+        runtime_gate = {'tasks': [by_id['R76.6']]}
+        accepted_runtime = prerequisites('R76.6')
+        self.assertEqual(
+            [t['id'] for t in tasks.select(runtime_gate, accepted_runtime)],
+            ['R76.6'])
+        self.assertEqual(
+            tasks.select(runtime_gate, accepted_runtime - {'R76.3'}), [])
+
     def test_composition_join_preserves_independent_evidence_and_runtime_gates(self):
         by_id = {t['id']: t for t in tasks.derive(tasks.ROOT)['tasks']}
         self.assertEqual(by_id['B0.1']['dependencies'], [])

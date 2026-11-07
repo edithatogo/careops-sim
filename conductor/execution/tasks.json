@@ -9727,7 +9727,7 @@
       "dependencies": [],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 13
+        "line": 27
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9757,7 +9757,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 19
+        "line": 33
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9787,7 +9787,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 25
+        "line": 39
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9817,7 +9817,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 31
+        "line": 45
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9844,7 +9844,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 39
+        "line": 53
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9874,7 +9874,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 45
+        "line": 59
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9904,7 +9904,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 51
+        "line": 65
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9934,7 +9934,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 57
+        "line": 71
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9965,7 +9965,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 63
+        "line": 77
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9987,15 +9987,15 @@
       "id": "R76.5",
       "track_id": "kairos_domain_contracts_20261107",
       "phase": "R76",
-      "objective": "Define one optional domain game policy profile Executor: specialist. Requires: R75.2 and generic game package contract. Files: `conductor/design/game-policy-profile.md`. Check: `cargo test --locked -p careops-core --test policy_classification_tests`. Acceptance: Specify actors/actions/information/payoffs and UOGTO mappings for one operational decision; reference generic solver/result capabilities. Keep clinical rules/equilibrium interpretation local; no solver copy or mandatory game dependency.",
+      "objective": "Define one optional domain game policy profile Executor: specialist. Requires: R75.2 and generic game package contract. Files: `conductor/design/game-policy-profile.md`. Check: `cargo test --locked -p careops-core --test policy_classification_tests`. Acceptance: Specify actors/actions/information/payoffs and UOGTO mappings for one operational decision; reference generic solver/result capabilities. Keep clinical rules/equilibrium interpretation local; no solver copy or mandatory game dependency. This optional profile is separate from R76.6/R77 runtime acceptance; documenting it does not qualify game execution.",
       "kind": "bounded_work",
       "accepted": false,
       "dependencies": [
-        "R76.4"
+        "R75.2"
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 69
+        "line": 83
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -10017,15 +10017,18 @@
       "id": "R76.6",
       "track_id": "kairos_domain_contracts_20261107",
       "phase": "R76",
-      "objective": "Conductor \u2014 review and verify phase (workflow.md) Executor: specialist. Requires: R76.1\u2013R76.5. Files: `conductor/tracks/kairos_domain_contracts_20261107/handoff.md`. Check: `cargo test --locked -p careops-core; python tools/tasks.py check`. Acceptance: Review the coherent adapter/valuation fixture batch once; record actual source/commands and only the supported behaviour.",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md) Executor: specialist. Requires: R76.1\u2013R76.4. Files: `conductor/tracks/kairos_domain_contracts_20261107/handoff.md`. Check: `cargo test --locked -p careops-core; python tools/tasks.py check`. Acceptance: Review the coherent runtime adapter/valuation fixture batch once; record actual source/commands and only the supported behaviour. This scoped join enables R77 without R76.5; retain the optional game profile as pending until its own evidence exists rather than marking the entire phase complete.",
       "kind": "review_integrate",
       "accepted": false,
       "dependencies": [
-        "R76.5"
+        "R76.1",
+        "R76.2",
+        "R76.3",
+        "R76.4"
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 75
+        "line": 89
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -10052,7 +10055,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 83
+        "line": 97
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -10074,7 +10077,7 @@
       "id": "R77.2",
       "track_id": "kairos_domain_contracts_20261107",
       "phase": "R77",
-      "objective": "Conductor \u2014 review and verify phase (workflow.md) Executor: specialist. Requires: R77.1. Files: `conductor/tracks/kairos_domain_contracts_20261107/handoff.md`. Check: `python tools/context.py check; python tools/tasks.py check`. Acceptance: Accept only the demonstrated adapter/fixture scope. Publish a separate reviewed parent pin change if justified; preserve unfinished domain/hardware/clinical obligations.",
+      "objective": "Conductor \u2014 review and verify phase (workflow.md) Executor: specialist. Requires: R77.1. Files: `conductor/tracks/kairos_domain_contracts_20261107/handoff.md`. Check: `python tools/context.py check; python tools/tasks.py check`. Acceptance: Accept only the demonstrated runtime adapter/fixture scope. Publish a separate reviewed parent pin change if justified; preserve unfinished game/domain/hardware/clinical obligations. A game-capability claim needs its separate profile and consumer receipt; it is not inferred from this runtime pin decision.",
       "kind": "review_integrate",
       "accepted": false,
       "dependencies": [
@@ -10082,7 +10085,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 89
+        "line": 103
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",

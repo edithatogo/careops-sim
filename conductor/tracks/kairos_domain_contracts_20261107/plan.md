@@ -8,6 +8,20 @@ a requirement to execute a shell chain. Future test targets are declared outputs
 A local worker stops implementation on missing upstream APIs or unsettled scientific assumptions. A known defect may be documented as a red reproducer; pair it with its bounded fix before green integration, and never treat the reproducer alone as runtime acceptance.
 No prototype or print-only result is accepted as native execution.
 
+Runtime consumer acceptance and optional game acceptance have separate scopes.
+R76.6 joins the runtime/valuation fixture work R76.1–R76.4, then R77 qualifies
+that consumer candidate. R76.5 remains an independently pending game-profile
+obligation; its external game-package availability does not block the runtime
+receipt or a release that makes no game capability claim. The metadata dependency
+overrides preserve this ordering in the generated task graph.
+
+Accepting the runtime receipt does not complete R76.5 or the whole track. A game
+claim additionally needs its accepted profile and a bounded, executed consumer
+receipt for the exact supported solver. A static game need not wait for dynamic
+Kairos execution; a dynamic-game claim also requires the optional adapter's
+native replay evidence. Those obligations remain with the existing game provider
+and consumer owners.
+
 ## R75 — Contracts
 
 - [ ] R75.1 Reconcile the actual consumer pin and public symbols
@@ -70,13 +84,13 @@ No prototype or print-only result is accepted as native execution.
   Executor: specialist. Requires: R75.2 and generic game package contract.
   Files: `conductor/design/game-policy-profile.md`.
   Check: `cargo test --locked -p careops-core --test policy_classification_tests`.
-  Acceptance: Specify actors/actions/information/payoffs and UOGTO mappings for one operational decision; reference generic solver/result capabilities. Keep clinical rules/equilibrium interpretation local; no solver copy or mandatory game dependency.
+  Acceptance: Specify actors/actions/information/payoffs and UOGTO mappings for one operational decision; reference generic solver/result capabilities. Keep clinical rules/equilibrium interpretation local; no solver copy or mandatory game dependency. This optional profile is separate from R76.6/R77 runtime acceptance; documenting it does not qualify game execution.
 
 - [ ] R76.6 Conductor — review and verify phase (workflow.md)
-  Executor: specialist. Requires: R76.1–R76.5.
+  Executor: specialist. Requires: R76.1–R76.4.
   Files: `conductor/tracks/kairos_domain_contracts_20261107/handoff.md`.
   Check: `cargo test --locked -p careops-core; python tools/tasks.py check`.
-  Acceptance: Review the coherent adapter/valuation fixture batch once; record actual source/commands and only the supported behaviour.
+  Acceptance: Review the coherent runtime adapter/valuation fixture batch once; record actual source/commands and only the supported behaviour. This scoped join enables R77 without R76.5; retain the optional game profile as pending until its own evidence exists rather than marking the entire phase complete.
 
 ## R77 — Consumer qualification
 
@@ -90,7 +104,7 @@ No prototype or print-only result is accepted as native execution.
   Executor: specialist. Requires: R77.1.
   Files: `conductor/tracks/kairos_domain_contracts_20261107/handoff.md`.
   Check: `python tools/context.py check; python tools/tasks.py check`.
-  Acceptance: Accept only the demonstrated adapter/fixture scope. Publish a separate reviewed parent pin change if justified; preserve unfinished domain/hardware/clinical obligations.
+  Acceptance: Accept only the demonstrated runtime adapter/fixture scope. Publish a separate reviewed parent pin change if justified; preserve unfinished game/domain/hardware/clinical obligations. A game-capability claim needs its separate profile and consumer receipt; it is not inferred from this runtime pin decision.
 
 ## Dispatch and evidence
 
