@@ -4,7 +4,11 @@
 
 [Domain, movement and HEOR boundaries](design/kairos-domain-economic-boundary-20261107.md)
 and [bounded consumer track](tracks/kairos_domain_contracts_20261107/index.md)
-keep Kairos an independent Rust dependency. All new runtime tasks remain pending.
+keep Kairos an independent Rust dependency. The [CareOps package decision](design/careops-library-boundaries-20261108.md)
+and [bounded reuse cards](tracks/kairos_domain_contracts_20261107/reuse-task-cards.md)
+strengthen the existing careops-core package and name optional Paignia integration.
+All new runtime tasks remain pending; A0–A7 and R75–R77 keep their existing IDs
+and acceptance boundaries.
 
 ## Project context
 

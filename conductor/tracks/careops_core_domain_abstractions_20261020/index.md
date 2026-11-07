@@ -9,5 +9,7 @@ Status: in progress. A0–A6 are accepted locally. A7.1–A7.4 remain incomplete
 - [Ownership](agent-contract.md)
 - [Handoff](handoff.md)
 - [Metadata](metadata.json)
+- [Package decision and source audit](../../design/careops-library-boundaries-20261108.md)
+- [Bounded follow-up under R75–R77](../kairos_domain_contracts_20261107/reuse-task-cards.md)
 
 [Readiness map](../../module-readiness.md) · [Registry](../../tracks.md)

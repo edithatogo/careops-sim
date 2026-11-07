@@ -9721,13 +9721,13 @@
       "id": "R75.1",
       "track_id": "kairos_domain_contracts_20261107",
       "phase": "R75",
-      "objective": "Reconcile the actual consumer pin and public symbols Executor: specialist. Requires: none. Files: `conductor/design/kairos-consumed-api-inventory.md`. Check: `git ls-tree HEAD libs/kairos; cargo test --locked -p careops-core --test allocation_kairos_conformance`. Acceptance: Read Cargo.toml, allocation.rs, transfer.rs and the actual pinned provider. Record public symbols/feature needs and existing evidence; no pin change or assumption that upstream main preserves them.",
+      "objective": "Reconcile the actual consumer pin and public symbols Executor: specialist. Requires: none. Files: `conductor/design/kairos-consumed-api-inventory.md`. Check: `git ls-tree HEAD libs/kairos; cargo test --locked -p careops-core --test allocation_kairos_conformance`. Acceptance: Read Cargo.toml, allocation.rs, transfer.rs and the actual pinned provider. Record public symbols/feature needs and existing evidence; no pin change or assumption that upstream main preserves them. Cards: `R75.1.package-map` and `R75.1.runner-handoff` in [reuse-task-cards.md](reuse-task-cards.md) settle the existing package boundary and a narrow experiment-lifecycle handoff to Kairos; they do not qualify its implementation.",
       "kind": "bounded_work",
       "accepted": false,
       "dependencies": [],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 27
+        "line": 29
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9749,7 +9749,7 @@
       "id": "R75.2",
       "track_id": "kairos_domain_contracts_20261107",
       "phase": "R75",
-      "objective": "Settle the thin movement/resource adapter interface Executor: specialist. Requires: R75.1. Files: `conductor/design/kairos-domain-adapter-contract.md`. Check: `cargo test --locked -p careops-core --test transfer_contract`. Acceptance: Specify identity, time units, cancellation/lease ordering, stale topology and explicit unsupported capabilities. CareOps policy remains here; route/allocator mechanics remain upstream.",
+      "objective": "Settle the thin movement/resource adapter interface Executor: specialist. Requires: R75.1. Files: `conductor/design/kairos-domain-adapter-contract.md`. Check: `cargo test --locked -p careops-core --test transfer_contract`. Acceptance: Specify identity, time units, cancellation/lease ordering, stale topology and explicit unsupported capabilities. CareOps policy remains here; route/allocator mechanics remain upstream. Card: `R75.2.clock-hazard` adds the versioned pathway time/RNG contract before numerical changes; discrete-unit and continuous-time progression are not silently treated as equivalent.",
       "kind": "bounded_work",
       "accepted": false,
       "dependencies": [
@@ -9757,7 +9757,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 33
+        "line": 36
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9787,7 +9787,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 39
+        "line": 43
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9817,7 +9817,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 45
+        "line": 49
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9844,7 +9844,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 53
+        "line": 57
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9866,7 +9866,7 @@
       "id": "R76.1",
       "track_id": "kairos_domain_contracts_20261107",
       "phase": "R76",
-      "objective": "Execute a standalone immutable Kairos consumer Executor: specialist. Requires: R76.0 and actual upstream candidate capability. Files: `tests/fixtures/kairos-consumer-smoke/Cargo.toml`, `tests/fixtures/kairos-consumer-smoke/Cargo.lock`, `tests/fixtures/kairos-consumer-smoke/src/main.rs`. Checks: `cargo generate-lockfile --manifest-path tests/fixtures/kairos-consumer-smoke/Cargo.toml`; `cargo run --locked --manifest-path tests/fixtures/kairos-consumer-smoke/Cargo.toml`. Acceptance: Generate the fixture lock during implementation. Exercise scheduler/entity/RNG/resource behaviour outside the provider checkout. Use a qualified immutable Git dependency or built package; the existing relative path smoke alone cannot close installed acceptance.",
+      "objective": "Execute a standalone immutable Kairos consumer Executor: specialist. Requires: R76.0 and actual upstream candidate capability. Files: `tests/fixtures/kairos-consumer-smoke/Cargo.toml`, `tests/fixtures/kairos-consumer-smoke/Cargo.lock`, `tests/fixtures/kairos-consumer-smoke/src/main.rs`. Checks: `cargo generate-lockfile --manifest-path tests/fixtures/kairos-consumer-smoke/Cargo.toml`; `cargo run --locked --manifest-path tests/fixtures/kairos-consumer-smoke/Cargo.toml`. Acceptance: Generate the fixture lock during implementation. Exercise scheduler/entity/RNG/resource behaviour outside the provider checkout. Use a qualified immutable Git dependency or built package; the existing relative path smoke alone cannot close installed acceptance. Cards: `R76.1.ed-graph`, `R76.1.ed-encoding` and `R76.1.installed` preserve explicit ED behavior/identity encoding while preparing the reusable package. Bind each card separately; do not combine their file sets into a broad writer claim.",
       "kind": "bounded_work",
       "accepted": false,
       "dependencies": [
@@ -9874,7 +9874,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 59
+        "line": 63
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9896,7 +9896,7 @@
       "id": "R76.2",
       "track_id": "kairos_domain_contracts_20261107",
       "phase": "R76",
-      "objective": "Map one domain journey to upstream scheduled movement Executor: local. Requires: R76.1 and upstream arrival/cancel contract. Files: `crates/careops-core/src/movement.rs`, `crates/careops-core/src/lib.rs`, `crates/careops-core/tests/movement_adapter.rs`. Check: `cargo test --locked -p careops-core --test movement_adapter`. Acceptance: New target: one porter/patient journey arrives once, cancellation releases the lease and leaves location unchanged. CareOps supplies accessibility/duration rules; no duplicate routing engine.",
+      "objective": "Integrate shared execution and one domain journey with upstream scheduled movement Executor: local. Requires: R76.1 and upstream arrival/cancel contract. Files: `crates/careops-core/src/movement.rs`, `crates/careops-core/src/lib.rs`, `crates/careops-core/tests/movement_adapter.rs`. Check: `cargo test --locked -p careops-core --test movement_adapter`. Acceptance: New target: one porter/patient journey arrives once, cancellation releases the lease and leaves location unchanged. CareOps supplies accessibility/duration rules; no duplicate routing engine. Cards: `R76.2.rng-adapter`, `pathway-events`, `sparse-cost`, `allocation`, `movement` and `live-feedback` in [reuse-task-cards.md](reuse-task-cards.md) define separate bounded files/dependencies/checks. The three files above belong only to the movement card. One-clock feedback and measured sparse execution remain unimplemented; retain the single-bed oracle and scoped A6 receipts.",
       "kind": "bounded_work",
       "accepted": false,
       "dependencies": [
@@ -9904,7 +9904,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 65
+        "line": 70
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9934,7 +9934,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 71
+        "line": 77
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9965,7 +9965,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 77
+        "line": 83
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -9987,7 +9987,7 @@
       "id": "R76.5",
       "track_id": "kairos_domain_contracts_20261107",
       "phase": "R76",
-      "objective": "Define one optional domain game policy profile Executor: specialist. Requires: R75.2 and generic game package contract. Files: `conductor/design/game-policy-profile.md`. Check: `cargo test --locked -p careops-core --test policy_classification_tests`. Acceptance: Specify actors/actions/information/payoffs and UOGTO mappings for one operational decision; reference generic solver/result capabilities. Keep clinical rules/equilibrium interpretation local; no solver copy or mandatory game dependency. This optional profile is separate from R76.6/R77 runtime acceptance; documenting it does not qualify game execution.",
+      "objective": "Define one optional Paignia domain game policy profile Executor: specialist. Requires: R75.2 and generic game package contract. Files: `conductor/design/game-policy-profile.md`. Check: `cargo test --locked -p careops-core --test policy_classification_tests`. Acceptance: Specify actors/actions/information/payoffs and UOGTO mappings for one operational decision; reference actual Paignia solver/result capabilities and immutable provider packages from `edithatogo/paignia` after source/artifact qualification. Keep clinical rules/equilibrium interpretation local; no solver copy or mandatory game dependency. This optional profile is separate from R76.6/R77 runtime acceptance; documenting it does not qualify game execution. Card: the optional R76.5 consumer decomposition requires an executed receipt for a game claim. T17.09 qualifies the first real static application and T17.10 the second distinct application; CareOps is optional. The supplied Paignia repository exists, with seed transfer pending; existence does not imply package publication or qualification.",
       "kind": "bounded_work",
       "accepted": false,
       "dependencies": [
@@ -9995,7 +9995,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 83
+        "line": 89
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -10028,7 +10028,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 89
+        "line": 96
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -10047,7 +10047,7 @@
       "id": "R77.1",
       "track_id": "kairos_domain_contracts_20261107",
       "phase": "R77",
-      "objective": "Qualify a candidate provider change against the ED consumer Executor: specialist. Requires: R76.6. Files: `conductor/tracks/kairos_domain_contracts_20261107/provider-qualification.md`. Check: `cargo test --locked -p careops-core --test allocation_kairos_conformance; cargo test --locked -p careops-ed`. Acceptance: Record before/after immutable provider revisions and real model replay/errors/features from the isolated R76.0 candidate configuration. Keep the accepted main pin until this consumer passes; source-only compatibility or an old-pin test is insufficient.",
+      "objective": "Qualify a candidate provider change against the ED consumer Executor: specialist. Requires: R76.6. Files: `conductor/tracks/kairos_domain_contracts_20261107/provider-qualification.md`. Check: `cargo test --locked -p careops-core --test allocation_kairos_conformance; cargo test --locked -p careops-ed`. Acceptance: Record before/after immutable provider revisions and real model replay/errors/features from the isolated R76.0 candidate configuration. Keep the accepted main pin until this consumer passes; source-only compatibility or an old-pin test is insufficient. Card: bind the external CareOps package-consumer smoke after R76 adapters, using an actual immutable artifact and generated lock outside the source workspace. No sibling checkout/private profile or source-metadata substitution. A7.1 retains its separate second-healthcare-consumer join; a new repository is not a prerequisite.",
       "kind": "bounded_work",
       "accepted": false,
       "dependencies": [
@@ -10055,7 +10055,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 97
+        "line": 104
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -10085,7 +10085,7 @@
       ],
       "source": {
         "path": "conductor/tracks/kairos_domain_contracts_20261107/plan.md",
-        "line": 103
+        "line": 111
       },
       "context_paths": [
         "conductor/tracks/kairos_domain_contracts_20261107/spec.md",
@@ -10112,7 +10112,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 20
+        "line": 36
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10145,7 +10145,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 21
+        "line": 37
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10178,7 +10178,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 22
+        "line": 38
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10211,7 +10211,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 23
+        "line": 39
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10238,7 +10238,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 29
+        "line": 45
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10271,7 +10271,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 30
+        "line": 46
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10304,7 +10304,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 31
+        "line": 47
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10337,7 +10337,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 32
+        "line": 48
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10364,7 +10364,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 39
+        "line": 55
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10397,7 +10397,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 40
+        "line": 56
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10430,7 +10430,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 41
+        "line": 57
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10463,7 +10463,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 42
+        "line": 58
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10490,7 +10490,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 48
+        "line": 64
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10523,7 +10523,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 49
+        "line": 65
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10556,7 +10556,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 50
+        "line": 66
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10589,7 +10589,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 51
+        "line": 67
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10616,7 +10616,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 57
+        "line": 73
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10649,7 +10649,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 58
+        "line": 74
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10682,7 +10682,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 59
+        "line": 75
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10715,7 +10715,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 60
+        "line": 76
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10742,7 +10742,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 66
+        "line": 82
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10775,7 +10775,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 67
+        "line": 83
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10808,7 +10808,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 68
+        "line": 84
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10841,7 +10841,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 69
+        "line": 85
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10868,7 +10868,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 75
+        "line": 91
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10901,7 +10901,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 76
+        "line": 92
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10934,7 +10934,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 77
+        "line": 93
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10967,7 +10967,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 78
+        "line": 94
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -10995,7 +10995,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 84
+        "line": 100
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -11028,7 +11028,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 85
+        "line": 101
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -11061,7 +11061,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 86
+        "line": 102
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
@@ -11094,7 +11094,7 @@
       ],
       "source": {
         "path": "conductor/tracks/careops_core_domain_abstractions_20261020/plan.md",
-        "line": 87
+        "line": 103
       },
       "context_paths": [
         "conductor/tracks/careops_core_domain_abstractions_20261020/spec.md",
