@@ -4,10 +4,35 @@ Date: 8 November 2026. Status: planning addition; implementation and qualificati
 pending. This refines R76.5 and paired-outcome/valuation handoffs under the existing
 Kairos domain-contract track. It does not take over ED MVP, native-core or routing work.
 
+## Parallel-owner reconciliation
+
+Read the [shared reconciliation](https://github.com/edithatogo/paignia/blob/87b4bda345b85310e85239d4845b0f85bf1c6439/docs/integrations/parallel-plan-reconciliation-20261108.md),
+[issue #205](https://github.com/edithatogo/careops-sim/issues/205) and
+[Kairos #381](https://github.com/edithatogo/kairos/pull/381). Paignia is the actual
+standalone provider; PR #2 merged its bounded core/solve seed at
+`12b22ce7571b9c590405bf53c2c1c5862b49cd64`. This is not full package, consumer or
+scientific qualification. Current T17.09/.11 belong to reimbursement; .10 is the
+selected second application, currently Innovate. Historical issue text does not
+make CareOps a required first or third consumer. CareOps remains an optional
+candidate under existing R75–R77 rather than a second T17/provider catalogue.
+
+Keep clinical pathways, operational policies, valuation assumptions and domain
+validation here. Route generic clock/RNG, pathway execution and shared-resource
+mechanism gaps through existing Kairos/CareOps owners; adding a game adapter must
+not create a competing loop or hide those gaps behind solver diagnostic traces.
+The current gitlink, locks, advisory claims and ED MVP priorities are unchanged.
+
+Reuse Voiage O01–O08 paired inputs and optional SI qualification. Keep parameter,
+model, measurement, simulation-replicate and solver identities distinct. The shared
+noise control with one parameter state and A=[-1,1], B=[1,-1] replicates must not
+be exported as two learnable parameter states: parameter EVPI is zero, not one.
+Voiage owns the arithmetic; the application owns input truth and valuation.
+This planning reference does not admit a provider pin or implement a new schema.
+
 ## Preserve ownership and independent acceptance
 
 CareOps owns operational games, actors, workflow policies and model assumptions.
-The separate Rust game packages own generic solving, UOGTO owns semantics and Kairos
+Paignia's separate Rust game packages own generic solving, UOGTO owns semantics and Kairos
 owns native time/state/events/resources/RNG. Valuation providers apply explicit HEOR
 assumptions; Voiage evaluates evidence and research choices. Do not put generic
 solvers into careops-core or Kairos, or VOI formulas into CareOps.
