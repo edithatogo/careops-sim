@@ -176,3 +176,14 @@ The [Luna MVP workpack](execution/mvp/README.md) covers all 82 MVP parent tasks 
 bounded leaves and explicit joins. Run `python3 tools/mvp.py check`; bind reviewed
 context/commands just before dispatch. No autonomous execution or model
 qualification is claimed.
+
+## Proportional execution amendment — 7 November 2026
+
+For the new domain-contract workstream, the plan leaf plus bound context is the
+single work instruction. Reuse this repository's existing preparation/lease
+system; do not add a second packet approval or review panel. A routine leaf needs
+a diff and focused results. Batch review at coherent public-interface,
+numerical/replay and integration milestones; update status only when it changes.
+Use specialist review for unresolved scientific/design choices, not another human
+approval for already authorized reversible work. Keep actual consumer/release
+checks at their relevant milestone and retain meaningful failure evidence.

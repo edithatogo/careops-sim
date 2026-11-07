@@ -128,3 +128,7 @@ Polars inventory leads; sha2/tempfile/proptest are separate tracks with gates on
 ## Python runtime migration — 23 October 2026
 
 - [x] **Track: Python 3.15 migration and qualification** — [Accepted parent runtime](tracks/python315_runtime_qualification_20261023/index.md); main `43ea690`, protected PRs #178/#179, hosted and repo-local Python 3.15.1 handover verified.
+
+## Kairos domain contract follow-through — 7 November 2026
+
+- [ ] [Kairos domain, movement and economic boundaries](tracks/kairos_domain_contracts_20261107/index.md) — proposed; R75–R77, all implementation pending.

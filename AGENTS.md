@@ -50,9 +50,9 @@ source before resuming. It is context, not authority to mark work complete.
 
 ## Delivery boundaries
 
-GitHub creation waits for development-readiness D2's explicit readiness gate.
-No remote currently exists for this parent repository. Use current user authority
-when that gate is reached; determine owner/name/visibility before creation.
+The repository exists at `edithatogo/careops-sim`. Historical D2 creation notes
+do not describe current remote state. Use ordinary scoped branches/PRs and the
+current user authorization; inspect actual branches and pins before integration.
 Secrets and private patient data stay out of Git and public CI artifacts.
 Do not install third-party skills from mutable URLs or enable broad unattended
 agents. Sourcing/installation follows the evaluated, pinned workflow in the plan.
