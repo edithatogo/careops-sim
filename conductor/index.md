@@ -1,5 +1,11 @@
 # CareOps Sim — Conductor
 
+## Ecosystem contract follow-through
+
+[Domain, movement and HEOR boundaries](design/kairos-domain-economic-boundary-20261107.md)
+and [bounded consumer track](tracks/kairos_domain_contracts_20261107/index.md)
+keep Kairos an independent Rust dependency. All new runtime tasks remain pending.
+
 ## Project context
 
 - [Serial/parallel and smaller-model execution](execution-model.md)

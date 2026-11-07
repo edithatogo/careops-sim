@@ -81,3 +81,12 @@ Use native selectors first: `.venv/bin/python -m unittest discover -s tests -p t
 This repository uses unittest; do not convert it to pytest solely for cache plugins. If a concrete pytest lane is later qualified, use focused node/file or `-k` first. `--lf --last-failed-no-failures=none` runs only cached failures and may execute zero tests, which is not full proof. `--ff` still runs all selected tests; `--sw` is a local debugging aid, never a release gate. Conditional skips require an actually missing capability; any xfail must be strict and name the known issue/reason. Retries are opt-in only for demonstrated transient local fake/read-only tests; never retry native mutations or email. Exact plugin versions require isolated Python 3.15.1 qualification before adoption.
 
 Python 3.15.1 plugin qualification currently excludes pytest-difftest 0.3.0: its reported source build is blocked by PyO3 supporting only through Python 3.14. Do not bypass that limit or downgrade Python. No retry plugin is adopted by this unittest repository; defaults remain zero retries.
+
+## Proportional ecosystem delivery — 7 November 2026
+
+The new [consumer contract track](tracks/kairos_domain_contracts_20261107/index.md)
+uses small leaves and one review at coherent interface/integration milestones.
+Routine authorized work does not require repeated human approval or a separate
+risk/evidence dossier. Reuse the existing task plan and focused CI/PR results;
+change registry/status records only when their state changes. Domain clinical
+or release claims still require the checks appropriate to those claims.
