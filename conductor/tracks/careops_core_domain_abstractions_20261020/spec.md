@@ -23,8 +23,19 @@ and exact invariants are defined by [CC-01–CC-08](../../design/composition-con
 A4/A6 build ED → minimal ward → community, including discharge readiness and
 actual departure. B5/B7 supply bounded theatre completion callbacks and linked
 maternal/infant destinations. A7 joins both before reusable-composition acceptance.
-The same single-process scheduler remains authoritative; distributed partitioning
-is optional and independently qualified.
+The target is one authoritative single-process scheduler; distributed partitioning
+is optional and independently qualified. Current A6 evidence is sequential
+composition in one process, not a shared cross-domain event loop. The
+[package decision/source audit](../../design/careops-library-boundaries-20261108.md)
+and [R75–R77 task cards](../kairos_domain_contracts_20261107/reuse-task-cards.md)
+make the remaining implementation explicit without reopening scoped A0–A6 receipts.
+
+Strengthen the existing careops-core package in careops-sim now. Consider a
+standalone repository only after actual independent package consumption and a
+second real healthcare consumer; a logistics runner is not that healthcare
+consumer. Keep ED defaults and specialty policy outside the reusable package
+interface, neutral execution mechanics in Kairos, generic games in optional
+Paignia, and HEOR valuation behind a separate explicit interface.
 
 Clinical models stay in domain crates; neutral engine mechanics use existing
 Kairos owners. No full ward, theatre, diagnostic or network implementation is

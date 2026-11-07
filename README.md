@@ -5,10 +5,18 @@
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Rust: 1.99.1](https://img.shields.io/badge/rust-1.99.1-orange.svg)](rust-toolchain.toml)
 [![Platforms: Linux x86_64 | macOS ARM64](https://img.shields.io/badge/platform-Linux%20x86__64%20%7C%20macOS%20ARM64-lightgrey.svg)](conductor/dependency-policy.md#cross-platform-reproducibility-policy)
-[![Conductor: 153 checked / 225 tasks](https://img.shields.io/badge/plan-153%20checked%20%2F%20225%20tasks-blue.svg)](conductor/tracks.md)
+[![Conductor: task DAG](https://img.shields.io/badge/Conductor-task%20DAG-blue.svg)](conductor/tracks.md)
 
-A planned Rust-native generic emergency-department simulation using Kairos/KairoECS
-DES and ABM. Generic/public or explicitly synthetic inputs first; Cairns later.
+A Rust-native healthcare operations simulation workspace using Kairos/KairoECS
+DES and ABM. The first application is emergency-department simulation, using
+generic/public or explicitly synthetic inputs; Cairns-specific validation follows.
+
+The existing `careops-core` package is the reusable healthcare composition layer;
+`careops-ed` supplies ED pathways and `careops-ed-cli` the application interface.
+[Package boundaries and concrete follow-up](conductor/design/careops-library-boundaries-20261108.md)
+explain what stays here, what belongs in Kairos, and how optional [**Paignia**](https://github.com/edithatogo/paignia) games
+and separate HEOR valuation fit. Keep this package in the current repository until
+independent packaging and a second real healthcare consumer demonstrate reuse.
 
 ## Delivery order
 
@@ -24,12 +32,19 @@ See [delivery scope and acceptance](conductor/delivery-contract.md) and
 
 ## Current state
 
-The plan contains **225 tasks across eight tracks**: 145 historical checkboxes
-are retained, eight R0/R1 reconciliation and baseline tasks are accepted on the development branch, and 72 reconciliation/composition
-tasks remain pending. This is a plan
-count, not overall runtime or product completion. R0 reconciles exact capability
-receipts; constructed GPU metadata and in-process cluster fixtures do not establish
-physical device or multi-host acceptance.
+The [generated task catalogue](conductor/execution/tasks.json) currently contains
+414 tasks across 26 tracks; plan checkboxes describe scoped work, not overall
+product completion. A0–A6 healthcare contract work has scoped local acceptance;
+A7 reuse/validation work remains incomplete and its two-domain join awaits the
+birthing consumer. The current ED-to-ward/community fixture is sequential and
+does not establish a shared cross-domain event loop.
+
+[Bounded implementation cards](conductor/tracks/kairos_domain_contracts_20261107/reuse-task-cards.md)
+cover package cleanup, one clock/RNG, versioned hazard semantics, measured sparse
+execution, live capacity feedback and installed dependency qualification. These
+are pending work, with the optional Paignia profile separate from runtime release
+qualification. Constructed GPU metadata and in-process cluster fixtures do not
+establish physical device or multi-host acceptance.
 
 The corrected [roadmap](conductor/roadmap.md) and [resume state](conductor/current-state.json)
 start with capability-preserving Kairos reconciliation, then shared healthcare
@@ -84,7 +99,7 @@ broad research. See [handoff](conductor/research/research-handoff.md).
 
 For gpt-6-luna execution through the MVP, use the
 [complete leaf workpack](conductor/execution/mvp/README.md): 82 parent tasks,
-258 bounded leaves, and the 225-task graph (`python3 tools/mvp.py check`,
+258 bounded leaves, and the current task graph (`python3 tools/mvp.py check`,
 `python3 tools/tasks.py check`).
 
 ## Licenses, notices, and citation
@@ -108,7 +123,7 @@ Pinned submodules (initialize with `git submodule update --init --recursive`):
 
 | Path | Gitlink | License | Citation |
 | --- | --- | --- | --- |
-| `libs/kairos` | `44261eb5cf8275f132f63a3396903d116d701dbe` | `libs/kairos/LICENSE` (Apache-2.0 OR MIT) | `libs/kairos/CITATION.cff` cites KairoECS |
+| `libs/kairos` | `07410266bf54b6f73c59db2f8cbfbc5697c53734` | `libs/kairos/LICENSE` (Apache-2.0 OR MIT) | `libs/kairos/CITATION.cff` cites KairoECS |
 | `extensions/conductor` | `7a5c560a4fdf5297be58594cc37527eb12790272` | `extensions/conductor/LICENSE` (Apache-2.0) | no citation file at this pin |
 
 ### Citation

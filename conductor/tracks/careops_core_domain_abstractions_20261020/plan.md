@@ -15,6 +15,22 @@ Status: implementation in progress. A0–A6 are accepted locally. A7.1–A7.4 re
 Contract: [cross-service composition](../../design/composition-contracts-20261020.md).
 Dispatch requires reviewed packets, upstream capability readback and the single-maintainer harness.
 
+## Package and Paignia follow-through — 8 November 2026
+
+[The source audit and package decision](../../design/careops-library-boundaries-20261108.md)
+keep careops-core in this repository and identify remaining ED default/encoding,
+clock/RNG, hazard-model, allocation and live-composition work. The
+[bounded R75–R77 cards](../kairos_domain_contracts_20261107/reuse-task-cards.md)
+own these follow-ups: R75.1 maps A0 experiment/package boundaries; R75.2 and
+R76.1–R76.2 implement A1/A3/A4/A5/A6 refinements; R75.3/R76.3–R76.4 support A7.3;
+R77 qualifies installed consumption. Historical A0–A6 statuses and their scoped
+receipts remain unchanged; A7.1 still joins B7.4 for a second real healthcare
+consumer. No current source pin or algorithm is changed by this planning revision.
+
+Paignia R76.5 is an optional domain-game profile/consumer obligation. It does not
+block the independent runtime R76.6/R77 receipt. Package-first cleanup is not a
+new general-purpose framework or an instruction to create another repository.
+
 ## A0 — Small contracts, identities and extraction boundaries
 
 - [x] A0.1 Freeze CC-01 through CC-08, stable identities, virtual clock, schema versions and stream ownership. Map each consumed Kairos 64/66 capability to exact evidence rather than whole-track completion; resolve 67 core/state/ABM overlap and 68/69 DES overlap to exact-file writers and contract handoffs before dispatch. Public API/checkpoint/schema compatibility remains an acceptance gate.

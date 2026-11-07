@@ -24,10 +24,24 @@ extract generic shared valuation only after a second real model demonstrates it.
 Voiage consumes paired strategy/draw outcomes or net benefits for VOI; CareOps
 must preserve units and pairing instead of making Voiage own the simulation.
 
-UOGTO defines game semantics. Generic Rust game packages already incubated in
-new-drug-reimbursement-game own solvers; a Kairos adapter is optional for dynamic
-games. CareOps owns particular operational games, policies and payoffs. A matrix
-solver does not need coordinates or a mandatory event-engine dependency.
+UOGTO defines game semantics. [**Paignia**](https://github.com/edithatogo/paignia)
+is the maintainer-supplied generic Rust game repository, confirmed empty before
+bootstrap. Transfer of `paignia-core`/`paignia-solve` from the reimbursement
+incubator is pending; preserve existing T17 IDs under the provider authority and
+select actual immutable source/artifacts at dispatch. Package publication and
+consumer qualification remain separate. A
+Kairos adapter is optional for dynamic games. CareOps owns particular operational
+games, policies and payoffs. A matrix solver does not need coordinates or a
+mandatory event-engine dependency. R76.5 remains optional and separate from
+runtime-only R76.6/R77 qualification. T17.09 qualifies the first real static
+application and T17.10 a second distinct application; CareOps is an optional
+candidate, not a mandatory consumer.
+
+[Package decision and source audit](careops-library-boundaries-20261108.md) record
+why the existing careops-core stays in this repository, the actual duplicate
+clock/RNG mechanisms and ED defaults to address, and the scoped A6 composition
+evidence. [Task cards](../tracks/kairos_domain_contracts_20261107/reuse-task-cards.md)
+map follow-up into existing A/R75–R77 ownership without a parallel programme.
 
 Use independent immutable package/commit dependencies after qualification.
 Existing submodule paths are current build machinery, not the public contract.
