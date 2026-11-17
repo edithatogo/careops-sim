@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "scenario_id": "public-anzics-plus-explicit-illustrative-assumptions-2026-11",
+  "data_class": "synthetic",
+  "seed": 20261117,
+  "iterations": 5000,
+  "annual_eligible_discharges": 1000,
+  "inputs": {
+    "delayed_discharge_ge12h_rate": {
+      "value": 0.204,
+      "low": 0.204,
+      "high": 0.204,
+      "status": "public_benchmark",
+      "source": "ANZICS 2024/25 Critical Care Resources and Activity Report, pooled 162 reporting units; live ward/home discharges delayed >=12 hours; NOT Cairns rate.",
+      "url": "https://www.anzics.org/public/311/files/PDFs/CORE/2024_2025-CCR-Activity-Report.pdf"
+    },
+    "delayed_cases_addressable_fraction": {
+      "value": 0.45,
+      "low": 0.2,
+      "high": 0.65,
+      "status": "illustrative_assumption",
+      "source": "Hypothetical share of delayed cases with causes potentially responsive to liaison; not measured at CHHHS.",
+      "url": null
+    },
+    "addressable_cases_improved_fraction": {
+      "value": 0.5,
+      "low": 0.2,
+      "high": 0.8,
+      "status": "illustrative_assumption",
+      "source": "Hypothetical service reach and effectiveness among addressable delayed cases; not an effect estimate.",
+      "url": null
+    },
+    "hours_released_per_improved_case": {
+      "value": 4,
+      "low": 1,
+      "high": 8,
+      "status": "illustrative_assumption",
+      "source": "Hypothetical hours freed on INDEX ICU discharge, not readmission ICU hours; constrained by observed delay after future calibration.",
+      "url": null
+    },
+    "unplanned_72h_readmission_risk": {
+      "value": 0.03,
+      "low": 0.01,
+      "high": 0.06,
+      "status": "illustrative_assumption",
+      "source": "Synthetic risk per eligible live ICU-to-ward discharge. Not interchangeable with APD 4.0% patient or CCR 4.5% episode measures.",
+      "url": null
+    },
+    "relative_readmission_reduction": {
+      "value": 0.15,
+      "low": -0.1,
+      "high": 0.3,
+      "status": "illustrative_assumption",
+      "source": "Unproven illustrative service effect; negative values explicitly permit more early returns through surveillance.",
+      "url": null
+    },
+    "additional_cost_per_readmission_aud": {
+      "value": 15000,
+      "low": 5000,
+      "high": 35000,
+      "status": "illustrative_assumption",
+      "source": "Hypothetical incremental post-discharge readmission episode cost excluding INDEX delay ICU hours and excluding care otherwise required.",
+      "url": null
+    },
+    "net_avoidable_cost_per_icu_day_aud": {
+      "value": 1800,
+      "low": 0,
+      "high": 5000,
+      "status": "illustrative_assumption",
+      "source": "Hypothetical marginal/avoidable resource cost per INDEX ICU bed-day released after extra ward cost. NOT the annual cost per staffed bed.",
+      "url": null
+    },
+    "annual_incremental_service_cost_aud": {
+      "value": 250000,
+      "low": 200000,
+      "high": 380000,
+      "status": "illustrative_assumption",
+      "source": "Hypothetical fully loaded additional annual liaison cost relative to current service, not a CHHHS workforce quote.",
+      "url": null
+    }
+  }
+}

@@ -11,3 +11,4 @@ pub mod profile;
 pub mod staffing;
 pub mod transfer;
 pub mod ward_community;
+pub mod icu_liaison;
