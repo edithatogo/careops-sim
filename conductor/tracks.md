@@ -141,8 +141,8 @@ Polars inventory leads; sha2/tempfile/proptest are separate tracks with gates on
   [track](tracks/icu_liaison_economic_psa_20261117/index.md),
   [spec](tracks/icu_liaison_economic_psa_20261117/spec.md),
   [plan](tracks/icu_liaison_economic_psa_20261117/plan.md).
-  IL0 public intake and IL1 Rust source/fixture/tests drafted; exact-head
-  hosted tests and review remain open. IL2 local CHHHS calibration and IL3
+  R78 public intake and R79 Rust source/fixture/tests drafted; exact-head
+  hosted tests and review remain open. R80 local CHHHS calibration and R81
   Kairos event-based patient-flow modelling are not started. This track
   does not supersede active global R/A/B reservations or amend upstream
   rand/rand_distr and suite integration authority.
