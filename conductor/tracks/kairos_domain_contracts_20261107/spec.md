@@ -38,3 +38,12 @@ source before dispatch. The required small companion files link to these rather
 than duplicate dossiers. Routine leaves need a diff and
 focused result; public/numerical/replay milestones receive specialist review.
 No repeated user approval is needed for authorized reversible implementation.
+
+## Serde usage assessment — 18 November 2026 (no new migration)
+
+The Rust workspace already depends on `serde` derive and `serde_json` for metadata/control exchange. Kairos upstream has accepted typed Serde control/replay DTOs (tracks 74/75). The simulation's discrete event clock, state, capacity, pre-emption, random stream and Arrow/Parquet calibration paths are **not** serialization problems and must not be replaced by Serde.
+
+- [ ] Inventory live CareOps Sim/Kairos control and replay fields against the pinned upstream DTOs; adopt already-qualified types only where the actual wire contract matches and no semantic widening/narrowing occurs.
+- [ ] Independently assert deterministic replay under identical seed/event schedule, large ID/tick fidelity, JSONL errors and ordering, schema version migration and patient-sensitive data minimisation; a JSON roundtrip does not establish simulated clinical correctness.
+- [ ] Keep Polars/Arrow/Parquet tabular outputs; retain versioned provenance and privacy controls and avoid unneeded Serde derives on hot-loop internal ECS/state structs.
+- [ ] Do not change the pinned Kairos, baseline calibration or active owner work as part of this note. File separate failing-fixture-first implementation only when a concrete duplicated codec or loss is evidenced and run exact-head locked Cargo, native reference, CI and consumer gates.
