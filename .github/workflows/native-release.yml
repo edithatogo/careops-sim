@@ -91,6 +91,22 @@ jobs:
           SOURCE_COMMIT: ${{ github.sha }}
         run: |
           "$CAREOPS_PYTHON" .artifacts/ci-release-policy/portfolio-scripts/artifact_sbom.py --artifact dist/careops-sim-linux-x64.zip --name careops-sim-linux-x64 --source-commit "$SOURCE_COMMIT" --created-epoch "$(git show -s --format=%ct "$SOURCE_COMMIT")" --output dist/careops-sim.spdx.json
+      - name: Inventory exact locked Rust dependencies
+        uses: edithatogo/repository-standards/.github/actions/cargo-lock-sbom@bc76f1fbe0fa87a1371eadc06b08f54b48c623f7
+        with:
+          lockfile: dist/resolved-workspace.Cargo.lock
+          output: dist/careops-sim.dependencies.cdx.json
+          name: careops-sim
+          source-sha: ${{ github.sha }}
+      - name: Scan resolved Rust dependencies with Grype
+        uses: edithatogo/repository-standards/.github/actions/grype-scan@bc76f1fbe0fa87a1371eadc06b08f54b48c623f7
+        with:
+          sbom: dist/careops-sim.dependencies.cdx.json
+          mode: ${{ github.event_name == 'pull_request' && 'advisory' || 'enforce' }}
+          severity-cutoff: critical
+          artifact-name: grype-careops-sim-native
+          output-directory: .grype/native-report
+          source-sha: ${{ github.sha }}
       - name: Preserve actual package and source resolution inventory
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
