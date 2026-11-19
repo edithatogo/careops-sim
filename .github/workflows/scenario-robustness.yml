@@ -1,0 +1,71 @@
+name: Scenario parser robustness
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/scenario-robustness.yml'
+      - 'crates/careops-ed/**'
+      - 'crates/careops-core/**'
+      - 'fuzz/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'rust-toolchain.toml'
+      - 'libs/kairos'
+  schedule:
+    - cron: '31 4 * * 2'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  stable-parser:
+    name: Stable parser mutation and contract tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CARGO_BUILD_JOBS: '2'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - name: Install canonical Rust
+        run: rustup toolchain install 1.99.1 --profile minimal
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
+        with:
+          key: scenario-robustness
+      - name: Build bounded parser tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/scenario-robustness
+          rustc +1.99.1 -Vv > .artifacts/scenario-robustness/compiler.txt
+          git rev-parse HEAD > .artifacts/scenario-robustness/commit.txt
+          timeout 600s cargo +1.99.1 test --locked -p careops-ed \
+            --test scenario_robustness --no-run \
+            2>&1 | tee .artifacts/scenario-robustness/build.log
+      - name: Execute shared oracle and independent rejection properties
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 120s cargo +1.99.1 test --locked -p careops-ed \
+            --test scenario_robustness -- --test-threads=1 --nocapture \
+            2>&1 | tee .artifacts/scenario-robustness/tests.log
+      - name: Record coverage boundary
+        if: always()
+        run: |
+          echo 'Stable mutation/corpus tests share the parser round-trip oracle with the existing fuzz target.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Coverage-guided cargo-fuzz and AddressSanitizer remain UNVERIFIED under the canonical stable-only policy.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve parser test evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: scenario-robustness-${{ github.run_attempt }}
+          path: .artifacts/scenario-robustness/
+          if-no-files-found: warn
+          retention-days: 14
