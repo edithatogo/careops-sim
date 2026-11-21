@@ -12,3 +12,8 @@ Status: proposed; direction authorized 7 November 2026, implementation pending.
 
 This complements existing core A0–A7, spatial routing and scientific alignment;
 it does not take over their open PRs or advance the Kairos gitlink.
+
+## Strategic information integration — 8 November 2026
+
+- [Owner-scoped roadmap and acceptance cases](strategic-information-integration.md).
+  Planning only; existing implementation statuses, pins and release gates remain unchanged.
