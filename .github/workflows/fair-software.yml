@@ -6,11 +6,16 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: fair-software-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
   fair-software:
+    name: FAIR software advisory assessment
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
