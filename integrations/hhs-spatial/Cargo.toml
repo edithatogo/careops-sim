@@ -1,0 +1,19 @@
+[package]
+name = "careops-hhs-spatial"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99"
+license = "Apache-2.0"
+publish = false
+
+[workspace]
+
+[dependencies]
+careops-ed = { path = "../../crates/careops-ed", default-features = false }
+arrow-array = "=60.2.0"
+arrow-schema = "=60.2.0"
+parquet = { version = "=60.2.0", default-features = false, features = ["arrow", "zstd"] }
+bytes = "=1.12.1"
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = { version = "=1.0.151", features = ["float_roundtrip"] }
+sha2 = "=0.11.1"
