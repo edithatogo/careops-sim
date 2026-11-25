@@ -53,11 +53,11 @@ The repository contains readable rows and schemas for fictional fixtures from
 the HHS producer. Reconstruct the original Parquet files in the ignored
 `tests/fixture-packages` directory. The generator verifies each file against
 its retained manifest SHA-256, including the malformed fixtures used to check
-rejection behavior. Use an isolated fixture environment with Python 3.15.2
+rejection behavior. Use an isolated fixture environment with Python 3.15.1
 and the pinned fixture dependencies.
 
 ```sh
-uv venv --python 3.15.2 .venv-hhs-fixtures
+uv venv --python 3.15.1 .venv-hhs-fixtures
 uv pip sync --python .venv-hhs-fixtures/bin/python --require-hashes integrations/hhs-spatial/tests/requirements.txt
 .venv-hhs-fixtures/bin/python -I -B integrations/hhs-spatial/tests/generate_fixtures.py
 rustup run 1.99.1 cargo test --manifest-path integrations/hhs-spatial/Cargo.toml --locked
