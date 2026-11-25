@@ -18,6 +18,11 @@ jobs:
     outputs:
       matrix: ${{ steps.discover.outputs.matrix }}
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - id: source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -142,6 +147,11 @@ jobs:
       CANDIDATE_PYTHON: ${{ matrix.python }}
       SOURCE_COMMIT: ${{ github.sha }}
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - name: Initialise bounded evidence location
         id: initialize
         run: echo "CANARY_ROOT=$GITHUB_WORKSPACE/.artifacts/schema-development" >> "$GITHUB_ENV"
