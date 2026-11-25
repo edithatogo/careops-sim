@@ -1,0 +1,40 @@
+name: hhs-spatial
+on:
+  pull_request:
+    paths: ['integrations/hhs-spatial/**', 'crates/careops-ed/**', 'crates/careops-core/**', 'libs/kairos', '.github/workflows/hhs-spatial.yml']
+  push:
+    branches: [main]
+    paths: ['integrations/hhs-spatial/**', 'crates/careops-ed/**', 'crates/careops-core/**', 'libs/kairos', '.github/workflows/hhs-spatial.yml']
+permissions:
+  contents: read
+concurrency:
+  group: hhs-spatial-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  contract:
+    name: HHS spatial contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.15.1'
+      - name: Verify repository-local Python 3.15.1
+        run: python tools/python_runtime.py --github
+      - name: Reconstruct Python producer fixtures
+        run: |
+          "$CAREOPS_PYTHON" -I -m pip install --only-binary=:all: --require-hashes -r integrations/hhs-spatial/tests/requirements.txt
+          "$CAREOPS_PYTHON" -I -B integrations/hhs-spatial/tests/generate_fixtures.py
+      - name: Install qualified Rust
+        run: |
+          rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
+          rustup run 1.99.1 rustc --version
+      - name: Format, contract and recovery tests, lint
+        run: |
+          rustup run 1.99.1 cargo fmt --manifest-path integrations/hhs-spatial/Cargo.toml --check
+          rustup run 1.99.1 cargo test --manifest-path integrations/hhs-spatial/Cargo.toml --locked
+          rustup run 1.99.1 cargo clippy --manifest-path integrations/hhs-spatial/Cargo.toml --locked --all-targets -- -D warnings
